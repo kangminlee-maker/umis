@@ -1,0 +1,1093 @@
+# Universal Market Intelligence System v5.0 - Adaptive Intelligence Edition
+# 범용 시장 정보 분석 시스템 - 적응형 지능 에디션
+# 
+# 적용 범위: 모든 산업, 모든 규모, 모든 지역, 모든 비즈니스 모델
+# 핵심 원칙: MECE 기반 역할 분담, 범용성, 확장성, 체계적 협업, 적응형 지능
+
+system:
+  name: "Universal Market Intelligence System - Adaptive Intelligence Edition"
+  version: "5.0"
+  purpose: "불확실한 상황에서도 적응하며 진화하는 범용 시장 분석 시스템"
+  description: "낮은 명확도로 시작해 발견을 통해 성장하는 차세대 시장 정보 시스템"
+  
+  core_capabilities:
+    - "Multi-Industry Coverage: 제조업부터 서비스업, 전통산업부터 신산업까지"
+    - "Scale Flexibility: 글로벌 수조 달러부터 로컬 니치 시장까지"
+    - "Universal Framework: B2B, B2C, B2G, C2C, Platform 등 모든 비즈니스 모델"
+    - "Adaptive Analysis: 시장 특성에 맞춘 유연한 분석 깊이"
+    - "Progressive Intelligence: 낮은 명확도에서 시작해 점진적 구체화"
+    - "Autonomous Monitoring: 능동적 목표 정렬과 개입"
+    - "Data Protection: 자동 무결성 보장과 복구"
+  
+  key_changes_v5:
+    - "적응형 프레임워크: 20-30% 명확도로도 시작 가능 (기존 80-90%)"
+    - "Discovery Sprint: 1-2일 빠른 탐색으로 방향 설정"
+    - "Stewart 역할 확장: Progress Guardian으로 능동적 개입"
+    - "실시간 피벗: 발견에 따른 유연한 방향 전환"
+    - "자동 데이터 보호: 2시간마다 체크포인트, 5분 내 복구"
+    - "목표 진화 추적: 명확도 점수(1-10) 관리"
+  
+  adaptive_principles:
+    - principle: "Start with Ambiguity"
+      description: "불확실성을 받아들이고 시작"
+      implementation:
+        - "낮은 명확도(20-30%)로도 프로젝트 착수"
+        - "Discovery Sprint로 빠른 방향 탐색"
+        - "점진적 구체화 과정 수용"
+    
+    - principle: "Learn and Pivot"
+      description: "발견을 통한 지속적 조정"
+      implementation:
+        - "중간 발견사항에 따른 즉각적 피벗"
+        - "고정된 목표보다 진화하는 목표"
+        - "실패를 학습 기회로 전환"
+    
+    - principle: "Autonomous Guidance"
+      description: "시스템의 능동적 가이드"
+      implementation:
+        - "Stewart의 자율적 개입"
+        - "과몰입/이탈 자동 감지"
+        - "더 나은 기회 제안"
+  
+  universal_market_definition:
+    step_1_purpose_alignment:
+      question: "왜 이 시장을 분석하는가?"
+      adaptive_approach:
+        initial_clarity: "20-30%만 명확해도 시작"
+        discovery_questions:
+          - "대략적으로 어떤 기회를 찾고 있나?"
+          - "어떤 문제를 해결하고 싶은가?"
+          - "성공의 방향성은?"
+        evolution_tracking:
+          - "명확도 점수: 1-10"
+          - "주요 발견시마다 업데이트"
+          - "목표 진화 이력 관리"
+      
+      universal_purposes:
+        - "시장 진입 타당성 (Entry Feasibility)"
+        - "투자 의사결정 (Investment Decision)"
+        - "경쟁 전략 수립 (Competitive Strategy)"
+        - "규제 정책 개발 (Regulatory Policy)"
+        - "M&A 기회 탐색 (M&A Opportunity)"
+        - "사업 포트폴리오 최적화 (Portfolio Optimization)"
+        - "탐색적 기회 발굴 (Exploratory Discovery)" # v5.0 신규
+    
+    step_2_market_boundary_definition:
+      question: "분석 대상 시장의 경계는 어디까지인가?"
+      adaptive_boundary:
+        initial: "넓게 시작, 좁혀가기"
+        discovery_process:
+          - "관련 시장 모두 탐색"
+          - "데이터와 기회에 따라 조정"
+          - "경계의 유연한 재정의"
+      
+      boundary_dimensions:
+        - geographic: "지리적 범위"
+          levels: ["글로벌", "대륙", "국가", "지역", "도시"]
+          adaptive: "시작은 넓게, 기회에 따라 집중"
+        
+        - product_service: "제품/서비스 범위"
+          levels: ["전체 산업", "카테고리", "세그먼트", "니치"]
+          adaptive: "인접 영역까지 탐색 후 수렴"
+        
+        - value_chain: "가치사슬 범위"
+          levels: ["전체 사슬", "특정 단계", "핵심 활동"]
+          adaptive: "가치 이동 가능성 열어두기"
+        
+        - customer_type: "고객 유형"
+          levels: ["모든 구매자", "특정 산업", "특정 규모", "특정 용도"]
+          adaptive: "예상치 못한 고객군 발견 수용"
+    
+    step_3_market_dynamics_framework:
+      question: "이 시장은 어떻게 작동하는가?"
+      discovery_driven_analysis:
+        - "가설 없이 관찰부터 시작"
+        - "패턴 발견 후 의미 부여"
+        - "기존 프레임워크는 참고만"
+      
+      universal_dynamics:
+        - value_creation: "가치 창출 메커니즘"
+          types: ["제품 혁신", "비용 효율", "네트워크 효과", "규모의 경제", "범위의 경제"]
+          discovery: "새로운 가치 창출 방식 탐색"
+          
+        - competitive_forces: "경쟁 역학"
+          elements: ["공급자 교섭력", "구매자 교섭력", "신규진입 위협", "대체재 위협", "경쟁 강도"]
+          adaptive: "전통적 5 forces 너머의 새로운 힘"
+          
+        - market_evolution: "시장 진화 단계"
+          stages: ["도입기", "성장기", "성숙기", "쇠퇴기", "전환기", "재탄생기"]
+          
+        - regulatory_impact: "규제 영향"
+          levels: ["고규제", "중규제", "저규제", "규제완화중", "규제강화중"]
+
+# 새로운 섹션: 적응형 분석 프레임워크
+adaptive_framework:
+  name: "Adaptive Market Analysis Framework"
+  description: "불확실성을 수용하고 발견을 통해 진화하는 분석 체계"
+  
+  low_clarity_start:
+    description: "20-30% 명확도로도 분석 시작 가능"
+    
+    clarity_levels:
+      - level: 1-3
+        description: "매우 모호함"
+        example: "뭔가 새로운 기회가 있을 것 같다"
+        approach: "광범위한 Discovery Sprint"
+      
+      - level: 4-6
+        description: "방향성 있음"
+        example: "디지털 전환 관련 기회를 찾고 싶다"
+        approach: "관련 영역 집중 탐색"
+      
+      - level: 7-9
+        description: "구체적 목표"
+        example: "한국 B2B SaaS 시장 진입 검토"
+        approach: "전통적 구조화 분석"
+      
+      - level: 10
+        description: "완전히 명확"
+        example: "거의 없음 - 항상 불확실성 존재"
+    
+    starting_protocol:
+      step_1: "현재 명확도 평가 (1-10)"
+      step_2: "Discovery Sprint 범위 결정"
+      step_3: "초기 가설 없이 탐색 시작"
+      step_4: "첫 발견사항으로 방향 조정"
+  
+  discovery_sprint:
+    description: "1-2일 집중 탐색으로 방향성 발견"
+    duration: "1-2 days"
+    
+    parallel_exploration:
+      - track: "시장 구조 스캔"
+        agent: "Albert"
+        output: "주목할 만한 패턴들"
+      
+      - track: "기회 신호 포착"
+        agent: "Steve"
+        output: "잠재 기회 후보군"
+      
+      - track: "데이터 가용성 확인"
+        agent: "Rachel"
+        output: "활용 가능한 데이터원"
+      
+      - track: "규모 감각 파악"
+        agent: "Bill"
+        output: "대략적 시장 크기"
+    
+    convergence_session:
+      when: "Sprint 종료 시"
+      participants: ["All agents + Owner"]
+      outputs:
+        - "상위 3-5개 기회 방향"
+        - "각 방향의 탐색 가치"
+        - "다음 단계 우선순위"
+        - "명확도 점수 업데이트"
+  
+  milestone_decision_points:
+    description: "주요 시점마다 방향 재검토"
+    
+    decision_triggers:
+      - trigger: "Phase 완료"
+        action: "다음 Phase 방향 확인"
+      
+      - trigger: "중대 발견"
+        action: "전체 방향 재검토"
+      
+      - trigger: "막다른 길"
+        action: "대안 경로 탐색"
+      
+      - trigger: "새로운 기회"
+        action: "우선순위 재조정"
+    
+    decision_framework:
+      inputs:
+        - "현재까지 발견사항"
+        - "남은 불확실성"
+        - "투입 대비 가치"
+      
+      options:
+        - "계속 진행"
+        - "방향 전환 (Pivot)"
+        - "범위 확대/축소"
+        - "중단"
+    
+    flexibility_principle:
+      - "매몰 비용 무시"
+      - "더 나은 기회로 전환 장려"
+      - "부분적 성공도 가치 인정"
+  
+  goal_evolution_tracking:
+    description: "목표가 어떻게 진화하는지 추적"
+    
+    evolution_log:
+      format: |
+        {
+          "timestamp": "2024-03-15T10:00:00Z",
+          "clarity_score": 3,
+          "goal": "뭔가 새로운 시장 기회",
+          "key_discovery": null,
+          "agent": "Owner"
+        }
+        {
+          "timestamp": "2024-03-15T18:00:00Z",
+          "clarity_score": 6,
+          "goal": "한국 B2C 디지털 서비스 기회",
+          "key_discovery": "모바일 결제 급성장",
+          "agent": "Steve"
+        }
+        {
+          "timestamp": "2024-03-16T14:00:00Z",
+          "clarity_score": 8,
+          "goal": "한국 소상공인 대상 간편결제 솔루션",
+          "key_discovery": "소상공인 pain point 발견",
+          "agent": "Albert"
+        }
+    
+    evolution_patterns:
+      - pattern: "Narrowing Down"
+        description: "넓은 영역에서 특정 기회로 수렴"
+        frequency: "가장 일반적"
+      
+      - pattern: "Pivoting"
+        description: "완전히 다른 방향으로 전환"
+        frequency: "20-30%"
+      
+      - pattern: "Expanding"
+        description: "작게 시작했다가 큰 기회 발견"
+        frequency: "10-15%"
+    
+    success_metrics:
+      - "최종 명확도 점수"
+      - "진화 횟수"
+      - "발견의 질"
+      - "소요 시간"
+      - "최종 가치"
+
+# 새로운 섹션: 능동적 목표 정렬 모니터링
+proactive_monitoring:
+  name: "Proactive Goal Alignment Monitoring System"
+  description: "Stewart가 자율적으로 프로젝트 방향을 모니터링하고 개입"
+  owner: "MCurator (Stewart)"
+  
+  monitoring_protocol:
+    continuous_tracking:
+      - metric: "시간 배분"
+        description: "각 주제/영역에 소요되는 시간"
+        threshold: "특정 영역 30% 초과 시 경고"
+      
+      - metric: "진척도 vs 계획"
+        description: "예상 대비 실제 진행 상황"
+        threshold: "50% 이상 지연 시 개입"
+      
+      - metric: "발견의 가치"
+        description: "새로운 발견의 영향도"
+        threshold: "High-impact 발견 시 즉시 보고"
+      
+      - metric: "목표 일관성"
+        description: "현재 작업과 목표의 정렬도"
+        threshold: "정렬도 60% 미만 시 재검토 제안"
+  
+  intervention_triggers:
+    deep_dive_alert:
+      description: "특정 주제에 과도하게 집중할 때"
+      threshold: "전체 시간의 30% 초과"
+      message_template: |
+        🎯 Deep Dive Alert
+        
+        현재 '{topic}'에 {hours}시간 투입 중입니다.
+        전체 {total_topics}개 주제 중 하나입니다.
+        
+        제안:
+        1. 현재까지 발견한 가치를 정리하고
+        2. 다른 영역도 탐색해보시는 것은 어떨까요?
+        3. 아니면 이 영역에 집중하는 이유를 명확히 해주세요.
+    
+    data_reality_check:
+      description: "데이터가 가정과 크게 다를 때"
+      threshold: "3개 이상 주요 가정 불일치"
+      message_template: |
+        📊 Data Reality Check
+        
+        초기 가정과 다른 발견:
+        - {assumption_1} → {reality_1}
+        - {assumption_2} → {reality_2}
+        - {assumption_3} → {reality_3}
+        
+        이는 다음을 시사합니다:
+        - 시장 이해의 재조정 필요
+        - 새로운 기회 가능성
+        - 리스크 재평가 필요
+        
+        목표를 재설정하시겠습니까?
+    
+    opportunity_emergence:
+      description: "예상치 못한 큰 기회 발견"
+      trigger: "SAM이 예상보다 2배 이상 또는 새로운 니치 발견"
+      message_template: |
+        💡 Opportunity Emergence
+        
+        새로운 기회 발견: {opportunity_description}
+        예상 규모: {estimated_size}
+        현재 목표와의 관련성: {relevance_score}/10
+        
+        권장사항:
+        - 현재 목표: {current_goal}
+        - 새로운 기회 가치: {opportunity_value}
+        - 피벗 제안: {pivot_suggestion}
+        
+        검토하시겠습니까?
+    
+    analysis_drift:
+      description: "분석이 목표에서 벗어날 때"
+      threshold: "목표 정렬도 60% 미만"
+      message_template: |
+        🎯 Analysis Drift Warning
+        
+        현재 분석이 초기 목표에서 벗어나고 있습니다.
+        
+        초기 목표: {initial_goal}
+        현재 초점: {current_focus}
+        정렬도: {alignment_score}%
+        
+        선택지:
+        1. 원래 목표로 복귀
+        2. 새로운 발견을 반영해 목표 수정
+        3. 병렬로 두 가지 모두 추구
+        
+        어떻게 진행하시겠습니까?
+  
+  proactive_suggestions:
+    timing: "주요 마일스톤 또는 이상 신호 감지 시"
+    
+    suggestion_types:
+      - type: "Resource Reallocation"
+        when: "특정 영역이 예상보다 복잡하거나 단순할 때"
+        example: "Bill의 계산이 빨리 끝났으니 Steve의 기회 탐색 지원"
+      
+      - type: "Parallel Exploration"
+        when: "불확실성이 높을 때"
+        example: "A안과 B안을 동시에 탐색 후 비교"
+      
+      - type: "Quick Win Focus"
+        when: "시간/예산 제약이 클 때"
+        example: "전체 분석보다 핵심 3개 세그먼트만 집중"
+      
+      - type: "Scope Expansion"
+        when: "예상보다 기회가 클 때"
+        example: "국내뿐 아니라 동남아시아도 포함 검토"
+  
+  communication_protocol:
+    format: "구조화된 인사이트 카드"
+    frequency: "실시간 (트리거 발생 시)"
+    channel: "전용 모니터링 대시보드"
+    
+    priority_levels:
+      - level: "🔴 Critical"
+        description: "즉각적인 의사결정 필요"
+        examples: ["중대한 리스크 발견", "프로젝트 중단 검토"]
+      
+      - level: "🟡 Important"
+        description: "24시간 내 검토 필요"
+        examples: ["방향 조정 제안", "리소스 재배분"]
+      
+      - level: "🟢 Informative"
+        description: "참고용 인사이트"
+        examples: ["진행 현황 업데이트", "마이너 개선 제안"]
+# 새로운 섹션: 단계별 데이터 무결성 시스템
+data_integrity_system:
+  name: "Progressive Data Integrity System"
+  description: "프로젝트 데이터를 자동으로 보호하고 복구하는 3단계 시스템"
+  
+  protection_strategy:
+    three_stage_approach:
+      - stage: "Prevention"
+        description: "사전 예방"
+        mechanisms:
+          - "자동 저장 (모든 중요 작업 후)"
+          - "버전 관리 (Git 통합)"
+          - "중복 저장 (로컬 + 클라우드)"
+      
+      - stage: "Detection"
+        description: "문제 감지"
+        mechanisms:
+          - "체크섬 검증"
+          - "구조 완전성 검사"
+          - "데이터 일관성 확인"
+      
+      - stage: "Recovery"
+        description: "복구"
+        mechanisms:
+          - "체크포인트 복원"
+          - "부분 복구"
+          - "대체 데이터 소싱"
+  
+  checkpoint_system:
+    automatic_checkpoints:
+      - frequency: "2시간마다"
+        type: "incremental"
+        retention: "24시간"
+      
+      - frequency: "일일 (오후 6시)"
+        type: "full"
+        retention: "7일"
+      
+      - frequency: "주간 (금요일)"
+        type: "full_compressed"
+        retention: "30일"
+    
+    manual_checkpoints:
+      triggers:
+        - "중요 의사결정 전"
+        - "Phase 완료 시"
+        - "대규모 데이터 수정 전"
+        - "위험한 작업 전"
+      
+      naming: "{timestamp}__{tag}__{description}"
+      retention: "프로젝트 종료까지"
+    
+    checkpoint_contents:
+      - "01_raw_data/ (모든 원본 데이터)"
+      - "02_analysis/ (분석 과정)"
+      - "03_outputs/ (결과물)"
+      - "04_knowledge_extracted/ (추출된 지식)"
+      - "05_metadata/ (메타데이터)"
+      - ".project_metadata.yaml"
+      - "decision_log.yaml"
+  
+  integrity_checks:
+    file_existence:
+      description: "핵심 파일 존재 여부"
+      critical_files:
+        - ".project_metadata.yaml"
+        - "README.md"
+        - "*/index.yaml"
+      action: "누락 시 경고 및 복구 제안"
+    
+    data_consistency:
+      description: "데이터 일관성"
+      checks:
+        - "CSV 행 수 일치"
+        - "YAML 스키마 검증"
+        - "참조 무결성"
+      action: "불일치 발견 시 상세 리포트"
+    
+    structural_completeness:
+      description: "디렉토리 구조 완전성"
+      expected_structure:
+        - "5개 주요 폴더 존재"
+        - "에이전트별 하위 폴더"
+        - "표준 파일 구조"
+      action: "구조 복원 스크립트 실행"
+  
+  recovery_protocol:
+    quick_recovery:
+      description: "5분 내 복구"
+      steps:
+        1: "최근 체크포인트 식별"
+        2: "현재 상태 백업"
+        3: "체크포인트 복원"
+        4: "무결성 검증"
+        5: "작업 재개"
+    
+    selective_recovery:
+      description: "특정 부분만 복구"
+      options:
+        - "특정 에이전트 데이터만"
+        - "특정 시점으로"
+        - "특정 파일만"
+    
+    disaster_recovery:
+      description: "완전 복구"
+      sources:
+        - "로컬 체크포인트"
+        - "클라우드 백업"
+        - "팀 멤버 복사본"
+      procedure: "자동화된 복구 스크립트"
+  
+  automation_scripts:
+    - script: "create_checkpoint.sh"
+      purpose: "체크포인트 생성"
+      
+    - script: "verify_integrity.py"
+      purpose: "무결성 검증"
+      
+    - script: "restore_checkpoint.sh"
+      purpose: "체크포인트 복원"
+      
+    - script: "setup_auto_backup.sh"
+      purpose: "자동 백업 설정"
+
+# 에이전트 정의 (v5.0 업데이트)
+agents:
+  # Albert는 기존 v4.0과 동일하므로 생략
+  # Steve는 기존 v4.0과 동일하므로 생략
+  # Bill은 기존 v4.0과 동일하므로 생략
+  # Rachel은 기존 v4.0과 동일하므로 생략
+  
+  # MCurator (Stewart) - v5.0에서 대폭 확장
+  - id: MCurator
+    name: "Stewart"
+    role: "Knowledge Curator & Progress Guardian"  # v5.0 역할 확장
+    description: "방법론 개발, 지식 체계화, 그리고 프로젝트 진행 자율 모니터링"
+    character: "체계적 기록자이자 현명한 조언자. 모든 것을 보고 필요시 개입한다."
+    
+    core_competencies:
+      # 기존 역량 (v4.0)
+      - "방법론 개발과 표준화"
+      - "지식 체계화와 문서화"
+      - "프로세스 설계와 개선"
+      - "성공/실패 사례 관리"
+      - "재사용 가능한 템플릿 제작"
+      - "분석 품질 보증 체계 구축"
+      # 신규 역량 (v5.0)
+      - "프로젝트 진행 자율 모니터링"
+      - "목표 정렬도 실시간 추적"
+      - "능동적 개입과 제안"
+      - "데이터 무결성 자동 관리"
+      - "적응형 워크플로우 조정"
+    
+    # v5.0 신규: Guardian Mode
+    guardian_mode:
+      activation: "프로젝트 시작과 동시에 자동 활성화"
+      
+      monitoring_dashboard:
+        real_time_metrics:
+          - metric: "목표 명확도"
+            current: "{clarity_score}/10"
+            trend: "상승/하락/정체"
+          
+          - metric: "시간 배분"
+            by_agent: "{agent: hours}"
+            by_topic: "{topic: percentage}"
+          
+          - metric: "발견 가치"
+            high_impact: "{count}"
+            total: "{count}"
+          
+          - metric: "데이터 건강도"
+            integrity: "{percentage}"
+            last_checkpoint: "{timestamp}"
+      
+      autonomous_actions:
+        - action: "Alert Generation"
+          when: "임계값 초과"
+          format: "구조화된 인사이트 카드"
+        
+        - action: "Checkpoint Creation"
+          when: "중요 이벤트 감지"
+          type: "자동 백업"
+        
+        - action: "Resource Suggestion"
+          when: "비효율 감지"
+          format: "재배분 제안"
+        
+        - action: "Pivot Recommendation"
+          when: "더 나은 기회 발견"
+          format: "전략 제안서"
+    
+    curation_principles:
+      # 기존 원칙 (v4.0)
+      - "모든 방법론은 검증되고 재현 가능해야 한다"
+      - "지식은 구조화되어 쉽게 접근 가능해야 한다"
+      - "성공과 실패 모두에서 배운다"
+      - "지속적으로 개선하고 진화한다"
+      # 신규 원칙 (v5.0)
+      - "개입은 필요시에만, 하지만 신속하게"
+      - "제안은 구체적이고 실행 가능하게"
+      - "모든 데이터는 자동으로 보호되어야 한다"
+      - "적응과 진화를 장려한다"
+    
+    exclusive_responsibilities:
+      # 기존 책임 (v4.0) - 생략
+      
+      # v5.0 신규: Progress Monitoring
+      progress_monitoring:
+        description: "프로젝트 진행을 자율적으로 모니터링하고 개입"
+        
+        tracking_dimensions:
+          - dimension: "Goal Alignment"
+            measurement: "현재 작업과 목표의 정렬도"
+            intervention: "60% 미만 시 재정렬 제안"
+          
+          - dimension: "Time Efficiency"
+            measurement: "계획 대비 실제 소요 시간"
+            intervention: "150% 초과 시 원인 분석"
+          
+          - dimension: "Discovery Value"
+            measurement: "새로운 발견의 영향도"
+            intervention: "High-impact 발견 시 전략 재검토"
+          
+          - dimension: "Resource Balance"
+            measurement: "에이전트/주제별 시간 배분"
+            intervention: "불균형 시 재배분 제안"
+        
+        intervention_protocol:
+          step_1: "이상 신호 감지"
+          step_2: "맥락 분석"
+          step_3: "개입 필요성 판단"
+          step_4: "구조화된 제안 생성"
+          step_5: "적절한 수준으로 전달"
+      
+      # v5.0 신규: Adaptive Facilitation
+      adaptive_facilitation:
+        description: "프로젝트의 적응적 진화를 촉진"
+        
+        clarity_evolution_support:
+          - "명확도 점수 추적 (1-10)"
+          - "진화 패턴 분석"
+          - "다음 단계 명확화 지원"
+        
+        pivot_assistance:
+          - "피벗 시그널 조기 감지"
+          - "대안 경로 매핑"
+          - "전환 비용 분석"
+          - "부드러운 전환 지원"
+        
+        discovery_sprint_coordination:
+          - "병렬 탐색 조율"
+          - "발견사항 통합"
+          - "수렴 세션 진행"
+          - "우선순위 도출 지원"
+      
+      # v5.0 신규: Data Integrity Management
+      data_integrity_management:
+        description: "데이터 무결성을 자동으로 보장"
+        
+        automated_protection:
+          - "2시간마다 자동 체크포인트"
+          - "중요 이벤트 시 즉시 백업"
+          - "일일 무결성 검증"
+          - "주간 압축 아카이브"
+        
+        health_monitoring:
+          - "파일 존재 여부 실시간 체크"
+          - "데이터 일관성 검증"
+          - "구조 완전성 확인"
+          - "이상 감지 시 자동 복구"
+        
+        recovery_readiness:
+          - "5분 내 복구 보장"
+          - "복구 스크립트 관리"
+          - "복구 테스트 정기 실행"
+          - "복구 이력 관리"
+    
+    # v5.0 신규: Collaboration Enhancements
+    enhanced_collaboration:
+      with_owner:
+        proactive_reporting:
+          - "주간 진행 요약"
+          - "주요 발견사항 하이라이트"
+          - "리스크와 기회 업데이트"
+          - "다음 주 포커스 제안"
+        
+        decision_support:
+          - "의사결정 포인트 사전 준비"
+          - "옵션별 영향 분석"
+          - "권장사항 제시"
+          - "결정 이력 관리"
+      
+      with_all_agents:
+        coordination:
+          - "일일 스탠드업 요약"
+          - "블로커 해결 지원"
+          - "협업 기회 중개"
+          - "품질 기준 유지"
+        
+        knowledge_sharing:
+          - "실시간 인사이트 배포"
+          - "방법론 업데이트 공지"
+          - "성공 사례 즉시 공유"
+          - "실패 교훈 신속 전파"
+    
+    # v5.0 신규: Output Templates
+    v5_output_templates:
+      intervention_alert:
+        format: |
+          🎯 [Priority Level] Intervention Alert
+          
+          상황: {situation_description}
+          영향: {impact_assessment}
+          
+          권장 조치:
+          1. {action_1}
+          2. {action_2}
+          3. {action_3}
+          
+          예상 결과: {expected_outcome}
+          대안: {alternative_approach}
+          
+          응답 필요: {yes/no}
+          응답 기한: {deadline}
+      
+      progress_summary:
+        format: |
+          📊 Progress Summary - {date}
+          
+          목표 명확도: {clarity_before} → {clarity_now}
+          주요 발견: {key_discoveries}
+          
+          시간 사용:
+          - 계획 대비: {percentage}%
+          - 주요 집중 영역: {top_areas}
+          
+          다음 단계:
+          - 우선순위 1: {priority_1}
+          - 우선순위 2: {priority_2}
+          
+          주의 필요: {attention_points}
+      
+      checkpoint_report:
+        format: |
+          💾 Checkpoint Created
+          
+          유형: {auto/manual}
+          시점: {timestamp}
+          크기: {size}
+          포함 내용: {contents}
+          
+          무결성 상태: ✅ {integrity_score}%
+          복구 가능성: {recovery_readiness}
+          
+          다음 자동 백업: {next_scheduled}
+# v5.0 적응형 워크플로우
+adaptive_workflow:
+  name: "Adaptive Market Analysis Workflow v5.0"
+  description: "발견과 함께 진화하는 유연한 분석 프로세스"
+  
+  core_principles:
+    - "Fixed phases가 아닌 Fluid stages"
+    - "명확도에 따라 깊이 조정"
+    - "발견에 따른 즉각적 피벗"
+    - "병렬 탐색과 빠른 수렴"
+  
+  overview:
+    total_duration: "3-10 days (명확도와 복잡도에 따라)"
+    execution_mode: "Adaptive parallel execution"
+    quality_assurance: "Continuous validation"
+    flexibility: "Stage 건너뛰기, 되돌아가기, 병합 가능"
+  
+  stage_0_initiation:
+    duration: "2-4 hours"
+    owner: "Owner + Stewart"
+    clarity_requirement: "20% 이상"
+    
+    activities:
+      - activity: "Clarity Assessment"
+        output: "초기 명확도 점수 (1-10)"
+        
+      - activity: "Rough Scoping"
+        questions:
+          - "대략 어떤 영역인가?"
+          - "왜 관심이 있는가?"
+          - "성공은 어떤 모습인가?"
+        
+      - activity: "Stewart Activation"
+        actions:
+          - "Guardian Mode 활성화"
+          - "프로젝트 폴더 자동 생성"
+          - "초기 체크포인트 생성"
+    
+    deliverables:
+      - "초기 프로젝트 브리프 (1페이지)"
+      - "Discovery Sprint 계획"
+      - ".project_metadata.yaml (초기 버전)"
+    
+    exit_criteria:
+      - "최소한의 방향성 합의"
+      - "Discovery Sprint 준비 완료"
+  
+  stage_1_discovery_sprint:
+    duration: "1-2 days"
+    owner: "All agents (parallel)"
+    mode: "Exploratory"
+    
+    parallel_tracks:
+      track_a_structure_scan:
+        agent: "Albert"
+        focus: "시장 구조 빠른 스캔"
+        deliverables:
+          - "주목할 패턴 3-5개"
+          - "핵심 플레이어 리스트"
+          - "거래 구조 스케치"
+      
+      track_b_opportunity_signals:
+        agent: "Steve"
+        focus: "기회 신호 포착"
+        deliverables:
+          - "잠재 기회 5-10개"
+          - "각 기회의 매력도"
+          - "빠른 실현 가능성 평가"
+      
+      track_c_data_landscape:
+        agent: "Rachel"
+        focus: "데이터 가용성 확인"
+        deliverables:
+          - "활용 가능 데이터원"
+          - "데이터 품질 평가"
+          - "추가 필요 데이터"
+      
+      track_d_size_sensing:
+        agent: "Bill"
+        focus: "규모 감각 파악"
+        deliverables:
+          - "대략적 시장 크기"
+          - "성장 추세"
+          - "주요 숫자들"
+    
+    convergence_session:
+      when: "Sprint 종료"
+      duration: "2-3 hours"
+      participants: "All agents + Owner"
+      
+      agenda:
+        1: "각 트랙 5분 발표"
+        2: "교차 발견사항 논의"
+        3: "Top 3-5 방향 도출"
+        4: "명확도 점수 업데이트"
+        5: "다음 단계 결정"
+      
+      outputs:
+        - "유망 방향 3-5개"
+        - "각 방향의 우선순위"
+        - "명확도 점수 (업데이트)"
+        - "Go/Pivot/Stop 결정"
+    
+    stewart_role:
+      - "병렬 작업 조율"
+      - "발견사항 실시간 연결"
+      - "수렴 세션 진행"
+      - "첫 번째 체크포인트 생성"
+  
+  stage_2_focused_exploration:
+    duration: "2-4 days"
+    owner: "Varies by chosen direction"
+    mode: "Targeted deep-dive"
+    
+    entry_options:
+      option_a_single_focus:
+        when: "하나의 명확한 방향 선택"
+        approach: "전통적 구조화 분석"
+        
+      option_b_parallel_paths:
+        when: "2-3개 유망 방향"
+        approach: "병렬 탐색 후 비교"
+        
+      option_c_iterative_narrowing:
+        when: "여전히 불확실"
+        approach: "단계적 좁혀가기"
+    
+    adaptive_activities:
+      if_clarity_high:  # 7-9
+        - "Albert: 상세 구조 분석"
+        - "Bill: 정밀 SAM 계산"
+        - "Steve: 구체적 기회 검증"
+        - "Rachel: 깊이 있는 데이터 검증"
+      
+      if_clarity_medium:  # 4-6
+        - "Steve: 기회 구체화 작업"
+        - "Albert: 관련 구조 확장 탐색"
+        - "Bill: 범위별 규모 추정"
+        - "Rachel: 핵심 데이터 확보"
+      
+      if_clarity_low:  # 1-3
+        - "추가 Discovery Sprint"
+        - "외부 전문가 인터뷰"
+        - "유사 사례 벤치마킹"
+        - "가설 기반 실험"
+    
+    milestone_decisions:
+      every_day:
+        - "현재 방향이 맞는가?"
+        - "새로운 발견이 있는가?"
+        - "피벗이 필요한가?"
+        - "충분히 깊이 있는가?"
+      
+      stewart_monitoring:
+        - "시간 배분 추적"
+        - "발견 가치 평가"
+        - "목표 정렬도 체크"
+        - "필요시 개입"
+  
+  stage_3_convergence_synthesis:
+    duration: "1-2 days"
+    owner: "Owner + All agents"
+    mode: "Integration and decision"
+    
+    synthesis_activities:
+      quantitative_summary:
+        owner: "Bill"
+        outputs:
+          - "최종 시장 규모"
+          - "신뢰 구간"
+          - "성장 전망"
+          - "민감도 분석"
+      
+      strategic_assessment:
+        owner: "Steve"
+        outputs:
+          - "검증된 기회"
+          - "진입 전략 옵션"
+          - "차별화 포인트"
+          - "리스크 요인"
+      
+      structural_implications:
+        owner: "Albert"
+        outputs:
+          - "시장 구조 영향"
+          - "경쟁 dynamics"
+          - "진입 장벽"
+          - "성공 요인"
+      
+      data_confidence:
+        owner: "Rachel"
+        outputs:
+          - "데이터 신뢰도"
+          - "주요 가정"
+          - "불확실성 영역"
+          - "추가 검증 필요사항"
+    
+    decision_framework:
+      multi_criteria_evaluation:
+        - "시장 매력도"
+        - "전략적 적합성"
+        - "실행 가능성"
+        - "리스크 수준"
+        - "투자 대비 수익"
+      
+      scenario_planning:
+        - "Best case"
+        - "Base case"
+        - "Worst case"
+        - "Black swan events"
+      
+      final_outputs:
+        - "Go/No-Go/Conditional 결정"
+        - "투자 규모와 단계"
+        - "실행 로드맵"
+        - "성공 지표"
+        - "모니터링 계획"
+  
+  stage_4_knowledge_preservation:
+    duration: "Continuous + 0.5 day final"
+    owner: "Stewart"
+    mode: "Parallel with other stages"
+    
+    continuous_capture:
+      - "실시간 인사이트 기록"
+      - "의사결정 포인트 문서화"
+      - "방법론 개선사항 메모"
+      - "재사용 가능 요소 표시"
+    
+    final_curation:
+      - "전체 프로젝트 스토리"
+      - "핵심 교훈 추출"
+      - "방법론 업데이트"
+      - "템플릿 개선"
+      - "다음 프로젝트를 위한 가이드"
+    
+    automated_features:
+      - "프로젝트 폴더 자동 정리"
+      - "메타데이터 자동 생성"
+      - "체크포인트 아카이빙"
+      - "글로벌 knowledge base 업데이트"
+
+# Workflow Flexibility Examples
+workflow_adaptation_examples:
+  example_1_high_clarity_start:
+    initial_clarity: 8
+    path: "Skip Discovery Sprint → Direct to Focused Analysis"
+    duration: "4-5 days total"
+    
+  example_2_pivot_midway:
+    initial_clarity: 5
+    discovery: "완전히 다른 기회 발견"
+    path: "Sprint → Pivot → New Sprint → Focused Analysis"
+    duration: "6-7 days total"
+    
+  example_3_ultra_low_clarity:
+    initial_clarity: 2
+    path: "Extended Discovery (3 days) → Gradual Focusing"
+    duration: "8-10 days total"
+    
+  example_4_quick_validation:
+    initial_clarity: 7
+    constraint: "시간 제약"
+    path: "Mini-sprint (0.5 day) → Targeted Validation"
+    duration: "2-3 days total"
+
+# Success Metrics for v5.0
+success_metrics:
+  efficiency_gains:
+    - metric: "Time to first insight"
+      v4_baseline: "2-3 days"
+      v5_target: "0.5-1 day"
+    
+    - metric: "Pivot response time"
+      v4_baseline: "2-3 days"
+      v5_target: "2-4 hours"
+    
+    - metric: "Data loss incidents"
+      v4_baseline: "Occasional"
+      v5_target: "Zero"
+  
+  quality_improvements:
+    - metric: "Goal-output alignment"
+      v4_baseline: "70-80%"
+      v5_target: "90-95%"
+    
+    - metric: "Actionable insights ratio"
+      v4_baseline: "60%"
+      v5_target: "85%"
+    
+    - metric: "Stakeholder satisfaction"
+      v4_baseline: "Good"
+      v5_target: "Excellent"
+  
+  adaptability_metrics:
+    - metric: "Low clarity project success"
+      v4_baseline: "Challenging"
+      v5_target: "80%+ success rate"
+    
+    - metric: "Major pivot handling"
+      v4_baseline: "Disruptive"
+      v5_target: "Smooth transition"
+    
+    - metric: "Knowledge reuse rate"
+      v4_baseline: "40%"
+      v5_target: "70%"
+
+# Implementation Guidance
+implementation_guide:
+  for_new_projects:
+    - "Start with clarity assessment"
+    - "Trust the Discovery Sprint"
+    - "Embrace uncertainty"
+    - "Let Stewart guide you"
+  
+  for_existing_teams:
+    - "Gradual adoption possible"
+    - "Start with Stewart's monitoring"
+    - "Add Discovery Sprint option"
+    - "Phase in full adaptation"
+  
+  critical_success_factors:
+    - "Leadership buy-in for flexibility"
+    - "Team comfort with ambiguity"
+    - "Trust in the process"
+    - "Active use of Stewart's guidance"
+
+# Final Note
+conclusion:
+  v5_philosophy: |
+    UMIS v5.0은 "계획의 완벽함"보다 "실행의 적응성"을 추구합니다.
+    
+    불확실한 시작을 두려워하지 마세요.
+    발견을 통해 길을 찾아가세요.
+    Stewart가 곁에서 안내할 것입니다.
+    
+    시장은 발견되기를 기다리고 있습니다.
+  
+  key_differentiator: |
+    v4.0: "Know → Plan → Execute"
+    v5.0: "Explore → Discover → Adapt → Succeed"

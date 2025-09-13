@@ -1,0 +1,341 @@
+# v5.0 적응형 워크플로우
+adaptive_workflow:
+  name: "Adaptive Market Analysis Workflow v5.0"
+  description: "발견과 함께 진화하는 유연한 분석 프로세스"
+  
+  core_principles:
+    - "Fixed phases가 아닌 Fluid stages"
+    - "명확도에 따라 깊이 조정"
+    - "발견에 따른 즉각적 피벗"
+    - "병렬 탐색과 빠른 수렴"
+  
+  overview:
+    total_duration: "3-10 days (명확도와 복잡도에 따라)"
+    execution_mode: "Adaptive parallel execution"
+    quality_assurance: "Continuous validation"
+    flexibility: "Stage 건너뛰기, 되돌아가기, 병합 가능"
+  
+  stage_0_initiation:
+    duration: "2-4 hours"
+    owner: "Owner + Stewart"
+    clarity_requirement: "20% 이상"
+    
+    activities:
+      - activity: "Clarity Assessment"
+        output: "초기 명확도 점수 (1-10)"
+        
+      - activity: "Rough Scoping"
+        questions:
+          - "대략 어떤 영역인가?"
+          - "왜 관심이 있는가?"
+          - "성공은 어떤 모습인가?"
+        
+      - activity: "Stewart Activation"
+        actions:
+          - "Guardian Mode 활성화"
+          - "프로젝트 폴더 자동 생성"
+          - "초기 체크포인트 생성"
+    
+    deliverables:
+      - "초기 프로젝트 브리프 (1페이지)"
+      - "Discovery Sprint 계획"
+      - ".project_metadata.yaml (초기 버전)"
+    
+    exit_criteria:
+      - "최소한의 방향성 합의"
+      - "Discovery Sprint 준비 완료"
+  
+  stage_1_discovery_sprint:
+    duration: "1-2 days"
+    owner: "All agents (parallel)"
+    mode: "Exploratory"
+    
+    parallel_tracks:
+      track_a_structure_scan:
+        agent: "Albert"
+        focus: "시장 구조 빠른 스캔"
+        deliverables:
+          - "주목할 패턴 3-5개"
+          - "핵심 플레이어 리스트"
+          - "거래 구조 스케치"
+      
+      track_b_opportunity_signals:
+        agent: "Steve"
+        focus: "기회 신호 포착"
+        deliverables:
+          - "잠재 기회 5-10개"
+          - "각 기회의 매력도"
+          - "빠른 실현 가능성 평가"
+      
+      track_c_data_landscape:
+        agent: "Rachel"
+        focus: "데이터 가용성 확인"
+        deliverables:
+          - "활용 가능 데이터원"
+          - "데이터 품질 평가"
+          - "추가 필요 데이터"
+      
+      track_d_size_sensing:
+        agent: "Bill"
+        focus: "규모 감각 파악"
+        deliverables:
+          - "대략적 시장 크기"
+          - "성장 추세"
+          - "주요 숫자들"
+    
+    convergence_session:
+      when: "Sprint 종료"
+      duration: "2-3 hours"
+      participants: "All agents + Owner"
+      
+      agenda:
+        1: "각 트랙 5분 발표"
+        2: "교차 발견사항 논의"
+        3: "Top 3-5 방향 도출"
+        4: "명확도 점수 업데이트"
+        5: "다음 단계 결정"
+      
+      outputs:
+        - "유망 방향 3-5개"
+        - "각 방향의 우선순위"
+        - "명확도 점수 (업데이트)"
+        - "Go/Pivot/Stop 결정"
+    
+    stewart_role:
+      - "병렬 작업 조율"
+      - "발견사항 실시간 연결"
+      - "수렴 세션 진행"
+      - "첫 번째 체크포인트 생성"
+  
+  stage_2_focused_exploration:
+    duration: "2-4 days"
+    owner: "Varies by chosen direction"
+    mode: "Targeted deep-dive"
+    
+    entry_options:
+      option_a_single_focus:
+        when: "하나의 명확한 방향 선택"
+        approach: "전통적 구조화 분석"
+        
+      option_b_parallel_paths:
+        when: "2-3개 유망 방향"
+        approach: "병렬 탐색 후 비교"
+        
+      option_c_iterative_narrowing:
+        when: "여전히 불확실"
+        approach: "단계적 좁혀가기"
+    
+    adaptive_activities:
+      if_clarity_high:  # 7-9
+        - "Albert: 상세 구조 분석"
+        - "Bill: 정밀 SAM 계산"
+        - "Steve: 구체적 기회 검증"
+        - "Rachel: 깊이 있는 데이터 검증"
+      
+      if_clarity_medium:  # 4-6
+        - "Steve: 기회 구체화 작업"
+        - "Albert: 관련 구조 확장 탐색"
+        - "Bill: 범위별 규모 추정"
+        - "Rachel: 핵심 데이터 확보"
+      
+      if_clarity_low:  # 1-3
+        - "추가 Discovery Sprint"
+        - "외부 전문가 인터뷰"
+        - "유사 사례 벤치마킹"
+        - "가설 기반 실험"
+    
+    milestone_decisions:
+      every_day:
+        - "현재 방향이 맞는가?"
+        - "새로운 발견이 있는가?"
+        - "피벗이 필요한가?"
+        - "충분히 깊이 있는가?"
+      
+      stewart_monitoring:
+        - "시간 배분 추적"
+        - "발견 가치 평가"
+        - "목표 정렬도 체크"
+        - "필요시 개입"
+  
+  stage_3_convergence_synthesis:
+    duration: "1-2 days"
+    owner: "Owner + All agents"
+    mode: "Integration and decision"
+    
+    synthesis_activities:
+      quantitative_summary:
+        owner: "Bill"
+        outputs:
+          - "최종 시장 규모"
+          - "신뢰 구간"
+          - "성장 전망"
+          - "민감도 분석"
+      
+      strategic_assessment:
+        owner: "Steve"
+        outputs:
+          - "검증된 기회"
+          - "진입 전략 옵션"
+          - "차별화 포인트"
+          - "리스크 요인"
+      
+      structural_implications:
+        owner: "Albert"
+        outputs:
+          - "시장 구조 영향"
+          - "경쟁 dynamics"
+          - "진입 장벽"
+          - "성공 요인"
+      
+      data_confidence:
+        owner: "Rachel"
+        outputs:
+          - "데이터 신뢰도"
+          - "주요 가정"
+          - "불확실성 영역"
+          - "추가 검증 필요사항"
+    
+    decision_framework:
+      multi_criteria_evaluation:
+        - "시장 매력도"
+        - "전략적 적합성"
+        - "실행 가능성"
+        - "리스크 수준"
+        - "투자 대비 수익"
+      
+      scenario_planning:
+        - "Best case"
+        - "Base case"
+        - "Worst case"
+        - "Black swan events"
+      
+      final_outputs:
+        - "Go/No-Go/Conditional 결정"
+        - "투자 규모와 단계"
+        - "실행 로드맵"
+        - "성공 지표"
+        - "모니터링 계획"
+  
+  stage_4_knowledge_preservation:
+    duration: "Continuous + 0.5 day final"
+    owner: "Stewart"
+    mode: "Parallel with other stages"
+    
+    continuous_capture:
+      - "실시간 인사이트 기록"
+      - "의사결정 포인트 문서화"
+      - "방법론 개선사항 메모"
+      - "재사용 가능 요소 표시"
+    
+    final_curation:
+      - "전체 프로젝트 스토리"
+      - "핵심 교훈 추출"
+      - "방법론 업데이트"
+      - "템플릿 개선"
+      - "다음 프로젝트를 위한 가이드"
+    
+    automated_features:
+      - "프로젝트 폴더 자동 정리"
+      - "메타데이터 자동 생성"
+      - "체크포인트 아카이빙"
+      - "글로벌 knowledge base 업데이트"
+
+# Workflow Flexibility Examples
+workflow_adaptation_examples:
+  example_1_high_clarity_start:
+    initial_clarity: 8
+    path: "Skip Discovery Sprint → Direct to Focused Analysis"
+    duration: "4-5 days total"
+    
+  example_2_pivot_midway:
+    initial_clarity: 5
+    discovery: "완전히 다른 기회 발견"
+    path: "Sprint → Pivot → New Sprint → Focused Analysis"
+    duration: "6-7 days total"
+    
+  example_3_ultra_low_clarity:
+    initial_clarity: 2
+    path: "Extended Discovery (3 days) → Gradual Focusing"
+    duration: "8-10 days total"
+    
+  example_4_quick_validation:
+    initial_clarity: 7
+    constraint: "시간 제약"
+    path: "Mini-sprint (0.5 day) → Targeted Validation"
+    duration: "2-3 days total"
+
+# Success Metrics for v5.0
+success_metrics:
+  efficiency_gains:
+    - metric: "Time to first insight"
+      v4_baseline: "2-3 days"
+      v5_target: "0.5-1 day"
+    
+    - metric: "Pivot response time"
+      v4_baseline: "2-3 days"
+      v5_target: "2-4 hours"
+    
+    - metric: "Data loss incidents"
+      v4_baseline: "Occasional"
+      v5_target: "Zero"
+  
+  quality_improvements:
+    - metric: "Goal-output alignment"
+      v4_baseline: "70-80%"
+      v5_target: "90-95%"
+    
+    - metric: "Actionable insights ratio"
+      v4_baseline: "60%"
+      v5_target: "85%"
+    
+    - metric: "Stakeholder satisfaction"
+      v4_baseline: "Good"
+      v5_target: "Excellent"
+  
+  adaptability_metrics:
+    - metric: "Low clarity project success"
+      v4_baseline: "Challenging"
+      v5_target: "80%+ success rate"
+    
+    - metric: "Major pivot handling"
+      v4_baseline: "Disruptive"
+      v5_target: "Smooth transition"
+    
+    - metric: "Knowledge reuse rate"
+      v4_baseline: "40%"
+      v5_target: "70%"
+
+# Implementation Guidance
+implementation_guide:
+  for_new_projects:
+    - "Start with clarity assessment"
+    - "Trust the Discovery Sprint"
+    - "Embrace uncertainty"
+    - "Let Stewart guide you"
+  
+  for_existing_teams:
+    - "Gradual adoption possible"
+    - "Start with Stewart's monitoring"
+    - "Add Discovery Sprint option"
+    - "Phase in full adaptation"
+  
+  critical_success_factors:
+    - "Leadership buy-in for flexibility"
+    - "Team comfort with ambiguity"
+    - "Trust in the process"
+    - "Active use of Stewart's guidance"
+
+# Final Note
+conclusion:
+  v5_philosophy: |
+    UMIS v5.0은 "계획의 완벽함"보다 "실행의 적응성"을 추구합니다.
+    
+    불확실한 시작을 두려워하지 마세요.
+    발견을 통해 길을 찾아가세요.
+    Stewart가 곁에서 안내할 것입니다.
+    
+    시장은 발견되기를 기다리고 있습니다.
+  
+  key_differentiator: |
+    v4.0: "Know → Plan → Execute"
+    v5.0: "Explore → Discover → Adapt → Succeed"

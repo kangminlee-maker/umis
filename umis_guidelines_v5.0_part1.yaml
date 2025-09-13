@@ -1,0 +1,396 @@
+# Universal Market Intelligence System v5.0 - Adaptive Intelligence Edition
+# 범용 시장 정보 분석 시스템 - 적응형 지능 에디션
+# 
+# 적용 범위: 모든 산업, 모든 규모, 모든 지역, 모든 비즈니스 모델
+# 핵심 원칙: MECE 기반 역할 분담, 범용성, 확장성, 체계적 협업, 적응형 지능
+
+system:
+  name: "Universal Market Intelligence System - Adaptive Intelligence Edition"
+  version: "5.0"
+  purpose: "불확실한 상황에서도 적응하며 진화하는 범용 시장 분석 시스템"
+  description: "낮은 명확도로 시작해 발견을 통해 성장하는 차세대 시장 정보 시스템"
+  
+  core_capabilities:
+    - "Multi-Industry Coverage: 제조업부터 서비스업, 전통산업부터 신산업까지"
+    - "Scale Flexibility: 글로벌 수조 달러부터 로컬 니치 시장까지"
+    - "Universal Framework: B2B, B2C, B2G, C2C, Platform 등 모든 비즈니스 모델"
+    - "Adaptive Analysis: 시장 특성에 맞춘 유연한 분석 깊이"
+    - "Progressive Intelligence: 낮은 명확도에서 시작해 점진적 구체화"
+    - "Autonomous Monitoring: 능동적 목표 정렬과 개입"
+    - "Data Protection: 자동 무결성 보장과 복구"
+  
+  key_changes_v5:
+    - "적응형 프레임워크: 20-30% 명확도로도 시작 가능 (기존 80-90%)"
+    - "Discovery Sprint: 1-2일 빠른 탐색으로 방향 설정"
+    - "Stewart 역할 확장: Progress Guardian으로 능동적 개입"
+    - "실시간 피벗: 발견에 따른 유연한 방향 전환"
+    - "자동 데이터 보호: 2시간마다 체크포인트, 5분 내 복구"
+    - "목표 진화 추적: 명확도 점수(1-10) 관리"
+  
+  adaptive_principles:
+    - principle: "Start with Ambiguity"
+      description: "불확실성을 받아들이고 시작"
+      implementation:
+        - "낮은 명확도(20-30%)로도 프로젝트 착수"
+        - "Discovery Sprint로 빠른 방향 탐색"
+        - "점진적 구체화 과정 수용"
+    
+    - principle: "Learn and Pivot"
+      description: "발견을 통한 지속적 조정"
+      implementation:
+        - "중간 발견사항에 따른 즉각적 피벗"
+        - "고정된 목표보다 진화하는 목표"
+        - "실패를 학습 기회로 전환"
+    
+    - principle: "Autonomous Guidance"
+      description: "시스템의 능동적 가이드"
+      implementation:
+        - "Stewart의 자율적 개입"
+        - "과몰입/이탈 자동 감지"
+        - "더 나은 기회 제안"
+  
+  universal_market_definition:
+    step_1_purpose_alignment:
+      question: "왜 이 시장을 분석하는가?"
+      adaptive_approach:
+        initial_clarity: "20-30%만 명확해도 시작"
+        discovery_questions:
+          - "대략적으로 어떤 기회를 찾고 있나?"
+          - "어떤 문제를 해결하고 싶은가?"
+          - "성공의 방향성은?"
+        evolution_tracking:
+          - "명확도 점수: 1-10"
+          - "주요 발견시마다 업데이트"
+          - "목표 진화 이력 관리"
+      
+      universal_purposes:
+        - "시장 진입 타당성 (Entry Feasibility)"
+        - "투자 의사결정 (Investment Decision)"
+        - "경쟁 전략 수립 (Competitive Strategy)"
+        - "규제 정책 개발 (Regulatory Policy)"
+        - "M&A 기회 탐색 (M&A Opportunity)"
+        - "사업 포트폴리오 최적화 (Portfolio Optimization)"
+        - "탐색적 기회 발굴 (Exploratory Discovery)" # v5.0 신규
+    
+    step_2_market_boundary_definition:
+      question: "분석 대상 시장의 경계는 어디까지인가?"
+      adaptive_boundary:
+        initial: "넓게 시작, 좁혀가기"
+        discovery_process:
+          - "관련 시장 모두 탐색"
+          - "데이터와 기회에 따라 조정"
+          - "경계의 유연한 재정의"
+      
+      boundary_dimensions:
+        - geographic: "지리적 범위"
+          levels: ["글로벌", "대륙", "국가", "지역", "도시"]
+          adaptive: "시작은 넓게, 기회에 따라 집중"
+        
+        - product_service: "제품/서비스 범위"
+          levels: ["전체 산업", "카테고리", "세그먼트", "니치"]
+          adaptive: "인접 영역까지 탐색 후 수렴"
+        
+        - value_chain: "가치사슬 범위"
+          levels: ["전체 사슬", "특정 단계", "핵심 활동"]
+          adaptive: "가치 이동 가능성 열어두기"
+        
+        - customer_type: "고객 유형"
+          levels: ["모든 구매자", "특정 산업", "특정 규모", "특정 용도"]
+          adaptive: "예상치 못한 고객군 발견 수용"
+    
+    step_3_market_dynamics_framework:
+      question: "이 시장은 어떻게 작동하는가?"
+      discovery_driven_analysis:
+        - "가설 없이 관찰부터 시작"
+        - "패턴 발견 후 의미 부여"
+        - "기존 프레임워크는 참고만"
+      
+      universal_dynamics:
+        - value_creation: "가치 창출 메커니즘"
+          types: ["제품 혁신", "비용 효율", "네트워크 효과", "규모의 경제", "범위의 경제"]
+          discovery: "새로운 가치 창출 방식 탐색"
+          
+        - competitive_forces: "경쟁 역학"
+          elements: ["공급자 교섭력", "구매자 교섭력", "신규진입 위협", "대체재 위협", "경쟁 강도"]
+          adaptive: "전통적 5 forces 너머의 새로운 힘"
+          
+        - market_evolution: "시장 진화 단계"
+          stages: ["도입기", "성장기", "성숙기", "쇠퇴기", "전환기", "재탄생기"]
+          
+        - regulatory_impact: "규제 영향"
+          levels: ["고규제", "중규제", "저규제", "규제완화중", "규제강화중"]
+
+# 새로운 섹션: 적응형 분석 프레임워크
+adaptive_framework:
+  name: "Adaptive Market Analysis Framework"
+  description: "불확실성을 수용하고 발견을 통해 진화하는 분석 체계"
+  
+  low_clarity_start:
+    description: "20-30% 명확도로도 분석 시작 가능"
+    
+    clarity_levels:
+      - level: 1-3
+        description: "매우 모호함"
+        example: "뭔가 새로운 기회가 있을 것 같다"
+        approach: "광범위한 Discovery Sprint"
+      
+      - level: 4-6
+        description: "방향성 있음"
+        example: "디지털 전환 관련 기회를 찾고 싶다"
+        approach: "관련 영역 집중 탐색"
+      
+      - level: 7-9
+        description: "구체적 목표"
+        example: "한국 B2B SaaS 시장 진입 검토"
+        approach: "전통적 구조화 분석"
+      
+      - level: 10
+        description: "완전히 명확"
+        example: "거의 없음 - 항상 불확실성 존재"
+    
+    starting_protocol:
+      step_1: "현재 명확도 평가 (1-10)"
+      step_2: "Discovery Sprint 범위 결정"
+      step_3: "초기 가설 없이 탐색 시작"
+      step_4: "첫 발견사항으로 방향 조정"
+  
+  discovery_sprint:
+    description: "1-2일 집중 탐색으로 방향성 발견"
+    duration: "1-2 days"
+    
+    parallel_exploration:
+      - track: "시장 구조 스캔"
+        agent: "Albert"
+        output: "주목할 만한 패턴들"
+      
+      - track: "기회 신호 포착"
+        agent: "Steve"
+        output: "잠재 기회 후보군"
+      
+      - track: "데이터 가용성 확인"
+        agent: "Rachel"
+        output: "활용 가능한 데이터원"
+      
+      - track: "규모 감각 파악"
+        agent: "Bill"
+        output: "대략적 시장 크기"
+    
+    convergence_session:
+      when: "Sprint 종료 시"
+      participants: ["All agents + Owner"]
+      outputs:
+        - "상위 3-5개 기회 방향"
+        - "각 방향의 탐색 가치"
+        - "다음 단계 우선순위"
+        - "명확도 점수 업데이트"
+  
+  milestone_decision_points:
+    description: "주요 시점마다 방향 재검토"
+    
+    decision_triggers:
+      - trigger: "Phase 완료"
+        action: "다음 Phase 방향 확인"
+      
+      - trigger: "중대 발견"
+        action: "전체 방향 재검토"
+      
+      - trigger: "막다른 길"
+        action: "대안 경로 탐색"
+      
+      - trigger: "새로운 기회"
+        action: "우선순위 재조정"
+    
+    decision_framework:
+      inputs:
+        - "현재까지 발견사항"
+        - "남은 불확실성"
+        - "투입 대비 가치"
+      
+      options:
+        - "계속 진행"
+        - "방향 전환 (Pivot)"
+        - "범위 확대/축소"
+        - "중단"
+    
+    flexibility_principle:
+      - "매몰 비용 무시"
+      - "더 나은 기회로 전환 장려"
+      - "부분적 성공도 가치 인정"
+  
+  goal_evolution_tracking:
+    description: "목표가 어떻게 진화하는지 추적"
+    
+    evolution_log:
+      format: |
+        {
+          "timestamp": "2024-03-15T10:00:00Z",
+          "clarity_score": 3,
+          "goal": "뭔가 새로운 시장 기회",
+          "key_discovery": null,
+          "agent": "Owner"
+        }
+        {
+          "timestamp": "2024-03-15T18:00:00Z",
+          "clarity_score": 6,
+          "goal": "한국 B2C 디지털 서비스 기회",
+          "key_discovery": "모바일 결제 급성장",
+          "agent": "Steve"
+        }
+        {
+          "timestamp": "2024-03-16T14:00:00Z",
+          "clarity_score": 8,
+          "goal": "한국 소상공인 대상 간편결제 솔루션",
+          "key_discovery": "소상공인 pain point 발견",
+          "agent": "Albert"
+        }
+    
+    evolution_patterns:
+      - pattern: "Narrowing Down"
+        description: "넓은 영역에서 특정 기회로 수렴"
+        frequency: "가장 일반적"
+      
+      - pattern: "Pivoting"
+        description: "완전히 다른 방향으로 전환"
+        frequency: "20-30%"
+      
+      - pattern: "Expanding"
+        description: "작게 시작했다가 큰 기회 발견"
+        frequency: "10-15%"
+    
+    success_metrics:
+      - "최종 명확도 점수"
+      - "진화 횟수"
+      - "발견의 질"
+      - "소요 시간"
+      - "최종 가치"
+
+# 새로운 섹션: 능동적 목표 정렬 모니터링
+proactive_monitoring:
+  name: "Proactive Goal Alignment Monitoring System"
+  description: "Stewart가 자율적으로 프로젝트 방향을 모니터링하고 개입"
+  owner: "MCurator (Stewart)"
+  
+  monitoring_protocol:
+    continuous_tracking:
+      - metric: "시간 배분"
+        description: "각 주제/영역에 소요되는 시간"
+        threshold: "특정 영역 30% 초과 시 경고"
+      
+      - metric: "진척도 vs 계획"
+        description: "예상 대비 실제 진행 상황"
+        threshold: "50% 이상 지연 시 개입"
+      
+      - metric: "발견의 가치"
+        description: "새로운 발견의 영향도"
+        threshold: "High-impact 발견 시 즉시 보고"
+      
+      - metric: "목표 일관성"
+        description: "현재 작업과 목표의 정렬도"
+        threshold: "정렬도 60% 미만 시 재검토 제안"
+  
+  intervention_triggers:
+    deep_dive_alert:
+      description: "특정 주제에 과도하게 집중할 때"
+      threshold: "전체 시간의 30% 초과"
+      message_template: |
+        🎯 Deep Dive Alert
+        
+        현재 '{topic}'에 {hours}시간 투입 중입니다.
+        전체 {total_topics}개 주제 중 하나입니다.
+        
+        제안:
+        1. 현재까지 발견한 가치를 정리하고
+        2. 다른 영역도 탐색해보시는 것은 어떨까요?
+        3. 아니면 이 영역에 집중하는 이유를 명확히 해주세요.
+    
+    data_reality_check:
+      description: "데이터가 가정과 크게 다를 때"
+      threshold: "3개 이상 주요 가정 불일치"
+      message_template: |
+        📊 Data Reality Check
+        
+        초기 가정과 다른 발견:
+        - {assumption_1} → {reality_1}
+        - {assumption_2} → {reality_2}
+        - {assumption_3} → {reality_3}
+        
+        이는 다음을 시사합니다:
+        - 시장 이해의 재조정 필요
+        - 새로운 기회 가능성
+        - 리스크 재평가 필요
+        
+        목표를 재설정하시겠습니까?
+    
+    opportunity_emergence:
+      description: "예상치 못한 큰 기회 발견"
+      trigger: "SAM이 예상보다 2배 이상 또는 새로운 니치 발견"
+      message_template: |
+        💡 Opportunity Emergence
+        
+        새로운 기회 발견: {opportunity_description}
+        예상 규모: {estimated_size}
+        현재 목표와의 관련성: {relevance_score}/10
+        
+        권장사항:
+        - 현재 목표: {current_goal}
+        - 새로운 기회 가치: {opportunity_value}
+        - 피벗 제안: {pivot_suggestion}
+        
+        검토하시겠습니까?
+    
+    analysis_drift:
+      description: "분석이 목표에서 벗어날 때"
+      threshold: "목표 정렬도 60% 미만"
+      message_template: |
+        🎯 Analysis Drift Warning
+        
+        현재 분석이 초기 목표에서 벗어나고 있습니다.
+        
+        초기 목표: {initial_goal}
+        현재 초점: {current_focus}
+        정렬도: {alignment_score}%
+        
+        선택지:
+        1. 원래 목표로 복귀
+        2. 새로운 발견을 반영해 목표 수정
+        3. 병렬로 두 가지 모두 추구
+        
+        어떻게 진행하시겠습니까?
+  
+  proactive_suggestions:
+    timing: "주요 마일스톤 또는 이상 신호 감지 시"
+    
+    suggestion_types:
+      - type: "Resource Reallocation"
+        when: "특정 영역이 예상보다 복잡하거나 단순할 때"
+        example: "Bill의 계산이 빨리 끝났으니 Steve의 기회 탐색 지원"
+      
+      - type: "Parallel Exploration"
+        when: "불확실성이 높을 때"
+        example: "A안과 B안을 동시에 탐색 후 비교"
+      
+      - type: "Quick Win Focus"
+        when: "시간/예산 제약이 클 때"
+        example: "전체 분석보다 핵심 3개 세그먼트만 집중"
+      
+      - type: "Scope Expansion"
+        when: "예상보다 기회가 클 때"
+        example: "국내뿐 아니라 동남아시아도 포함 검토"
+  
+  communication_protocol:
+    format: "구조화된 인사이트 카드"
+    frequency: "실시간 (트리거 발생 시)"
+    channel: "전용 모니터링 대시보드"
+    
+    priority_levels:
+      - level: "🔴 Critical"
+        description: "즉각적인 의사결정 필요"
+        examples: ["중대한 리스크 발견", "프로젝트 중단 검토"]
+      
+      - level: "🟡 Important"
+        description: "24시간 내 검토 필요"
+        examples: ["방향 조정 제안", "리소스 재배분"]
+      
+      - level: "🟢 Informative"
+        description: "참고용 인사이트"
+        examples: ["진행 현황 업데이트", "마이너 개선 제안"]
