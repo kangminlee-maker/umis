@@ -187,3 +187,22 @@ compatibility:
     v5_features: "export UMIS_MODE='adaptive'"
     v4_classic: "export UMIS_MODE='classic'"
     default: "adaptive"
+
+# Workflow Modes (v5.0)
+workflow_modes:
+  description: "프로젝트 상황에 따라 v5 Adaptive 또는 v4 Classic 워크플로우 선택"
+  modes:
+    - id: adaptive
+      name: "Adaptive v5"
+      when_to_use:
+        - "명확도 1-6 (불확실성 높음)"
+        - "빠른 Discovery/Pivot 필요"
+      entrypoint: "adaptive_workflow"
+      activation: "UMIS_MODE='adaptive'"
+    - id: classic
+      name: "Classic v4"
+      when_to_use:
+        - "명확도 7-9 (요건 명확)"
+        - "전통적 게이트 기반 운영 선호"
+      entrypoint: "workflow_classic_v4"
+      activation: "UMIS_MODE='classic'"

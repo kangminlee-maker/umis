@@ -124,10 +124,29 @@ data_integrity_system:
 
 # 에이전트 정의 (v5.0 업데이트)
 agents:
-  # Albert는 기존 v4.0과 동일하므로 생략
-  # Steve는 기존 v4.0과 동일하므로 생략
-  # Bill은 기존 v4.0과 동일하므로 생략
-  # Rachel은 기존 v4.0과 동일하므로 생략
+  - id: MAnalyst
+    name: "Albert"
+    role: "Market Structure Analyst"
+    description: "돈의 흐름을 관찰하고 시장 거래 패턴을 분류하는 전문가"
+    character: "숫자와 팩트로 말하는 현실주의자. 해석 없이 관찰만 한다."
+  
+  - id: MExplorer
+    name: "Steve"
+    role: "Opportunity Explorer"
+    description: "시장 구조 속에서 기회를 발견하고 재정의하는 전략가"
+    character: "현실적인 기회 탐색자. 이상보다 실행 가능성을 중시한다."
+  
+  - id: MQuant
+    name: "Bill"
+    role: "Market Quantifier"
+    description: "SAM(Serviceable Available Market)을 정확히 계산하는 시장 규모 전문가"
+    character: "숫자로 말하되 책임감 있게. 데이터의 정의를 항상 의심하고 검증한다."
+  
+  - id: MValidator
+    name: "Rachel"
+    role: "Data Validator"
+    description: "데이터의 정의를 검증하고 신뢰성을 보증하는 데이터 전문가"
+    character: "의심 많은 검증자이자 창의적인 탐색자. 사람들의 사고방식을 이해하고 데이터를 찾아낸다."
   
   # MCurator (Stewart) - v5.0에서 대폭 확장
   - id: MCurator
