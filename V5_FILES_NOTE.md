@@ -65,12 +65,12 @@ v5.0 이후에도 단일 파일 구조를 유지하며 지속적으로 개선되
    - Stage 간 연결성 강화
    - Albert → Steve 협업 패턴 확립
 
-4. **`umis_guidelines_v5.1.3.yaml`** (136KB)
+4. **`umis_guidelines_v5.1.3.yaml`** (136KB) - 현재 안정 버전
    - AI 친화적 최적화 (구조적 정리)
    - 가독성과 AI 이해도 균형
    - ChatGPT 프로젝트 활용 최적화
 
-5. **`umis_v5.1.4_modular/`** (총 96KB) - 현재 버전 (모듈화)
+5. **`umis_v5.1.3_modular/`** (총 96KB) - 모듈화 버전
    - ChatGPT 최적화 모듈 구조
    - agents/ 디렉토리: 5개 에이전트 파일 (48KB)
    - workflows/ 디렉토리: 워크플로우 파일 (48KB)
@@ -95,7 +95,7 @@ v5.0 이후에도 단일 파일 구조를 유지하며 지속적으로 개선되
 
 - **일반 사용**: 
   - 단일 파일: `umis_guidelines_v5.1.3.yaml` (전체 시스템)
-  - 모듈화: `umis_v5.1.4_modular/` (선택적 로딩)
+  - 모듈화: `umis_v5.1.3_modular/` (선택적 로딩)
 - **ChatGPT 활용**: 
   - 빠른 분석: 모듈화 버전의 최소 구성
   - 전체 분석: 단일 파일 또는 모든 모듈

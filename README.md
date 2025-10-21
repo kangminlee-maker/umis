@@ -34,7 +34,7 @@ umis-monolithic-guidelines/
 ├── umis_guidelines_v5.3.yaml   # 7 Powers 통합 (현재 버전)
 ├── CHANGELOG.md                # 상세 버전 히스토리
 ├── VERSION.txt                 # 현재 버전 정보
-├── umis_v5.1.4_modular/        # 모듈러 v5.1.4
+├── umis_v5.1.3_modular/        # 모듈러 v5.1.3
 └── umis_v5.3_modular/          # 모듈러 v5.3 (7 Powers 통합)
     ├── agents/
     │   ├── manalyst_albert_v5.3.yaml
@@ -93,17 +93,15 @@ umis-monolithic-guidelines/
   - Stage 간 입력/출력 관계 명확화
   - Albert → Steve 협업 패턴 확립
   
-- **v5.1.3**: AI 친화적 최적화
+- **v5.1.3**: AI 친화적 최적화 및 모듈화
   - 1단계 최적화로 7.7% 크기 절감
   - AI 이해도 유지하면서 토큰 사용량 감소
   - ChatGPT 프로젝트 활용 가이드 포함
-  
-- **v5.1.4**: ChatGPT 최적화 모듈화
   - 적절한 수준의 모듈화로 유연성 확보
   - 에이전트별 파일 분리 (5개, 48KB)
   - 워크플로우 단일 파일 (48KB)
   - MOwner 역할 정의 포함
-  - 총 96KB (단일 파일 대비 29% 절감)
+  - 모듈 총 96KB (단일 파일 대비 29% 절감)
 
 ### v5.2 - Creative Boost Edition
 - **AI Brainstorming Framework 통합**
@@ -162,7 +160,7 @@ umis-monolithic-guidelines/
 - **최신 버전 선택**:
   - 단일 파일: `umis_guidelines_v5.3.yaml` (176KB) - Sustainable Advantage Edition
   - 모듈러 최신: `umis_v5.3_modular/` (총 144KB) - 7 Powers 통합, 선택적 로드
-  - 모듈러 안정: `umis_v5.1.4_modular/` (총 96KB) - 검증된 모듈러 구조
+  - 모듈러 안정: `umis_v5.1.3_modular/` (총 96KB) - 검증된 모듈러 구조
 - **ChatGPT 프로젝트**: Custom Instructions와 함께 활용
 - **용도별 선택**:
   - 빠른 탐색: 모듈화 버전의 최소 구성 (adaptive_workflow_v5.3.yaml + manalyst_albert_v5.3.yaml + mexplorer_steve_v5.3.yaml)
