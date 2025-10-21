@@ -1,8 +1,8 @@
-# UMIS v5.1.4 - Steve (MExplorer)
+# UMIS v5.1.3 - Steve (MExplorer)
 # ChatGPT 최적화 모듈 버전
 
 system_context:
-  umis_version: "5.1.4"
+  umis_version: "5.1.3"
   modular_structure: true
   purpose: "Universal Market Intelligence System - Agent Module"
   

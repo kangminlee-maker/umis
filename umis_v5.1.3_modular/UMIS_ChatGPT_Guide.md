@@ -1,12 +1,12 @@
-# UMIS v5.1.4 - ChatGPT 모듈화 활용 가이드
+# UMIS v5.1.3 - ChatGPT 모듈화 활용 가이드
 
 ## 🎯 개요
 
-UMIS v5.1.4는 ChatGPT에서 더 효율적으로 사용할 수 있도록 적절히 모듈화된 버전입니다.
+UMIS v5.1.3는 ChatGPT에서 더 효율적으로 사용할 수 있도록 적절히 모듈화된 버전입니다.
 
 ### 📁 파일 구조
 ```
-umis_v5.1.4_modular/
+umis_v5.1.3_modular/
 ├── agents/                    # 에이전트별 개별 파일
 │   ├── manalyst_albert.yaml   (8KB)
 │   ├── mexplorer_steve.yaml   (10KB)
@@ -38,7 +38,7 @@ ChatGPT 프로젝트에 다음 파일만 첨부:
 
 **Custom Instructions:**
 ```
-UMIS v5.1.4 모듈화 버전을 사용합니다.
+UMIS v5.1.3 모듈화 버전을 사용합니다.
 핵심 패턴: Albert(관찰) → Steve(해석)
 두 가지 기회 원천: ①비효율성 ②환경 변화
 6단계 워크플로우 수행
@@ -164,7 +164,7 @@ A: 기본 3개(workflow + albert + steve)로 시작하고, 필요에 따라 추�
 
 ## 📝 마무리
 
-UMIS v5.1.4 모듈화 버전은 필요한 부분만 선택적으로 사용할 수 있어 ChatGPT에서 더 효율적입니다. 
+UMIS v5.1.3 모듈화 버전은 필요한 부분만 선택적으로 사용할 수 있어 ChatGPT에서 더 효율적입니다. 
 하지만 에이전트 간 협업이 핵심이므로, 항상 협업 컨텍스트를 염두에 두고 사용하세요.
 
 **Remember**: Albert observes → Steve interprets → Continuous validation
