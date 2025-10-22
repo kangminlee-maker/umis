@@ -60,9 +60,22 @@
   - Adaptive goal management와 strategic decision making 강화
   - Section 1의 모든 개념에 대한 의사결정 프레임워크 추가
 
+### Section 3 (PROACTIVE MONITORING) 개선
+- 목표 정렬(Goal Alignment) 중심으로 전면 재구성
+- 목표를 잃는 다양한 상황을 MECE하게 분류:
+  - A. 목표 자체의 문제 (obsolete, superior opportunity, conflict)
+  - B. 실행 과정의 문제 (micro obsession, scope inflation, analysis paralysis)
+  - C. 방향성의 문제 (goal drift, wrong vector, circular motion)
+  - D. 리소스의 문제 (resource drain, capability mismatch)
+- 블랙스완 기회에 대한 대응 메커니즘 포함
+- 건설적인 개입 메시지 형식 도입
+
 ### 파일 구조 개선
+- 새로운 Section 4 (COLLABORATION PROTOCOLS) 생성
+  - 기존 Section 3의 collaboration_triggers를 독립 섹션으로 분리
+  - 에이전트 간 협업 규칙을 명확한 위치에 배치
 - 기존 Section 8 (Adaptive Workflow) 삭제
-- 섹션 번호 재정렬 (총 10개 섹션)
+- 섹션 번호 재정렬 (총 11개 섹션)
 - adaptive_workflow_examples.yaml로 실행 예시 분리
 
 ### 기타 개선

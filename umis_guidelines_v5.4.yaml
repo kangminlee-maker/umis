@@ -724,131 +724,190 @@ adaptive_intelligence_system:
 # ========================================
 proactive_monitoring:
   name: "Proactive Goal Alignment Monitoring System"
-  description: "Stewart가 자율적으로 프로젝트 방향을 모니터링하고 개입"
+  description: "목표를 향한 진전을 보장하고 비생산적 활동 방지"
+  purpose: "Adaptive workflow의 유연성을 유지하면서도 목표를 잃지 않도록 보장"
   owner: "MCurator (Stewart)"
-  anchor: "proactive_monitoring"
   
-  monitoring_protocol:
-    continuous_tracking:
-      - metric: "시간 배분"
-        description: "각 주제/영역에 소요되는 시간"
-        threshold: "특정 영역 30% 초과 시 경고"
-      
-      - metric: "진척도 vs 계획"
-        description: "예상 대비 실제 진행 상황"
-        threshold: "50% 이상 지연 시 개입"
-      
-      - metric: "발견의 가치"
-        description: "새로운 발견의 영향도"
-        threshold: "High-impact 발견 시 즉시 보고"
-      
-      - metric: "목표 일관성"
-        description: "현재 작업과 목표의 정렬도"
-        threshold: "정렬도 60% 미만 시 재검토 제안"
+  # A. 목표 자체의 문제
+  goal_validity_monitoring:
+    obsolete_goal:
+      description: "시장 변화로 원래 목표가 무의미해짐"
+      signal: "목표 달성해도 가치가 없어진 상황"
+      threshold: "목표 가치 50% 이상 감소"
+      action: "목표 재정의 필요"
+    
+    superior_opportunity:
+      description: "원래 목표보다 월등한 기회 발견"
+      signal: "10x 이상의 가치 차이"
+      threshold: "ROI 10배 이상 차이"
+      action: "피벗 검토"
+      note: "블랙스완 대응 메커니즘"
+    
+    goal_conflict:
+      description: "복수 목표 간 상충 발생"
+      signal: "A 달성하면 B 불가능"
+      threshold: "주요 목표 2개 이상 충돌"
+      action: "우선순위 재설정"
   
-  intervention_triggers:
-    deep_dive_alert:
-      description: "특정 주제에 과도하게 집중할 때"
-      threshold: "전체 시간의 30% 초과"
-      message_template: |
-        🎯 Deep Dive Alert
-        
-        현재 '{topic}'에 {hours}시간 투입 중입니다.
-        전체 {total_topics}개 주제 중 하나입니다.
-        
-        제안:
-        1. 현재까지 발견한 가치를 정리하고
-        2. 다른 영역도 탐색해보시는 것은 어떨까요?
-        3. 아니면 이 영역에 집중하는 이유를 명확히 해주세요.
+  # B. 실행 과정의 문제
+  execution_deviation_monitoring:
+    micro_obsession:
+      description: "세부사항에 과도한 집착"
+      signal: "전체의 10% 미만에 30% 이상 시간"
+      threshold: "특정 영역 30% 초과"
+      action: "큰 그림 재확인"
     
-    data_reality_check:
-      description: "데이터가 가정과 크게 다를 때"
-      threshold: "3개 이상 주요 가정 불일치"
-      message_template: |
-        📊 Data Reality Check
-        
-        초기 가정과 다른 발견:
-        - {assumption_1} → {reality_1}
-        - {assumption_2} → {reality_2}
-        - {assumption_3} → {reality_3}
-        이는 다음을 시사합니다:
-        - 시장 이해의 재조정 필요
-        - 새로운 기회 가능성
-        - 리스크 재평가 필요
-        목표를 재설정하시겠습니까?
+    scope_inflation:
+      description: "계속 새로운 범위 추가"
+      signal: "초기 범위 대비 150% 초과"
+      threshold: "범위 50% 이상 확대"
+      action: "핵심으로 재집중"
     
-    opportunity_emergence:
-      description: "예상치 못한 큰 기회 발견"
-      trigger: "SAM이 예상보다 2배 이상 또는 새로운 니치 발견"
-      message_template: |
-        💡 Opportunity Emergence
-        
-        새로운 기회 발견: {opportunity_description}
-        예상 규모: {estimated_size}
-        현재 목표와의 관련성: {relevance_score}/10
-        
-        권장사항:
-        - 현재 목표: {current_goal}
-        - 새로운 기회 가치: {opportunity_value}
-        - 피벗 제안: {pivot_suggestion}
-        검토하시겠습니까?
-    
-    analysis_drift:
-      description: "분석이 목표에서 벗어날 때"
-      threshold: "목표 정렬도 60% 미만"
-      message_template: |
-        🎯 Analysis Drift Warning
-        
-        현재 분석이 초기 목표에서 벗어나고 있습니다.
-        
-        초기 목표: {initial_goal}
-        현재 초점: {current_focus}
-        정렬도: {alignment_score}%
-        
-        선택지:
-        1. 원래 목표로 복귀
-        2. 새로운 발견을 반영해 목표 수정
-        3. 병렬로 두 가지 모두 추구
-        
-        어떻게 진행하시겠습니까?
+    analysis_paralysis:
+      description: "분석만 하고 진전 없음"
+      signal: "2주간 실질적 진전 10% 미만"
+      threshold: "목표 거리 감소율 10% 미만"
+      action: "실행 모드 전환"
   
-  proactive_suggestions:
-    timing: "주요 마일스톤 또는 이상 신호 감지 시"
+  # C. 방향성의 문제
+  direction_alignment_monitoring:
+    goal_drift:
+      description: "점진적으로 목표에서 이탈"
+      signal: "목표 정렬도 60% 미만"
+      threshold: "정렬도 60% 미만"
+      action: "경로 재조정"
     
-    suggestion_types:
-      - type: "Resource Reallocation"
-        when: "특정 영역이 예상보다 복잡하거나 단순할 때"
-        example: "Bill의 계산이 빨리 끝났으니 Steve의 기회 탐색 지원"
-      
-      - type: "Parallel Exploration"
-        when: "불확실성이 높을 때"
-        example: "A안과 B안을 동시에 탐색 후 비교"
-      
-      - type: "Quick Win Focus"
-        when: "시간/예산 제약이 클 때"
-        example: "전체 분석보다 핵심 3개 세그먼트만 집중"
-      
-      - type: "Scope Expansion"
-        when: "예상보다 기회가 클 때"
-        example: "국내뿐 아니라 동남아시아도 포함 검토"
+    wrong_vector:
+      description: "열심히 하지만 잘못된 방향"
+      signal: "활동은 많은데 목표 거리 불변"
+      threshold: "2주간 목표 거리 변화 없음"
+      action: "접근법 재검토"
+    
+    circular_motion:
+      description: "같은 자리를 맴돌기"
+      signal: "동일 이슈 3회 이상 재방문"
+      threshold: "특정 주제 3회 이상 반복"
+      action: "돌파구 모색"
   
-  communication_protocol:
-    format: "구조화된 인사이트 카드"
-    frequency: "실시간 (트리거 발생 시)"
-    channel: "전용 모니터링 대시보드"
+  # D. 리소스의 문제
+  resource_efficiency_monitoring:
+    resource_drain:
+      description: "특정 영역이 리소스 과다 소비"
+      signal: "ROI 대비 투입 과다"
+      threshold: "예상 ROI의 30% 미만"
+      action: "리소스 재배분"
     
-    priority_levels:
-      - level: "🔴 Critical"
-        description: "즉각적인 의사결정 필요"
-        examples: ["중대한 리스크 발견", "프로젝트 중단 검토"]
+    capability_mismatch:
+      description: "목표와 역량의 불일치"
+      signal: "진전 속도가 예상의 30% 미만"
+      threshold: "계획 대비 30% 미만 진척도"
+      action: "접근법 변경 또는 역량 보강"
+  
+  adaptive_intervention_protocol:
+    severity_levels:
+      - level_1_nudge: "가벼운 알림과 제안"
+      - level_2_review: "Owner와 함께 검토"
+      - level_3_pivot: "전면적 재검토 및 피벗"
+    
+    intervention_messages:
+      constructive_format: |
+        🎯 Goal Alignment Check
+        
+        상황: {situation_description}
+        현재 목표: {current_goal}
+        관찰된 패턴: {observed_pattern}
+        
+        옵션:
+        1. 계속 진행 (이유: {continue_rationale})
+        2. 조정 필요 (제안: {adjustment_suggestion})
+        3. 재검토 필요 (근거: {review_reasoning})
+        
+        특히 고려사항: {special_consideration}
       
-      - level: "🟡 Important"
-        description: "24시간 내 검토 필요"
-        examples: ["방향 조정 제안", "리소스 재배분"]
+      example_messages:
+        micro_obsession_alert: |
+          🎯 Goal Alignment Check
+          
+          상황: "{topic}"에 전체 시간의 {percentage}% 투입 중
+          현재 목표: {main_goal}
+          관찰된 패턴: 세부사항에 과도한 집중
+          
+          옵션:
+          1. 계속 진행 (이 부분이 전체 목표의 핵심인 경우)
+          2. 다른 영역도 탐색 (전체 그림을 보기 위해)
+          3. 현재까지의 발견 정리 후 다음 단계로
+        
+        superior_opportunity_alert: |
+          💡 Goal Alignment Check - Major Opportunity
+          
+          상황: 예상보다 {multiple}x 큰 기회 발견
+          현재 목표: {current_goal} (SAM: {current_sam})
+          새 기회: {new_opportunity} (SAM: {new_sam})
+          
+          옵션:
+          1. 현재 목표 유지 (이미 투자된 리소스 고려)
+          2. 새 기회로 피벗 (10x 이상의 가치)
+          3. 두 가지 병행 추구 (리소스 허용 시)
+          
+          특히 고려사항: 블랙스완 기회일 가능성
+  
+  proactive_insights:
+    timing: "주요 마일스톤 또는 이상 패턴 감지 시"
+    
+    insight_categories:
+      goal_health_check:
+        description: "목표 건강성 점검"
+        metrics:
+          - "목표 거리 감소율"
+          - "활동 정렬도"
+          - "리소스 효율성"
+        frequency: "주 2회 또는 중요 이벤트 시"
       
-      - level: "🟢 Informative"
-        description: "참고용 인사이트"
-        examples: ["진행 현황 업데이트", "마이너 개선 제안"]
+      path_optimization:
+        description: "더 나은 경로 제안"
+        triggers:
+          - "동일 문제 반복 직면"
+          - "예상보다 느린 진척"
+          - "새로운 접근법 발견"
+      
+      opportunity_alert:
+        description: "기회와 위험 알림"
+        types:
+          - "10x 기회 (피벗 검토 필요)"
+          - "비효율 패턴 (개선 가능)"
+          - "리스크 신호 (주의 필요)"
+  
+  monitoring_dashboard:
+    real_time_metrics:
+      goal_vector:
+        display: "목표까지의 백터 시각화"
+        components:
+          - "현재 위치"
+          - "목표 지점"
+          - "예상 경로"
+          - "실제 경로"
+      
+      effort_distribution:
+        display: "영역별 노력 분포 히트맵"
+        alert: "불균형 패턴 감지 시"
+      
+      progress_velocity:
+        display: "진척 속도 추세"
+        alert: "정체 또는 후퇴 감지 시"
+    
+    intervention_history:
+      format: "타임라인 형식"
+      content:
+        - "개입 시점"
+        - "개입 이유"
+        - "결과와 학습"
+
+# ========================================
+# SECTION 4: COLLABORATION PROTOCOLS
+# ========================================
+collaboration_protocols:
+  description: "UMIS 에이전트 간 협업 규칙과 트리거"
+  purpose: "각 에이전트가 자신의 전문 영역에 집중하면서도 필요시 효과적으로 협업"
 
 collaboration_triggers:
   description: "MECE 원칙에 따른 에이전트 간 협업 규칙 - v5.0 적응형 협업"
@@ -891,8 +950,9 @@ collaboration_triggers:
     - name: "SAM 계산 협업"
       trigger: "Bill의 SAM 계산 시작"
       participants: ["bill", "rachel", "albert"]
+
 # ========================================
-# SECTION 4: DATA INTEGRITY SYSTEM
+# SECTION 5: DATA INTEGRITY SYSTEM
 # ========================================
 data_integrity_system:
   name: "Progressive Data Integrity System"
@@ -1012,7 +1072,7 @@ data_integrity_system:
       purpose: "자동 백업 설정"
 
 # ========================================
-# SECTION 5: AGENTS
+# SECTION 6: AGENTS
 # ========================================
 agents:
   - id: MAnalyst
@@ -2686,7 +2746,7 @@ agents:
       - "최종 투자 결정 (→ Owner의 업무)"
 
 # ========================================
-# SECTION 6: ROLES
+# SECTION 7: ROLES
 # ========================================
 roles:
   - id: MOwner
@@ -3105,7 +3165,7 @@ roles:
           - "리스크 승인"
 
 # ========================================
-# SECTION 7: CREATIVE BOOST MODULE
+# SECTION 8: CREATIVE BOOST MODULE
 # ========================================
 creative_boost_module:
   name: "AI Brainstorming Framework Integration"
@@ -4211,7 +4271,7 @@ creative_boost_module:
     - "과도한 사용은 분석의 일관성을 해칠 수 있음"
 
 # ========================================
-# SECTION 8: IMPLEMENTATION GUIDE
+# SECTION 9: IMPLEMENTATION GUIDE
 # ========================================
 implementation_guide:
   for_new_projects:
@@ -4248,7 +4308,7 @@ implementation_guide:
       - "Convergence: 통합과 결정"
       - "Iteration: 지속적 개선"
 # ========================================
-# SECTION 9: CONCLUSION
+# SECTION 10: CONCLUSION
 # ========================================
 conclusion:
   v5_philosophy: |
@@ -4269,7 +4329,7 @@ conclusion:
     단일 워크플로우로 모든 상황에 대응합니다.
 
 # ========================================
-# SECTION 10: COMPATIBILITY
+# SECTION 11: COMPATIBILITY
 # ========================================
 compatibility:
   version: "5.2.2"
