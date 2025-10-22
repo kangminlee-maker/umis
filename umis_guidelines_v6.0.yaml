@@ -1,8 +1,8 @@
-# Universal Market Intelligence System v5.4 - Conceptual Clarity Edition
-# 범용 시장 정보 분석 시스템 - 적응형 지능 에디션 (창의적 부스트 포함)
+# Universal Market Intelligence System v6.0 - Progressive Intelligence Edition
+# 범용 시장 정보 분석 시스템 - 점진적 지능 에디션 (실행력 강화)
 # 
 # 적용 범위: 모든 산업, 모든 규모, 모든 지역, 모든 비즈니스 모델
-# 핵심 원칙: MECE 기반 역할 분담, 범용성, 확장성, 체계적 협업, 적응형 지능
+# 핵심 원칙: MECE 기반 역할 분담, 범용성, 확장성, 체계적 협업, 점진적 지능
 # 
 # 버전 변경사항: CHANGELOG.md 참조
 # 
@@ -10,10 +10,10 @@
 # SECTION 1: SYSTEM DEFINITION
 # ========================================
 system:
-  name: "Universal Market Intelligence System - Sustainable Advantage Edition"
-  version: "5.4"
+  name: "Universal Market Intelligence System - Progressive Intelligence Edition"
+  version: "6.0"
   purpose: "불확실한 상황에서도 적응하며 진화하는 범용 시장 분석 시스템"
-  description: "낮은 명확도로 시작해 발견을 통해 성장하는 차세대 시장 정보 시스템 (선택적 창의성 증강 포함)"
+  description: "낮은 명확도로 시작해 발견을 통해 성장하는 차세대 시장 정보 시스템 (실행력 강화)"
   
   core_capabilities:
     - "Multi-Industry Coverage: 제조업부터 서비스업, 전통산업부터 신산업까지"

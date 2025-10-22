@@ -4,7 +4,7 @@
 
 이 폴더는 UMIS (Universal Market Intelligence System)의 단일 파일(monolithic) 형태로 작성된 가이드라인입니다.
 
-v1.2부터 현재 v5.4까지의 진화 과정을 담고 있으며, 지속적으로 단일 파일 형태로 유지·발전되고 있습니다.
+v1.2부터 현재 v6.0까지의 진화 과정을 담고 있으며, 지속적으로 단일 파일 형태로 유지·발전되고 있습니다.
 
 **📝 v5.2부터 버전 히스토리는 별도 파일로 관리됩니다: [CHANGELOG.md](./CHANGELOG.md)**
 
@@ -32,7 +32,7 @@ umis-monolithic-guidelines/
 ├── umis_guidelines_v5.2.1.yaml # Classic 제거, 단순화
 ├── umis_guidelines_v5.2.2.yaml # Market Definition 개선
 ├── umis_guidelines_v5.3.yaml   # 7 Powers 통합
-├── umis_guidelines_v5.4.yaml   # Conceptual Clarity Edition (현재 버전, 152KB)
+├── umis_guidelines_v6.0.yaml   # Progressive Intelligence Edition (현재 버전, 169KB)
 ├── adaptive_workflow_examples.yaml # Adaptive workflow 실행 예시
 ├── CHANGELOG.md                # 상세 버전 히스토리
 ├── VERSION.txt                 # 현재 버전 정보
@@ -213,7 +213,7 @@ Step 3: Market Dynamics Framework (HOW × WHEN × WHY)
 ## 💡 사용 권장사항
 
 - **최신 버전 선택**:
-  - 단일 파일: `umis_guidelines_v5.4.yaml` (174KB) - Conceptual Clarity Edition
+  - 단일 파일: `umis_guidelines_v6.0.yaml` (169KB) - Progressive Intelligence Edition
   - 모듈러 최신: `umis_v5.3_modular/` (총 144KB) - 7 Powers 통합, 선택적 로드
   - 모듈러 안정: `umis_v5.1.3_modular/` (총 96KB) - 검증된 모듈러 구조
 - **ChatGPT 프로젝트**: Custom Instructions와 함께 활용
@@ -252,11 +252,11 @@ v5.4: 154KB    █████████████████████�
 
 ```bash
 # 1. 최신 파일 사용
-umis_guidelines_v5.4.yaml
+umis_guidelines_v6.0.yaml
 
 # 2. ChatGPT 프로젝트 설정
 chatgpt_custom_instructions.txt 내용 복사
-umis_guidelines_v5.4.yaml 파일 첨부
+umis_guidelines_v6.0.yaml 파일 첨부
 
 # 3. 테스트 프롬프트
 "[시장명]을 UMIS로 분석해주세요"
