@@ -462,146 +462,263 @@ system:
             - stakeholder_reconfiguration: "이해관계자 재구성"
 
 # ========================================
-# SECTION 2: ADAPTIVE FRAMEWORK
+# SECTION 2: ADAPTIVE INTELLIGENCE SYSTEM
 # ========================================
-adaptive_framework:
-  name: "Adaptive Market Analysis Framework"
-  description: "불확실성을 수용하고 발견을 통해 진화하는 분석 체계"
+adaptive_intelligence_system:
+  name: "Adaptive Intelligence System"
+  description: "불확실성을 수용하고 발견을 통해 진화하는 UMIS의 핵심 시스템"
   
+  # 2.1 Philosophy (WHY) - 왜 Adaptive가 필요한가
+  philosophy:
+    core_belief: "불확실성은 문제가 아닌 기회의 원천"
+    
+    adaptive_principles:
+      - principle: "Start with Ambiguity"
+        description: "불확실성을 받아들이고 시작"
+        implementation:
+          - "낮은 명확도(20-30%)로도 프로젝트 착수"
+          - "Discovery Sprint로 빠른 방향 탐색"
+          - "점진적 구체화 과정 수용"
+      
+      - principle: "Learn by Doing"
+        description: "실행을 통한 학습과 진화"
+        implementation:
+          - "작은 실험으로 빠른 검증"
+          - "실패를 학습 기회로 전환"
+          - "지속적 피드백 루프 구축"
+      
+      - principle: "Embrace Evolution"
+        description: "목표와 방법의 동적 진화"
+        implementation:
+          - "고정된 목표 대신 진화하는 목표"
+          - "발견에 따른 즉각적 방향 전환"
+          - "창발적 기회 포착"
+    
+    why_adaptive_matters:
+      traditional_limitations:
+        - "완벽한 정보를 기다리다 기회 상실"
+        - "고정된 계획으로 인한 경직성"
+        - "변화하는 시장에 대한 대응 지연"
+      
+      adaptive_advantages:
+        - "빠른 시작과 점진적 개선"
+        - "발견 기반 기회 포착"
+        - "불확실성 속에서도 진전"
+  
+  # 2.2 Framework (WHAT) - Adaptive가 무엇인가
+  framework:
   low_clarity_start:
     description: "20-30% 명확도로도 분석 시작 가능"
     
     clarity_levels:
       - level: 1-3
-        description: "매우 모호함"
+          name: "매우 모호함"
         example: "뭔가 새로운 기회가 있을 것 같다"
         approach: "광범위한 Discovery Sprint"
       
       - level: 4-6
-        description: "방향성 있음"
+          name: "방향성 있음"
         example: "디지털 전환 관련 기회를 찾고 싶다"
         approach: "관련 영역 집중 탐색"
       
       - level: 7-9
-        description: "구체적 목표"
+          name: "구체적 목표"
         example: "한국 B2B SaaS 시장 진입 검토"
         approach: "전통적 구조화 분석"
       
       - level: 10
-        description: "완전히 명확"
-        example: "거의 없음 - 항상 불확실성 존재"
+          name: "완전히 명확"
+          note: "거의 없음 - 항상 불확실성 존재"
+  
     
-    starting_protocol:
-      step_1: "현재 명확도 평가 (1-10)"
-      step_2: "Discovery Sprint 범위 결정"
-      step_3: "초기 가설 없이 탐색 시작"
-      step_4: "첫 발견사항으로 방향 조정"
+    progressive_intelligence:
+      definition: "발견을 통해 목표와 방법이 함께 진화"
+      
+      evolution_patterns:
+        goal_evolution:
+          from: "모호한 욕구"
+          through: "구체적 문제 인식"
+          to: "명확한 기회 정의"
+        
+        method_evolution:
+          from: "광범위 탐색"
+          through: "집중 분석"
+          to: "정밀 실행"
+      
+      tracking_mechanism:
+        - "명확도 점수 (1-10) 지속 업데이트"
+        - "주요 발견사항 기록"
+        - "피벗 포인트 문서화"
   
   discovery_sprint:
     description: "1-2일 집중 탐색으로 방향성 발견"
+      
+      sprint_types:
+        exploratory:
+          duration: "4-8 hours"
+          focus: "가능성 공간 탐색"
+          output: "기회 영역 목록"
+        
+        focused:
     duration: "1-2 days"
+          focus: "특정 영역 심화"
+          output: "검증된 기회"
+        
+        validation:
+          duration: "2-4 hours"
+          focus: "가설 검증"
+          output: "다음 단계 결정"
+  
+  # 2.3 Methodology (HOW) - 어떻게 Adaptive를 구현하는가
+  methodology:
+    adaptive_analysis_methods:
+      depth_adjustment:
+        triggers:
+          - "시장 규모가 예상보다 클 때"
+          - "경쟁 강도가 높을 때"
+          - "규제 리스크가 있을 때"
+          - "기술 변화가 빠를 때"
+        
+        depth_levels:
+          quick_scan: "2-4시간 빠른 스캔"
+          standard_analysis: "1-2일 표준 분석"
+          deep_dive: "3-5일 심층 분석"
+          comprehensive_study: "1-2주 종합 연구"
     
     parallel_exploration:
-      - track: "시장 구조 스캔"
-        agent: "Albert"
-        output: "주목할 만한 패턴들"
+        description: "여러 가능성을 동시에 탐색"
+        benefits:
+          - "빠른 비교와 검증"
+          - "시너지 발견"
+          - "리스크 분산"
       
-      - track: "기회 신호 포착"
-        agent: "Steve"
-        output: "잠재 기회 후보군"
-      
-      - track: "데이터 가용성 확인"
-        agent: "Rachel"
-        output: "활용 가능한 데이터원"
-      
-      - track: "규모 감각 파악"
-        agent: "Bill"
-        output: "대략적 시장 크기"
+      iterative_refinement:
+        cycles:
+          - "탐색 → 분석 → 검증 → 조정"
+          - "각 사이클은 2-4시간"
+          - "3-5 사이클로 수렴"
     
-    convergence_session:
-      when: "Sprint 종료 시"
-      participants: ["All agents + Owner"]
-      outputs:
-        - "상위 3-5개 기회 방향"
-        - "각 방향의 탐색 가치"
-        - "다음 단계 우선순위"
-        - "명확도 점수 업데이트"
-  milestone_decision_points:
-    description: "주요 시점마다 방향 재검토"
-    
-    decision_triggers:
-      - trigger: "Phase 완료"
-        action: "다음 Phase 방향 확인"
+    agent_collaboration_protocols:
+      discovery_phase:
+        steve_leads: "창의적 가능성 탐색"
+        albert_supports: "팩트 기반 검증"
+        bill_estimates: "잠재 규모 추정"
       
-      - trigger: "중대 발견"
-        action: "전체 방향 재검토"
+      analysis_phase:
+        albert_leads: "구조적 분석"
+        rachel_validates: "데이터 검증"
+        steve_interprets: "의미 해석"
       
-      - trigger: "막다른 길"
-        action: "대안 경로 탐색"
+      convergence_phase:
+        owner_decides: "방향 결정"
+        stewart_documents: "프로세스 정리"
+        all_refine: "최종 조정"
+  
+  # 2.4 Workflow (WHEN) - 언제/어떤 순서로 적용하는가
+  workflow:
+    adaptive_stages:
+      stage_1_initialization:
+        name: "Initial Contact"
+        duration: "30분-1시간"
+        activities:
+          - "명확도 평가 (1-10)"
+          - "초기 scope 설정"
+          - "리소스 할당"
+        decision_point: "Discovery Sprint 필요 여부"
       
-      - trigger: "새로운 기회"
-        action: "우선순위 재조정"
-    
-    decision_framework:
-      inputs:
-        - "현재까지 발견사항"
-        - "남은 불확실성"
-        - "투입 대비 가치"
-      options:
-        - "계속 진행"
-        - "방향 전환 (Pivot)"
-        - "범위 확대/축소"
-        - "중단"
-    flexibility_principle:
-      - "매몰 비용 무시"
-      - "더 나은 기회로 전환 장려"
-      - "부분적 성공도 가치 인정"
-  goal_evolution_tracking:
-    description: "목표가 어떻게 진화하는지 추적"
-    
-    evolution_log:
-      format: |
-        {
-          "timestamp": "2024-03-15T10:00:00Z",
-          "clarity_score": 3,
-          "goal": "뭔가 새로운 시장 기회",
-          "key_discovery": null,
-          "agent": "Owner"
-        }
-        {
-          "timestamp": "2024-03-15T18:00:00Z",
-          "clarity_score": 6,
-          "goal": "한국 B2C 디지털 서비스 기회",
-          "key_discovery": "모바일 결제 급성장",
-          "agent": "Steve"
-        }
-        {
-          "timestamp": "2024-03-16T14:00:00Z",
-          "clarity_score": 8,
-          "goal": "한국 소상공인 대상 간편결제 솔루션",
-          "key_discovery": "소상공인 pain point 발견",
-          "agent": "Albert"
-        }
-    
-    evolution_patterns:
-      - pattern: "Narrowing Down"
-        description: "넓은 영역에서 특정 기회로 수렴"
-        frequency: "가장 일반적"
+      stage_2_discovery:
+        name: "Discovery Sprint"
+        duration: "4시간-2일"
+        activities:
+          - "병렬 탐색 실행"
+          - "초기 패턴 발견"
+          - "기회 영역 식별"
+        decision_point: "집중 영역 선택"
       
-      - pattern: "Pivoting"
-        description: "완전히 다른 방향으로 전환"
-        frequency: "20-30%"
+      stage_3_progressive_analysis:
+        name: "Progressive Deep Dive"
+        duration: "1-5일"
+        parallel_tracks:
+          market_structure: "Albert 주도"
+          opportunity_interpretation: "Steve 주도"
+          quantification: "Bill 주도"
+          validation: "Rachel 주도"
+        decision_point: "분석 깊이 조정"
       
-      - pattern: "Expanding"
-        description: "작게 시작했다가 큰 기회 발견"
-        frequency: "10-15%"
+      stage_4_convergence:
+        name: "Synthesis & Decision"
+        duration: "4-8시간"
+        activities:
+          - "발견사항 통합"
+          - "기회 우선순위화"
+          - "실행 계획 수립"
+        decision_point: "다음 단계 액션"
+      
+      stage_5_iteration:
+        name: "Iterative Refinement"
+        duration: "필요시 반복"
+        triggers:
+          - "새로운 정보 발견"
+          - "가정 변경"
+          - "시장 변화"
+        activities:
+          - "부분적 재분석"
+          - "전략 조정"
+          - "지속적 모니터링"
     
-    success_metrics:
-      - "최종 명확도 점수"
-      - "진화 횟수"
-      - "발견의 질"
-      - "소요 시간"
-      - "최종 가치"
+    timing_guidelines:
+      clarity_1_3:
+        total_time: "5-10일"
+        discovery_portion: "40-50%"
+        analysis_portion: "30-40%"
+        synthesis_portion: "10-20%"
+      
+      clarity_4_6:
+        total_time: "3-7일"
+        discovery_portion: "20-30%"
+        analysis_portion: "50-60%"
+        synthesis_portion: "20-30%"
+      
+      clarity_7_9:
+        total_time: "2-5일"
+        discovery_portion: "10-20%"
+        analysis_portion: "60-70%"
+        synthesis_portion: "20-30%"
+  
+  # 2.5 Application (WHERE) - 어디에 적용되는가
+  application:
+    market_analysis_application:
+      universal_market_definition:
+        - "Step 1: Purpose alignment에서 명확도 평가"
+        - "Step 2: Boundary definition에서 adaptive boundary 설정"
+        - "Step 3: Dynamics에서 진화 패턴 추적"
+      
+      opportunity_discovery:
+        - "비효율성 탐색에서 병렬 discovery"
+        - "환경 변화 감지에서 weak signal 포착"
+        - "융합 기회에서 창의적 조합"
+    
+    decision_making_application:
+      owner_decisions:
+        - "불완전 정보에서도 방향 결정"
+        - "피벗 타이밍 판단"
+        - "리소스 재배분"
+      
+      agent_coordination:
+        - "동적 역할 조정"
+        - "정보 흐름 최적화"
+        - "병렬 작업 조율"
+    
+    continuous_improvement:
+      learning_loops:
+        - "각 프로젝트에서 패턴 학습"
+        - "방법론 지속 개선"
+        - "best practice 축적"
+      
+      system_evolution:
+        - "새로운 discovery 방법 추가"
+        - "collaboration 프로토콜 개선"
+        - "툴과 프레임워크 확장"
 # ========================================
 # SECTION 3: PROACTIVE MONITORING
 # ========================================
@@ -963,7 +1080,7 @@ agents:
           - "시장 지배적 사업자가 존재하는가?"
           - "신규 진입자의 수와 빈도는 어떠한가?"
           - "얼마나 많은 단계를 거쳐 최종 고객에게 도달하는가?"
-    
+      
     extended_frameworks:
       universal_observation_dimensions:
         - dimension: "Value Chain Structure"
@@ -1072,7 +1189,7 @@ agents:
             - "가치 배분"
             - "진입 장벽"
           scalable_format: "각 시장 규모와 특성에 맞춰 조정 가능"
-    
+      
     creative_boost_option:
       available_modules: ["M2", "M8"]
       activation: "[BRAINSTORM REQUEST] 복잡한 시장 구조 분해 필요시"
@@ -1260,7 +1377,7 @@ agents:
             - "데이터/네트워크 축적으로 격차가 벌어지는가?"
             - "고객 전환 비용이 시간에 따라 증가하는가?"
             - "복제 난이도가 시간에 따라 높아지는가?"
-    
+      
     extended_frameworks:
       defensive_structure_analysis:
         description: "시간에 따라 강화되는 방어 구조를 분석하고 해석"
@@ -1678,7 +1795,7 @@ agents:
             - "Rachel과 함께 정의 일치성 검토"
             - "논리적 타당성 재검증"
           final_sam: "수렴된 범위의 중간값 ± 신뢰구간"
-    
+      
     extended_frameworks:
       growth_analysis:
         description: "시장 성장률과 미래 전망 분석"
@@ -2073,7 +2190,7 @@ agents:
             1. 민물낚시 추가: ×1.3 = 975만
             2. 월 1회 기준: ×0.4 = 390만
             최종: 390만명 (±15%)
-    
+      
     extended_frameworks:
       data_sourcing_strategy:
         description: "필요한 데이터를 체계적으로 찾고 수집"
@@ -2479,25 +2596,25 @@ agents:
           - "복구 이력 관리"
     
     extended_frameworks:
-      enhanced_collaboration:
-        with_owner:
-          proactive_reporting:
+    enhanced_collaboration:
+      with_owner:
+        proactive_reporting:
           - "주간 진행 요약"
           - "주요 발견사항 하이라이트"
           - "리스크와 기회 업데이트"
           - "다음 주 포커스 제안"
-          decision_support:
+        decision_support:
           - "의사결정 포인트 사전 준비"
           - "옵션별 영향 분석"
           - "권장사항 제시"
           - "결정 이력 관리"
-        with_all_agents:
-          coordination:
+      with_all_agents:
+        coordination:
           - "일일 스탠드업 요약"
           - "블로커 해결 지원"
           - "협업 기회 중개"
           - "품질 기준 유지"
-          knowledge_sharing:
+        knowledge_sharing:
           - "실시간 인사이트 배포"
           - "방법론 업데이트 공지"
           - "성공 사례 즉시 공유"
@@ -2512,9 +2629,9 @@ agents:
       example_output: "[BRAINSTORM] 방법론 진화 제안 또는 통합적 혁신"
     
     concrete_examples:
-      v5_output_templates:
-        intervention_alert:
-          format: |
+    v5_output_templates:
+      intervention_alert:
+        format: |
           🎯 [Priority Level] Intervention Alert
           
           상황: {situation_description}
@@ -2531,8 +2648,8 @@ agents:
           응답 필요: {yes/no}
           응답 기한: {deadline}
       
-        progress_summary:
-          format: |
+      progress_summary:
+        format: |
           📊 Progress Summary - {date}
           
           목표 명확도: {clarity_before} → {clarity_now}
@@ -4094,1225 +4211,7 @@ creative_boost_module:
     - "과도한 사용은 분석의 일관성을 해칠 수 있음"
 
 # ========================================
-# SECTION 8: ADAPTIVE WORKFLOW V5
-# ========================================
-adaptive_workflow:
-  name: "Adaptive Market Analysis Workflow v5.1"
-  description: "적응형 명확화 프로토콜을 통해 진화하는 분석 프로세스"
-  anchor: "adaptive_workflow"
-  
-  core_principles:
-    - "Fixed phases가 아닌 Fluid stages"
-    - "명확도에 따라 깊이 조정"
-    - "발견에 따른 즉각적 피벗"
-    - "병렬 탐색과 빠른 수렴"
-    - "사용자와의 대화를 통한 점진적 구체화"
-    - "Fact 기반 시장 분류"
-    - "Albert → Steve 협업: 관찰/분류 → 해석/기회 발굴"
-    - "두 가지 기회 원천의 일관된 추적 (비효율성 + 환경 변화)"
-  overview:
-    total_duration: "3-10 days (명확도와 복잡도에 따라)"
-    execution_mode: "Adaptive parallel execution"
-    quality_assurance: "Continuous validation"
-    flexibility: "Stage 건너뛰기, 되돌아가기, 병합 가능"
-  
-  key_collaboration_pattern:
-    albert_to_steve_flow:
-      description: "전체 워크플로우의 핵심 협업 패턴"
-      sequence:
-        1_albert_observes: "시장 구조와 패턴을 관찰하고 분류 (해석 없이)"
-        2_steve_interprets: "Albert의 관찰을 기반으로 의미 해석과 기회 발굴"
-        3_continuous_validation: "Steve의 해석을 Albert의 팩트로 지속 검증"
-      
-      stage_specific_applications:
-        stage_2: "Albert가 MECE 분류 → Steve가 각 카테고리의 기회 해석"
-        stage_3: "Albert가 구조 분석 → Steve가 비효율성의 의미 해석"
-        stage_4: "Albert의 패턴 → Steve의 인접 기회 발굴"
-      
-      benefits:
-        - "관찰과 해석의 명확한 분리"
-        - "팩트 기반 기회 발굴"
-        - "주관적 해석의 객관적 검증"
-  # 새로운 6단계 Adaptive Clarification Protocol
-  
-  stage_1_progressive_narrowing:
-    name: "Progressive Narrowing - 점진적 구체화"
-    duration: "2-4 hours"
-    owner: "Owner + Stewart"
-    clarity_requirement: "20% 이상"
-    
-    stage_inputs:
-      from: "Initial user request"
-      clarity_level: "1-3/10"
-      description: "모호하고 포괄적인 초기 요청"
-    
-    progressive_narrowing_v2:
-      step_1_initial_probe:
-        opening: "시장을 어떤 관점에서 보시면 도움이 될까요?"
-        
-        primary_dimensions:
-          fact_based_options:
-            - "💰 돈의 흐름으로 보기 (누가 누구에게 얼마를 지불하는가)"
-            - "🏢 시장 참여자로 보기 (어떤 기업/조직들이 있는가)"
-            - "📍 실제 거래 패턴으로 보기 (어떤 거래가 얼마나 일어나는가)"
-            - "🔍 특정 관심사가 있다면 말씀해 주세요"
-        avoid: 
-          - "성장 가능성이 높은 분야 ❌ (해석 포함)"
-          - "혁신적인 서비스 ❌ (주관적 판단)"
-          - "프리미엄 시장 ❌ (기준 모호)"
-      step_2_classification_method:
-        message: "선택하신 관점에서 시장을 나누는 여러 방법이 있습니다:"
-        
-        if_money_flow_selected:
-          top_down_options:
-            - "거래 주체별: 누가 돈을 내는가"
-            - "거래 대상별: 무엇에 돈을 내는가"  
-            - "거래 규모별: 얼마씩 거래되는가"
-            - "거래 빈도별: 얼마나 자주 거래되는가"
-          bottom_up_options:
-            - "주요 플레이어 분석: 매출 상위 기업들 중심으로"
-            - "실거래 데이터 분석: 카드사/POS 데이터 기반"
-            - "이상 패턴 분석: 특이한 거래 패턴 중심으로"
-        if_market_players_selected:
-          classification_approaches:
-            - "산업 구조: 제조-유통-서비스 체인"
-            - "시장 지배력: 점유율/영향력 기준"
-            - "비즈니스 모델: 수익 창출 방식별"
-            - "네트워크 관계: 제휴/경쟁 관계도"
-    fact_finding_before_classification:
-      quick_research: "선택하신 방향에서 바로 확인 가능한 사실들:"
-      
-      example_money_flow:
-        instant_facts:
-          - "연간 시장 거래 규모 및 성장률"
-          - "주요 결제 방식과 거래 빈도"  
-          - "평균 거래 단가 및 분포"
-        follow_up: "이 중 특정 영역을 deeper dive 하시겠습니까?"
-      
-      example_player_centric:
-        major_players:
-          - "상위 기업들의 시장 점유율"
-          - "각 기업의 주력 사업 영역"
-          - "기업 간 경쟁/협력 관계"
-        follow_up: "특정 기업군의 사업 영역을 매핑해드릴까요?"
-    
-    build_classification_together:
-      approach: "함께 분류 체계를 만들어가기"
-      
-      step_1_identify_anchors:
-        message: "시장에서 확실한 '기준점'들을 먼저 찾아볼까요?"
-        examples:
-          - "가장 큰 거래: B2B 대형 계약, M&A, 인프라 투자 등"
-          - "가장 빈번한 거래: 일상 소비재, 구독 서비스, 소액 결제 등"
-          - "가장 많은 참여자: 대중 소비자 시장, 플랫폼 거래 등"
-      step_2_explore_connections:
-        message: "이 기준점들 사이의 연결고리는?"
-        approach: "거래 흐름과 상호 영향 관계 파악"
-      
-      step_3_reveal_structure:
-        message: "자연스럽게 드러나는 시장 구조:"
-        outcomes:
-          - "진입 장벽별 계층 구조"
-          - "거래 특성별 세분화"
-          - "가치 흐름의 병목 지점"
-    context_aware_progression:
-      high_clarity_fast_track:
-        trigger: "구체적 키워드 감지"
-        action: 
-          - "즉시 해당 영역 fact 제공"
-          - "인접 영역 확장 옵션 제시"
-          - "비교 가능한 대안 보여주기"
-      medium_clarity_parallel:
-        trigger: "영역은 명확하나 목적 불분명"
-        action:
-          - "2-3개 가능한 목적별 시나리오 동시 진행"
-          - "각 시나리오별 핵심 fact 비교표"
-          - "추가 질문으로 수렴"
-      low_clarity_discovery:
-        trigger: "포괄적/탐색적 질문"
-        action:
-          - "시장 전체 큰 그림 먼저 제시"
-          - "흥미로운 이상 신호 하이라이트"
-          - "Bottom-up 발견 유도"
-    no_assumption_protocol:
-      fact_only_classification:
-        always_specify:
-          - "이 분류는 [데이터소스]에 기반합니다"
-          - "다른 분류 방식도 가능합니다"
-          - "목적에 따라 최적 분류가 다를 수 있습니다"
-        never_assume:
-          - 사용자의 목적 ❌
-          - 시장의 매력도 ❌
-          - 성장 가능성 ❌
-          - 투자 가치 ❌
-        always_offer:
-          - 다른 분류 체계 옵션
-          - 분류 방식 자체를 바꿀 수 있는 선택권
-          - Raw 데이터 접근 옵션
-    dynamic_classification_principle:
-      core_philosophy: "산업 분류는 사전 정의가 아닌, 사용자와 Albert의 상호작용으로 생성"
-      
-      why_no_predefined_categories:
-        - "각 시장마다 고유한 구조와 특성 존재"
-        - "사전 정의는 오히려 발견을 제한"
-        - "사용자의 관점과 목적에 따라 최적 분류가 다름"
-        - "실시간 데이터 기반으로 새로운 분류 발견 가능"
-      classification_emerges_from:
-        - "현재 시장의 실제 거래 패턴"
-        - "주요 플레이어들의 사업 구조"
-        - "돈이 흐르는 실제 경로"
-        - "사용자가 관심있는 특정 측면"
-      albert_role_in_classification:
-        - "관찰 가능한 거래 데이터 제시"
-        - "다양한 분류 가능성 제안"
-        - "사용자 피드백 기반 재분류"
-        - "새로운 분류 기준 공동 개발"
-    opportunity_lens_application:
-      description: "Stage 1부터 두 가지 기회 원천 관점 적용"
-      
-      inefficiency_early_signals:
-        observation_points:
-          - "복잡한 중개 구조나 다단계 유통"
-          - "정보 불균형이나 가격 불투명성"
-          - "높은 거래 비용이나 진입 장벽"
-          - "참여자 간 교섭력 불균형"
-        albert_role: "이러한 패턴을 관찰만 하고 기록"
-      
-      change_early_signals:
-        observation_points:
-          - "새로운 기술이나 플랫폼의 등장"
-          - "규제 변화나 정책 전환"
-          - "소비자 행동이나 선호 변화"
-          - "글로벌 트렌드나 환경 변화"
-        albert_role: "변화의 사실만 기록, 의미는 해석하지 않음"
-    
-    deliverables:
-      - "초기 프로젝트 브리프 (1페이지)"
-      - "사용자가 선택한 시장 분류 체계"
-      - "Fact-finding sprint 계획"
-      - ".project_metadata.yaml (초기 버전)"
-      - "초기 관찰된 비효율성 신호 리스트"
-      - "초기 감지된 환경 변화 신호 리스트"
-    stage_outputs:
-      to_stage_2:
-        - "선택된 시장 관점과 분류 체계"
-        - "초기 비효율성/변화 신호"
-        - "명확도 점수: 20% → 40-50%"
-        - "탐색할 우선순위 영역"
-    exit_criteria:
-      - "기본적인 시장 방향성 합의"
-      - "Fact 기반 분류 체계 선택 완료"
-      - "두 가지 기회 원천 초기 스캔 완료"
-  stage_2_interactive_discovery_sprint:
-    name: "Interactive Discovery Sprint - 대화형 탐색"
-    duration: "1-2 days"
-    owner: "All agents (parallel)"
-    mode: "User-guided exploration"
-    
-    stage_inputs:
-      from_stage_1:
-        - "선택된 시장 관점과 분류 체계"
-        - "초기 비효율성/변화 신호"
-        - "명확도 점수: 40-50%"
-        - "탐색 우선순위 영역"
-    approach:
-      principle: "사용자와의 지속적 대화를 통한 방향 설정"
-      method: "Parallel hypothesis testing with user feedback"
-      dual_opportunity_focus: "모든 트랙에서 비효율성과 변화 기회 동시 탐색"
-    
-    parallel_tracks:
-      track_a_fact_based_structure_scan:
-        agent: "Albert"
-        focus: "Fact 기반 시장 구조 분석"
-        approach: "돈의 흐름과 거래 패턴만 관찰 (해석 제외)"
-        
-        dual_lens_observation:
-          inefficiency_patterns:
-            - "중개 단계 수와 각 단계의 마진"
-            - "정보 접근성의 차이"
-            - "거래 비용 구조"
-            - "시장 지배력 분포"
-          change_indicators:
-            - "새로운 거래 방식 출현"
-            - "기존 플레이어의 역할 변화"
-            - "거래량/빈도의 변화 추이"
-            - "신규 진입자 패턴"
-        deliverables:
-          - "관찰된 거래 패턴 3-5개"
-          - "핵심 플레이어 리스트"
-          - "거래 구조 fact sheet"
-          - "비효율성 관찰 노트"
-          - "변화 신호 관찰 노트"
-      track_b_opportunity_hypothesis:
-        agent: "Albert"
-        focus: "MECE 기반 사용자 의도 파악"
-        approach: "Structured options for user selection"
-        
-        mece_intent_framework:
-          primary_intent_categories:
-            1_investment:
-              label: "💰 투자/자산 관점"
-              options:
-                - "기업 인수/지분 투자"
-                - "부동산/인프라 투자"
-                - "신기술/스타트업 투자"
-                - "금융상품/펀드 투자"
-            2_business_creation:
-              label: "🚀 신규 사업 관점"
-              options:
-                - "제품/서비스 개발 및 출시"
-                - "플랫폼/마켓플레이스 구축"
-                - "B2B 솔루션 사업"
-                - "프랜차이즈/체인 사업"
-            3_business_expansion:
-              label: "🔗 기존 사업 연계 관점"
-              options:
-                - "신규 시장/지역 진출"
-                - "제품/서비스 라인 확장"
-                - "파트너십/제휴 기회"
-                - "고객군 확대 전략"
-            4_market_research:
-              label: "📊 시장 조사 관점"
-              options:
-                - "경쟁사 분석"
-                - "시장 진입 타당성 검토"
-                - "산업 트렌드 파악"
-                - "정책/규제 영향 분석"
-            5_other:
-              label: "🔍 기타"
-              options:
-                - "학술/연구 목적"
-                - "정책 수립 참고"
-                - "개인적 관심"
-                - "위의 범주에 없는 목적"
-          selection_process:
-            step_1: "위의 5가지 주요 관점 중 가장 가까운 것을 선택해주세요"
-            step_2: "선택한 관점 내에서 구체적인 목적을 선택해주세요"
-            step_3: "복수 선택도 가능합니다"
-            
-        deliverables:
-          - "사용자가 선택한 명확한 의도 카테고리"
-          - "선택된 카테고리의 구조적 특성 정리"
-          - "각 카테고리별 관찰 가능한 시장 패턴"
-      track_c_data_landscape:
-        agent: "Rachel"
-        focus: "선택된 분류 체계별 데이터 탐색"
-        deliverables:
-          - "활용 가능 데이터원"
-          - "데이터 품질 평가"
-          - "추가 필요 데이터"
-      track_d_size_sensing:
-        agent: "Bill"
-        focus: "선택된 분류별 규모 감각"
-        deliverables:
-          - "분류 체계별 대략적 시장 크기"
-          - "성장 추세"
-          - "주요 숫자들"
-    user_interaction_points:
-      - "각 트랙의 초기 발견에 대한 피드백"
-      - "방향성 조정을 위한 대화"
-      - "새로운 관심사 발견 시 즉시 반영"
-    convergence_session:
-      when: "Sprint 종료"
-      duration: "2-3 hours"
-      participants: "All agents + Owner"
-      
-      steve_interpretation:
-        based_on: "Albert의 MECE 카테고리와 사용자 선택"
-        focus: "선택된 카테고리별 기회 해석"
-        deliverables:
-          - "각 카테고리의 기회 잠재력 평가"
-          - "실행 가능성 검토"
-          - "예상되는 도전과제"
-      outputs:
-        - "사용자와 함께 선택한 방향 3-5개"
-        - "각 방향의 우선순위"
-        - "명확도 점수 (업데이트)"
-        - "Go/Pivot/Stop 결정"
-    stage_outputs:
-      to_stage_3:
-        - "확정된 사용자 의도와 분석 방향"
-        - "심화된 비효율성 패턴 리스트"
-        - "구체화된 변화 신호 리스트"
-        - "명확도 점수: 50% → 70-80%"
-        - "Steve의 기회 해석 초안"
-  stage_3_smart_default_iteration:
-    name: "Smart Default with Iteration - 빠른 가치 제공과 반복"
-    duration: "1-2 days"
-    owner: "Bill + Albert (parallel)"
-    mode: "Quick value delivery"
-    
-    stage_inputs:
-      from_stage_2:
-        - "확정된 사용자 의도와 분석 방향"
-        - "심화된 비효율성 패턴 리스트"
-        - "구체화된 변화 신호 리스트"
-        - "명확도 점수: 70-80%"
-        - "Steve의 기회 해석 초안"
-    approach:
-      principle: "명시적 Depth 선택을 통한 맞춤형 가치 제공"
-      method: "Progressive depth expansion with explicit user choice"
-      
-      why_explicit_depth_selection:
-        - "사용자가 원하는 분석 수준을 명확히 인지"
-        - "시간과 리소스에 대한 투명한 기대치 설정"
-        - "불필요한 상세 분석으로 인한 정보 과부하 방지"
-        - "단계별 확장으로 유연성 확보"
-      umis_analysis_philosophy:
-        core_mission: "시장의 비효율성과 환경 변화로 인한 기회를 발견하고 드러내기"
-        
-        what_we_reveal:
-          category_1_inefficiency_based_opportunities:
-            description: "현재 시장의 구조적 비효율성에서 오는 기회"
-            
-          market_structure_inefficiencies:
-            - "시장 지배력의 불균형 (과점/독점 구조)"
-            - "교섭력 격차와 그로 인한 가치 배분 왜곡"
-            - "수직/수평적 통합의 부재 또는 과도함"
-            - "네트워크 효과의 악용 또는 미활용"
-          information_asymmetries:
-            - "구매자-판매자 간 정보 격차"
-            - "품질/가격 정보의 불투명성"
-            - "시장 데이터 접근성의 차별"
-            - "의도적 정보 은폐나 조작"
-          transaction_cost_problems:
-            - "불필요한 중개 단계와 수수료"
-            - "복잡한 계약/결제 프로세스"
-            - "높은 전환 비용과 락인(lock-in) 효과"
-            - "탐색/매칭 비용의 비효율"
-          regulatory_institutional_barriers:
-            - "인위적 진입 장벽과 면허 제도"
-            - "기득권 보호를 위한 규제 포획"
-            - "시대에 뒤떨어진 법규와 관행"
-            - "규제 공백 또는 중복 규제"
-          geographic_temporal_arbitrage:
-            - "지역 간 가격/품질 격차"
-            - "시간대별 수급 불균형"
-            - "국경 간 규제 차익거래"
-            - "계절성/주기성 활용 부재"
-          innovation_adoption_gaps:
-            - "기술 도입의 지연과 저항"
-            - "레거시 시스템의 비효율 지속"
-            - "혁신을 막는 이해관계 구조"
-            - "신구 비즈니스 모델 간 갈등"
-          category_2_change_driven_opportunities:
-            description: "효율적 시장에서도 환경 변화가 만드는 새로운 기회"
-          
-          technological_disruptions:
-            - "새로운 기술이 가능하게 하는 비즈니스 모델"
-            - "기술 발전으로 인한 비용 구조 변화"
-            - "디지털 전환이 만드는 새로운 가치 사슬"
-            - "AI/자동화가 바꾸는 산업 구조"
-          demographic_shifts:
-            - "세대 교체로 인한 소비 패턴 변화"
-            - "인구 구조 변화가 만드는 신규 수요"
-            - "라이프스타일 변화와 새로운 니즈"
-            - "글로벌화/로컬화의 동시 진행"
-          regulatory_changes:
-            - "규제 완화로 열리는 새로운 시장"
-            - "새로운 규제가 만드는 의무 수요"
-            - "국제 표준 변화에 따른 기회"
-            - "ESG/지속가능성 요구사항"
-          macro_trends:
-            - "기후 변화 대응 필요성"
-            - "팬데믹 이후 행동 변화의 고착화"
-            - "지정학적 변화와 공급망 재편"
-            - "새로운 경제 패러다임 (공유경제, 구독경제 등)"
-          convergence_opportunities:
-            - "산업 간 경계 붕괴와 융합"
-            - "오프라인-온라인 통합 (O2O, OMO)"
-            - "B2B-B2C 경계의 모호화"
-            - "제품-서비스 융합 (서비스화)"
-        mece_validation:
-          two_major_categories: "기회는 1) 비효율성 해소와 2) 환경 변화 활용에서 온다"
-          mutually_exclusive: "비효율성과 변화는 서로 다른 기회의 원천"
-          collectively_exhaustive: "모든 시장 기회는 이 두 카테고리로 설명 가능"
-          
-          inefficiency_examples:
-            structure: "예: 택시업계의 면허 제한으로 인한 공급 부족"
-            information: "예: 중고차 시장의 품질 정보 비대칭"
-            transaction: "예: 부동산 중개 수수료의 경직성"
-            regulatory: "예: 의료기기 인증의 과도한 시간과 비용"
-            geographic: "예: 농산물의 산지-소비지 가격 격차"
-            innovation_gap: "예: 금융권의 레거시 시스템 의존"
-          
-          change_driven_examples:
-            technology: "예: AI로 가능해진 개인 맞춤형 교육"
-            demographic: "예: MZ세대를 위한 새로운 금융 서비스"
-            regulatory: "예: 원격의료 허용으로 열린 디지털 헬스케어"
-            macro_trend: "예: ESG 요구에 따른 탄소 관리 솔루션"
-            convergence: "예: 리테일+미디어 융합 (리테일 미디어)"
-        
-        how_we_detect_inefficiencies:
-          market_structure_signals:
-            - "HHI(허핀달 지수)가 2500 이상"
-            - "상위 3개사 점유율 70% 초과"
-            - "신규 진입자 5년간 전무"
-            - "가격 리더십의 명확한 증거"
-          information_asymmetry_signals:
-            - "동일 제품의 가격 분산 30% 이상"
-            - "품질 인증/평가 시스템 부재"
-            - "구매 후 불만족률 높음"
-            - "전문가-일반인 거래 가격 격차"
-          transaction_cost_signals:
-            - "최종가격의 20% 이상이 중개 수수료"
-            - "거래 완료까지 5단계 이상"
-            - "플랫폼 전환율 연 5% 미만"
-            - "표준 계약서 부재로 개별 협상"
-          regulatory_barrier_signals:
-            - "면허/인가 취득 비용이 연매출 대비 과도"
-            - "규제 변경 주기 10년 이상"
-            - "특정 이해관계자의 반복적 로비"
-            - "OECD 대비 규제 강도 상위 20%"
-          geographic_temporal_signals:
-            - "지역간 가격차 20% 이상 지속"
-            - "피크/비피크 가격차 3배 이상"
-            - "국경 간 가격차가 관세+물류비 초과"
-            - "계절 변동 예측 가능하나 대응 전무"
-          innovation_gap_signals:
-            - "업계 평균 IT 투자 비중 2% 미만"
-            - "주요 프로세스 디지털화율 30% 미만"
-            - "신기술 도입 후 확산까지 5년 이상"
-            - "기존 업체의 혁신 기업 인수 후 폐쇄"
-        how_we_detect_changes:
-          technology_disruption_signals:
-            - "특정 기술의 비용이 임계점 통과 (90% 하락 등)"
-            - "대체 기술의 성능이 기존 기술 추월"
-            - "빅테크/스타트업의 해당 산업 진입 신호"
-            - "핵심 기술 특허의 만료나 공개"
-          demographic_shift_signals:
-            - "주요 소비층의 세대 교체 시점 (5년 내)"
-            - "특정 연령대 인구의 급격한 증감"
-            - "라이프스타일 조사에서 뚜렷한 변화 추세"
-            - "새로운 소비 행동의 주류화 조짐"
-          regulatory_change_signals:
-            - "정부 정책 로드맵에 명시된 변화"
-            - "국회/규제기관의 법안 발의 및 논의"
-            - "국제 협약이나 표준의 변경 예고"
-            - "여론과 정치권의 규제 개혁 압력"
-          macro_trend_signals:
-            - "글로벌 메가트렌드 보고서의 공통 키워드"
-            - "선진 시장에서 이미 일어난 변화"
-            - "VC 투자와 M&A의 집중 영역 변화"
-            - "대기업들의 사업 포트폴리오 재편 방향"
-          convergence_signals:
-            - "이종 산업 간 제휴/협력 증가"
-            - "산업 분류 체계의 모호화"
-            - "복합 비즈니스 모델의 등장"
-            - "규제 당국의 관할권 혼란"
-        integrated_analysis_examples:
-          case_1_inefficiency:
-            market: "한국 안경 시장"
-            findings:
-              structure: "온라인 판매 금지로 오프라인 매장 과점"
-              information: "도수/렌즈 가격 정보 비교 불가능"
-              transaction: "안과-안경원 분리로 이중 방문 필수"
-              regulatory: "의료기기법상 온라인 판매 금지"
-              geographic: "강남 vs 지방 가격차 40%"
-              innovation_gap: "AR 가상 피팅 기술 도입 차단"
-            result: "소비자는 OECD 평균 대비 2.5배 가격 부담"
-          
-          case_2_change_driven:
-            market: "한국 실버 케어 시장"
-            findings:
-              demographic: "2025년 초고령사회 진입, 노인 인구 20% 돌파"
-              technology: "AI 돌봄 로봇, IoT 건강 모니터링 기술 성숙"
-              regulatory: "비대면 진료 전면 허용, 요양보험 확대"
-              macro_trend: "1인 가구 증가로 가족 돌봄 한계"
-              convergence: "헬스케어+부동산+IT 융합 서비스 등장"
-            result: "향후 10년 간 연평균 15% 성장 예상되는 신시장"
-        
-        what_we_dont_do:
-          - "❌ 사업 아이템 제안"
-          - "❌ 투자 추천이나 의사결정 대행"
-          - "❌ 실행 계획 수립"
-          - "❌ 미래 예측이나 보장"
-        what_we_do:
-          - "✅ 시장의 비효율성 발견과 분석"
-          - "✅ 환경 변화가 만드는 기회 포착"
-          - "✅ 숨겨진 구조와 역학 드러내기"
-          - "✅ 변화의 신호와 패턴 식별"
-    initial_delivery:
-      quick_overview:
-        description: "선택된 분류 체계 기반 빠른 시장 개괄"
-        contents:
-          - "한국/글로벌 주요 수치"
-          - "주요 구성 요소별 비중"
-          - "성장률 및 트렌드"
-      depth_selection_prompt:
-        message: "어느 정도의 분석을 원하시나요? 예시를 보고 선택해주세요:"
-        
-        depth_options_with_examples:
-          level_1_quick_facts:
-            label: "1️⃣ 핵심 수치만 빠르게"
-            example_output: |
-              [시장명] 핵심 정리:
-              • 시장 규모: XX조원 (2024)
-              • 성장률: CAGR XX%
-              • 시장 집중도: Top 3가 XX% 점유
-              • 주요 변화: ① [구조적 변화1] ② [규제 변화2] ③ [기술 변화3]
-              • 특이사항: [시장의 독특한 특성이나 비정상적 패턴]
-            time: "즉시 제공"
-            
-          level_2_structured_insights:
-            label: "2️⃣ 시장 구조와 역학 관계"
-            example_output: |
-              1. 가치 흐름과 마진 구조
-                 [원재료] → [제조] → [유통] → [최종고객]
-                    5%       15%      45%      35%
-                 
-                 • 유통 마진이 비정상적으로 높은 이유
-                 • 제조사의 교섭력이 약한 구조적 원인
-                 • 최종 가격의 35%가 비효율적 중개 수수료
-                 
-              2. 시장 참여자간 힘의 균형
-                 ┌─────────┬────────┬─────────┬──────────┐
-                 │ 구분     │ 집중도  │ 교섭력   │ 주요 불만  │
-                 ├─────────┼────────┼─────────┼──────────┤
-                 │ 공급자   │ 분산    │ 약함     │ 단가 압박  │
-                 │ 유통업자 │ 과점    │ 매우강함 │ (없음)     │
-                 │ 구매자   │ 분산    │ 약함     │ 높은 가격  │
-                 └─────────┴────────┴─────────┴──────────┘
-                 
-              3. 발견된 시장 기회 (비효율성 + 변화)
-                 
-                 [비효율성 기반]
-                 • 지역간 가격차: 수도권 vs 지방 30% 차이
-                 • 정보 비대칭: 품질 대비 가격 왜곡 심각
-                 • 진입 장벽: 인위적 규제로 신규 진입 차단
-                 
-                 [환경 변화 기반]
-                 • 기술: AI/자동화로 비용 구조 50% 개선 가능
-                 • 규제: 2025년 XX 규제 완화 예정
-                 • 트렌드: MZ세대 진입으로 시장 규모 2배 예상
-            time: "30분 내"
-          
-          level_3_comprehensive_report:
-            label: "3️⃣ 시장의 모든 측면을 파헤치기"
-            example_output: |
-              📊 종합 분석 보고서 구성:
-              
-              Part 1. 시장 정의와 범위 (pp.1-5)
-              • 4가지 관점의 시장 정의와 각각의 규모
-              • 포함/제외 기준과 그 논리적 근거
-              • 인접 시장과의 경계 및 상호 영향
-              
-              Part 2. 구조적 특성 분석 (pp.6-15)
-              • 가치사슬 각 단계별 수익성과 리스크
-              • 시장 집중도 변화 추이 (10년)
-              • 진입/퇴출 장벽의 실체와 변화 가능성
-              • 규제 환경과 로비 구조
-              
-              Part 3. 시장 기회 심층 분석 (pp.16-25)
-              
-              [비효율성에서 오는 기회]
-              • 가격 형성 메커니즘의 왜곡 지점
-              • 정보 비대칭이 만드는 초과 이익 구조
-              • 지역별/채널별/고객군별 차익거래 기회
-              • 이해관계자별 불만과 니즈 갭 매트릭스
-              
-              [환경 변화가 만드는 기회]
-              • 기술 혁신이 가능케 하는 새로운 모델
-              • 규제 변화로 열리는 시장 공간
-              • 인구/라이프스타일 변화가 만드는 수요
-              • 글로벌 트렌드의 로컬 적용 가능성
-              
-              Part 4. 통합 시나리오와 전망 (pp.26-30)
-              • 비효율성 해소 + 환경 변화의 복합 시나리오
-              • 각 시나리오별 예상 시장 재편
-              • 기회의 지속 가능성과 타이밍
-              
-              📎 데이터 부록: 모든 분석의 원천 데이터
-            time: "2-3시간"
-          
-          level_4_custom_deep_dive:
-            label: "4️⃣ 특정 질문에 답하는 맞춤 분석"
-            example_cases: |
-              다양한 맞춤형 분석 사례:
-              
-              Case A: "우리 업계의 수수료가 왜 이렇게 높죠?"
-              → 수수료 구조의 역사적 형성 과정
-              → 타 국가/산업과의 비교 분석
-              → 수수료를 지탱하는 구조적 요인들
-              → 변화 가능성과 트리거 이벤트
-              
-              Case B: "지방에서는 왜 이 서비스가 안 될까?"
-              → 지역별 시장 특성 차이 분석
-              → 인프라/규제/문화적 장벽 매핑
-              → 숨겨진 지역 시장의 실제 규모
-              → 타 지역 성공/실패 사례 분석
-              
-              Case C: "대기업들이 왜 이 시장에 안 들어올까?"
-              → 대기업 관점의 시장 매력도 평가
-              → 진입을 막는 실질적 장벽들
-              → 대기업 진입 시 시장 변화 시뮬레이션
-              → 틈새 시장으로서의 지속 가능성
-              
-              Case D: "기존 방식이 왜 아직도 바뀌지 않죠?"
-              → 현상 유지를 원하는 이해관계자 분석
-              → 변화 비용 vs 유지 비용 계산
-              → 해외의 변화 사례와 촉발 요인
-              → 변화의 임계점과 징후
-              
-              💡 "어떤 의문이나 문제의식을 갖고 계신가요?"
-            time: "질문의 복잡도에 따라 협의"
-        
-        selection_guidance:
-          - "예시는 실제 산출물의 형태를 보여드리는 것입니다"
-          - "각 레벨은 누적됩니다 (더 깊은 레벨은 이전 레벨 포함)"
-          - "언제든지 확장하거나 특정 부분만 깊게 볼 수 있습니다"
-    iterative_deepening:
-      based_on_selected_depth:
-        level_1_execution:
-          - "즉시 제공: 핵심 수치와 인사이트"
-          - "다음 단계로의 확장 옵션 제시"
-        level_2_execution:
-          - "Albert: 시장 구조 상세 매핑"
-          - "Bill: 세그먼트별 규모 계산"
-          - "병렬 처리로 30분 내 완료"
-        level_3_execution:
-          - "전체 에이전트 팀 동원"
-          - "다각도 심층 분석 동시 진행"
-          - "Steve: 기회/위협 상세 분석"
-          - "Rachel: 데이터 교차 검증"
-        level_4_execution:
-          - "사용자 요구사항 명세 확인"
-          - "맞춤형 분석 프레임워크 설계"
-          - "필요시 외부 데이터 소스 활용"
-      continuous_refinement:
-        - "각 레벨 완료 후 추가 확장 여부 확인"
-        - "특정 영역 Deep Dive 옵션 상시 제공"
-        - "사용자 피드백 기반 방향 조정"
-    adaptive_activities:
-      if_clarity_high:  # 7-9
-        action: "바로 상세 분석 진행"
-      
-      if_clarity_medium:  # 4-6
-        action: "2-3개 시나리오 병렬 분석"
-      
-      if_clarity_low:  # 1-3
-        action: "더 넓은 범위에서 다시 시작"
-    
-    deliverables:
-      by_selected_depth:
-        level_1_deliverables:
-          - "핵심 지표 한 장 요약"
-          - "시장 구조 스냅샷"
-          - "주목할 만한 특이사항 5가지"
-          - "추가 탐색이 필요한 영역 제안"
-        level_2_deliverables:
-          - "시장 구조 분석서 (5-10페이지)"
-          - "가치 흐름과 마진 구조도"
-          - "시장 참여자 역학 관계도"
-          - "발견된 비효율성 리스트"
-          - "주요 데이터 시각화 자료"
-        level_3_deliverables:
-          - "종합 시장 분석 보고서 (20-30페이지)"
-          - "다각도 시장 정의와 범위 분석"
-          - "구조적 특성과 변화 동인"
-          - "비효율성 심층 분석 매트릭스"
-          - "시나리오별 시장 변화 예측"
-          - "모든 분석의 원천 데이터"
-        level_4_deliverables:
-          - "특정 질문에 대한 맞춤 답변서"
-          - "문제의 근본 원인 분석"
-          - "비교 분석 및 벤치마크"
-          - "변화 가능성과 조건 분석"
-      common_features:
-        - "선택한 depth에 관계없이 확장 가능"
-        - "모든 레벨에서 raw data 접근 가능"
-        - "인터랙티브 대시보드 제공"
-    example_interaction:
-      user_sees_after_overview: |
-        "[시장명] 개요를 확인하셨습니다.
-        
-        어느 정도의 분석을 원하시나요? 
-        실제 결과물 예시를 보고 선택해주세요:
-        
-        1️⃣ 핵심 수치만 빠르게 (즉시)
-            → 1페이지 요약: 시장규모, 성장률, Top기업, 핵심트렌드
-        
-        2️⃣ 실무에 바로 쓸 수 있는 분석 (30분)
-            → 5-10페이지: 시장구조도, 경쟁사 비교표, 기회분석
-        
-        3️⃣ 의사결정에 필요한 모든 것 (2-3시간)  
-            → 20-30페이지: 시나리오 분석, 투자 시뮬레이션, 전략 옵션
-        
-        4️⃣ 우리 상황에 딱 맞는 분석
-            → 예: '해외진출', '신사업', '투자유치' 등 목적별 맞춤
-        
-        💡 특정 부분만 깊게 보실 수도 있습니다"
-      
-      user_response_examples:
-        - "2번으로 주세요"
-        - "일단 1번 보고, 유통 부분만 3번 수준으로"
-        - "우리가 인수합병 검토 중인데 4번으로"
-      system_response_to_level_2:
-        message: "실무 분석을 시작합니다. 예상 시간: 30분"
-        status_updates:
-          - "10분 경과: 시장 구조 분석 완료"
-          - "20분 경과: 경쟁사 분석 진행 중"
-          - "30분 완료: 보고서 생성 중"
-    stage_outputs:
-      to_stage_4:
-        - "사용자가 선택한 분석 깊이와 범위"
-        - "발견된 주요 비효율성 (구체화/정량화)"
-        - "확인된 환경 변화 동인 (검증됨)"
-        - "초기 기회 포트폴리오"
-        - "추가 탐색이 필요한 영역"
-  stage_4_context_aware_suggestions:
-    name: "Context-Aware Suggestions - 맥락 기반 추가 탐색 제안"
-    duration: "0.5-1 day"
-    owner: "Stewart (autonomous)"
-    mode: "Proactive discovery guidance"
-    
-    stage_inputs:
-      from_stage_3:
-        - "사용자가 선택한 분석 깊이와 범위"
-        - "발견된 주요 비효율성 (구체화/정량화)"
-        - "확인된 환경 변화 동인 (검증됨)"
-        - "초기 기회 포트폴리오"
-        - "추가 탐색이 필요한 영역"
-    approach:
-      principle: "Stage 2에서 파악한 의도와 Stage 3에서 발견한 비효율성/변화 기반 다음 탐색 제안"
-      method: "Dual opportunity pattern matching and adjacent possibility detection"
-    
-    context_awareness_framework:
-      from_stage_2_user_intent:
-        "💰 투자/자산 관점": 
-          - "발견된 비효율성의 수익화 가능성 규모"
-          - "진입장벽 변화 시 자산가치 영향"
-          - "규제 변화 시나리오별 기회/위험"
-        "🚀 신규 사업 관점":
-          - "비효율성이 가장 큰 세부 시장 segments"
-          - "기존 업체들이 대응하지 못하는 구조적 이유"
-          - "최소 규모로 검증 가능한 시장 틈새"
-        "🔗 기존 사업 연계 관점":
-          - "현재 역량으로 해결 가능한 비효율성"
-          - "인접 시장의 유사한 비효율성 패턴"
-          - "가치사슬 내 포지션 변경 기회"
-        "📊 시장 조사 관점":
-          - "발견된 패턴의 타 시장 적용 가능성"
-          - "벤치마크 가능한 해외 사례"
-          - "비효율성의 지속 가능 기간 예측"
-      from_stage_3_inefficiencies_found:
-        if_market_structure_issues:
-          - "과점 구조를 깨뜨릴 수 있는 외부 충격 시나리오"
-          - "교섭력 재편이 일어날 수 있는 조건들"
-          - "수직계열화/분리의 영향 시뮬레이션"
-        if_information_asymmetry:
-          - "정보 투명성이 높아질 때 예상되는 시장 재편"
-          - "정보 격차로 이익 보는 구체적 주체들"
-          - "정보 중개자의 실제 부가가치 분석"
-        if_transaction_cost_problems:
-          - "거래 단계를 줄일 수 있는 기술적 방법"
-          - "중개 수수료가 정당화되는/되지 않는 부분"
-          - "전환 비용을 낮출 수 있는 메커니즘"
-        if_regulatory_barriers:
-          - "규제 변화의 징후와 이해관계자 동향"
-          - "우회 가능한 합법적 대안 구조"
-          - "타 국가의 규제 완화 사례와 결과"
-        if_geographic_temporal_gaps:
-          - "차익거래를 막는 실질적 장벽들"
-          - "지역/시간 격차가 좁혀지지 않는 이유"
-          - "디지털 기술로 해결 가능한 부분"
-        if_innovation_adoption_gaps:
-          - "혁신 저항의 실제 비용 구조"
-          - "early adopter와 laggard의 특성 차이"
-          - "기술 전환의 tipping point 조건"
-    proactive_discovery_suggestions:
-      format: "구체적 탐색 질문 + 예상 발견사항"
-      
-      example_suggestions:
-        - question: "이 시장의 수수료 구조가 10년간 변하지 않은 이유는?"
-          expected_findings: "수수료 인하 시 손실 주체, 기득권 유지 메커니즘"
-          
-        - question: "신규 진입자가 3년 내 모두 철수한 진짜 이유는?"
-          expected_findings: "공식 진입장벽 외 숨겨진 장벽, 필수 자원 접근 차단"
-          
-        - question: "온라인 전환율이 5%에 머무는 구조적 원인은?"
-          expected_findings: "오프라인 채널의 정보/서비스 독점, 온라인 불신 요인"
-    
-    stewart_autonomous_intervention_types:
-      type_1_pattern_alert:
-        trigger: "특정 비효율성 수치가 임계값 초과"
-        example: |
-          🚨 패턴 발견: 중개 수수료 40% 초과
-          
-          이는 일반적인 유통 마진(15-25%)의 2배입니다.
-          동일한 패턴을 보이는 다른 시장:
-          - [시장A]: 규제로 인한 독점적 유통 구조
-          - [시장B]: 정보 비대칭을 활용한 수수료
-          - [시장C]: 높은 진입장벽으로 인한 과점
-      type_2_cross_market_insight:
-        trigger: "유사한 구조의 타 시장에서 변화 감지"
-        example: |
-          💡 인접 시장 변화 감지
-          
-          분석 중인 시장과 유사한 구조를 가진 [인접시장]에서
-          최근 규제 완화로 중개 수수료가 40% → 15%로 하락했습니다.
-          
-          변화 요인:
-          - 온라인 플랫폼 진입 허용
-          - 가격 공시 의무화
-          - 직거래 장벽 제거
-      type_3_deeper_question:
-        trigger: "표면적 분석으로는 설명되지 않는 현상"
-        example: |
-          🔍 더 깊은 탐색이 필요한 지점
-          
-          "시장 점유율 1위가 수익률 최하위인 이유"
-          
-          가능한 원인들:
-          - 시장 점유를 위한 약탈적 가격 정책?
-          - 숨겨진 수익원이 존재?
-          - 회계적 수익 이전?
-          검증 방법: [구체적 데이터 확인 방법]
-      
-    adaptive_timing:
-      continuous_monitoring:
-        - "전체 분석 과정 중 상시 모니터링"
-        - "특정 수치/패턴 발견 시 즉시 개입"
-        - "사용자 탐색 방향에 따른 실시간 조정"
-      intervention_criteria:
-        must_intervene:
-          - "비효율성 지표가 업계 평균의 2배 초과"
-          - "시장 구조상 설명되지 않는 이상 현상"
-          - "인접 시장에서 급격한 변화 발생"
-        optional_suggest:
-          - "더 효율적인 분석 경로 존재"
-          - "유사 패턴의 과거 사례 발견"
-          - "놓치기 쉬운 연관 정보 존재"
-    deliverables:
-      - "다음 탐색을 위한 핵심 질문 리스트"
-      - "각 질문별 예상 발견사항과 검증 방법"
-      - "인접 시장 비효율성 패턴 매칭 결과"
-      - "시간 경과에 따른 변화 모니터링 지표"
-      - "Stewart의 자율적 인사이트 카드 (수시)"
-    stage_outputs:
-      to_stage_5:
-        - "통합된 비효율성 지도"
-        - "변화 동인의 연결 관계"
-        - "인접 기회 탐색 우선순위"
-        - "시각화가 필요한 핵심 패턴들"
-        - "명확도 점수: 80% → 90%+"
-  stage_5_visual_clarification_synthesis:
-    name: "Visual Clarification & Synthesis - 시각적 명확화와 종합"
-    duration: "1-2 days"
-    owner: "Owner + All agents"
-    mode: "Interactive visual synthesis"
-    
-    stage_inputs:
-      from_stage_4:
-        - "통합된 비효율성 지도"
-        - "변화 동인의 연결 관계"
-        - "인접 기회 탐색 우선순위"
-        - "시각화가 필요한 핵심 패턴들"
-        - "명확도 점수: 90%+"
-    approach:
-      principle: "인터랙티브 다이어그램을 통한 의사결정 촉진"
-      method: "Visual decision trees and interactive exploration"
-      dual_lens: "비효율성과 환경 변화 기회를 통합 시각화"
-    
-    visual_elements:
-      market_structure_diagram:
-        description: "시장 구조와 돈의 흐름 시각화"
-        format: "인터랙티브 플로우 차트"
-        elements:
-          - "가치사슬 각 단계별 마진"
-          - "시장 참여자 간 교섭력 관계"
-          - "병목 지점과 비효율성 표시"
-      inefficiency_heat_map:
-        description: "발견된 비효율성의 시각적 매핑"
-        dimensions:
-          - "비효율성 유형 (6대 카테고리)"
-          - "심각도 (비용/가격 왜곡 정도)"
-          - "영향 범위 (영향받는 시장 규모)"
-      pattern_connection_graph:
-        description: "비효율성 간 연결 관계"
-        shows:
-          - "한 비효율성이 다른 비효율성을 강화하는 구조"
-          - "근본 원인과 파생 효과의 관계"
-          - "해결 시 연쇄 효과 예상도"
-    synthesis_activities:
-      quantitative_summary:
-        owner: "Bill"
-        visual_output: "시장 규모 대시보드"
-      
-      strategic_assessment:
-        owner: "Steve"
-        visual_output: "기회 포트폴리오 매트릭스"
-      
-      structural_implications:
-        owner: "Albert"
-        visual_output: "가치사슬 흐름도"
-    
-    decision_framework:
-      interactive_evaluation:
-        - "시나리오별 시뮬레이션"
-        - "What-if 분석"
-        - "다기준 의사결정 도구"
-      final_outputs:
-        - "시각적 의사결정 자료"
-        - "인터랙티브 대시보드"
-        - "실행 로드맵"
-        - "성공 지표 대시보드"
-    stage_outputs:
-      to_stage_6:
-        - "종합된 비효율성 패턴 (시각화됨)"
-        - "확인된 환경 변화 패턴 (시각화됨)"
-        - "의사결정 프레임워크"
-        - "패턴화 가능한 인사이트"
-        - "명확도 점수: 95%+"
-  stage_6_pattern_library_building:
-    name: "Pattern Library Building - 시장 기회 패턴 라이브러리 구축"
-    duration: "Post-analysis continuous"
-    owner: "Stewart + All agents"
-    mode: "Knowledge accumulation"
-    
-    stage_inputs:
-      from_stage_5:
-        - "종합된 비효율성 패턴 (시각화됨)"
-        - "확인된 환경 변화 패턴 (시각화됨)"
-        - "의사결정 프레임워크"
-        - "패턴화 가능한 인사이트"
-        - "명확도 점수: 95%+"
-    approach:
-      principle: "발견된 비효율성과 변화 패턴을 체계적으로 축적하여 향후 분석 품질 향상"
-      method: "Pattern extraction, categorization, and cross-reference"
-    
-    pattern_extraction:
-      category_1_inefficiency_patterns:
-        what_to_capture:
-          - "비효율성 유형과 심각도"
-          - "발생 원인과 유지 메커니즘"
-          - "이해관계자별 인센티브 구조"
-          - "변화를 막는 장벽들"
-        how_to_document:
-          - "정량적 지표와 임계값"
-          - "정성적 특징과 신호"
-          - "연관된 다른 비효율성"
-          - "해외/타산업 유사 사례"
-      category_2_change_patterns:
-        what_to_capture:
-          - "변화의 유형과 속도"
-          - "변화를 촉발한 트리거"
-          - "early adopter의 특성"
-          - "변화 확산의 경로"
-        how_to_document:
-          - "변화의 선행 지표"
-          - "tipping point 시그널"
-          - "유사한 변화의 타산업 사례"
-          - "변화의 예상 타임라인"
-      pattern_categories:
-        inefficiency_patterns:
-          - "규제 기원 패턴"
-          - "시장 구조 기원 패턴"
-          - "기술 지체 기원 패턴"
-          - "정보 독점 기원 패턴"
-        change_patterns:
-          - "기술 주도 변화"
-          - "규제 변화 주도"
-          - "소비자 행동 주도"
-          - "글로벌 트렌드 주도"
-    cross_industry_learning:
-      pattern_matching:
-        - "동일 패턴이 나타나는 다른 산업 식별"
-        - "패턴 변형과 진화 추적"
-        - "해결 사례와 실패 사례 수집"
-      predictive_insights:
-        - "패턴 A가 있으면 B도 있을 확률 X%"
-        - "특정 조건 하에서 패턴 변화 예측"
-        - "신규 시장 분석 시 quick scan 가능"
-    knowledge_sharing:
-      internal_use:
-        - "신규 시장 분석 시 패턴 체크리스트"
-        - "Stewart의 자율적 제안 기반 데이터"
-        - "에이전트 간 협업 효율성 향상"
-      pattern_library_format:
-        inefficiency_pattern_template: |
-          Pattern ID: [자동생성-I]
-          시장: [분석한 시장명]
-          기회 유형: 비효율성 해소
-          비효율성 카테고리: [6대 카테고리 중]
-          심각도: [High/Medium/Low]
-          
-          핵심 특징:
-          - 정량적 지표: [구체적 수치]
-          - 발생 메커니즘: [원인-결과 체인]
-          - 유지 요인: [왜 지속되는가]
-          유사 패턴:
-          - [다른 시장의 유사 사례]
-          - [해결/실패 사례]
-          탐지 신호:
-          - [이 패턴을 빠르게 찾는 방법]
-        change_pattern_template: |
-          Pattern ID: [자동생성-C]
-          시장: [분석한 시장명]
-          기회 유형: 환경 변화 활용
-          변화 카테고리: [5대 변화 유형 중]
-          변화 속도: [급격/점진/주기적]
-          
-          핵심 특징:
-          - 변화 지표: [구체적 신호]
-          - 트리거 이벤트: [무엇이 변화를 촉발]
-          - 확산 경로: [어떻게 퍼져나가는가]
-          유사 패턴:
-          - [다른 시장의 선행 사례]
-          - [변화 수용/거부 사례]
-          모니터링 포인트:
-          - [변화 가속화 신호]
-          - [tipping point 지표]
-      automated_features:
-        - "패턴 ID 자동 생성 및 태깅"
-        - "유사 패턴 자동 매칭"
-        - "시장 간 교차 참조"
-        - "글로벌 knowledge base 업데이트"
-    deliverables:
-      - "시장 기회 패턴 라이브러리 (비효율성 + 변화)"
-      - "패턴 간 연결 관계도"
-      - "향후 분석 효율화 가이드"
-      - "Cross-industry 인사이트 리포트"
-      - "기회의 지속성과 타이밍 분석"
-# Workflow Flexibility Examples
-workflow_adaptation_examples:
-  example_1_high_clarity_start:
-    initial_clarity: 8
-    path: "Skip Discovery Sprint → Direct to Focused Analysis"
-    duration: "4-5 days total"
-    
-  example_2_pivot_midway:
-    initial_clarity: 5
-    discovery: "완전히 다른 기회 발견"
-    path: "Sprint → Pivot → New Sprint → Focused Analysis"
-    duration: "6-7 days total"
-    
-  example_3_ultra_low_clarity:
-    initial_clarity: 2
-    path: "Extended Discovery (3 days) → Gradual Focusing"
-    duration: "8-10 days total"
-    
-  example_4_quick_validation:
-    initial_clarity: 7
-    constraint: "시간 제약"
-    path: "Mini-sprint (0.5 day) → Targeted Validation"
-    duration: "2-3 days total"
-
-success_metrics:
-  efficiency_gains:
-    - metric: "Time to first insight"
-      v4_baseline: "2-3 days"
-      v5_target: "0.5-1 day"
-    
-    - metric: "Pivot response time"
-      v4_baseline: "2-3 days"
-      v5_target: "2-4 hours"
-    
-    - metric: "Data loss incidents"
-      v4_baseline: "Occasional"
-      v5_target: "Zero"
-  
-  quality_improvements:
-    - metric: "Goal-output alignment"
-      v4_baseline: "70-80%"
-      v5_target: "90-95%"
-    
-    - metric: "Actionable insights ratio"
-      v4_baseline: "60%"
-      v5_target: "85%"
-    
-    - metric: "Stakeholder satisfaction"
-      v4_baseline: "Good"
-      v5_target: "Excellent"
-  
-  adaptability_metrics:
-    - metric: "Low clarity project success"
-      v4_baseline: "Challenging"
-      v5_target: "80%+ success rate"
-    
-    - metric: "Major pivot handling"
-      v4_baseline: "Disruptive"
-      v5_target: "Smooth transition"
-    
-    - metric: "Knowledge reuse rate"
-      v4_baseline: "40%"
-      v5_target: "70%"
-
-enhanced_principles:
-  - principle: "Adaptive Intelligence"
-    description: "불확실성에서 시작해 발견을 통해 성장하는 지능"
-    v5_implementation:
-      - "20-30% 명확도로도 시작"
-      - "Discovery Sprint 기본 채택"
-      - "실시간 피벗 장려"
-      - "목표 진화 추적"
-  - principle: "Autonomous Guidance"
-    description: "시스템이 스스로 판단하고 개입하는 자율성"
-    v5_implementation:
-      - "Stewart의 Guardian Mode"
-      - "자동 체크포인트"
-      - "능동적 제안"
-      - "실시간 모니터링"
-  - principle: "Progressive Protection"
-    description: "데이터를 단계적으로 보호하고 복구 보장"
-    v5_implementation:
-      - "Prevention → Detection → Recovery"
-      - "2시간마다 자동 백업"
-      - "5분 내 복구"
-      - "무결성 자동 검증"
-  - principle: "Universal Applicability"
-    description: "모든 산업, 규모, 지역, 사업 모델에 적용 가능한 프레임워크"
-  
-  - principle: "MECE-based Role Definition"
-    description: "각 에이전트의 역할은 상호배타적이며 전체를 완전히 포괄"
-  
-  - principle: "Scale-Agnostic Analysis"
-    description: "시장 규모에 관계없이 일관된 분석 방법론 적용"
-  
-  - principle: "Industry-Neutral Framework"
-    description: "특정 산업에 치우치지 않은 중립적 분석 구조"
-  
-  - principle: "Structured Collaboration"
-    description: "명확한 Input/Output 기반의 협업 구조"
-  
-  - principle: "Context-Aware Flexibility"
-    description: "핵심 방법론은 유지하되 상황별 유연한 적용"
-
-adaptive_quality_gates:
-  description: "유연한 품질 검증 체크포인트"
-  
-  principle: "Quality over Speed, but Adaptively"
-  
-  gate_flexibility:
-    - "명확도에 따라 게이트 깊이 조정"
-    - "발견 가치가 크면 일부 스킵 가능"
-    - "Stewart가 자동으로 품질 모니터링"
-  continuous_quality:
-    - "Stage 종료 시점이 아닌 지속적 검증"
-    - "문제 발견 즉시 해결"
-    - "품질과 속도의 동적 균형"
-adaptive_output_format:
-  description: "상황에 맞춰 조정되는 결과물 형식"
-  
-  clarity_based_outputs:
-    high_clarity_7_plus:
-      - "전통적 구조화 보고서"
-      - "상세 정량 분석"
-      - "명확한 권고사항"
-    medium_clarity_4_6:
-      - "시나리오 기반 분석"
-      - "범위형 추정치"
-      - "조건부 권고"
-    low_clarity_1_3:
-      - "탐색 결과 요약"
-      - "발견된 기회 목록"
-      - "다음 탐색 방향"
-  adaptive_dashboards:
-    - "실시간 업데이트"
-    - "인터랙티브 시나리오"
-    - "What-if 분석"
-    - "진화 추적 뷰"
-# SECTION 9: IMPLEMENTATION GUIDE
+# SECTION 8: IMPLEMENTATION GUIDE
 # ========================================
 implementation_guide:
   for_new_projects:
@@ -5330,8 +4229,26 @@ implementation_guide:
     - "Team comfort with ambiguity"
     - "Trust in the process"
     - "Active use of Stewart's guidance"
+  
+  adaptive_workflow_examples:
+    description: "Adaptive workflow의 구체적 실행 예시는 별도 파일 참조"
+    reference: "adaptive_workflow_examples.yaml"
+    key_examples:
+      - "Progressive narrowing으로 시작하기"
+      - "MECE intent framework로 사용자 의도 파악"
+      - "Depth selection으로 분석 깊이 조정"
+      - "Market opportunity examples 참고"
+  
+  workflow_execution:
+    see_section_2: "Adaptive Intelligence System의 Workflow 섹션 참조"
+    key_stages:
+      - "Initialization: 명확도 평가"
+      - "Discovery Sprint: 병렬 탐색"
+      - "Progressive Analysis: 점진적 심화"
+      - "Convergence: 통합과 결정"
+      - "Iteration: 지속적 개선"
 # ========================================
-# SECTION 10: CONCLUSION
+# SECTION 9: CONCLUSION
 # ========================================
 conclusion:
   v5_philosophy: |
@@ -5352,7 +4269,7 @@ conclusion:
     단일 워크플로우로 모든 상황에 대응합니다.
 
 # ========================================
-# SECTION 11: COMPATIBILITY
+# SECTION 10: COMPATIBILITY
 # ========================================
 compatibility:
   version: "5.2.2"

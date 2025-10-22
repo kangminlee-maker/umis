@@ -12,6 +12,11 @@
   - 중복 제거 및 누락 요소 보완
   - 정적(Step 2)/동적(Step 3) 요소 명확히 분리
 
+- **Adaptive Intelligence System 통합**
+  - Section 2를 새로운 통합 Adaptive Intelligence System으로 재구성
+  - What, Why, How, When, Where의 완전한 구조화
+  - 기존 Section 8 (Adaptive Workflow)를 통합하여 중복 제거
+
 ### 구조적 개선
 - **Step 1: Purpose Alignment**
   - universal_purposes를 창업자/기업/투자자 관점으로 재구성
@@ -44,11 +49,27 @@
   - switching_dynamics로 명칭 통일
   - brand_dynamics, resource_dynamics, process_dynamics 추가
 
+### Agent & Owner 구조 표준화
+- **Agent 구조 통일**
+  - 4-섹션 구조로 표준화: IDENTITY, CAPABILITIES, WORK DOMAIN, BOUNDARIES & INTERFACES
+  - Section 1 개념 완전 커버리지를 위한 역량 확장
+  - Extended frameworks에 새로운 차원 대응 능력 추가
+
+- **Owner 구조 개선**
+  - Agent 구조와 일관성 유지하면서 Owner 특성 반영
+  - Adaptive goal management와 strategic decision making 강화
+  - Section 1의 모든 개념에 대한 의사결정 프레임워크 추가
+
+### 파일 구조 개선
+- 기존 Section 8 (Adaptive Workflow) 삭제
+- 섹션 번호 재정렬 (총 10개 섹션)
+- adaptive_workflow_examples.yaml로 실행 예시 분리
+
 ### 기타 개선
 - 파일 상단 Core Structure 설명을 README.md로 이동
 - 각 Step별 question, integrated_approach, purpose 명시
 - 정보 손실 없이 구조 효율화
-- 파일 크기: 176KB → 188KB (약 6.8% 증가)
+- 파일 크기: 176KB → 172KB (약 2.3% 감소, Section 통합 효과)
 
 ---
 

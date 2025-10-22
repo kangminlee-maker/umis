@@ -1,0 +1,190 @@
+# Adaptive Workflow Examples
+# Section 8에서 추출한 구체적 예시와 템플릿
+# UMIS v5.4에서 보존
+
+adaptive_workflow_examples:
+  description: "Adaptive Workflow의 구체적 실행 예시"
+  
+  progressive_narrowing_examples:
+    initial_probe_example:
+      opening: "시장을 어떤 관점에서 보시면 도움이 될까요?"
+      
+      fact_based_options:
+        - "💰 돈의 흐름으로 보기 (누가 누구에게 얼마를 지불하는가)"
+        - "🏢 시장 참여자로 보기 (어떤 기업/조직들이 있는가)"
+        - "📍 실제 거래 패턴으로 보기 (어떤 거래가 얼마나 일어나는가)"
+        - "🔍 특정 관심사가 있다면 말씀해 주세요"
+    
+    classification_examples:
+      if_money_flow_selected:
+        top_down_options:
+          - "거래 주체별: 누가 돈을 내는가"
+          - "거래 대상별: 무엇에 돈을 내는가"  
+          - "거래 규모별: 얼마씩 거래되는가"
+          - "거래 빈도별: 얼마나 자주 거래되는가"
+        
+        bottom_up_options:
+          - "주요 플레이어 분석: 매출 상위 기업들 중심으로"
+          - "실거래 데이터 분석: 카드사/POS 데이터 기반"
+          - "이상 패턴 분석: 특이한 거래 패턴 중심으로"
+  
+  mece_intent_framework:
+    primary_intent_categories:
+      1_investment:
+        label: "💰 투자/자산 관점"
+        options:
+          - "기업 인수/지분 투자"
+          - "부동산/인프라 투자"
+          - "신기술/스타트업 투자"
+          - "금융상품/펀드 투자"
+      
+      2_business_creation:
+        label: "🚀 신규 사업 관점"
+        options:
+          - "제품/서비스 개발 및 출시"
+          - "플랫폼/마켓플레이스 구축"
+          - "B2B 솔루션 사업"
+          - "프랜차이즈/체인 사업"
+      
+      3_business_expansion:
+        label: "🔗 기존 사업 연계 관점"
+        options:
+          - "신규 시장/지역 진출"
+          - "제품/서비스 라인 확장"
+          - "파트너십/제휴 기회"
+          - "고객군 확대 전략"
+      
+      4_market_research:
+        label: "📊 시장 조사 관점"
+        options:
+          - "경쟁사 분석"
+          - "시장 진입 타당성 검토"
+          - "산업 트렌드 파악"
+          - "정책/규제 영향 분석"
+      
+      5_other:
+        label: "🔍 기타"
+        options:
+          - "학술/연구 목적"
+          - "정책 수립 참고"
+          - "개인적 관심"
+          - "위의 범주에 없는 목적"
+  
+  depth_selection_examples:
+    level_1_quick_facts:
+      label: "1️⃣ 핵심 수치만 빠르게"
+      example_output: |
+        [시장명] 핵심 정리:
+        • 시장 규모: XX조원 (2024)
+        • 성장률: CAGR XX%
+        • 시장 집중도: Top 3가 XX% 점유
+        • 주요 변화: ① [구조적 변화1] ② [규제 변화2] ③ [기술 변화3]
+        • 특이사항: [시장의 독특한 특성이나 비정상적 패턴]
+      time: "즉시 제공"
+    
+    level_2_structured_insights:
+      label: "2️⃣ 시장 구조와 역학 관계"
+      example_output: |
+        1. 가치 흐름과 마진 구조
+           [원재료] → [제조] → [유통] → [최종고객]
+              5%       15%      45%      35%
+           
+           • 유통 마진이 비정상적으로 높은 이유
+           • 제조사의 교섭력이 약한 구조적 원인
+           • 최종 가격의 35%가 비효율적 중개 수수료
+           
+        2. 시장 참여자간 힘의 균형
+           ┌─────────┬────────┬─────────┬──────────┐
+           │ 구분     │ 집중도  │ 교섭력   │ 주요 불만  │
+           ├─────────┼────────┼─────────┼──────────┤
+           │ 공급자   │ 분산    │ 약함     │ 단가 압박  │
+           │ 유통업자 │ 과점    │ 매우강함 │ (없음)     │
+           │ 구매자   │ 분산    │ 약함     │ 높은 가격  │
+           └─────────┴────────┴─────────┴──────────┘
+      time: "30분 내"
+    
+    level_3_comprehensive_report:
+      label: "3️⃣ 시장의 모든 측면을 파헤치기"
+      structure:
+        - "Part 1. 시장 정의와 범위 (pp.1-5)"
+        - "Part 2. 구조적 특성 분석 (pp.6-15)"
+        - "Part 3. 시장 기회 심층 분석 (pp.16-25)"
+        - "Part 4. 통합 시나리오와 전망 (pp.26-30)"
+        - "📎 데이터 부록: 모든 분석의 원천 데이터"
+      time: "2-3시간"
+    
+    level_4_custom_deep_dive:
+      label: "4️⃣ 특정 질문에 답하는 맞춤 분석"
+      example_cases:
+        case_a: 
+          question: "우리 업계의 수수료가 왜 이렇게 높죠?"
+          analysis_points:
+            - "수수료 구조의 역사적 형성 과정"
+            - "타 국가/산업과의 비교 분석"
+            - "수수료를 지탱하는 구조적 요인들"
+            - "변화 가능성과 트리거 이벤트"
+        
+        case_b:
+          question: "지방에서는 왜 이 서비스가 안 될까?"
+          analysis_points:
+            - "지역별 시장 특성 차이 분석"
+            - "인프라/규제/문화적 장벽 매핑"
+            - "숨겨진 지역 시장의 실제 규모"
+            - "타 지역 성공/실패 사례 분석"
+  
+  market_opportunity_examples:
+    inefficiency_case:
+      market: "한국 안경 시장"
+      findings:
+        structure: "온라인 판매 금지로 오프라인 매장 과점"
+        information: "도수/렌즈 가격 정보 비교 불가능"
+        transaction: "안과-안경원 분리로 이중 방문 필수"
+        regulatory: "의료기기법상 온라인 판매 금지"
+        geographic: "강남 vs 지방 가격차 40%"
+        innovation_gap: "AR 가상 피팅 기술 도입 차단"
+      result: "소비자는 OECD 평균 대비 2.5배 가격 부담"
+    
+    change_driven_case:
+      market: "한국 실버 케어 시장"
+      findings:
+        demographic: "2025년 초고령사회 진입, 노인 인구 20% 돌파"
+        technology: "AI 돌봄 로봇, IoT 건강 모니터링 기술 성숙"
+        regulatory: "비대면 진료 전면 허용, 요양보험 확대"
+        macro_trend: "1인 가구 증가로 가족 돌봄 한계"
+        convergence: "헬스케어+부동산+IT 융합 서비스 등장"
+      result: "향후 10년 간 연평균 15% 성장 예상되는 신시장"
+  
+  collaboration_patterns:
+    albert_to_steve_flow:
+      stage_specific_applications:
+        stage_2: "Albert가 MECE 분류 → Steve가 각 카테고리의 기회 해석"
+        stage_3: "Albert가 구조 분석 → Steve가 비효율성의 의미 해석"
+        stage_4: "Albert의 패턴 → Steve의 인접 기회 발굴"
+      
+      benefits:
+        - "관찰과 해석의 명확한 분리"
+        - "팩트 기반 기회 발굴"
+        - "주관적 해석의 객관적 검증"
+  
+  stage_deliverables:
+    stage_1_outputs:
+      - "초기 프로젝트 브리프 (1페이지)"
+      - "사용자가 선택한 시장 분류 체계"
+      - "Fact-finding sprint 계획"
+      - ".project_metadata.yaml (초기 버전)"
+      - "초기 관찰된 비효율성 신호 리스트"
+      - "초기 감지된 환경 변화 신호 리스트"
+    
+    stage_2_outputs:
+      - "확정된 사용자 의도와 분석 방향"
+      - "심화된 비효율성 패턴 리스트"
+      - "구체화된 변화 신호 리스트"
+      - "명확도 점수: 50% → 70-80%"
+      - "Steve의 기회 해석 초안"
+    
+    stage_3_outputs:
+      - "선택된 depth 레벨별 분석 결과"
+      - "비효율성 기반 기회 목록 (우선순위화)"
+      - "환경 변화 기반 기회 목록 (타이밍 포함)"
+      - "통합 기회 매트릭스"
+      - "명확도 점수: 80% → 90-95%"
