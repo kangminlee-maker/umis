@@ -107,8 +107,8 @@
 - UMIS 에이전트와의 연결 유지
 
 ### 파일 크기
-- 176KB → 154KB (약 12.5% 감소)
-- 4366줄 → 3772줄 (약 13.6% 감소)
+- 176KB → 162KB (약 8.0% 감소)
+- 4366줄 → 3959줄 (약 9.3% 감소)
 
 ### 추가 보강 (2024-10-22 Hotfix)
 - **Adaptive Safeguards 추가**: 피드백 루프 부작용 방지를 위한 최소한의 안전장치
@@ -122,6 +122,13 @@
   - Albert와 Bill의 실시간 동기화 프로토콜
   - Steve의 입력 전제조건: 구조-정량 통합 데이터 필수
   - 예상 효과: 기회 현실성 향상, 재작업 빈도 감소 60% → 15%
+
+- **의사결정 검증 체계 강화**: Owner의 균형잡힌 의사결정 지원
+  - Albert → Owner 직접 채널 추가: Market Reality Check Report
+  - Stewart의 논리 검증 역할 명시화: Decision Logic Validation
+  - Rachel의 신뢰도 평가 확대: Comprehensive Reliability Assessment
+  - 새로운 협업: "의사결정 전 검증 프로세스" (4단계 순차 진행)
+  - 예상 효과: 현실성 +40%, 논리 오류 -60%, 의사결정 신뢰도 +50%
 
 ---
 

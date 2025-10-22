@@ -560,7 +560,7 @@ adaptive_intelligence_system:
         output: "기회 영역 목록"
       
       focused:
-        duration: "1-2 days"
+    duration: "1-2 days"
         focus: "특정 영역 심화"
         output: "검증된 기회"
       
@@ -584,8 +584,8 @@ adaptive_intelligence_system:
           standard_analysis: "1-2일 표준 분석"
           deep_dive: "3-5일 심층 분석"
           comprehensive_study: "1-2주 종합 연구"
-      
-      parallel_exploration:
+    
+    parallel_exploration:
         description: "여러 가능성을 동시에 탐색"
         benefits:
           - "빠른 비교와 검증"
@@ -964,6 +964,38 @@ collaboration_triggers:
       participants: ["steve"]
       prerequisite: "구조+정량 통합 데이터 필수"
       output: "데이터 기반 기회 포트폴리오"
+    
+    - name: "의사결정 전 검증 프로세스"
+      trigger: "Owner의 최종 의사결정 요청"
+      sequence:
+        step_1:
+          participants: ["albert", "steve", "bill"]
+          action: "최종 산출물 제출"
+          deliverables:
+            - albert: "Market Reality Report"
+            - steve: "Opportunity Portfolio"
+            - bill: "Quantified Scenarios"
+        
+        step_2:
+          participants: ["rachel"]
+          action: "근거 신뢰도 평가"
+          duration: "2-4시간"
+          output: "Evidence Reliability Matrix"
+        
+        step_3:
+          participants: ["stewart"]
+          action: "논리적 건전성 검증"
+          duration: "2-4시간"
+          output: "Decision Readiness Assessment"
+        
+        step_4:
+          participants: ["owner", "all_agents"]
+          action: "최종 의사결정 회의"
+          inputs:
+            - "모든 에이전트 산출물"
+            - "Rachel의 신뢰도 평가"
+            - "Stewart의 논리 검증"
+          output: "검증된 의사결정"
 
   # 최소한의 적응형 안전장치
   adaptive_safeguards:
@@ -1441,6 +1473,39 @@ agents:
           - "거래 데이터 (계약 유형, 규모, 조건)"
           - "가치사슬 데이터 (단계별 마진, 비용구조)"
         purpose: "정확한 시장 구조 분석의 기반 데이터"
+      
+      to_owner:
+        trigger: "시장 구조 분석 완료 또는 중대한 현실 제약 발견"
+        format: "Market Reality Check Report"
+        deliverables:
+          structural_facts:
+            description: "변경 불가능한 시장의 구조적 현실"
+            contents:
+              - "실제 돈의 흐름: 누가 → 누구에게 → 얼마를"
+              - "가치사슬 병목: 어디서 가치가 정체되는가"
+              - "진입장벽 실체: 무엇이 정말로 진입을 막는가"
+              - "기존 플레이어 위치: 실제 점유 상황"
+          
+          opportunity_reality_check:
+            description: "Steve의 기회 vs 구조적 현실"
+            format: |
+              기회: {Steve가 제시한 기회}
+              구조적 제약:
+              - 현재: {현재 구조가 허용하지 않는 것}
+              - 변경 필요: {바뀌어야 하는 구조}
+              - 변경 난이도: {High/Medium/Low}
+              - 예상 시간: {immediate/1년/3년/5년+}
+          
+          critical_constraints:
+            description: "간과하기 쉬운 현실적 제약"
+            examples:
+              - "규제로 인한 진입 불가"
+              - "독점적 공급계약 존재"
+              - "전환비용이 매출보다 큼"
+              - "필수 인프라 부재"
+        
+        frequency: "분석 완료 시 + 중요 발견 시"
+        purpose: "Owner가 현실과 기회의 균형잡힌 판단"
   - id: MExplorer
     # ===== 1. IDENTITY =====
     name: "Steve"
@@ -2102,7 +2167,7 @@ agents:
             - "한국 GDP 비중 1.8% = $900M"
             - "클라우드 ERP만 = $300M"
           definition_verification: "ERP에 SCM/CRM 포함? → 제외하고 순수 ERP만"
-          
+        
         method_2_bottom_up:
           segments:
             - "대기업(1000명+): 500개 × 5억 = 2,500억"
@@ -2526,6 +2591,57 @@ agents:
         provides:
           - "새로운 데이터 소스 발견"
           - "검증 과정의 개선점"
+      
+      comprehensive_reliability_assessment:
+        description: "모든 에이전트 산출물의 근거 신뢰도 종합 평가"
+        
+        evidence_evaluation_framework:
+          for_albert:
+            data_quality:
+              - source: "1차/2차/3차 자료"
+              - recency: "최신성 (월/년)"
+              - coverage: "전수/샘플 (%)"
+              - methodology: "수집 방법의 타당성"
+            reliability_score: "{1-10}"
+            confidence_interval: "±{%}"
+          
+          for_steve:
+            hypothesis_strength:
+              - evidence_base: "강한 근거/추론/추측"
+              - precedent_relevance: "유사 사례의 적합도"
+              - assumption_validity: "가정의 현실성"
+              - logical_leap: "논리적 비약 정도"
+            reliability_score: "{1-10}"
+            risk_level: "High/Medium/Low"
+          
+          for_bill:
+            calculation_robustness:
+              - data_verification: "검증됨/추정/가정"
+              - method_validity: "방법론의 적절성"
+              - convergence: "4가지 방법 일치도"
+              - sensitivity: "가정 변화 민감도"
+            reliability_score: "{1-10}"
+            error_range: "±{%}"
+        
+        reliability_matrix_to_owner:
+          format: "Evidence Reliability Matrix"
+          visualization: |
+            ┌─────────────┬──────────┬───────────┬──────────┐
+            │ Agent       │ 신뢰도    │ 주요 리스크 │ 보강 필요 │
+            ├─────────────┼──────────┼───────────┼──────────┤
+            │ Albert      │ 8/10     │ 샘플 편향  │ 지역 확대 │
+            │ Steve       │ 6/10     │ 추론 과다  │ 사례 검증 │
+            │ Bill        │ 7/10     │ 가정 민감  │ 범위 제시 │
+            │ Overall     │ 7/10     │ 중간 신뢰  │ 추가 검증 │
+            └─────────────┴──────────┴───────────┴──────────┘
+          
+          critical_warnings:
+            - condition: "Any score < 5"
+              alert: "⚠️ 낮은 신뢰도 경고"
+            - condition: "High assumption dependency"
+              alert: "⚠️ 가정 의존도 높음"
+            - condition: "Conflicting evidence"
+              alert: "⚠️ 상충되는 증거 존재"
   - id: MCurator
     # ===== 1. IDENTITY =====
     name: "Stewart"
@@ -2660,6 +2776,77 @@ agents:
           - "복구 스크립트 관리"
           - "복구 테스트 정기 실행"
           - "복구 이력 관리"
+      
+      decision_logic_validation:
+        description: "의사결정의 논리적 건전성과 절차적 완결성 검증"
+        
+        procedural_completeness:
+          checklist:
+            - "모든 에이전트의 분석 완료 여부"
+            - "상충되는 정보의 해결 여부"
+            - "필수 데이터의 확보 여부"
+            - "의사결정 기준의 명확성"
+          
+          missing_elements_alert:
+            format: |
+              ⚠️ 절차적 미완결 발견
+              
+              누락된 요소:
+              - {missing_1}: {영향도}
+              - {missing_2}: {영향도}
+              
+              권장사항: {proceed_or_wait}
+        
+        logical_soundness:
+          validation_points:
+            premise_validity:
+              - "각 전제가 검증된 사실인가?"
+              - "가정의 현실성은 어떠한가?"
+              - "전제 간 모순은 없는가?"
+            
+            inference_validity:
+              - "전제에서 결론으로의 논리적 연결"
+              - "숨겨진 가정은 없는가?"
+              - "논리적 비약은 없는가?"
+            
+            consistency_check:
+              - "과거 결정과의 일관성"
+              - "전략적 방향과의 정합성"
+              - "리스크 수용 수준의 일관성"
+          
+          logical_fallacy_detection:
+            common_patterns:
+              - "확증 편향: 유리한 데이터만 선택"
+              - "성급한 일반화: 제한된 샘플로 전체 판단"
+              - "순환논리: A→B→A"
+              - "허수아비 논증: 실제와 다른 가정"
+              - "잘못된 이분법: 중간 옵션 무시"
+        
+        decision_quality_report:
+          to_owner:
+            format: "Decision Readiness Assessment"
+            contents:
+              overall_score: "{1-10}"
+              
+              procedural_status:
+                complete_items: []
+                incomplete_items: []
+                critical_gaps: []
+              
+              logical_assessment:
+                strengths: []
+                weaknesses: []
+                fallacies_detected: []
+                
+              risk_factors:
+                - factor: "논리적 약점"
+                  severity: "High/Medium/Low"
+                  mitigation: "보완 방안"
+              
+              recommendation:
+                proceed: "Yes/No"
+                conditions: []
+                alternatives: []
     
     extended_frameworks:
     enhanced_collaboration:
@@ -3233,7 +3420,7 @@ creative_boost_module:
     # M1. 천재적 통찰 도출
     M1_genius_insight:
       formula: "GI = (O × C × P × S) / (A + B)"
-      variables:
+        variables:
         O: "관찰의 깊이 (1-10)"
         C: "연결의 독창성 (1-10)"
         P: "패턴 인식 능력 (1-10)"
