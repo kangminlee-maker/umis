@@ -183,11 +183,11 @@ umis-monolithic-guidelines/
   - 각 Step별 integrated_approach 명시
   - 정보 손실 없는 효율적 구조
 
-## 📌 UMIS Core Structure (v5.4)
+## 📌 UMIS Core Structure (v6.0)
 
-### 전체 구조 (9개 섹션):
+### UMIS v6.0 전체 구조 (9개 섹션):
 1. **SYSTEM DEFINITION** - 시스템 정의와 핵심 역량
-2. **ADAPTIVE INTELLIGENCE SYSTEM** - 적응형 지능 통합 시스템
+2. **ADAPTIVE INTELLIGENCE SYSTEM** - 점진적 지능 통합 시스템
 3. **PROACTIVE MONITORING** - 목표 정렬 모니터링
 4. **COLLABORATION PROTOCOLS** - 에이전트 간 협업 규칙
 5. **DATA INTEGRITY SYSTEM** - 데이터 라이프사이클 관리
