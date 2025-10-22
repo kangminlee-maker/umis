@@ -1,6 +1,6 @@
 # Adaptive Workflow Examples
 # Section 8에서 추출한 구체적 예시와 템플릿
-# UMIS v5.4에서 보존
+# UMIS v6.0에서 보존
 
 adaptive_workflow_examples:
   description: "Adaptive Workflow의 구체적 실행 예시"
