@@ -2075,7 +2075,6 @@ agents:
           - "TAM → SAM → SOM 전환 로직"
         format: "중간값 ± 범위 + 가정 명세서"
   - id: MValidator
-  - id: MValidator
     # ===== 1. IDENTITY =====
     name: "Rachel"
     role: "Data Validator"
