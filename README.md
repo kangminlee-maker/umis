@@ -33,6 +33,7 @@ umis-monolithic-guidelines/
 ├── umis_guidelines_v5.2.2.yaml # Market Definition 개선
 ├── umis_guidelines_v5.3.yaml   # 7 Powers 통합
 ├── umis_guidelines_v5.4.yaml   # Conceptual Clarity Edition (현재 버전)
+├── adaptive_workflow_examples.yaml # Adaptive workflow 실행 예시
 ├── CHANGELOG.md                # 상세 버전 히스토리
 ├── VERSION.txt                 # 현재 버전 정보
 ├── umis_v5.1.3_modular/        # 모듈러 v5.1.3
@@ -169,12 +170,33 @@ umis-monolithic-guidelines/
   - immediate_value: Lean Startup, JTBD, Value Proposition Canvas 통합
   - sustainable_value: 7 Powers 완전 포함
   - 경영학 이론들의 체계적 매핑
+- **Adaptive Intelligence System 통합 (Section 2)**
+  - 기존 Adaptive Framework와 Workflow를 통합
+  - Philosophy, Framework, Methodology, Workflow, Application 5개 하위섹션
+  - What, Why, How, When, Where 완전한 구조화
+- **Section 구조 개선**
+  - Section 3 (PROACTIVE MONITORING): 목표 정렬 중심으로 재구성
+  - 새로운 Section 4 (COLLABORATION PROTOCOLS) 생성
+  - 총 11개 섹션으로 재구성 (기존 10개에서 확장)
 - **실무 활용성 개선**
+  - adaptive_workflow_examples.yaml로 실행 예시 분리
   - 각 Step별 integrated_approach 명시
-  - Core/Contextual 구분 제거로 단순화
   - 정보 손실 없는 효율적 구조
 
 ## 📌 UMIS Core Structure (v5.4)
+
+### 전체 구조 (11개 섹션):
+1. **SYSTEM DEFINITION** - 시스템 정의와 핵심 역량
+2. **ADAPTIVE INTELLIGENCE SYSTEM** - 적응형 지능 통합 시스템
+3. **PROACTIVE MONITORING** - 목표 정렬 모니터링
+4. **COLLABORATION PROTOCOLS** - 에이전트 간 협업 규칙
+5. **DATA INTEGRITY SYSTEM** - 데이터 무결성 보장
+6. **AGENTS** - 5개 전문 에이전트 (Albert, Steve, Bill, Rachel, Stewart)
+7. **ROLES** - Owner 역할과 책임
+8. **CREATIVE BOOST MODULE** - 선택적 창의성 증강
+9. **IMPLEMENTATION GUIDE** - 실행 가이드
+10. **CONCLUSION** - 결론
+11. **COMPATIBILITY** - 호환성 정보
 
 ### Market Analysis Framework:
 ```yaml
@@ -193,7 +215,7 @@ Step 3: Market Dynamics Framework (HOW × WHEN × WHY)
 ## 💡 사용 권장사항
 
 - **최신 버전 선택**:
-  - 단일 파일: `umis_guidelines_v5.4.yaml` (188KB) - Conceptual Clarity Edition
+  - 단일 파일: `umis_guidelines_v5.4.yaml` (174KB) - Conceptual Clarity Edition
   - 모듈러 최신: `umis_v5.3_modular/` (총 144KB) - 7 Powers 통합, 선택적 로드
   - 모듈러 안정: `umis_v5.1.3_modular/` (총 96KB) - 검증된 모듈러 구조
 - **ChatGPT 프로젝트**: Custom Instructions와 함께 활용
@@ -223,7 +245,7 @@ v5.2: 174KB  ██████████████████████�
 v5.2.1: 164KB  ██████████████████████████ (Simplified)
 v5.2.2: 167KB  ███████████████████████████ (Enhanced Definition)
 v5.3: 176KB    █████████████████████████████ (Sustainable Advantage)
-v5.4: 188KB    ███████████████████████████████ (Conceptual Clarity)
+v5.4: 174KB    ████████████████████████████ (Conceptual Clarity)
 ```
 
 ## 🚀 빠른 시작
