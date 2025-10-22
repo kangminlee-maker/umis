@@ -507,29 +507,156 @@ adaptive_intelligence_system:
   
   # 2.2 Framework (WHAT) - Adaptive가 무엇인가
   framework:
-  low_clarity_start:
-    description: "20-30% 명확도로도 분석 시작 가능"
+  clarity_measurement:
+    description: "Discovery Sprint 준비도 평가 - 20-30% 명확도로도 시작 가능"
+    philosophy: "적게 알아도 시작할 수 있다"
     
-    clarity_levels:
-      - level: 1-3
-        name: "매우 모호함"
-        example: "뭔가 새로운 기회가 있을 것 같다"
-        approach: "광범위한 Discovery Sprint"
+    # 핵심 3요소 평가
+    dimensions:
+      intention_clarity:
+        weight: 40%
+        evaluation_method: "아래 질문들로 현재 수준 파악"
+        
+        diagnostic_questions:
+          - "무엇을 찾고/검증하고 싶은가?"
+          - "왜 지금 이것이 필요한가?"
+          - "성공은 어떤 모습인가?"
+        
+        maturity_levels:
+          exploratory:
+            score_range: "1-3"
+            indicators:
+              - "막연한 기회 탐색 욕구"
+              - "구체적 분야 미정"
+              - "성공 기준 모호"
+            typical_statements:
+              - "뭔가 새로운 기회가 있을 것 같아"
+              - "우리도 뭔가 해야 하는데..."
+            recommended_approach:
+              focus: "가능성 공간 탐색"
+              duration: "4-8시간 스프린트"
+              activities: "트렌드 스캔, 유사 사례 수집"
+              deliverable: "관심 영역 3-5개"
+          
+          focused:
+            score_range: "4-6"
+            indicators:
+              - "특정 분야/문제 인식"
+              - "대략적 방향성 존재"
+              - "초기 가설 보유"
+            typical_statements:
+              - "헬스케어 디지털 전환 기회를 찾고 싶다"
+              - "우리 기술로 B2B 시장을 공략하고 싶다"
+            recommended_approach:
+              focus: "시장 구조와 기회 매핑"
+              duration: "1-2일 스프린트"
+              activities: "가치사슬 분석, 고객 문제 탐색"
+              deliverable: "검증 가능한 기회 가설 3개"
+          
+          specific:
+            score_range: "7-9"
+            indicators:
+              - "명확한 시장/고객 정의"
+              - "구체적 가설 존재"
+              - "검증 포인트 명확"
+            typical_statements:
+              - "한국 시니어 케어 시장 진입을 검토한다"
+              - "중소기업 대상 SCM SaaS 가능성을 검증한다"
+            recommended_approach:
+              focus: "빠른 가설 검증"
+              duration: "2-3일 심층 분석"
+              activities: "경쟁 분석, 시장 규모 계산, 진입 전략"
+              deliverable: "Go/No-go 의사결정 자료"
       
-      - level: 4-6
-        name: "방향성 있음"
-        example: "디지털 전환 관련 기회를 찾고 싶다"
-        approach: "관련 영역 집중 탐색"
+      domain_knowledge:
+        weight: 35%
+        evaluation_method: "분야 이해도 자가 진단"
+        
+        diagnostic_questions:
+          - "주요 플레이어를 아는가?"
+          - "가치사슬을 그릴 수 있는가?"
+          - "업계 용어를 이해하는가?"
+        
+        knowledge_levels:
+          beginner:
+            score_range: "1-3"
+            characteristics: "용어도 생소, 기본 구조 모름"
+            support_needed: "기초 교육 콘텐츠"
+            sprint_adjustment: "+50% 시간 for 학습"
+          
+          intermediate:
+            score_range: "4-6"
+            characteristics: "주요 플레이어는 알지만 깊이 부족"
+            support_needed: "심화 인사이트"
+            sprint_adjustment: "표준 시간"
+          
+          expert:
+            score_range: "7-9"
+            characteristics: "업계 내부자 수준의 이해"
+            support_needed: "도전적 관점"
+            sprint_adjustment: "-30% 시간 단축 가능"
       
-      - level: 7-9
-        name: "구체적 목표"
-        example: "한국 B2B SaaS 시장 진입 검토"
-        approach: "전통적 구조화 분석"
+      urgency_context:
+        weight: 25%
+        evaluation_method: "의사결정 시한과 목적"
+        
+        categories:
+          immediate:
+            timeline: "1-3개월"
+            sprint_type: "Tactical Sprint"
+            focus: "즉시 실행 가능한 인사이트"
+          
+          strategic:
+            timeline: "3-6개월"
+            sprint_type: "Balanced Sprint"
+            focus: "실행 가능성과 기회 균형"
+          
+          exploratory:
+            timeline: "6개월+"
+            sprint_type: "Creative Sprint"
+            focus: "다양한 가능성 탐색"
+    
+    # 통합 Sprint 설계
+    sprint_customization_matrix:
+      description: "의도 명확도 × 도메인 지식으로 Sprint 커스터마이징"
       
-      - level: 10
-        name: "완전히 명확"
-        note: "거의 없음 - 항상 불확실성 존재"
-  
+      approach_matrix:
+        low_intent_low_knowledge:
+          name: "Educational Discovery"
+          approach: "Learn & Explore"
+          key_activities:
+            - "산업 기초 학습"
+            - "트렌드와 사례 탐색"
+            - "가능성 영역 도출"
+          expected_outcome: "학습된 관심 영역"
+        
+        low_intent_high_knowledge:
+          name: "Opportunity Scanning"
+          approach: "Leverage Expertise"
+          key_activities:
+            - "블라인드 스팟 탐색"
+            - "인접 기회 발굴"
+            - "새로운 연결 시도"
+          expected_outcome: "전문성 기반 새 기회"
+        
+        high_intent_low_knowledge:
+          name: "Systematic Learning"
+          approach: "Structured Deep Dive"
+          key_activities:
+            - "목표 시장 집중 학습"
+            - "체계적 구조 분석"
+            - "전문가 인사이트 확보"
+          expected_outcome: "검증 가능한 진입 전략"
+        
+        high_intent_high_knowledge:
+          name: "Rapid Validation"
+          approach: "Fast Track Analysis"
+          key_activities:
+            - "핵심 가설 검증"
+            - "정량 분석 집중"
+            - "실행 계획 수립"
+          expected_outcome: "즉시 실행 가능한 계획"
+    
     
     progressive_intelligence:
       definition: "발견을 통해 목표와 방법이 함께 진화"
@@ -551,23 +678,79 @@ adaptive_intelligence_system:
         - "피벗 포인트 문서화"
   
   discovery_sprint:
-    description: "1-2일 집중 탐색으로 방향성 발견"
+    description: "명확도 수준에 맞춘 적응형 탐색 프로세스"
     
-    sprint_types:
-      exploratory:
-        duration: "4-8 hours"
-        focus: "가능성 공간 탐색"
-        output: "기회 영역 목록"
+    connection_to_clarity: "clarity_measurement 결과에 따라 Sprint 유형 결정"
+    
+    sprint_execution_guide:
+      clarity_1to3:
+        sprint_name: "Exploratory Discovery"
+        duration: "4-8시간"
+        objective: "가능성 공간 매핑"
+        
+        parallel_activities:
+          all_agents:
+            - Steve: "메가트렌드와 혁신 사례 스캔"
+            - Albert: "관련 산업 구조 개요 파악"
+            - Bill: "대략적 시장 규모 감 잡기"
+            - Rachel: "접근 가능한 데이터 소스 탐색"
+        
+        convergence:
+          method: "브레인스토밍 세션"
+          output: "관심 영역 3-5개 + 각 영역의 잠재력"
+        
+        next_step: "가장 유망한 1-2개 영역 선택 후 심화"
       
-      focused:
-    duration: "1-2 days"
-        focus: "특정 영역 심화"
-        output: "검증된 기회"
+      clarity_4to6:
+        sprint_name: "Focused Analysis"
+        duration: "1-2일"
+        objective: "시장 구조와 기회 정의"
+        
+        sequential_phases:
+          phase_1_structure: # 오전
+            lead: "Albert"
+            activities:
+              - "타겟 시장 가치사슬 매핑"
+              - "주요 플레이어와 경쟁 구조"
+              - "거래 흐름과 수익 모델"
+          
+          phase_2_opportunity: # 오후
+            lead: "Steve"
+            activities:
+              - "고객 문제와 미충족 니즈"
+              - "혁신 가능 영역 도출"
+              - "차별화 가능성 탐색"
+          
+          phase_3_validation: # 다음날
+            parallel:
+              - Bill: "시장 규모와 성장성 계산"
+              - Rachel: "핵심 데이터 검증"
+        
+        output: "검증 가능한 기회 가설 3개 + 우선순위"
       
-      validation:
-        duration: "2-4 hours"
-        focus: "가설 검증"
-        output: "다음 단계 결정"
+      clarity_7to9:
+        sprint_name: "Rapid Validation"
+        duration: "2-3일"
+        objective: "Go/No-go 의사결정"
+        
+        intensive_analysis:
+          day_1:
+            morning: "Albert-Bill 병렬 구조-정량 분석"
+            afternoon: "통합 리포트 작성"
+          
+          day_2:
+            morning: "Steve의 기회 구체화 (통합 데이터 기반)"
+            afternoon: "Rachel의 전체 데이터 신뢰도 평가"
+          
+          day_3:
+            morning: "Stewart의 논리 검증"
+            afternoon: "Owner 의사결정 세션"
+        
+        deliverables:
+          - "상세 시장 진입 전략"
+          - "정량화된 기회와 리스크"
+          - "실행 로드맵과 필요 자원"
+          - "명확한 Go/No-go 권고안"
   
   # 2.3 Methodology (HOW) - 어떻게 Adaptive를 구현하는가
   methodology:
