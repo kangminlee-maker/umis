@@ -5,6 +5,53 @@
 
 ---
 
+## v5.4 (2024-10-22) - Conceptual Clarity Edition
+### 주요 변경사항
+- **System Definition 전면 재구성**
+  - MECE 원칙에 따른 개념 구조 정리
+  - 중복 제거 및 누락 요소 보완
+  - 정적(Step 2)/동적(Step 3) 요소 명확히 분리
+
+### 구조적 개선
+- **Step 1: Purpose Alignment**
+  - universal_purposes를 창업자/기업/투자자 관점으로 재구성
+  - 7개 → 12개로 확장 (정부 관점 제거, 실무 중심)
+  
+- **Step 2: Market Boundary Definition**  
+  - Core/Contextual 구분 제거
+  - 13개 통합 차원으로 재구성
+  - 모든 차원에 정적 구조 속성 부여
+  - integrated_approach: "What × Where × Who" 명시
+  
+- **Step 3: Market Dynamics Framework**
+  - 3-Part 구조로 전면 개편
+  - Part A: 경계의 진화 패턴 (13개 차원별)
+  - Part B: 시장 작동 메커니즘 (value/force/lifecycle)
+  - Part C: 통합적 시장 역학 (상호작용/패턴/신호)
+  - integrated_approach: "How × When × Why" 명시
+
+### 이론적 강화
+- **immediate_value 대폭 확장** (6개 영역)
+  - problem_solution_fit
+  - value_proposition_design
+  - customer_discovery
+  - time_to_value
+  - innovation_patterns
+  - lean_validation
+  
+- **sustainable_value 완전성 확보**
+  - 7 Powers 모두 포함 (기존 4개 → 7개)
+  - switching_dynamics로 명칭 통일
+  - brand_dynamics, resource_dynamics, process_dynamics 추가
+
+### 기타 개선
+- 파일 상단 Core Structure 설명을 README.md로 이동
+- 각 Step별 question, integrated_approach, purpose 명시
+- 정보 손실 없이 구조 효율화
+- 파일 크기: 176KB → 188KB (약 6.8% 증가)
+
+---
+
 ## v5.3 (2024-10-21) - Sustainable Advantage Edition
 ### 추가
 - **7 Powers Framework 통합**

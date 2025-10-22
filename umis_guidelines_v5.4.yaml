@@ -1,4 +1,4 @@
-# Universal Market Intelligence System v5.3 - Sustainable Advantage Edition
+# Universal Market Intelligence System v5.4 - Conceptual Clarity Edition
 # 범용 시장 정보 분석 시스템 - 적응형 지능 에디션 (창의적 부스트 포함)
 # 
 # 적용 범위: 모든 산업, 모든 규모, 모든 지역, 모든 비즈니스 모델
@@ -6,28 +6,12 @@
 # 
 # 버전 변경사항: CHANGELOG.md 참조
 # 
-# ================================
-# UMIS v5.3 - Quick Navigation
-# ================================
-# 1. System Definition             (Line 30)
-# 2. Adaptive Framework           (Line 142)
-# 3. Proactive Monitoring         (Line 283)
-# 4. Data Integrity System        (Line 455)
-# 5. Agents                       (Line 575)
-# 6. Roles                        (Line 1682)
-# 7. Creative Boost Module        (Line 1717)
-# 8. Adaptive Workflow v5         (Line 2823)
-# 9. Implementation Guide         (Line 4041)
-# 10. Conclusion                  (Line 4060)
-# 11. Compatibility               (Line 4081)
-# ================================
-
 # ========================================
 # SECTION 1: SYSTEM DEFINITION
 # ========================================
 system:
   name: "Universal Market Intelligence System - Sustainable Advantage Edition"
-  version: "5.3"
+  version: "5.4"
   purpose: "불확실한 상황에서도 적응하며 진화하는 범용 시장 분석 시스템"
   description: "낮은 명확도로 시작해 발견을 통해 성장하는 차세대 시장 정보 시스템 (선택적 창의성 증강 포함)"
   
@@ -35,19 +19,11 @@ system:
     - "Multi-Industry Coverage: 제조업부터 서비스업, 전통산업부터 신산업까지"
     - "Scale Flexibility: 글로벌 수조 달러부터 로컬 니치 시장까지"
     - "Universal Framework: B2B, B2C, B2G, C2C, Platform 등 모든 비즈니스 모델"
-    - "Adaptive Analysis: 시장 특성에 맞춘 유연한 분석 깊이"
-    - "Progressive Intelligence: 낮은 명확도에서 시작해 점진적 구체화"
+    - "Adaptive Analysis: 시장 특성에 맞춘 유연한 분석 깊이와 방법론"
+    - "Progressive Intelligence: 낮은 명확도에서 시작해 발견을 통한 목표 구체화"
     - "Autonomous Monitoring: 능동적 목표 정렬과 개입"
     - "Data Protection: 자동 무결성 보장과 복구"
-    - "Creative Boost (v5.2): 필요시 AI Brainstorming Framework 활용한 창의성 증강"
-  key_changes_v5:
-    - "적응형 프레임워크: 20-30% 명확도로도 시작 가능 (기존 80-90%)"
-    - "Discovery Sprint: 1-2일 빠른 탐색으로 방향 설정"
-    - "Stewart 역할 확장: Progress Guardian으로 능동적 개입"
-    - "실시간 피벗: 발견에 따른 유연한 방향 전환"
-    - "자동 데이터 보호: 2시간마다 체크포인트, 5분 내 복구"
-    - "목표 진화 추적: 명확도 점수(1-10) 관리"
-    - "Creative Boost 모듈 (v5.2): 필요시 10개 브레인스토밍 도구 활용"
+    - "Creative Boost: 필요시 10개 AI 브레인스토밍 도구 활용한 창의성 증강"
   adaptive_principles:
     - principle: "Start with Ambiguity"
       description: "불확실성을 받아들이고 시작"
@@ -81,161 +57,409 @@ system:
           - "주요 발견시마다 업데이트"
           - "목표 진화 이력 관리"
       universal_purposes:
+        # 창업자 관점 (Entrepreneur Perspective)
         - "시장 진입 타당성 (Entry Feasibility)"
-        - "투자 의사결정 (Investment Decision)"
+        - "제품-시장 적합성 검증 (Product-Market Fit Validation)"
+        - "초기 고객 발굴 (Early Customer Discovery)"
+        
+        # 기업 관점 (Corporate Perspective)
         - "경쟁 전략 수립 (Competitive Strategy)"
-        - "규제 정책 개발 (Regulatory Policy)"
+        - "시장 확장/축소 결정 (Market Expansion/Contraction)"
         - "M&A 기회 탐색 (M&A Opportunity)"
         - "사업 포트폴리오 최적화 (Portfolio Optimization)"
+        
+        # 투자자 관점 (Investor Perspective)
+        - "투자 의사결정 (Investment Decision)"
+        - "엑시트 전략 수립 (Exit Strategy)"
+        - "리스크-수익 평가 (Risk-Return Assessment)"
+        
+        # 공통 관점 (Common Perspective)
         - "탐색적 기회 발굴 (Exploratory Discovery)"
+        - "시장 트렌드 파악 (Market Trend Analysis)"
     step_2_market_boundary_definition:
       question: "분석 대상 시장의 경계는 어디까지인가?"
+      integrated_approach: "What × Where × Who의 교차점에서 시장 정의"
+      purpose: "현재 시점의 시장 구조와 경계를 명확히 정의"
+      
       adaptive_boundary:
         initial: "넓게 시작, 좁혀가기"
         discovery_process:
           - "관련 시장 모두 탐색"
           - "데이터와 기회에 따라 조정"
           - "경계의 유연한 재정의"
-      # Core Boundary Dimensions (필수 분석)
-      core_boundary_dimensions:
+      
+      # 13개 핵심 시장 경계 차원 (정적 구조)
+      market_boundary_dimensions:
+        # 공간적 차원 (WHERE)
         - geographic: "지리적 범위"
           levels: ["글로벌", "대륙", "국가", "지역", "도시"]
-          adaptive: "시작은 넓게, 기회에 따라 집중"
+          current_coverage: "현재 시장이 커버하는 지리적 범위"
         
+        - access_level: "접근성 수준"
+          types: ["정보 독점", "네트워크 장벽", "신뢰 자본", "암묵지"]
+          gradient: ["독점적", "제한적", "선택적", "개방적", "완전개방"]
+          current_barriers: "현재 존재하는 접근 장벽"
+        
+        # 대상 차원 (WHAT/WHO)
         - product_service: "제품/서비스 범위"
           levels: ["전체 산업", "카테고리", "세그먼트", "니치"]
-          adaptive: "인접 영역까지 탐색 후 수렴"
+          current_scope: "현재 시장에서 거래되는 제품/서비스 범위"
         
         - value_chain: "가치사슬 범위"
           levels: ["전체 사슬", "특정 단계", "핵심 활동"]
-          adaptive: "가치 이동 가능성 열어두기"
+          current_position: "현재 가치사슬 내 위치와 범위"
         
-        - customer_type: "고객 유형"
-          levels: ["모든 구매자", "특정 산업", "특정 규모", "특정 용도"]
-          adaptive: "예상치 못한 고객군 발견 수용"
+        - customer_segment: "고객 세그먼트"
+          dimensions: ["산업", "규모", "용도", "행동특성"]
+          current_segments: "현재 시장의 주요 고객군"
         
-        - technology_maturity: "기술 성숙도 경계"
-          spectrum: ["실험적", "초기채택", "주류화", "성숙", "쇠퇴"]
-          adaptive: "기술 전환점과 융합 가능성"
+        # 구조적 차원 (HOW)
+        - competition_structure: "경쟁 구조"
+          spectrum: ["독점", "과점", "경쟁", "완전경쟁"]
+          concentration: ["시장 집중도", "주요 플레이어", "점유율 분포"]
+          current_landscape: "현재 경쟁 구도"
         
-        - temporal_dynamics: "시간 특성"
-          aspects: ["거래 주기", "의사결정 속도", "가치 실현 시점"]
-          adaptive: "시간 압축과 확장 기회"
-      
-      # Contextual Boundary Dimensions (선택적 추가)
-      contextual_boundary_dimensions:
-        - transaction_model: "거래 구조"
+        - regulatory_framework: "규제 프레임워크"
+          aspects: ["진입장벽", "운영규제", "보호규제"]
+          current_regulations: "현재 적용되는 규제 체계"
+        
+        - transaction_model: "거래 모델"
           patterns: ["직접거래", "중개거래", "플랫폼", "구독", "혼합"]
-          when_relevant: "복잡한 거래 구조나 새로운 모델 등장 시"
+          current_models: "현재 주요 거래 방식"
         
-        - access_level: "접근성 수준"
-          gradient: ["독점적", "제한적", "선택적", "개방적", "완전개방"]
-          when_relevant: "접근성이 핵심 차별화 요소일 때"
+        # 운영 차원
+        - channel_ecosystem: "채널 생태계"
+          architecture: ["직판", "간접유통", "온라인", "O2O", "옴니채널"]
+          current_channels: "현재 활용되는 채널 구조"
         
-        - price_positioning: "가격대 포지셔닝"
+        - price_architecture: "가격 구조"
+          layers: ["가격대", "과금모델", "가치포착방식"]
           spectrum: ["초고가", "프리미엄", "중간", "가성비", "초저가"]
-          when_relevant: "가격이 시장 세분화의 핵심일 때"
+          current_pricing: "현재 가격 체계와 포지셔닝"
         
-        - channel_structure: "채널 구조"
-          types: ["직판", "간접유통", "온라인", "O2O", "옴니채널"]
-          when_relevant: "채널 혁신이 기회 창출의 핵심일 때"
+        # 환경적 차원 (WHEN/CONDITIONS)
+        - technology_maturity: "기술 성숙도"
+          spectrum: ["실험적", "초기채택", "주류화", "성숙", "쇠퇴"]
+          infrastructure: ["핵심 기술", "지원 인프라", "표준화 수준"]
+          current_state: "현재 기술 성숙도와 채택 수준"
+        
+        - temporal_characteristics: "시간 특성"
+          cycles: ["거래 주기", "의사결정 속도", "가치 실현 시점"]
+          current_tempo: "현재 시장의 시간적 리듬"
+        
+        # 감성적 차원 (WHY)
+        - affinity_profile: "친화성 프로필"
+          definition: "제품/서비스를 넘어선 감성적 연결과 커뮤니티 형성력"
+          spectrum: ["거래적", "선호", "충성", "옹호", "팬덤", "운동"]
+          components:
+            - emotional_connection: "감성적 유대"
+            - community_strength: "커뮤니티 결속력"
+            - network_effect: "네트워크 효과"
+          current_affinity: "현재 친화성 수준과 특성"
+      
+      # 분석 깊이 가이드
+      depth_guidance:
+        principle: "모든 차원을 검토하되, 시장 특성에 따라 깊이 조정"
+        
+        deep_dive_signals:
+          - "해당 차원이 주요 차별화 요소일 때"
+          - "혁신이나 변화가 일어나는 지점일 때"
+          - "경쟁 우위의 원천일 때"
+          - "의사결정의 핵심 변수일 때"
+        
+        light_touch_signals:
+          - "업계 표준이 확립되어 있을 때"
+          - "변화가 느리거나 예측 가능할 때"
+          - "차별화 요소가 아닐 때"
     
     step_3_market_dynamics_framework:
-      question: "이 시장은 어떻게 작동하는가?"
+      question: "이 시장은 어떻게 작동하고 변화하는가?"
+      integrated_approach: "How × When × Why의 동적 분석"
+      purpose: "시장의 작동 메커니즘과 진화 패턴을 통합적으로 분석"
+      
       discovery_driven_analysis:
         - "가설 없이 관찰부터 시작"
         - "패턴 발견 후 의미 부여"
         - "기존 프레임워크는 참고만"
-      # Core Dynamics (필수 분석)
-      core_dynamics:
-        - value_creation: "가치 창출과 방어 메커니즘"
-          immediate_value: 
-            types: ["제품 혁신", "비용 효율", "고객 경험", "시장 재정의"]
-            focus: "즉각적 가치 제공과 차별화"
+      
+      # Part A: 시장 경계의 진화 (How Boundaries Evolve)
+      boundary_evolution_patterns:
+        geographic_evolution:
+          evolution_pattern: "시작은 넓게, 기회에 따라 집중"
+          expansion_triggers: ["시장 포화", "규제 완화", "인프라 발달"]
+          contraction_triggers: ["지정학적 리스크", "현지화 요구", "규제 강화"]
+        
+        access_evolution:
+          evolution_pattern: "접근성 변화가 만드는 기회"
+          democratization: ["정보 개방", "기술 보편화", "진입장벽 완화"]
+          polarization: ["독점 강화", "네트워크 폐쇄", "승자독식"]
+        
+        product_service_evolution:
+          evolution_pattern: "인접 영역까지 탐색 후 수렴"
+          convergence: ["산업 간 융합", "번들링", "원스톱 솔루션"]
+          divergence: ["전문화", "언번들링", "니치 타겟팅"]
+        
+        value_chain_evolution:
+          evolution_pattern: "가치 이동 및 확장 가능성 열어두기"
+          vertical_movement: ["전방 통합", "후방 통합", "탈중개화"]
+          horizontal_movement: ["가치 이동", "새로운 가치 풀", "가치 재정의"]
+        
+        customer_evolution:
+          evolution_pattern: "예상치 못한 고객군 발견 수용"
+          emergence: ["새로운 니즈", "세대 교체", "행동 변화"]
+          migration: ["고객 이동", "다중 채널 활용", "충성도 변화"]
+        
+        competition_evolution:
+          evolution_pattern: "경쟁 구조의 급변 가능성"
+          structural_shifts: ["진입/퇴출", "통합", "파편화"]
+          ecosystem_formation: ["협력과 경쟁", "플랫폼화", "생태계 형성"]
+        
+        regulatory_evolution:
+          evolution_pattern: "규제 변화가 만드는 기회와 위협"
+          change_direction: ["규제 강화", "규제 완화", "새로운 규제"]
+          impact_areas: ["시장 구조 결정", "혁신 속도", "비용 구조"]
+        
+        transaction_evolution:
+          evolution_pattern: "새로운 거래 모델 출현 가능성"
+          model_innovation: ["구독 경제", "공유 경제", "토큰 경제"]
+          efficiency_gains: ["자동화", "직거래", "실시간 매칭"]
+        
+        channel_evolution:
+          evolution_pattern: "채널 융합과 혁신"
+          integration: ["O2O", "옴니채널", "메타버스"]
+          disruption: ["D2C", "소셜 커머스", "라이브 커머스"]
+        
+        price_evolution:
+          evolution_pattern: "가격 파괴와 프리미엄화 동시 추구"
+          polarization: ["가치 양극화", "중간 소멸", "다층 가격"]
+          innovation: ["동적 가격", "번들/언번들", "가치 기반 가격"]
+        
+        technology_evolution:
+          evolution_pattern: "기술 전환점과 융합 가능성"
+          disruption_impact: ["인프라 변화", "enabler 효과", "파괴적 혁신"]
+          adoption_curve: ["혁신자", "조기 채택자", "주류", "후발 주자"]
+        
+        temporal_evolution:
+          evolution_pattern: "시간 압축과 확장 기회"
+          acceleration_opportunities: ["주기 단축", "속도 격차", "시간 가치"]
+          time_arbitrage: ["선점 효과", "타이밍 차익", "주기 활용"]
+        
+        affinity_evolution:
+          evolution_pattern: "친화성이 시장에 미치는 영향력 확대"
+          amplification_effects:
+            - "프리미엄 가격 수용도 증가"
+            - "감성적 전환 비용 형성"
+            - "지수적 성장 가능성"
+            - "위기 상황 복원력 강화"
+          network_effects: ["바이럴 확산", "커뮤니티 성장", "팬덤 경제"]
+      
+      # Part B: 시장 작동 메커니즘 (How Markets Work)
+      market_operation_mechanisms:
+        value_mechanics:  # 가치가 어떻게 창출되고 방어되는가
           
-          sustainable_value:  # 7 Powers 개념을 UMIS 언어로 재해석
-            - scale_dynamics: 
+          immediate_value:  # 즉각적 가치 창출 (확장된 버전)
+            problem_solution_fit:  # 문제-해결책 적합성
+              customer_problems:
+                - functional_problems: "해결해야 할 기능적 문제"
+                - emotional_problems: "정서적 불편과 불안"
+                - social_problems: "사회적 지위와 관계"
+              solution_approaches:
+                - direct_solutions: "직접적 문제 해결"
+                - workarounds: "우회 해결책"
+                - prevention: "문제 예방"
+            
+            value_proposition_design:  # 가치 제안 설계
+              pain_relievers:
+                - severity: "고통의 강도 감소"
+                - frequency: "고통의 빈도 감소"
+                - duration: "고통의 지속시간 단축"
+              gain_creators:
+                - expected_gains: "기대 충족"
+                - desired_gains: "욕구 실현"
+                - unexpected_gains: "예상 못한 기쁨"
+              jobs_to_be_done:
+                - core_functional: "핵심 기능 수행"
+                - supporting: "지원 기능"
+                - emotional: "감정적 만족"
+                - social: "사회적 인정"
+            
+            customer_discovery:  # 고객 발견과 검증
+              early_adopters:
+                - profile: "혁신 수용자 특성"
+                - pain_intensity: "문제 심각도"
+                - willingness_to_pay: "지불 의향"
+              validation_methods:
+                - problem_interviews: "문제 인터뷰"
+                - solution_interviews: "해결책 인터뷰"
+                - mvp_testing: "MVP 테스트"
+                - concierge_mvp: "컨시어지 MVP"
+            
+            time_to_value:  # 가치 실현 속도
+              immediate_wins:
+                - onboarding_value: "첫 사용 가치"
+                - aha_moment: "핵심 가치 인식 순간"
+                - quick_roi: "빠른 투자 회수"
+              value_delivery_speed:
+                - setup_time: "설정 시간"
+                - learning_curve: "학습 곡선"
+                - result_visibility: "결과 가시성"
+            
+            innovation_patterns:  # 혁신 패턴
+              blue_ocean_moves:
+                - eliminate: "불필요한 요소 제거"
+                - reduce: "과도한 요소 축소"
+                - raise: "부족한 요소 강화"
+                - create: "새로운 요소 창조"
+              disruptive_potential:
+                - low_end_disruption: "저가 시장 진입"
+                - new_market_creation: "신시장 창출"
+                - business_model_innovation: "비즈니스 모델 혁신"
+            
+            lean_validation:  # 린 검증 프로세스
+              build_measure_learn:
+                - hypothesis: "핵심 가설"
+                - metrics: "검증 지표"
+                - learning: "학습과 피벗"
+              innovation_accounting:
+                - actionable_metrics: "행동 가능한 지표"
+                - vanity_metrics: "허영 지표 회피"
+                - cohort_analysis: "코호트 분석"
+          
+          sustainable_value:  # 7 Powers 완전 포함
+            - scale_dynamics:  # Scale Economies
                 concept: "규모 증가에 따른 단위당 가치 상승"
                 includes: ["규모의 경제", "범위의 경제", "밀도의 경제", "데이터의 경제"]
                 signals: ["높은 고정비용", "네트워크 밀도 효과", "공유 가능 자원"]
                 
-            - network_dynamics:
+            - network_dynamics:  # Network Effects
                 concept: "참여자 증가에 따른 전체 가치 상승"
                 includes: ["직접 네트워크", "간접 네트워크", "데이터 네트워크", "생태계 네트워크"]
                 signals: ["다면 플랫폼", "상호작용 증폭", "바이럴 성장"]
                 
-            - lock_in_dynamics:
+            - switching_dynamics:  # Switching Costs
                 concept: "이탈 시 손실로 인한 관계 지속"
                 includes: ["기능적 전환비용", "관계적 전환비용", "인지적 전환비용", "생태계 전환비용"]
                 signals: ["학습 곡선", "데이터 축적", "통합된 워크플로우", "커뮤니티 형성"]
                 
-            - uniqueness_dynamics:
-                concept: "복제 불가능한 차별화 요소"
-                includes: ["독점 자원", "독특한 프로세스", "브랜드 자산", "역포지셔닝", "복잡성 우위"]
-                signals: ["특허/라이선스", "축적된 노하우", "문화적 자산", "역발상 모델"]
+            - brand_dynamics:  # Branding
+                concept: "객관적 속성을 넘어선 주관적 가치"
+                includes: ["신뢰 자산", "감성적 연결", "지위 상징", "문화적 의미"]
+                signals: ["프리미엄 가격", "자발적 추천", "반복 구매", "브랜드 충성도"]
+                
+            - resource_dynamics:  # Cornered Resource
+                concept: "경쟁자가 접근할 수 없는 독점 자원"
+                includes: ["특허/라이선스", "독점 계약", "희소 자원", "최고 입지"]
+                signals: ["법적 보호", "독점적 공급계약", "물리적 희소성", "위치 독점"]
+                
+            - process_dynamics:  # Process Power
+                concept: "내재화되어 복제 불가능한 운영 우위"
+                includes: ["독특한 프로세스", "축적된 노하우", "조직 문화", "암묵지"]
+                signals: ["지속적 개선", "복잡한 조정", "깊은 통합", "장기간 최적화"]
+                
+            - counter_positioning:  # Counter-Positioning
+                concept: "기존 강자가 따라하면 손해보는 포지션"
+                includes: ["비즈니스 모델 충돌", "채널 갈등", "가격 구조 파괴", "핵심 고객 이탈"]
+                signals: ["기존 사업 잠식", "브랜드 정체성 충돌", "조직 문화 충돌", "전환 비용"]
           
           evaluation_questions:
             - "단기 가치와 장기 방어력의 균형은?"
             - "시간이 지날수록 강해지는 요소는?"
             - "경쟁자가 따라하기 어려운 이유는?"
             - "고객이 떠나기 어려운 이유는?"
+        
+        force_dynamics:  # 시장을 움직이는 힘들
+          competitive_forces:  # Porter's 5 Forces + α
+            traditional_forces:
+              - supplier_power: "공급자 교섭력"
+              - buyer_power: "구매자 교섭력"
+              - new_entrants: "신규진입 위협"
+              - substitutes: "대체재 위협"
+              - rivalry: "경쟁 강도"
+            extended_forces:
+              - platform_power: "플랫폼 지배력"
+              - ecosystem_leverage: "생태계 영향력"
+              - regulatory_influence: "규제 영향력"
+              - community_power: "커뮤니티 힘"
           
-          discovery: "새로운 가치 창출 방식과 지속 가능한 방어 메커니즘 탐색"
+          information_flows:  # 정보 비대칭과 흐름
+            transparency_levels:
+              - opaque: "불투명한 정보"
+              - translucent: "부분적 공개"
+              - transparent: "완전 공개"
+            velocity_patterns:
+              - viral: "바이럴 확산"
+              - gradual: "점진적 전파"
+              - gated: "제한적 공유"
+            asymmetry_opportunities:
+              - arbitrage: "정보 차익거래"
+              - education: "정보 교육 사업"
+              - curation: "정보 큐레이션"
           
-        - competitive_forces: "경쟁 역학"
-          elements: ["공급자 교섭력", "구매자 교섭력", "신규진입 위협", "대체재 위협", "경쟁 강도"]
-          adaptive: "전통적 5 forces 너머의 새로운 힘"
+          network_mechanisms:  # 네트워크 효과와 피드백 루프
+            positive_loops:
+              - user_growth: "사용자 증가 → 가치 증가 → 사용자 증가"
+              - data_accumulation: "데이터 축적 → 서비스 개선 → 사용자 증가"
+              - ecosystem_expansion: "파트너 증가 → 가치 증가 → 파트너 증가"
+            negative_loops:
+              - quality_dilution: "과도한 성장 → 품질 저하 → 이탈 증가"
+              - complexity_burden: "기능 증가 → 복잡도 증가 → 사용성 저하"
+        
+        lifecycle_patterns:  # 시장의 생명주기 패턴
+          evolution_stages:
+            - emergence: "출현기 - 문제 인식과 초기 솔루션"
+            - growth: "성장기 - 급속한 채택과 경쟁 진입"
+            - maturity: "성숙기 - 표준화와 효율성 경쟁"
+            - transformation: "전환기 - 혁신이나 쇠퇴"
           
-        - market_evolution: "시장 진화 단계"
-          stages: ["도입기", "성장기", "성숙기", "쇠퇴기", "전환기", "재탄생기"]
+          disruption_patterns:
+            - low_end: "저가 시장에서 시작"
+            - new_market: "비소비자를 타겟"
+            - big_bang: "즉각적 시장 재편"
           
-        - regulatory_impact: "규제 영향"
-          levels: ["고규제", "중규제", "저규제", "규제완화중", "규제강화중"]
-          
-        - technology_evolution: "기술 진화와 영향"
-          dimensions:
-            - maturity: "기술 성숙도와 채택 곡선"
-            - convergence: "기술 간 융합과 상호작용"
-            - disruption_potential: "기존 구조 파괴 가능성"
-          discovery: "예상치 못한 기술 활용과 조합"
-          
-        - information_asymmetry: "정보 격차와 흐름"
-          aspects:
-            - transparency: "정보 공개 수준"
-            - velocity: "정보 전파 속도"
-            - accessibility: "정보 접근 장벽"
-          discovery: "정보 격차가 만드는 시장 기회"
+          renewal_mechanisms:
+            - reinvention: "핵심 가치 재정의"
+            - adjacency: "인접 시장 확장"
+            - platform_shift: "플랫폼 비즈니스로 전환"
       
-      # Contextual Dynamics (선택적 추가)
-      contextual_dynamics:
-        - market_signals: "시장 건강도와 활력 신호"
-          observable_indicators:
-            - transaction_volume: "거래량과 빈도 변화"
-            - price_volatility: "가격 변동성과 안정성"
-            - participant_diversity: "참여자 다양성과 진입/퇴출"
-            - innovation_rate: "신제품/서비스 출시 빈도"
-          when_relevant: "시장의 전반적 건강도 평가가 중요할 때"
+      # Part C: 통합적 시장 역학 (Integrated Market Dynamics)
+      integrated_dynamics:
+        cross_dimensional_effects:  # 차원 간 상호작용
+          technology_price_nexus: "기술 성숙 → 가격 구조 변화"
+          regulation_competition_nexus: "규제 변화 → 경쟁 구조 재편"
+          affinity_channel_nexus: "친화성 증가 → 채널 혁신"
+          access_value_nexus: "접근성 개방 → 가치사슬 재구성"
+        
+        systemic_patterns:  # 시스템 전체의 패턴
+          reinforcing_loops:
+            - winner_take_all: "승자독식 강화 메커니즘"
+            - ecosystem_lock_in: "생태계 고착화"
+            - innovation_acceleration: "혁신 가속화"
           
-        - cultural_momentum: "문화적 모멘텀"
-          timeframes:
-            - micro_trends: "1-2년 유행과 버즈"
-            - meso_trends: "3-5년 행동 변화"
-            - macro_shifts: "10년+ 가치관 전환"
-          when_relevant: "문화적 요소가 시장 변화의 핵심일 때"
+          balancing_forces:
+            - regulatory_intervention: "규제 개입"
+            - competitive_response: "경쟁 대응"
+            - customer_pushback: "고객 저항"
           
-        - ecosystem_health: "생태계 건강도"
-          indicators:
-            - partner_network: "파트너십 밀도와 품질"
-            - value_distribution: "가치 배분의 공정성"
-            - innovation_ecosystem: "혁신 생태계 활성도"
-          when_relevant: "플랫폼이나 생태계 비즈니스일 때"
+          tipping_points:
+            - critical_mass: "임계 질량 도달"
+            - technology_maturity: "기술 성숙 임계점"
+            - regulatory_threshold: "규제 전환점"
+        
+        emergence_signals:  # 창발적 변화 신호
+          weak_signals:
+            - edge_innovations: "주변부 혁신"
+            - user_workarounds: "사용자 우회 행동"
+            - regulatory_discussions: "규제 논의 시작"
           
-        - sustainability_factors: "지속가능성 요소"
-          dimensions:
-            - environmental: "환경적 영향과 규제"
-            - social: "사회적 가치와 요구"
-            - governance: "거버넌스와 투명성"
-          when_relevant: "ESG가 경쟁력의 핵심 요소일 때"
+          pattern_breaks:
+            - business_model_shifts: "비즈니스 모델 전환"
+            - value_migration: "가치 이동"
+            - ecosystem_disruption: "생태계 파괴"
+          
+          new_combinations:
+            - technology_convergence: "기술 융합"
+            - industry_blending: "산업 경계 붕괴"
+            - stakeholder_reconfiguration: "이해관계자 재구성"
 
 # ========================================
 # SECTION 2: ADAPTIVE FRAMEWORK

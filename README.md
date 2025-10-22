@@ -31,7 +31,8 @@ umis-monolithic-guidelines/
 ├── umis_guidelines_v5.2.yaml   # Creative Boost 통합
 ├── umis_guidelines_v5.2.1.yaml # Classic 제거, 단순화
 ├── umis_guidelines_v5.2.2.yaml # Market Definition 개선
-├── umis_guidelines_v5.3.yaml   # 7 Powers 통합 (현재 버전)
+├── umis_guidelines_v5.3.yaml   # 7 Powers 통합
+├── umis_guidelines_v5.4.yaml   # Conceptual Clarity Edition (현재 버전)
 ├── CHANGELOG.md                # 상세 버전 히스토리
 ├── VERSION.txt                 # 현재 버전 정보
 ├── umis_v5.1.3_modular/        # 모듈러 v5.1.3
@@ -139,7 +140,7 @@ umis-monolithic-guidelines/
   - 상황별 선택적 차원 활용 가능
   - 시장 특성에 맞춤형 분석
 
-### v5.3 - Sustainable Advantage Edition (현재)
+### v5.3 - Sustainable Advantage Edition
 - **7 Powers Framework 통합**
   - value_creation을 immediate_value와 sustainable_value로 구분
   - 4가지 지속가능성 다이나믹스 정의 (scale/network/lock-in/uniqueness)
@@ -155,10 +156,44 @@ umis-monolithic-guidelines/
   - 단순 기회 발견을 넘어 지속 가능한 해자(moat) 구축
   - 시간이 지날수록 강해지는 사업 모델 설계
 
+### v5.4 - Conceptual Clarity Edition (현재)
+- **System Definition 전면 재구성**
+  - MECE 원칙에 따른 개념 구조 개선
+  - 중복 제거 및 누락 요소 보완
+  - 정적/동적 요소의 명확한 분리
+- **시장 분석 프레임워크 체계화**
+  - Step 1: Purpose Alignment - 창업자/기업/투자자 12개 관점
+  - Step 2: Market Boundary - 13개 차원의 정적 구조
+  - Step 3: Market Dynamics - 3-part 동적 분석
+- **이론적 기반 강화**
+  - immediate_value: Lean Startup, JTBD, Value Proposition Canvas 통합
+  - sustainable_value: 7 Powers 완전 포함
+  - 경영학 이론들의 체계적 매핑
+- **실무 활용성 개선**
+  - 각 Step별 integrated_approach 명시
+  - Core/Contextual 구분 제거로 단순화
+  - 정보 손실 없는 효율적 구조
+
+## 📌 UMIS Core Structure (v5.4)
+
+### Market Analysis Framework:
+```yaml
+Step 1: Purpose Alignment (WHY)
+  └─ 창업자/기업/투자자 관점의 12가지 분석 목적
+
+Step 2: Market Boundary Definition (WHAT × WHERE × WHO)
+  └─ 13개 차원의 정적 시장 구조 정의
+
+Step 3: Market Dynamics Framework (HOW × WHEN × WHY)
+  ├─ Part A: 경계의 진화 패턴
+  ├─ Part B: 시장 작동 메커니즘
+  └─ Part C: 통합적 시장 역학
+```
+
 ## 💡 사용 권장사항
 
 - **최신 버전 선택**:
-  - 단일 파일: `umis_guidelines_v5.3.yaml` (176KB) - Sustainable Advantage Edition
+  - 단일 파일: `umis_guidelines_v5.4.yaml` (188KB) - Conceptual Clarity Edition
   - 모듈러 최신: `umis_v5.3_modular/` (총 144KB) - 7 Powers 통합, 선택적 로드
   - 모듈러 안정: `umis_v5.1.3_modular/` (총 96KB) - 검증된 모듈러 구조
 - **ChatGPT 프로젝트**: Custom Instructions와 함께 활용
@@ -187,6 +222,8 @@ v5.1.3: 136KB ██████████████████████
 v5.2: 174KB  ████████████████████████████ (Creative Boost)
 v5.2.1: 164KB  ██████████████████████████ (Simplified)
 v5.2.2: 167KB  ███████████████████████████ (Enhanced Definition)
+v5.3: 176KB    █████████████████████████████ (Sustainable Advantage)
+v5.4: 188KB    ███████████████████████████████ (Conceptual Clarity)
 ```
 
 ## 🚀 빠른 시작
@@ -195,11 +232,11 @@ v5.2.2: 167KB  █████████████████████�
 
 ```bash
 # 1. 최신 파일 사용
-umis_guidelines_v5.3.yaml
+umis_guidelines_v5.4.yaml
 
 # 2. ChatGPT 프로젝트 설정
 chatgpt_custom_instructions.txt 내용 복사
-umis_guidelines_v5.3.yaml 파일 첨부
+umis_guidelines_v5.4.yaml 파일 첨부
 
 # 3. 테스트 프롬프트
 "[시장명]을 UMIS로 분석해주세요"
