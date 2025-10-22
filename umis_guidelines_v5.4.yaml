@@ -951,6 +951,58 @@ collaboration_triggers:
       trigger: "Bill의 SAM 계산 시작"
       participants: ["bill", "rachel", "albert"]
 
+  # 최소한의 적응형 안전장치
+  adaptive_safeguards:
+    description: "과도한 피드백 루프 방지를 위한 최소한의 안전장치"
+    philosophy: "유연성을 유지하면서도 비생산적 순환 방지"
+    
+    iteration_limit:
+      description: "동일 이슈의 과도한 순환 방지"
+      rule: "동일 주제로 3회 이상 순환 시 Stewart 자동 개입"
+      mechanism:
+        - "1회차: 정상 피드백 교환"
+        - "2회차: Stewart 모니터링 강화"
+        - "3회차: Stewart 개입 및 Owner 에스컬레이션"
+      exceptions:
+        - "Critical 이슈 (10x 기회, 중대 리스크)"
+        - "Owner의 명시적 지시"
+        - "블랙스완 이벤트"
+      example: |
+        Albert → Steve → Bill → Albert (1회)
+        Albert → Steve → Bill → Albert (2회) [Stewart 주시]
+        Albert → Steve → Bill → ... [Stewart 개입: "순환 패턴 감지"]
+    
+    feedback_guidelines:
+      description: "효과적인 피드백을 위한 권장 가이드라인 (강제 아님)"
+      recommended_format:
+        context: "무엇에 대한 피드백인지 명확히"
+        impact: "왜 중요한지, 어떤 영향이 있는지"
+        suggestion: "구체적인 개선 방향 제시"
+      priority_indicators:
+        high: "프로젝트 방향에 영향"
+        medium: "효율성 개선 가능"
+        low: "참고사항"
+      note: "긴급하거나 명확한 상황에서는 간략하게 전달 가능"
+    
+    stewart_intervention_upgrade:
+      description: "기존 Guardian Mode를 순환 방지에 특화하여 강화"
+      circular_pattern_detection:
+        - "동일 주제 반복 감지"
+        - "피드백 내용 유사도 분석"
+        - "시간 대비 진전도 측정"
+      intervention_message_template: |
+        🔄 순환 패턴 감지
+        
+        관찰: {agent_A} ↔ {agent_B} 간 {topic}에 대해 {count}회 순환
+        영향: 시간 소비 {time}, 진전도 {progress}%
+        
+        제안:
+        1. 현재 가정/제약 재검토
+        2. Owner 의사결정 요청
+        3. 다른 접근법 시도
+        
+        Stewart가 도울 수 있는 것: {assistance_options}
+
 # ========================================
 # SECTION 5: DATA INTEGRITY SYSTEM
 # ========================================
