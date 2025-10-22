@@ -767,8 +767,8 @@ adaptive_intelligence_system:
           standard_analysis: "1-2일 표준 분석"
           deep_dive: "3-5일 심층 분석"
           comprehensive_study: "1-2주 종합 연구"
-    
-    parallel_exploration:
+      
+      parallel_exploration:
         description: "여러 가능성을 동시에 탐색"
         benefits:
           - "빠른 비교와 검증"
@@ -1091,13 +1091,13 @@ proactive_monitoring:
 collaboration_protocols:
   description: "UMIS 에이전트 간 협업 규칙과 트리거"
   purpose: "각 에이전트가 자신의 전문 영역에 집중하면서도 필요시 효과적으로 협업"
-
-collaboration_triggers:
-  description: "MECE 원칙에 따른 에이전트 간 협업 규칙 - v5.0 적응형 협업"
   
-  principle: "각 에이전트는 자신의 전문 영역에 집중하되, 명확한 트리거 발생 시 협업"
-  
-  adaptive_triggers:
+  collaboration_triggers:
+    description: "MECE 원칙에 따른 에이전트 간 협업 규칙 - v5.0 적응형 협업"
+    
+    principle: "각 에이전트는 자신의 전문 영역에 집중하되, 명확한 트리거 발생 시 협업"
+    
+    adaptive_triggers:
     - name: "Discovery Sprint Kick-off"
       trigger: "프로젝트 시작 with 명확도 < 7"
       participants: ["all_agents"]
@@ -1119,8 +1119,8 @@ collaboration_triggers:
       trigger: "특정 영역 30% 이상 시간 소요"
       participants: ["focused_agent", "stewart", "owner"]
       action: "집중 타당성 검토 또는 재배분"
-  
-  mandatory_collaborations:
+    
+    mandatory_collaborations:
     - name: "프로젝트 착수 회의"
       trigger: "Owner의 프로젝트 시작 선언"
       participants: ["owner", "all_agents"]
@@ -1179,7 +1179,7 @@ collaboration_triggers:
             - "Rachel의 신뢰도 평가"
             - "Stewart의 논리 검증"
           output: "검증된 의사결정"
-
+  
   # 최소한의 적응형 안전장치
   adaptive_safeguards:
     description: "과도한 피드백 루프 방지를 위한 최소한의 안전장치"
@@ -3603,7 +3603,7 @@ creative_boost_module:
     # M1. 천재적 통찰 도출
     M1_genius_insight:
       formula: "GI = (O × C × P × S) / (A + B)"
-        variables:
+      variables:
         O: "관찰의 깊이 (1-10)"
         C: "연결의 독창성 (1-10)"
         P: "패턴 인식 능력 (1-10)"
