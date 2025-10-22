@@ -512,23 +512,23 @@ adaptive_intelligence_system:
     
     clarity_levels:
       - level: 1-3
-          name: "매우 모호함"
+        name: "매우 모호함"
         example: "뭔가 새로운 기회가 있을 것 같다"
         approach: "광범위한 Discovery Sprint"
       
       - level: 4-6
-          name: "방향성 있음"
+        name: "방향성 있음"
         example: "디지털 전환 관련 기회를 찾고 싶다"
         approach: "관련 영역 집중 탐색"
       
       - level: 7-9
-          name: "구체적 목표"
+        name: "구체적 목표"
         example: "한국 B2B SaaS 시장 진입 검토"
         approach: "전통적 구조화 분석"
       
       - level: 10
-          name: "완전히 명확"
-          note: "거의 없음 - 항상 불확실성 존재"
+        name: "완전히 명확"
+        note: "거의 없음 - 항상 불확실성 존재"
   
     
     progressive_intelligence:
@@ -552,22 +552,22 @@ adaptive_intelligence_system:
   
   discovery_sprint:
     description: "1-2일 집중 탐색으로 방향성 발견"
+    
+    sprint_types:
+      exploratory:
+        duration: "4-8 hours"
+        focus: "가능성 공간 탐색"
+        output: "기회 영역 목록"
       
-      sprint_types:
-        exploratory:
-          duration: "4-8 hours"
-          focus: "가능성 공간 탐색"
-          output: "기회 영역 목록"
-        
-        focused:
-    duration: "1-2 days"
-          focus: "특정 영역 심화"
-          output: "검증된 기회"
-        
-        validation:
-          duration: "2-4 hours"
-          focus: "가설 검증"
-          output: "다음 단계 결정"
+      focused:
+        duration: "1-2 days"
+        focus: "특정 영역 심화"
+        output: "검증된 기회"
+      
+      validation:
+        duration: "2-4 hours"
+        focus: "가설 검증"
+        output: "다음 단계 결정"
   
   # 2.3 Methodology (HOW) - 어떻게 Adaptive를 구현하는가
   methodology:
@@ -584,8 +584,8 @@ adaptive_intelligence_system:
           standard_analysis: "1-2일 표준 분석"
           deep_dive: "3-5일 심층 분석"
           comprehensive_study: "1-2주 종합 연구"
-    
-    parallel_exploration:
+      
+      parallel_exploration:
         description: "여러 가능성을 동시에 탐색"
         benefits:
           - "빠른 비교와 검증"
@@ -955,121 +955,160 @@ collaboration_triggers:
 # SECTION 5: DATA INTEGRITY SYSTEM
 # ========================================
 data_integrity_system:
-  name: "Progressive Data Integrity System"
-  description: "프로젝트 데이터를 자동으로 보호하고 복구하는 3단계 시스템"
+  purpose: "시장 분석 데이터의 체계적 관리와 신뢰성 보장"
+  description: "데이터 수집부터 활용까지 전 과정의 표준과 품질 관리"
   
-  protection_strategy:
-    three_stage_approach:
-      - stage: "Prevention"
-        description: "사전 예방"
-        mechanisms:
-          - "자동 저장 (모든 중요 작업 후)"
-          - "버전 관리 (Git 통합)"
-          - "중복 저장 (로컬 + 클라우드)"
-      - stage: "Detection"
-        description: "문제 감지"
-        mechanisms:
-          - "체크섬 검증"
-          - "구조 완전성 검사"
-          - "데이터 일관성 확인"
-      - stage: "Recovery"
-        description: "복구"
-        mechanisms:
-          - "체크포인트 복원"
-          - "부분 복구"
-          - "대체 데이터 소싱"
-  checkpoint_system:
-    automatic_checkpoints:
-      - frequency: "2시간마다"
-        type: "incremental"
-        retention: "24시간"
+  # 1. 데이터 라이프사이클 관리
+  data_lifecycle:
+    collection_standards:
+      description: "데이터 수집 시 필수 메타데이터"
+      required_metadata:
+        - source: "출처 (기관, URL, 담당자)"
+        - date: "수집일 및 데이터 생성일"
+        - method: "수집 방법 (API, 크롤링, 구매, 직접조사)"
+        - reliability: "신뢰도 평가 (Rachel 검증)"
+        - update_cycle: "갱신 주기"
       
-      - frequency: "일일 (오후 6시)"
-        type: "full"
-        retention: "7일"
+      data_categories:
+        market_data: "시장 규모, 거래량, 가격"
+        competitive_data: "경쟁사 정보, 제품, 전략"
+        regulatory_data: "규제, 정책, 법령"
+        customer_data: "고객 행동, 선호, 피드백"
+    
+    storage_principles:
+      raw_preservation: "원본 데이터는 불변 상태로 보존"
+      processed_versioning: "가공 데이터는 버전 관리"
+      metadata_tracking: "모든 변환 과정 추적"
+      retention_policy: "프로젝트 종료 후 1년 보관"
+    
+    access_patterns:
+      by_agent: "각 Agent별 최적화된 데이터 뷰"
+      by_project: "프로젝트별 통합 데이터셋"
+      by_timeline: "시계열 기반 접근"
+      by_quality: "신뢰도 기반 필터링"
+    
+    update_protocol:
+      trigger_events:
+        - "정기 갱신 주기 도래"
+        - "중요 시장 이벤트 발생"
+        - "데이터 품질 저하 감지"
+        - "사용자 요청"
       
-      - frequency: "주간 (금요일)"
-        type: "full_compressed"
-        retention: "30일"
-    
-    manual_checkpoints:
-      triggers:
-        - "중요 의사결정 전"
-        - "Phase 완료 시"
-        - "대규모 데이터 수정 전"
-        - "위험한 작업 전"
-      naming: "{timestamp}__{tag}__{description}"
-      retention: "프로젝트 종료까지"
-    
-    checkpoint_contents:
-      - "01_raw_data/ (모든 원본 데이터)"
-      - "02_analysis/ (분석 과정)"
-      - "03_outputs/ (결과물)"
-      - "04_knowledge_extracted/ (추출된 지식)"
-      - "05_metadata/ (메타데이터)"
-      - ".project_metadata.yaml"
-      - "decision_log.yaml"
-  integrity_checks:
-    file_existence:
-      description: "핵심 파일 존재 여부"
-      critical_files:
-        - ".project_metadata.yaml"
-        - "README.md"
-        - "*/index.yaml"
-      action: "누락 시 경고 및 복구 제안"
-    
-    data_consistency:
-      description: "데이터 일관성"
-      checks:
-        - "CSV 행 수 일치"
-        - "YAML 스키마 검증"
-        - "참조 무결성"
-      action: "불일치 발견 시 상세 리포트"
-    
-    structural_completeness:
-      description: "디렉토리 구조 완전성"
-      expected_structure:
-        - "5개 주요 폴더 존재"
-        - "에이전트별 하위 폴더"
-        - "표준 파일 구조"
-      action: "구조 복원 스크립트 실행"
+      update_process:
+        - "기존 데이터와 비교"
+        - "변경사항 하이라이트"
+        - "품질 재검증"
+        - "영향받는 분석 식별"
   
-  recovery_protocol:
-    quick_recovery:
-      description: "5분 내 복구"
-      steps:
-        1: "최근 체크포인트 식별"
-        2: "현재 상태 백업"
-        3: "체크포인트 복원"
-        4: "무결성 검증"
-        5: "작업 재개"
+  # 2. 프로젝트 구조 표준
+  project_structure:
+    standard_layout:
+      01_raw_data:
+        purpose: "수집된 원본 데이터"
+        organization: "출처별/날짜별 분류"
+        
+      02_analysis:
+        purpose: "Agent별 분석 결과"
+        subfolders:
+          - "albert/: 시장 구조 관찰"
+          - "steve/: 해석과 시나리오"
+          - "bill/: 정량 분석"
+          - "rachel/: 검증 결과"
+          - "stewart/: 통합 보고서"
+      
+      03_insights:
+        purpose: "핵심 발견과 결론"
+        contents: "실행 가능한 인사이트"
+      
+      04_metadata:
+        purpose: "프로젝트 메타데이터"
+        contents: "출처, 방법론, 품질 지표"
     
-    selective_recovery:
-      description: "특정 부분만 복구"
-      options:
-        - "특정 에이전트 데이터만"
-        - "특정 시점으로"
-        - "특정 파일만"
-    disaster_recovery:
-      description: "완전 복구"
-      sources:
-        - "로컬 체크포인트"
-        - "클라우드 백업"
-        - "팀 멤버 복사본"
-      procedure: "자동화된 복구 스크립트"
+    required_files:
+      ".project_metadata.yaml": "프로젝트 기본 정보"
+      "README.md": "개요와 주요 발견"
+      "decision_log.yaml": "의사결정 이력"
+      "data_sources.yaml": "데이터 출처 목록"
   
-  automation_scripts:
-    - script: "create_checkpoint.sh"
-      purpose: "체크포인트 생성"
+  # 3. 품질 보증 체계
+  quality_assurance:
+    quality_dimensions:
+      completeness: "필요한 데이터가 모두 있는가"
+      accuracy: "데이터가 정확한가"
+      consistency: "데이터 간 일관성이 있는가"
+      timeliness: "데이터가 최신인가"
+      relevance: "분석 목적에 적합한가"
+    
+    verification_layers:
+      automated_checks:
+        - "필수 필드 존재 여부"
+        - "데이터 타입 일치"
+        - "범위 및 논리 검증"
+        - "시계열 연속성"
       
-    - script: "verify_integrity.py"
-      purpose: "무결성 검증"
+      agent_validation:
+        - "Rachel: 소스 신뢰도 검증"
+        - "Albert: 시장 데이터 일관성"
+        - "Bill: 수치 정확성"
+        - "Stewart: 전체 품질 감독"
       
-    - script: "restore_checkpoint.sh"
-      purpose: "체크포인트 복원"
+      quality_scoring:
+        A_grade: "90% 이상 - 즉시 사용 가능"
+        B_grade: "70-89% - 주의하여 사용"
+        C_grade: "50-69% - 보완 필요"
+        D_grade: "50% 미만 - 재수집 권장"
+    
+    issue_handling:
+      severity_levels: ["Critical", "Major", "Minor", "Info"]
+      resolution_sla:
+        critical: "즉시 대응"
+        major: "24시간 내"
+        minor: "1주일 내"
+        info: "다음 갱신 시"
+  
+  # 4. 백업 및 복구 전략
+  backup_recovery:
+    checkpoint_strategy:
+      automatic_saves:
+        - frequency: "중요 작업 완료 시"
+        - retention: "최근 10개 버전"
+        
+      milestone_snapshots:
+        - trigger: "프로젝트 단계 완료"
+        - retention: "영구 보관"
       
-    - script: "setup_auto_backup.sh"
-      purpose: "자동 백업 설정"
+      included_content:
+        - "모든 원본 데이터"
+        - "분석 결과와 인사이트"
+        - "프로젝트 메타데이터"
+        - "의사결정 이력"
+    
+    recovery_options:
+      quick_restore: "최근 체크포인트로 즉시 복구"
+      selective_restore: "특정 데이터/기간만 복구"
+      rebuild_from_source: "원본 데이터부터 재구성"
+    
+    data_integrity_protection:
+      prevention: "자동 검증 및 백업"
+      detection: "실시간 모니터링"
+      recovery: "다단계 복구 옵션"
+  
+  # Agent 역할 구분
+  agent_responsibilities:
+    rachel:
+      - "개별 데이터 소스의 신뢰도 평가"
+      - "수집 방법의 적절성 검증"
+      - "데이터 품질 이슈 발견 및 보고"
+    
+    stewart:
+      - "전체 데이터 플로우 감독"
+      - "Agent 간 데이터 일관성 확인"
+      - "품질 대시보드 관리"
+    
+    system_level:
+      - "데이터 저장소 인프라"
+      - "백업 및 복구 자동화"
+      - "프로젝트 구조 표준화"
 
 # ========================================
 # SECTION 6: AGENTS
@@ -1655,71 +1694,7 @@ agents:
           - "실현 가능성 평가"
           - "필요 자원과 역량"
         purpose: "의사결정을 위한 전략적 옵션 제시"
-  - id: MQuant
-        user_question: "[특정 산업] 시장 규모를 알려줘"
         steve_response:
-          opening: "해당 시장 정보가 필요하신 이유를 이해하면 더 도움이 되는 정보를 드릴 수 있을 것 같습니다."
-          
-          mece_options_presentation: |
-            다음 중 어떤 관점에서 시장 규모를 알고 싶으신가요?
-            
-            💰 투자/자산 관점
-               □ 기업 인수/지분 투자
-               □ 부동산/인프라 투자
-               □ 신기술/스타트업 투자
-               □ 금융상품/펀드 투자
-            
-            🚀 신규 사업 관점
-               □ 제품/서비스 개발 및 출시
-               □ 플랫폼/마켓플레이스 구축
-               □ B2B 솔루션 사업
-               □ 프랜차이즈/체인 사업
-            
-            🔗 기존 사업 연계 관점
-               □ 신규 시장/지역 진출
-               □ 제품/서비스 라인 확장
-               □ 파트너십/제휴 기회
-               □ 고객군 확대 전략
-            
-            📊 시장 조사 관점
-               □ 경쟁사 분석
-               □ 시장 진입 타당성 검토
-               □ 산업 트렌드 파악
-               □ 정책/규제 영향 분석
-            
-            🔍 기타
-               □ 학술/연구 목적
-               □ 개인적 관심
-               □ 위의 범주에 없는 목적
-          
-          follow_up: "여러 개를 선택하셔도 됩니다. 선택하신 관점에 맞춰 가장 유용한 시장 정보를 준비하겠습니다."
-          
-      b2b_software:
-        observation: "연간 계약 70%, 갱신율 85%, 평균 5천만원"
-        interpretation: "높은 전환비용과 업무 의존성 → Lock-in 효과"
-        initial_opportunity: "더 쉬운 온보딩으로 초기 진입장벽 낮추기"
-        reality_check: 
-          - "기존 고객이 데이터 마이그레이션 위험을 감수할까? → 아니다"
-          - "대신 신규 고객이나 소규모 기업 타겟 → 가능하다"
-        refined_opportunity: "복잡한 레거시 없는 스타트업 전용 경량 버전"
-      
-      commodity_market:
-        observation: "선물거래 60%, 가격 변동성 높음, 소수 거래자 집중"
-        interpretation: "가격 리스크 헤징 니즈 + 정보 비대칭"
-        initial_opportunity: "소규모 참여자를 위한 리스크 관리 솔루션"
-        reality_check:
-          - "규제 요건 충족 가능한가? → 라이선스 필요"
-          - "소규모 참여자의 거래량이 수익성 있나? → 확인 필요"
-        refined_opportunity: "교육 + 시뮬레이션 플랫폼으로 시작, 실거래는 파트너십"
-      
-      platform_economy:
-        observation: "수수료 3%, 판매자 이탈률 20%, 멀티호밍 증가"
-        interpretation: "플랫폼 의존도 감소 욕구 + 수수료 부담"
-        initial_opportunity: "판매자 자율성 높인 하이브리드 모델"
-        reality_check:
-          - "네트워크 효과 없이 구매자를 모을 수 있나? → 어렵다"
-          - "기존 플랫폼이 수수료 인하로 대응하면? → 경쟁력 상실"
-        refined_opportunity: "특정 니치 카테고리의 전문 판매자 커뮤니티"
   - id: MQuant
     # ===== 1. IDENTITY =====
     name: "Bill"
@@ -2100,78 +2075,6 @@ agents:
           - "TAM → SAM → SOM 전환 로직"
         format: "중간값 ± 범위 + 가정 명세서"
   - id: MValidator
-      piano_market:
-        target: "국내 피아노 판매 시장 SAM"
-        
-        method_1_top_down:
-          tam: "악기 시장 1조원"
-          narrowing: "피아노 비중 15% = 1,500억"
-          definition_check: 
-            - "악기 시장이 신품만? 중고 포함? → 신품만"
-            - "렌탈 포함? → 판매만"
-          logical_test:
-            - "상한: 전체 교육 시장 10조 > 1,500억 ✓"
-            - "하한: 피아노 학원 수 × 연간 구매 < 1,500억 ✓"
-          result: "1,500억원"
-        
-        method_2_bottom_up:
-          calculation: |
-            - 연간 피아노 학원 신규: 1,000개 × 2대 × 500만 = 100억
-            - 가정용 신규 구매: 20,000가구 × 300만 = 600억
-            - 교체 수요: 10,000대 × 400만 = 400억
-          result: "1,100억원"
-        
-        method_3_proxy:
-          benchmark: "일본 피아노 시장 3,000억엔"
-          adjustment: "3,000억엔 × (한국/일본 GDP비) × 문화계수 0.8"
-          result: "1,200억원"
-        
-        method_4_competitor:
-          top_players_with_rationale:
-            삼익악기:
-              total_revenue: "1,000억"
-              extraction_process:
-                - "사업보고서: 기타사업 30% → 악기 70% = 700억"
-                - "제품 구성 분석: 피아노 40% 추정 = 280억"
-                - "추정 근거: 홈페이지 제품 비중 + 브랜드 포지셔닝"
-            영창악기:
-              total_revenue: "800억"
-              extraction_process:
-                - "공시: 악기사업 80% = 640억"
-                - "업계 정보: 피아노 비중 35% = 224억"
-                - "추정 근거: 영창은 기타/관악기도 강함"
-            가와이코리아:
-              total_revenue: "300억 (피아노 전문)"
-              extraction_process:
-                - "피아노 전문 기업으로 100% = 300억"
-          competitive_revenue_sum: "280 + 224 + 300 = 804억"
-          market_share_estimation:
-            - "출처: 한국악기공업협동조합 자료"
-            - "Top 3 시장점유율: 65%"
-          calculation: "804억 ÷ 0.65 = 1,237억"
-          result: "1,240억원"
-        
-        convergence:
-          range: "1,100억 ~ 1,500억 (±15% 수렴)"
-          final_sam: "1,250억 ± 150억원"
-      
-      b2b_software:
-        target: "한국 CRM 소프트웨어 SAM"
-        
-        method_1_top_down:
-          definition_validation: "CRM이 마케팅 자동화 포함? ERP 내장 CRM 제외?"
-          result_with_validation: "글로벌 $50B → 한국 $500M (정의 확인 후)"
-        
-        method_2_bottom_up:
-          target_calculation: "대기업 1000 × 70% × $200K + 중견 5000 × 30% × $50K"
-          
-        method_3_proxy:
-          similar_market: "일본 CRM $2B, 조정계수 적용"
-          
-        method_4_competitor:
-          revenue_extraction: "세일즈포스 한국: 전체 중 CRM만 / 국내 업체: SI 제외"
-          
-        convergence: "4가지 방법 모두 $450-600M 범위 → SAM $520M ± 70M"
   - id: MValidator
     # ===== 1. IDENTITY =====
     name: "Rachel"
@@ -2744,6 +2647,53 @@ agents:
       - "시장 규모 계산 (→ Bill의 업무)"
       - "데이터 검증과 소싱 (→ Rachel의 업무)"
       - "최종 투자 결정 (→ Owner의 업무)"
+    
+    collaboration_interfaces:
+      with_all_agents:
+        monitoring:
+          trigger: "프로젝트 진행 중 상시"
+          stewart_tracks:
+            - "각 에이전트의 시간 사용 패턴"
+            - "발견사항의 가치와 영향도"
+            - "목표와의 정렬도"
+            - "데이터 품질과 일관성"
+          stewart_provides:
+            - "실시간 진행 대시보드"
+            - "효율성 개선 제안"
+            - "품질 기준 유지 지원"
+        
+        intervention:
+          trigger: "임계값 초과 또는 이상 신호"
+          stewart_actions:
+            - "구조화된 개입 알림"
+            - "대안 경로 제시"
+            - "리소스 재배분 제안"
+            - "피벗 기회 식별"
+      
+      with_owner:
+        strategic_reporting:
+          frequency: "주간 및 중요 이벤트 시"
+          stewart_delivers:
+            - "종합 진행 요약"
+            - "주요 발견사항 큐레이션"
+            - "전략적 의사결정 지원"
+            - "리스크와 기회 업데이트"
+          decision_preparation:
+            - "의사결정 포인트 사전 준비"
+            - "옵션별 영향 분석"
+            - "데이터 기반 권장사항"
+      
+      from_all_agents:
+        knowledge_input:
+          - "분석 방법론과 프로세스"
+          - "성공/실패 사례"
+          - "개선 아이디어"
+          - "재사용 가능한 인사이트"
+        stewart_creates:
+          - "표준화된 템플릿"
+          - "베스트 프랙티스 문서"
+          - "지식 저장소 업데이트"
+          - "프로세스 개선안"
 
 # ========================================
 # SECTION 7: ROLES
@@ -3168,1183 +3118,552 @@ roles:
 # SECTION 8: CREATIVE BOOST MODULE
 # ========================================
 creative_boost_module:
-  name: "AI Brainstorming Framework Integration"
   description: "필요시 활용하는 선택적 창의성 증강 도구"
-  version: "1.0"
-  anchor: "creative_boost_module"
+  philosophy: "간단한 공식으로 복잡한 사고를 돕는 실용적 프레임워크"
   
   usage_principle:
     activation: "명시적 요청 시에만 활용"
-    tagging: "모든 창의적 프로세스 결과물에 [BRAINSTORM] 태그 필수"
-    separation: "기존 UMIS 프로세스와 명확히 구분"
-    integration: "UMIS 에이전트의 보조 도구로 활용"
+    tagging: "[BRAINSTORM] 태그로 결과 표시"
+    approach: "공식을 기계적으로 따르기보다 창의적으로 변형하여 사용"
   
-  when_to_use:
-    - "극도로 불확실한 상황에서 새로운 관점 필요"
-    - "기존 프레임워크로 해결이 어려운 창의적 문제"
-    - "패러다임 전환 수준의 혁신 필요"
-    - "에이전트들이 교착 상태에 빠졌을 때"
-    - "Owner가 직관적 통찰을 원할 때"
-  
-  brainstorming_modules:
-    - id: "M1"
-      name: "천재적 통찰 도출 엔진"
-      name_en: "Genius Insight Generator"
-      category: "insight_discovery"
-      umis_agent: ["Steve", "Owner"]
-      use_case: "시장 기회의 혁신적 재해석"
-      
-      formula:
-        expression: "I = (O + P + C) × D × T"
-        variables:
-          O:
-            name: "관찰"
-            description: "깊이 있는 관찰의 질"
-            range: [1, 10]
-          P:
-            name: "패턴"
-            description: "숨겨진 패턴 인식 능력"
-            range: [1, 10]
-          C:
-            name: "연결"
-            description: "이질적 요소 연결 능력"
-            range: [1, 10]
-          D:
-            name: "깊이"
-            description: "사고의 깊이 수준"
-            multiplier: true
-            levels:
-              surface: 1.0
-              intermediate: 2.0
-              deep: 3.0
-              profound: 5.0
-          T:
-            name: "변형"
-            description: "기존 사고의 변형 정도"
-            multiplier: true
-            transformation_degree:
-              incremental: 1.0
-              moderate: 2.0
-              radical: 4.0
-              paradigm_shift: 10.0
-      
-      process_steps:
-        - step: 1
-          name: "깊은 관찰"
-          actions: ["현상 관찰", "세부사항 포착", "미묘한 신호 감지"]
-        - step: 2
-          name: "패턴 인식"
-          actions: ["반복 패턴 발견", "숨겨진 구조 파악", "관계성 인식"]
-        - step: 3
-          name: "창의적 연결"
-          actions: ["이질적 요소 연결", "유추 적용", "메타포 생성"]
-        - step: 4
-          name: "통찰 도출"
-          actions: ["핵심 원리 추출", "새로운 관점 제시", "혁신적 해석"]
-      
-      prompt_template: |
-        [BRAINSTORM - M1] 천재적 통찰 도출
-        
-        주제: {topic}
-        
-        1. 깊은 관찰:
-           - 표면적 현상: ...
-           - 숨겨진 세부사항: ...
-           - 미묘한 신호들: ...
-        
-        2. 패턴 인식:
-           - 반복되는 패턴: ...
-           - 예외적 상황: ...
-           - 구조적 특징: ...
-        
-        3. 창의적 연결:
-           - 연결 1: [A] + [B] = [새로운 의미]
-           - 연결 2: [C]와 [D]의 유사성 = [통찰]
-           - 연결 3: [E]를 [F]에 적용하면 = [혁신]
-        
-        4. 핵심 통찰:
-           "진짜 기회는 [발견한 패턴]에서 오는 [새로운 가능성]이다"
-        
-        통찰 지수: I = {계산 결과}
-      
-      best_for: ["패러다임 전환", "숨겨진 기회 발견", "혁신적 관점"]
-      time_estimate: "10-15분"
-      difficulty: "intermediate"
-      
-    - id: "M2"
-      name: "다차원 분석 프로세서"
-      name_en: "Multidimensional Analysis Processor"
-      category: "systematic_analysis"
-      umis_agent: ["Albert"]
-      use_case: "복잡한 시장 구조의 체계적 분해"
-      
-      formula:
-        expression: "MA = Σ(Di × Wi) × Π(Ij)"
-        variables:
-          Di:
-            name: "차원 i"
-            description: "각 분석 차원의 깊이"
-            dimensions:
-              economic: "경제적 차원"
-              social: "사회적 차원"
-              technological: "기술적 차원"
-              political: "정치적 차원"
-              ecological: "생태적 차원"
-              legal: "법적 차원"
-          Wi:
-            name: "가중치 i"
-            description: "각 차원의 상대적 중요도"
-            range: [0, 1]
-            constraint: "ΣWi = 1"
-          Ij:
-            name: "상호작용 j"
-            description: "차원 간 상호작용 효과"
-            range: [0.5, 2.0]
-      
-      process_steps:
-        - step: 1
-          name: "차원 분해"
-          actions: ["차원 식별", "하위 요소 매핑", "경계 설정"]
-        - step: 2
-          name: "각 차원 분석"
-          actions: ["요소별 분석", "영향력 평가", "변화 추세 파악"]
-        - step: 3
-          name: "상호작용 분석"
-          actions: ["차원 간 관계", "피드백 루프", "시너지 효과"]
-        - step: 4
-          name: "통합적 이해"
-          actions: ["전체 그림 구성", "핵심 동인 식별", "시스템 다이내믹스"]
-      
-      prompt_template: |
-        [BRAINSTORM - M2] 다차원 분석
-        
-        분석 대상: {subject}
-        
-        1. 경제적 차원 (D1):
-           - 시장 규모/성장률: ...
-           - 비용 구조: ...
-           - 수익성: ...
-           가중치: W1 = X
-        
-        2. 기술적 차원 (D2):
-           - 기술 성숙도: ...
-           - 혁신 속도: ...
-           - 진입 장벽: ...
-           가중치: W2 = Y
-        
-        3. 사회적 차원 (D3):
-           - 소비자 트렌드: ...
-           - 문화적 수용성: ...
-           - 인구 통계: ...
-           가중치: W3 = Z
-        
-        4. 상호작용 분석:
-           - D1 × D2: 경제-기술 시너지 = ...
-           - D2 × D3: 기술-사회 적합성 = ...
-           - D1 × D3: 경제-사회 지속가능성 = ...
-        
-        다차원 분석 지수: MA = {계산 결과}
-      
-      best_for: ["시장 구조 이해", "복잡성 해체", "체계적 분석"]
-      time_estimate: "15-20분"
-      difficulty: "beginner"
-      
-    - id: "M3"
-      name: "창의적 연결 생성기"
-      name_en: "Creative Connection Generator"
-      category: "creative_synthesis"
-      umis_agent: ["Steve"]
-      use_case: "이질적 시장 요소의 융합 기회 발견"
-      
-      formula:
-        expression: "CC = (S ∩ E) + (S ⊕ E) + T(S→E)"
-        variables:
-          S:
-            name: "소스 개념"
-            description: "출발점이 되는 개념/아이디어"
-          E:
-            name: "대상 개념"
-            description: "연결하고자 하는 개념/아이디어"
-          "S ∩ E":
-            name: "교집합"
-            description: "공통 요소와 유사성"
-          "S ⊕ E":
-            name: "배타적 합"
-            description: "상호보완적 차이점"
-          "T(S→E)":
-            name: "전이 함수"
-            description: "한 영역의 원리를 다른 영역에 적용"
-      
-      process_steps:
-        - step: 1
-          name: "개념 선택"
-          actions: ["소스 개념 정의", "대상 개념 선택", "연결 목적 명확화"]
-        - step: 2
-          name: "공통점 탐색"
-          actions: ["유사 패턴 발견", "공통 원리 추출", "연결 가능성 확인"]
-        - step: 3
-          name: "차이점 활용"
-          actions: ["보완적 요소 발견", "시너지 가능성", "창발적 속성"]
-        - step: 4
-          name: "창의적 융합"
-          actions: ["새로운 조합 시도", "창발적 속성 발견", "혁신적 연결 생성"]
-      
-      prompt_template: |
-        [BRAINSTORM - M3] 창의적 연결
-        
-        개념 A: {concept_a}
-        개념 B: {concept_b}
-        
-        1. 직접적 연결 (공통 요소):
-           - 공통점 1: ...
-           - 공통점 2: ...
-           - 시너지 가능성: ...
-        
-        2. 배타적 차이 (독특한 요소):
-           - A만의 특징: ...
-           - B만의 특징: ...
-           - 보완 가능성: ...
-        
-        3. 전이 함수 (A→B 변환):
-           - 변환 경로 1: ...
-           - 변환 경로 2: ...
-           - 창발적 속성: ...
-        
-        4. 혁신적 연결 아이디어:
-           - 아이디어 1: [설명]
-           - 아이디어 2: [설명]
-           - 아이디어 3: [설명]
-        
-        최종 창의적 연결: [CC 지수와 함께 핵심 연결 제시]
-      
-      best_for: ["융합 기회", "새로운 조합", "혁신적 연결"]
-      time_estimate: "15-20분"
-      difficulty: "intermediate"
-      
-    - id: "M4"
-      name: "문제 재정의 엔진"
-      name_en: "Problem Redefinition Engine"
-      category: "problem_framing"
-      umis_agent: ["Steve", "Owner"]
-      use_case: "시장 문제의 근본적 재구성"
-      
-      formula:
-        expression: "PR = P₀ × T(θ) × S(φ) × M(ψ)"
-        variables:
-          P₀:
-            name: "원래 문제"
-            description: "초기 문제 정의"
-          "T(θ)":
-            name: "관점 회전"
-            description: "θ 각도만큼 관점 회전"
-            angles:
-              0: "원래 관점"
-              90: "측면 관점"
-              180: "반대 관점"
-              270: "다른 측면 관점"
-          "S(φ)":
-            name: "규모 조정"
-            description: "φ 비율로 범위 조정"
-            scales:
-              0.1: "극도로 축소된 관점"
-              0.5: "축소된 관점"
-              1: "원래 크기"
-              2: "확대된 관점"
-              10: "극도로 확대된 관점"
-          "M(ψ)":
-            name: "메타 레벨"
-            description: "ψ 차원으로 메타 레벨 이동"
-            levels:
-              -2: "구체적 실행 수준"
-              -1: "전술적 수준"
-              0: "원래 수준"
-              1: "전략적 수준"
-              2: "철학적 수준"
-      
-      process_steps:
-        - step: 1
-          name: "현재 문제 분석"
-          actions: ["문제 구조 파악", "가정 확인", "제약 식별"]
-        - step: 2
-          name: "다양한 변환 적용"
-          actions: ["관점 회전", "규모 조정", "메타 레벨 이동"]
-        - step: 3
-          name: "재정의 생성"
-          actions: ["새로운 프레임 구성", "대안적 정의 도출", "혁신적 관점 제시"]
-        - step: 4
-          name: "최적 재정의 선택"
-          actions: ["각 재정의 평가", "통찰력 비교", "실행가능성 검토"]
-      
-      prompt_template: |
-        [BRAINSTORM - M4] 문제 재정의
-        
-        원래 문제: {problem}
-        
-        1. 관점 회전:
-           - 0°(원래): ...
-           - 90°(고객 관점): ...
-           - 180°(반대 관점): ...
-           - 270°(시스템 관점): ...
-        
-        2. 규모 조정:
-           - 0.1x(개인): ...
-           - 1x(원래): ...
-           - 10x(사회): ...
-        
-        3. 메타 레벨 이동:
-           - -1(어떻게): ...
-           - 0(무엇을): ...
-           - +1(왜): ...
-        
-        4. 재정의된 문제들:
-           1. [재정의 1]
-           2. [재정의 2]
-           3. [재정의 3]
-        
-        가장 통찰력 있는 재정의: [선택된 재정의와 이유]
-      
-      best_for: ["새로운 프레임", "관점 전환", "문제 본질 파악"]
-      time_estimate: "10-15분"
-      difficulty: "beginner"
-      
-    - id: "M5"
-      name: "혁신 솔루션 설계기"
-      name_en: "Innovation Solution Designer"
-      category: "solution_creation"
-      umis_agent: ["Steve"]
-      use_case: "실행 가능한 혁신적 시장 전략"
-      
-      formula:
-        expression: "IS = Σ[Ci × Ni × Fi × Vi] / Ri"
-        variables:
-          Ci:
-            name: "조합 시너지"
-            description: "요소들의 시너지 효과"
-            range: [1, 10]
-          Ni:
-            name: "참신성"
-            description: "기존 대비 참신함의 정도"
-            range: [1, 10]
-          Fi:
-            name: "실현가능성"
-            description: "현실적 구현 가능성"
-            range: [1, 10]
-          Vi:
-            name: "가치 창출"
-            description: "예상되는 가치의 크기"
-            range: [1, 10]
-          Ri:
-            name: "위험 수준"
-            description: "잠재적 위험 정도"
-            range: [1, 10]
-            inverse: true
-      
-      process_steps:
-        - step: 1
-          name: "솔루션 아이디어 생성"
-          actions: ["브레인스토밍", "유사 사례 탐색", "창의적 조합"]
-        - step: 2
-          name: "각 솔루션 평가"
-          actions: ["CNFVR 점수 산정", "장단점 분석", "실현가능성 검토"]
-        - step: 3
-          name: "최적화 및 개선"
-          actions: ["약점 보완", "강점 강화", "위험 완화"]
-        - step: 4
-          name: "실행 계획 수립"
-          actions: ["단계별 계획", "리소스 할당", "성과 지표 설정"]
-      
-      prompt_template: |
-        [BRAINSTORM - M5] 혁신 솔루션 설계
-        
-        문제: {problem}
-        
-        솔루션 1: [기존 요소의 새로운 조합]
-        - 구성 요소: A + B + C
-        - 참신성 (Ni): X/10
-        - 실현가능성 (Fi): Y/10
-        - 가치 (Vi): Z/10
-        - 위험 (Ri): W/10
-        - IS 점수: [계산]
-        
-        솔루션 2: [타 분야 솔루션 차용]
-        - 원래 분야: ...
-        - 적용 방법: ...
-        - 참신성 (Ni): X/10
-        - 실현가능성 (Fi): Y/10
-        - 가치 (Vi): Z/10
-        - 위험 (Ri): W/10
-        - IS 점수: [계산]
-        
-        솔루션 3: [제약을 기회로 전환]
-        - 제약 사항: ...
-        - 전환 방법: ...
-        - 평가 점수: ...
-        
-        최적 솔루션: [가장 높은 IS 점수를 가진 솔루션과 구현 계획]
-      
-      best_for: ["실행 가능한 아이디어", "혁신적 솔루션", "구체적 계획"]
-      time_estimate: "20-25분"
-      difficulty: "intermediate"
-      
-    - id: "M6"
-      name: "인사이트 증폭기"
-      name_en: "Insight Amplifier"
-      category: "insight_enhancement"
-      umis_agent: ["Rachel", "Stewart"]
-      use_case: "초기 발견의 반복적 심화"
-      
-      formula:
-        expression: "IA = I₀ × (1 + r)ⁿ × C × Q"
-        variables:
-          I₀:
-            name: "초기 인사이트"
-            description: "시작점이 되는 통찰"
-          r:
-            name: "반복 개선율"
-            description: "각 반복에서의 개선 정도"
-            values:
-              low: 0.1
-              medium: 0.3
-              high: 0.5
-          n:
-            name: "반복 횟수"
-            description: "인사이트 개선 반복 수"
-            default: 5
-          C:
-            name: "협력 효과"
-            description: "다양한 관점의 시너지"
-            values:
-              solo: 1.0
-              pair: 1.5
-              team: 2.0
-              crowd: 3.0
-          Q:
-            name: "질문의 질"
-            description: "탐구 질문의 깊이와 품질"
-            values:
-              basic: 1.0
-              good: 2.0
-              excellent: 3.0
-              transformative: 5.0
-      
-      process_steps:
-        - step: 1
-          name: "초기 인사이트 정의"
-          actions: ["핵심 통찰 명확화", "가치 평가", "개선 가능성 확인"]
-        - step: 2
-          name: "반복적 심화"
-          actions: ["Why 질문", "What if 탐색", "How might we 적용"]
-        - step: 3
-          name: "다각도 검증"
-          actions: ["다른 관점 적용", "반대 의견 고려", "실제 사례 검토"]
-        - step: 4
-          name: "증폭된 통찰 정리"
-          actions: ["핵심 발견 종합", "실행 가능성 평가", "다음 단계 제시"]
-      
-      prompt_template: |
-        [BRAINSTORM - M6] 인사이트 증폭
-        
-        초기 인사이트: {initial_insight}
-        
-        반복 1: Why?
-        - 질문: 왜 이것이 중요한가?
-        - 답변: ...
-        - 개선된 인사이트: ...
-        
-        반복 2: Why deeper?
-        - 질문: 더 깊은 이유는 무엇인가?
-        - 답변: ...
-        - 개선된 인사이트: ...
-        
-        반복 3: What if?
-        - 시나리오 1: 만약 ... 라면?
-        - 시나리오 2: 만약 ... 라면?
-        - 개선된 인사이트: ...
-        
-        반복 4: How might we?
-        - HMW 1: 어떻게 하면 ... 할 수 있을까?
-        - HMW 2: 어떻게 하면 ... 할 수 있을까?
-        - 개선된 인사이트: ...
-        
-        증폭 결과:
-        - 초기 가치: I₀
-        - 최종 가치: IA = [계산 결과]
-        - 증폭률: [IA/I₀]
-      
-      best_for: ["아이디어 발전", "깊이 있는 통찰", "반복적 개선"]
-      time_estimate: "15-20분"
-      difficulty: "intermediate"
-      
-    - id: "M7"
-      name: "사고 진화 시뮬레이터"
-      name_en: "Thinking Evolution Simulator"
-      category: "cognitive_development"
-      umis_agent: ["Stewart"]
-      use_case: "분석 방법론의 지속적 개선"
-      
-      formula:
-        expression: "TE = T₀ + ∫[L(t) + E(t) + R(t)]dt"
-        variables:
-          T₀:
-            name: "초기 사고 상태"
-            description: "시작 시점의 사고 수준"
-          "L(t)":
-            name: "학습 함수"
-            description: "시간에 따른 학습 누적"
-            components: ["정보 수집", "개념 이해", "지식 통합"]
-          "E(t)":
-            name: "경험 함수"
-            description: "시간에 따른 경험 축적"
-            components: ["직접 경험", "간접 경험", "시뮬레이션"]
-          "R(t)":
-            name: "반성 함수"
-            description: "시간에 따른 반성적 사고"
-            components: ["자기 평가", "오류 수정", "메타인지"]
-      
-      process_steps:
-        - step: 1
-          name: "현재 상태 평가"
-          actions: ["지식 수준 확인", "사고 패턴 분석", "한계 인식"]
-        - step: 2
-          name: "학습 경로 설계"
-          actions: ["목표 설정", "자원 확인", "계획 수립"]
-        - step: 3
-          name: "진화 과정 실행"
-          actions: ["새로운 정보 학습", "경험 축적", "지속적 반성"]
-        - step: 4
-          name: "진화 측정 및 조정"
-          actions: ["진전 평가", "방향 조정", "다음 단계 계획"]
-      
-      prompt_template: |
-        [BRAINSTORM - M7] 사고 진화
-        
-        주제: {topic}
-        초기 사고 상태 (T₀): [현재 이해 수준]
-        
-        진화 단계 1 - 학습 (L):
-        - 새로운 정보: ...
-        - 핵심 개념: ...
-        - 사고 업데이트: ...
-        
-        진화 단계 2 - 경험 (E):
-        - 관련 사례: ...
-        - 실험 결과: ...
-        - 사고 업데이트: ...
-        
-        진화 단계 3 - 반성 (R):
-        - 가정 재검토: ...
-        - 오류 수정: ...
-        - 사고 업데이트: ...
-        
-        진화된 사고 (TE):
-        - 새로운 이해: ...
-        - 확장된 관점: ...
-        - 미래 방향: ...
-        
-        진화 측정:
-        - 지식 증가: +X%
-        - 이해 깊이: +Y%
-        - 관점 다양성: +Z%
-      
-      best_for: ["방법론 개선", "장기적 발전", "학습 최적화"]
-      time_estimate: "20-30분"
-      difficulty: "advanced"
-      
-    - id: "M8"
-      name: "복잡성 해결 내비게이터"
-      name_en: "Complexity Solution Navigator"
-      category: "systematic_decomposition"
-      umis_agent: ["Bill", "Albert"]
-      use_case: "복잡한 시장 요소의 체계적 정리"
-      
-      formula:
-        expression: "CS = det|M| × Σ[Si/Ci] × ∏[Ii]"
-        variables:
-          "det|M|":
-            name: "시스템 매트릭스 행렬식"
-            description: "시스템의 구조적 특성"
-          Si:
-            name: "하위 시스템 해결책"
-            description: "각 구성요소의 해결 방안"
-          Ci:
-            name: "하위 시스템 복잡도"
-            description: "각 구성요소의 복잡성 수준"
-            range: [1, 10]
-          Ii:
-            name: "상호작용 계수"
-            description: "구성요소 간 상호작용 강도"
-            range: [0, 1]
-      
-      process_steps:
-        - step: 1
-          name: "시스템 매핑"
-          actions: ["구성요소 식별", "관계 도식화", "경계 설정"]
-        - step: 2
-          name: "복잡도 평가"
-          actions: ["각 요소 복잡도 측정", "상호작용 분석", "병목 지점 확인"]
-        - step: 3
-          name: "분해 및 해결"
-          actions: ["적절한 분해 전략 선택", "하위 문제 해결", "솔루션 통합"]
-        - step: 4
-          name: "최적화 및 실행"
-          actions: ["레버리지 포인트 활용", "실행 순서 결정", "통합 테스트"]
-      
-      prompt_template: |
-        [BRAINSTORM - M8] 복잡성 해결
-        
-        복잡한 문제: {complex_problem}
-        
-        1. 시스템 매핑:
-           구성요소:
-           - C1: ...
-           - C2: ...
-           - C3: ...
-           
-           관계 매트릭스:
-           |    | C1 | C2 | C3 |
-           |----|----|----|-----|
-           | C1 |  - | R1 | R2  |
-           | C2 | R3 |  - | R4  |
-           | C3 | R5 | R6 |  -  |
-        
-        2. 복잡도 분석:
-           - C1 복잡도: 낮음 (3/10)
-           - C2 복잡도: 중간 (6/10)
-           - C3 복잡도: 높음 (9/10)
-        
-        3. 하위 시스템 해결책:
-           - S1 (C1 해결): ...
-           - S2 (C2 해결): ...
-           - S3 (C3 해결): ...
-        
-        4. 통합 솔루션: [전체 시스템 최적화 방안]
-      
-      best_for: ["복잡한 문제", "시스템 분석", "단계별 해결"]
-      time_estimate: "25-30분"
-      difficulty: "expert"
-      
-    - id: "M9"
-      name: "직관 활성화 프로세서"
-      name_en: "Intuition Activation Processor"
-      category: "intuitive_thinking"
-      umis_agent: ["Owner"]
-      use_case: "데이터를 넘어선 직관적 의사결정"
-      
-      formula:
-        expression: "IL = (S × E × T) / (L × R)"
-        variables:
-          S:
-            name: "정적 사고"
-            description: "의식적 사고 중단의 질"
-            factors: ["명상 시간", "마음 비우기", "수용적 상태"]
-          E:
-            name: "경험 축적"
-            description: "관련 경험의 폭과 깊이"
-            factors: ["다양성", "깊이", "관련성"]
-          T:
-            name: "직관 신뢰"
-            description: "내적 목소리에 대한 신뢰"
-            factors: ["자신감", "개방성", "수용성"]
-          L:
-            name: "논리적 제약"
-            description: "과도한 분석적 사고"
-            factors: ["경직성", "과분석", "회의주의"]
-            inverse: true
-          R:
-            name: "합리화"
-            description: "과도한 정당화 욕구"
-            factors: ["정당화", "두려움", "통제욕"]
-            inverse: true
-      
-      process_steps:
-        - step: 1
-          name: "준비 단계"
-          actions: ["정보 수집 완료", "논리적 분석 중단", "열린 상태 유지"]
-        - step: 2
-          name: "직관 활성화"
-          actions: ["정적 유지", "내면 관찰", "신호 포착"]
-        - step: 3
-          name: "직관 수용"
-          actions: ["첫 인상 기록", "판단 보류", "가능성 탐색"]
-        - step: 4
-          name: "직관 검증"
-          actions: ["일관성 확인", "경험과 대조", "실행 가능성 평가"]
-      
-      prompt_template: |
-        [BRAINSTORM - M9] 직관 활성화
-        
-        주제: {topic}
-        
-        준비 단계:
-        - 관련 정보 수집 완료
-        - 논리적 분석 일시 중단
-        - 마음을 비우고 열린 상태 유지
-        
-        직관 포착:
-        - 첫 번째 떠오르는 이미지: ...
-        - 연관된 감정: ...
-        - 즉각적인 인상: ...
-        
-        직관적 도약:
-        - 핵심 통찰: ...
-        - 혁신적 접근: ...
-        - 다음 단계: ...
-        
-        직관 지수 (IL): [계산 결과]
-      
-      best_for: ["창의적 도약", "예상외 발견", "직관적 해결"]
-      time_estimate: "10-15분"
-      difficulty: "intermediate"
-      
-    - id: "M10"
-      name: "통합 지혜 신시사이저"
-      name_en: "Integrated Wisdom Synthesizer"
-      category: "holistic_integration"
-      umis_agent: ["Stewart", "Owner"]
-      use_case: "모든 분석의 균형잡힌 종합"
-      
-      formula:
-        expression: "IW = (K + U + W + C + A) × H × E"
-        variables:
-          K:
-            name: "지식"
-            description: "정보와 사실의 축적"
-            aspects: ["폭", "깊이", "최신성"]
-            range: [1, 10]
-          U:
-            name: "이해"
-            description: "개념과 관계의 파악"
-            aspects: ["개념적", "실용적", "시스템적"]
-            range: [1, 10]
-          W:
-            name: "지혜"
-            description: "경험과 통찰의 결정"
-            aspects: ["분별력", "판단력", "선견지명"]
-            range: [1, 10]
-          C:
-            name: "공감"
-            description: "타인과 상황에 대한 이해"
-            aspects: ["감정이입", "배려", "포용성"]
-            range: [1, 10]
-          A:
-            name: "실행"
-            description: "계획과 실천의 능력"
-            aspects: ["계획", "실행", "적응"]
-            range: [1, 10]
-          H:
-            name: "겸손"
-            description: "한계 인식과 개방성"
-            multiplier: true
-            range: [0.5, 2.0]
-          E:
-            name: "윤리"
-            description: "가치와 원칙의 일관성"
-            multiplier: true
-            range: [0.5, 2.0]
-      
-      process_steps:
-        - step: 1
-          name: "요소별 평가"
-          actions: ["각 요소 수준 측정", "강점과 약점 파악", "개선 영역 확인"]
-        - step: 2
-          name: "통합적 종합"
-          actions: ["요소 간 연결", "시너지 발견", "전체상 구성"]
-        - step: 3
-          name: "지혜 도출"
-          actions: ["핵심 통찰 추출", "실천 방안 수립", "윤리적 검토"]
-        - step: 4
-          name: "실행 계획"
-          actions: ["우선순위 설정", "자원 배분", "평가 기준 수립"]
-      
-      prompt_template: |
-        [BRAINSTORM - M10] 통합 지혜
-        
-        주제: {topic}
-        
-        지식 (K):
-        - 핵심 사실: ...
-        - 관련 이론: ...
-        평가: X/10
-        
-        이해 (U):
-        - 개념적 통찰: ...
-        - 실용적 적용: ...
-        평가: Y/10
-        
-        지혜 (W):
-        - 장기적 관점: ...
-        - 균형잡힌 판단: ...
-        평가: Z/10
-        
-        공감 (C):
-        - 이해관계자 관점: ...
-        - 포용적 접근: ...
-        평가: A/10
-        
-        실행 (A):
-        - 구체적 계획: ...
-        - 실행 전략: ...
-        평가: B/10
-        
-        겸손 (H) × 윤리 (E):
-        - 한계 인정: ...
-        - 가치 정렬: ...
-        
-        통합적 지혜:
-        - 최종 통찰: ...
-        - 권장 행동: ...
-        - IW 지수: [계산 결과]
-      
-      best_for: ["종합적 판단", "균형잡힌 결정", "지혜로운 행동"]
-      time_estimate: "20-25분"
-      difficulty: "advanced"
-  
-  # 모듈 간 관계
-  module_relationships:
-    relationship_types:
-      strong: 
-        symbol: "●●●"
-        description: "매우 강한 상호보완 관계"
-        synergy: "높은 시너지 효과"
-      medium:
-        symbol: "●●"
-        description: "중간 정도의 연관성"
-        synergy: "적절한 시너지 효과"
-      weak:
-        symbol: "●"
-        description: "약한 연관성"
-        synergy: "제한적 시너지 효과"
+  formulas:
+    # M1. 천재적 통찰 도출
+    M1_genius_insight:
+      formula: "GI = (O × C × P × S) / (A + B)"
+      variables:
+        O: "관찰의 깊이 (1-10)"
+        C: "연결의 독창성 (1-10)"
+        P: "패턴 인식 능력 (1-10)"
+        S: "종합적 사고 (1-10)"
+        A: "고정관념 수준 (1-10)"
+        B: "편향 정도 (1-10)"
+      agent: ["Steve", "Owner"]
+      use_for: "패러다임 전환, 숨겨진 기회 발견"
     
-    key_patterns:
-      discovery_creation_axis:
-        name: "발견-창조 축"
-        flow: ["M2", "M1", "M3", "M5"]
-        reverse: ["M4", "M6", "M9", "M7"]
-        description: "아이디어의 발견에서 창조까지의 흐름"
-      
-      analysis_synthesis_axis:
-        name: "분석-종합 축"
-        analytical: ["M2", "M4", "M8"]
-        synthetic: ["M5", "M10"]
-        bridge: "M8"
-        description: "분해와 통합의 균형"
-      
-      logic_intuition_axis:
-        name: "논리-직관 축"
-        logical: ["M2", "M4", "M8"]
-        intuitive: ["M1", "M3", "M9"]
-        balanced: ["M5", "M10"]
-        description: "이성과 직관의 조화"
+    # M2. 다차원 분석
+    M2_multidimensional_analysis:
+      formula: "MDA = Σ[Di × Wi × Ii]"
+      dimensions:
+        - "시간적 (과거-현재-미래)"
+        - "공간적 (로컬-글로벌)"
+        - "추상적 (구체-추상)"
+        - "인과적 (원인-결과)"
+        - "계층적 (미시-거시)"
+      agent: ["Albert"]
+      use_for: "복잡한 시장 구조의 체계적 분해"
     
-    synergy_combinations:
-      problem_understanding:
-        core: ["M2", "M4"]
-        support: ["M8"]
-        synergy: "다차원 분석 후 문제 재정의로 본질 파악"
-      
-      idea_generation:
-        core: ["M1", "M3"]
-        support: ["M9"]
-        synergy: "깊은 통찰과 창의적 연결의 시너지"
-      
-      solution_development:
-        core: ["M5", "M6"]
-        support: ["M7"]
-        synergy: "솔루션 생성 후 지속적 개선"
-      
-      holistic_execution:
-        core: ["M10"]
-        support: ["all"]
-        synergy: "모든 모듈의 결과를 통합하여 실행"
-  
-  # Creative Boost 워크플로우
-  creative_workflows:
-    - id: "quick_insight"
-      name: "빠른 통찰"
-      description: "신속한 시장 기회 발견을 위한 최소 워크플로우"
-      modules: ["M1", "M5"]
-      time_estimate: "10-15분"
-      
-      steps:
-        - step: 1
-          module: "M1"
-          action: "천재적 통찰 도출"
-          output: "핵심 인사이트"
-        - step: 2
-          module: "M5"
-          action: "혁신 솔루션 설계"
-          output: "실행 가능한 아이디어"
-      
-      best_for: ["긴급한 기회 포착", "빠른 전략 피벗", "초기 아이디어 검증"]
-      
-    - id: "deep_market_analysis"
-      name: "심층 시장 분석"
-      description: "복잡한 시장 구조의 체계적 분석과 해결"
-      modules: ["M2", "M4", "M8", "M10"]
-      time_estimate: "45-60분"
-      
-      steps:
-        - step: 1
-          module: "M2"
-          action: "다차원적 시장 분석"
-          output: "체계적 시장 이해"
-        - step: 2
-          module: "M4"
-          action: "시장 문제 재정의"
-          output: "새로운 시장 관점"
-        - step: 3
-          module: "M8"
-          action: "복잡성 해결"
-          output: "구조화된 기회 맵"
-        - step: 4
-          module: "M10"
-          action: "통합적 종합"
-          output: "실행 전략"
-      
-      best_for: ["신규 시장 진입", "시장 재편 전략", "복잡한 생태계 분석"]
-      
-    - id: "creative_opportunity"
-      name: "창의적 기회 발굴"
-      description: "혁신적 시장 기회 창출을 위한 창의성 중심 워크플로우"
-      modules: ["M3", "M6", "M9"]
-      time_estimate: "30-40분"
-      
-      steps:
-        - step: 1
-          module: "M3"
-          action: "이질적 요소 연결"
-          output: "새로운 시장 조합"
-        - step: 2
-          module: "M9"
-          action: "직관 활성화"
-          output: "직관적 기회 포착"
-        - step: 3
-          module: "M6"
-          action: "인사이트 증폭"
-          output: "발전된 기회 개념"
-      
-      best_for: ["Blue Ocean 탐색", "융합 시장 창출", "패러다임 전환"]
-      
-    - id: "full_creative_boost"
-      name: "전체 창의적 부스트"
-      description: "모든 창의적 도구를 활용한 완전한 브레인스토밍"
-      modules: "all"
-      time_estimate: "60-90분"
-      
-      phases:
-        - phase: 1
-          name: "시장 이해"
-          modules: ["M1", "M2", "M4"]
-          output: "시장의 본질 파악"
-        - phase: 2
-          name: "기회 창출"
-          modules: ["M3", "M5", "M9"]
-          output: "창의적 시장 기회"
-        - phase: 3
-          name: "개선 검증"
-          modules: ["M6", "M7", "M8"]
-          output: "최적화된 전략"
-        - phase: 4
-          name: "최종 통합"
-          modules: ["M10"]
-          output: "실행 가능한 마스터플랜"
-      
-      best_for: ["대규모 전략 전환", "신사업 기획", "시장 혁신 프로젝트"]
-  
-  # 실행 패턴
-  execution_patterns:
-    - pattern: "linear_progression"
-      name: "선형 진행"
-      description: "단계별 순차적 실행"
-      flow: ["M4", "M2", "M1", "M5", "M10"]
-      use_case: "구조화된 문제 해결"
-      
-    - pattern: "iterative_deepening"
-      name: "반복 심화"
-      description: "순환적 개선을 통한 심화"
-      flow: 
-        cycle: ["M1", "M6", "M7"]
-        output: "M5"
-      use_case: "아이디어 정교화"
-      
-    - pattern: "diverge_converge"
-      name: "발산-수렴"
-      description: "넓게 탐색 후 집중"
-      flow:
-        diverge: ["M1", "M3", "M9"]
-        converge: ["M2", "M4", "M8"]
-        integrate: "M10"
-      use_case: "혁신적 솔루션 도출"
-      
-    - pattern: "parallel_exploration"
-      name: "병렬 탐색"
-      description: "여러 관점 동시 탐색"
-      flow:
-        tracks: [["M1", "M3"], ["M2", "M4"], ["M8", "M9"]]
-        synthesis: "M10"
-      use_case: "복잡한 문제의 다각도 분석"
-      
-    - pattern: "adaptive_flow"
-      name: "적응형 흐름"
-      description: "상황에 따라 유연하게 조정"
-      initial: "M1"
-      decision_points:
-        after_M1:
-          if_clear: "M5"
-          if_complex: "M2"
-          if_blocked: "M4"
-        after_M2:
-          if_insight: "M3"
-          if_stuck: "M9"
-      use_case: "불확실한 상황에서의 탐색"
-  
-  integration_protocol:
-    step_1_request:
-      trigger: "User 또는 Agent의 명시적 요청"
-      format: "[BRAINSTORM REQUEST] {specific_need}"
-      
-    step_2_selection:
-      action: "필요한 모듈 선택 (1-3개 권장)"
-      criteria: "현재 문제와 가장 적합한 모듈"
-      
-    step_3_execution:
-      process: "선택된 모듈의 프로세스 실행"
-      documentation: "각 단계별 결과 기록"
-      
-    step_4_tagging:
-      format: |
-        [BRAINSTORM START - Module: {module_id}]
-        {brainstorming_process_and_results}
-        [BRAINSTORM END]
-      
-    step_5_integration:
-      action: "브레인스토밍 결과를 UMIS 프로세스에 통합"
-      validation: "기존 데이터/분석과의 일관성 검토"
-  
-  example_usage:
-    steve_creative_opportunity:
-      context: "기존 시장 구조 분석에서 새로운 기회를 못 찾을 때"
-      request: "[BRAINSTORM REQUEST] 시장 구조의 창의적 재해석 필요"
-      modules: ["M1", "M3", "M4"]
-      output: |
-        [BRAINSTORM START - Module: M1, M3, M4]
-        
-        M1 천재적 통찰:
-        - 관찰: 시장의 숨겨진 패턴 X 발견
-        - 연결: 기존에 없던 A-B 융합 가능성
-        - 통찰: 새로운 가치 창출 메커니즘
-        
-        M3 창의적 연결:
-        - 개념 A (전통 산업) + 개념 B (디지털 기술)
-        - 시너지: 예상치 못한 효율성 창출
-        
-        M4 문제 재정의:
-        - 원래: "어떻게 시장 점유율을 늘릴까?"
-        - 재정의: "왜 기존 시장 정의에 갇혀있나?"
-        - 새로운 시장 정의로 10배 큰 기회 발견
-        
-        [BRAINSTORM END]
+    # M3. 창의적 연결
+    M3_creative_connection:
+      formula: "CC = |A ∩ B| + |A ⊕ B| + f(A→B)"
+      components:
+        "A ∩ B": "두 개념의 공통 요소"
+        "A ⊕ B": "배타적 차이 요소"
+        "f(A→B)": "A에서 B로의 전이 함수"
+      agent: ["Steve"]
+      use_for: "이질적 시장 요소의 융합 기회 발견"
     
-    owner_intuitive_decision:
-      context: "데이터는 충분하지만 결정이 어려울 때"
-      request: "[BRAINSTORM REQUEST] 직관적 의사결정 지원"
-      modules: ["M9", "M10"]
-      output: |
-        [BRAINSTORM START - Module: M9, M10]
-        
-        M9 직관 활성화:
-        - 첫 인상: 시장의 미묘한 신호 감지
-        - 직관적 패턴: 데이터에 없는 연결 발견
-        - 신체 감각: 특정 방향에 대한 확신
-        
-        M10 통합 지혜:
-        - 지식 + 직관 = 균형잡힌 판단
-        - 장기적 관점에서의 지속가능성
-        - 윤리적 고려사항 통합
-        
-        [BRAINSTORM END]
+    # M4. 문제 재정의
+    M4_problem_redefinition:
+      formula: "PR = P₀ × T(θ) × S(φ) × M(ψ)"
+      transformations:
+        "T(θ)": "관점 회전 (0°, 90°, 180°, 270°)"
+        "S(φ)": "범위 조정 (0.1x ~ 10x)"
+        "M(ψ)": "메타 레벨 이동 (±1, ±2, ±3)"
+      agent: ["Steve", "Owner"]
+      use_for: "시장 문제의 근본적 재구성"
+    
+    # M5. 혁신 솔루션
+    M5_innovative_solution:
+      formula: "IS = Σ[Ci × Ni × Fi × Vi] / Ri"
+      factors:
+        Ci: "조합 방식"
+        Ni: "참신성 지수"
+        Fi: "실현 가능성"
+        Vi: "가치 창출 정도"
+        Ri: "위험 요소"
+      agent: ["Steve"]
+      use_for: "실행 가능한 혁신적 시장 전략"
+    
+    # M6. 인사이트 증폭
+    M6_insight_amplification:
+      formula: "IA = I₀ × (1 + r)ⁿ × C × Q"
+      multipliers:
+        r: "반복 개선율"
+        n: "반복 횟수"
+        C: "협력 효과 (1-3x)"
+        Q: "질문의 질 (1-5x)"
+      agent: ["Rachel", "Stewart"]
+      use_for: "초기 발견의 반복적 심화"
+    
+    # M7. 사고 진화
+    M7_thinking_evolution:
+      formula: "TE = T₀ + ∫[L(t) + E(t) + R(t)]dt"
+      functions:
+        "L(t)": "학습 함수"
+        "E(t)": "경험 축적 함수"
+        "R(t)": "반성적 사고 함수"
+      agent: ["Stewart"]
+      use_for: "분석 방법론의 지속적 개선"
+    
+    # M8. 복잡성 해결
+    M8_complexity_solution:
+      formula: "CS = det|M| × Σ[Si/Ci] × ∏[Ii]"
+      elements:
+        "det|M|": "시스템 매트릭스 행렬식"
+        "Si/Ci": "하위 시스템 해결책/복잡도"
+        "Ii": "상호작용 계수"
+      agent: ["Bill", "Albert"]
+      use_for: "복잡한 시장 요소의 체계적 정리"
+    
+    # M9. 직관적 도약
+    M9_intuitive_leap:
+      formula: "IL = (S × E × T) / (L × R)"
+      balance:
+        numerator: "정적(S) × 경험(E) × 신뢰(T)"
+        denominator: "논리적 제약(L) × 과도한 합리화(R)"
+      agent: ["Owner"]
+      use_for: "데이터를 넘어선 직관적 의사결정"
+    
+    # M10. 통합 지혜
+    M10_integrated_wisdom:
+      formula: "IW = (K + U + W + C + A) × H × E"
+      components:
+        base: "지식(K) + 이해(U) + 지혜(W) + 공감(C) + 실행(A)"
+        multipliers: "겸손(H) × 윤리(E)"
+      agent: ["Stewart", "Owner"]
+      use_for: "모든 분석의 균형잡힌 종합"
   
-  limitations:
-    - "브레인스토밍 결과는 반드시 UMIS의 데이터 기반 검증 필요"
-    - "창의적 아이디어도 시장 현실성 테스트 필수"
-    - "모든 에이전트가 모든 모듈을 사용할 수 있는 것은 아님"
-    - "과도한 사용은 분석의 일관성을 해칠 수 있음"
+  quick_guide:
+    - "단계적 적용: 각 공식을 순차적으로 적용하여 사고 심화"
+    - "반복적 개선: 여러 번 반복하여 정교화"
+    - "다양한 관점: 서로 다른 배경의 사람들과 함께 적용"
+    - "실험적 태도: 창의적으로 변형하여 사용"
+    - "균형적 접근: 분석적 사고와 직관적 사고의 조화"
 
 # ========================================
 # SECTION 9: IMPLEMENTATION GUIDE
 # ========================================
 implementation_guide:
-  for_new_projects:
-    - "Start with clarity assessment"
-    - "Trust the Discovery Sprint"
-    - "Embrace uncertainty"
-    - "Let Stewart guide you"
-  for_existing_teams:
-    - "Gradual adoption possible"
-    - "Start with Stewart's monitoring"
-    - "Add Discovery Sprint option"
-    - "Phase in full adaptation"
-  critical_success_factors:
-    - "Leadership buy-in for flexibility"
-    - "Team comfort with ambiguity"
-    - "Trust in the process"
-    - "Active use of Stewart's guidance"
+  purpose: "UMIS v5.4를 실제 프로젝트에 적용하는 구체적 방법"
+  description: "사용자별, 상황별, 단계별 실행 가이드"
   
-  adaptive_workflow_examples:
-    description: "Adaptive workflow의 구체적 실행 예시는 별도 파일 참조"
-    reference: "adaptive_workflow_examples.yaml"
-    key_examples:
-      - "Progressive narrowing으로 시작하기"
-      - "MECE intent framework로 사용자 의도 파악"
-      - "Depth selection으로 분석 깊이 조정"
-      - "Market opportunity examples 참고"
-  
-  workflow_execution:
-    see_section_2: "Adaptive Intelligence System의 Workflow 섹션 참조"
-    key_stages:
-      - "Initialization: 명확도 평가"
-      - "Discovery Sprint: 병렬 탐색"
-      - "Progressive Analysis: 점진적 심화"
-      - "Convergence: 통합과 결정"
-      - "Iteration: 지속적 개선"
-# ========================================
-# SECTION 10: CONCLUSION
-# ========================================
-conclusion:
-  v5_philosophy: |
-    UMIS v5.2.2는 "계획의 완벽함"보다 "실행의 적응성"을 추구합니다.
+  # 1. 시작하기 (WHO - 사용자별 가이드)
+  getting_started:
+    for_new_users:
+      description: "UMIS를 처음 사용하는 사용자를 위한 가이드"
+      prerequisites:
+        - "System Definition (Section 1) 이해"
+        - "5 Agents + 1 Owner 구조 파악"
+        - "Adaptive Intelligence 개념 수용"
+      
+      initial_steps:
+        1_understand_framework:
+          action: "3-step market analysis framework 학습"
+          focus: "Purpose → Boundary → Dynamics 흐름 이해"
+        
+        2_meet_the_team:
+          action: "각 Agent의 역할과 성격 파악"
+          agents:
+            - "Albert: 팩트와 관찰"
+            - "Steve: 해석과 가능성"
+            - "Bill: 숫자와 규모"
+            - "Rachel: 데이터 검증"
+            - "Stewart: 프로세스 감독"
+            - "Owner: 전략적 결정"
+        
+        3_embrace_ambiguity:
+          action: "Low-clarity start 수용하기"
+          mindset: "불확실성은 기회의 시작"
+        
+        4_trust_the_process:
+          action: "Discovery Sprint 신뢰하기"
+          benefit: "20-30% 명확도로도 시작 가능"
     
-    불확실한 시작을 두려워하지 마세요.
-    발견을 통해 길을 찾아가세요.
-    Stewart가 곁에서 안내할 것입니다.
+    for_existing_users:
+      description: "이전 버전 사용자를 위한 마이그레이션 가이드"
+      
+      key_changes_from_v5_3:
+        - "Section 2: Adaptive Intelligence System으로 통합"
+        - "Section 3: Goal Alignment 중심으로 재구성"
+        - "Section 4: Collaboration Protocols 독립"
+        - "Owner: 확장된 의사결정 프레임워크"
+      
+      migration_steps:
+        - "새로운 11개 섹션 구조 확인"
+        - "확장된 Owner 역할 숙지"
+        - "13개 market dimensions 활용"
+        - "Goal alignment monitoring 적용"
     
-    필요할 때는 Creative Boost로 창의적 돌파구를 찾으세요.
-    하지만 항상 [BRAINSTORM] 태그로 명시하세요.
-    
-    시장은 발견되기를 기다리고 있습니다.
+    for_developers:
+      description: "UMIS를 시스템에 통합하려는 개발자"
+      
+      integration_points:
+        agent_interfaces:
+          - "표준화된 4-섹션 구조 활용"
+          - "BOUNDARIES & INTERFACES 참조"
+          - "Extended frameworks 확장 가능"
+        
+        collaboration_protocols:
+          - "Section 4의 트리거 구현"
+          - "Agent 간 통신 프로토콜"
+          - "비동기 협업 지원"
+        
+        data_integrity:
+          - "Section 5의 검증 규칙"
+          - "데이터 소스 관리"
+          - "버전 관리 시스템"
   
-  key_differentiator: |
-    v5.2.2: "Explore → Discover → [Creative Boost] → Adapt → Succeed"
+  # 2. 핵심 워크플로우 (HOW - 실행 방법)
+  core_workflows:
+    standard_market_analysis:
+      description: "일반적인 시장 분석 프로젝트 (1-2주)"
+      
+      phase_1_initialization:
+        duration: "Day 1"
+        owner_actions:
+          - "프로젝트 목적 정의 (12 universal purposes 참조)"
+          - "초기 시장 경계 스케치"
+          - "성공 기준 설정"
+        stewart_actions:
+          - "명확도 평가 (1-10 스케일)"
+          - "리소스 배분 계획"
+          - "Discovery Sprint 필요성 판단"
+        decision_point: "명확도 < 7 → Discovery Sprint 진행"
+      
+      phase_2_discovery:
+        duration: "Days 2-3"
+        condition: "IF 명확도 < 7"
+        all_agents_parallel:
+          albert: "시장 현상 관찰"
+          steve: "가능성 탐색"
+          bill: "규모 추정"
+          rachel: "데이터 소스 확보"
+          stewart: "수렴 패턴 모니터링"
+        convergence: "Owner 주도로 기회 통합"
+      
+      phase_3_progressive_analysis:
+        duration: "Days 4-10"
+        approach: "점진적 심화"
+        iteration_cycle:
+          - "목표 구체화 (Owner)"
+          - "심층 분석 (Agents)"
+          - "협업 트리거 실행"
+          - "중간 검토 (Stewart)"
+          - "방향 조정 (Owner)"
+        depth_adjustment: "Market 특성에 따라 유연하게"
+      
+      phase_4_synthesis:
+        duration: "Days 11-14"
+        final_deliverables:
+          - "시장 정의 (13 dimensions)"
+          - "경쟁 우위 분석 (7 Powers)"
+          - "기회와 위험 평가"
+          - "전략적 권고사항"
+        stewart_final: "품질 검증 및 완성도 확인"
+        owner_final: "최종 의사결정 및 실행 계획"
     
-    단일 워크플로우로 모든 상황에 대응합니다.
-
+    rapid_opportunity_assessment:
+      description: "빠른 기회 평가 (1-3일)"
+      when_to_use:
+        - "인수합병 기회"
+        - "신규 시장 진입"
+        - "경쟁자 대응"
+      
+      compressed_workflow:
+        day_1_morning: "Purpose & Quick Scan"
+        day_1_afternoon: "Parallel Agent Analysis"
+        day_2_morning: "Size & Validation"
+        day_2_afternoon: "Strategic Assessment"
+        day_3: "Decision & Action Plan"
+      
+      focus_areas:
+        immediate: "Problem-Solution Fit, Time to Value"
+        sustainable: "7 Powers Quick Scan"
+        decision: "Go/No-Go with rationale"
+    
+    deep_market_research:
+      description: "심층 시장 조사 (2-4주)"
+      when_to_use:
+        - "신규 사업 기획"
+        - "장기 투자 검토"
+        - "시장 재정의"
+      
+      extended_analysis:
+        week_1: "전체 시장 맵핑"
+        week_2: "13개 차원 심층 분석"
+        week_3: "동적 패턴과 미래 시나리오"
+        week_4: "전략 수립과 실행 계획"
+      
+      special_techniques:
+        - "Extended forces 분석"
+        - "Affinity dynamics 심층 조사"
+        - "Cross-dimensional integration"
+        - "Creative Boost 활용 (필요시)"
+  
+  # 3. 섹션별 활용법 (WHAT - 각 섹션 사용법)
+  section_utilization:
+    section_1_system_definition:
+      when: "프로젝트 시작 시"
+      how: "프레임워크와 원칙 이해"
+      key_tools:
+        - "12 universal purposes 체크리스트"
+        - "13 market dimensions 템플릿"
+        - "3-part dynamics framework"
+    
+    section_2_adaptive_intelligence:
+      when: "프로젝트 전반"
+      how: "적응형 접근법 실행"
+      key_tools:
+        - "Clarity score 계산기"
+        - "Discovery sprint 체크리스트"
+        - "5-stage workflow tracker"
+    
+    section_3_proactive_monitoring:
+      when: "실행 중 지속적"
+      how: "목표 정렬 상태 확인"
+      key_metrics:
+        - "목표 벡터 거리"
+        - "핵심 활동 비중"
+        - "범위 확산도"
+    
+    section_4_collaboration_protocols:
+      when: "Agent 협업 필요시"
+      how: "트리거 기반 실행"
+      key_triggers:
+        - "Discovery Sprint Kick-off"
+        - "Clarity Evolution Check"
+        - "Pivot Assessment"
+        - "Deep Dive Alert"
+    
+    section_5_data_integrity:
+      when: "데이터 작업 시"
+      how: "검증 프로토콜 적용"
+      key_aspects:
+        - "Source credibility"
+        - "Temporal relevance"
+        - "Contextual accuracy"
+    
+    section_6_agents:
+      when: "분석 작업 배분"
+      how: "전문성 기반 할당"
+      assignment_matrix:
+        facts_and_data: "Albert"
+        interpretation: "Steve"
+        quantification: "Bill"
+        validation: "Rachel"
+        orchestration: "Stewart"
+    
+    section_7_owner:
+      when: "전략적 결정 필요"
+      how: "통합적 판단"
+      decision_areas:
+        - "목표 설정과 조정"
+        - "자원 배분"
+        - "피벗 결정"
+        - "최종 전략"
+    
+    section_8_creative_boost:
+      when: "창의적 돌파 필요"
+      how: "선택적 활성화"
+      activation: "[BRAINSTORM] 태그 사용"
+      approval: "Owner 승인 필수"
+  
+  # 4. 상황별 적용 (WHEN - 언제 무엇을)
+  situational_application:
+    high_uncertainty_scenarios:
+      characteristics:
+        - "명확도 < 3"
+        - "새로운 시장/기술"
+        - "복잡한 이해관계"
+      
+      recommended_approach:
+        - "Extended Discovery Sprint (3-5일)"
+        - "Creative Boost 적극 활용"
+        - "빈번한 피벗 준비"
+        - "Stewart의 가이던스 중시"
+      
+      success_factors:
+        - "인내심과 개방성"
+        - "작은 발견 축적"
+        - "방향 전환 유연성"
+    
+    well_defined_projects:
+      characteristics:
+        - "명확도 > 7"
+        - "익숙한 시장"
+        - "명확한 목표"
+      
+      streamlined_approach:
+        - "Discovery Sprint 생략"
+        - "직접 심층 분석"
+        - "실행 속도 중시"
+        - "검증 중심 진행"
+      
+      efficiency_tips:
+        - "기존 데이터 최대 활용"
+        - "표준 템플릿 적용"
+        - "빠른 의사결정"
+    
+    crisis_management:
+      characteristics:
+        - "시간 압박"
+        - "높은 리스크"
+        - "제한된 정보"
+      
+      emergency_protocol:
+        - "Owner 직접 지휘"
+        - "핵심 정보만 수집"
+        - "80/20 원칙 적용"
+        - "일일 모니터링"
+      
+      critical_focus:
+        - "즉각적 위협/기회"
+        - "의사결정 임계값"
+        - "실행 가능성"
+    
+    innovation_projects:
+      characteristics:
+        - "미래 지향적"
+        - "파괴적 혁신"
+        - "Blue Ocean"
+      
+      creative_approach:
+        - "Steve 주도 탐색"
+        - "Creative Boost 활용"
+        - "시나리오 플래닝"
+        - "실험적 검증"
+  
+  # 5. 성공 요인과 함정 (WHY - 이유와 주의사항)
+  success_factors:
+    critical_enablers:
+      low_clarity_acceptance:
+        why: "불확실성이 발견의 시작"
+        how: "20-30% 명확도로도 시작"
+        benefit: "예상치 못한 기회 발견"
+      
+      process_trust:
+        why: "시스템이 검증된 방법론"
+        how: "각 단계를 충실히 실행"
+        benefit: "일관된 품질과 통찰"
+      
+      agent_autonomy:
+        why: "전문성이 가치를 창출"
+        how: "역할 경계 존중"
+        benefit: "시너지와 효율성"
+      
+      adaptive_mindset:
+        why: "시장은 계속 변화"
+        how: "발견에 따라 조정"
+        benefit: "적합성과 적시성"
+    
+    common_pitfalls:
+      over_planning:
+        symptom: "Discovery Sprint 회피"
+        consequence: "잘못된 방향 고착"
+        solution: "명확도 < 7이면 반드시 실행"
+        prevention: "불확실성 수용 문화"
+      
+      micro_management:
+        symptom: "Agent 역할 침범"
+        consequence: "비효율과 갈등"
+        solution: "전문 영역 존중"
+        prevention: "명확한 역할 정의"
+      
+      goal_fixation:
+        symptom: "새로운 발견 무시"
+        consequence: "기회 상실"
+        solution: "Stewart 제안 경청"
+        prevention: "정기적 목표 검토"
+      
+      analysis_paralysis:
+        symptom: "결정 지연"
+        consequence: "시장 기회 상실"
+        solution: "80% 규칙 적용"
+        prevention: "명확한 마일스톤"
+  
+  # 6. 도구와 템플릿 (TOOLS)
+  tools_and_templates:
+    essential_templates:
+      project_initialization:
+        - "Clarity Assessment Matrix"
+        - "Purpose Alignment Checklist"
+        - "Initial Boundary Sketch"
+        - "Resource Planning Sheet"
+      
+      execution_tracking:
+        - "Agent Task Tracker"
+        - "Collaboration Log"
+        - "Progress Dashboard"
+        - "Risk Register"
+      
+      analysis_frameworks:
+        - "13 Dimensions Template"
+        - "7 Powers Scorecard"
+        - "Force Dynamics Map"
+        - "Scenario Planning Canvas"
+      
+      decision_support:
+        - "Go/No-Go Criteria"
+        - "Pivot Decision Tree"
+        - "Investment Thesis"
+        - "Exit Strategy Planner"
+    
+    external_resources:
+      detailed_examples: "adaptive_workflow_examples.yaml"
+      market_templates: "market_analysis_templates/"
+      collaboration_scripts: "collaboration_scripts/"
+      case_studies: "umis_case_studies/"
+    
+    automation_tools:
+      - "UMIS CLI for project setup"
+      - "Agent simulation scripts"
+      - "Data validation tools"
+      - "Report generators"
+  
+  # 7. 측정과 개선 (MEASURE)
+  measurement_and_improvement:
+    key_metrics:
+      project_efficiency:
+        - "Time to first insight"
+        - "Clarity improvement rate"
+        - "Decision accuracy"
+        - "Resource utilization"
+      
+      quality_indicators:
+        - "Stakeholder satisfaction"
+        - "Actionability of insights"
+        - "Prediction accuracy"
+        - "Strategic impact"
+    
+    continuous_improvement:
+      after_action_review:
+        - "What worked well?"
+        - "What could improve?"
+        - "Key learnings"
+        - "Process updates"
+      
+      feedback_loops:
+        - "User feedback integration"
+        - "Agent performance tuning"
+        - "Template refinement"
+        - "Workflow optimization"
+    
+    maturity_model:
+      level_1_beginner: "Following templates"
+      level_2_competent: "Adapting workflows"
+      level_3_proficient: "Creating variations"
+      level_4_expert: "Innovating methods"
+      level_5_master: "Teaching others"
 # ========================================
-# SECTION 11: COMPATIBILITY
+# END OF UMIS v5.4 GUIDELINES
 # ========================================
-compatibility:
-  version: "5.2.2"
-  creative_boost: true
-  
-  activation:
-    creative_boost: "export UMIS_CREATIVE='enabled'"
-  
-  breaking_changes_from_v5_2:
-    - "Classic workflow v4 제거됨"
-    - "모든 프로젝트는 Adaptive workflow 사용"
-    - "Migration guide 제거됨"
-  
-  upgrade_benefits:
-    - "단일 워크플로우로 단순화"
-    - "모든 명확도 수준 대응"
-    - "파일 크기 감소 (약 10%)"
+# 
+# UMIS v5.4 - Conceptual Clarity Edition
+# 
+# 핵심 메시지:
+# - 불확실성을 기회로 바꾸는 시장 분석 시스템
+# - 20-30% 명확도로도 시작 가능
+# - 체계적인 프레임워크와 적응형 지능의 결합
+# 
+# "시장 분석은 완벽한 계획이 아닌 지속적인 발견과 적응의 과정입니다."
 

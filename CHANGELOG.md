@@ -75,14 +75,39 @@
   - 기존 Section 3의 collaboration_triggers를 독립 섹션으로 분리
   - 에이전트 간 협업 규칙을 명확한 위치에 배치
 - 기존 Section 8 (Adaptive Workflow) 삭제
-- 섹션 번호 재정렬 (총 11개 섹션)
+- Section 10 (CONCLUSION)과 Section 11 (COMPATIBILITY) 제거
+  - 불필요한 과거 버전 참조와 중복 내용 정리
+  - 핵심 메시지는 파일 끝에 간단히 정리
+- 섹션 번호 재정렬 (총 9개 섹션으로 간소화)
 - adaptive_workflow_examples.yaml로 실행 예시 분리
+
+### Section 5 (DATA INTEGRITY SYSTEM) 대폭 간소화
+- 620줄 → 152줄로 75% 감소
+- 6개 하위섹션 → 4개로 재구성
+  1. 데이터 라이프사이클 관리
+  2. 프로젝트 구조 표준
+  3. 품질 보증 체계
+  4. 백업 및 복구 전략
+- 시장 분석에 특화된 내용으로 재편
+- 불필요한 기술적 세부사항 제거
+- Agent 역할 명확화 (Rachel vs Stewart vs System)
 
 ### 기타 개선
 - 파일 상단 Core Structure 설명을 README.md로 이동
 - 각 Step별 question, integrated_approach, purpose 명시
 - 정보 손실 없이 구조 효율화
-- 파일 크기: 176KB → 172KB (약 2.3% 감소, Section 통합 효과)
+### Section 8 (CREATIVE BOOST MODULE) 대폭 간소화
+- 800줄 → 120줄로 85% 감소
+- 원본의 간결한 철학 복원
+  - 10개 공식을 간단명료하게 정리
+  - 복잡한 하위 구조 제거
+  - 실용적 사용 가이드 중심
+- 각 공식당 5-8줄로 핵심만 보존
+- UMIS 에이전트와의 연결 유지
+
+### 파일 크기
+- 176KB → 154KB (약 12.5% 감소)
+- 4366줄 → 3758줄 (약 14% 감소)
 
 ---
 
