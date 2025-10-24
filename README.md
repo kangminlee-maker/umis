@@ -4,7 +4,7 @@
 
 이 폴더는 UMIS (Universal Market Intelligence System)의 단일 파일(monolithic) 형태로 작성된 가이드라인입니다.
 
-v1.2부터 현재 v6.0까지의 진화 과정을 담고 있으며, 지속적으로 단일 파일 형태로 유지·발전되고 있습니다.
+v1.2부터 현재 v6.0.1까지의 진화 과정을 담고 있으며, 지속적으로 단일 파일 형태로 유지·발전되고 있습니다.
 
 **📝 v5.2부터 버전 히스토리는 별도 파일로 관리됩니다: [CHANGELOG.md](./CHANGELOG.md)**
 
@@ -32,7 +32,8 @@ umis-monolithic-guidelines/
 ├── umis_guidelines_v5.2.1.yaml # Classic 제거, 단순화
 ├── umis_guidelines_v5.2.2.yaml # Market Definition 개선
 ├── umis_guidelines_v5.3.yaml   # 7 Powers 통합
-├── umis_guidelines_v6.0.yaml   # Progressive Intelligence Edition (현재 버전, 169KB)
+├── umis_guidelines_v6.0.yaml   # Progressive Intelligence Edition (169KB)
+├── umis_guidelines_v6.0.1.yaml # Information Flow Optimization (현재 버전, 177KB)
 ├── adaptive_workflow_examples.yaml # Adaptive workflow 실행 예시
 ├── CHANGELOG.md                # 상세 버전 히스토리
 ├── VERSION.txt                 # 현재 버전 정보
@@ -157,7 +158,7 @@ umis-monolithic-guidelines/
   - 단순 기회 발견을 넘어 지속 가능한 해자(moat) 구축
   - 시간이 지날수록 강해지는 사업 모델 설계
 
-### v6.0 - Progressive Intelligence Edition (현재)
+### v6.0 - Progressive Intelligence Edition
 - **System Definition 전면 재구성**
   - MECE 원칙에 따른 개념 구조 개선
   - 중복 제거 및 누락 요소 보완
@@ -210,10 +211,28 @@ Step 3: Market Dynamics Framework (HOW × WHEN × WHY)
   └─ Part C: 통합적 시장 역학
 ```
 
+### v6.0.1 - Information Flow Optimization (현재)
+- **정보 흐름 아키텍처 추가**
+  - Main Flow: 관찰(Albert) → 해석(Steve) → 결정(Owner)
+  - Information Layers: Raw Data → Processed Data → Insights
+  - Support/Oversight 기능 명확화
+- **에이전트 역할 명확화**
+  - Albert: 구조적 해석 (How it works)
+  - Steve: 가설적 해석 (Why & What if)
+  - 해석의 명확한 구분으로 중복 제거
+- **협업 프로토콜 개선**
+  - Albert-Bill 병렬 분석 동기화 강화
+  - 2시간 단위 체크포인트 명시
+  - 구조-정량 통합 리포트 표준화
+- **Stewart 자율 개입 확대**
+  - 4가지 개입 트리거 정의 (순환/목표이탈/정체/비효율)
+  - 임계값 기반 자동 개입
+  - 구체적 액션 가이드라인
+
 ## 💡 사용 권장사항
 
 - **최신 버전 선택**:
-  - 단일 파일: `umis_guidelines_v6.0.yaml` (169KB) - Progressive Intelligence Edition
+  - 단일 파일: `umis_guidelines_v6.0.1.yaml` (177KB) - Information Flow Optimization
   - 모듈러 최신: `umis_v5.3_modular/` (총 144KB) - 7 Powers 통합, 선택적 로드
   - 모듈러 안정: `umis_v5.1.3_modular/` (총 96KB) - 검증된 모듈러 구조
 - **ChatGPT 프로젝트**: Custom Instructions와 함께 활용
@@ -244,6 +263,7 @@ v5.2.1: 164KB  █████████████████████�
 v5.2.2: 167KB  ███████████████████████████ (Enhanced Definition)
 v5.3: 176KB    █████████████████████████████ (Sustainable Advantage)
 v6.0: 169KB    ████████████████████████ (Progressive Intelligence)
+v6.0.1: 177KB  █████████████████████████████ (Information Flow)
 ```
 
 ## 🚀 빠른 시작
