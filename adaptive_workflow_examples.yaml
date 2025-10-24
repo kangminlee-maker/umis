@@ -1,190 +1,377 @@
-# Adaptive Workflow Examples
-# Section 8에서 추출한 구체적 예시와 템플릿
-# UMIS v6.0에서 보존
+# Adaptive Workflow Examples for UMIS v6.0.1
+# UMIS v6.0.1 Progressive Intelligence Edition의 구체적 실행 예시
+# 
+# 참조: Section 9 (Implementation Guide) - external_resources
+# 관련: Section 1 (System Definition) - 3-step market analysis framework
+# 
+# v6.0.1 핵심 개념 반영:
+# - Information Flow Architecture (Albert → Steve → Owner)
+# - 12 Universal Purposes (4개 관점)
+# - 3-Step Framework (Purpose → Boundary → Dynamics)
+# - 20-30% 명확도로 시작하는 Discovery Sprint
 
 adaptive_workflow_examples:
-  description: "Adaptive Workflow의 구체적 실행 예시"
+  version: "6.0.1"
+  description: "UMIS v6.0.1의 Adaptive Workflow 실행 예시"
+  last_updated: "2024-10-24"
   
-  progressive_narrowing_examples:
-    initial_probe_example:
-      opening: "시장을 어떤 관점에서 보시면 도움이 될까요?"
-      
-      fact_based_options:
-        - "💰 돈의 흐름으로 보기 (누가 누구에게 얼마를 지불하는가)"
-        - "🏢 시장 참여자로 보기 (어떤 기업/조직들이 있는가)"
-        - "📍 실제 거래 패턴으로 보기 (어떤 거래가 얼마나 일어나는가)"
-        - "🔍 특정 관심사가 있다면 말씀해 주세요"
+  # ===== 1. Discovery Sprint Examples =====
+  discovery_sprint_examples:
+    description: "20-30% 명확도에서 시작하는 탐색적 접근"
     
-    classification_examples:
-      if_money_flow_selected:
-        top_down_options:
-          - "거래 주체별: 누가 돈을 내는가"
-          - "거래 대상별: 무엇에 돈을 내는가"  
-          - "거래 규모별: 얼마씩 거래되는가"
-          - "거래 빈도별: 얼마나 자주 거래되는가"
+    initial_clarity_assessment:
+      low_clarity_start:
+        user_input: "뭔가 헬스케어 쪽에 기회가 있을 것 같은데..."
+        clarity_score: "2/10 (20%)"
+        stewart_guidance:
+          - "헬스케어의 어떤 측면에 관심이 있으신가요?"
+          - "해결하고 싶은 문제가 있으신가요?"
+          - "특정 사용자군을 염두에 두고 계신가요?"
+        evolution_path:
+          step_1: "헬스케어 일반 (20%)"
+          step_2: "디지털 헬스케어 (40%)"
+          step_3: "원격진료 플랫폼 (60%)"
+          step_4: "만성질환자 원격관리 (80%)"
+    
+    discovery_questions_examples:
+      purpose_discovery:
+        - question: "대략적으로 어떤 기회를 찾고 있나?"
+          example_answers:
+            - "고령화 관련 뭔가..."
+            - "기존 비효율성 해결"
+            - "새로운 기술 활용 가능성"
         
-        bottom_up_options:
-          - "주요 플레이어 분석: 매출 상위 기업들 중심으로"
-          - "실거래 데이터 분석: 카드사/POS 데이터 기반"
-          - "이상 패턴 분석: 특이한 거래 패턴 중심으로"
-  
-  mece_intent_framework:
-    primary_intent_categories:
-      1_investment:
-        label: "💰 투자/자산 관점"
-        options:
-          - "기업 인수/지분 투자"
-          - "부동산/인프라 투자"
-          - "신기술/스타트업 투자"
-          - "금융상품/펀드 투자"
-      
-      2_business_creation:
-        label: "🚀 신규 사업 관점"
-        options:
-          - "제품/서비스 개발 및 출시"
-          - "플랫폼/마켓플레이스 구축"
-          - "B2B 솔루션 사업"
-          - "프랜차이즈/체인 사업"
-      
-      3_business_expansion:
-        label: "🔗 기존 사업 연계 관점"
-        options:
-          - "신규 시장/지역 진출"
-          - "제품/서비스 라인 확장"
-          - "파트너십/제휴 기회"
-          - "고객군 확대 전략"
-      
-      4_market_research:
-        label: "📊 시장 조사 관점"
-        options:
-          - "경쟁사 분석"
-          - "시장 진입 타당성 검토"
-          - "산업 트렌드 파악"
-          - "정책/규제 영향 분석"
-      
-      5_other:
-        label: "🔍 기타"
-        options:
-          - "학술/연구 목적"
-          - "정책 수립 참고"
-          - "개인적 관심"
-          - "위의 범주에 없는 목적"
-  
-  depth_selection_examples:
-    level_1_quick_facts:
-      label: "1️⃣ 핵심 수치만 빠르게"
-      example_output: |
-        [시장명] 핵심 정리:
-        • 시장 규모: XX조원 (2024)
-        • 성장률: CAGR XX%
-        • 시장 집중도: Top 3가 XX% 점유
-        • 주요 변화: ① [구조적 변화1] ② [규제 변화2] ③ [기술 변화3]
-        • 특이사항: [시장의 독특한 특성이나 비정상적 패턴]
-      time: "즉시 제공"
-    
-    level_2_structured_insights:
-      label: "2️⃣ 시장 구조와 역학 관계"
-      example_output: |
-        1. 가치 흐름과 마진 구조
-           [원재료] → [제조] → [유통] → [최종고객]
-              5%       15%      45%      35%
-           
-           • 유통 마진이 비정상적으로 높은 이유
-           • 제조사의 교섭력이 약한 구조적 원인
-           • 최종 가격의 35%가 비효율적 중개 수수료
-           
-        2. 시장 참여자간 힘의 균형
-           ┌─────────┬────────┬─────────┬──────────┐
-           │ 구분     │ 집중도  │ 교섭력   │ 주요 불만  │
-           ├─────────┼────────┼─────────┼──────────┤
-           │ 공급자   │ 분산    │ 약함     │ 단가 압박  │
-           │ 유통업자 │ 과점    │ 매우강함 │ (없음)     │
-           │ 구매자   │ 분산    │ 약함     │ 높은 가격  │
-           └─────────┴────────┴─────────┴──────────┘
-      time: "30분 내"
-    
-    level_3_comprehensive_report:
-      label: "3️⃣ 시장의 모든 측면을 파헤치기"
-      structure:
-        - "Part 1. 시장 정의와 범위 (pp.1-5)"
-        - "Part 2. 구조적 특성 분석 (pp.6-15)"
-        - "Part 3. 시장 기회 심층 분석 (pp.16-25)"
-        - "Part 4. 통합 시나리오와 전망 (pp.26-30)"
-        - "📎 데이터 부록: 모든 분석의 원천 데이터"
-      time: "2-3시간"
-    
-    level_4_custom_deep_dive:
-      label: "4️⃣ 특정 질문에 답하는 맞춤 분석"
-      example_cases:
-        case_a: 
-          question: "우리 업계의 수수료가 왜 이렇게 높죠?"
-          analysis_points:
-            - "수수료 구조의 역사적 형성 과정"
-            - "타 국가/산업과의 비교 분석"
-            - "수수료를 지탱하는 구조적 요인들"
-            - "변화 가능성과 트리거 이벤트"
+        - question: "어떤 문제를 해결하고 싶은가?"
+          example_answers:
+            - "비싼 의료비"
+            - "접근성 문제"
+            - "정보 비대칭"
         
-        case_b:
-          question: "지방에서는 왜 이 서비스가 안 될까?"
-          analysis_points:
-            - "지역별 시장 특성 차이 분석"
-            - "인프라/규제/문화적 장벽 매핑"
-            - "숨겨진 지역 시장의 실제 규모"
-            - "타 지역 성공/실패 사례 분석"
+        - question: "성공의 방향성은?"
+          example_answers:
+            - "사회적 가치 창출"
+            - "수익성 있는 사업"
+            - "기존 사업과 시너지"
   
-  market_opportunity_examples:
-    inefficiency_case:
-      market: "한국 안경 시장"
-      findings:
-        structure: "온라인 판매 금지로 오프라인 매장 과점"
-        information: "도수/렌즈 가격 정보 비교 불가능"
-        transaction: "안과-안경원 분리로 이중 방문 필수"
-        regulatory: "의료기기법상 온라인 판매 금지"
-        geographic: "강남 vs 지방 가격차 40%"
-        innovation_gap: "AR 가상 피팅 기술 도입 차단"
-      result: "소비자는 OECD 평균 대비 2.5배 가격 부담"
+  # ===== 2. Purpose Alignment Framework (Step 1) =====
+  purpose_alignment_framework:
+    description: "12 Universal Purposes 기반 의도 명확화"
     
-    change_driven_case:
-      market: "한국 실버 케어 시장"
-      findings:
-        demographic: "2025년 초고령사회 진입, 노인 인구 20% 돌파"
-        technology: "AI 돌봄 로봇, IoT 건강 모니터링 기술 성숙"
-        regulatory: "비대면 진료 전면 허용, 요양보험 확대"
-        macro_trend: "1인 가구 증가로 가족 돌봄 한계"
-        convergence: "헬스케어+부동산+IT 융합 서비스 등장"
-      result: "향후 10년 간 연평균 15% 성장 예상되는 신시장"
+    entrepreneur_perspective:
+      entry_feasibility:
+        discovery_questions:
+          - "어떤 자원으로 시작하려고 하나요?"
+          - "초기 목표 고객은 누구인가요?"
+          - "차별화 포인트는 무엇인가요?"
+        clarity_evolution:
+          initial: "온라인 교육 시장 진입하고 싶음 (30%)"
+          refined: "직장인 대상 실무 스킬 교육 플랫폼 (70%)"
+          final: "IT 직군 전환 희망자를 위한 멘토링 결합 부트캠프 (90%)"
+      
+      product_market_fit:
+        validation_approach:
+          - "MVP로 빠른 시장 테스트"
+          - "초기 사용자 피드백 수집"
+          - "반복적 개선"
+    
+    corporate_perspective:
+      competitive_strategy:
+        analysis_focus:
+          - "경쟁사 포지셔닝 맵"
+          - "차별화 기회 영역"
+          - "진입 장벽 분석"
+      
+      market_expansion:
+        decision_criteria:
+          - "시장 성장 잠재력"
+          - "자사 역량과의 적합성"
+          - "투자 대비 수익 전망"
+    
+    investor_perspective:
+      investment_decision:
+        evaluation_framework:
+          - "시장 규모와 성장성"
+          - "경쟁 구조와 진입장벽"
+          - "팀과 실행 능력"
+      
+      risk_return_assessment:
+        key_metrics:
+          - "TAM/SAM/SOM 분석"
+          - "Unit Economics"
+          - "확장 가능성"
   
+  # ===== 3. Information Flow Examples =====
+  information_flow_examples:
+    description: "v6.0.1 핵심: 체계적 정보 처리 흐름"
+    
+    layer_by_layer_processing:
+      # Layer 1: Raw Data (Rachel)
+      raw_data_example:
+        market: "한국 커피 프랜차이즈"
+        rachel_output:
+          verified_data:
+            - "점포 수: 스타벅스 1,700개, 이디야 3,000개"
+            - "평균 객단가: 스타벅스 7,000원, 이디야 3,500원"
+            - "연간 성장률: 시장 전체 5%"
+          reliability_score: "85%"
+          sources: ["공정거래위원회", "업계 보고서", "카드사 데이터"]
+      
+      # Layer 2: Processed Data (Bill)
+      processed_data_example:
+        bill_calculations:
+          market_size: "2.5조원 (2024년 추정)"
+          growth_rate: "CAGR 5.2%"
+          market_concentration: "HHI 1,250 (경쟁적 시장)"
+          profitability_analysis:
+            average_margin: "영업이익률 8-12%"
+            roi_period: "투자회수 3-5년"
+      
+      # Layer 3a: Structural Insights (Albert)
+      structural_insights_example:
+        albert_analysis:
+          value_chain_interpretation:
+            - "원두 수입업체 → 프랜차이즈 본사 → 가맹점 → 최종소비자"
+            - "본사-가맹점 간 수익 배분 구조가 핵심"
+          inefficiency_patterns:
+            - "3rd Wave 커피 트렌드와 대형 프랜차이즈 gap"
+            - "프리미엄 수요 vs 표준화된 공급"
+          competitive_dynamics:
+            - "입지 경쟁 심화로 임대료 부담 증가"
+            - "배달 플랫폼 수수료로 마진 압박"
+      
+      # Layer 3b: Hypothetical Insights (Steve)
+      hypothetical_insights_example:
+        steve_opportunities:
+          opportunity_1:
+            hypothesis: "스페셜티 커피 구독 서비스"
+            rationale: "품질 중시 소비자 + 정기구매 니즈"
+            validation_needed: "타겟 고객 규모, 지불의향"
+          opportunity_2:
+            hypothesis: "무인 프리미엄 커피바"
+            rationale: "인건비 절감 + 24시간 운영"
+            validation_needed: "기술 신뢰도, 초기 투자비"
+      
+      # Final: Strategic Decision (Owner)
+      strategic_decision_example:
+        owner_synthesis:
+          selected_opportunity: "스페셜티 커피 구독 서비스"
+          reasoning:
+            - "낮은 초기 투자 (무인매장 대비)"
+            - "차별화 가능성 높음"
+            - "확장성 우수"
+          next_steps:
+            - "MVP 개발 (3개월)"
+            - "베타 테스트 (100명)"
+            - "본격 출시 결정"
+  
+  # ===== 4. Market Boundary Examples (Step 2) =====
+  market_boundary_examples:
+    description: "13 dimensions를 활용한 시장 경계 정의"
+    
+    adaptive_boundary_setting:
+      example_market: "온라인 교육"
+      
+      initial_boundary:
+        what: "온라인 강의"
+        where: "한국"
+        who: "성인"
+        clarity: "40%"
+      
+      refined_boundary:
+        what: "실시간 인터랙티브 직무 교육"
+        where: "한국 + 동남아 한국어 학습자"
+        who: "25-35세 사무직 직장인"
+        clarity: "75%"
+      
+      dimension_analysis:
+        geographic:
+          current: "한국 수도권 중심"
+          expansion: "지방 → 동남아 진출"
+        
+        demographic:
+          primary: "밀레니얼 직장인"
+          secondary: "Z세대 취준생"
+        
+        technological:
+          enablers: "화상회의 기술, AI 개인화"
+          barriers: "기술 리터러시 격차"
+  
+  # ===== 5. Market Dynamics Examples (Step 3) =====
+  market_dynamics_examples:
+    description: "시장 작동 원리와 변화 패턴"
+    
+    force_dynamics_example:
+      market: "전기차 충전 인프라"
+      
+      immediate_value_drivers:
+        problem_solution_fit:
+          problem: "충전 불안(Range Anxiety)"
+          solution: "도심 초급속 충전소"
+        
+        time_to_value:
+          current: "충전 30분"
+          target: "충전 10분 이내"
+      
+      sustainable_value_dynamics:
+        network_effects:
+          mechanism: "충전소↑ → EV구매↑ → 충전소↑"
+          tipping_point: "반경 5km 내 2개 이상"
+        
+        scale_economics:
+          fixed_costs: "부지, 설비 투자"
+          variable_costs: "전력, 유지보수"
+          breakeven: "일일 이용률 30%"
+  
+  # ===== 6. Collaboration Patterns =====
   collaboration_patterns:
-    albert_to_steve_flow:
-      stage_specific_applications:
-        stage_2: "Albert가 MECE 분류 → Steve가 각 카테고리의 기회 해석"
-        stage_3: "Albert가 구조 분석 → Steve가 비효율성의 의미 해석"
-        stage_4: "Albert의 패턴 → Steve의 인접 기회 발굴"
+    description: "에이전트 간 협업 패턴"
+    
+    sequential_collaboration:
+      pattern_name: "Albert → Steve → Owner"
       
-      benefits:
-        - "관찰과 해석의 명확한 분리"
-        - "팩트 기반 기회 발굴"
-        - "주관적 해석의 객관적 검증"
+      stage_1_albert_observation:
+        input: "Rachel의 검증된 데이터"
+        process: "구조적 패턴 분석"
+        output:
+          - "시장 구조 맵"
+          - "비효율성 목록"
+          - "Force dynamics"
+      
+      stage_2_steve_interpretation:
+        input: "Albert의 구조 분석"
+        process: "기회 가설 생성"
+        output:
+          - "기회 포트폴리오"
+          - "혁신 시나리오"
+          - "가치 제안"
+      
+      stage_3_owner_decision:
+        input: "Steve의 기회 분석"
+        process: "전략적 평가"
+        output:
+          - "Go/No-go 결정"
+          - "자원 배분"
+          - "실행 계획"
+    
+    parallel_collaboration:
+      pattern_name: "동시 다발적 분석"
+      when_used: "시간이 중요한 의사결정"
+      
+      example:
+        situation: "경쟁사 M&A 발표 대응"
+        parallel_tasks:
+          rachel: "관련 데이터 긴급 수집"
+          bill: "시장 영향 정량 분석"
+          albert: "구조 변화 시나리오"
+          steve: "대응 전략 옵션"
+        coordination: "Stewart가 실시간 조율"
   
+  # ===== 7. Stage-Specific Deliverables =====
   stage_deliverables:
-    stage_1_outputs:
-      - "초기 프로젝트 브리프 (1페이지)"
-      - "사용자가 선택한 시장 분류 체계"
-      - "Fact-finding sprint 계획"
-      - ".project_metadata.yaml (초기 버전)"
-      - "초기 관찰된 비효율성 신호 리스트"
-      - "초기 감지된 환경 변화 신호 리스트"
+    description: "단계별 구체적 산출물"
     
-    stage_2_outputs:
-      - "확정된 사용자 의도와 분석 방향"
-      - "심화된 비효율성 패턴 리스트"
-      - "구체화된 변화 신호 리스트"
-      - "명확도 점수: 50% → 70-80%"
-      - "Steve의 기회 해석 초안"
+    discovery_sprint_outputs:
+      day_1:
+        - "초기 명확도 평가서 (2-3/10)"
+        - "탐색 질문 목록"
+        - "잠재 방향성 3-5개"
+      
+      day_3:
+        - "refined purpose statement"
+        - "초기 시장 경계 스케치"
+        - "명확도 상승 (5-6/10)"
+      
+      day_5:
+        - "확정 프로젝트 스코프"
+        - "agent 역할 분담표"
+        - "마일스톤 계획"
     
-    stage_3_outputs:
-      - "선택된 depth 레벨별 분석 결과"
-      - "비효율성 기반 기회 목록 (우선순위화)"
-      - "환경 변화 기반 기회 목록 (타이밍 포함)"
-      - "통합 기회 매트릭스"
-      - "명확도 점수: 80% → 90-95%"
+    full_analysis_outputs:
+      week_1:
+        title: "Market Structure Report"
+        contents:
+          - "13 dimension 분석"
+          - "가치사슬 맵"
+          - "경쟁 구조도"
+      
+      week_2:
+        title: "Opportunity Portfolio"
+        contents:
+          - "검증된 기회 5-10개"
+          - "우선순위 매트릭스"
+          - "실행 로드맵"
+      
+      final:
+        title: "Strategic Decision Package"
+        contents:
+          - "Executive Summary"
+          - "투자 권고안"
+          - "리스크 분석"
+          - "실행 계획"
+  
+  # ===== 8. Common Patterns & Anti-patterns =====
+  patterns_and_antipatterns:
+    description: "자주 발생하는 패턴과 피해야 할 함정"
+    
+    successful_patterns:
+      embracing_ambiguity:
+        example: "처음엔 그냥 '푸드테크'였는데..."
+        evolution: "푸드테크 → 밀키트 → 1인가구 프리미엄 밀키트 → 구독형 맞춤 밀키트"
+        key_success: "각 단계에서 발견을 수용하고 방향 조정"
+      
+      parallel_exploration:
+        example: "multiple hypotheses 동시 검증"
+        approach:
+          - "가설 A: B2C 직접 판매"
+          - "가설 B: B2B2C 제휴"
+          - "가설 C: 플랫폼 모델"
+        benefit: "빠른 학습과 피벗"
+    
+    common_antipatterns:
+      premature_convergence:
+        symptom: "너무 일찍 한 방향에 고착"
+        consequence: "더 나은 기회 놓침"
+        prevention: "최소 3개 옵션 유지"
+      
+      analysis_paralysis:
+        symptom: "완벽한 데이터 기다림"
+        consequence: "시장 기회 상실"
+        prevention: "80% 규칙 적용"
+      
+      role_confusion:
+        symptom: "모든 agent가 모든 일"
+        consequence: "비효율과 중복"
+        prevention: "명확한 역할 경계"
+  
+  # ===== 9. Quick Reference Templates =====
+  quick_reference_templates:
+    description: "즉시 사용 가능한 템플릿"
+    
+    discovery_sprint_kickoff:
+      template: |
+        프로젝트명: [    ]
+        초기 관심사: [    ]
+        현재 명확도: [ ]/10
+        
+        Day 1 목표:
+        □ 초기 purpose 탐색
+        □ 잠재 시장 범위 스케치
+        □ 주요 불확실성 식별
+        
+        Day 3 체크포인트:
+        □ Purpose 구체화 (30% → 60%)
+        □ 핵심 가설 3개 도출
+        □ 검증 계획 수립
+    
+    information_flow_checklist:
+      rachel_to_albert: "□ 데이터 신뢰도 > 80%"
+      albert_to_steve: "□ 구조 분석 완료"
+      steve_to_owner: "□ 기회 포트폴리오 준비"
+      owner_decision: "□ 전략적 우선순위 결정"
+    
+    collaboration_trigger_matrix:
+      low_clarity: "Stewart 주도"
+      data_conflict: "Rachel 검증"
+      structure_unclear: "Albert 심화"
+      no_opportunities: "Steve 창의성"
+      decision_paralysis: "Owner 결단"
