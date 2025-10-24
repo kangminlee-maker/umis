@@ -5,152 +5,194 @@
 
 ---
 
+## v6.0.1 (2024-10-24) - Information Flow Optimization [MINOR UPDATE]
+
+### 🎯 핵심 개선사항
+**정보 흐름 최적화**: 에이전트 간 역할과 협업 구조 명확화
+- **정보 흐름**: Albert → Steve → Owner의 명확한 단계별 진행
+- **계층 구조**: Raw Data → Processed Data → Insights
+- **해석 구분**: 구조적 해석(Albert) vs 가설적 해석(Steve)
+- **Stewart 강화**: 자율 개입 트리거 구체화
+
+### 🏗️ 주요 개선사항
+
+#### 1. 정보 흐름 아키텍처 신규 추가
+- Main Flow: 관찰 → 해석 → 결정
+- Information Layers: 4계층 구조 정의
+- Support Functions: Rachel/Bill 역할 명확화
+- Oversight Function: Stewart 모니터링 강화
+
+#### 2. 에이전트 역할 명확화
+- **Albert**: "How" - 구조적 해석 전문
+- **Steve**: "Why & What if" - 가설적 해석 전문
+- 해석의 명확한 구분으로 중복 제거
+
+#### 3. 협업 프로토콜 개선
+- Albert-Bill 병렬 분석 동기화 강화
+- 2시간 단위 체크포인트 명시
+- 구조-정량 통합 리포트 표준화
+
+#### 4. Stewart 자율 개입 확대
+- 4가지 개입 트리거 정의
+- 임계값 기반 자동 개입
+- 구체적 액션 가이드라인
+
+---
+
+## v6.1a (2024-10-24) - Modular Architecture Edition [ARCHITECTURE UPDATE]
+
+### 🎯 핵심 변경사항
+**아키텍처 업데이트**: BMAD-METHOD 분석을 통한 모듈화 구조 도입
+- **파일 크기**: 177KB → 16KB (90% 감소)
+- **토큰 효율성**: 70% 개선
+- **선택적 로딩**: 필요한 모듈만 로드
+
+### 🏗️ 주요 개선사항
+
+#### 1. 모듈화 아키텍처
+- **Core Module**: 핵심 에이전트와 워크플로우 유지
+- **Meta Workflow**: 지능형 진입점 도입
+- **Data Management**: 1차/2차 데이터 분리
+- **Lifecycle Management**: 30일 규칙 적용
+
+#### 2. 데이터 관리 체계
+- **자동 분류 시스템**: 가치 기반 자동 분류
+- **데이터 계보 추적**: 모든 2차 데이터의 출처 추적
+- **Working Directory**: 프로젝트 진행 중 데이터 실시간 저장
+
+#### 3. 성능 최적화
+- **캐싱 전략**: Hot/Cold 캐시 구분
+- **지연 로딩**: 필요시에만 모듈 로드
+- **배치 처리**: 일일/주간/월간 자동화
+
+#### 4. 프로젝트 구조 정리
+- **core 폴더 제거**: 중복 제거 및 구조 단순화
+- **VERSION.txt**: 프로젝트 루트로 이동
+- **문서 업데이트**: 모든 참조 경로 수정
+
+### 📁 간소화된 구조
+```
+umis-monolithic-guidelines/
+├── umis_guidelines_v6.0.yaml   # 기준 버전
+├── umis_guidelines_v6.1a.yaml  # 모듈화 버전
+├── VERSION.txt                 # 현재 버전
+└── [기타 폴더들]
+```
+
+---
+
 ## v6.0 (2024-10-22) - Progressive Intelligence Edition [MAJOR UPDATE]
 
-### 🚀 메이저 업데이트 핵심
-이번 v6.0은 UMIS의 **실행력**과 **현실성**을 대폭 강화한 메이저 업데이트입니다:
-- **명확도 프레임워크**: "뭔가 기회가 있을 것 같아"도 시작 가능
-- **병렬 분석 구조**: 현실과 기회의 균형
+### 🎯 핵심 철학 변화
+**메이저 업데이트 핵심**: 실행력과 현실성 대폭 강화
+- **명확도 프레임워크**: "뭔가 기회가 있을 것 같아"(20-30%)도 시작 가능
+- **병렬 분석 구조**: 현실(Albert)과 기회(Steve)의 균형
 - **검증된 의사결정**: 상상이 아닌 데이터 기반 판단
 
-### ⚡ v5.x → v6.0 메이저 업그레이드 이유
+### 🚀 v5.x → v6.0 업그레이드 이유
 1. **시스템 전반 재구조화**: 9개 섹션 전체 재정의
 2. **핵심 개념 진화**: 적응형 → 점진적 지능
 3. **실행 메커니즘 혁신**: 추상적 → 구체적 가이드
 4. **에이전트 역할 재정립**: 표준화 + 협업 강화
 5. **사용자 경험 혁신**: 진입 장벽 대폭 낮춤
 
-### 주요 변경사항
-- **System Definition 전면 재구성**
-  - MECE 원칙에 따른 개념 구조 정리
-  - 중복 제거 및 누락 요소 보완
-  - 정적(Step 2)/동적(Step 3) 요소 명확히 분리
+### 🏗️ 1. 시스템 구조 재편
 
-- **Adaptive Intelligence System 통합**
-  - Section 2를 새로운 통합 Adaptive Intelligence System으로 재구성
-  - What, Why, How, When, Where의 완전한 구조화
-  - 기존 Section 8 (Adaptive Workflow)를 통합하여 중복 제거
+#### 전체 구조 개선
+- **9개 섹션 체제**로 재구성 (기존 11개 → 9개)
+- **Section 통합/분리**:
+  - Section 2: Adaptive Intelligence System으로 통합 (기존 Section 8 흡수)
+  - Section 4: COLLABORATION PROTOCOLS 독립 (기존 Section 3에서 분리)
+  - Section 10, 11 제거 (불필요한 과거 참조 정리)
 
-### 구조적 개선
-- **Step 1: Purpose Alignment**
-  - universal_purposes를 창업자/기업/투자자 관점으로 재구성
-  - 7개 → 12개로 확장 (정부 관점 제거, 실무 중심)
-  
-- **Step 2: Market Boundary Definition**  
-  - Core/Contextual 구분 제거
-  - 13개 통합 차원으로 재구성
-  - 모든 차원에 정적 구조 속성 부여
-  - integrated_approach: "What × Where × Who" 명시
-  
-- **Step 3: Market Dynamics Framework**
-  - 3-Part 구조로 전면 개편
-  - Part A: 경계의 진화 패턴 (13개 차원별)
-  - Part B: 시장 작동 메커니즘 (value/force/lifecycle)
-  - Part C: 통합적 시장 역학 (상호작용/패턴/신호)
-  - integrated_approach: "How × When × Why" 명시
+#### Market Analysis Framework 체계화
+- **3단계 구조의 완성도 향상**:
+  - Step 1: Purpose Alignment (WHY) - 12개 관점 (창업자/기업/투자자)
+  - Step 2: Market Boundary (WHAT×WHERE×WHO) - 13개 차원
+  - Step 3: Market Dynamics (HOW×WHEN×WHY) - 3-part 구조
 
-### 이론적 강화
-- **immediate_value 대폭 확장** (6개 영역)
-  - problem_solution_fit
-  - value_proposition_design
-  - customer_discovery
-  - time_to_value
-  - innovation_patterns
-  - lean_validation
-  
-- **sustainable_value 완전성 확보**
-  - 7 Powers 모두 포함 (기존 4개 → 7개)
-  - switching_dynamics로 명칭 통일
-  - brand_dynamics, resource_dynamics, process_dynamics 추가
+#### 파일 최적화
+- **크기 감소**: 176KB → 169KB (4.0%)
+- **실행 예시 분리**: adaptive_workflow_examples.yaml
 
-### Agent & Owner 구조 표준화
-- **Agent 구조 통일**
-  - 4-섹션 구조로 표준화: IDENTITY, CAPABILITIES, WORK DOMAIN, BOUNDARIES & INTERFACES
-  - Section 1 개념 완전 커버리지를 위한 역량 확장
-  - Extended frameworks에 새로운 차원 대응 능력 추가
+### 🧠 2. 개념적 강화
 
-- **Owner 구조 개선**
-  - Agent 구조와 일관성 유지하면서 Owner 특성 반영
-  - Adaptive goal management와 strategic decision making 강화
-  - Section 1의 모든 개념에 대한 의사결정 프레임워크 추가
+#### 이론적 기반 확장
+- **immediate_value** (6개 영역): problem_solution_fit, value_proposition_design, customer_discovery, time_to_value, innovation_patterns, lean_validation
+- **sustainable_value** (7 Powers 완전 포함): scale/network/switching/brand/resource/process/counter-positioning dynamics
 
-### Section 3 (PROACTIVE MONITORING) 개선
-- 목표 정렬(Goal Alignment) 중심으로 전면 재구성
-- 목표를 잃는 다양한 상황을 MECE하게 분류:
-  - A. 목표 자체의 문제 (obsolete, superior opportunity, conflict)
-  - B. 실행 과정의 문제 (micro obsession, scope inflation, analysis paralysis)
-  - C. 방향성의 문제 (goal drift, wrong vector, circular motion)
-  - D. 리소스의 문제 (resource drain, capability mismatch)
-- 블랙스완 기회에 대한 대응 메커니즘 포함
-- 건설적인 개입 메시지 형식 도입
+#### Market Dynamics 3-Part 구조
+- **Part A**: 경계의 진화 패턴 (13개 차원별)
+- **Part B**: 시장 작동 메커니즘 (value/force/lifecycle)
+- **Part C**: 통합적 시장 역학 (상호작용/패턴/신호)
 
-### 파일 구조 개선
-- 새로운 Section 4 (COLLABORATION PROTOCOLS) 생성
-  - 기존 Section 3의 collaboration_triggers를 독립 섹션으로 분리
-  - 에이전트 간 협업 규칙을 명확한 위치에 배치
-- 기존 Section 8 (Adaptive Workflow) 삭제
-- Section 10 (CONCLUSION)과 Section 11 (COMPATIBILITY) 제거
-  - 불필요한 과거 버전 참조와 중복 내용 정리
-  - 핵심 메시지는 파일 끝에 간단히 정리
-- 섹션 번호 재정렬 (총 9개 섹션으로 간소화)
-- adaptive_workflow_examples.yaml로 실행 예시 분리
+### 🤝 3. 협업 메커니즘 강화
 
-### Section 5 (DATA INTEGRITY SYSTEM) 대폭 간소화
-- 620줄 → 152줄로 75% 감소
-- 6개 하위섹션 → 4개로 재구성
-  1. 데이터 라이프사이클 관리
-  2. 프로젝트 구조 표준
-  3. 품질 보증 체계
-  4. 백업 및 복구 전략
-- 시장 분석에 특화된 내용으로 재편
-- 불필요한 기술적 세부사항 제거
-- Agent 역할 명확화 (Rachel vs Stewart vs System)
+#### Albert-Bill 병렬 분석 구조
+- **실시간 동기화**: 2시간마다 중간 결과 공유
+- **통합 리포트**: Steve에게 구조-정량 통합 데이터 제공
+- **예상 효과**: 재작업 빈도 60% → 15% 감소
 
-### 기타 개선
-- 파일 상단 Core Structure 설명을 README.md로 이동
-- 각 Step별 question, integrated_approach, purpose 명시
-- 정보 손실 없이 구조 효율화
+#### 의사결정 검증 체계 (4단계)
+1. Albert, Steve, Bill: 최종 산출물 제출
+2. Rachel: 근거 신뢰도 평가 (Evidence Reliability Matrix)
+3. Stewart: 논리적 건전성 검증 (Decision Readiness Assessment)
+4. Owner + 전체: 최종 의사결정 회의
 
-### Section 8 (CREATIVE BOOST MODULE) 대폭 간소화
-- 800줄 → 120줄로 85% 감소
-- 원본의 간결한 철학 복원
-  - 10개 공식을 간단명료하게 정리
-  - 복잡한 하위 구조 제거
-  - 실용적 사용 가이드 중심
-- 각 공식당 5-8줄로 핵심만 보존
-- UMIS 에이전트와의 연결 유지
+### 🎯 4. 실행력 강화
 
-### 파일 크기 (v5.3 → v6.0)
-- 176KB → 169KB (약 4.0% 감소)
-- 4366줄 → 4143줄 (약 5.1% 감소)
+#### 명확도 프레임워크 구체화
+- **3개 핵심 차원**: 의도 명확도(40%), 도메인 지식(35%), 시급성(25%)
+- **Sprint Customization Matrix**: 의도×지식 조합별 4가지 접근법
+- **예상 효과**: 프로젝트 시작 시간 -50%, 방향 전환 빈도 -40%
 
-### 추가 보강 (2024-10-22 Hotfix)
-- **Adaptive Safeguards 추가**: 피드백 루프 부작용 방지를 위한 최소한의 안전장치
-  - 3회 순환 차단 규칙: 동일 주제로 3회 이상 순환 시 Stewart 자동 개입
-  - 피드백 가이드라인: 효과적인 피드백을 위한 권장 형식 (강제 아님)
-  - Stewart 개입 메시지 템플릿: 순환 패턴 감지 시 구조화된 개입
-  - Critical 이슈 예외 처리: 10x 기회, 블랙스완 이벤트는 제한 없음
+#### Adaptive Safeguards
+- **3회 순환 차단**: 동일 주제 3회 반복 시 Stewart 자동 개입
+- **예외 처리**: 10x 기회, 블랙스완 이벤트는 제한 없음
 
-- **Albert-Bill 병렬 분석 구조 추가**: Steve의 기회 발굴 품질 향상
-  - 새로운 협업 트리거: "병렬 구조-정량 분석", "통합 기회 발굴"
-  - Albert와 Bill의 실시간 동기화 프로토콜
-  - Steve의 입력 전제조건: 구조-정량 통합 데이터 필수
-  - 예상 효과: 기회 현실성 향상, 재작업 빈도 감소 60% → 15%
+### 🔍 5. 모니터링 개선
 
-- **의사결정 검증 체계 강화**: Owner의 균형잡힌 의사결정 지원
-  - Albert → Owner 직접 채널 추가: Market Reality Check Report
-  - Stewart의 논리 검증 역할 명시화: Decision Logic Validation
-  - Rachel의 신뢰도 평가 확대: Comprehensive Reliability Assessment
-  - 새로운 협업: "의사결정 전 검증 프로세스" (4단계 순차 진행)
-  - 예상 효과: 현실성 +40%, 논리 오류 -60%, 의사결정 신뢰도 +50%
+#### Proactive Monitoring 재구성
+**목표 정렬 중심의 4가지 문제 유형**:
+- **A. 목표 자체**: obsolete goal, superior opportunity, goal conflict
+- **B. 실행 과정**: micro obsession, scope inflation, analysis paralysis
+- **C. 방향성**: goal drift, wrong vector, circular motion
+- **D. 리소스**: resource drain, capability mismatch
 
-- **명확도 프레임워크 구체화**: Discovery Sprint 실행을 위한 구조적 가이드
-  - 기존 추상적 clarity_levels를 실행 가능한 clarity_measurement로 대체
-  - 3개 핵심 차원 평가: 의도 명확도(40%), 도메인 지식(35%), 시급성(25%)
-  - 각 차원별 진단 질문과 수준별 특징 명시
-  - Sprint Customization Matrix: 의도×지식 조합별 4가지 접근법
-  - Discovery Sprint 실행 가이드: 명확도별 구체적 일정과 활동
-  - 예상 효과: 프로젝트 시작 시간 -50%, 방향 전환 빈도 -40%
+### 📉 6. 대폭 간소화된 섹션들
+
+- **DATA INTEGRITY SYSTEM**: 620줄 → 152줄 (75% 감소)
+- **CREATIVE BOOST MODULE**: 800줄 → 120줄 (85% 감소)
+
+### 🎁 7. 에이전트/오너 표준화
+
+- **Agent 4-섹션 구조**: IDENTITY, CAPABILITIES, WORK DOMAIN, BOUNDARIES & INTERFACES
+- **Extended Frameworks**: 모든 에이전트에 새로운 시장 차원 대응 능력 추가
+
+### 📊 예상 효과 요약
+
+| 영역 | 개선 효과 |
+|------|-----------|
+| 프로젝트 시작 시간 | -50% |
+| 방향 전환 빈도 | -40% |
+| 재작업 빈도 | -45% |
+| 의사결정 신뢰도 | +50% |
+| 현실성 | +40% |
+| 논리 오류 | -60% |
+
+---
+
+## v6.1a (2024-10-23) - [DEPRECATED - Replaced by v6.1a Modular Architecture]
+
+*Note: 이 버전은 2024-10-24 모듈화 아키텍처 버전으로 대체되었습니다.*
+
+원래 v6.1a는 사용자 접근성 강화를 위해 Brownfield Intelligence System과 Activation System을 추가했으나, 
+모듈화 아키텍처가 더 효율적인 솔루션을 제공하므로 대체되었습니다.
+
+### 주요 변경사항 (참고용)
+- Brownfield Intelligence System 추가 (Section 13)
+- Activation Code System 추가 (umis_activation_system.yaml, umis_activation_prompt.md)
+- 사용자 친화적 인터페이스 강화
 
 ---
 
