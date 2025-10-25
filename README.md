@@ -4,7 +4,7 @@
 
 이 폴더는 UMIS (Universal Market Intelligence System)의 단일 파일(monolithic) 형태로 작성된 가이드라인입니다.
 
-v1.2부터 현재 v6.0.1까지의 진화 과정을 담고 있으며, 지속적으로 단일 파일 형태로 유지·발전되고 있습니다.
+v1.2부터 현재 v6.1까지의 진화 과정을 담고 있으며, 지속적으로 단일 파일 형태로 유지·발전되고 있습니다.
 
 **📝 v5.2부터 버전 히스토리는 별도 파일로 관리됩니다: [CHANGELOG.md](./CHANGELOG.md)**
 
@@ -32,11 +32,15 @@ umis-monolithic-guidelines/
 ├── umis_guidelines_v5.2.1.yaml # Classic 제거, 단순화
 ├── umis_guidelines_v5.2.2.yaml # Market Definition 개선
 ├── umis_guidelines_v5.3.yaml   # 7 Powers 통합
-├── umis_guidelines_v6.0.yaml   # Progressive Intelligence Edition (169KB)
-├── umis_guidelines_v6.0.1.yaml # Information Flow Optimization (현재 버전, 177KB)
+├── umis_guidelines_v6.1.yaml   # AI-Optimized Edition (현재 버전, 205KB)
 ├── adaptive_workflow_examples.yaml # Adaptive workflow 실행 예시
 ├── CHANGELOG.md                # 상세 버전 히스토리
 ├── VERSION.txt                 # 현재 버전 정보
+├── archive/                    # 이전 버전들
+│   ├── v6.x/
+│   │   ├── umis_guidelines_v6.0.yaml
+│   │   ├── umis_guidelines_v6.0.2.yaml
+│   │   └── umis_guidelines_v6.0.3.yaml
 ├── umis_v5.1.3_modular/        # 모듈러 v5.1.3
 └── umis_v5.3_modular/          # 모듈러 v5.3 (7 Powers 통합)
     ├── agents/
@@ -183,6 +187,28 @@ umis-monolithic-guidelines/
   - adaptive_workflow_examples.yaml로 실행 예시 분리
   - 각 Step별 integrated_approach 명시
   - 정보 손실 없는 효율적 구조
+
+### v6.1 - AI-Optimized Edition
+- **UMIS 실행 프로토콜**
+  - 모든 프로젝트는 작업리스트로 시작 (예외 없음)
+  - 각 작업은 가용 토큰의 50% 이하로 설계
+  - 90% 도달 시 긴급 중단 프로토콜
+  - 작업별 재평가 포인트 설정
+- **AI 가독성 대폭 향상**
+  - 명확한 AI GUIDE 섹션 추가 (Line 24-435)
+  - 섹션별 검색 가이드 제공
+  - 주요 기능 인덱스 구성
+  - 라인 번호 참조 정확성 개선
+- **토큰 관리 최적화**
+  - 기존 40% → 50% 상향 (버퍼 고려)
+  - 적응형 재평가 프로토콜 도입
+  - 세션 간 컨텍스트 보존 강화
+  - 스마트 토큰 최적화 전략
+- **Stewart 모니터링 강화**
+  - 작업리스트 관리 모니터링 추가
+  - 토큰 사용량 실시간 추적
+  - 적응적 개입 프로토콜
+  - 재평가 트리거 자동화
 
 ## 📌 UMIS Core Structure (v6.0)
 
