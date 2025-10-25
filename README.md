@@ -17,7 +17,7 @@ umis-main/
 ├── VERSION.txt                  # 현재 버전 정보
 ├── CHANGELOG.md                 # 변경사항 기록
 ├── README.md                    # 이 파일
-├── adaptive_workflow_examples.yaml  # 실제 사용 예시
+├── umis_examples_v6.2.yaml      # 실제 사용 예시
 └── archive/                     # 이전 버전들
     ├── v1.x/                   # v1.2 - v1.8
     ├── v2.x/                   # v2.0 - v2.1  
@@ -155,7 +155,7 @@ umis-main/
   - 새로운 Section 4 (COLLABORATION PROTOCOLS) 생성
   - 총 11개 섹션으로 재구성 (기존 10개에서 확장)
 - **실무 활용성 개선**
-  - adaptive_workflow_examples.yaml로 실행 예시 분리
+  - umis_examples_v6.2.yaml로 실행 예시 분리
   - 각 Step별 integrated_approach 명시
   - 정보 손실 없는 효율적 구조
 

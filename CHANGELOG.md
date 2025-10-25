@@ -284,7 +284,7 @@ umis-monolithic-guidelines/
 
 #### 파일 최적화
 - **크기 감소**: 176KB → 169KB (4.0%)
-- **실행 예시 분리**: adaptive_workflow_examples.yaml
+- **실행 예시 분리**: umis_examples_v6.2.yaml
 
 ### 🧠 2. 개념적 강화
 

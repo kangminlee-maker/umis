@@ -4686,7 +4686,7 @@ implementation_guide:
         - "Exit Strategy Planner"
     
     external_resources:
-      detailed_examples: "adaptive_workflow_examples.yaml"
+      detailed_examples: "umis_examples_v6.2.yaml"
       market_templates: "market_analysis_templates/"
       collaboration_scripts: "collaboration_scripts/"
       case_studies: "umis_case_studies/"

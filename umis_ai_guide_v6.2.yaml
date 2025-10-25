@@ -339,7 +339,7 @@ parallel_exploration_protocol:
 # 📁 UMIS 전체 파일 구성:
 # 1. umis_ai_guide_v6.2.yaml (이 파일) - AI 사용 가이드
 # 2. umis_guidelines_v6.2.yaml - 메인 시스템 정의
-# 3. adaptive_workflow_examples.yaml - 실행 예시
+# 3. umis_examples_v6.2.yaml - 실행 예시
 # 
 # 💡 사용 방법:
 # - 간단한 분석: 이 가이드만으로 시작 가능
@@ -685,5 +685,5 @@ reference_map:
 #    → 에이전트 상세 정의, 워크플로우 구현 등
 # 
 # 5. 구체적 예시가 필요한 경우:
-#    "실행 예시 파일(adaptive_workflow_examples.yaml)을 참조하고 싶습니다"
+#    "실행 예시 파일(umis_examples_v6.2.yaml)을 참조하고 싶습니다"
 #    → 실제 프로젝트 사례, 패턴, 템플릿 등
