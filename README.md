@@ -4,7 +4,7 @@
 
 이 폴더는 UMIS (Universal Market Intelligence System)의 단일 파일(monolithic) 형태로 작성된 가이드라인입니다.
 
-v1.2부터 현재 v6.1까지의 진화 과정을 담고 있으며, 지속적으로 단일 파일 형태로 유지·발전되고 있습니다.
+v1.2부터 현재 v6.2까지의 진화 과정을 담고 있으며, 지속적으로 단일 파일 형태로 유지·발전되고 있습니다.
 
 **📝 v5.2부터 버전 히스토리는 별도 파일로 관리됩니다: [CHANGELOG.md](./CHANGELOG.md)**
 
@@ -32,7 +32,7 @@ umis-monolithic-guidelines/
 ├── umis_guidelines_v5.2.1.yaml # Classic 제거, 단순화
 ├── umis_guidelines_v5.2.2.yaml # Market Definition 개선
 ├── umis_guidelines_v5.3.yaml   # 7 Powers 통합
-├── umis_guidelines_v6.1.yaml   # AI-Optimized Edition (현재 버전, 205KB)
+├── umis_guidelines_v6.2.yaml   # Autonomous Intelligence Edition (현재 버전, 210KB)
 ├── adaptive_workflow_examples.yaml # Adaptive workflow 실행 예시
 ├── CHANGELOG.md                # 상세 버전 히스토리
 ├── VERSION.txt                 # 현재 버전 정보
@@ -40,7 +40,8 @@ umis-monolithic-guidelines/
 │   ├── v6.x/
 │   │   ├── umis_guidelines_v6.0.yaml
 │   │   ├── umis_guidelines_v6.0.2.yaml
-│   │   └── umis_guidelines_v6.0.3.yaml
+│   │   ├── umis_guidelines_v6.0.3.yaml
+│   │   └── umis_guidelines_v6.1.yaml
 ├── umis_v5.1.3_modular/        # 모듈러 v5.1.3
 └── umis_v5.3_modular/          # 모듈러 v5.3 (7 Powers 통합)
     ├── agents/
@@ -196,6 +197,25 @@ umis-monolithic-guidelines/
   - 작업별 재평가 포인트 설정
 - **AI 가독성 대폭 향상**
   - 명확한 AI GUIDE 섹션 추가 (Line 24-435)
+
+### v6.2 - Autonomous Intelligence Edition
+- **병렬 탐색 프로토콜**
+  - 2-4시간 자율 탐색으로 AI 창의성 극대화
+  - 스마트 체크포인트로 필요시에만 개입
+  - AI 자율성 지표 기반 동적 관리
+- **3가지 실행 모드**
+  - Exploration Mode: AI 자율성 90-100%
+  - Collaboration Mode: AI 자율성 60-70% (기본값)
+  - Precision Mode: AI 자율성 30-40%
+  - 프로젝트 진행에 따른 동적 전환
+- **Stewart 문서 완전 자동화**
+  - 모든 작업 실시간 문서화
+  - 중요도 기반 자동 분류 및 요약
+  - 사용자 부담 제로
+- **Data Integrity System 강화**
+  - 4-5 depth 세분화된 프로젝트 구조
+  - 자동 파일 생성 및 메타데이터 관리
+  - 스마트 압축 및 아카이빙
   - 섹션별 검색 가이드 제공
   - 주요 기능 인덱스 구성
   - 라인 번호 참조 정확성 개선
