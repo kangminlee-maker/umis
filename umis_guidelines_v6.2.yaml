@@ -80,14 +80,14 @@
 #   - 데이터 무결성 보장
 #
 # SECTION 6: AGENTS (실제 파일에서 "# SECTION 6:" 검색) ⭐ 핵심
-#   - Albert: 시장 구조 분석가 ("- id: MAnalyst" 검색)
-#   - Steve: 시장 기회 발굴가 ("- id: MExplorer" 검색)
-#   - Bill: 시장 규모 계산가 ("- id: MQuant" 검색)
-#   - Rachel: 데이터 검증 전문가 ("- id: MValidator" 검색)
+#   - Albert: 시장 구조 분석가 ("- id: Observer" 검색)
+#   - Steve: 시장 기회 발굴가 ("- id: Explorer" 검색)
+#   - Bill: 시장 규모 계산가 ("- id: Quantifier" 검색)
+#   - Rachel: 데이터 검증 전문가 ("- id: Validator" 검색)
 #
 # SECTION 7: ROLES (실제 파일에서 "# SECTION 7:" 검색)
-#   - Stewart: 시스템 운영자 ("- id: MCurator" 검색)
-#   - Owner: 의사결정자 ("- id: MOwner" 검색)
+#   - Stewart: 시스템 운영자 ("- id: Guardian" 검색)
+#   - Owner: 의사결정자 ("- id: Owner" 검색)
 #
 # SECTION 8: CREATIVE BOOST (실제 파일에서 "# SECTION 8:" 검색)
 #   - 10개 AI 브레인스토밍 도구
@@ -109,11 +109,11 @@ reference_map:
     adaptive_checkpoint: "adaptive_checkpoint_system"
     
   agents:
-    albert: "agent_manalyst"
-    steve: "agent_mexplorer"
-    bill: "agent_mquant"
-    rachel: "agent_mvalidator"
-    stewart: "agent_mcurator"
+    albert: "agent_observer"
+    steve: "agent_explorer"
+    bill: "agent_quantifier"
+    rachel: "agent_validator"
+    stewart: "agent_guardian"
     
   workflows:
     discovery: "discovery_sprint"
@@ -188,35 +188,35 @@ reference_map:
 #    역할: 돈의 흐름과 거래 패턴 관찰
 #    입력: 시장 정의, 거래 데이터
 #    출력: Market Reality Report
-#    검색: grep "albert:" 또는 "- id: MAnalyst"
+#    검색: grep "albert:" 또는 "- id: Observer"
 #    핵심: "어떻게" 작동하는지만 관찰, 해석 없음
 #
 # 2. Steve (시장 기회 발굴가)  
 #    역할: 가설 생성과 기회 발굴
 #    입력: Albert의 구조 + Bill의 정량 데이터
 #    출력: Opportunity Portfolio (검증된 3등급 기회)
-#    검색: grep "steve:" 또는 "- id: MExplorer"
+#    검색: grep "steve:" 또는 "- id: Explorer"
 #    핵심: "왜"와 "만약"을 탐구, 가설 검증 필수
 #
 # 3. Bill (시장 규모 계산가)
 #    역할: TAM/SAM/SOM 계산
 #    병렬: Albert와 동시 실행 (Rachel 데이터 기반)
 #    출력: Quantified Scenarios
-#    검색: grep "bill:" 또는 "- id: MQuant"
+#    검색: grep "bill:" 또는 "- id: Quantifier"
 #    핵심: 모든 숫자에 신뢰구간 포함
 #
 # 4. Rachel (데이터 검증 전문가)
 #    역할: 데이터 수집과 신뢰도 평가
 #    모든 에이전트 지원: 신뢰도 80% 이상 데이터만 제공
 #    출력: 신뢰도 평가된 데이터셋
-#    검색: grep "rachel:" 또는 "- id: MValidator"
+#    검색: grep "rachel:" 또는 "- id: Validator"
 #    핵심: 출처와 한계 명시
 #
 # 5. Stewart (프로세스 가디언)
 #    역할: 시스템 운영과 자율 개입
 #    모니터링: 목표 정렬, 진전도, 순환 패턴
 #    개입: 3회 순환 시, 60% 미달 시, 2주 정체 시
-#    검색: grep "stewart:" 또는 "- id: MCurator"
+#    검색: grep "stewart:" 또는 "- id: Guardian"
 #    핵심: Owner 보조, 과정 최적화
 #
 # ========================================
@@ -271,7 +271,7 @@ reference_map:
 # 4. read_file의 offset/limit 파라미터를 활용하여 특정 부분만 읽을 수 있습니다
 #
 # 🚀 자주 사용하는 AI 명령어 패턴:
-# - 특정 에이전트 찾기: grep "- id: MAnalyst" -A 500
+# - 특정 에이전트 찾기: grep "- id: Observer" -A 500
 # - 프롬프트 템플릿: grep "prompt: |" -A 50  
 # - 워크플로우 단계: grep "step_[0-9]:" -B 5 -A 20
 # - 병렬 검색: 여러 grep을 동시에 실행하여 관련 정보 한번에 수집
@@ -1667,7 +1667,7 @@ proactive_monitoring:
   name: "Proactive Goal Alignment Monitoring System"
   description: "목표를 향한 진전을 보장하고 비생산적 활동 방지"
   purpose: "Adaptive workflow의 유연성을 유지하면서도 목표를 잃지 않도록 보장"
-  owner: "MCurator (Stewart)"
+  owner: "Guardian (Stewart)"
   
   # A. 목표 자체의 문제
   goal_validity_monitoring:
@@ -2405,10 +2405,10 @@ data_integrity_system:
 # SECTION 6: AGENTS
 # ========================================
 agents:
-  - id: MAnalyst
+  - id: Observer
     # ===== 1. IDENTITY =====
     name: "Albert"
-    role: "Market Structure Analyst"
+    role: "Market Structure Observer"
     description: "돈의 흐름을 관찰하고 시장 거래 패턴을 분류하는 전문가"
     character: "숫자와 팩트로 말하는 현실주의자. 구조적 해석만 제공한다."
     
@@ -2709,7 +2709,7 @@ agents:
         
         frequency: "분석 완료 시 + 중요 발견 시"
         purpose: "Owner가 현실과 기회의 균형잡힌 판단"
-  - id: MExplorer
+  - id: Explorer
     # ===== 1. IDENTITY =====
     name: "Steve"
     role: "Market Explorer"
@@ -3033,7 +3033,7 @@ agents:
           objective: "전략적 방향성 조율"
         - timing: "Phase 7 최종"
           objective: "의사결정 지원"
-  - id: MQuant
+  - id: Quantifier
     # ===== 1. IDENTITY =====
     name: "Bill"
     role: "Market Quantifier"
@@ -3429,7 +3429,7 @@ agents:
           - "민감도 분석 (어떤 가정이 결과에 큰 영향)"
           - "TAM → SAM → SOM 전환 로직"
         format: "중간값 ± 범위 + 가정 명세서"
-  - id: MValidator
+  - id: Validator
     # ===== 1. IDENTITY =====
     name: "Rachel"
     role: "Data Validator"
@@ -3828,7 +3828,7 @@ agents:
               alert: "⚠️ 가정 의존도 높음"
             - condition: "Conflicting evidence"
               alert: "⚠️ 상충되는 증거 존재"
-  - id: MCurator
+  - id: Guardian
     # ===== 1. IDENTITY =====
     name: "Stewart"
     role: "Knowledge Curator & Progress Guardian"
@@ -4213,7 +4213,7 @@ agents:
 # SECTION 7: ROLES
 # ========================================
 roles:
-  - id: MOwner
+  - id: Owner
     # ===== 1. IDENTITY =====
     name: "Owner"
     role: "Strategic Decision Maker"
