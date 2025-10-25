@@ -81,13 +81,13 @@
 #
 # SECTION 6: AGENTS (실제 파일에서 "# SECTION 6:" 검색) ⭐ 핵심
 #   - Albert: 시장 구조 분석가 ("- id: MAnalyst" 검색)
-#   - Steve: 시장 기회 발굴가 ("- id: OHunter" 검색)
-#   - Bill: 시장 규모 계산가 ("- id: SCalculator" 검색)
-#   - Rachel: 데이터 검증 전문가 ("- id: Researcher" 검색)
+#   - Steve: 시장 기회 발굴가 ("- id: MExplorer" 검색)
+#   - Bill: 시장 규모 계산가 ("- id: MQuant" 검색)
+#   - Rachel: 데이터 검증 전문가 ("- id: MValidator" 검색)
 #
 # SECTION 7: ROLES (실제 파일에서 "# SECTION 7:" 검색)
-#   - Stewart: 시스템 운영자 ("- id: Guardian" 검색)
-#   - Owner: 의사결정자 ("owner:" 검색)
+#   - Stewart: 시스템 운영자 ("- id: MCurator" 검색)
+#   - Owner: 의사결정자 ("- id: MOwner" 검색)
 #
 # SECTION 8: CREATIVE BOOST (실제 파일에서 "# SECTION 8:" 검색)
 #   - 10개 AI 브레인스토밍 도구
@@ -110,9 +110,9 @@ reference_map:
     
   agents:
     albert: "agent_manalyst"
-    steve: "agent_ohunter"
-    bill: "agent_scalculator"
-    rachel: "agent_researcher"
+    steve: "agent_mexplorer"
+    bill: "agent_mquant"
+    rachel: "agent_mvalidator"
     stewart: "agent_mcurator"
     
   workflows:
@@ -195,28 +195,28 @@ reference_map:
 #    역할: 가설 생성과 기회 발굴
 #    입력: Albert의 구조 + Bill의 정량 데이터
 #    출력: Opportunity Portfolio (검증된 3등급 기회)
-#    검색: grep "steve:" 또는 "- id: OHunter"
+#    검색: grep "steve:" 또는 "- id: MExplorer"
 #    핵심: "왜"와 "만약"을 탐구, 가설 검증 필수
 #
 # 3. Bill (시장 규모 계산가)
 #    역할: TAM/SAM/SOM 계산
 #    병렬: Albert와 동시 실행 (Rachel 데이터 기반)
 #    출력: Quantified Scenarios
-#    검색: grep "bill:" 또는 "- id: SCalculator"
+#    검색: grep "bill:" 또는 "- id: MQuant"
 #    핵심: 모든 숫자에 신뢰구간 포함
 #
 # 4. Rachel (데이터 검증 전문가)
 #    역할: 데이터 수집과 신뢰도 평가
 #    모든 에이전트 지원: 신뢰도 80% 이상 데이터만 제공
 #    출력: 신뢰도 평가된 데이터셋
-#    검색: grep "rachel:" 또는 "- id: Researcher"
+#    검색: grep "rachel:" 또는 "- id: MValidator"
 #    핵심: 출처와 한계 명시
 #
 # 5. Stewart (프로세스 가디언)
 #    역할: 시스템 운영과 자율 개입
 #    모니터링: 목표 정렬, 진전도, 순환 패턴
 #    개입: 3회 순환 시, 60% 미달 시, 2주 정체 시
-#    검색: grep "stewart:" 또는 "- id: Guardian"
+#    검색: grep "stewart:" 또는 "- id: MCurator"
 #    핵심: Owner 보조, 과정 최적화
 #
 # ========================================
