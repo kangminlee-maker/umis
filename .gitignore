@@ -31,6 +31,9 @@ out/
 *.exe
 *.app
 
+# 시장 분석 문서 (민감한 비즈니스 정보)
+docs/market_analysis/
+
 # 로그 파일
 logs/
 *.log

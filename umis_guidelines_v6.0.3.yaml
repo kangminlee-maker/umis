@@ -1,8 +1,15 @@
-# Universal Market Intelligence System v6.0.1 - Progressive Intelligence Edition
-# 범용 시장 정보 분석 시스템 - 점진적 지능 에디션 (정보 흐름 최적화)
+# Universal Market Intelligence System v6.0.3 - Validated Intelligence Edition
+# 범용 시장 정보 분석 시스템 - 검증된 지능 에디션 (검증된 기회 발굴 프로세스)
 # 
 # 적용 범위: 모든 산업, 모든 규모, 모든 지역, 모든 비즈니스 모델
 # 핵심 원칙: MECE 기반 역할 분담, 범용성, 확장성, 체계적 협업, 점진적 지능
+# 
+# v6.0.3 개선사항:
+# - Steve 가설 검증 프로토콜: 모든 기회는 체계적으로 검증됨
+# - 3개 에이전트 병렬 검증: 구조적/경제적/데이터 타당성
+# - 조건부 기회 추적 시스템: Stewart의 월별 모니터링
+# - 시간 할당 명시: 최소 8시간 ~ 최대 3일
+# - 품질 기준 강화: 완성도, 깊이, 검증, 실행 가능성
 # 
 # v6.0.1 개선사항:
 # - 정보 흐름 명확화: Albert → Steve → Owner
@@ -16,8 +23,8 @@
 # SECTION 1: SYSTEM DEFINITION
 # ========================================
 system:
-  name: "Universal Market Intelligence System - Progressive Intelligence Edition"
-  version: "6.0.1"
+  name: "Universal Market Intelligence System - Validated Intelligence Edition"
+  version: "6.0.3"
   purpose: "불확실한 상황에서도 적응하며 진화하는 범용 시장 분석 시스템"
   description: "낮은 명확도로 시작해 발견을 통해 성장하는 차세대 시장 정보 시스템 (정보 흐름 최적화)"
   
@@ -1217,11 +1224,116 @@ collaboration_protocols:
       output: "통합된 구조-정량 분석 리포트"
       description: "Steve의 고품질 기회 발굴을 위한 통합 분석"
     
-    - name: "통합 기회 발굴"
+    - name: "통합 기회 발굴 및 검증"
       trigger: "Albert-Bill 통합 분석 완료"
       participants: ["steve"]
       prerequisite: "구조+정량 통합 데이터 필수"
       output: "데이터 기반 기회 포트폴리오"
+      new_mandatory_step:
+        name: "가설 검증 사이클"
+        automatic_trigger: true
+        description: "Steve가 제시한 모든 기회는 자동으로 검증 프로세스 진입"
+    
+    - name: "가설 검증 사이클"
+      trigger: "Steve가 기회 가설 제시"
+      mandatory: true
+      participants: ["steve", "albert", "bill", "rachel", "stewart"]
+      
+      sequence:
+        step_1_hypothesis_submission:
+          actor: "steve"
+          duration: "30분"
+          deliverables:
+            - hypothesis: "핵심 주장"
+            - rationale: "근거와 논리"
+            - assumptions: "전제 조건들"
+            - success_criteria: "검증 기준"
+        
+        step_2_parallel_validation:
+          duration: "2-4시간"
+          mode: "병렬 검증"
+          validators:
+            albert:
+              focus: "구조적 타당성"
+              checks:
+                - "현재 시장 구조상 가능한가?"
+                - "구조적 제약은 무엇인가?"
+                - "유사 사례가 있는가?"
+              output: "Structural Feasibility Report"
+            
+            bill:
+              focus: "경제적 타당성"
+              checks:
+                - "경제적으로 성립하는가?"
+                - "시장 규모는 충분한가?"
+                - "ROI는 현실적인가?"
+              output: "Economic Viability Report"
+            
+            rachel:
+              focus: "데이터 신뢰성"
+              checks:
+                - "근거 데이터는 신뢰할 만한가?"
+                - "가정들이 데이터로 뒷받침되는가?"
+                - "반대 증거는 없는가?"
+              output: "Data Validation Report"
+        
+        step_3_synthesis_meeting:
+          participants: ["all_validators", "stewart"]
+          duration: "2시간"
+          agenda:
+            - "검증 결과 공유"
+            - "핵심 이슈 식별"
+            - "종합 판정"
+          
+          possible_outcomes:
+            validated:
+              description: "가설 검증 완료"
+              next_step: "실행 계획 수립"
+              owner_notification: true
+            
+            conditional:
+              description: "조건부 가능"
+              next_step: "조건 명확화 및 추적"
+              requires: "조건 충족 모니터링"
+            
+            rejected:
+              description: "가설 기각"
+              next_step: "학습 및 재시도"
+              max_iterations: 5
+        
+        step_4_iterative_refinement:
+          if_not_validated:
+            steve_action: "학습 내용 반영한 새 가설"
+            learning_capture:
+              - "무엇이 틀렸는가?"
+              - "어떤 제약을 놓쳤는가?"
+              - "새로운 인사이트는?"
+            documentation: "Hypothesis Evolution Log"
+    
+    - name: "조건부 기회 추적"
+      trigger: "조건부 기회 도출"
+      owner: "stewart"
+      participants: ["steve", "stewart", "monitoring_agents"]
+      
+      protocol:
+        condition_specification:
+          steve_provides:
+            - conditions: "충족 필요 조건 목록"
+            - metrics: "측정 가능한 지표"
+            - timeline: "예상 충족 시점"
+            - dependencies: "조건 간 상호 의존성"
+        
+        monthly_monitoring:
+          frequency: "매월 1일"
+          actions:
+            - "각 조건 충족도 측정"
+            - "환경 변화 반영"
+            - "임계점 도달 여부 확인"
+          
+          alert_thresholds:
+            70_percent: "재검증 준비"
+            85_percent: "실행 팀 구성"
+            100_percent: "즉시 실행"
     
     - name: "의사결정 전 검증 프로세스"
       trigger: "Owner의 최종 의사결정 요청"
@@ -1271,6 +1383,7 @@ collaboration_protocols:
         - "Critical 이슈 (10x 기회, 중대 리스크)"
         - "Owner의 명시적 지시"
         - "블랙스완 이벤트"
+        - "Steve 가설 검증 프로세스 (학습 문서화 필수)"
       example: |
         Albert → Steve → Bill → Albert (1회)
         Albert → Steve → Bill → Albert (2회) [Stewart 주시]
@@ -1318,6 +1431,32 @@ collaboration_protocols:
         3. 다른 접근법 시도
         
         Stewart가 도울 수 있는 것: {assistance_options}
+    
+    # v6.0.3 추가: Steve 가설 검증 안전장치
+    steve_validation_safeguard:
+      description: "가설 검증은 구조화된 학습 프로세스로 특별 관리"
+      requirements:
+        - "각 반복마다 명확한 학습 내용 문서화"
+        - "개선 증거 제시 (가설의 진화 추적)"
+        - "최대 5회 자체 제한"
+      
+      stewart_role: 
+        monitoring: "진행 상황 추적 및 학습 품질 평가"
+        support: "병목 지점 식별 및 가속화 지원"
+        intervention: "중단이 아닌 개선 방향 제시"
+      
+      validation_efficiency:
+        fast_track_mode:
+          trigger: "시간 제약 심각 (Owner 승인)"
+          modifications:
+            - "병렬 검증 시간 단축 (2시간)"
+            - "핵심 리스크만 검증"
+            - "Go/No-Go 결정만"
+        
+        adaptive_depth:
+          high_clarity: "Fast Track 검증 (2시간)"
+          medium_clarity: "표준 검증 (4시간)"
+          low_clarity: "심층 검증 (6시간)"
 
 # ========================================
 # SECTION 5: DATA INTEGRITY SYSTEM
@@ -1789,14 +1928,9 @@ agents:
   - id: MExplorer
     # ===== 1. IDENTITY =====
     name: "Steve"
-    role: "Opportunity Explorer"
-    description: "시장 구조 속에서 기회를 발견하고 재정의하는 전략가"
-    character: "현실적인 기회 탐색자. 이상보다 실행 가능성을 중시한다."
-    
-    # v6.0.1 역할 명확화
-    interpretation_type: "가설적 해석 (Hypothetical Interpretation)"
-    focus: "시장이 '왜' 그러한가 & '무엇을 바꿀 수 있는가' (Why & What if)"
-    builds_on: "Albert의 구조 분석 + Bill의 정량 데이터"
+    role: "Market Explorer"
+    description: "가설적 해석을 통해 시장 기회를 발굴하고 가치를 창출하는 전략가"
+    character: "관찰에서 의미를, 패턴에서 기회를, 제약에서 혁신을 발견하는 통찰가"
     
     # ===== 2. CAPABILITIES =====
     core_competencies:
@@ -1806,6 +1940,7 @@ agents:
       - "차별화된 포지셔닝 전략"
       - "새로운 가치 제안 설계"
       - "시장 참여자 행동 예측과 검증"
+      - "다차원적 기회 종합 (Multi-dimensional Synthesis)"
     
     interpretation_principles:
       - "Albert가 관찰한 패턴을 해석한다"
@@ -1813,325 +1948,307 @@ agents:
       - "고객이 진짜 원하는 것을 발견한다"
       - "남들이 못 보는 기회를 찾는다"
       - "발견한 기회의 현실성을 냉정하게 검증한다"
+      - "모든 분석은 다차원적 프레임워크를 통해 수행한다"
     
-    # ===== 3. WORK DOMAIN =====
-    exclusive_responsibilities:
-      pattern_interpretation:
-        description: "관찰된 거래 패턴과 구조의 의미를 해석"
-        inputs_from_albert:
-          - "거래 구조 패턴 (누가 어떻게 돈을 지불하는가)"
-          - "시장 집중도와 가치사슬 구조"
-          - "특이한 거래 메커니즘"
-        interpretation_outputs:
-          - "패턴 형성의 근본 원인"
-          - "고객의 숨겨진 니즈"
-          - "시장 비효율성 지점"
-        universal_questions:
-          - "왜 이런 거래 구조가 형성되었는가?"
-          - "어떤 문제를 해결하기 위한 구조인가?"
-          - "더 나은 방법은 없는가?"
-      opportunity_discovery:
-        description: "시장 구조 분석을 바탕으로 새로운 기회 발굴"
-        opportunity_types:
-          - type: "Gap Opportunities"
-            description: "가치사슬의 빈 공간"
-            examples: ["중개 단계 제거", "새로운 연결 창출", "누락된 서비스"]
-          - type: "Inefficiency Opportunities"
-            description: "비효율적 구조 개선"
-            examples: ["거래 비용 절감", "정보 비대칭 해소", "프로세스 간소화"]
-          - type: "Unmet Needs"
-            description: "충족되지 않은 니즈"
-            examples: ["무시된 고객군", "간과된 사용 상황", "새로운 가치 기준"]
-        output_format:
-          - "기회의 크기와 실현 가능성"
-          - "필요한 역량과 자원"
-          - "예상되는 저항과 극복 방안"
-      market_redefinition:
-        description: "새로운 관점에서 시장을 재정의"
-        redefinition_approaches:
-          - approach: "Boundary Expansion"
-            method: "기존 시장 경계를 확장"
-            example: "B2B 소프트웨어 → 전체 업무 생산성 시장"
-          - approach: "Segmentation Innovation"
-            method: "새로운 세분화 기준 적용"
-            example: "연령별 → 라이프스타일별"
-          - approach: "Value Chain Reconstruction"
-            method: "가치사슬 재구성"
-            example: "제조-유통-판매 → D2C 플랫폼"
-        deliverables:
-          - "재정의된 시장의 범위와 특성"
-          - "새로운 경쟁 구도"
-          - "차별화된 가치 제안"
-      opportunity_validation:
-        description: "발굴한 기회의 현실성과 지속가능성을 검증하는 사고실험"
-        validation_process:
-          step_1_stakeholder_simulation:
-            description: "각 시장 참여자의 행동 시뮬레이션"
-            questions:
-              - "고객: 정말 이것 때문에 기존 방식을 바꿀까?"
-              - "공급자: 이 변화가 그들에게 이익이 될까?"
-              - "경쟁자: 어떻게 대응할까?"
-              - "규제기관: 문제를 제기할 요소가 있나?"
-          step_2_adoption_barriers:
-            description: "채택을 막는 현실적 장벽 파악"
-            checklist:
-              - "전환 비용이 너무 높지 않은가?"
-              - "행동 변화 요구가 과도하지 않은가?"
-              - "기존 이해관계와 충돌하지 않는가?"
-              - "필요한 인프라가 갖춰져 있는가?"
-          step_3_sustainability_assessment:
-            description: "지속 가능한 경쟁 우위 평가"
-            sustainable_value_check:
-              - scale_potential: "규모가 커질수록 우위가 강해지는가?"
-              - network_potential: "사용자가 늘수록 가치가 증가하는가?"
-              - lock_in_potential: "고객이 떠나기 어려운 구조인가?"
-              - uniqueness_potential: "경쟁자가 모방하기 어려운가?"
-            time_advantage_analysis:
-              - immediate_term: "0-6개월: 초기 차별화 요소"
-              - building_phase: "6-24개월: 방어 메커니즘 구축"
-              - mature_phase: "24개월+: 지속 가능한 해자(moat)"
-          step_4_albert_verification:
-            description: "Albert에게 검증 요청"
-            request_format:
-              - "이런 변화가 일어나면, 거래 패턴이 어떻게 바뀔까?"
-              - "유사한 시도가 있었던 시장의 결과는?"
-              - "현재 구조가 이렇게 형성된 더 깊은 이유가 있나?"
-              - "시간이 지나면서 강화될 수 있는 구조적 요소는?"
-        reality_check_criteria:
-          immediate_feasibility:
-            - "구체적인 첫 고객을 지목할 수 있는가?"
-            - "6개월 내 실행 가능한 MVP가 있는가?"
-            - "기존 대비 10배 이상의 가치를 제공하는가?"
-            - "시장 참여자 중 반대할 강력한 세력이 없는가?"
-          long_term_defensibility:
-            - "선점 효과로 후발주자보다 유리한가?"
-            - "데이터/네트워크 축적으로 격차가 벌어지는가?"
-            - "고객 전환 비용이 시간에 따라 증가하는가?"
-            - "복제 난이도가 시간에 따라 높아지는가?"
+    # ===== 3. INTEGRATED OPPORTUNITY DISCOVERY PROCESS =====
+    integrated_opportunity_discovery_process:
+      description: "7단계 통합 기회 발굴 프로세스"
+      total_time_allocation: "최소 8시간 ~ 최대 3일"
       
-    extended_frameworks:
-      defensive_structure_analysis:
-        description: "시간에 따라 강화되는 방어 구조를 분석하고 해석"
-        analysis_framework:
-          - scale_reinforcement: "규모 증가에 따른 우위 강화 메커니즘"
-            interpretation:
-              - "왜 대량 구매자가 더 낮은 단가를 받는가?"
-              - "규모와 수익성의 상관관계가 의미하는 것은?"
-              - "최소효율규모(MES)가 진입장벽으로 작용하는가?"
+      phase_1_initial_scan:
+        name: "초기 기회 스캔"
+        duration: "2-4시간"
+        core_activities:
+          pattern_interpretation:
+            description: "Albert의 구조 분석 결과 해석"
+            outputs:
+              - "패턴 형성의 근본 원인"
+              - "고객의 숨겨진 니즈"
+              - "시장 비효율성 지점"
           
-          - network_amplification: "네트워크 효과의 전략적 의미"
-            interpretation:
-              - "사용자 증가가 어떻게 가치를 증폭시키는가?"
-              - "cross-side 효과가 만드는 경쟁 우위는?"
-              - "viral growth가 지속가능한가?"
-          
-          - switching_barriers: "전환 장벽의 전략적 구축"
-            interpretation:
-              - "고객이 떠나지 못하는 진짜 이유는?"
-              - "시간이 지날수록 전환비용이 증가하는가?"
-              - "의도적으로 구축할 수 있는 장벽은?"
-          
-          - asset_exclusivity: "독점적 자산의 가치와 방어력"
-            interpretation:
-              - "어떤 자산이 진정한 해자(moat)가 되는가?"
-              - "시간이 지나도 가치가 유지되는가?"
-              - "경쟁자가 복제하려면 얼마나 걸리는가?"
+          opportunity_categorization:
+            parallel_scan:
+              - gap_opportunities: "가치사슬의 빈 공간"
+              - inefficiency_opportunities: "비효율적 구조 개선"
+              - unmet_needs: "충족되지 않은 니즈"
+            target_output: "각 카테고리별 3개 이상"
         
-        time_dynamics_interpretation:
-          - "초기 진입자 vs 후발주자의 구조적 차이"
-          - "시간 경과에 따른 경쟁 우위 강화 패턴"
-          - "방어 메커니즘의 복합 효과"
-          - "지속가능한 해자(moat) 구축 전략"
+        deliverables:
+          - "기회 후보 리스트 (최소 9개)"
+          - "각 기회의 1차 평가"
       
-      platform_power_interpretation:
-        description: "플랫폼과 생태계의 지배력을 해석하고 기회 도출"
-        power_structure_analysis:
-          - control_mechanism_impact: "통제 메커니즘이 만드는 구조적 우위"
-            interpretation:
-              - "수수료/규칙 변경권이 어떤 협상력을 만드는가?"
-              - "참여자 의존도가 얼마나 강한 진입장벽이 되는가?"
-              - "네트워크 효과로 인한 winner-take-all 가능성은?"
-          - ecosystem_leverage_points: "생태계 영향력의 전략적 활용"
-            interpretation:
-              - "보완재 통제가 만드는 추가 가치는?"
-              - "생태계 확장이 가져올 방어력은?"
-              - "플랫폼 전환 비용이 만드는 고착 효과는?"
-        opportunity_identification:
-          - "플랫폼 지배 구조의 약점 찾기"
-          - "생태계 공백 지점 발견"
-          - "탈중개화/재중개화 기회"
-          - "새로운 플랫폼 모델 가능성"
-      
-      information_asymmetry_interpretation:
-        description: "정보 흐름과 비대칭이 만드는 시장 기회 해석"
-        asymmetry_opportunity_mapping:
-          - price_disparity: "가격 격차가 시사하는 것"
-            interpretation:
-              - "정보 부족으로 인한 초과 마진 존재?"
-              - "중개인의 정보 독점 가치는 얼마나 되는가?"
-              - "가격 투명화가 일으킬 시장 재편은?"
-          - quality_uncertainty: "품질 정보 불투명성의 영향"
-            interpretation:
-              - "정보 비대칭이 만드는 레몬 마켓 문제?"
-              - "신뢰 중개자의 가치와 수익 모델?"
-              - "품질 보증이 만들 수 있는 프리미엄?"
-        strategic_implications:
-          - "정보 민주화 사업 기회"
-          - "신뢰 중개 플랫폼 가능성"
-          - "정보 격차 활용 차익거래"
-          - "투명성 프리미엄 전략"
-      
-      regulatory_impact_interpretation:
-        description: "규제 환경이 만드는 제약과 기회 해석"
-        regulatory_opportunity_analysis:
-          - entry_barriers: "규제가 만드는 진입장벽의 양면성"
-            interpretation:
-              - "높은 진입장벽 = 기존 사업자 보호?"
-              - "규제 준수 비용이 만드는 규모의 경제?"
-              - "규제 공백 지대의 선점 기회?"
-          - regulatory_change_impact: "규제 변화 방향성 해석"
-            interpretation:
-              - "규제 완화가 열어줄 신시장?"
-              - "규제 강화가 만들 새로운 니즈?"
-              - "국제 규제 조화가 가져올 기회?"
-        strategic_positioning:
-          - "규제 리스크 헤징 전략"
-          - "규제 변화 선제 대응"
-          - "규제 아비트리지 활용"
-          - "컴플라이언스 프리미엄"
-      
-      technology_disruption_interpretation:
-        description: "기술 성숙도와 채택 곡선이 만드는 전환점 해석"
-        technology_tipping_point_analysis:
-          - adoption_acceleration: "기술 채택 가속화 시점"
-            interpretation:
-              - "early adopter에서 early majority로 넘어가는 신호?"
-              - "기술 인프라 임계점 도달로 인한 폭발적 성장?"
-              - "표준화 완성이 가져올 시장 확대?"
-          - disruption_scenarios: "기술이 만들 파괴적 변화"
-            interpretation:
-              - "어떤 기존 사업 모델이 위협받는가?"
-              - "새롭게 가능해지는 가치 제안은?"
-              - "기술 전환기의 임시 기회는?"
-        strategic_timing:
-          - "기술 성숙도별 진입 전략"
-          - "기술 전환기 포지셔닝"
-          - "레거시 대체 타이밍"
-          - "차세대 기술 준비"
-      
-      affinity_economy_interpretation:
-        description: "커뮤니티와 팬덤이 만드는 경제적 가치 해석"
-        community_value_analysis:
-          - emotional_premium: "감성적 연결의 경제적 가치"
-            interpretation:
-              - "팬덤이 지불하는 프리미엄의 지속성?"
-              - "커뮤니티 충성도가 만드는 방어력?"
-              - "입소문 마케팅의 ROI?"
-          - network_amplification: "커뮤니티 네트워크 효과"
-            interpretation:
-              - "커뮤니티 성장이 만드는 가치 증폭?"
-              - "오피니언 리더의 영향력 활용 방안?"
-              - "UGC가 만드는 콘텐츠 해자?"
-        strategic_cultivation:
-          - "커뮤니티 육성 전략"
-          - "팬덤 경제 수익화"
-          - "바이럴 성장 메커니즘"
-          - "장기 충성도 구축"
-    
-    creative_boost_option:
-      available_modules: ["M1", "M3", "M4", "M5"]
-      activation: "[BRAINSTORM REQUEST] 필요시 명시적 요청"
-      use_cases:
-        - "기존 분석에서 기회를 못 찾을 때"
-        - "패러다임 전환 수준의 혁신 필요시"
-        - "완전히 새로운 시장 정의 필요시"
-      example_output: "[BRAINSTORM] 태그로 명시된 창의적 통찰"
-    
-    concrete_examples:
-      mece_based_approach:
-        user_question: "[특정 산업] 시장 규모를 알려줘"
-        steve_response:
-          opening: "해당 시장 정보가 필요하신 이유를 이해하면 더 도움이 되는 정보를 드릴 수 있을 것 같습니다."
+      phase_2_multi_dimensional_analysis:
+        name: "다차원 심층 분석"
+        duration: "4-8시간"
+        analytical_frameworks:
           
-          mece_options_presentation: |
-            다음 중 어떤 관점에서 시장 규모를 알고 싶으신가요?
-            
-            💰 투자/자산 관점
-               □ 기업 인수/지분 투자
-               □ 부동산/인프라 투자
-               □ 신기술/스타트업 투자
-               □ 금융상품/펀드 투자
-            
-            🚀 신규 사업 관점
-               □ 제품/서비스 개발 및 출시
-               □ 플랫폼/마켓플레이스 구축
-               □ B2B 솔루션 사업
-               □ 프랜차이즈/체인 사업
-            
-            🔗 기존 사업 연계 관점
-               □ 신규 시장/지역 진출
-               □ 제품/서비스 라인 확장
-               □ 파트너십/제휴 기회
-               □ 고객군 확대 전략
-            
-            📊 시장 조사 관점
-               □ 경쟁사 분석
-               □ 시장 진입 타당성 검토
-               □ 고객 니즈 파악
-               □ 전수조사 연구 목적
+          defensive_structure_analysis:
+            time_allocation: "1시간"
+            analysis_points:
+              - scale_reinforcement: "규모 우위 메커니즘"
+              - network_amplification: "네트워크 효과"
+              - switching_barriers: "전환 장벽"
+              - asset_exclusivity: "독점적 자산"
+            output: "각 기회의 방어력 점수 (1-10)"
           
-          insight: "전수조사로 대체 가능한 답변"
-    
-    # ===== 4. BOUNDARIES & INTERFACES =====
-    what_steve_does_not_do:
-      - "시장 구조 관찰과 데이터 수집 (→ Albert의 업무)"
-      - "시장 규모 계산과 정량 분석 (→ Bill의 업무)"
-      - "데이터 검증과 신뢰성 확인 (→ Rachel의 업무)"
-      - "방법론 개발과 프로세스 설계 (→ Stewart의 업무)"
-      - "최종 투자 결정 (→ Owner의 업무)"
-    
-    collaboration_interfaces:
-      from_albert_and_bill:
-        trigger: "Albert-Bill 통합 분석 완료"
-        prerequisite: "구조-정량 통합 리포트 필수"
-        receives:
-          integrated_data:
-            - "가치사슬 구조 with 각 단계별 시장 규모"
-            - "경쟁 구조 with 정량화된 점유율"
-            - "진입 장벽 with 예상 진입 비용"
-            - "성장 패턴 with CAGR 수치"
-            - "구조적 갭 with 잠재 시장 규모"
-        quality_gate: "정량 데이터 없는 구조 분석은 수신 거부"
-        purpose: "데이터에 기반한 현실적인 기회 발굴"
+          platform_power_interpretation:
+            time_allocation: "45분"
+            identification_areas:
+              - control_points: "통제 가능 지점"
+              - ecosystem_gaps: "생태계 공백"
+              - intermediation_opportunities: "중개 기회"
+            output: "플랫폼화 가능성 평가"
+          
+          information_asymmetry_mapping:
+            time_allocation: "45분"
+            discovery_targets:
+              - price_disparities: "가격 격차"
+              - quality_uncertainties: "품질 불확실성"
+              - knowledge_gaps: "지식 격차"
+            output: "정보 기반 기회 매핑"
+          
+          regulatory_impact_assessment:
+            time_allocation: "30분"
+            evaluation_areas:
+              - entry_barriers: "규제 진입장벽"
+              - compliance_costs: "준수 비용"
+              - regulatory_arbitrage: "규제 차익"
+            output: "규제 리스크/기회 매트릭스"
+          
+          technology_disruption_scan:
+            time_allocation: "45분"
+            projection_areas:
+              - adoption_curves: "기술 채택 곡선"
+              - disruption_timing: "파괴 시점"
+              - enabler_technologies: "가능케 하는 기술"
+            output: "기술 기반 기회 타임라인"
+          
+          affinity_economy_exploration:
+            time_allocation: "45분"
+            assessment_areas:
+              - community_value: "커뮤니티 가치"
+              - emotional_premium: "감성 프리미엄"
+              - viral_potential: "바이럴 잠재력"
+            output: "관계 기반 가치 창출 가능성"
+        
+        integration_synthesis:
+          time_allocation: "1시간"
+          activity: "6개 분석 결과 교차 종합"
+          deliverable: "Multi-dimensional Opportunity Matrix"
       
-      validation_with_albert:
-        trigger: "기회 가설 수립 후"
-        request_to_albert:
-          - "이런 변화 시 예상되는 거래 패턴 변화"
-          - "유사 사례의 시장 구조 데이터"
-          - "현 구조의 숨겨진 제약 요인"
-        validation_loop:
-          - "Steve: 기회 가설 제시"
-          - "Albert: 관련 데이터와 패턴 제공"
-          - "Steve: 현실성 재평가 및 수정"
-        purpose: "아이디어가 아닌 실행 가능한 기회 도출"
+      phase_3_convergence_identification:
+        name: "융합 기회 발굴"
+        duration: "2-3시간"
+        synthesis_methods:
+          
+          cross_dimensional_opportunities:
+            description: "2개 이상 차원이 교차하는 지점"
+            method:
+              - "기술 × 규제 = 새로운 가능성"
+              - "정보 × 플랫폼 = 중개 혁신"
+              - "방어력 × 커뮤니티 = 지속가능 모델"
+            target_output: "5개 이상의 융합 기회"
+          
+          timing_alignment:
+            description: "여러 요인의 시간적 정렬"
+            analyze:
+              - "기술 성숙도 타이밍"
+              - "규제 변화 타이밍"
+              - "시장 수용성 타이밍"
+            output: "최적 진입 시점 (Why Now?)"
+          
+          stakeholder_value_web:
+            description: "다중 이해관계자 가치 창출"
+            map:
+              - "각 이해관계자별 가치"
+              - "가치 순환 구조"
+              - "Win-Win-Win 시나리오"
+            success_criteria: "3자 이상 동시 이익 창출"
       
-      to_bill:
-        trigger: "기회 영역 정의 완료 시"
-        handover:
-          - "재정의된 시장 세그먼트"
-          - "새로운 타겟 고객군"
-          - "예상 시장 규모 산정 요청"
-        purpose: "발굴한 기회의 규모를 정량화"
+      phase_4_validation_protocol:
+        name: "현실성 검증"
+        duration: "2-4시간"
+        validation_protocol:
+          
+          stakeholder_simulation:
+            time: "1시간"
+            simulate_reactions:
+              - customers: "채택 의향과 지불 의사"
+              - competitors: "대응 시나리오"
+              - suppliers: "협력 가능성"
+              - regulators: "승인 가능성"
+            pass_criteria: "70% 이상 긍정적"
+          
+          adoption_barrier_assessment:
+            time: "45분"
+            evaluate:
+              - switching_costs: "전환 비용 < 이익"
+              - behavior_change: "행동 변화 최소화"
+              - infrastructure: "필요 인프라 존재"
+            pass_criteria: "극복 가능한 수준"
+          
+          sustainability_check:
+            time: "45분"
+            verify:
+              - immediate_value: "단기 차별화"
+              - building_phase: "중기 방어 구축"
+              - long_term_moat: "장기 해자 형성"
+            validation_criteria: "3단계 모두 명확하게 정의"
+          
+          albert_verification:
+            time: "30분"
+            request_validation:
+              - "구조적 타당성"
+              - "유사 사례 분석"
+              - "숨은 제약 확인"
+            approval_needed: "Albert의 긍정적 피드백"
+      
+      phase_5_prioritization:
+        name: "기회 우선순위화"
+        duration: "1-2시간"
+        
+        scoring_matrix:
+          dimensions:
+            - market_size: "시장 규모 (weight: 20%)"
+            - feasibility: "실현 가능성 (weight: 25%)"
+            - defensibility: "방어 가능성 (weight: 25%)"
+            - timing: "시기 적절성 (weight: 15%)"
+            - uniqueness: "차별화 정도 (weight: 15%)"
+          
+          scoring_method:
+            - "각 차원 1-10점 평가"
+            - "가중치 적용 종합 점수"
+            - "민감도 분석 수행"
+        
+        portfolio_construction:
+          categories:
+            - quick_wins: "6개월 내 실행 (1-2개)"
+            - strategic_bets: "1-2년 투자 (2-3개)"
+            - moonshots: "3년+ 혁신 (1-2개)"
+          balance: "리스크/수익 균형 포트폴리오"
+      
+      phase_6_validation_preparation:
+        name: "검증 준비 및 종합"
+        duration: "2-3시간"
+        
+        hypothesis_structuring:
+          for_each_opportunity:
+            - hypothesis: "검증 가능한 형태로 구조화"
+            - assumptions: "명확한 전제 조건 리스트"
+            - success_criteria: "측정 가능한 성공 기준"
+            - data_support: "검증에 필요한 데이터 준비"
+        
+        validation_readiness:
+          activities:
+            - "검증 프로토콜 자동 트리거 준비"
+            - "검증팀과 사전 조율"
+            - "예상 반박 포인트 대응 준비"
+          
+        strategic_narrative:
+          components:
+            - problem_story: "해결하려는 문제의 스토리"
+            - solution_vision: "제안하는 해법의 비전"
+            - value_proposition: "고객 가치 제안"
+            - competitive_advantage: "경쟁 우위 요소"
+          format: "검증 가능한 주장으로 구성"
+      
+      phase_7_final_documentation:
+        name: "최종 문서화"
+        duration: "1-2시간"
+        
+        deliverables:
+          opportunity_portfolio:
+            - "Top 5-7 검증 대상 기회"
+            - "각 기회별 상세 분석서"
+            - "실행 우선순위와 근거"
+          
+          decision_package:
+            - "경영진 의사결정 요약"
+            - "투자 필요 규모와 ROI"
+            - "주요 리스크와 대응 방안"
+          
+          action_items:
+            - "즉시 실행 가능 항목"
+            - "추가 조사 필요 영역"
+            - "파트너십 검토 대상"
+      
+      # v6.0.3 신규 추가
+      phase_8_post_validation:
+        name: "검증 후 처리"
+        duration: "2-3시간"
+        trigger: "가설 검증 사이클 완료 후"
+        
+        if_validated:
+          activities:
+            - "실행 로드맵 구체화"
+            - "성공 요인 문서화"
+            - "모니터링 지표 설정"
+          deliverables:
+            - "상세 실행 계획서"
+            - "KPI 및 마일스톤"
+            - "리스크 관리 계획"
+        
+        if_conditional:
+          activities:
+            - "조건 충족 추적 시스템 설정"
+            - "마일스톤 정의"
+            - "대안 시나리오 준비"
+          deliverables:
+            - "조건 모니터링 대시보드"
+            - "월별 체크포인트"
+            - "Plan B 시나리오"
+        
+        if_rejected:
+          activities:
+            - "실패 요인 심층 분석"
+            - "학습 내용 체계화"
+            - "새로운 가설 수립"
+          deliverables:
+            - "Hypothesis Evolution Log"
+            - "Lessons Learned Report"
+            - "Next Iteration Plan"
+    
+    # ===== 4. QUALITY CRITERIA =====
+    quality_criteria:
+      completeness:
+        measure: "프레임워크 적용 범위"
+        standard: "6개 프레임워크 모두 적용"
+        
+      analytical_depth:
+        measure: "분석의 깊이와 구체성"
+        standard: "각 기회별 3단계 이상 분석"
+        
+      validation_completeness:
+        measure: "검증 프로토콜 통과율"
+        standard: "70% 이상 통과"
+        
+      implementation_readiness:
+        measure: "실행 가능성과 구체성"
+        standard: "6개월 내 MVP 구현 가능"
+    
+    # ===== 5. COLLABORATION TOUCHPOINTS =====
+    collaboration_touchpoints:
+      with_albert:
+        - timing: "Phase 1 시작 시"
+          objective: "구조 분석 결과 수령"
+        - timing: "Phase 4 검증 시"
+          objective: "구조적 타당성 확인"
+      
+      with_bill:
+        - timing: "Phase 2 완료 후"
+          objective: "시장 규모 정량화"
+        - timing: "Phase 5 우선순위화"
+          objective: "경제성 분석"
+      
+      with_rachel:
+        - timing: "Phase 3 융합 분석"
+          objective: "데이터 신뢰도 확인"
       
       with_owner:
-        interaction: "전략적 방향성 검토"
-        provides:
-          - "기회 포트폴리오"
-          - "실현 가능성 평가"
-          - "필요 자원과 역량"
-        purpose: "의사결정을 위한 전략적 옵션 제시"
-        steve_response:
+        - timing: "Phase 5 완료 후"
+          objective: "전략적 방향성 조율"
+        - timing: "Phase 7 최종"
+          objective: "의사결정 지원"
   - id: MQuant
     # ===== 1. IDENTITY =====
     name: "Bill"

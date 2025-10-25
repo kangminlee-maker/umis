@@ -5,6 +5,81 @@
 
 ---
 
+## v6.0.3 (2024-10-25) - Validated Opportunity Discovery Process [CRITICAL UPDATE]
+
+### 🎯 핵심 개선사항
+**Steve 가설 검증 프로토콜**: 모든 기회는 체계적으로 검증됨
+- **3개 에이전트 병렬 검증**: Albert(구조적), Bill(경제적), Rachel(데이터) 타당성 검증
+- **조건부 기회 추적**: Stewart의 월별 모니터링 시스템
+- **Stewart 예외 조항**: Steve 가설 검증은 반복 제한에서 제외
+- **학습 기반 개선**: 실패를 통한 체계적 학습과 진화
+
+### 🏗️ 주요 개선사항
+
+#### 1. 가설 검증 사이클 (신규)
+- 30분 가설 제출 → 2-4시간 병렬 검증 → 2시간 종합 회의
+- 검증 결과: 검증됨/조건부/기각
+- 최대 5회 반복을 통한 가설 정교화
+- 모든 Steve 기회는 자동으로 검증 프로세스 진입
+
+#### 2. 조건부 기회 관리 (신규)
+- Stewart가 월별 조건 충족도 모니터링
+- 70% 충족: 재검증 준비
+- 85% 충족: 실행팀 구성
+- 100% 충족: 즉시 실행
+
+#### 3. 검증 효율성 개선
+- Fast Track Mode: 긴급 시 2시간 내 Go/No-Go
+- Adaptive Depth: 프로젝트 명확도에 따른 검증 깊이 조정
+- 중복 검증 방지: 개별 가설과 포트폴리오 검증 분리
+
+#### 4. Steve 프로세스 업데이트
+- Phase 6: "검증 준비 및 종합"으로 변경
+- Phase 8: "검증 후 처리" 신규 추가
+- 검증 결과별 차별화된 후속 조치
+
+---
+
+## v6.0.2 (2024-10-24) - Integrated Opportunity Discovery Process [MAJOR UPDATE]
+
+### 🎯 핵심 개선사항
+**Steve의 통합 기회 발굴 프로세스**: 체계적인 7단계 프로세스 도입
+- **Extended → Core**: extended_frameworks를 핵심 분석 프레임워크로 통합
+- **시간 할당**: 최소 8시간 ~ 최대 3일 명시
+- **품질 기준**: 완성도, 깊이, 검증, 실행 가능성 표준화
+- **다차원 분석**: 6개 프레임워크 필수 적용
+
+### 🏗️ 주요 개선사항
+
+#### 1. 7단계 통합 프로세스
+- Phase 1: 초기 기회 스캔 (2-4시간)
+- Phase 2: 다차원 심층 분석 (4-8시간)
+- Phase 3: 융합 기회 발굴 (2-3시간)
+- Phase 4: 현실성 검증 (2-4시간)
+- Phase 5: 우선순위화 (1-2시간)
+- Phase 6: 전략적 종합 (2-3시간)
+- Phase 7: 최종 문서화 (1-2시간)
+
+#### 2. 6개 핵심 분석 프레임워크
+- Defensive Structure Analysis
+- Platform Power Interpretation
+- Information Asymmetry Mapping
+- Regulatory Impact Assessment
+- Technology Disruption Scan
+- Affinity Economy Exploration
+
+#### 3. 품질 기준 강화
+- 프레임워크 적용 완성도
+- 분석의 깊이와 구체성
+- 검증 프로토콜 통과율
+- 실행 가능성과 구체성
+
+#### 4. 협업 터치포인트 명확화
+- 각 단계별 협업 시점과 목적 정의
+- Albert, Bill, Rachel, Owner와의 상호작용 구조화
+
+---
+
 ## v6.0.1 (2024-10-24) - Information Flow Optimization [MINOR UPDATE]
 
 ### 🎯 핵심 개선사항
