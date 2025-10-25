@@ -3,7 +3,18 @@
 # @id: usage_guide
 # ========================================
 # 
-# 이 파일은 대용량(5,254줄) YAML 파일입니다. 효과적인 활용을 위해:
+# 🚀 UMIS 시작하기:
+# 이 AI 가이드 파일만으로도 UMIS를 시작할 수 있습니다!
+# 
+# 📁 UMIS 전체 파일 구성:
+# 1. umis_ai_guide_v6.2.yaml (이 파일) - AI 사용 가이드
+# 2. umis_guidelines_v6.2.yaml - 메인 시스템 정의
+# 3. adaptive_workflow_examples.yaml - 실행 예시
+# 
+# 💡 사용 방법:
+# - 간단한 분석: 이 가이드만으로 시작 가능
+# - 전체 분석: 필요시 메인 시스템 파일 요청
+# - 예시 참조: 구체적 사례가 필요하면 예시 파일 요청
 # 
 # 🔍 AI 읽기 전략:
 #    - AI 가이드: @id 태그로 빠른 접근 가능
@@ -654,3 +665,25 @@ parallel_exploration_protocol:
 # 
 # 실제 UMIS v6.2 시작 (umis_guidelines_v6.2.yaml 참조)
 # ========================================
+#
+# 🎯 빠른 시작 가이드:
+# 
+# 1. 간단한 시장 분석 시작:
+#    "온라인 교육 시장을 UMIS로 분석해주세요"
+#    → 이 가이드의 Quick Start (@id: quick_start_guide) 참조
+# 
+# 2. 작업리스트 기반 실행:
+#    "프로젝트를 작업리스트로 계획해주세요"
+#    → UMIS 실행 프로토콜 (@id: umis_execution_protocol) 참조
+# 
+# 3. 병렬 탐색 모드:
+#    "AI 자율성을 최대화해서 탐색해주세요"
+#    → 병렬 탐색 프로토콜 (@id: parallel_exploration_protocol) 참조
+# 
+# 4. 전체 시스템 활용이 필요한 경우:
+#    "메인 시스템 파일(umis_guidelines_v6.2.yaml)도 필요합니다"
+#    → 에이전트 상세 정의, 워크플로우 구현 등
+# 
+# 5. 구체적 예시가 필요한 경우:
+#    "실행 예시 파일(adaptive_workflow_examples.yaml)을 참조하고 싶습니다"
+#    → 실제 프로젝트 사례, 패턴, 템플릿 등
