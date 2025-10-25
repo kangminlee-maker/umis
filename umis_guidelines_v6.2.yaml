@@ -12,7 +12,10 @@
 # 주요 내용:
 # - Quick Start Guide (@id: quick_start_guide)
 # - Agent Summary (@id: agent_summary)
-# - Token Management Protocols (@id: umis_execution_protocol)
+# - Token Management Protocols (@id: token_management_protocol)
+#   · 동적 토큰 관리: 에이전트별 계수 (0.75-0.85)
+#   · 권장 모델: Claude-4-sonnet-1m (1M)
+#   · 지원 모델: GPT-5 (272K), Claude 200K (제한적)
 # - Reference Map (@id: reference_map)
 # 
 # ========================================
@@ -29,7 +32,7 @@
 # ========================================
 system:
   name: "Universal Market Intelligence System - Validated Intelligence Edition"
-  version: "6.2"
+  version: "6.2.1"
   purpose: "불확실한 상황에서도 적응하며 진화하는 범용 시장 분석 시스템"
   description: "낮은 명확도로 시작해 발견을 통해 성장하는 차세대 시장 정보 시스템 (정보 흐름 최적화)"
   default_mode: "Discovery Sprint → Comprehensive Study (2-4주) - 별도 언급 없으면 자동 적용"
@@ -771,8 +774,9 @@ adaptive_intelligence_system:
     
     pre_execution_check:
       description: "UMIS 실행 프로토콜 적용 (@id: umis_execution_protocol)"
-      action: "작업리스트 작성 → 각 작업 50% 이하 확인 → 승인 후 순차 실행"
-      emergency_protocol: "실행 중 90% 도달 시 긴급 중단 (@id: umis_execution_protocol.token_management.emergency)"
+      action: "작업리스트 작성 → 각 쿼리가 동적 토큰 한도 이하 확인 → 승인 후 순차 실행"
+      token_protocol: "에이전트별 동적 계수 적용 (Steve: 0.75, Albert: 0.80, Bill/Rachel: 0.85)"
+      emergency_protocol: "세션 누적 예측이 95% 초과 시 긴급 중단 (@id: umis_execution_protocol.token_management.emergency)"
       
     context_preservation:
       description: "세션 연속성 보장 (@id: context_preservation_mechanism)"
@@ -1064,15 +1068,100 @@ proactive_monitoring:
         - "작업리스트 수정 필요성 평가"
         - "Owner와 다음 단계 협의"
     
-    task_deviation:
-      description: "작업 중 예상 토큰 초과 위험"
-      signal: "진행 중 토큰 사용량 모니터링"
-      thresholds:
-        warning: "40% 도달 - 속도 조절 권고"
-        critical: "90% 도달 - 즉시 중단"
-      actions:
-        at_40_percent: "진행 속도 재평가, 핵심만 집중"
-        at_90_percent: "긴급 프로토콜 실행 (@id: umis_execution_protocol.token_management.emergency)"
+    token_management_protocol:
+      description: "모델별 동적 토큰 관리 시스템"
+      
+      model_awareness:
+        detection: "사용 중인 AI 모델의 컨텍스트 윈도우 자동 감지"
+        supported_models:
+          - name: "Claude-4-sonnet-1m"
+            context_window: "1M"
+            system_overhead: "~90K"
+            available: "~910K (91%)"
+            status: "최적 - 권장 모델 ✅"
+          - name: "GPT-5"
+            context_window: "272K"
+            system_overhead: "~90K (현재) / ~35K (최적화)"
+            available: "~182K / ~237K"
+            status: "양호 - 경량화 권장"
+          - name: "Claude-4.5-sonnet / Claude-4.1-opus"
+            context_window: "200K"
+            system_overhead: "~90K"
+            available: "~110K"
+            status: "제한적 - Quick Mode만"
+      
+      dynamic_query_allocation:
+        principle: "각 쿼리 크기 = 남은 컨텍스트 × 에이전트별 계수"
+        
+        agent_coefficients:
+          steve: 
+            value: 0.75
+            reason: "창의적 작업, 출력 예측 어려움, 최대 오차 25%"
+          albert:
+            value: 0.80
+            reason: "구조적 분석, 예측 가능, 평균 오차 18%"
+          bill:
+            value: 0.85
+            reason: "정량 계산, 구조화된 출력, 평균 오차 12%"
+          rachel:
+            value: 0.85
+            reason: "데이터 검증, 제한적 출력, 평균 오차 12%"
+          stewart:
+            value: 0.80
+            reason: "프로세스 관리, 표준 출력"
+          default:
+            value: 0.75
+            reason: "불확실할 때는 보수적으로"
+        
+        calculation_formula: |
+          remaining_context = model_window - current_session_usage
+          max_query_size = remaining_context × agent_coefficient
+          
+          예시 (1M 모델, Steve 작업):
+          • 현재 사용: 400K
+          • 남은 공간: 600K
+          • 최대 쿼리: 600K × 0.75 = 450K
+      
+      session_level_safeguards:
+        warning_threshold:
+          level: "70%"
+          trigger: "누적 사용량이 컨텍스트 윈도우의 70% 도달"
+          action: "다음 쿼리 크기 제한 (최대 20% 크기만 허용)"
+          message: "⚠️ 세션 70% 사용 - 작은 작업만 가능하거나 세션 종료 고려"
+        
+        projection_check:
+          description: "다음 쿼리 실행 전 필수 검증"
+          formula: |
+            projected_usage = current_usage + (next_query × 1.25) + 20K
+            safety_threshold = model_window × 0.95
+            
+            if projected_usage > safety_threshold:
+              세션 즉시 종료
+          
+          example: |
+            현재 누적: 720K (72%)
+            다음 쿼리: 400K (Steve)
+            안전 계산: 400K × 1.25 + 20K = 520K
+            예상 총합: 720K + 520K = 1,240K
+            한도: 1,000K × 0.95 = 950K
+            판정: 1,240K > 950K → 🛑 세션 종료
+          
+          safety_multiplier: "1.25 (최악 25% 오차 대비)"
+          output_buffer: "20K (출력 + 여유)"
+        
+        emergency_cutoff:
+          level: "98%"
+          trigger: "실행 중 예상 외로 98% 도달"
+          action: "즉시 중단 및 세션 종료"
+          recovery: "현재까지 작업 저장 → 요약 생성 → 새 세션"
+      
+      multi_session_independence:
+        principle: "각 세션은 독립적으로 컨텍스트 관리"
+        session_handoff:
+          - "이전 세션 핵심 요약만 전달 (5-10K)"
+          - "상세 내용은 파일 시스템에 저장"
+          - "새 세션은 0K부터 재시작"
+        context_reset: "세션 종료 시 컨텍스트 완전 리셋"
     
     adaptive_replanning:
       description: "중요한 발견으로 인한 계획 변경 필요"
@@ -4269,10 +4358,12 @@ implementation_guide:
         description: "UMIS 실행 프로토콜 필수 적용"
         process:
           1_task_list: "전체 작업리스트 작성 (항상)"
-          2_token_check: "각 작업이 가용 토큰의 50% 이하인지 확인"
+          2_token_check: "각 쿼리가 동적 토큰 한도 이하인지 확인"
+          2a_dynamic_allocation: "에이전트별 계수 적용 (Steve: 0.75, Albert: 0.80, Bill/Rachel: 0.85)"
+          2b_projection_check: "세션 누적 예측 < 95% 확인"
           3_approval: "사용자 승인 후 첫 작업 시작"
           4_adaptive: "각 작업 완료 후 재평가 및 조정"
-        reference: "@id: umis_execution_protocol"
+        reference: "@id: umis_execution_protocol 및 @id: token_management_protocol"
       
       session_continuity_protocol:
         description: "다중 세션 실행 시 컨텍스트 보존"
