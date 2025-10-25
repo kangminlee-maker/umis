@@ -1091,36 +1091,124 @@ proactive_monitoring:
             status: "제한적 - Quick Mode만"
       
       dynamic_query_allocation:
-        principle: "각 쿼리 크기 = 남은 컨텍스트 × 에이전트별 계수"
+        principle: "각 쿼리 크기 = 남은 컨텍스트 × 에이전트별 계수 (모델 크기에 따라 자동 조정)"
         
-        agent_coefficients:
-          steve: 
-            value: 0.75
-            reason: "창의적 작업, 출력 예측 어려움, 최대 오차 25%"
-          albert:
-            value: 0.80
-            reason: "구조적 분석, 예측 가능, 평균 오차 18%"
-          bill:
-            value: 0.85
-            reason: "정량 계산, 구조화된 출력, 평균 오차 12%"
-          rachel:
-            value: 0.85
-            reason: "데이터 검증, 제한적 출력, 평균 오차 12%"
-          stewart:
-            value: 0.80
-            reason: "프로세스 관리, 표준 출력"
-          default:
-            value: 0.75
-            reason: "불확실할 때는 보수적으로"
+        model_adaptive_coefficients:
+          description: "컨텍스트 윈도우 크기에 따른 자동 계수 조정"
+          
+          large_models:
+            threshold: "context_window >= 500K"
+            models: ["Claude-4-sonnet-1m (1M)", "GPT-4 Turbo (128K+)"]
+            coefficients:
+              steve: 
+                value: 0.75
+                reason: "넉넉한 공간에서 창의성 최대 활용"
+              albert:
+                value: 0.80
+                reason: "구조 분석 충분한 공간 확보"
+              bill:
+                value: 0.85
+                reason: "정량 작업 효율 극대화"
+              rachel:
+                value: 0.85
+                reason: "검증 작업 효율 극대화"
+              stewart:
+                value: 0.80
+                reason: "프로세스 관리 표준"
+              default:
+                value: 0.75
+                reason: "보수적 기본값"
+          
+          medium_models:
+            threshold: "250K <= context_window < 500K"
+            models: ["GPT-5 (272K)", "Claude Haiku (300K)"]
+            coefficients:
+              steve:
+                value: 0.65
+                reason: "적당한 공간에서 안전성과 효율 균형"
+              albert:
+                value: 0.70
+                reason: "구조 분석 안전 마진 확보"
+              bill:
+                value: 0.75
+                reason: "정량 작업 적절한 공간"
+              rachel:
+                value: 0.75
+                reason: "검증 작업 적절한 공간"
+              stewart:
+                value: 0.70
+                reason: "프로세스 관리 균형"
+              default:
+                value: 0.65
+                reason: "보수적 기본값"
+          
+          small_models:
+            threshold: "context_window < 250K"
+            models: ["Claude-4.5-sonnet (200K)", "Claude-4.1-opus (200K)"]
+            coefficients:
+              steve:
+                value: 0.60
+                reason: "좁은 공간에서 최대 안전성"
+              albert:
+                value: 0.65
+                reason: "구조 분석 안전 우선"
+              bill:
+                value: 0.70
+                reason: "정량 작업 보수적"
+              rachel:
+                value: 0.70
+                reason: "검증 작업 보수적"
+              stewart:
+                value: 0.65
+                reason: "프로세스 관리 안전"
+              default:
+                value: 0.60
+                reason: "최대 보수적"
         
         calculation_formula: |
+          # 1단계: 모델 감지
+          if context_window >= 500K:
+              coefficient_tier = "large_models"
+          elif context_window >= 250K:
+              coefficient_tier = "medium_models"
+          else:
+              coefficient_tier = "small_models"
+          
+          # 2단계: 에이전트별 계수 선택
+          agent_coefficient = coefficients[coefficient_tier][current_agent]
+          
+          # 3단계: 최대 쿼리 크기 계산
           remaining_context = model_window - current_session_usage
           max_query_size = remaining_context × agent_coefficient
+        
+        examples:
+          example_1m_steve: |
+            모델: Claude 1M (1,000K)
+            현재 사용: 400K
+            남은 공간: 600K
+            감지: >= 500K → Large Model
+            계수: Steve 0.75
+            최대 쿼리: 600K × 0.75 = 450K ✅
           
-          예시 (1M 모델, Steve 작업):
-          • 현재 사용: 400K
-          • 남은 공간: 600K
-          • 최대 쿼리: 600K × 0.75 = 450K
+          example_272k_steve: |
+            모델: GPT-5 (272K)
+            현재 사용: 90K
+            남은 공간: 182K
+            감지: >= 250K → Medium Model
+            계수: Steve 0.65
+            최대 쿼리: 182K × 0.65 = 118.3K ✅
+            실제 소비: 118.3K × 1.25 + 6K = 153.9K
+            누적: 243.9K (90%) - 안전!
+          
+          example_200k_steve: |
+            모델: Claude 200K (200K)
+            현재 사용: 90K
+            남은 공간: 110K
+            감지: < 250K → Small Model
+            계수: Steve 0.60
+            최대 쿼리: 110K × 0.60 = 66K ✅
+            실제 소비: 66K × 1.25 + 6K = 88.5K
+            누적: 178.5K (89%) - 안전!
       
       session_level_safeguards:
         warning_threshold:
