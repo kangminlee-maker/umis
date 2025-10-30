@@ -10,6 +10,11 @@
 ### 🔄 시스템 아키텍처 재설계
 **핵심 철학**: "가설과 판단에는 근거와 검증이 필요하다"
 
+**지원 모델 업데이트**:
+- **Claude-4-sonnet-1m / Claude-4.5-sonnet (1M)**: 권장 모델 ✅
+- **GPT-5 (272K)**: 지원 모델
+- **Claude-4.1-opus (200K)**: 제한적 지원
+
 #### 주요 변경사항:
 
 **1. SECTION 0: SYSTEM ARCHITECTURE OVERVIEW 신규 추가**
@@ -69,7 +74,7 @@
 
 **핵심 특징**:
 - 20-30% 낮은 명확도로도 시작 가능한 Discovery Sprint
-- 모델별 동적 토큰 관리 (Claude-1M 최적화, GPT-5/Claude-200K 지원)  
+- 모델별 동적 토큰 관리 (Claude-1M 계열 최적화, GPT-5 지원)
 - Stewart의 자율적 진행 모니터링 및 개입
 - 완전 자동 문서화 및 세션 연속성 보장
 - 필수/선택 파일 구분으로 유연한 모듈 사용
@@ -197,18 +202,19 @@ max_query_size = remaining_context × agent_coefficient
    - 실행 중 예상 외 상황 대비
    - 즉시 중단 및 복구 프로토콜
 
-##### 모델별 지원 상태 (Line 1074-1088)
-- **Claude-4-sonnet-1m (1M)**: 최적 - 권장 모델 ✅
+##### 모델별 지원 상태 (Line 1325-1345)
+- **Claude-4-sonnet-1m / Claude-4.5-sonnet (1M)**: 최적 - 권장 모델 ✅
   - 가용 공간: ~910K (91%)
   - 세션당: 3-5개 쿼리
   - Comprehensive Mode: 8-12 세션
+  - 대용량 분석에 최적
   
 - **GPT-5 (272K)**: 양호 - 지원 ⭐
   - 가용 공간: ~182K (현재) / ~237K (최적화 시)
   - 세션당: 1-2개 / 2-3개 쿼리
   - Comprehensive Mode: 30-40 / 15-20 세션
   
-- **Claude 200K**: 제한적 - Quick Mode만 ⚠️
+- **Claude-4.1-opus (200K)**: 제한적 - Quick Mode만 ⚠️
   - 가용 공간: ~110K (55%)
   - 세션당: 1개 쿼리
   - Quick Mode만 실행 가능

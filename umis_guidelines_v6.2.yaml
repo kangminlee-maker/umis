@@ -14,8 +14,8 @@
 # - Agent Summary (@id: agent_summary)
 # - Token Management Protocols (@id: token_management_protocol)
 #   · 동적 토큰 관리: 에이전트별 계수 (0.75-0.85)
-#   · 권장 모델: Claude-4-sonnet-1m (1M)
-#   · 지원 모델: GPT-5 (272K), Claude 200K (제한적)
+#   · 권장 모델: Claude-4-sonnet-1m / Claude-4.5-sonnet (1M)
+#   · 지원 모델: GPT-5 (272K), Claude-4.1-opus (200K, 제한적)
 # - Reference Map (@id: reference_map)
 # 
 # ========================================
@@ -1323,21 +1323,26 @@ proactive_monitoring:
       model_awareness:
         detection: "사용 중인 AI 모델의 컨텍스트 윈도우 자동 감지"
         supported_models:
-          - name: "Claude-4-sonnet-1m"
+          - name: "Claude-4-sonnet-1m / Claude-4.5-sonnet"
             context_window: "1M"
             system_overhead: "~90K"
             available: "~910K (91%)"
             status: "최적 - 권장 모델 ✅"
+            note: "대용량 분석에 최적, Comprehensive Mode 완벽 지원"
+          
           - name: "GPT-5"
             context_window: "272K"
             system_overhead: "~90K (현재) / ~35K (최적화)"
             available: "~182K / ~237K"
             status: "양호 - 경량화 권장"
-          - name: "Claude-4.5-sonnet / Claude-4.1-opus"
+            note: "Standard/Rapid Mode 적합"
+          
+          - name: "Claude-4.1-opus"
             context_window: "200K"
             system_overhead: "~90K"
             available: "~110K"
             status: "제한적 - Quick Mode만"
+            note: "간단한 분석, 빠른 검증용"
       
       dynamic_query_allocation:
         principle: "각 쿼리 크기 = 남은 컨텍스트 × 에이전트별 계수 (모델 크기에 따라 자동 조정)"
@@ -1347,7 +1352,7 @@ proactive_monitoring:
           
           large_models:
             threshold: "context_window >= 500K"
-            models: ["Claude-4-sonnet-1m (1M)", "GPT-4 Turbo (128K+)"]
+            models: ["Claude-4-sonnet-1m / Claude-4.5-sonnet (1M)"]
             coefficients:
               steve: 
                 value: 0.75
@@ -1393,7 +1398,7 @@ proactive_monitoring:
           
           small_models:
             threshold: "context_window < 250K"
-            models: ["Claude-4.5-sonnet (200K)", "Claude-4.1-opus (200K)"]
+            models: ["Claude-4.1-opus (200K)"]
             coefficients:
               steve:
                 value: 0.60

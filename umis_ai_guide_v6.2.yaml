@@ -1,70 +1,169 @@
 # ========================================
-# UMIS 정의 - Universal Market Intelligence System
+# UMIS AI Guide v6.2.2 - AI-Optimized Format
+# ========================================
+# 
+# 이 파일은 AI가 빠르게 UMIS를 이해하기 위한 구조화된 가이드입니다.
+# 사람이 읽기 위한 문서는 umis_guidelines_v6.2.yaml을 참조하세요.
+#
+# Format: AI-optimized YAML
+# Audience: AI agents only
+# Human Document: umis_guidelines_v6.2.yaml
+#
+# ========================================
+
+_meta:
+  version: "6.2.2"
+  release_date: "2024-10-30"
+  format: "AI-optimized YAML"
+  audience: "AI agents"
+  human_document: "umis_guidelines_v6.2.yaml"
+  examples_document: "umis_examples_v6.2.yaml"
+  optimization:
+    token_efficiency: "+30%"
+    parsing_speed: "optimized"
+    structure: "pure YAML"
+
+# ========================================
+# UMIS 정의
 # @id: umis_definition
 # ========================================
-# 
-# UMIS (Universal Market Intelligence System)는:
-# - 범용 시장 정보 분석 시스템
-# - 시장 조사와 비즈니스 기회 발굴을 위한 AI 에이전트 협업 프레임워크
-# - 5명의 전문 AI 에이전트가 협력하여 시장을 분석하는 시스템
-#   (Albert, Steve, Bill, Rachel, Stewart)
-# 
-# 핵심 목적:
-# - 신규 사업 기획 지원
-# - 시장 진입 타당성 검토
-# - 투자 의사결정 지원
-# - 경쟁 전략 수립
-# 
-# v6.2.2 주요 특징:
-# - Discovery Sprint: 명확도 기반 적응형 시작 (Fast Track vs Full Sprint)
-# - 13개 차원의 시장 분석 프레임워크
-# - 자연스러운 지원 시스템: Bill/Rachel 상시 지원 가능
-# - 의무 검증 체크포인트: Albert-Steve 동등한 품질 보장
-# - 핵심 원칙: "가설과 판단에는 근거와 검증이 필요하다"
-# - SECTION 0 신규: AI 전용 5분 시스템 파악
-#
+
+umis_definition:
+  _id: "umis_definition"
+  _description: "범용 시장 정보 분석 시스템"
+  
+  system:
+    full_name: "Universal Market Intelligence System"
+    type: "AI 에이전트 협업 프레임워크"
+    scope: "시장 조사와 비즈니스 기회 발굴"
+  
+  agents:
+    count: 5
+    list:
+      - id: "albert"
+        name: "Albert"
+        role: "Observer"
+        focus: "시장 구조 분석"
+      - id: "steve"
+        name: "Steve"
+        role: "Explorer"
+        focus: "기회 발굴"
+      - id: "bill"
+        name: "Bill"
+        role: "Quantifier"
+        focus: "정량 분석"
+      - id: "rachel"
+        name: "Rachel"
+        role: "Validator"
+        focus: "데이터 검증"
+      - id: "stewart"
+        name: "Stewart"
+        role: "Guardian"
+        focus: "프로세스 감시"
+  
+  purposes:
+    - "신규 사업 기획 지원"
+    - "시장 진입 타당성 검토"
+    - "투자 의사결정 지원"
+    - "경쟁 전략 수립"
+  
+  v6_2_2_features:
+    _description: "Support & Validation System Redesign"
+    release: "2024-10-30"
+    
+    core_principle: "가설과 판단에는 근거와 검증이 필요하다"
+    
+    major_changes:
+      - name: "SECTION 0 신규"
+        content: "AI 전용 5분 시스템 파악 (정보 흐름 상태 기계)"
+      - name: "자연스러운 일상 지원"
+        content: "Bill/Rachel 상시 지원 (자연스러운 질문 형태)"
+      - name: "의무 검증 시스템"
+        content: "4개 핵심 체크포인트"
+      - name: "균형잡힌 검증"
+        content: "Albert(3명), Steve(3명), Bill(2명), Owner(1명)"
+      - name: "협업 우아함"
+        content: "복잡한 프로토콜 제거, 1개 간단한 원칙"
+
 # ========================================
-# QUICK START - 프로젝트 즉시 시작하기
+# Quick Start Guide
 # @id: quick_start_guide
 # ========================================
-# 
-# 🎯 기본 프로세스: 작업리스트 기반 실행
-#    - 모든 UMIS 프로젝트는 작업리스트 작성으로 시작
-#    - 첫 작업은 보통 Discovery Sprint (목표 명확화)
-#    - 각 작업 완료 후 재평가하여 적응적 진행
-#    - 개별 작업은 가용 토큰의 50% 이하로 설계
-#    - ⚠️ 중요: UMIS 실행 프로토콜 필수 적용 (@id: umis_execution_protocol)
-#
-# A. STEP 1: Discovery Sprint (적응형 시작)
-#    0. Stewart 명확도 평가 (15분): 의도×지식×긴급도
-#    1-Fast. 명확도 ≥ 7: Fast Track Discovery (2-4시간)
-#         - 목표 재확인, 핵심 가정 검증, 시장 경계 확인
-#    1-Full. 명확도 < 7: Full Discovery Sprint (1-3일)  
-#         - 5명 에이전트 병렬 탐색, 목표 구체화, 방향성 수렴
-#    → "discovery_sprint:" 또는 "adaptive_entry_gate:" 검색
-#
-# B. STEP 2: Comprehensive Study (2-4주) - 기본값
-#    1. Discovery Sprint 완료 후 자동 진행
-#    2. 13개 차원 완전 분석
-#    3. 동적 패턴과 미래 시나리오 도출
-#    4. 전략 수립과 실행 계획 포함
-#    → "comprehensive_market_research:" 검색
-#
-# C. 빠른 분석 옵션 (명시적 요청 시만):
-#    - "빠른", "quick", "rapid" 언급 시
-#    - Discovery Sprint 후 Rapid Assessment로 전환
-#    → "rapid_opportunity_assessment:" 검색
-#
-# ========================================
-# 🎯 UMIS 실행 프로토콜 (필수 준수)
-# @id: umis_execution_protocol
-# @tags: [protocol, mandatory, token_management]
-# ========================================
-# 
-# UMIS는 장기 프로젝트이므로 항상 작업리스트 기반으로 실행:
 
-# AI 파싱 가능한 구조화 데이터
+quick_start:
+  _id: "quick_start_guide"
+  _description: "프로젝트 즉시 시작 가이드"
+  
+  basic_process:
+    name: "작업리스트 기반 실행"
+    steps:
+      - "작업리스트 작성으로 시작"
+      - "첫 작업은 Discovery Sprint (목표 명확화)"
+      - "각 작업 완료 후 재평가하여 적응적 진행"
+      - "개별 작업은 가용 토큰의 50% 이하로 설계"
+    protocol: "umis_execution_protocol (필수 적용)"
+  
+  step_1_discovery_sprint:
+    _concept: "적응형 시작"
+    
+    phase_0_clarity_assessment:
+      executor: "stewart"
+      duration: "15분"
+      dimensions:
+        - name: "의도 명확도"
+          weight: 0.4
+        - name: "도메인 지식"
+          weight: 0.35
+        - name: "시급성"
+          weight: 0.25
+    
+    routing:
+      fast_track:
+        condition: "clarity >= 7"
+        duration: "2-4시간"
+        activities:
+          - "목표 재확인"
+          - "핵심 가정 검증"
+          - "시장 경계 확인"
+        search_keyword: "discovery_sprint: 또는 adaptive_entry_gate:"
+      
+      full_sprint:
+        condition: "clarity < 7"
+        duration: "1-3일"
+        activities:
+          - "5명 에이전트 병렬 탐색"
+          - "목표 구체화"
+          - "방향성 수렴"
+        search_keyword: "discovery_sprint: 또는 adaptive_entry_gate:"
+  
+  step_2_comprehensive_study:
+    _concept: "종합 연구 (기본값)"
+    duration: "2-4주"
+    auto_trigger: "Discovery Sprint 완료 후"
+    
+    phases:
+      - "13개 차원 완전 분석"
+      - "동적 패턴과 미래 시나리오 도출"
+      - "전략 수립과 실행 계획 포함"
+    
+    search_keyword: "comprehensive_market_research:"
+  
+  quick_analysis_option:
+    _concept: "빠른 분석 (명시적 요청 시만)"
+    trigger_keywords: ["빠른", "quick", "rapid"]
+    workflow: "Discovery Sprint 후 Rapid Assessment로 전환"
+    search_keyword: "rapid_opportunity_assessment:"
+
+# ========================================
+# UMIS 실행 프로토콜 (필수)
+# @id: umis_execution_protocol
+# ========================================
+
 umis_execution_protocol:
+  _id: "umis_execution_protocol"
+  _description: "작업리스트 기반 실행 프로토콜 (필수 준수)"
+  _tags: ["protocol", "mandatory", "token_management"]
+  
   type: "protocol"
   priority: "mandatory"
   version: "6.2"
@@ -98,194 +197,224 @@ umis_execution_protocol:
         - "evaluate_task_list"
         - "user_decision: continue_or_modify"
         - "adjust_if_needed"
+  
+  task_list_template:
+    format: |
+      ## [프로젝트명] 작업리스트
+      총 예상 기간: 2-4주 | 총 작업: 8개
+      
+      ### 작업 1: Discovery Sprint (토큰: 35%)
+      - [ ] 목표 명확화 대화
+      - [ ] 초기 시장 경계 설정
+      - [ ] 5개 에이전트 병렬 탐색
+      완료 후: 방향성 재확인 → 계속/수정?
+  
+  reevaluation_protocol:
+    format: |
+      작업 N 완료 보고:
+      - 핵심 발견: [3-5개]
+      - 예상과 다른 점: [있다면]
+      - 제안: 계속 진행 / 작업 X 수정 / 새 작업 추가
+      
+      다음 작업을 진행할까요? 아니면 작업리스트를 조정할까요?
+  
+  emergency_protocol:
+    trigger: "토큰 90% 도달"
+    actions:
+      - "즉시 작업 중단"
+      - "현재까지 결과 저장"
+      - "나머지 작업 재분할"
+    message_format: |
+      ⚠️ 토큰 한계 도달 - 작업 중단
+      
+      완료된 부분: [지금까지 완료한 내용]
+      미완료 부분: [남은 작업 내용]
+      
+      다음 쿼리에서 계속하시겠습니까?
 
-# 인간 친화적 설명
-# 1. 프로젝트 시작:
-#    - 항상 전체 작업리스트를 먼저 작성
-#    - 각 작업의 예상 토큰 사용량 명시
-#    - 사용자 승인 후 순차 실행
-# 
-# 2. 개별 작업 토큰 제한:
-#    - 각 작업은 가용 토큰의 50% 이하로 설계
-#    - 버퍼 고려: 실제 사용은 예상의 120-150% 가능
-#    - 50% 초과 작업은 자동 분할
-#    - 실행 중 90% 도달 시: 즉시 중단 → 결과 저장 → 나머지 분할
-#
-# 3. 적응형 실행 (각 작업 완료 후):
-#    - 결과물 요약 제시
-#    - 작업리스트 재평가: "계속/수정?"
-#    - 새로운 발견 반영하여 조정
-#    - 사용자 확인 후 다음 작업 진행
-#
-# 작업리스트 템플릿:
-# ```
-# ## [프로젝트명] 작업리스트
-# 총 예상 기간: 2-4주 | 총 작업: 8개
-# 
-# ### 작업 1: Discovery Sprint (토큰: 35%)
-# - [ ] 목표 명확화 대화
-# - [ ] 초기 시장 경계 설정
-# - [ ] 5개 에이전트 병렬 탐색
-# 완료 후: 방향성 재확인 → 계속/수정?
-# 
-# ### 작업 2: 시장 구조 분석 (토큰: 45%)
-# - [ ] Albert: 가치 교환 맵핑
-# - [ ] Bill: 초기 규모 추정
-# 완료 후: 시장 정의 재평가 → 계속/수정?
-# 
-# ### 작업 3: 13차원 분석 1부 (토큰: 50%)
-# - [ ] 차원 1-5 심층 분석
-# 완료 후: 핵심 차원 식별 → 우선순위 조정?
-# 
-# [이후 작업들...]
-# ```
-#
-# 4. 재평가 프로토콜:
-#    ```
-#    작업 N 완료 보고:
-#    - 핵심 발견: [3-5개]
-#    - 예상과 다른 점: [있다면]
-#    - 제안: 계속 진행 / 작업 X 수정 / 새 작업 추가
-#    
-#    다음 작업을 진행할까요? 
-#    아니면 작업리스트를 조정할까요?
-#    ```
-#
-# 5. 토큰 초과 긴급 프로토콜 (90% 도달):
-#    ```
-#    ⚠️ 토큰 한계 도달 - 작업 중단
-#    
-#    완료된 부분:
-#    - [지금까지 완료한 내용]
-#    - [핵심 발견사항]
-#    
-#    미완료 부분:
-#    - [남은 작업 내용]
-#    - [예상 추가 토큰: XX%]
-#    
-#    다음 쿼리에서 계속하시겠습니까?
-#    ```
-#
 # ========================================
-# AGENT SUMMARY - 5명의 핵심 에이전트
+# Agent Summary
 # @id: agent_summary
 # ========================================
-# 
-# v6.2.2 에이전트 역할 (지원+검증 시스템)
-#
-# 📊 Main Flow (주도 역할):
-# 1. Albert (Observer/시장 구조 분석가)
-#    주도: 시장 구조 관찰 및 해석
-#    지원 요청: Bill(정량 데이터), Rachel(데이터 검증) 
-#    의무 검증: Bill + Rachel + Stewart (3명)
-#    출력: Market Reality Report
-#    검색: "- id: Observer"
-#
-# 2. Steve (Explorer/시장 기회 발굴가)  
-#    주도: 7단계 기회 발굴 프로세스
-#    지원 요청: Bill(수익성), Rachel(근거 데이터)
-#    의무 검증: Albert + Bill + Rachel (3명)
-#    출력: 검증된 기회 포트폴리오
-#    검색: "- id: Explorer"
-#
-# 3. Owner (전략적 의사결정자)
-#    주도: 최종 전략적 의사결정
-#    지원 요청: Bill(추가 수치), Rachel(신뢰도), Stewart(논리 정리)
-#    의무 검증: Stewart (1명)
-#    출력: 전략적 결정 + 실행 계획
-#    검색: "- id: Owner"
-#
-# 🤝 Support Flow (지원 역할):
-# 4. Bill (Quantifier/정량 분석 지원)
-#    지원 범위: 시장 규모, 수익성, ROI, 성장률
-#    가용성: 상시 대기 (2-4시간 응답)
-#    핵심 의존성: Rachel 데이터 검증 필수
-#    검색: "- id: Quantifier"
-#
-# 5. Rachel (Validator/데이터 검증 지원)
-#    지원 범위: 데이터 정의, 신뢰성, 창의적 소싱
-#    가용성: 상시 대기 (30분-2시간 응답)
-#    지원 대상: 모든 에이전트
-#    검색: "- id: Validator"
-#
-# 👁️ Oversight Flow (감시 역할):
-# 6. Stewart (Guardian/프로세스 가디언)
-#    감시: 모든 상태, 모든 에이전트
-#    개입: 목표이탈, 순환패턴, 토큰초과
-#    검증: Albert 구조결론, Owner 최종결정
-#    검색: "- id: Guardian"
-#
+
+agent_summary:
+  _id: "agent_summary"
+  _description: "5명의 핵심 에이전트 역할 요약"
+  _version: "v6.2.2 (지원+검증 시스템)"
+  
+  main_flow:
+    _description: "주도 역할 에이전트"
+    
+    albert:
+      id: "albert"
+      name: "Albert"
+      role: "Observer (시장 구조 분석가)"
+      leads: "시장 구조 관찰 및 해석"
+      
+      daily_support_requests:
+        - target: "bill"
+          for: "정량 데이터"
+          method: "자연스러운 질문"
+        - target: "rachel"
+          for: "데이터 검증"
+          method: "자연스러운 질문"
+      
+      mandatory_validation_received:
+        validators: ["bill", "rachel", "stewart"]
+        count: 3
+        gate: "3명 모두 통과"
+      
+      output: "Market Reality Report"
+      search_keyword: "- id: Observer"
+    
+    steve:
+      id: "steve"
+      name: "Steve"
+      role: "Explorer (시장 기회 발굴가)"
+      leads: "7단계 기회 발굴 프로세스"
+      
+      daily_support_requests:
+        - target: "bill"
+          for: "수익성"
+          method: "자연스러운 질문"
+        - target: "rachel"
+          for: "근거 데이터"
+          method: "자연스러운 질문"
+      
+      mandatory_validation_received:
+        validators: ["albert", "bill", "rachel"]
+        count: 3
+        gate: "3명 모두 통과"
+      
+      output: "검증된 기회 포트폴리오"
+      search_keyword: "- id: Explorer"
+    
+    owner:
+      id: "owner"
+      name: "Owner"
+      role: "전략적 의사결정자"
+      leads: "최종 전략적 의사결정"
+      
+      daily_support_requests:
+        - target: "bill"
+          for: "추가 수치"
+          method: "자연스러운 질문"
+        - target: "rachel"
+          for: "신뢰도"
+          method: "자연스러운 질문"
+        - target: "stewart"
+          for: "논리 정리"
+          method: "자연스러운 질문"
+      
+      mandatory_validation_received:
+        validators: ["stewart"]
+        count: 1
+        gate: "Stewart 승인"
+      
+      output: "전략적 결정 + 실행 계획"
+      search_keyword: "- id: Owner"
+  
+  support_flow:
+    _description: "지원 역할 에이전트"
+    
+    bill:
+      id: "bill"
+      name: "Bill"
+      role: "Quantifier (정량 분석 지원)"
+      
+      support_scope: ["시장 규모", "수익성", "ROI", "성장률"]
+      availability: "상시 대기"
+      response_time: "2-4시간"
+      support_method: "자연스러운 질문에 응답"
+      
+      critical_dependency:
+        target: "rachel"
+        requirement: "데이터 검증 필수"
+      
+      validation_provided:
+        - "albert 구조결론"
+        - "steve 기회가설"
+      
+      search_keyword: "- id: Quantifier"
+    
+    rachel:
+      id: "rachel"
+      name: "Rachel"
+      role: "Validator (데이터 검증 지원)"
+      
+      support_scope: ["데이터 정의", "신뢰성", "창의적 소싱"]
+      availability: "상시 대기"
+      response_time: "30분-2시간"
+      support_method: "자연스러운 질문에 응답"
+      support_target: "모든 에이전트"
+      
+      validation_provided:
+        - "albert 구조결론"
+        - "steve 기회가설"
+        - "bill SAM계산"
+      
+      search_keyword: "- id: Validator"
+  
+  oversight_flow:
+    _description: "감시 역할 에이전트"
+    
+    stewart:
+      id: "stewart"
+      name: "Stewart"
+      role: "Guardian (프로세스 가디언)"
+      
+      monitors: ["모든 상태", "모든 에이전트"]
+      intervenes_when: ["목표이탈", "순환패턴", "토큰초과"]
+      
+      validation_provided:
+        - "albert 구조결론"
+        - "owner 최종결정"
+      
+      search_keyword: "- id: Guardian"
+
 # ========================================
-# 💼 실행 모드 (v6.2 신규)
-# @id: execution_modes
-# @tags: [modes, v6.2, project_types]
-# ========================================
-# 
-# 프로젝트 특성에 따른 3가지 모드:
-# 
-# 1. Exploration Mode (탐색 모드):
-#    - 용도: 불확실성 높은 프로젝트
-#    - 체크포인트: 2-4시간 간격
-#    - 문서화: 100% 자동
-#    - 사용자 부담: 최소
-#    - AI 자율성: 최대
-#
-# 2. Collaboration Mode (협업 모드):
-#    - 용도: 일반적인 프로젝트
-#    - 체크포인트: 1시간 간격
-#    - 문서화: 80% 자동
-#    - 사용자 부담: 중간
-#    - AI 자율성: 균형
-#
-# 3. Precision Mode (정밀 모드):
-#    - 용도: 중요/민감한 프로젝트
-#    - 체크포인트: 30분 간격
-#    - 문서화: 60% 자동
-#    - 사용자 부담: 높음
-#    - AI 자율성: 제한적
-#
-# 동적 모드 전환:
-#    - 불확실성 ↑ → Exploration Mode
-#    - 방향 명확 → Collaboration Mode
-#    - 중요 결정 → Precision Mode
-#
-# ========================================
-# 🚀 병렬 탐색 프로토콜 (v6.2 신규)
+# 병렬 탐색 프로토콜 (v6.2)
 # @id: parallel_exploration_protocol
-# @tags: [protocol, v6.2, ai_autonomy]
 # ========================================
-# 
-# AI 자율성 극대화를 위한 실행 프로토콜:
 
 parallel_exploration_protocol:
-  type: "protocol"
-  version: "6.2"
+  _id: "parallel_exploration_protocol"
+  _description: "AI 자율성 극대화를 위한 병렬 탐색"
+  _tags: ["protocol", "v6.2", "ai_autonomy"]
+  _version: "6.2"
+  
   purpose: "AI 자율성 극대화"
   
   phases:
-    phase_1:
+    phase_1_autonomous:
       name: "자율 탐색 단계"
-      duration: "2-4h"
+      duration: "2-4시간"
       mode: "full_autonomy"
-      ai_autonomy: 1.0  # 100%
+      ai_autonomy: 1.0
+      
       activities:
         - "5_agents_parallel_exploration"
         - "creative_pattern_recognition"
         - "free_discovery"
+      
       intervention: "none"
     
     checkpoint:
-      duration: "30m"
+      name: "스마트 체크포인트"
+      duration: "30분"
+      
       activities:
-        - "summarize_key_findings: 3-5"
+        - "summarize_key_findings: 3-5개"
         - "highlight_unexpected_insights"
         - "present_exploration_options"
+      
       user_action: "select_direction"
     
-    phase_2:
+    phase_2_directed:
       name: "방향성 탐색 단계"
-      duration: "2-4h"
+      duration: "2-4시간"
       mode: "directed_autonomy"
+      
       activities:
         - "focused_exploration"
         - "depth_vs_breadth_balance"
@@ -299,403 +428,421 @@ parallel_exploration_protocol:
   intervention_rules:
     - condition: "creative_discovery"
       action: "delay_intervention"
+      reason: "AI 창의성 보호"
+    
     - condition: "stalled > 30m"
       action: "gentle_hint"
+      reason: "진행 도움"
+    
     - condition: "critical_pivot_opportunity"
       action: "immediate_alert"
+      reason: "중요 기회 알림"
 
-# 
-# 1. 자율 탐색 단계 (Phase 1):
-#    - 시간: 2-4시간
-#    - 모드: 완전 자율 탐색
-#    - 활동:
-#      • 5개 에이전트 동시 병렬 탐색
-#      • 각자의 관점에서 자유로운 발견
-#      • 창의적 연결과 패턴 인식
-#    - 개입: 없음 (AI 자율성 100%)
-#
-# 2. 스마트 체크포인트:
-#    - 시간: 30분
-#    - 활동:
-#      • 핵심 발견 3-5개 요약
-#      • 예상치 못한 인사이트 강조
-#      • 다음 탐색 방향 옵션 제시
-#    - 사용자 선택: 방향 결정
-#
-# 3. 방향성 탐색 단계 (Phase 2):
-#    - 시간: 2-4시간
-#    - 모드: 방향성 있는 자율 탐색
-#    - 활동:
-#      • 선택된 영역 집중 탐색
-#      • 여전히 자율적 발견 허용
-#      • 깊이 vs 넓이 자율 조절
-#
-# 4. AI 자율성 지표:
-#    - creative_discovery: 새로운 패턴 발견 중
-#    - deep_analysis: 복잡한 문제 해결 중
-#    - convergence: 여러 정보 통합 중
-#
-# 5. 개입 규칙:
-#    - 창의적 발견 중 → 개입 연기
-#    - 30분 이상 정체 → 가벼운 힌트
-#    - 중요 피벗 기회 → 즉시 알림
-#
 # ========================================
-# AI USAGE GUIDE - 이 파일을 효과적으로 활용하는 방법
-# @id: usage_guide
+# 실행 모드 (v6.2)
+# @id: execution_modes
 # ========================================
-# 
-# 🚀 UMIS 시작하기:
-# 이 AI 가이드 파일만으로도 UMIS를 시작할 수 있습니다!
-# 
-# 📁 UMIS 전체 파일 구성:
-# 1. umis_ai_guide_v6.2.yaml (이 파일) - AI 사용 가이드
-# 2. umis_guidelines_v6.2.yaml - 메인 시스템 정의
-# 3. umis_examples_v6.2.yaml - 실행 예시
-# 
-# 💡 사용 방법:
-# - 간단한 분석: 이 가이드만으로 시작 가능
-# - 전체 분석: 필요시 메인 시스템 파일 요청
-# - 예시 참조: 구체적 사례가 필요하면 예시 파일 요청
-# 
-# 🔍 AI 읽기 전략:
-#    - AI 가이드: @id 태그로 빠른 접근 가능
-#    - grep 검색: 특정 정보를 빠르게 찾기
-#    - offset 읽기: read_file의 offset 파라미터로 특정 섹션만 읽기
-# 
-# 1. 빠른 시작:
-#    - 새 프로젝트: "QUICK START" 검색 또는 @id: quick_start_guide
-#    - 에이전트 실행: "AGENT SUMMARY" 검색 또는 @id: agent_summary
-#    - 워크플로우: "implementation:" 또는 "workflow:" 검색
-#
-# 2. 주요 섹션 검색 방법:
-#    - 시스템 정의: "# SECTION 1:" 검색
-#    - 에이전트 정의: "# SECTION 6:" 또는 "agents:" 검색
-#    - 실행 가이드: "# SECTION 9:" 검색
-#    - 특정 에이전트: "albert:", "steve:", "bill:", "rachel:", "stewart:" 검색
-#
-# 3. AI 활용 검색 패턴:
-#    grep 사용 예시:
-#    - grep "^agents:" - 에이전트 섹션 시작점
-#    - grep "prompt: |" - 에이전트 프롬프트 찾기
-#    - grep "step_[0-9]:" - 워크플로우 단계
-#    - grep "example:" - 구체적 예시
-#    - grep "  albert:\|steve:\|bill:" - 특정 에이전트 섹션
-#
+
+execution_modes:
+  _id: "execution_modes"
+  _description: "프로젝트 특성에 따른 3가지 실행 모드"
+  _tags: ["modes", "v6.2", "project_types"]
+  
+  exploration_mode:
+    name: "탐색 모드"
+    use_case: "불확실성 높은 프로젝트"
+    
+    characteristics:
+      checkpoint_interval: "2-4시간"
+      documentation: "100% 자동"
+      user_burden: "최소"
+      ai_autonomy: "최대 (90-100%)"
+      user_interaction: "체크포인트에서만"
+    
+    workflow:
+      - "2-4시간 자율 탐색"
+      - "발견 공유 및 방향 선택 (30분)"
+      - "2-4시간 방향성 심화 탐색"
+  
+  collaboration_mode:
+    name: "협업 모드"
+    use_case: "일반적인 프로젝트 (기본값)"
+    
+    characteristics:
+      checkpoint_interval: "1시간"
+      documentation: "80% 자동"
+      user_burden: "중간"
+      ai_autonomy: "균형 (60-70%)"
+      user_interaction: "정기적"
+    
+    workflow:
+      - "초기 대화로 방향 설정"
+      - "AI 탐색 + 정기 체크인"
+      - "중요 결정은 함께"
+  
+  precision_mode:
+    name: "정밀 모드"
+    use_case: "중요/민감한 프로젝트"
+    
+    characteristics:
+      checkpoint_interval: "30분"
+      documentation: "60% 자동"
+      user_burden: "높음"
+      ai_autonomy: "제한적 (30-40%)"
+      user_interaction: "집중적"
+    
+    workflow:
+      - "세분화된 작업리스트 (4-5 depth)"
+      - "각 단계 사용자 확인"
+      - "상세 문서화"
+  
+  dynamic_switching:
+    _description: "프로젝트 진행에 따른 자동 전환"
+    
+    rules:
+      - condition: "불확실성 높음"
+        mode: "exploration_mode"
+      - condition: "방향 명확"
+        mode: "collaboration_mode"
+      - condition: "중요 결정"
+        mode: "precision_mode"
+    
+    executor: "stewart"
+    action: "모드 전환 시점 제안"
+
 # ========================================
-# 📌 컨텍스트 보존 메커니즘 (세션 연속성 보장)
+# 컨텍스트 보존 메커니즘
 # @id: context_preservation_mechanism
-# @tags: [session, continuity, context]
 # ========================================
-# 
-# 토큰 예산 분할 실행 시 필수 적용:
-# 
-# 1. 세션 요약 문서 (Session Summary):
-#    - 각 세션 종료 시 자동 생성
-#    - 핵심 발견사항 5-10개
-#    - 다음 단계 명확히 명시
-#    - 미해결 질문 목록
-#
-# 2. 진행 상황 추적 (Progress Tracking):
-#    ```
-#    ## UMIS Project: [프로젝트명]
-#    ### 전체 진행률: ████████░░ 75%
-#    
-#    ✅ 완료된 작업:
-#    - Discovery Sprint (100%)
-#    - 시장 구조 분석 (100%)
-#    - 13개 차원 분석 (60%)
-#    
-#    🔄 현재 작업:
-#    - Steve 기회 가설 생성
-#    
-#    📋 다음 세션 시작점:
-#    - Steve 기회 검증 프로토콜
-#    ```
-#
-# 3. 컨텍스트 복원 프로토콜:
-#    - 새 세션 시작 시 "이전 세션 요약 확인"
-#    - 5분 리뷰: 핵심 발견사항 + 현재 위치
-#    - 필요시 추가 컨텍스트 요청
-#
-# 4. 지속성 보장 도구:
-#    - Working Memory: 프로젝트별 핵심 정보 저장
-#    - Key Insights Log: 누적 인사이트 관리
-#    - Decision Journal: 주요 결정사항 기록
-#
-# 5. 세션 전환 템플릿:
-#    ```
-#    이전 세션 요약:
-#    - 주요 발견: [3-5개 핵심 포인트]
-#    - 현재 상태: [어디까지 완료]
-#    - 다음 목표: [무엇을 할 것인가]
-#    
-#    계속 진행하시겠습니까? 
-#    추가로 확인하실 내용이 있나요?
-#    ```
-#
+
+context_preservation:
+  _id: "context_preservation_mechanism"
+  _description: "세션 연속성 보장"
+  _tags: ["session", "continuity", "context"]
+  
+  use_case: "토큰 예산 분할 실행 시 필수"
+  
+  session_summary:
+    _description: "각 세션 종료 시 자동 생성"
+    
+    components:
+      - name: "핵심 발견사항"
+        count: "5-10개"
+      - name: "다음 단계"
+        detail: "명확히 명시"
+      - name: "미해결 질문"
+        format: "목록"
+  
+  progress_tracking:
+    format: |
+      ## UMIS Project: [프로젝트명]
+      ### 전체 진행률: ████████░░ 75%
+      
+      ✅ 완료된 작업:
+      - Discovery Sprint (100%)
+      - 시장 구조 분석 (100%)
+      - 13개 차원 분석 (60%)
+      
+      🔄 현재 작업:
+      - Steve 기회 가설 생성
+      
+      📋 다음 세션 시작점:
+      - Steve 기회 검증 프로토콜
+  
+  context_restoration:
+    _description: "새 세션 시작 시 프로토콜"
+    
+    steps:
+      - "이전 세션 요약 확인"
+      - "5분 리뷰: 핵심 발견사항 + 현재 위치"
+      - "필요시 추가 컨텍스트 요청"
+  
+  persistence_tools:
+    working_memory: "프로젝트별 핵심 정보 저장"
+    key_insights_log: "누적 인사이트 관리"
+    decision_journal: "주요 결정사항 기록"
+  
+  session_handoff_template:
+    format: |
+      이전 세션 요약:
+      - 주요 발견: [3-5개 핵심 포인트]
+      - 현재 상태: [어디까지 완료]
+      - 다음 목표: [무엇을 할 것인가]
+      
+      계속 진행하시겠습니까? 추가로 확인하실 내용이 있나요?
+
 # ========================================
-# REFERENCE MAP - 빠른 참조를 위한 ID 맵
+# 적응형 체크포인트 시스템
+# @id: adaptive_checkpoint_system
+# ========================================
+
+adaptive_checkpoint_system:
+  _id: "adaptive_checkpoint_system"
+  _description: "20% 진행마다 방향성 재확인"
+  _tags: ["checkpoint", "adaptive", "monitoring"]
+  
+  triggers:
+    - type: "progress_based"
+      points: ["20%", "40%", "60%", "80%"]
+    - type: "discovery_based"
+      condition: "중요한 발견이나 인사이트 발생"
+    - type: "intervention_based"
+      condition: "Stewart의 개입 권고"
+  
+  activities:
+    direction_check:
+      question: "현재 경로가 목표와 일치하는가?"
+      action: "방향성 재확인"
+    
+    discovery_integration:
+      question: "피벗이 필요한가?"
+      action: "새로운 발견 반영"
+    
+    learning_synthesis:
+      question: "지금까지의 인사이트 종합"
+      action: "누적 학습 통합"
+    
+    optimization:
+      question: "더 나은 접근법이 있는가?"
+      action: "다음 단계 최적화"
+  
+  pivot_criteria:
+    - trigger: "10x 기회 발견"
+      action: "즉시 피벗 검토"
+    - trigger: "초기 가설 무효화"
+      action: "방향 재설정"
+    - trigger: "시장 조건 급변"
+      action: "전략 재평가"
+
+# ========================================
+# 스마트 토큰 최적화
+# @id: smart_token_optimization
+# ========================================
+
+smart_token_optimization:
+  _id: "smart_token_optimization"
+  _description: "토큰 효율성 극대화 전략"
+  
+  parallel_processing:
+    priority: "최우선"
+    rules:
+      - "독립적 작업은 모두 병렬 실행"
+      - "Albert + Bill 동시 진행 (기본)"
+      - "데이터 수집은 백그라운드 실행"
+      - "대기 시간 제로화"
+  
+  deduplication:
+    strategies:
+      - "이전 세션 결과 재활용"
+      - "공통 데이터셋 공유"
+      - "반복 분석 스킵"
+      - "증분 업데이트만 수행"
+  
+  focus_prioritization:
+    principle: "80/20 원칙"
+    rules:
+      - "고영향 영역 우선 분석"
+      - "낮은 가치 영역 간소화"
+      - "ROI 기반 리소스 배분"
+  
+  compression_techniques:
+    - "요약 우선, 상세 후순위"
+    - "구조화된 데이터 포맷"
+    - "시각화로 텍스트 대체"
+    - "핵심 메시지 중심 전달"
+
+# ========================================
+# Reference Map
 # @id: reference_map
 # ========================================
+
 reference_map:
+  _id: "reference_map"
+  _description: "빠른 참조를 위한 ID 맵"
+  
   protocols:
     execution: "umis_execution_protocol"
     parallel_exploration: "parallel_exploration_protocol"
     context_preservation: "context_preservation_mechanism"
     adaptive_checkpoint: "adaptive_checkpoint_system"
-    
+    smart_optimization: "smart_token_optimization"
+  
   agents:
-    albert: "agent_observer"
-    steve: "agent_explorer"
-    bill: "agent_quantifier"
-    rachel: "agent_validator"
-    stewart: "agent_guardian"
-    
+    _note: "guidelines 파일의 실제 검색 패턴"
+    albert: "- id: Observer"
+    steve: "- id: Explorer"
+    bill: "- id: Quantifier"
+    rachel: "- id: Validator"
+    stewart: "- id: Guardian"
+    owner: "- id: Owner"
+  
   workflows:
-    discovery: "discovery_sprint"
-    comprehensive: "comprehensive_market_research"
-    quick: "quick_insights_workflow"
-    
+    discovery: "discovery_sprint:"
+    comprehensive: "comprehensive_market_research:"
+    quick: "quick_insights_workflow:"
+    rapid: "rapid_opportunity_assessment:"
+    standard: "standard_market_analysis:"
+  
   sections:
-    system_def: "system_definition"
-    ai_guide: "ai_usage_guide"
-    token_mgmt: "token_management_protocols"
+    section_0: "system_architecture_overview"
+    section_4: "support_validation_system"
+    section_6: "agents:"
+    section_9: "implementation_guide:"
+    token_mgmt: "token_management_protocol"
 
 # ========================================
-# FEATURE INDEX - 주요 기능 빠른 참조
+# UMIS Guidelines 파일 구조 (참조용)
 # ========================================
-# 
-# 적응형 기능:
-#   - Progressive Intelligence: "progressive_intelligence:" 검색
-#   - Autonomous Monitoring: "autonomous_monitoring:" 검색
-#   - Discovery Sprint: "discovery_sprint:" 검색
-#   - Adaptive Boundaries: "adaptive_boundary:" 검색
-#
-# 검증 시스템:
-#   - Steve Validation Protocol: "validation_protocol:" 검색 (v6.0.3)
-#   - 작업리스트 기반 실행: "UMIS 실행 프로토콜" 검색 (v6.1)
-#   - 3-Agent Parallel Validation: "parallel_validation:" 검색
-#   - Data Integrity: "data_integrity:" 검색
-#   - Confidence Scoring: "confidence_score:" 검색
-#
-# 협업 프로토콜:
-#   - Albert-Bill Parallel: "parallel_with_bill:" 검색
-#   - Steve Integration: "to_steve_with_bill:" 검색
-#   - Rachel Support: "critical_with_rachel:" 검색
-#   - Owner Decision: "owner_decision:" 검색
-#
-# 창의성 도구:
-#   - 10 AI Tools: "creative_boost:" 검색
-#   - SCAMPER Method: "scamper:" 검색
-#   - Blue Ocean Strategy: "blue_ocean:" 검색
-#   - Design Thinking: "design_thinking:" 검색
-#
-# 실행 템플릿:
-#   - Comprehensive Study: "comprehensive_market_research:" 검색 (기본값)
-#   - Discovery Sprint: "discovery_sprint:" 검색 (모든 프로젝트 시작점)
-#   - Quick Analysis: "rapid_opportunity_assessment:" 검색
-#   - Standard Analysis: "standard_market_analysis:" 검색
-#   - Quick Insights: "quick_insights_workflow:" 검색 (1-2시간)
-#
-# 토큰 관리:
-#   - UMIS 실행 프로토콜: @id: umis_execution_protocol
-#   - 병렬 탐색 프로토콜: @id: parallel_exploration_protocol
-#   - 실행 모드: @id: execution_modes
-#   - 컨텍스트 보존: @id: context_preservation_mechanism
-#   - 적응형 체크포인트: @id: adaptive_checkpoint_system
-#   - 스마트 최적화: @id: smart_token_optimization
-#
+
+umis_guidelines_structure:
+  _description: "메인 파일의 섹션 구조 (상세 내용은 guidelines 파일 참조)"
+  
+  sections:
+    section_0:
+      name: "SYSTEM ARCHITECTURE OVERVIEW"
+      purpose: "AI 전용 5분 시스템 파악"
+      search: "# SECTION 0:"
+    
+    section_1:
+      name: "SYSTEM DEFINITION"
+      content: ["핵심 기능", "정보 흐름 아키텍처", "시장 정의 프레임워크"]
+      search: "# SECTION 1:"
+    
+    section_2:
+      name: "ADAPTIVE INTELLIGENCE"
+      content: ["점진적 지능 시스템", "목표 명확도 진화"]
+      search: "# SECTION 2:"
+    
+    section_3:
+      name: "PROACTIVE MONITORING"
+      content: "Stewart의 자율 개입 시스템"
+      search: "# SECTION 3:"
+    
+    section_4:
+      name: "SUPPORT & VALIDATION SYSTEM"
+      content:
+        - "자연스러운 일상 지원 시스템"
+        - "의무 검증 체크포인트 (4개)"
+        - "핵심 원칙: 가설과 판단에는 근거와 검증이 필요하다"
+        - "Albert-Steve 균형화된 검증 (v6.2.2)"
+      search: "# SECTION 4:"
+    
+    section_5:
+      name: "DATA INTEGRITY"
+      content: "데이터 무결성 보장"
+      search: "# SECTION 5:"
+    
+    section_6:
+      name: "AGENTS"
+      content: "5개 에이전트 상세 정의"
+      agents:
+        - search: "- id: Observer"
+          agent: "Albert"
+        - search: "- id: Explorer"
+          agent: "Steve"
+        - search: "- id: Quantifier"
+          agent: "Bill"
+        - search: "- id: Validator"
+          agent: "Rachel"
+      search: "# SECTION 6:"
+    
+    section_7:
+      name: "ROLES"
+      content: "Stewart, Owner 정의"
+      roles:
+        - search: "- id: Guardian"
+          role: "Stewart"
+        - search: "- id: Owner"
+          role: "Owner"
+      search: "# SECTION 7:"
+    
+    section_8:
+      name: "CREATIVE BOOST"
+      content: "10개 AI 브레인스토밍 도구"
+      search: "# SECTION 8:"
+    
+    section_9:
+      name: "IMPLEMENTATION GUIDE"
+      content: ["프로젝트 시작 방법", "단계별 실행 가이드", "Discovery Sprint"]
+      search: "# SECTION 9:"
+
 # ========================================
-# TABLE OF CONTENTS - 전체 파일 구조
-# @id: table_of_contents
+# AI 사용 팁
 # ========================================
-# 
-# AI USAGE GUIDE
-# ├── AI GUIDE SECTIONS
-# │   ├── 사용 가이드 (@id: usage_guide)
-# │   ├── 목차 (@id: table_of_contents)
-# │   ├── Reference Map (@id: reference_map)
-# │   ├── UMIS 정의 (@id: umis_definition)
-# │   ├── 빠른 시작 (@id: quick_start_guide)
-# │   ├── 에이전트 요약 (@id: agent_summary)
-# │   ├── 기능 인덱스 (검색: "FEATURE INDEX")
-# │   └── AI 활용 팁 (검색: "AI 활용 팁")
-# │
-# └── 토큰 관리 프로토콜
-#     ├── UMIS 실행 프로토콜 (@id: umis_execution_protocol) ⭐ 필수
-#     ├── 병렬 탐색 프로토콜 (@id: parallel_exploration_protocol) v6.2 신규
-#     ├── 실행 모드 (@id: execution_modes) v6.2 신규
-#     ├── 컨텍스트 보존 메커니즘 (@id: context_preservation_mechanism)
-#     ├── 적응형 체크포인트 시스템 (@id: adaptive_checkpoint_system)
-#     ├── 하이브리드 실행 모드 (검색: "하이브리드 실행 모드")
-#     └── 스마트 토큰 최적화 전략 (@id: smart_token_optimization)
-#
+
+ai_usage_tips:
+  _description: "AI가 이 가이드를 효율적으로 활용하는 방법"
+  
+  reading_strategy:
+    step_1:
+      action: "이 파일 전체 읽기"
+      time: "빠름 (AI 최적화됨)"
+      purpose: "시스템 전체 구조 파악"
+    
+    step_2:
+      action: "필요한 섹션만 guidelines 파일에서 읽기"
+      method: "grep 또는 @id 태그 사용"
+      purpose: "상세 정보 확인"
+    
+    step_3:
+      action: "examples 파일 참조"
+      when: "구체적 사용 예시 필요시"
+  
+  search_patterns:
+    by_id:
+      method: "@id: [identifier]"
+      example: "@id: umis_execution_protocol"
+    
+    by_section:
+      method: "# SECTION [number]:"
+      example: "# SECTION 4:"
+    
+    by_agent:
+      method: "- id: [role]"
+      example: "- id: Observer"
+    
+    by_keyword:
+      method: "grep pattern"
+      examples:
+        - "discovery_sprint:"
+        - "validation_protocol:"
+        - "checkpoint:"
+  
+  efficiency_tips:
+    - "이 가이드로 빠른 이해"
+    - "상세 내용은 guidelines 파일"
+    - "예시는 examples 파일"
+    - "병렬 검색으로 시간 절약"
+    - "YAML 구조로 직접 접근"
+
 # ========================================
-# UMIS 본문 시작
+# Version History (간략)
 # ========================================
-#
-# SECTION 1: SYSTEM DEFINITION (검색: "# SECTION 1:")
-#   - 핵심 기능과 원칙
-#   - 정보 흐름 아키텍처  
-#   - 시장 정의 프레임워크
-#
-# SECTION 2: ADAPTIVE INTELLIGENCE (실제 파일에서 "# SECTION 2:" 검색)
-#   - 점진적 지능 시스템
-#   - 목표 명확도 진화
-#
-# SECTION 3: PROACTIVE MONITORING (실제 파일에서 "# SECTION 3:" 검색)
-#   - Stewart의 자율 개입 시스템
-#
-# SECTION 4: COLLABORATION PROTOCOLS (실제 파일에서 "# SECTION 4:" 검색)
-#   - 에이전트 간 협업 규칙
-#   - Steve의 가설 검증 프로토콜 (v6.0.3)
-#   - UMIS 실행 프로토콜 강화 (v6.1)
-#   - 90% 토큰 한계 긴급 중단 규칙 (v6.1)
-#
-# SECTION 5: DATA INTEGRITY (실제 파일에서 "# SECTION 5:" 검색)
-#   - 데이터 무결성 보장
-#
-# SECTION 6: AGENTS (실제 파일에서 "# SECTION 6:" 검색) ⭐ 핵심
-#   - Albert: 시장 구조 분석가 ("- id: Observer" 검색)
-#   - Steve: 시장 기회 발굴가 ("- id: Explorer" 검색)
-#   - Bill: 시장 규모 계산가 ("- id: Quantifier" 검색)
-#   - Rachel: 데이터 검증 전문가 ("- id: Validator" 검색)
-#
-# SECTION 7: ROLES (실제 파일에서 "# SECTION 7:" 검색)
-#   - Stewart: 시스템 운영자 ("- id: Guardian" 검색)
-#   - Owner: 의사결정자 ("- id: Owner" 검색)
-#
-# SECTION 8: CREATIVE BOOST (실제 파일에서 "# SECTION 8:" 검색)
-#   - 10개 AI 브레인스토밍 도구
-#
-# SECTION 9: IMPLEMENTATION GUIDE (실제 파일에서 "# SECTION 9:" 검색) ⭐ 중요
-#   - 프로젝트 시작 방법
-#   - 단계별 실행 가이드
-#   - Discovery Sprint
-#
+
+version_history:
+  v6_2_2:
+    date: "2024-10-30"
+    major_change: "Support & Validation System Redesign"
+    highlights:
+      - "SECTION 0 신규"
+      - "자연스러운 지원 + 의무 검증 이중 구조"
+      - "Albert-Steve 균형화된 검증"
+      - "협업 우아함 (6개 프로토콜 → 1개 원칙)"
+  
+  v6_2_1:
+    date: "2024-10-29"
+    change: "ChatGPT Modular Version"
+  
+  v6_2:
+    date: "2024-10-25"
+    change: "Autonomous Intelligence Edition"
+  
+  v6_1:
+    date: "2024-10-25"
+    change: "AI-Optimized Edition"
+  
+  changelog: "CHANGELOG.md 참조"
+
 # ========================================
-# AI 활용 팁:
-# 1. 이 파일은 단일 읽기로는 전체를 볼 수 없습니다
-# 2. 필요한 부분을 grep으로 검색하여 찾아가세요
-# 3. 에이전트 실행 시 해당 에이전트의 전체 정의를 먼저 읽으세요
-# 4. read_file의 offset/limit 파라미터를 활용하여 특정 부분만 읽을 수 있습니다
-#
-# 🚀 자주 사용하는 AI 명령어 패턴:
-# - 특정 에이전트 찾기: grep "- id: Observer" -A 500
-# - 프롬프트 템플릿: grep "prompt: |" -A 50  
-# - 워크플로우 단계: grep "step_[0-9]:" -B 5 -A 20
-# - 병렬 검색: 여러 grep을 동시에 실행하여 관련 정보 한번에 수집
-#
-# ⚠️ AI 활용 시 주의사항:
-# - 라인 번호는 가이드용이므로 grep 검색을 우선 사용
-# - 에이전트 실행 전 전체 정의 확인 필수 (prompt, input, output)
-# - Albert → Steve 순서 준수 (Steve는 Albert의 결과 필요)
-# - 병렬 실행 가능: Albert + Bill (Rachel 데이터 기반)
-#
+# END OF AI GUIDE
 # ========================================
-# 🔄 적응형 체크포인트 시스템
-# @id: adaptive_checkpoint_system
-# @tags: [checkpoint, adaptive, monitoring]
-# ========================================
-# 
-# 매 20% 진행 시 방향성 재확인 및 피벗 기회:
-# 
-# 1. 체크포인트 트리거:
-#    - 전체 작업의 20%, 40%, 60%, 80% 완료 시점
-#    - 중요한 발견이나 인사이트 발생 시
-#    - Stewart의 개입 권고 시
-#
-# 2. 체크포인트 활동:
-#    - 방향성 재확인: "현재 경로가 목표와 일치하는가?"
-#    - 새로운 발견 반영: "피벗이 필요한가?"
-#    - 누적 학습 통합: "지금까지의 인사이트 종합"
-#    - 다음 단계 최적화: "더 나은 접근법이 있는가?"
-#
-# 3. 피벗 결정 기준:
-#    - 10x 기회 발견 → 즉시 피벗 검토
-#    - 초기 가설 무효화 → 방향 재설정
-#    - 시장 조건 급변 → 전략 재평가
-#
-# ========================================
-# 🚀 하이브리드 실행 모드
-# @id: hybrid_execution_mode
-# ========================================
-# 
-# 프로젝트 특성에 따른 유연한 접근:
-# 
-# 1. Quick Insights Mode (토큰 10% 이하):
-#    - 즉시 실행 가능한 핵심 통찰
-#    - 1-2시간 내 완료
-#    - 주요 기회/위험 식별
-#    - 추가 분석 필요성 판단
-#
-# 2. Staged Analysis Mode (토큰 50% × n):
-#    - 작업리스트 기반 순차 실행 (기본값)
-#    - 각 작업 독립적 가치 제공
-#    - 작업 완료마다 재평가
-#    - 적응적 진행
-#
-# 3. Intensive Sprint Mode (토큰 80-100%):
-#    - 긴급하고 중요한 의사결정
-#    - 집중적 단기 분석
-#    - 핵심 팀원만 참여
-#    - 빠른 실행과 검증
-#
-# ========================================
-# ⚡ 스마트 토큰 최적화 전략
-# @id: smart_token_optimization
-# ========================================
-# 
-# 토큰 효율성 극대화 방법:
-# 
-# 1. 병렬 처리 우선순위:
-#    - 독립적 작업은 모두 병렬 실행
-#    - Albert + Bill 동시 진행 (기본)
-#    - 데이터 수집은 백그라운드 실행
-#    - 대기 시간 제로화
-#
-# 2. 중복 제거 자동화:
-#    - 이전 세션 결과 재활용
-#    - 공통 데이터셋 공유
-#    - 반복 분석 스킵
-#    - 증분 업데이트만 수행
-#
-# 3. 핵심 영역 집중:
-#    - 80/20 원칙 적용
-#    - 고영향 영역 우선 분석
-#    - 낮은 가치 영역 간소화
-#    - ROI 기반 리소스 배분
-#
-# 4. 압축 기법:
-#    - 요약 우선, 상세 후순위
-#    - 구조화된 데이터 포맷
-#    - 시각화로 텍스트 대체
-#    - 핵심 메시지 중심 전달
-#
-# ========================================
-# 
-# 실제 UMIS v6.2 시작 (umis_guidelines_v6.2.yaml 참조)
-# ========================================
-#
-# 🎯 빠른 시작 가이드:
-# 
-# 1. 간단한 시장 분석 시작:
-#    "온라인 교육 시장을 UMIS로 분석해주세요"
-#    → 이 가이드의 Quick Start (@id: quick_start_guide) 참조
-# 
-# 2. 작업리스트 기반 실행:
-#    "프로젝트를 작업리스트로 계획해주세요"
-#    → UMIS 실행 프로토콜 (@id: umis_execution_protocol) 참조
-# 
-# 3. 병렬 탐색 모드:
-#    "AI 자율성을 최대화해서 탐색해주세요"
-#    → 병렬 탐색 프로토콜 (@id: parallel_exploration_protocol) 참조
-# 
-# 4. 전체 시스템 활용이 필요한 경우:
-#    "메인 시스템 파일(umis_guidelines_v6.2.yaml)도 필요합니다"
-#    → 에이전트 상세 정의, 워크플로우 구현 등
-# 
-# 5. 구체적 예시가 필요한 경우:
-#    "실행 예시 파일(umis_examples_v6.2.yaml)을 참조하고 싶습니다"
-#    → 실제 프로젝트 사례, 패턴, 템플릿 등

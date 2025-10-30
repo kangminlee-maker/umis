@@ -419,8 +419,34 @@ adaptive_workflow_examples:
   
 # ===== 5.8. Support & Validation System Examples (v6.2.2 신규) =====
   support_validation_examples:
-    description: "자연스러운 지원과 엄격한 검증의 실제 사용 예시"
+    description: "v6.2.2 핵심: 자연스러운 지원과 엄격한 검증의 실제 사용 예시"
     
+    core_principle: "가설과 판단에는 근거와 검증이 필요하다"
+    
+    system_architecture:
+      natural_support:
+        description: "일상 작업 중 자유로운 협업"
+        characteristics:
+          - "복잡한 트리거 불필요"
+          - "자연스러운 질문 형태"
+          - "상시 대기 체계"
+          - "빠른 응답 (Bill: 2-4시간, Rachel: 30분-2시간)"
+        when: "분석 작업 중 언제든"
+        
+      mandatory_validation:
+        description: "중요 결론의 품질 보장"
+        characteristics:
+          - "명확한 트리거 (최종 제시시)"
+          - "정해진 검증자"
+          - "품질 게이트"
+          - "자동 실행"
+        checkpoints:
+          1: "Albert 시장 구조 최종 결론 → Bill + Rachel + Stewart"
+          2: "Steve 기회 가설 최종 제시 → Albert + Bill + Rachel"
+          3: "Bill SAM 계산 최종 완료 → Rachel + Albert"
+          4: "Owner 최종 의사결정 제시 → Stewart"
+    
+    # Part A: 일상 지원 시스템 예시
     natural_support_examples:
       albert_working_scenario:
         context: "Albert가 펫케어 시장 구조 분석 중"
@@ -436,14 +462,25 @@ adaptive_workflow_examples:
         bill_response: "LTV/CAC 비율 6:1, 손익분기 5,000명 (현실적 수준)"
         steve_result: "데이터 기반 현실적 가설 완성"
     
+    # Part B: 의무 검증 시스템 예시
     mandatory_validation_examples:
+      principle: "중요 결론은 반드시 검증 받기"
+      trigger: "최종 결론 제시시 자동 실행"
+      
       albert_structure_validation:
+        trigger: "Albert가 시장 구조 최종 결론 제시"
         albert_conclusion: "펫케어 시장 = B2C 직판 70% + B2B2C(수의사) 30%"
         
-        triggered_validation:
-          bill_validation: "이 70:30 비율에서 각 채널 시장 규모는 얼마인가?"
-          rachel_validation: "이 비율 데이터의 출처와 신뢰도는?"
-          stewart_validation: "이 구조 해석이 논리적으로 건전한가?"
+        automatic_triggered_validation:
+          bill_validation: 
+            question: "이 70:30 비율에서 각 채널 시장 규모는 얼마인가?"
+            role: "구조 분석의 정량적 타당성 검증"
+          rachel_validation: 
+            question: "이 비율 데이터의 출처와 신뢰도는?"
+            role: "근거 데이터 신뢰성 검증"
+          stewart_validation: 
+            question: "이 구조 해석이 논리적으로 건전한가?"
+            role: "논리적 건전성 검증"
           
         validation_results:
           bill: "✅ 통과 - B2C 2.1조, B2B2C 900억 (합리적)"
@@ -453,12 +490,19 @@ adaptive_workflow_examples:
         final_decision: "조건부 승인 (Rachel 최신 데이터로 비율 재확인 필요)"
       
       steve_hypothesis_validation:
+        trigger: "Steve가 기회 가설 최종 제시"
         steve_hypothesis: "펫 웨어러블 구독 서비스 (월 5만원) 기회"
         
-        triggered_validation:
-          albert_validation: "현재 펫케어 구조에서 구독 모델이 구조적으로 가능한가?"
-          bill_validation: "월 5만원 모델이 경제적으로 성립하는가?"
-          rachel_validation: "구독 서비스 근거 데이터가 신뢰할 만한가?"
+        automatic_triggered_validation:
+          albert_validation: 
+            question: "현재 펫케어 구조에서 구독 모델이 구조적으로 가능한가?"
+            role: "기회의 구조적 실현 가능성 검증"
+          bill_validation: 
+            question: "월 5만원 모델이 경제적으로 성립하는가?"
+            role: "기회의 경제적 타당성 검증"
+          rachel_validation: 
+            question: "구독 서비스 근거 데이터가 신뢰할 만한가?"
+            role: "가설 근거 데이터 신뢰성 검증"
           
         validation_results:
           albert: "✅ 통과 - B2C 직판 70% 구조에서 구독 모델 충분히 가능"
@@ -469,10 +513,24 @@ adaptive_workflow_examples:
 
   # ===== 6. Support & Validation Patterns (v6.2.2 업데이트) =====
   collaboration_patterns:
-    description: "자연스러운 지원과 엄격한 검증의 협업 패턴"
+    description: "v6.2.2 핵심: 자연스러운 지원과 엄격한 검증의 이중 구조"
     
+    core_philosophy:
+      principle: "가설과 판단에는 근거와 검증이 필요하다"
+      dual_structure:
+        daily_work: "자연스러운 지원 (자유로운 질문)"
+        critical_decisions: "의무 검증 (4개 체크포인트)"
+    
+    # Part A: 자연스러운 일상 지원 패턴
     natural_support_pattern:
       principle: "필요시 자연스럽게 전문가에게 질문"
+      when: "분석 작업 중 언제든"
+      trigger: "없음 (자유로운 요청)"
+      characteristics:
+        - "복잡한 프로토콜 불필요"
+        - "자연스러운 질문 형태"
+        - "빠른 응답"
+        - "유연한 협업"
       
       albert_analysis_with_support:
         context: "Albert가 전자상거래 시장 구조 분석 중"
@@ -490,8 +548,22 @@ adaptive_workflow_examples:
         bill_response: "D2C 순이익률 15% vs 플랫폼 판매 8% (마케팅비 고려)"
         steve_result: "데이터 기반 현실적 가설: 'D2C 전환으로 수익성 2배 향상'"
     
+    # Part B: 의무 검증 패턴
     mandatory_validation_pattern:
       principle: "중요 결론은 반드시 검증 받기"
+      when: "최종 결론 제시시"
+      trigger: "자동 (4개 체크포인트)"
+      characteristics:
+        - "명확한 트리거"
+        - "정해진 검증자"
+        - "품질 게이트"
+        - "자동 실행"
+      
+      checkpoints:
+        checkpoint_1: "Albert 시장 구조 최종 결론 → Bill + Rachel + Stewart"
+        checkpoint_2: "Steve 기회 가설 최종 제시 → Albert + Bill + Rachel"
+        checkpoint_3: "Bill SAM 계산 최종 완료 → Rachel + Albert"
+        checkpoint_4: "Owner 최종 의사결정 제시 → Stewart"
       
       albert_structure_conclusion_example:
         albert_final_conclusion: "전자상거래 시장 구조: 플랫폼 중심(70%) + D2C 급성장(30%)"

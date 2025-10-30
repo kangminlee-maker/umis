@@ -253,7 +253,7 @@ Step 3: Market Dynamics Framework (HOW × WHEN × WHY)
 ## 💡 사용 권장사항
 
 - **권장 AI 모델** (v6.2.1 - 모델 적응형):
-  - **최적**: Claude-4-sonnet-1m (1M) ✅ 
+  - **최적**: Claude-4-sonnet-1m / Claude-4.5-sonnet (1M) ✅ 
     - 계수: 0.75-0.85 (Large Model)
     - 세션당: 3-5개 쿼리, Comprehensive: 8-12 세션
   - **양호**: GPT-5 (272K) ⭐ 
