@@ -2380,10 +2380,85 @@ agents:
               - emotional_premium: "감성 프리미엄"
               - viral_potential: "바이럴 잠재력"
             output: "관계 기반 가치 창출 가능성"
+          
+          business_model_pattern_recognition:
+            time_allocation: "1시간"
+            description: "검증된 사업모델 패턴을 시장 구조에 매칭"
+            
+            purpose: "Albert 관찰 → 검증된 사업모델 기회 발견"
+            reference: "📖 umis_business_model_patterns_v6.2.yaml (상세)"
+            
+            pattern_triggers:
+              
+              intermediation_pattern:
+                trigger_observations:
+                  - "공급자와 수요자의 직접 연결 어려움"
+                  - "중개 비용 과다 (마진 20% 이상)"
+                  - "정보 비대칭 심각"
+                applicable_model: "플랫폼 (양면/다면 시장)"
+                reference_section: "platform_business_model"
+              
+              recurring_value_pattern:
+                trigger_observations:
+                  - "고객 획득 비용(CAC) 높음"
+                  - "제품/서비스 반복 사용"
+                  - "유지관리 가치 존재"
+                applicable_model: "구독형 (렌탈/SaaS/멤버십)"
+                reference_section: "subscription_model"
+              
+              scalable_replication_pattern:
+                trigger_observations:
+                  - "지역별 성공 검증 완료"
+                  - "운영 프로세스 표준화 가능"
+                  - "브랜드 가치 확립"
+                applicable_model: "프랜차이즈"
+                reference_section: "franchise_model"
+              
+              disintermediation_pattern:
+                trigger_observations:
+                  - "유통 마진 > 30%"
+                  - "중간 단계 가치 미추가"
+                  - "브랜드 통제 필요"
+                applicable_model: "D2C (제조-직판)"
+                reference_section: "direct_to_consumer_model"
+              
+              attention_economy_pattern:
+                trigger_observations:
+                  - "대규모 트래픽 확보 가능"
+                  - "무료 서비스로 사용자 모집"
+                  - "광고주 수요 존재"
+                applicable_model: "광고 기반"
+                reference_section: "advertising_model"
+              
+              ip_leverage_pattern:
+                trigger_observations:
+                  - "강력한 지적재산 보유"
+                  - "여러 산업 응용 가능"
+                  - "직접 사업화 리스크 높음"
+                applicable_model: "라이선싱"
+                reference_section: "licensing_model"
+              
+              conversion_funnel_pattern:
+                trigger_observations:
+                  - "진입장벽 제거 필요"
+                  - "사용 후 가치 체감 가능"
+                  - "고급 기능 차별화 명확"
+                applicable_model: "프리미엄 (Freemium)"
+                reference_section: "freemium_model"
+            
+            usage_guide:
+              step_1: "Albert 관찰에서 트리거 패턴 식별"
+              step_2: "매칭되는 패턴의 reference_section 확인"
+              step_3: "상세 파일에서 해당 섹션 읽기"
+              step_4: "성공사례 핵심요인 추출"
+              step_5: "우리 시장 맥락에 조정"
+              step_6: "검증 체크리스트 실행"
+            
+            output: "사업모델 패턴 기반 기회 후보"
         
         integration_synthesis:
           time_allocation: "1시간"
-          activity: "6개 분석 결과 교차 종합"
+          activity: "7개 분석 결과 교차 종합"
           deliverable: "Multi-dimensional Opportunity Matrix"
       
       phase_3_convergence_identification:
