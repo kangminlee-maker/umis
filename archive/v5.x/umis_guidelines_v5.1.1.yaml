@@ -235,21 +235,21 @@ adaptive_framework:
     evolution_log:
       format: |
         {
-          "timestamp": "2024-03-15T10:00:00Z",
+          "timestamp": "2025-09-15T10:00:00Z",
           "clarity_score": 3,
           "goal": "뭔가 새로운 시장 기회",
           "key_discovery": null,
           "agent": "Owner"
         }
         {
-          "timestamp": "2024-03-15T18:00:00Z",
+          "timestamp": "2025-09-15T18:00:00Z",
           "clarity_score": 6,
           "goal": "한국 B2C 디지털 서비스 기회",
           "key_discovery": "모바일 결제 급성장",
           "agent": "Steve"
         }
         {
-          "timestamp": "2024-03-16T14:00:00Z",
+          "timestamp": "2025-09-16T14:00:00Z",
           "clarity_score": 8,
           "goal": "한국 소상공인 대상 간편결제 솔루션",
           "key_discovery": "소상공인 pain point 발견",
@@ -2287,7 +2287,7 @@ adaptive_workflow:
             label: "1️⃣ 핵심 수치만 빠르게"
             example_output: |
               [시장명] 핵심 정리:
-              • 시장 규모: XX조원 (2024)
+              • 시장 규모: XX조원 (2025)
               • 성장률: CAGR XX%
               • 시장 집중도: Top 3가 XX% 점유
               • 주요 변화: ① [구조적 변화1] ② [규제 변화2] ③ [기술 변화3]

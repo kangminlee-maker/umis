@@ -5,7 +5,80 @@
 
 ---
 
-## v6.2 (2024-10-25) - Autonomous Intelligence Edition [MAJOR UPDATE]
+## v6.2.2 (2024-10-30) - Support & Validation System Redesign [MAJOR UPDATE]
+
+### 🔄 시스템 아키텍처 재설계
+**핵심 철학**: "가설과 판단에는 근거와 검증이 필요하다"
+
+#### 주요 변경사항:
+
+**1. SECTION 0: SYSTEM ARCHITECTURE OVERVIEW 신규 추가**
+- **AI 전용 5분 시스템 파악**: 상태 기계 방식으로 전체 구조 명확화
+- **정보 흐름 상태 기계**: 7개 상태로 단순화된 프로세스 플로우
+- **에이전트 협업 매트릭스**: 역할, 의존성, 지원 관계 명확화
+- **의무 검증 체크포인트**: 4개 핵심 검증 지점 정의
+
+**2. SECTION 4: 협업 프로토콜 완전 재설계**
+- **Before**: 복잡한 collaboration_protocols (6개 프로토콜, 상세 트리거/모드)
+- **After**: 간결한 support_validation_system (1개 원칙 + 4개 체크포인트)
+
+**3. Albert-Steve 검증 균형화**
+- **Albert 의무 검증**: Bill + Rachel + Stewart (3명)
+- **Steve 의무 검증**: Albert + Bill + Rachel (3명)  
+- **균등한 품질 보장**: 중요 결론의 동등한 검증 강도
+
+**4. 자연스러운 지원 시스템**
+- **Bill**: 정량 분석 상시 지원 (시장 규모, ROI, 수익성)
+- **Rachel**: 데이터 검증 상시 지원 (정의, 신뢰성, 소싱)
+- **요청 방식**: "이 시장 규모는?" 같은 자연스러운 질문
+- **응답 시간**: Bill(2-4시간), Rachel(30분-2시간)
+
+#### 시스템 우아함 달성:
+
+| 개선 영역 | Before | After |
+|-----------|--------|-------|
+| **협업 복잡도** | 6개 복잡한 프로토콜 | 1개 간단한 원칙 |
+| **검증 균형** | Steve만 3명 검증 | Albert-Steve 모두 3명 |
+| **지원 접근** | 특정 트리거만 | 자연스러운 상시 지원 |
+| **AI 시스템 파악** | 4857줄 전체 읽기 | SECTION 0로 5분 |
+
+#### 기대 효과:
+- **품질 향상**: Albert 결론도 Steve와 동등한 엄격한 검증
+- **효율성 증대**: 복잡한 프로토콜 제거, 자연스러운 협업  
+- **AI 친화성**: 상태 기계로 명확한 시스템 이해
+- **자의성 방지**: 의무 검증으로 품질 보장 체계화
+
+---
+
+## v6.2.1 (2024-10-29) - ChatGPT Modular Version [RELEASE]
+
+### 📦 ChatGPT 모듈러 버전 생성
+**위치**: `.chatgpt/umis_v6.2_modular/`
+
+**주요 구성요소**:
+- **custom_instructions_v6.2.txt**: ChatGPT 커스텀 인스트럭션
+- **agents/**: 5개 에이전트 모듈 파일
+  - `manalyst_albert_v6.2.yaml`: 시장 구조 관찰 전문
+  - `mexplorer_steve_v6.2.yaml`: 7단계 기회 발굴 프로세스  
+  - `mquant_bill_v6.2.yaml`: SAM 4방법론 + 지속가치 정량화
+  - `mvalidator_rachel_v6.2.yaml`: 창의적 데이터 소싱 + 검증
+  - `mcurator_stewart_v6.2.yaml`: 자율 모니터링 + 토큰 최적화
+- **workflows/adaptive_workflow_v6.2.yaml**: 적응형 워크플로우 시스템
+- **UMIS_ChatGPT_Guide_v6.2.md**: 종합 활용 가이드
+- **example_usage_v6.2.md**: 5가지 시나리오별 상세 사용 예시
+
+**핵심 특징**:
+- 20-30% 낮은 명확도로도 시작 가능한 Discovery Sprint
+- 모델별 동적 토큰 관리 (Claude-1M 최적화, GPT-5/Claude-200K 지원)  
+- Stewart의 자율적 진행 모니터링 및 개입
+- 완전 자동 문서화 및 세션 연속성 보장
+- 필수/선택 파일 구분으로 유연한 모듈 사용
+
+**사용법**: ChatGPT 커스텀 인스트럭션 설정 + 필요 모듈 파일 첨부
+
+---
+
+## v6.2 (2025-10-25) - Autonomous Intelligence Edition [MAJOR UPDATE]
 
 ### 🎯 핵심 개선사항
 **AI 자율성과 체계적 관리의 균형**: AI의 창의성을 극대화하면서 사용자 부담은 최소화
@@ -49,14 +122,14 @@
 - **핵심 집중**: 80/20 원칙 적용
 - **압축 기법**: 요약 우선, 시각화 활용
 
-#### 6. 파일 구조 최적화 (2024-10-25 추가)
+#### 6. 파일 구조 최적화 (2025-10-25 추가)
 - **AI 가이드 분리**: 657줄의 AI 사용 가이드를 별도 파일로 분리
   - `umis_guidelines_v6.2.yaml`: 메인 시스템 (4,747줄)
   - `umis_ai_guide_v6.2.yaml`: AI 가이드 (656줄)
 - **가독성 향상**: 메인 파일 12% 경량화
 - **유지보수 개선**: 가이드와 시스템 독립적 업데이트 가능
 
-#### 7. 에이전트 이름 체계 개선 (2024-10-25 추가)
+#### 7. 에이전트 이름 체계 개선 (2025-10-25 추가)
 - **역할 기반 이름**: 에이전트의 기능을 명확히 반영
   - Albert: Observer (시장 구조 관찰자)
   - Steve: Explorer (시장 기회 탐색가)
@@ -64,7 +137,7 @@
   - Rachel: Validator (데이터 검증 전문가)
   - Stewart: Guardian (프로젝트 수호자)
 
-#### 8. 동적 토큰 관리 시스템 (v6.2.1 - 2024-10-25) 🆕
+#### 8. 동적 토큰 관리 시스템 (v6.2.1 - 2025-10-25) 🆕
 **에이전트별 차등 계수를 통한 컨텍스트 윈도우 최적 활용**
 
 ##### 핵심 개선
@@ -149,7 +222,7 @@ max_query_size = remaining_context × agent_coefficient
 
 ---
 
-## v6.1 (2024-10-25) - AI-Optimized Edition [MAJOR UPDATE]
+## v6.1 (2025-10-25) - AI-Optimized Edition [MAJOR UPDATE]
 
 ### 🎯 핵심 개선사항
 **UMIS 실행 프로토콜**: AI가 효율적으로 UMIS를 실행할 수 있도록 최적화
@@ -186,7 +259,7 @@ max_query_size = remaining_context × agent_coefficient
 
 ---
 
-## v6.0.3 (2024-10-25) - Validated Opportunity Discovery Process [CRITICAL UPDATE]
+## v6.0.3 (2025-10-25) - Validated Opportunity Discovery Process [CRITICAL UPDATE]
 
 ### 🎯 핵심 개선사항
 **Steve 가설 검증 프로토콜**: 모든 기회는 체계적으로 검증됨
@@ -221,7 +294,7 @@ max_query_size = remaining_context × agent_coefficient
 
 ---
 
-## v6.0.2 (2024-10-24) - Integrated Opportunity Discovery Process [MAJOR UPDATE]
+## v6.0.2 (2025-10-24) - Integrated Opportunity Discovery Process [MAJOR UPDATE]
 
 ### 🎯 핵심 개선사항
 **Steve의 통합 기회 발굴 프로세스**: 체계적인 7단계 프로세스 도입
@@ -261,7 +334,7 @@ max_query_size = remaining_context × agent_coefficient
 
 ---
 
-## v6.0.1 (2024-10-24) - Information Flow Optimization [MINOR UPDATE]
+## v6.0.1 (2025-10-24) - Information Flow Optimization [MINOR UPDATE]
 
 ### 🎯 핵심 개선사항
 **정보 흐름 최적화**: 에이전트 간 역할과 협업 구조 명확화
@@ -295,7 +368,7 @@ max_query_size = remaining_context × agent_coefficient
 
 ---
 
-## v6.1a (2024-10-24) - Modular Architecture Edition [ARCHITECTURE UPDATE]
+## v6.1a (2025-10-24) - Modular Architecture Edition [ARCHITECTURE UPDATE]
 
 ### 🎯 핵심 변경사항
 **아키텍처 업데이트**: BMAD-METHOD 분석을 통한 모듈화 구조 도입
@@ -337,7 +410,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v6.0 (2024-10-22) - Progressive Intelligence Edition [MAJOR UPDATE]
+## v6.0 (2025-10-22) - Progressive Intelligence Edition [MAJOR UPDATE]
 
 ### 🎯 핵심 철학 변화
 **메이저 업데이트 핵심**: 실행력과 현실성 대폭 강화
@@ -438,9 +511,9 @@ umis-monolithic-guidelines/
 
 ---
 
-## v6.1a (2024-10-23) - [DEPRECATED - Replaced by v6.1a Modular Architecture]
+## v6.1a (2025-10-23) - [DEPRECATED - Replaced by v6.1a Modular Architecture]
 
-*Note: 이 버전은 2024-10-24 모듈화 아키텍처 버전으로 대체되었습니다.*
+*Note: 이 버전은 2025-10-24 모듈화 아키텍처 버전으로 대체되었습니다.*
 
 원래 v6.1a는 사용자 접근성 강화를 위해 Brownfield Intelligence System과 Activation System을 추가했으나, 
 모듈화 아키텍처가 더 효율적인 솔루션을 제공하므로 대체되었습니다.
@@ -452,7 +525,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v5.3 (2024-10-21) - Sustainable Advantage Edition
+## v5.3 (2025-10-21) - Sustainable Advantage Edition
 ### 추가
 - **7 Powers Framework 통합**
   - Market Dynamics에 sustainable_value 개념 통합
@@ -477,7 +550,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v5.2.2 - Enhanced Market Definition (2024-10-21)
+## v5.2.2 - Enhanced Market Definition (2025-10-21)
 ### 주요 변경사항
 - **Universal Market Definition 개선**: 2단계 계층구조로 확장
 - **Market Boundary Dimensions**: 4개 → 10개 (6 core + 4 contextual)
@@ -500,7 +573,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v5.2.1 - Simplified Edition (2024-10-21)
+## v5.2.1 - Simplified Edition (2025-10-21)
 ### 추가 단순화 (같은 날 업데이트)
 - **Section 7 (Workflow Management) 제거**: 단일 워크플로우만 있으므로 불필요
 - **UMIS_MODE 환경변수 제거**: 선택지가 없으므로 무의미
@@ -509,7 +582,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v5.2.1 - Simplified Edition (2024-10-21)
+## v5.2.1 - Simplified Edition (2025-10-21)
 ### 주요 변경사항
 - **Classic Workflow v4 제거**: 단일 Adaptive workflow로 통합
 - **Migration Guide 제거**: 더 이상 필요하지 않음
@@ -529,7 +602,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v5.2 - Creative Boost Edition (2024-10-21)
+## v5.2 - Creative Boost Edition (2025-10-21)
 ### 주요 변경사항
 - **AI Brainstorming Framework 통합**: 선택적 Creative Boost 모듈로 통합
 - **창의성 증강 도구**: 필요시에만 활용하는 명시적 창의성 도구 추가
@@ -549,7 +622,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v5.1.3 - Optimization Update (2024-10-21)
+## v5.1.3 - Optimization Update (2025-10-21)
 ### 최적화
 - **구조 최적화**: 중복 주석 통합, 구조적 빈 줄 제거
 - **크기 절감**: 7.7% 파일 크기 감소
@@ -557,7 +630,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v5.1.2 - Collaboration Enhancement (2024-10-19)
+## v5.1.2 - Collaboration Enhancement (2025-10-19)
 ### 주요 변경사항
 - **Albert 역할 확장**: Stage 2의 MECE 기반 사용자 의도 파악 담당
 - **Steve 역할 재정의**: 사용자 선택 후 기회 해석으로 변경
@@ -573,7 +646,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v5.1.1 - Market Opportunity Clarification (2024-10-19)
+## v5.1.1 - Market Opportunity Clarification (2025-10-19)
 ### 주요 변경사항
 - **시장 기회 원천 명확화**:
   1. 비효율성 해소
@@ -585,7 +658,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v5.1 - Enhanced Adaptive Intelligence (2024-10-19)
+## v5.1 - Enhanced Adaptive Intelligence (2025-10-19)
 ### 개선사항
 - Discovery Sprint 프로세스 정교화
 - Stewart의 자율적 모니터링 기능 상세화
@@ -593,7 +666,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v5.0 - Adaptive Intelligence Edition (2024-09-16)
+## v5.0 - Adaptive Intelligence Edition (2025-09-16)
 ### 혁신적 변경
 - **적응형 프레임워크 도입**: 20-30% 명확도로도 시작 가능 (기존 80-90%)
 - **Discovery Sprint**: 1-2일 빠른 탐색으로 방향 설정
@@ -614,7 +687,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v4.0 - MECE Framework (2024-09-07)
+## v4.0 - MECE Framework (2025-09-07)
 ### 핵심 변경
 - **MECE 원칙 전면 도입**: 상호배타적이며 전체를 포괄하는 분석
 - **체계적 워크플로우**: Phase 기반 구조화된 프로세스
@@ -631,7 +704,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v3.0 - Simplified Architecture (2024-09-07)
+## v3.0 - Simplified Architecture (2025-09-07)
 ### 주요 변경
 - 복잡도 대폭 감소
 - 핵심 기능에 집중
@@ -639,7 +712,7 @@ umis-monolithic-guidelines/
 
 ---
 
-## v2.0 - Enhanced Collaboration (2024-09-07)
+## v2.0 - Enhanced Collaboration (2025-09-07)
 ### 개선사항
 - 에이전트 간 협업 프로토콜 강화
 - 정보 흐름 최적화
@@ -648,31 +721,31 @@ umis-monolithic-guidelines/
 ---
 
 ## v1.x Series - Foundation Building
-### v1.8 (2024-09-07)
+### v1.8 (2025-09-07)
 - 추가 기능 통합
 - 안정성 개선
 
-### v1.7 (2024-09-07)
+### v1.7 (2025-09-07)
 - 성능 최적화
 - 버그 수정
 
-### v1.6 (2024-09-03)
+### v1.6 (2025-09-03)
 - 사용자 피드백 반영
 - 인터페이스 개선
 
-### v1.5 (2024-09-03)
+### v1.5 (2025-09-03)
 - 새로운 분석 도구 추가
 - 문서화 강화
 
-### v1.4 (2024-09-03)
+### v1.4 (2025-09-03)
 - 시장 정의 프레임워크 개선
 - 에이전트 역할 명확화
 
-### v1.3 (2024-09-03)
+### v1.3 (2025-09-03)
 - 첫 안정화 버전
 - 기본 기능 완성
 
-### v1.2 (2024-09-03)
+### v1.2 (2025-09-03)
 - 초기 프로토타입
 - 기본 구조 확립
 

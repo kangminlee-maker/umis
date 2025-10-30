@@ -445,7 +445,7 @@ roles:
       universal_data_standards:
         naming_convention:
           - "데이터명_출처_시점_정의버전"
-          - "예: 이커머스시장_통계청_2024Q3_온라인쇼핑만"
+          - "예: 이커머스시장_통계청_2025Q3_온라인쇼핑만"
         
         quality_markers:
           - "[Original]": "원본 그대로"

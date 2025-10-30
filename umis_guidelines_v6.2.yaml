@@ -28,11 +28,238 @@
 # 
 # 버전 히스토리: CHANGELOG.md 참조
 # ========================================
+# SECTION 0: SYSTEM ARCHITECTURE OVERVIEW
+# @id: system_architecture_overview
+# @purpose: AI 전용 - 5분 내 전체 시스템 파악
+# ========================================
+
+system_architecture:
+  
+  # 0.1 정보 흐름 상태 기계 (AI 친화적)
+  information_flow_state_machine:
+    
+    initial_state: "project_start"
+    core_principle: "가설과 판단에는 근거와 검증이 필요하다"
+    
+    states:
+      project_start:
+        active_agents: ["stewart"]
+        actions: ["명확도 평가", "Discovery Sprint 유형 결정"]
+        next_state: "discovery"
+        trigger: "사용자 요청 수신"
+        
+      discovery:
+        active_agents: ["all_agents_parallel"]
+        sub_modes:
+          fast_track: "명확도 >= 7 (2-4시간)"
+          full_sprint: "명확도 < 7 (1-3일)"
+        outputs: ["명확한 목표", "시장 경계", "방향성"]
+        next_state: "data_preparation"
+        
+      data_preparation:
+        active_agents: ["rachel"]
+        process: "데이터 수집 + 정의 검증"
+        outputs: ["검증된 데이터셋", "신뢰도 평가"]
+        quality_gate: "신뢰도 >= 80%"
+        next_state: "structure_analysis"
+        
+      structure_analysis:
+        active_agents: ["albert"]
+        support_available: ["bill", "rachel"]
+        process: "시장 구조 관찰 + 해석"
+        daily_support_usage:
+          - "Bill: 구조 관련 정량 데이터 질문시"
+          - "Rachel: 데이터 검증이나 추가 소싱 필요시"
+        mandatory_validation:
+          when: "Albert 최종 결론 제시시"
+          validators: ["bill", "rachel", "stewart"]
+          quality_gate: "3명 모두 통과 필요"
+        outputs: ["Market Reality Report"]
+        next_state: "opportunity_discovery"
+        
+      opportunity_discovery:
+        active_agents: ["steve"]
+        prerequisites: ["albert.market_reality_report"]
+        support_available: ["bill", "rachel"]
+        process: "7단계 기회 발굴 + 자체 검증"
+        daily_support_usage:
+          - "Bill: 기회 수익성 검증 질문시"
+          - "Rachel: 가설 근거 데이터 질문시"
+        mandatory_validation:
+          when: "Steve 기회 가설 최종 제시시"
+          validators: ["albert", "bill", "rachel"]  
+          quality_gate: "3명 모두 통과 필요"
+        outputs: ["검증된 기회 포트폴리오"]
+        next_state: "decision_preparation"
+        
+      decision_preparation:
+        active_agents: ["stewart"]
+        process: "논리적 건전성 + 절차적 완결성 검증"
+        inputs: ["모든 검증 완료된 분석 결과"]
+        outputs: ["Decision Readiness Assessment"]
+        next_state: "strategic_decision"
+        
+      strategic_decision:
+        active_agents: ["owner"]
+        support_available: ["bill", "rachel", "stewart"]
+        inputs: ["모든 검증된 분석", "Stewart 검증"]
+        process: "전략적 의사결정"
+        mandatory_validation:
+          when: "Owner 최종 의사결정 제시시"
+          validators: ["stewart"]
+          quality_gate: "Stewart 승인 필요"
+        outputs: ["전략적 결정", "실행 계획"]
+        end_state: true
+    
+    # 상태 간 전환 규칙
+    transition_rules:
+      - condition: "data_reliability < 80%"
+        action: "return_to_data_preparation"
+      - condition: "validation_failed >= 3_times"  
+        action: "escalate_to_approach_review"
+      - condition: "goal_alignment < 60%"
+        action: "stewart_intervention_triggered"
+      - condition: "10x_opportunity_discovered"
+        action: "pivot_assessment_required"
+
+  # 0.2 에이전트 역할 및 지원 매트릭스
+  agent_collaboration_matrix:
+    
+    main_flow_agents:
+      albert:
+        role: "시장 구조 분석 주도"
+        depends_on: ["rachel.verified_data"]
+        provides_to: ["steve"]
+        support_requests: ["bill: 정량 데이터", "rachel: 데이터 검증"]
+        mandatory_validation: ["bill", "rachel", "stewart"]
+        
+      steve:
+        role: "기회 발굴 주도"  
+        depends_on: ["albert.market_reality_report"]
+        provides_to: ["owner"]
+        support_requests: ["bill: 수익성 검증", "rachel: 근거 데이터"]
+        mandatory_validation: ["albert", "bill", "rachel"]
+        
+      owner:
+        role: "전략적 의사결정 주도"
+        depends_on: ["steve.validated_opportunities"]
+        support_requests: ["bill: 추가 수치", "rachel: 신뢰도 재확인"]
+        mandatory_validation: ["stewart"]
+    
+    support_agents:
+      bill:
+        role: "정량 분석 지원"
+        availability: "상시 대기"
+        expertise: "시장 규모, 수익성, ROI, 성장률"
+        response_time: "2-4시간"
+        critical_dependency: ["rachel.data_definitions"]
+        
+      rachel:
+        role: "데이터 검증 지원"
+        availability: "상시 대기"
+        expertise: "데이터 정의, 신뢰성, 창의적 소싱"
+        response_time: "30분-2시간"
+        supports: "모든 에이전트"
+        
+    oversight_agent:
+      stewart:
+        role: "프로세스 감시 및 검증"
+        monitors: ["모든 상태", "모든 에이전트"]
+        intervenes_when: ["목표이탈", "순환패턴", "토큰초과"]
+        validates: ["albert.구조결론", "owner.최종결정"]
+
+  # 0.3 의무 검증 체크포인트
+  mandatory_validation_checkpoints:
+    
+    checkpoint_1_albert_conclusions:
+      trigger: "Albert 시장 구조 최종 결론 제시"
+      criticality: "매우 높음 (전체 방향 결정)"
+      validators:
+        - bill: "구조 분석의 정량적 타당성"
+        - rachel: "근거 데이터 신뢰성" 
+        - stewart: "논리적 건전성"
+      quality_gate: "3명 모두 통과"
+      
+    checkpoint_2_steve_hypotheses:
+      trigger: "Steve 기회 가설 최종 제시"
+      criticality: "매우 높음 (투자 결정)"
+      validators:
+        - albert: "구조적 실현 가능성"
+        - bill: "경제적 타당성"
+        - rachel: "근거 데이터 신뢰성"
+      quality_gate: "3명 모두 통과"
+      
+    checkpoint_3_bill_calculations:
+      trigger: "Bill SAM 계산 최종 완료"
+      criticality: "높음 (투자 규모 결정)"
+      validators:
+        - rachel: "데이터 정의 및 신뢰성"
+        - albert: "시장 구조 부합성"
+      quality_gate: "2명 통과 + ±30% 수렴"
+      
+    checkpoint_4_owner_decisions:
+      trigger: "Owner 최종 의사결정 제시"
+      criticality: "최고 (프로젝트 성패)"
+      validators:
+        - stewart: "절차적 완결성 + 논리적 건전성"
+      quality_gate: "Stewart 승인"
+
+  # 0.4 지원 시스템 프로토콜
+  support_system_protocol:
+    
+    daily_support_availability:
+      bill_support:
+        scope: "시장 규모, 수익성, ROI, 성장률"
+        availability: "모든 상태에서 요청 가능"
+        response_time: "2-4시간 (정밀 분석)"
+        typical_questions:
+          - "이 시장 규모는?"
+          - "ROI가 현실적인가?"
+          - "이 수익 모델 타당해?"
+          
+      rachel_support:
+        scope: "데이터 정의, 신뢰성, 창의적 소싱"
+        availability: "모든 상태에서 요청 가능"  
+        response_time: "30분-2시간"
+        typical_questions:
+          - "이 데이터 정의 맞나?"
+          - "더 나은 데이터 소스 있어?"
+          - "이 근거 신뢰할 만해?"
+    
+    critical_dependencies:
+      bill_rachel_dependency:
+        rule: "Bill의 모든 계산은 Rachel 데이터 검증 후"
+        process: "정의 불명확시 계산 중단하고 즉시 확인"
+        
+      albert_steve_sequence:
+        rule: "Steve는 Albert 완료 후에만 시작"
+        input: "Market Reality Report 필수"
+        
+    frequent_collaboration_patterns:
+      albert_bill: "구조 분석과 정량 분석 자주 함께"
+      steve_bill: "기회 발굴과 수익성 검증 자주 함께"
+      steve_rachel: "가설 개발과 근거 확보 자주 함께"
+      note: "자연스러운 협업, 복잡한 프로토콜 불필요"
+
+  # 0.5 시스템 활용 가이드
+  quick_navigation:
+    full_agent_definitions: "SECTION 6: AGENTS"
+    workflow_details: "SECTION 9: IMPLEMENTATION GUIDE"  
+    support_validation_details: "SECTION 4: SUPPORT & VALIDATION SYSTEM"
+    token_management: "adaptive_intelligence_system.token_management_protocol"
+    
+    ai_reading_strategy:
+      system_overview: "이 SECTION 0 (5분)"
+      specific_agent: "SECTION 6의 해당 에이전트 (10분)"
+      workflow_execution: "SECTION 9의 해당 워크플로우 (15분)"
+      troubleshooting: "SECTION 3: PROACTIVE MONITORING (10분)"
+
+# ========================================
 # SECTION 1: SYSTEM DEFINITION
 # ========================================
 system:
   name: "Universal Market Intelligence System - Validated Intelligence Edition"
-  version: "6.2.1"
+  version: "6.2.2"
   purpose: "불확실한 상황에서도 적응하며 진화하는 범용 시장 분석 시스템"
   description: "낮은 명확도로 시작해 발견을 통해 성장하는 차세대 시장 정보 시스템 (정보 흐름 최적화)"
   default_mode: "Discovery Sprint → Comprehensive Study (2-4주) - 별도 언급 없으면 자동 적용"
@@ -769,8 +996,30 @@ adaptive_intelligence_system:
         - "피벗 포인트 문서화"
   
   discovery_sprint:
-    description: "모든 프로젝트의 시작점 - 대화형 목표 명확화 프로세스"
+    description: "모든 프로젝트의 시작점 - 명확도 기반 적응형 목표 명확화 프로세스"
     note: "완료 후 자동으로 Comprehensive Study로 전환 (명시적 'quick' 요청 제외)"
+    
+    adaptive_entry_gate:
+      description: "명확도 기반 Discovery 유형 자동 선택"
+      phase_0_clarity_assessment:
+        duration: "15분"
+        stewart_evaluation:
+          - intention_clarity: "무엇을 찾는가 (40%)"
+          - domain_knowledge: "시장을 아는가 (35%)" 
+          - urgency_context: "언제까지인가 (25%)"
+        
+        gate_routing:
+          if_clarity_gte_7:
+            route: "fast_track_discovery"
+            duration: "2-4시간"
+            activities: ["목표 재확인", "핵심 가정 검증", "시장 경계 확인"]
+            
+          if_clarity_lt_7:
+            route: "full_discovery_sprint"  
+            duration: "1-3일"
+            activities: ["5-Agent 병렬 탐색", "목표 구체화", "방향성 수렴"]
+            standard_process: true
+        
     
     pre_execution_check:
       description: "UMIS 실행 프로토콜 적용 (@id: umis_execution_protocol)"
@@ -1448,296 +1697,119 @@ proactive_monitoring:
         - "결과와 학습"
 
 # ========================================
-# SECTION 4: COLLABORATION PROTOCOLS
+# SECTION 4: SUPPORT & VALIDATION SYSTEM  
 # ========================================
-collaboration_protocols:
-  description: "UMIS 에이전트 간 협업 규칙과 트리거"
-  purpose: "각 에이전트가 자신의 전문 영역에 집중하면서도 필요시 효과적으로 협업"
+support_validation_system:
+  description: "자연스러운 지원과 엄격한 검증의 조화"
+  purpose: "일상적 협업의 유연성과 중요 결론의 품질 보장"
   
-  collaboration_triggers:
-    description: "MECE 원칙에 따른 에이전트 간 협업 규칙 - v5.0 적응형 협업"
-    
-    principle: "각 에이전트는 자신의 전문 영역에 집중하되, 명확한 트리거 발생 시 협업"
-    
-    adaptive_triggers:
-    - name: "Discovery Sprint Kick-off"
-      trigger: "프로젝트 시작 with 명확도 < 7"
-      participants: ["all_agents"]
-      mode: "Parallel exploration"
-      duration: "1-2 days"
-      output: "Converged opportunities"
-    
-    - name: "Clarity Evolution Check"
-      trigger: "명확도 점수 2점 이상 변화"
-      participants: ["owner", "stewart"]
-      action: "목표 재정의 및 경로 조정"
-    
-    - name: "Pivot Assessment"
-      trigger: "Stewart의 피벗 제안"
-      participants: ["owner", "discovering_agent", "stewart"]
-      action: "피벗 타당성 검토 및 결정"
-    
-    - name: "Deep Dive Alert Response"
-      trigger: "특정 영역 30% 이상 시간 소요"
-      participants: ["focused_agent", "stewart", "owner"]
-      action: "집중 타당성 검토 또는 재배분"
-    
-    mandatory_collaborations:
-    - name: "프로젝트 착수 회의"
-      trigger: "Owner의 프로젝트 시작 선언"
-      participants: ["owner", "all_agents"]
-      v5_addition: "명확도 평가 및 접근법 결정"
-    
-    - name: "데이터 정의 정렬"
-      trigger: "새로운 데이터 소스 발견 또는 정의 불일치"
-      participants: ["rachel", "requesting_agent"]
-    
-    - name: "SAM 계산 협업"
-      trigger: "Bill의 SAM 계산 시작"
-      participants: ["bill", "rachel", "albert"]
-    
-    - name: "병렬 구조-정량 분석"
-      trigger: "Rachel의 검증된 데이터 준비 완료"
-      participants: ["albert", "bill"]
-      mode: "병렬 분석 with 실시간 동기화"
-      duration: "4-8시간"
-      output: "통합된 구조-정량 분석 리포트"
-      description: "Steve의 고품질 기회 발굴을 위한 통합 분석"
-    
-    - name: "통합 기회 발굴 및 검증"
-      trigger: "Albert-Bill 통합 분석 완료"
-      participants: ["steve"]
-      prerequisite: "구조+정량 통합 데이터 필수"
-      output: "데이터 기반 기회 포트폴리오"
-      new_mandatory_step:
-        name: "가설 검증 사이클"
-        automatic_trigger: true
-        description: "Steve가 제시한 모든 기회는 자동으로 검증 프로세스 진입"
-    
-    - name: "가설 검증 사이클"
-      trigger: "Steve가 기회 가설 제시"
-      mandatory: true
-      participants: ["steve", "albert", "bill", "rachel", "stewart"]
-      
-      sequence:
-        step_1_hypothesis_submission:
-          actor: "steve"
-          duration: "30분"
-          deliverables:
-            - hypothesis: "핵심 주장"
-            - rationale: "근거와 논리"
-            - assumptions: "전제 조건들"
-            - success_criteria: "검증 기준"
-        
-        step_2_parallel_validation:
-          duration: "2-4시간"
-          mode: "병렬 검증"
-          validators:
-            albert:
-              focus: "구조적 타당성"
-              checks:
-                - "현재 시장 구조상 가능한가?"
-                - "구조적 제약은 무엇인가?"
-                - "유사 사례가 있는가?"
-              output: "Structural Feasibility Report"
-            
-            bill:
-              focus: "경제적 타당성"
-              checks:
-                - "경제적으로 성립하는가?"
-                - "시장 규모는 충분한가?"
-                - "ROI는 현실적인가?"
-              output: "Economic Viability Report"
-            
-            rachel:
-              focus: "데이터 신뢰성"
-              checks:
-                - "근거 데이터는 신뢰할 만한가?"
-                - "가정들이 데이터로 뒷받침되는가?"
-                - "반대 증거는 없는가?"
-              output: "Data Validation Report"
-        
-        step_3_synthesis_meeting:
-          participants: ["all_validators", "stewart"]
-          duration: "2시간"
-          agenda:
-            - "검증 결과 공유"
-            - "핵심 이슈 식별"
-            - "종합 판정"
-          
-          possible_outcomes:
-            validated:
-              description: "가설 검증 완료"
-              next_step: "실행 계획 수립"
-              owner_notification: true
-            
-            conditional:
-              description: "조건부 가능"
-              next_step: "조건 명확화 및 추적"
-              requires: "조건 충족 모니터링"
-            
-            rejected:
-              description: "가설 기각"
-              next_step: "학습 및 재시도"
-              max_iterations: 5
-        
-        step_4_iterative_refinement:
-          if_not_validated:
-            steve_action: "학습 내용 반영한 새 가설"
-            learning_capture:
-              - "무엇이 틀렸는가?"
-              - "어떤 제약을 놓쳤는가?"
-              - "새로운 인사이트는?"
-            documentation: "Hypothesis Evolution Log"
-    
-    - name: "조건부 기회 추적"
-      trigger: "조건부 기회 도출"
-      owner: "stewart"
-      participants: ["steve", "stewart", "monitoring_agents"]
-      
-      protocol:
-        condition_specification:
-          steve_provides:
-            - conditions: "충족 필요 조건 목록"
-            - metrics: "측정 가능한 지표"
-            - timeline: "예상 충족 시점"
-            - dependencies: "조건 간 상호 의존성"
-        
-        monthly_monitoring:
-          frequency: "매월 1일"
-          actions:
-            - "각 조건 충족도 측정"
-            - "환경 변화 반영"
-            - "임계점 도달 여부 확인"
-          
-          alert_thresholds:
-            70_percent: "재검증 준비"
-            85_percent: "실행 팀 구성"
-            100_percent: "즉시 실행"
-    
-    - name: "의사결정 전 검증 프로세스"
-      trigger: "Owner의 최종 의사결정 요청"
-      sequence:
-        step_1:
-          participants: ["albert", "steve", "bill"]
-          action: "최종 산출물 제출"
-          deliverables:
-            - albert: "Market Reality Report"
-            - steve: "Opportunity Portfolio"
-            - bill: "Quantified Scenarios"
-        
-        step_2:
-          participants: ["rachel"]
-          action: "근거 신뢰도 평가"
-          duration: "2-4시간"
-          output: "Evidence Reliability Matrix"
-        
-        step_3:
-          participants: ["stewart"]
-          action: "논리적 건전성 검증"
-          duration: "2-4시간"
-          output: "Decision Readiness Assessment"
-        
-        step_4:
-          participants: ["owner", "all_agents"]
-          action: "최종 의사결정 회의"
-          inputs:
-            - "모든 에이전트 산출물"
-            - "Rachel의 신뢰도 평가"
-            - "Stewart의 논리 검증"
-          output: "검증된 의사결정"
+  core_principle: "가설과 판단에는 근거와 검증이 필요하다"
   
-  # 최소한의 적응형 안전장치
-  adaptive_safeguards:
-    description: "과도한 피드백 루프 방지를 위한 최소한의 안전장치"
-    philosophy: "유연성을 유지하면서도 비생산적 순환 방지"
+  # Part A: 일상 지원 시스템
+  daily_support_system:
+    description: "자연스러운 전문가 지원"
     
-    iteration_limit:
-      description: "동일 이슈의 과도한 순환 방지"
-      rule: "동일 주제로 3회 이상 순환 시 Stewart 자동 개입"
-      mechanism:
-        - "1회차: 정상 피드백 교환"
-        - "2회차: Stewart 모니터링 강화"
-        - "3회차: Stewart 개입 및 Owner 에스컬레이션"
-      exceptions:
-        - "Critical 이슈 (10x 기회, 중대 리스크)"
-        - "Owner의 명시적 지시"
-        - "블랙스완 이벤트"
-        - "Steve 가설 검증 프로세스 (학습 문서화 필수)"
-      example: |
-        Albert → Steve → Bill → Albert (1회)
-        Albert → Steve → Bill → Albert (2회) [Stewart 주시]
-        Albert → Steve → Bill → ... [Stewart 개입: "순환 패턴 감지"]
+    support_agents:
+      bill_quantitative_support:
+        availability: "상시 지원 가능"
+        expertise: "시장 규모, 수익성, ROI, 성장률"
+        response_time: "2-4시간 (정밀 분석)"
+        request_examples:
+          - "이 시장 규모는?"
+          - "ROI가 현실적인가?"
+          - "이 수익 모델 타당해?"
+      
+      rachel_evidence_support:
+        availability: "상시 지원 가능"
+        expertise: "데이터 검증, 신뢰성, 추가 소싱"
+        response_time: "30분-2시간"
+        request_examples:
+          - "이 데이터 정의 맞나?"
+          - "더 나은 데이터 소스 있어?"
+          - "이 근거 신뢰할 만해?"
     
-    feedback_guidelines:
-      description: "효과적인 피드백을 위한 권장 가이드라인 (강제 아님)"
-      recommended_format:
-        context: "무엇에 대한 피드백인지 명확히"
-        impact: "왜 중요한지, 어떤 영향이 있는지"
-        suggestion: "구체적인 개선 방향 제시"
-      priority_indicators:
-        high: "프로젝트 방향에 영향"
-        medium: "효율성 개선 가능"
-        low: "참고사항"
-      note: "긴급하거나 명확한 상황에서는 간략하게 전달 가능"
+    support_protocol:
+      request_method: "자연스러운 질문 형태"
+      response_scope: "요청 범위에 맞춰 적절히"
+      integration: "요청 에이전트가 결과 활용 및 통합"
     
-    stewart_intervention_upgrade:
-      description: "기존 Guardian Mode를 순환 방지에 특화하여 강화"
-      
-      # v6.0.1 강화: 확대된 자율 개입 시스템
-      proactive_intervention_triggers:
-        circular_pattern:
-          threshold: "동일 주제 3회 반복"
-          action: "돌파구 제시"
-        goal_drift:
-          threshold: "목표 정렬도 < 60%"
-          action: "경로 재조정"
-        analysis_paralysis:
-          threshold: "2주간 진전도 < 10%"
-          action: "실행 모드 전환"
-        resource_inefficiency:
-          threshold: "ROI < 30%"
-          action: "리소스 재배분"
-      
-      intervention_message_template: |
-        🔄 순환 패턴 감지
-        
-        관찰: {agent_A} ↔ {agent_B} 간 {topic}에 대해 {count}회 순환
-        영향: 시간 소비 {time}, 진전도 {progress}%
-        
-        제안:
-        1. 현재 가정/제약 재검토
-        2. Owner 의사결정 요청
-        3. 다른 접근법 시도
-        
-        Stewart가 도울 수 있는 것: {assistance_options}
+    frequent_collaboration:
+      albert_bill: "구조 분석시 정량 데이터 자주 필요"
+      steve_bill: "기회 발굴시 수익성 검증 자주 필요"
+      steve_rachel: "가설 개발시 근거 데이터 자주 필요"
+      note: "자주 협업하지만 의무는 아님"
+  
+  # Part B: 의무 검증 시스템
+  mandatory_validation_system:
+    description: "중요 결론의 품질 보장"
+    trigger: "핵심 가설이나 판단의 최종 확정시"
     
-    # v6.0.3 추가: Steve 가설 검증 안전장치
-    steve_validation_safeguard:
-      description: "가설 검증은 구조화된 학습 프로세스로 특별 관리"
-      requirements:
-        - "각 반복마다 명확한 학습 내용 문서화"
-        - "개선 증거 제시 (가설의 진화 추적)"
-        - "최대 5회 자체 제한"
-      
-      stewart_role: 
-        monitoring: "진행 상황 추적 및 학습 품질 평가"
-        support: "병목 지점 식별 및 가속화 지원"
-        intervention: "중단이 아닌 개선 방향 제시"
-      
-      validation_efficiency:
-        fast_track_mode:
-          trigger: "시간 제약 심각 (Owner 승인)"
-          modifications:
-            - "병렬 검증 시간 단축 (2시간)"
-            - "핵심 리스크만 검증"
-            - "Go/No-Go 결정만"
+    validation_checkpoints:
+      albert_market_structure_conclusions:
+        when: "Albert가 시장 구조 최종 결론 제시"
+        why: "전체 프로젝트 방향을 결정하는 핵심 판단"
+        mandatory_validators:
+          - bill: "구조 분석의 정량적 타당성"
+          - rachel: "구조 분석 근거 데이터 신뢰성"  
+          - stewart: "구조 해석의 논리적 건전성"
+        quality_gate: "3명 모두 통과"
+        outputs: ["Market Structure Validation Report"]
         
-        adaptive_depth:
-          comprehensive_default: "종합 검증 (8-12시간) - 기본값"
-          quick_request: "Fast Track 검증 (2시간) - 명시적 요청 시"
-          standard_request: "표준 검증 (4시간) - 명시적 요청 시"
-          discovery_phase: "탐색 검증 (1-2시간) - Discovery Sprint 중"
+      steve_opportunity_hypotheses:
+        when: "Steve가 기회 가설 최종 제시"
+        why: "투자 의사결정의 핵심 근거"
+        mandatory_validators:
+          - albert: "기회의 구조적 실현 가능성"
+          - bill: "기회의 경제적 타당성"
+          - rachel: "가설 근거 데이터 신뢰성"
+        quality_gate: "3명 모두 통과"
+        outputs: ["Opportunity Validation Report"]
+        
+      bill_sam_calculations:
+        when: "Bill이 SAM 계산 최종 완료"
+        why: "투자 규모 결정의 핵심 근거"
+        mandatory_validators:
+          - rachel: "계산 기초 데이터 정의 및 신뢰성"
+          - albert: "계산 결과의 시장 구조 부합성"
+        quality_gate: "2명 모두 통과 + ±30% 수렴"
+        outputs: ["SAM Validation Report"]
+        
+      owner_strategic_decisions:
+        when: "Owner가 최종 의사결정 제시"
+        why: "전체 프로젝트 성패 결정"
+        mandatory_validators:
+          - stewart: "논리적 건전성 + 절차적 완결성"
+        quality_gate: "Stewart 승인"
+        outputs: ["Decision Readiness Assessment"]
+  
+  # Part C: 검증 실패시 처리
+  validation_failure_protocol:
+    partial_pass:
+      condition: "일부 검증자만 통과"
+      action: "조건부 승인 + 보완 요구"
+      example: "Albert 구조 분석 중 Rachel만 불통과 → 데이터 보강 후 재검토"
+      
+    full_fail:
+      condition: "모든 검증자 불통과"
+      action: "전면 재작업 필수"
+      learning: "실패 원인 분석 + 접근법 수정"
+      
+    iteration_management:
+      max_attempts: "3회"
+      each_iteration: "명확한 학습 내용 문서화 필수"
+      stewart_role: "학습 품질 확인 + 개선 방향 제시"
+  
+  # Part D: 시스템 통합 및 최적화
+  system_integration:
+    work_flow_integration:
+      discovery_sprint: "5-Agent 병렬 탐색 중에도 지원 요청 가능"
+      comprehensive_study: "모든 단계에서 일상 지원 + 핵심 결론시 의무 검증"
+      rapid_assessment: "압축된 일정 내 핵심 검증만 실행"
+      
+    efficiency_optimization:
+      parallel_execution: "지원 요청들은 병렬 처리 가능"
+      batched_validation: "비슷한 시점의 검증들은 통합 실행"
+      progressive_depth: "초기 간단 → 필요시 심화"
 
 # ========================================
 # SECTION 5: DATA INTEGRITY SYSTEM
@@ -2155,99 +2227,49 @@ agents:
           output: "월 거래액 1조원, 평균 수수료 3%, 활성 판매자 10만명"
     
     # ===== 4. BOUNDARIES & INTERFACES =====
-    what_albert_does_not_do:
-      - "왜 그런 패턴이 나타나는지 해석 (→ Steve/Owner의 업무)"
-      - "시장 규모 계산 (→ Bill의 업무)"
-      - "성장률 추정 (→ Bill의 업무)"
-      - "기회 발굴 및 재정의 (→ Steve의 업무)"
-      - "데이터 검증 (→ Rachel의 업무)"
-      - "방법론 개발 (→ Stewart의 업무)"
+    albert_role_boundaries:
+      primary_focus: "시장 구조 관찰 및 해석 주도"
+      does_not_lead:
+        - "시장 규모 계산 주도 (Bill 지원 요청)"
+        - "데이터 수집 주도 (Rachel 지원 요청)"
+        - "기회 가설 수립 주도 (Steve 영역)"
+      
+      support_requests:
+        to_bill: "구조 분석 중 정량 데이터 필요시 요청"
+        to_rachel: "구조 분석 중 데이터 검증이나 추가 소싱 필요시 요청"
+        examples:
+          - "Bill, 이 가치사슬 단계별 마진율 계산해줘"
+          - "Rachel, 이 시장점유율 데이터 신뢰할 만해?"
     
-    collaboration_interfaces:
-      parallel_with_bill:
-        trigger: "Rachel의 검증된 데이터 준비 완료"
-        mode: "병렬 분석 with 실시간 동기화"
+    support_and_validation:
+      daily_support_usage:
+        with_bill: "구조 분석시 정량 데이터 자주 필요"
+        with_rachel: "데이터 정의나 신뢰성 확인 자주 필요"
+        method: "자연스러운 질문으로 즉시 지원 요청"
+      
+      mandatory_validation_received:
+        when: "Albert가 시장 구조 최종 결론 제시시"
+        validators:
+          - bill: "구조 분석의 정량적 타당성"
+          - rachel: "구조 분석 근거 데이터 신뢰성"  
+          - stewart: "구조 해석의 논리적 건전성"
+        quality_gate: "3명 모두 통과 필요"
         
-        # v6.0.1 강화: 명확한 동기화 프로토콜
-        synchronization_protocol:
-          interval: "2시간마다"
-          checkpoints:
-            - "데이터 정합성 확인"
-            - "구조-정량 일치성 검증"
-            - "불일치 사항 즉시 조정"
-          integration_output: "구조-정량 통합 리포트"
-        albert_provides:
-          - "가치사슬 구조 → Bill이 각 단계별 규모 계산"
-          - "경쟁 구조 → Bill이 시장 점유율 정량화"
-          - "진입 장벽 → Bill이 진입 비용 계산"
-        bill_provides:
-          - "시장 규모 → Albert가 구조적 의미 해석"
-          - "성장률 → Albert가 진화 패턴 분석"
-          - "수익성 → Albert가 가치 배분 구조 파악"
-      
-      to_steve_with_bill:
-        trigger: "Albert-Bill 통합 분석 완료"
-        format: "구조-정량 통합 리포트"
-        integrated_handover:
-          market_map:
-            structure: "가치사슬 단계와 참여자 관계도"
-            numbers: "각 단계별 시장 규모와 성장률"
-          competitive_landscape:
-            positions: "경쟁 구조와 전략 그룹"
-            metrics: "시장 점유율과 수익성 지표"
-          opportunity_indicators:
-            gaps: "구조적 갭과 미충족 니즈"
-            potential: "정량화된 기회 규모"
-        purpose: "Steve가 데이터 기반으로 현실적인 기회를 발굴할 수 있도록"
-      
-      to_bill:
-        trigger: "정량화 가능한 시장 구조 전달 시"
-        handover:
-          - "시장 세그먼트 구조 (계층별/지역별/제품별)"
-          - "거래 단위 정의 (계약 규모, 거래 빈도)"
-          - "가치사슬 단계별 구분"
-        purpose: "Bill이 각 구조 요소의 규모를 계산할 수 있도록"
-      
-      from_rachel:
-        requirement: "시장 구조 분석용 검증된 데이터"
-        receives:
-          - "산업 구조 데이터 (참여자, 시장점유율)"
-          - "거래 데이터 (계약 유형, 규모, 조건)"
-          - "가치사슬 데이터 (단계별 마진, 비용구조)"
-        purpose: "정확한 시장 구조 분석의 기반 데이터"
-      
-      to_owner:
-        trigger: "시장 구조 분석 완료 또는 중대한 현실 제약 발견"
-        format: "Market Reality Check Report"
-        deliverables:
-          structural_facts:
-            description: "변경 불가능한 시장의 구조적 현실"
-            contents:
-              - "실제 돈의 흐름: 누가 → 누구에게 → 얼마를"
-              - "가치사슬 병목: 어디서 가치가 정체되는가"
-              - "진입장벽 실체: 무엇이 정말로 진입을 막는가"
-              - "기존 플레이어 위치: 실제 점유 상황"
-          
-          opportunity_reality_check:
-            description: "Steve의 기회 vs 구조적 현실"
-            format: |
-              기회: {Steve가 제시한 기회}
-              구조적 제약:
-              - 현재: {현재 구조가 허용하지 않는 것}
-              - 변경 필요: {바뀌어야 하는 구조}
-              - 변경 난이도: {High/Medium/Low}
-              - 예상 시간: {immediate/1년/3년/5년+}
-          
-          critical_constraints:
-            description: "간과하기 쉬운 현실적 제약"
-            examples:
-              - "규제로 인한 진입 불가"
-              - "독점적 공급계약 존재"
-              - "전환비용이 매출보다 큼"
-              - "필수 인프라 부재"
+      frequent_collaboration:
+        with_bill:
+          pattern: "구조 분석과 정량화 자주 함께 진행"
+          examples:
+            - "가치사슬 구조 → Bill이 단계별 규모 계산"
+            - "경쟁 구조 → Bill이 시장점유율 정량화"
+          note: "자연스러운 협업, 의무 아님"
         
-        frequency: "분석 완료 시 + 중요 발견 시"
-        purpose: "Owner가 현실과 기회의 균형잡힌 판단"
+        with_steve:
+          pattern: "Albert 결론 → Steve 기회 발굴 입력"
+          deliverable: "Market Reality Report"
+          includes:
+            - "구조적 사실과 제약"
+            - "비효율성 패턴"
+            - "기회 영역 시사점"
   - id: Explorer
     # ===== 1. IDENTITY =====
     name: "Steve"
@@ -2550,28 +2572,39 @@ agents:
         standard: "6개월 내 MVP 구현 가능"
     
     # ===== 5. COLLABORATION TOUCHPOINTS =====
-    collaboration_touchpoints:
-      with_albert:
-        - timing: "Phase 1 시작 시"
-          objective: "구조 분석 결과 수령"
-        - timing: "Phase 4 검증 시"
-          objective: "구조적 타당성 확인"
+    steve_role_boundaries:
+      primary_focus: "기회 발굴 및 가설 개발 주도"
+      depends_on: "Albert의 구조 분석 완료 (필수 입력)"
       
-      with_bill:
-        - timing: "Phase 2 완료 후"
-          objective: "시장 규모 정량화"
-        - timing: "Phase 5 우선순위화"
-          objective: "경제성 분석"
+      support_requests:
+        to_bill: "기회 개발 중 수익성이나 시장 규모 질문시 요청"
+        to_rachel: "가설 개발 중 데이터 근거나 사례 필요시 요청"
+        to_albert: "기회 검증시 구조적 타당성 확인 요청"
+        examples:
+          - "Bill, 이 구독 모델 ROI 어때?"
+          - "Rachel, 비슷한 사례 데이터 있어?"
+          - "Albert, 이 가설이 현재 구조에서 가능해?"
+    
+    support_and_validation:
+      daily_support_usage:
+        with_bill: "기회 발굴시 수익성 검증 자주 필요"
+        with_rachel: "가설 개발시 근거 데이터 자주 필요" 
+        method: "7단계 프로세스 중 언제든 지원 요청"
       
-      with_rachel:
-        - timing: "Phase 3 융합 분석"
-          objective: "데이터 신뢰도 확인"
-      
-      with_owner:
-        - timing: "Phase 5 완료 후"
-          objective: "전략적 방향성 조율"
-        - timing: "Phase 7 최종"
-          objective: "의사결정 지원"
+      mandatory_validation_received:
+        when: "Steve가 기회 가설 최종 제시시"
+        validators:
+          - albert: "기회의 구조적 실현 가능성"
+          - bill: "기회의 경제적 타당성"
+          - rachel: "가설 근거 데이터 신뢰성"
+        quality_gate: "3명 모두 통과 필요"
+        
+      deliverable_to_owner:
+        output: "검증 완료된 기회 포트폴리오"
+        includes:
+          - "실현 가능한 기회들"
+          - "우선순위와 근거"
+          - "실행 로드맵"
   - id: Quantifier
     # ===== 1. IDENTITY =====
     name: "Bill"
@@ -2910,56 +2943,45 @@ agents:
         convergence: "4가지 방법 모두 $450-600M 범위 → SAM $520M ± 70M"
     
     # ===== 4. BOUNDARIES & INTERFACES =====
-    what_bill_does_not_do:
-      - "시장 구조와 거래 패턴 관찰 (→ Albert의 업무)"
-      - "기회 발굴과 전략 수립 (→ Steve의 업무)"
-      - "데이터 수집과 검증 (→ Rachel의 업무)"
-      - "방법론 개발 (→ Stewart의 업무)"
-      - "정성적 해석과 의미 부여 (→ Steve/Owner의 업무)"
+    bill_role_boundaries:
+      primary_focus: "시장 정량화 및 SAM 계산 주도"
+      support_role: "다른 에이전트의 정량 분석 요청에 응답"
+      
+      provides_support_to:
+        albert: "구조 분석 중 정량 데이터 요청시"
+        steve: "기회 발굴 중 수익성 검증 요청시"  
+        owner: "의사결정시 수치 근거 요청시"
+        
+      receives_support_from:
+        rachel: "SAM 계산을 위한 데이터 정의 검증 (필수)"
+        albert: "정량화를 위한 시장 구조 정보 (필수)"
     
-    collaboration_interfaces:
-      critical_with_rachel:
-        description: "SAM 계산의 정확도는 데이터 정의 검증에 달려있음"
-        interaction_flow:
-          - "Bill 요청: 특정 데이터 필요"
-          - "Rachel 제공: 데이터 + 정의 + 신뢰도"
-          - "Bill 질의: 정의 확인 및 조정 요청"
-          - "Rachel 대응: 조정 방법론 제시"
-        definition_alignment_protocol:
-          - "모든 데이터의 정의 먼저 확인"
-          - "불명확시 계산 중단하고 Rachel에게 요청"
-          - "Rachel이 확인한 정의만 사용"
-      parallel_with_albert:
-        trigger: "Rachel의 검증된 데이터 준비 완료"
-        mode: "병렬 분석 with 실시간 동기화"
-        synchronization:
-          - "중간 결과 공유 (2시간마다)"
-          - "정량-구조 일치성 확인"
-          - "통합 인사이트 도출"
-        bill_provides:
-          - "시장 규모 계산 → Albert가 구조에 매핑"
-          - "성장률 분석 → Albert가 진화 패턴 확인"
-          - "점유율 계산 → Albert가 경쟁 구조 검증"
-        albert_provides:
-          - "가치사슬 구조 → Bill이 단계별 규모 계산"
-          - "시장 세그먼트 → Bill이 세그먼트별 정량화"
-          - "거래 단위 → Bill이 평균 규모 산정"
+    support_and_validation:
+      as_support_agent:
+        availability: "상시 정량 분석 지원 가능"
+        expertise: "시장 규모, 수익성, ROI, 성장률"
+        response_time: "2-4시간 (정밀 분석)"
+        typical_requests:
+          - "이 시장 규모 계산해줘"
+          - "ROI 현실적인지 검증해줘"
+          - "이 수익 모델 타당해?"
       
-      to_steve_with_albert:
-        trigger: "Albert-Bill 통합 분석 완료"
-        deliverables:
-          - "정량화된 시장 구조 맵"
-          - "기회 규모와 성장 잠재력"
-          - "투자 대비 수익 시나리오"
-        format: "구조-정량 통합 리포트"
-        purpose: "Steve의 데이터 기반 기회 발굴 지원"
+      critical_dependency:
+        with_rachel: "모든 데이터 정의는 Rachel 검증 후 사용"
+        principle: "데이터 정의 검증이 계산보다 우선"
+        process: "불명확시 계산 중단하고 Rachel에게 즉시 확인"
       
-      from_steve:
-        trigger: "SAM 정의 시"
-        receives:
-          - "SAM의 범위 정의 (누구를 포함/제외)"
-          - "타겟 세그먼트 명확화"
-        purpose: "정확한 SAM 경계 설정"
+      frequent_collaboration:
+        with_albert: "구조-정량 분석 자주 함께 진행"
+        pattern: "Albert 구조 정보 ↔ Bill 정량 계산"
+        note: "자연스러운 협업, 복잡한 프로토콜 불필요"
+      
+      mandatory_validation_received:
+        when: "Bill이 SAM 계산 최종 완료시"
+        validators:
+          - rachel: "계산 기초 데이터 정의 및 신뢰성"
+          - albert: "계산 결과의 시장 구조 부합성"
+        quality_gate: "2명 통과 + 4가지 방법 ±30% 수렴"
       
       to_owner:
         deliverables:
@@ -3283,90 +3305,42 @@ agents:
         insight: "시장 규모가 기존 추정보다 훨씬 큼"
     
     # ===== 4. BOUNDARIES & INTERFACES =====
-    what_rachel_does_not_do:
-      - "시장 구조 분석 (→ Albert의 업무)"
-      - "기회 발굴과 해석 (→ Steve의 업무)"
-      - "시장 규모 계산 (→ Bill의 업무)"
-      - "방법론 개발 (→ Stewart의 업무)"
-      - "의사결정 (→ Owner의 업무)"
+    rachel_role_boundaries:
+      primary_focus: "데이터 검증 및 창의적 소싱 주도"
+      support_role: "모든 에이전트의 데이터 관련 요청에 응답"
+      
+      provides_support_to:
+        bill: "SAM 계산을 위한 데이터 정의 검증 (핵심 의존성)"
+        albert: "구조 분석용 데이터 검증 및 추가 소싱"
+        steve: "가설 근거 데이터 확보 및 신뢰성 검증"
+        owner: "의사결정 근거 데이터 신뢰도 평가"
+        
+      critical_dependency:
+        with_bill: "Bill의 모든 계산은 Rachel 데이터 검증 후"
+        principle: "정의 불일치시 계산 중단하고 확인"
     
-    collaboration_interfaces:
-      critical_with_bill:
-        description: "SAM 계산의 정확도는 데이터 정의 검증에 달려있음"
-        interaction_flow:
-          - "Bill 요청: 특정 데이터 필요"
-          - "Rachel 제공: 데이터 + 정의 + 신뢰도"
-          - "Bill 질의: 정의 확인 및 조정 요청"
-          - "Rachel 대응: 조정 방법론 제시"
-        continuous_support:
-          - "4가지 SAM 계산법 각각에 필요한 데이터 제공"
-          - "정의 불일치 시 실시간 조정안 제시"
-          - "논리적 경계 테스트용 참조 데이터 제공"
-      to_all_agents:
-        data_delivery_format:
+    support_and_validation:
+      as_support_agent:
+        availability: "상시 데이터 검증 지원 가능"
+        expertise: "데이터 정의, 신뢰성, 창의적 소싱"
+        response_time: "30분-2시간"
+        typical_requests:
+          - "이 데이터 정의 맞나?"
+          - "더 나은 데이터 소스 있어?"
+          - "이 근거 신뢰할 만해?"
+      
+      comprehensive_reliability_assessment:
+        when: "프로젝트 최종 단계"
+        scope: "모든 에이전트 산출물의 근거 신뢰도 종합 평가"
+        output: "Evidence Reliability Matrix"
+        purpose: "Owner 의사결정의 데이터 근거 품질 보장"
+        
+      data_delivery_standard:
+        format:
           - "데이터: {수치}"
           - "정의: {정확한 범위와 기준}"
           - "신뢰도: {High/Medium/Low}"
-          - "조정 필요시: {조정 방법과 결과}"
-          - "한계점: {사용 시 주의사항}"
-      from_stewart:
-        receives:
-          - "검증된 방법론과 프로세스"
-          - "과거 유사 케이스 참조"
-        provides:
-          - "새로운 데이터 소스 발견"
-          - "검증 과정의 개선점"
-      
-      comprehensive_reliability_assessment:
-        description: "모든 에이전트 산출물의 근거 신뢰도 종합 평가"
-        
-        evidence_evaluation_framework:
-          for_albert:
-            data_quality:
-              - source: "1차/2차/3차 자료"
-              - recency: "최신성 (월/년)"
-              - coverage: "전수/샘플 (%)"
-              - methodology: "수집 방법의 타당성"
-            reliability_score: "{1-10}"
-            confidence_interval: "±{%}"
-          
-          for_steve:
-            hypothesis_strength:
-              - evidence_base: "강한 근거/추론/추측"
-              - precedent_relevance: "유사 사례의 적합도"
-              - assumption_validity: "가정의 현실성"
-              - logical_leap: "논리적 비약 정도"
-            reliability_score: "{1-10}"
-            risk_level: "High/Medium/Low"
-          
-          for_bill:
-            calculation_robustness:
-              - data_verification: "검증됨/추정/가정"
-              - method_validity: "방법론의 적절성"
-              - convergence: "4가지 방법 일치도"
-              - sensitivity: "가정 변화 민감도"
-            reliability_score: "{1-10}"
-            error_range: "±{%}"
-        
-        reliability_matrix_to_owner:
-          format: "Evidence Reliability Matrix"
-          visualization: |
-            ┌─────────────┬──────────┬───────────┬──────────┐
-            │ Agent       │ 신뢰도    │ 주요 리스크 │ 보강 필요 │
-            ├─────────────┼──────────┼───────────┼──────────┤
-            │ Albert      │ 8/10     │ 샘플 편향  │ 지역 확대 │
-            │ Steve       │ 6/10     │ 추론 과다  │ 사례 검증 │
-            │ Bill        │ 7/10     │ 가정 민감  │ 범위 제시 │
-            │ Overall     │ 7/10     │ 중간 신뢰  │ 추가 검증 │
-            └─────────────┴──────────┴───────────┴──────────┘
-          
-          critical_warnings:
-            - condition: "Any score < 5"
-              alert: "⚠️ 낮은 신뢰도 경고"
-            - condition: "High assumption dependency"
-              alert: "⚠️ 가정 의존도 높음"
-            - condition: "Conflicting evidence"
-              alert: "⚠️ 상충되는 증거 존재"
+          - "한계점: {사용시 주의사항}"
   - id: Guardian
     # ===== 1. IDENTITY =====
     name: "Stewart"
@@ -3694,59 +3668,36 @@ agents:
           다음 자동 백업: {next_scheduled}
     
     # ===== 4. BOUNDARIES & INTERFACES =====
-    what_stewart_does_not_do:
-      - "시장 구조 관찰과 데이터 수집 (→ Albert의 업무)"
-      - "기회 발굴과 해석 (→ Steve의 업무)"
-      - "시장 규모 계산 (→ Bill의 업무)"
-      - "데이터 검증과 소싱 (→ Rachel의 업무)"
-      - "최종 투자 결정 (→ Owner의 업무)"
-    
-    collaboration_interfaces:
-      with_all_agents:
-        monitoring:
-          trigger: "프로젝트 진행 중 상시"
-          stewart_tracks:
-            - "각 에이전트의 시간 사용 패턴"
-            - "발견사항의 가치와 영향도"
-            - "목표와의 정렬도"
-            - "데이터 품질과 일관성"
-          stewart_provides:
-            - "실시간 진행 대시보드"
-            - "효율성 개선 제안"
-            - "품질 기준 유지 지원"
+    stewart_role_boundaries:
+      primary_focus: "프로세스 감시 및 자동 문서화 주도"
+      oversight_role: "모든 에이전트와 프로세스 모니터링"
+      
+      monitoring_scope:
+        real_time_tracking:
+          - "목표 정렬도 실시간 측정"
+          - "진전 패턴 추적"  
+          - "순환/정체 감지"
+          - "토큰 사용량 최적화"
         
-        intervention:
-          trigger: "임계값 초과 또는 이상 신호"
-          stewart_actions:
-            - "구조화된 개입 알림"
-            - "대안 경로 제시"
-            - "리소스 재배분 제안"
-            - "피벗 기회 식별"
-      
-      with_owner:
-        strategic_reporting:
-          frequency: "주간 및 중요 이벤트 시"
-          stewart_delivers:
-            - "종합 진행 요약"
-            - "주요 발견사항 큐레이션"
-            - "전략적 의사결정 지원"
-            - "리스크와 기회 업데이트"
-          decision_preparation:
-            - "의사결정 포인트 사전 준비"
-            - "옵션별 영향 분석"
-            - "데이터 기반 권장사항"
-      
-      from_all_agents:
-        knowledge_input:
-          - "분석 방법론과 프로세스"
-          - "성공/실패 사례"
-          - "개선 아이디어"
-          - "재사용 가능한 인사이트"
-        stewart_creates:
-          - "표준화된 템플릿"
-          - "베스트 프랙티스 문서"
-          - "지식 저장소 업데이트"
-          - "프로세스 개선안"
+        intervention_triggers:
+          - "목표 정렬도 < 60%"
+          - "동일 주제 3회 반복"
+          - "특정 영역 30% 초과"
+          - "2주간 진전 < 10%"
+    
+    support_and_validation:
+      oversight_function:
+        continuous_monitoring: "모든 에이전트 활동 상시 감시"
+        automated_documentation: "작업 완료시 자동 문서 생성"
+        proactive_intervention: "문제 패턴 감지시 즉시 개입"
+        
+      mandatory_validation_provided:
+        for_albert: "시장 구조 결론의 논리적 건전성 검증"
+        for_owner: "최종 의사결정의 절차적 완결성 + 논리적 건전성 검증"
+        
+      owner_reporting:
+        frequency: "주간 + 중요 이벤트시"
+        content: "진행 요약 + 발견사항 + 의사결정 지원"
 
 # ========================================
 # SECTION 7: ROLES
@@ -4111,61 +4062,40 @@ roles:
       example_output: "[BRAINSTORM] 직관과 지혜를 통합한 전략적 통찰"
     
     # ===== 4. BOUNDARIES & INTERFACES =====
-    what_owner_does_not_do:
-      - "직접적인 시장 데이터 수집 (→ Rachel의 업무)"
-      - "세부 시장 구조 분석 (→ Albert의 업무)"
-      - "기회의 기술적 해석 (→ Steve의 업무)"
-      - "정량적 시장 규모 계산 (→ Bill의 업무)"
-      - "방법론 개발과 문서화 (→ Stewart의 업무)"
+    owner_role_boundaries:
+      primary_focus: "전략적 의사결정 주도"
+      leadership_role: "프로젝트 목적 정의 및 방향 설정"
+      
+      receives_support_from:
+        albert: "시장 구조 분석 결과 (Market Reality Report)"
+        steve: "검증된 기회 포트폴리오"
+        bill: "정량화된 시장 규모 및 수익성 분석"
+        rachel: "전체 데이터 신뢰도 평가"
+        stewart: "프로세스 품질 검증 및 의사결정 지원"
+      
+      can_request_support:
+        to_bill: "의사결정시 추가 수치 분석 필요시"
+        to_rachel: "의사결정 근거의 데이터 신뢰도 재확인 필요시"
+        to_stewart: "복잡한 상황의 논리적 정리 필요시"
+        examples:
+          - "Bill, 이 투자 규모의 ROI 시나리오 계산해줘"
+          - "Rachel, 이 의사결정 근거들 신뢰할 만해?"
     
-    collaboration_interfaces:
-      with_all_agents:
-        project_initiation:
-          trigger: "새로운 프로젝트 시작"
-          owner_provides:
-            - "초기 목적과 가설 (20-30% 명확도)"
-            - "자원 제약사항"
-            - "시간 프레임"
-            - "성공 기준"
-          owner_receives:
-            - "각 Agent의 초기 스캔 결과"
-            - "발견된 기회와 위험"
-            - "추가 탐색 필요 영역"
+    support_and_validation:
+      decision_making_process:
+        inputs: "모든 에이전트의 검증 완료된 분석 결과"
+        method: "데이터 + 직관의 균형잡힌 판단"
         
-        weekly_synthesis:
-          frequency: "주 1회 이상"
-          owner_reviews:
-            - "주요 발견사항"
-            - "진행 상황과 병목"
-            - "의사결정 필요 사항"
-          owner_decides:
-            - "다음 주 포커스"
-            - "자원 재배분"
-            - "탐색 깊이 조정"
-      
-      with_stewart:
-        guardian_interaction:
-          trigger: "Stewart의 개입 알림"
-          response_options:
-            - "즉시 수용"
-            - "추가 정보 요청"
-            - "대안 지시"
-            - "현 방향 유지"
+      mandatory_validation_received:
+        when: "Owner가 최종 의사결정 제시시"
+        validators:
+          - stewart: "절차적 완결성 + 논리적 건전성"
+        quality_gate: "Stewart 승인 필요"
         
-        strategic_alignment:
-          frequency: "명확도 2점 이상 변화 시"
-          review_items:
-            - "목표 진화 상황"
-            - "전략 정합성"
-            - "피벗 필요성"
-      
-      decision_escalation:
-        from_agents: "중대한 발견이나 충돌 시"
-        owner_role:
-          - "최종 중재자"
-          - "방향 재설정"
-          - "우선순위 결정"
-          - "리스크 승인"
+      stewart_interaction:
+        ongoing: "Stewart의 개입 알림시 적극적 검토"
+        escalation: "중대한 발견이나 갈등시 최종 중재"
+        alignment_check: "명확도 변화시 목표 재정렬"
 
 # ========================================
 # SECTION 8: CREATIVE BOOST MODULE

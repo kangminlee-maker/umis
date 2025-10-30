@@ -14,7 +14,7 @@
 adaptive_workflow_examples:
   version: "6.2"
   description: "UMIS v6.2의 Adaptive Workflow 실행 예시"
-  last_updated: "2024-10-25"
+  last_updated: "2025-10-25"
   
   # ===== 0. UMIS 실행 프로토콜 Examples (v6.2 필수) =====
   umis_execution_protocol_examples:
@@ -168,7 +168,7 @@ adaptive_workflow_examples:
       # Layer 2: Processed Data (Bill (Quantifier))
       processed_data_example:
         bill_calculations:
-          market_size: "2.5조원 (2024년 추정)"
+          market_size: "2.5조원 (2025년 추정)"
           growth_rate: "CAGR 5.2%"
           market_concentration: "HHI 1,250 (경쟁적 시장)"
           profitability_analysis:
@@ -417,9 +417,111 @@ adaptive_workflow_examples:
         - "방향 전환"
         - "30분마다"
   
-  # ===== 6. Collaboration Patterns =====
+# ===== 5.8. Support & Validation System Examples (v6.2.2 신규) =====
+  support_validation_examples:
+    description: "자연스러운 지원과 엄격한 검증의 실제 사용 예시"
+    
+    natural_support_examples:
+      albert_working_scenario:
+        context: "Albert가 펫케어 시장 구조 분석 중"
+        albert_question: "Bill, 펫케어 시장 가치사슬에서 각 단계별 마진율 계산해줘"
+        bill_response: "반려용품 제조 25%, 유통 15%, 소매 35%, 서비스 25% (2-3시간 분석)"
+        albert_integration: "가치사슬 구조에 정량 데이터 통합하여 구조 해석 완성"
+        
+      steve_working_scenario:
+        context: "Steve가 펫 웨어러블 구독 서비스 가설 개발 중"
+        steve_question1: "Rachel, 펫 구독 서비스 시장 데이터 찾아줘"
+        rachel_response: "펫박스 월 3만원, 구독자 10만명 (신뢰도 85%, 출처: 공시자료)"
+        steve_question2: "Bill, 월 5만원 구독료 모델 ROI 어때?"
+        bill_response: "LTV/CAC 비율 6:1, 손익분기 5,000명 (현실적 수준)"
+        steve_result: "데이터 기반 현실적 가설 완성"
+    
+    mandatory_validation_examples:
+      albert_structure_validation:
+        albert_conclusion: "펫케어 시장 = B2C 직판 70% + B2B2C(수의사) 30%"
+        
+        triggered_validation:
+          bill_validation: "이 70:30 비율에서 각 채널 시장 규모는 얼마인가?"
+          rachel_validation: "이 비율 데이터의 출처와 신뢰도는?"
+          stewart_validation: "이 구조 해석이 논리적으로 건전한가?"
+          
+        validation_results:
+          bill: "✅ 통과 - B2C 2.1조, B2B2C 900억 (합리적)"
+          rachel: "⚠️ 조건부 - 70:30 비율은 2022년 데이터, 트렌드 변화 있음"
+          stewart: "✅ 통과 - 논리적 근거 충분"
+          
+        final_decision: "조건부 승인 (Rachel 최신 데이터로 비율 재확인 필요)"
+      
+      steve_hypothesis_validation:
+        steve_hypothesis: "펫 웨어러블 구독 서비스 (월 5만원) 기회"
+        
+        triggered_validation:
+          albert_validation: "현재 펫케어 구조에서 구독 모델이 구조적으로 가능한가?"
+          bill_validation: "월 5만원 모델이 경제적으로 성립하는가?"
+          rachel_validation: "구독 서비스 근거 데이터가 신뢰할 만한가?"
+          
+        validation_results:
+          albert: "✅ 통과 - B2C 직판 70% 구조에서 구독 모델 충분히 가능"
+          bill: "✅ 통과 - LTV 30만원, CAC 5만원, 건전한 수익 구조"
+          rachel: "✅ 통과 - 펫박스 성공 사례, 시장 성장 데이터 신뢰함"
+          
+        final_decision: "완전 검증 통과 - 실행 계획 수립 단계로"
+
+  # ===== 6. Support & Validation Patterns (v6.2.2 업데이트) =====
   collaboration_patterns:
-    description: "에이전트 간 협업 패턴"
+    description: "자연스러운 지원과 엄격한 검증의 협업 패턴"
+    
+    natural_support_pattern:
+      principle: "필요시 자연스럽게 전문가에게 질문"
+      
+      albert_analysis_with_support:
+        context: "Albert가 전자상거래 시장 구조 분석 중"
+        albert_working: "가치사슬 분석: 판매자 → 플랫폼 → 구매자"
+        albert_question: "Bill, 이 플랫폼 수수료 구조에서 각 단계별 수익성 계산해줘"
+        bill_response: "판매자 마진 65%, 플랫폼 수수료 3.5%, 배송비 부담 8% (3시간 분석)"
+        albert_integration: "수수료 구조를 가치사슬에 통합, 플랫폼 파워 평가"
+        
+      steve_hypothesis_with_support:
+        context: "Steve가 D2C 브랜드 플랫폼 기회 가설 개발 중"
+        steve_working: "플랫폼 수수료 부담 → 직접 판매 기회 가설"
+        steve_question1: "Rachel, D2C 성공 사례 데이터 있어?"
+        rachel_response: "와비파커, 글래시어 등 월 평균 성장률 25% (신뢰도 90%)"
+        steve_question2: "Bill, 플랫폼 vs D2C 수익성 비교해줘"
+        bill_response: "D2C 순이익률 15% vs 플랫폼 판매 8% (마케팅비 고려)"
+        steve_result: "데이터 기반 현실적 가설: 'D2C 전환으로 수익성 2배 향상'"
+    
+    mandatory_validation_pattern:
+      principle: "중요 결론은 반드시 검증 받기"
+      
+      albert_structure_conclusion_example:
+        albert_final_conclusion: "전자상거래 시장 구조: 플랫폼 중심(70%) + D2C 급성장(30%)"
+        
+        automatic_validation_triggered:
+          bill_question: "이 70:30 비율에서 각각의 시장 규모와 성장률은?"
+          bill_analysis: "플랫폼 50조원(5%), D2C 20조원(25%) - 데이터 기반 계산"
+          
+          rachel_question: "이 구조 분석의 근거 데이터들이 신뢰할 만한가?"
+          rachel_analysis: "주요 데이터 85% 신뢰도, 단 D2C 성장률은 추정치 많음"
+          
+          stewart_question: "이 구조 해석이 논리적으로 건전한가?"
+          stewart_analysis: "논리적 근거 충분, 구조 변화 패턴 일관성 있음"
+        
+        validation_outcome: "✅ 3명 모두 통과 → Steve 기회 발굴 단계 진행"
+      
+      steve_opportunity_validation_example:
+        steve_final_hypothesis: "중소 브랜드 D2C 플랫폼 (월 수수료 1%) 기회"
+        
+        automatic_validation_triggered:
+          albert_question: "현재 시장 구조에서 1% 수수료 모델이 가능한가?"
+          albert_analysis: "가능하지만 기존 플랫폼과 직접 경쟁, 차별화 필수"
+          
+          bill_question: "1% 수수료로 경제적으로 성립하는가?"
+          bill_analysis: "손익분기 50만 판매자, 현재 시장에서 달성 어려움"
+          
+          rachel_question: "이 가설의 근거 데이터가 신뢰할 만한가?"
+          rachel_analysis: "1% 수수료 성공사례 없음, 가정에 의존적"
+        
+        validation_outcome: "❌ 부분 실패 → Steve 재작업: '차별화된 가치 추가 모델'로 수정"
     
     sequential_collaboration:
       pattern_name: "Albert (Observer) → Steve (Explorer) → Owner"

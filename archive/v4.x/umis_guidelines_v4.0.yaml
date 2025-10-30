@@ -1113,7 +1113,7 @@ agents:
       project_folder_structure:
         description: "모든 신규 시장분석은 독립된 프로젝트 폴더에서 시작"
         naming_convention: "{YYYY-MM-DD}_{market_name}_{purpose}"
-        example: "2024-03-15_korean_piano_market_entry"
+        example: "2025-09-07_korean_piano_market_entry"
         
         mandatory_creation: |
           # 프로젝트 시작 시 자동 생성되는 폴더 구조
@@ -1206,8 +1206,8 @@ agents:
           - key_questions: ["핵심 질문들"]
         
         example: |
-          project_id: "2024-03-15-korean_piano-market_entry"
-          created_at: "2024-03-15T09:00:00Z"
+          project_id: "2025-09-07-korean_piano-market_entry"
+          created_at: "2025-09-07T09:00:00Z"
           market_name: "한국 피아노 시장"
           purpose: "market_entry"
           owner: "Market Strategy Owner"
@@ -1218,7 +1218,7 @@ agents:
             geographic_scope: "national"
             industry_category: "악기 제조 및 판매"
             target_segment: "가정용 피아노"
-            analysis_period: "2024-2026"
+            analysis_period: "2025-2027"
             key_questions:
               - "현재 SAM 규모는?"
               - "주요 경쟁자는?"

@@ -1,7 +1,7 @@
 # UMIS v6.0.3 Release Notes
 
 **Version**: 6.0.3 - Validated Opportunity Discovery Process  
-**Release Date**: 2024-10-25  
+**Release Date**: 2025-10-25  
 **Type**: Critical Update
 
 ## 🎯 Executive Summary

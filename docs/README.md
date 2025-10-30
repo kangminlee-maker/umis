@@ -33,7 +33,7 @@ UMIS 프로젝트의 문서를 관리하는 폴더입니다.
 ### 시장 분석 문서
 - `/market_analysis/` 폴더에 저장
 - 민감 정보는 반드시 이 폴더에만 저장
-- 파일명에 날짜 포함 권장: `korea_si_market_analysis_2024.md`
+- 파일명에 날짜 포함 권장: `korea_si_market_analysis_2025.md`
 
 ## 🔒 보안 주의사항
 

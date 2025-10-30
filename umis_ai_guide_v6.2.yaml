@@ -15,11 +15,13 @@
 # - 투자 의사결정 지원
 # - 경쟁 전략 수립
 # 
-# 주요 특징:
-# - Discovery Sprint로 시작하여 목표를 명확히 함
+# v6.2.2 주요 특징:
+# - Discovery Sprint: 명확도 기반 적응형 시작 (Fast Track vs Full Sprint)
 # - 13개 차원의 시장 분석 프레임워크
-# - 불확실성을 받아들이고 점진적으로 구체화
-# - 기본값: 2-4주 Comprehensive Study
+# - 자연스러운 지원 시스템: Bill/Rachel 상시 지원 가능
+# - 의무 검증 체크포인트: Albert-Steve 동등한 품질 보장
+# - 핵심 원칙: "가설과 판단에는 근거와 검증이 필요하다"
+# - SECTION 0 신규: AI 전용 5분 시스템 파악
 #
 # ========================================
 # QUICK START - 프로젝트 즉시 시작하기
@@ -33,12 +35,13 @@
 #    - 개별 작업은 가용 토큰의 50% 이하로 설계
 #    - ⚠️ 중요: UMIS 실행 프로토콜 필수 적용 (@id: umis_execution_protocol)
 #
-# A. STEP 1: Discovery Sprint (1-3일)
-#    1. 사용자와 짧은 대화로 목표 탐색
-#    2. Stewart가 명확도 평가 (1-10 스케일)
-#    3. 5명 에이전트 병렬 탐색
-#    4. 방향성 수렴 및 목표 구체화
-#    → "discovery_sprint:" 검색
+# A. STEP 1: Discovery Sprint (적응형 시작)
+#    0. Stewart 명확도 평가 (15분): 의도×지식×긴급도
+#    1-Fast. 명확도 ≥ 7: Fast Track Discovery (2-4시간)
+#         - 목표 재확인, 핵심 가정 검증, 시장 경계 확인
+#    1-Full. 명확도 < 7: Full Discovery Sprint (1-3일)  
+#         - 5명 에이전트 병렬 탐색, 목표 구체화, 방향성 수렴
+#    → "discovery_sprint:" 또는 "adaptive_entry_gate:" 검색
 #
 # B. STEP 2: Comprehensive Study (2-4주) - 기본값
 #    1. Discovery Sprint 완료 후 자동 진행
@@ -168,40 +171,49 @@ umis_execution_protocol:
 # @id: agent_summary
 # ========================================
 # 
-# 1. Albert (시장 구조 분석가)
-#    역할: 돈의 흐름과 거래 패턴 관찰
-#    입력: 시장 정의, 거래 데이터
+# v6.2.2 에이전트 역할 (지원+검증 시스템)
+#
+# 📊 Main Flow (주도 역할):
+# 1. Albert (Observer/시장 구조 분석가)
+#    주도: 시장 구조 관찰 및 해석
+#    지원 요청: Bill(정량 데이터), Rachel(데이터 검증) 
+#    의무 검증: Bill + Rachel + Stewart (3명)
 #    출력: Market Reality Report
-#    검색: grep "albert:" 또는 "- id: Observer"
-#    핵심: "어떻게" 작동하는지만 관찰, 해석 없음
+#    검색: "- id: Observer"
 #
-# 2. Steve (시장 기회 발굴가)  
-#    역할: 가설 생성과 기회 발굴
-#    입력: Albert의 구조 + Bill의 정량 데이터
-#    출력: Opportunity Portfolio (검증된 3등급 기회)
-#    검색: grep "steve:" 또는 "- id: Explorer"
-#    핵심: "왜"와 "만약"을 탐구, 가설 검증 필수
+# 2. Steve (Explorer/시장 기회 발굴가)  
+#    주도: 7단계 기회 발굴 프로세스
+#    지원 요청: Bill(수익성), Rachel(근거 데이터)
+#    의무 검증: Albert + Bill + Rachel (3명)
+#    출력: 검증된 기회 포트폴리오
+#    검색: "- id: Explorer"
 #
-# 3. Bill (시장 규모 계산가)
-#    역할: TAM/SAM/SOM 계산
-#    병렬: Albert와 동시 실행 (Rachel 데이터 기반)
-#    출력: Quantified Scenarios
-#    검색: grep "bill:" 또는 "- id: Quantifier"
-#    핵심: 모든 숫자에 신뢰구간 포함
+# 3. Owner (전략적 의사결정자)
+#    주도: 최종 전략적 의사결정
+#    지원 요청: Bill(추가 수치), Rachel(신뢰도), Stewart(논리 정리)
+#    의무 검증: Stewart (1명)
+#    출력: 전략적 결정 + 실행 계획
+#    검색: "- id: Owner"
 #
-# 4. Rachel (데이터 검증 전문가)
-#    역할: 데이터 수집과 신뢰도 평가
-#    모든 에이전트 지원: 신뢰도 80% 이상 데이터만 제공
-#    출력: 신뢰도 평가된 데이터셋
-#    검색: grep "rachel:" 또는 "- id: Validator"
-#    핵심: 출처와 한계 명시
+# 🤝 Support Flow (지원 역할):
+# 4. Bill (Quantifier/정량 분석 지원)
+#    지원 범위: 시장 규모, 수익성, ROI, 성장률
+#    가용성: 상시 대기 (2-4시간 응답)
+#    핵심 의존성: Rachel 데이터 검증 필수
+#    검색: "- id: Quantifier"
 #
-# 5. Stewart (프로세스 가디언)
-#    역할: 시스템 운영과 자율 개입
-#    모니터링: 목표 정렬, 진전도, 순환 패턴
-#    개입: 3회 순환 시, 60% 미달 시, 2주 정체 시
-#    검색: grep "stewart:" 또는 "- id: Guardian"
-#    핵심: Owner 보조, 과정 최적화
+# 5. Rachel (Validator/데이터 검증 지원)
+#    지원 범위: 데이터 정의, 신뢰성, 창의적 소싱
+#    가용성: 상시 대기 (30분-2시간 응답)
+#    지원 대상: 모든 에이전트
+#    검색: "- id: Validator"
+#
+# 👁️ Oversight Flow (감시 역할):
+# 6. Stewart (Guardian/프로세스 가디언)
+#    감시: 모든 상태, 모든 에이전트
+#    개입: 목표이탈, 순환패턴, 토큰초과
+#    검증: Albert 구조결론, Owner 최종결정
+#    검색: "- id: Guardian"
 #
 # ========================================
 # 💼 실행 모드 (v6.2 신규)
