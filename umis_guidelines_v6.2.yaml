@@ -2016,6 +2016,429 @@ data_integrity_system:
       - "데이터 저장소 인프라"
       - "백업 및 복구 자동화"
       - "프로젝트 구조 표준화"
+  
+  # 5. Deliverable Standards 통합 (v6.2 신규)
+  deliverable_standards_integration:
+    description: "산출물 표준화 및 재검증 가능성 보장"
+    reference: "📖 umis_deliverable_standards_v6.2.yaml (상세)"
+    
+    core_principle: "모든 결론은 원본 데이터까지 추적 가능해야 한다"
+    
+    agent_deliverable_requirements:
+      
+      rachel_requirements:
+        mandatory_files:
+          - "source_registry.yaml: 모든 데이터 출처 (17개 필드)"
+          - "data_verification_report.md: 검증 결과"
+        
+        key_standards:
+          - "모든 데이터에 source_id 부여 (SRC_YYYYMMDD_NNN)"
+          - "원본 정의 vs 필요 정의 Gap 분석 100%"
+          - "조정 논리 투명 문서화"
+          - "평균 신뢰도 ≥ 70%"
+      
+      bill_requirements:
+        mandatory_files:
+          - "market_sizing_[name].xlsx: 9개 시트 SAM 계산서"
+          - "  · Assumptions: 직접데이터(SRC_ID) vs 추정치(EST_ID) 구분"
+          - "  · Estimation_Details: 추정 논리 7개 섹션 상세 문서화"
+          - "  · Method 1-4: 4가지 방법 (다단계 narrowing 지원)"
+          - "  · Convergence: 수렴 분석"
+          - "market_sizing_[name].pdf: Excel 백업"
+          - "sam_calculation_report.md: 결과 요약"
+        
+        key_standards:
+          - "모든 계산 Excel 함수로 구현 (하드코딩 금지)"
+          - "모든 입력값 출처 명시 (셀 코멘트: SRC_ID 또는 EST_ID)"
+          - "추정치는 Estimation_Details에 7개 섹션 작성"
+          - "4가지 방법 ±30% 수렴"
+      
+      albert_requirements:
+        mandatory_files:
+          - "market_reality_report.md: 시장 구조 종합 보고서"
+          - "structure_observations/[topic].md: 주제별 상세 관찰"
+        
+        key_standards:
+          - "모든 팩트 주장에 근거 링크 (SRC_ID 또는 Bill 계산)"
+          - "관찰 vs 해석 명확히 구분"
+          - "3명 검증 통과 (Bill, Rachel, Stewart)"
+      
+      steve_requirements:
+        mandatory_files:
+          - "opportunity_portfolio.md: 기회 종합 포트폴리오"
+          - "opportunity_hypotheses/OPP_*.md: 개별 가설 (최소 3개)"
+        
+        key_standards:
+          - "모든 가설에 근거 명시 (Albert/Bill/Rachel 참조)"
+          - "7단계 프로세스 완료"
+          - "3명 검증 통과 (Albert, Bill, Rachel)"
+    
+    traceability_chain:
+      description: "결론에서 원본 데이터까지 완전 추적"
+      
+      example_chain: |
+        Steve 기회 가설: "피아노 구독 서비스 월 5만원"
+        ↓
+        근거 1: Albert 구조 분석 "B2C 직판 70%" 
+        ↓
+        근거 2: Bill SAM 계산 "270억원 시장"
+        ↓
+        근거 3: Rachel 데이터 "유사 서비스 구독료"
+        ↓
+        최종 원본: SRC_20241031_015 (코웨이 렌탈 사례)
+      
+      verification_path: "역방향으로 완전히 추적 가능"
+  
+  # 6. 프로젝트 생명주기 관리 (v6.2 신규)
+  project_lifecycle_protocols:
+    description: "프로젝트 시작부터 종료까지의 체계적 관리"
+    reference: "📖 umis_deliverable_standards_v6.2.yaml § project_lifecycle_management"
+    
+    lifecycle_phases:
+      
+      phase_1_initiation:
+        call_sign: "[PROJECT_START]"
+        trigger: "Owner 명시적 선언 또는 Stewart 초기화 제안 승인"
+        
+        stewart_auto_actions:
+          - "프로젝트 폴더 생성: projects/YYYYMMDD_[name]/"
+          - "17개 하위 폴더 자동 생성"
+          - "초기 파일 4개 생성:"
+          - "  · .project_meta.yaml (프로젝트 메타데이터)"
+          - "  · project_charter.md (목표 및 범위)"
+          - "  · progress_tracker.md (진행 추적)"
+          - "  · README.md (프로젝트 개요)"
+        
+        user_interaction: "프로젝트명 입력 → 초기화 완료 → Discovery Sprint 시작"
+      
+      phase_2_execution:
+        real_time_tracking:
+          - "progress_tracker.md: 작업 완료시마다 자동 업데이트"
+          - "deliverables_registry.yaml: 산출물 자동 등록"
+          - ".project_meta.yaml: 명확도/단계 자동 업데이트"
+        
+        deliverable_management:
+          - "에이전트가 파일 생성시 자동 등록"
+          - "검증 상태 추적"
+          - "품질 메트릭 실시간 계산"
+      
+      phase_3_closure:
+        call_sign: "[PROJECT_END]"
+        trigger: "Owner 종료 선언 또는 최종 의사결정 완료"
+        
+        stewart_final_actions:
+          - "완결성 체크: 모든 필수 산출물 확인"
+          - "품질 평가: A/B/C/D 등급 부여"
+          - "executive_summary.md 자동 생성"
+          - "아카이브 생성 및 압축"
+          - "project_index.yaml 전역 인덱스 업데이트"
+        
+        completion_message: "프로젝트 요약 + 산출물 목록 + 아카이브 위치"
+      
+      phase_4_cleanup:
+        call_sign: "[PROJECT_CLEANUP]"
+        when: "종료 후 추가 정리 필요시 (선택)"
+        
+        options:
+          - "문서 품질 향상"
+          - "검증 보완"
+          - "포맷 표준화"
+          - "아카이브 최적화"
+    
+    project_folder_structure:
+      root: "projects/YYYYMMDD_[project_name]/"
+      
+      auto_created_folders:
+        - "00_overview/                    # 프로젝트 개요"
+        - "01_discovery/                   # Discovery Sprint"
+        - "01_discovery/parallel_discoveries/"
+        - "01_discovery/checkpoints/"
+        - "02_analysis/                    # 본격 분석"
+        - "02_analysis/validator/data_sources/"       # Rachel
+        - "02_analysis/validator/search_logs/"
+        - "02_analysis/quantifier/market_sizing/"     # Bill
+        - "02_analysis/quantifier/scenarios/"
+        - "02_analysis/observer/structure_observations/"  # Albert
+        - "02_analysis/observer/flow_patterns/"
+        - "02_analysis/explorer/opportunity_hypotheses/"  # Steve
+        - "02_analysis/explorer/validation_results/"
+        - "02_analysis/explorer/process_logs/"
+        - "03_insights/                    # 핵심 발견"
+        - "03_insights/supporting_data/"
+        - "99_decisions/                   # 의사결정 기록"
+        - "99_decisions/rationale/"
+  
+  # 7. 재검증 가능성 프레임워크 (v6.2 신규)
+  reproducibility_framework:
+    description: "제3자가 모든 분석을 재현할 수 있도록 보장"
+    reference: "📖 umis_deliverable_standards_v6.2.yaml § reproducibility_framework"
+    
+    core_requirements:
+      - "Traceability: 모든 결론은 원본 데이터까지 추적 가능"
+      - "Transparency: 모든 추정은 논리와 근거 명시"
+      - "Reproducibility: 같은 입력 → 같은 출력 보장"
+      - "Auditability: 외부 검증자가 검토 가능"
+    
+    agent_specific_standards:
+      
+      rachel_audit_trail:
+        what: "데이터 수집 및 검증의 완전한 추적"
+        how:
+          - "source_registry.yaml에 원본 → 조정 전체 체인"
+          - "정의 Gap 분석 및 조정 논리 명시"
+          - "신뢰도 평가 근거 설명"
+        verification: "다른 사람이 같은 출처를 찾을 수 있어야 함"
+      
+      bill_audit_trail:
+        what: "계산 과정의 완전한 재현 가능성"
+        how:
+          - "Assumptions: 모든 입력값 출처 (SRC_ID 또는 EST_ID)"
+          - "Estimation_Details: 추정 논리 7개 섹션 투명 공개"
+          - "Excel 함수 100%: 하드코딩 금지"
+          - "셀 코멘트: 모든 입력/가정의 근거"
+        verification: "Excel 파일만으로 계산 재현 가능해야 함"
+        
+        guesstimation_standard:
+          description: "추정치의 투명한 논리 문서화"
+          requirement: "직접 데이터 없는 모든 추정치는 EST_NNN으로 등록"
+          
+          mandatory_documentation:
+            - "[1] 추정 필요 이유"
+            - "[2] 사용한 데이터 (모두 SRC_ID)"
+            - "[3] 추정 논리 (단계별 계산)"
+            - "[4] 신뢰도 평가 (오차 범위)"
+            - "[5] 검증 방법 (상한/하한/벤치마크)"
+            - "[6] 대체 접근법 시도 기록"
+            - "[7] 사용 위치"
+          
+          example: "피아노 학원 비중 30% = 전체 10,000개 × 추정비중 → EST_001에 상세 논리"
+      
+      albert_audit_trail:
+        what: "구조 분석의 근거 기반 검증"
+        how:
+          - "모든 팩트 주장에 source_id 또는 계산 참조"
+          - "관찰 vs 해석 명확히 구분"
+          - "추론 논리 명시"
+        verification: "같은 데이터로 같은 해석 도출 가능해야 함"
+      
+      steve_audit_trail:
+        what: "기회 가설의 근거 기반 검증"
+        how:
+          - "Albert 구조 분석 명시적 참조"
+          - "모든 근거 데이터 source_id 연결"
+          - "가정 투명하게 공개"
+          - "검증 결과 포함"
+        verification: "같은 근거로 같은 가설 도출 가능해야 함"
+    
+    verification_checklist_system:
+      description: "프로젝트 전체 재검증 체크리스트"
+      
+      project_level_verification:
+        file: "00_overview/PROJECT_VERIFICATION_CHECKLIST.md"
+        
+        data_integrity_check:
+          - "모든 원본 데이터 보존"
+          - "source_registry.yaml 완성"
+          - "평균 신뢰도 ≥ 70%"
+          - "정의 Gap 100% 분석"
+        
+        calculation_integrity_check:
+          - "Excel 함수화 100%"
+          - "Estimation_Details 모든 추정 논리 문서화"
+          - "4가지 방법 ±30% 수렴"
+          - "PDF 백업 존재"
+        
+        analysis_integrity_check:
+          - "모든 주장에 근거"
+          - "에이전트 간 참조 일관성"
+          - "검증 프로토콜 통과"
+        
+        traceability_check:
+          - "결론 → 데이터 역추적 가능"
+          - "모든 추정 논리 명시"
+          - "검증 체인 완결"
+    
+    external_audit_readiness:
+      description: "외부 검증자를 위한 준비"
+      
+      audit_package:
+        - "README.md: 프로젝트 전체 개요"
+        - "executive_summary.md: 결과 요약"
+        - "source_registry.yaml: 모든 데이터 출처"
+        - "market_sizing_*.xlsx + pdf: 계산 과정"
+        - "모든 보고서: 근거 링크 포함"
+      
+      audit_guide: "외부 검증자가 5단계로 프로젝트 검증 가능"
+  
+  # 8. 스마트 프로젝트 감지 시스템 (v6.2 신규)
+  smart_project_detection:
+    description: "사용자 부담 없는 자동 프로젝트 초기화"
+    philosophy: "Call Sign 없이도 첫 질문만으로 자동 감지 및 제안"
+    
+    automatic_detection:
+      trigger: "UMIS 관련 첫 번째 시장 분석 질문 수신"
+      
+      detection_patterns:
+        market_analysis_questions:
+          - "~시장 분석해줘"
+          - "~기회가 있을까?"
+          - "~시장 진입 검토"
+          - "~경쟁 구조 분석"
+          - "Discovery Sprint 시작"
+        
+        implicit_signals:
+          - "구체적 시장명 언급"
+          - "분석 범위 제시"
+          - "의사결정 맥락 포함"
+      
+      stewart_response_protocol:
+        step_1_detect:
+          message: |
+            💡 시장 분석 프로젝트로 감지되었습니다.
+            
+            데이터 무결성 및 재검증 가능성을 위해 
+            구조화된 프로젝트 폴더를 생성하는 것을 권장합니다.
+        
+        step_2_propose_options:
+          message: |
+            📁 프로젝트 저장 방식을 선택해주세요:
+            
+            **옵션 A: 신규 프로젝트 폴더 생성 (권장)**
+            - 위치: projects/YYYYMMDD_[프로젝트명]/
+            - 장점: 완전한 구조, 추적 용이, 아카이빙 쉬움
+            - 프로젝트명 제안: "{자동 생성 제안}"
+            
+            **옵션 B: 기존 폴더에 통합**
+            - 기존 프로젝트 목록: {있다면 표시}
+            - 장점: 연관 분석 통합 관리
+            
+            **옵션 C: 폴더 생성 안 함 (비추천)**
+            - 산출물이 체계적으로 관리되지 않음
+            - 재검증 어려움
+            
+            어떤 방식을 선택하시겠습니까?
+            (1, 2, 3 또는 A, B, C로 답변 / 엔터 = 옵션 A)
+        
+        step_3_naming_if_new:
+          condition: "옵션 A 선택시"
+          
+          auto_suggestion:
+            method: "질문 내용에서 핵심 키워드 추출"
+            format: "YYYYMMDD_[keyword1]_[keyword2]"
+            examples:
+              - 질문: "피아노 구독 서비스 시장 분석해줘"
+              - 제안: "20241031_piano_subscription_market"
+          
+          message: |
+            📝 프로젝트명 확인:
+            
+            제안: {auto_suggested_name}
+            
+            그대로 사용하시겠습니까? 
+            (엔터 = 그대로 / 수정 원하시면 입력)
+        
+        step_4_folder_selection_if_existing:
+          condition: "옵션 B 선택시"
+          
+          message: |
+            📂 기존 프로젝트 선택:
+            
+            1. 20241015_ev_charging_market
+            2. 20241020_edtech_platform
+            3. 20241025_pet_care_subscription
+            
+            번호를 선택하거나 새 이름 입력:
+        
+        step_5_confirmation:
+          message: |
+            ✅ 프로젝트 설정 완료
+            
+            📁 폴더: projects/{folder_name}/
+            📋 구조: 17개 하위 폴더 생성 완료
+            📄 초기 파일: 4개 생성 완료
+            
+            이제 Discovery Sprint를 시작합니다.
+      
+      fallback_behavior:
+        if_user_declines: "폴더 없이 진행 (산출물 저장 안 됨, 경고 표시)"
+        if_no_response: "30초 후 자동으로 옵션 A 적용"
+    
+    progressive_onboarding:
+      first_time_user:
+        additional_guidance: |
+          ℹ️ UMIS 첫 사용을 환영합니다!
+          
+          **프로젝트 폴더의 이점**:
+          - ✅ 모든 데이터 출처 추적 가능 (Rachel source_registry)
+          - ✅ 계산 과정 재검증 가능 (Bill Excel 함수)
+          - ✅ 분석 근거 투명 공개 (Albert/Steve 보고서)
+          - ✅ 외부 감사 준비 완료
+          
+          향후 프로젝트에서는 간단히:
+          "[PROJECT_START] 프로젝트명" 으로 시작 가능합니다.
+      
+      returning_user:
+        streamlined_message: |
+          📁 프로젝트 폴더 생성할까요?
+          (Y = 신규 / 기존번호 = 통합 / N = 안함)
+    
+    call_sign_optional:
+      description: "명시적 Call Sign은 선택사항"
+      usage: "빠른 시작 원하는 파워 유저용"
+      
+      when_used:
+        - "사용자가 명시적으로 [PROJECT_START] 입력"
+        - "→ 폴더 선택 단계 생략, 즉시 프로젝트명만 확인"
+      
+      benefit: "2단계 → 1단계로 단축"
+  
+  # 9. Call Sign 시스템 (선택사항)
+  call_sign_system:
+    description: "프로젝트 생명주기 신호 체계 (파워 유저용)"
+    usage: "선택사항 - 자동 감지가 기본, Call Sign은 빠른 시작용"
+    
+    signals:
+      
+      project_start:
+        call_sign: "[PROJECT_START]"
+        type: "선택사항 (파워 유저용)"
+        alternative: "자동 감지가 기본 동작"
+        usage: "빠른 시작 원할 때"
+        format: "[PROJECT_START] {프로젝트명}"
+        example: "[PROJECT_START] 전기차 충전 인프라 시장 분석"
+        benefit: "폴더 선택 단계 생략, 즉시 프로젝트명 확인만"
+        stewart_trigger: "프로젝트 초기화 프로토콜 자동 실행"
+      
+      project_end:
+        call_sign: "[PROJECT_END]"
+        type: "선택사항"
+        alternative: "최종 의사결정 완료시 자동 감지"
+        usage: "명시적 종료 원할 때"
+        example: "[PROJECT_END] 최종 의사결정 완료"
+        stewart_trigger: "종료 프로토콜 자동 실행"
+      
+      project_cleanup:
+        call_sign: "[PROJECT_CLEANUP]"
+        type: "선택사항"
+        usage: "종료 후 추가 정리 필요시"
+        example: "[PROJECT_CLEANUP] 문서 품질 향상"
+        stewart_trigger: "정리 옵션 제시"
+      
+      deliverable_complete:
+        call_sign: "[DELIVERABLE_COMPLETE]"
+        type: "내부 사용 (에이전트 자동)"
+        usage: "에이전트가 산출물 완료시 자동 발행"
+        example: "[DELIVERABLE_COMPLETE] Rachel source_registry.yaml"
+        stewart_trigger: "deliverables_registry.yaml 자동 등록"
+        note: "사용자가 명시할 필요 없음"
+      
+      validation_request:
+        call_sign: "[VALIDATION_REQUEST]"
+        type: "선택사항"
+        alternative: "검증 프로토콜이 자동 트리거됨"
+        usage: "추가 검증 필요시"
+        example: "[VALIDATION_REQUEST] Albert market_reality_report.md"
+        stewart_trigger: "필수 검증자에게 알림"
 
 # ========================================
 # SECTION 6: AGENTS

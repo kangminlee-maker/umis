@@ -1,0 +1,750 @@
+# ========================================
+# Opportunity Hypothesis Specification
+# ========================================
+# 
+# Agent: Steve (Explorer)
+# Output: OPP_YYYYMMDD_NNN_{short_name}.md
+# Format: YAML Frontmatter + Markdown Body
+# Purpose: AI 생성 최적화 명세서
+# 
+# ========================================
+
+spec_meta:
+  spec_version: "1.0"
+  agent_id: "explorer"
+  agent_role: "Explorer"
+  agent_name: "Steve"  # customizable
+  output_format: "yaml_frontmatter_markdown"
+  deliverable_type: "opportunity_hypothesis"
+
+output_file:
+  naming_convention: "OPP_{date}_{sequence}_{short_name}.md"
+  location: "02_analysis/explorer/opportunity_hypotheses/"
+  examples:
+    - "OPP_20241031_001_piano_subscription.md"
+    - "OPP_20241031_002_d2c_platform.md"
+
+# ========================================
+# YAML Frontmatter Schema
+# ========================================
+
+frontmatter_schema:
+  
+  required_fields:
+    
+    id:
+      type: "string"
+      format: "OPP_YYYYMMDD_NNN"
+      auto_generate: true
+      example: "OPP_20241031_001"
+    
+    type:
+      type: "string"
+      fixed_value: "opportunity_hypothesis"
+    
+    project:
+      type: "string"
+      source: "project_meta.project_name"
+      example: "piano_subscription_market"
+    
+    created_date:
+      type: "date"
+      format: "YYYY-MM-DD"
+      auto_generate: true
+    
+    author:
+      type: "string"
+      fixed_value: "explorer"  # agent_id
+      display_name: "Steve (Explorer)"  # customizable
+    
+    status:
+      type: "enum"
+      values: ["draft", "under_review", "validated", "approved", "rejected"]
+      default: "draft"
+      updatable: true
+    
+    hypothesis:
+      type: "object"
+      required_subfields:
+        title:
+          type: "string"
+          max_length: 100
+          example: "피아노 구독 서비스"
+        
+        target_customer:
+          type: "string"
+          example: "피아노 학원, 가정 교육용"
+        
+        problem:
+          type: "text"
+          example: "높은 초기 구매 부담 (500만원)"
+        
+        solution:
+          type: "text"
+          example: "월 5만원 구독 모델"
+        
+        target_sam:
+          type: "number"
+          unit: "억원"
+          source: "bill.sam_calculation"
+          example: 270
+  
+  validation_section:
+    type: "object"
+    description: "3명 검증 결과 자동 업데이트"
+    
+    required_validators:
+      - "observer"   # Albert
+      - "quantifier" # Bill
+      - "validator"  # Rachel
+    
+    schema:
+      observer:  # Albert (구조적 실현 가능성)
+        status: {type: "enum", values: ["pending", "passed", "conditional", "failed"]}
+        date: {type: "date", nullable: true}
+        score: {type: "integer", range: "1-10", nullable: true}
+        comment: {type: "text", nullable: true}
+      
+      quantifier:  # Bill (경제적 타당성)
+        status: {type: "enum", values: ["pending", "passed", "conditional", "failed"]}
+        date: {type: "date", nullable: true}
+        sam: {type: "number", unit: "억원", nullable: true}
+        ltv_cac: {type: "number", nullable: true}
+        roi: {type: "number", nullable: true}
+        comment: {type: "text", nullable: true}
+      
+      validator:  # Rachel (근거 신뢰성)
+        status: {type: "enum", values: ["pending", "passed", "conditional", "failed"]}
+        date: {type: "date", nullable: true}
+        avg_reliability: {type: "integer", range: "0-100", nullable: true}
+        data_count: {type: "integer", nullable: true}
+        comment: {type: "text", nullable: true}
+      
+      overall:
+        status: {type: "enum", values: ["pending", "passed", "conditional", "failed"]}
+        conditions: {type: "array", nullable: true}
+  
+  scores_section:
+    type: "object"
+    description: "5개 차원 점수 (우선순위 계산용)"
+    
+    required_dimensions:
+      market_size:
+        type: "integer"
+        range: "1-10"
+        weight: 0.20
+        source: "bill_sam"
+      
+      feasibility:
+        type: "integer"
+        range: "1-10"
+        weight: 0.25
+        description: "실현 가능성"
+      
+      defensibility:
+        type: "integer"
+        range: "1-10"
+        weight: 0.25
+        description: "방어 가능성 (7 Powers)"
+      
+      timing:
+        type: "integer"
+        range: "1-10"
+        weight: 0.15
+        description: "시기 적절성"
+      
+      differentiation:
+        type: "integer"
+        range: "1-10"
+        weight: 0.15
+        description: "차별화 정도"
+      
+      total:
+        type: "number"
+        formula: "weighted_average(market_size, feasibility, defensibility, timing, differentiation)"
+        auto_calculate: true
+  
+  optional_fields:
+    
+    tags:
+      type: "array"
+      examples: ["subscription", "b2c", "switching_costs"]
+    
+    priority:
+      type: "integer"
+      range: "1-100"
+      description: "전체 포트폴리오 내 순위"
+      auto_calculate: true
+    
+    frameworks_applied:
+      type: "object"
+      subfields:
+        seven_powers: {type: "array", values: ["scale", "network", "switching", "brand", "resource", "process", "counter"]}
+        business_model: {type: "string", reference: "umis_business_model_patterns_v6.2.yaml"}
+        disruption_pattern: {type: "string", reference: "umis_disruption_patterns_v6.2.yaml", nullable: true}
+
+# ========================================
+# Markdown Body Sections
+# ========================================
+
+markdown_body_sections:
+  
+  section_1_hypothesis_statement:
+    required: true
+    heading_level: 2
+    title: "Hypothesis Statement"
+    
+    content_structure:
+      - subsection: "기회 정의"
+        format: "bullet_list"
+        fields: ["한 줄 요약"]
+      
+      - subsection: "핵심 요소"
+        format: "bullet_list"
+        fields: ["타겟 고객", "해결하는 문제", "제안하는 솔루션", "예상 SAM"]
+  
+  section_2_market_context:
+    required: true
+    heading_level: 2
+    title: "Market Context"
+    
+    subsections:
+      - id: "observer_summary"
+        heading: "Observer 구조 분석 요약"
+        agent: "observer"  # Albert
+        content: "Observer market_reality_report 핵심 요약"
+        reference: "../../observer/market_reality_report.md"
+        auto_extract: ["비효율성 목록", "기회 영역"]
+      
+      - id: "inefficiencies"
+        heading: "시장 비효율성"
+        format: "numbered_list"
+        evidence_required: true
+        evidence_format: "← Observer 보고서 [section]"
+      
+      - id: "current_alternatives"
+        heading: "현재 대안의 한계"
+        format: "bullet_list"
+  
+  section_3_opportunity_analysis:
+    required: true
+    heading_level: 2
+    title: "Opportunity Analysis"
+    
+    subsections:
+      - id: "seven_powers"
+        heading: "7 Powers 분석"
+        required_fields:
+          - power_name: "해당 Power"
+          - score: "1-10"
+          - analysis: "분석 내용"
+      
+      - id: "business_model"
+        heading: "Business Model Pattern"
+        required_fields:
+          - pattern: "패턴명"
+          - reference: "umis_business_model_patterns 섹션"
+          - application_logic: "적용 논리"
+      
+      - id: "counter_positioning"
+        heading: "Counter-Positioning"
+        optional: true
+        required_when: "disruption_pattern exists"
+        required_fields:
+          - incumbent_weakness: "1등 약점"
+          - our_strategy: "우리 전략"
+          - incumbent_dilemma: "1등이 따라하면"
+          - cp_score: "1-10"
+  
+  section_4_supporting_evidence:
+    required: true
+    heading_level: 2
+    title: "Supporting Evidence"
+    
+    structure:
+      format: "repeated_blocks"
+      block_template:
+        - claim: "구체적 주장"
+        - evidence_type: "rachel_data / bill_calculation / albert_analysis"
+        - evidence_id: "SRC_ID or reference"
+        - reliability: "0-100 (Rachel 평가)"
+        - summary: "내용 요약"
+      
+      minimum_blocks: 3
+      evidence_linking: "모든 주장에 SRC_ID 또는 계산 참조 필수"
+  
+  section_5_validation_results:
+    required: true
+    heading_level: 2
+    title: "Validation Results"
+    
+    auto_populate: true
+    source: "frontmatter.validation"
+    
+    subsections:
+      - id: "albert_validation"
+        content: "frontmatter.validation.albert"
+        display: "구조적 실현 가능성 의견 + 통과 여부"
+      
+      - id: "bill_validation"
+        content: "frontmatter.validation.bill"
+        display: "경제적 타당성 + SAM + ROI"
+      
+      - id: "rachel_validation"
+        content: "frontmatter.validation.rachel"
+        display: "근거 신뢰성 + 평균 신뢰도"
+      
+      - id: "overall_status"
+        content: "frontmatter.validation.overall"
+        display: "전체 검증 결과 + 조건"
+  
+  section_6_implementation_roadmap:
+    required: true
+    heading_level: 2
+    title: "Implementation Roadmap"
+    
+    subsections:
+      - id: "phase_1_mvp"
+        heading: "Phase 1: MVP (3개월)"
+        fields: ["목표", "마일스톤", "필요 자원", "성공 기준"]
+      
+      - id: "phase_2_scale"
+        heading: "Phase 2: Scale-Up (6개월)"
+        fields: ["목표", "마일스톤"]
+      
+      - id: "phase_3_expansion"
+        heading: "Phase 3: Expansion (12개월)"
+        fields: ["목표", "마일스톤"]
+  
+  section_7_assumptions_risks:
+    required: true
+    heading_level: 2
+    title: "Assumptions & Risks"
+    
+    subsections:
+      - id: "core_assumptions"
+        format: "numbered_list"
+        block_structure:
+          - assumption: "가정 내용"
+          - evidence: "SRC_ID"
+          - confidence: "High/Medium/Low (%)"
+          - impact: "영향도 %"
+          - verification: "검증 방법"
+          - risk: "만약 틀리면"
+        
+        minimum_blocks: 3
+      
+      - id: "major_risks"
+        format: "numbered_list"
+        block_structure:
+          - risk: "리스크 내용"
+          - probability: "High/Medium/Low (%)"
+          - impact: "High/Medium/Low"
+          - severity: "Critical/Major/Minor"
+          - mitigation: "완화 방안"
+        
+        minimum_blocks: 2
+
+# ========================================
+# Generation Rules (AI 생성 규칙)
+# ========================================
+
+generation_rules:
+  
+  auto_populate_fields:
+    - "id": "날짜 + 시퀀스 자동 생성"
+    - "created_date": "오늘 날짜"
+    - "author": "steve"
+    - "type": "opportunity_hypothesis"
+    - "validation.*.status": "pending"
+    - "scores.total": "가중 평균 자동 계산"
+  
+  require_user_input:
+    - "hypothesis.title"
+    - "hypothesis.target_customer"
+    - "hypothesis.problem"
+    - "hypothesis.solution"
+    - "scores.*": "5개 차원 점수"
+  
+  cross_reference_required:
+    - "hypothesis.target_sam": "quantifier.sam_calculation"
+    - "market_context": "observer.market_reality_report"
+    - "supporting_evidence": "validator.source_registry"
+  
+  validation_triggers:
+    auto_request:
+      - when: "status = 'under_review'"
+        action: "request validation from observer, quantifier, validator"
+    
+    auto_update:
+      - when: "validation received"
+        action: "update frontmatter.validation.{validator}"
+    
+    status_transition:
+      - when: "all validators passed"
+        action: "status = 'validated'"
+
+# ========================================
+# Validation Rules
+# ========================================
+
+validation_rules:
+  
+  completeness_check:
+    - rule: "all_required_frontmatter_fields_filled"
+      error: "필수 frontmatter 필드 누락"
+    
+    - rule: "all_required_sections_exist"
+      error: "필수 Markdown 섹션 누락"
+    
+    - rule: "minimum_evidence_count >= 3"
+      error: "근거 데이터 부족 (최소 3개)"
+  
+  evidence_linking_check:
+    - rule: "all_claims_have_evidence"
+      pattern: "← (SRC_|Quantifier |Observer |계산:|분석:)"
+      error: "근거 없는 주장 존재"
+    
+    - rule: "all_src_ids_in_registry"
+      check: "validator.source_registry.yaml"
+      agent: "validator"  # Rachel
+      error: "source_registry에 없는 SRC_ID 참조"
+  
+  validation_completion_check:
+    - rule: "three_validators_completed"
+      validators: ["observer", "quantifier", "validator"]
+      error: "3명 검증 미완료"
+    
+    - rule: "overall_status_determined"
+      values: ["passed", "conditional", "failed"]
+      error: "최종 검증 상태 미결정"
+
+# ========================================
+# Template Rendering (AI 생성시)
+# ========================================
+
+rendering_template: |
+  ---
+  id: "{id}"
+  type: "opportunity_hypothesis"
+  project: "{project}"
+  created_date: "{created_date}"
+  author: "explorer"  # agent_id
+  status: "{status}"
+  
+  hypothesis:
+    title: "{hypothesis.title}"
+    target_customer: "{hypothesis.target_customer}"
+    problem: "{hypothesis.problem}"
+    solution: "{hypothesis.solution}"
+    target_sam: {hypothesis.target_sam}
+  
+  validation:
+    observer:  # Albert
+      status: "{validation.observer.status}"
+      date: {validation.observer.date}
+      score: {validation.observer.score}
+      comment: "{validation.observer.comment}"
+    quantifier:  # Bill
+      status: "{validation.quantifier.status}"
+      date: {validation.quantifier.date}
+      sam: {validation.quantifier.sam}
+      ltv_cac: {validation.quantifier.ltv_cac}
+      comment: "{validation.quantifier.comment}"
+    validator:  # Rachel
+      status: "{validation.validator.status}"
+      date: {validation.validator.date}
+      avg_reliability: {validation.validator.avg_reliability}
+      comment: "{validation.validator.comment}"
+    overall:
+      status: "{validation.overall.status}"
+      conditions: {validation.overall.conditions}
+  
+  scores:
+    market_size: {scores.market_size}
+    feasibility: {scores.feasibility}
+    defensibility: {scores.defensibility}
+    timing: {scores.timing}
+    differentiation: {scores.differentiation}
+    total: {scores.total}
+  
+  priority: {priority}
+  
+  tags: {tags}
+  
+  frameworks:
+    seven_powers: {frameworks.seven_powers}
+    business_model: "{frameworks.business_model}"
+    disruption: "{frameworks.disruption}"
+  ---
+  
+  # Opportunity Hypothesis: {hypothesis.title}
+  
+  **ID**: {id}
+  **작성일**: {created_date}
+  **상태**: {status_emoji} {status}
+  
+  ---
+  
+  ## Hypothesis Statement
+  
+  ### 기회 정의
+  
+  **한 줄 요약**: {hypothesis.title}
+  
+  ### 핵심 요소
+  
+  - **타겟 고객**: {hypothesis.target_customer}
+  - **해결하는 문제**: {hypothesis.problem}
+  - **제안하는 솔루션**: {hypothesis.solution}
+  - **예상 SAM**: {hypothesis.target_sam}억원 (Bill 계산)
+  
+  ---
+  
+  ## Market Context
+  
+  ### Observer 구조 분석 요약
+  **Agent**: Albert (Observer)
+  
+  {observer_summary_auto_extracted}
+  
+  ← 참조: [market_reality_report.md](../../observer/market_reality_report.md)
+  
+  ### 시장 비효율성
+  
+  {inefficiencies_numbered_list}
+  
+  ### 현재 대안의 한계
+  
+  {current_alternatives_bullet_list}
+  
+  ---
+  
+  ## Opportunity Analysis
+  
+  ### 7 Powers 분석
+  
+  - **해당 Power**: {frameworks.seven_powers}
+  - **점수**: {scores.defensibility}/10
+  - **분석**: {seven_powers_analysis}
+  
+  ### Business Model Pattern
+  
+  - **패턴**: {frameworks.business_model}
+  - **참조**: umis_business_model_patterns_v6.2.yaml § {pattern_section}
+  - **적용 논리**: {application_logic}
+  
+  ### Counter-Positioning
+  
+  {if frameworks.disruption exists}
+  - **1등 약점**: {counter_positioning.incumbent_weakness}
+  - **우리 전략**: {counter_positioning.our_strategy}
+  - **1등이 따라하면**: {counter_positioning.dilemma}
+  - **CP 점수**: {counter_positioning.score}/10
+  {endif}
+  
+  ---
+  
+  ## Supporting Evidence
+  
+  {for each evidence_block}
+  ### 주장 {n}: {claim}
+  
+  - **근거**: {evidence_id} ← {source_type}
+  - **신뢰도**: {reliability}% (Rachel 평가)
+  - **내용**: {summary}
+  {endfor}
+  
+  ---
+  
+  ## Validation Results
+  
+  ### Observer 검증 (구조적 실현 가능성)
+  **Validator**: Albert (Observer)
+  
+  - **검증일**: {validation.observer.date}
+  - **의견**: {validation.observer.comment}
+  - **통과**: {validation.observer.status_emoji} {validation.observer.status}
+  
+  ### Quantifier 검증 (경제적 타당성)
+  **Validator**: Bill (Quantifier)
+  
+  - **SAM**: {validation.quantifier.sam}억원
+  - **LTV/CAC**: {validation.quantifier.ltv_cac}
+  - **통과**: {validation.quantifier.status_emoji} {validation.quantifier.status}
+  - **의견**: {validation.quantifier.comment}
+  
+  ### Validator 검증 (근거 신뢰성)
+  **Validator**: Rachel (Validator)
+  
+  - **평균 신뢰도**: {validation.validator.avg_reliability}%
+  - **데이터 개수**: {validation.validator.data_count}개
+  - **통과**: {validation.validator.status_emoji} {validation.validator.status}
+  - **의견**: {validation.validator.comment}
+  
+  ### 최종 상태
+  
+  - **전체 검증**: {validation.overall.status_emoji} {validation.overall.status}
+  {if conditional}
+  - **조건**: {validation.overall.conditions_list}
+  {endif}
+  
+  ---
+  
+  ## Implementation Roadmap
+  
+  {implementation_roadmap_content}
+  
+  ---
+  
+  ## Assumptions & Risks
+  
+  ### 핵심 가정
+  
+  {assumptions_numbered_list}
+  
+  ### 주요 리스크
+  
+  {risks_numbered_list}
+  
+  ---
+  
+  ## Appendix
+  
+  ### 참조 문서
+  
+  - **Observer 구조 분석**: `../../observer/market_reality_report.md` (Albert)
+  - **Quantifier SAM 계산**: `../../quantifier/market_sizing/sam_calculation_report.md` (Bill)
+  - **Validator 데이터**: `../../validator/data_sources/source_registry.yaml` (Rachel)
+  
+  ---
+  
+  **작성 완료일**: {created_date}
+  **최종 검토자**: Steve
+  **검증 상태**: {validation.overall.status}
+  **Owner 결정**: {owner_decision}
+
+# ========================================
+# AI Usage Guide
+# ========================================
+
+ai_usage:
+  
+  generation_workflow:
+    step_1: "Explorer가 7단계 프로세스 완료"
+    step_2: "이 spec.yaml 로드"
+    step_3: "frontmatter 데이터 채우기"
+    step_4: "markdown body 생성"
+    step_5: "validation 섹션은 pending으로"
+    step_6: "OPP_*.md 파일 저장"
+    step_7: "[DELIVERABLE_COMPLETE] explorer {filename} 신호 발행"
+  
+  update_workflow:
+    trigger: "검증자가 피드백 제공"
+    step_1: "해당 OPP_*.md 파일 읽기"
+    step_2: "frontmatter.validation.{validator} 업데이트"
+    step_3: "overall.status 재계산"
+    step_4: "파일 저장"
+  
+  query_workflow:
+    use_case: "Guardian이 검증 상태 체크"
+    agent: "guardian"  # Stewart
+    step_1: "모든 OPP_*.md의 frontmatter만 파싱"
+    step_2: "validation.overall.status 집계"
+    step_3: "passed / conditional / failed 개수 계산"
+    step_4: "대시보드 생성"
+
+# ========================================
+# Integration Points
+# ========================================
+
+integration:
+  
+  with_observer:  # Albert
+    agent_id: "observer"
+    input: "market_reality_report.md의 비효율성 목록"
+    usage: "Market Context 섹션 자동 채우기"
+  
+  with_quantifier:  # Bill
+    agent_id: "quantifier"
+    input: "sam_calculation_report.md의 최종 SAM"
+    usage: "hypothesis.target_sam 자동 채우기"
+  
+  with_validator:  # Rachel
+    agent_id: "validator"
+    input: "source_registry.yaml의 SRC_ID 목록"
+    usage: "Supporting Evidence 검증 (모든 SRC_ID 존재 체크)"
+  
+  with_opportunity_portfolio:
+    output: "모든 OPP_*.md의 frontmatter.scores"
+    usage: "opportunity_portfolio.md의 Prioritization Matrix 자동 생성"
+
+# ========================================
+# Example Generated File
+# ========================================
+
+example_output: |
+  ---
+  id: "OPP_20241031_001"
+  type: "opportunity_hypothesis"
+  project: "piano_subscription_market"
+  created_date: "2024-10-31"
+  author: "explorer"  # agent_id
+  status: "validated"
+  
+  hypothesis:
+    title: "피아노 구독 서비스"
+    target_customer: "피아노 학원, 가정 교육용"
+    problem: "높은 초기 구매 부담 (500만원) → 진입 장벽"
+    solution: "월 5만원 구독 모델로 부담 제거 + 정기 관리"
+    target_sam: 270
+  
+  validation:
+    observer:  # Albert
+      status: "passed"
+      date: "2024-11-01"
+      score: 8
+      comment: "B2C 직판 70% 구조에서 구독 모델 충분히 가능. 유통망 충돌 관리 필요."
+    quantifier:  # Bill
+      status: "passed"
+      date: "2024-11-01"
+      sam: 270
+      ltv_cac: 7.0
+      roi: 4.5
+      comment: "건전한 Unit Economics. LTV 70만원, CAC 10만원."
+    validator:  # Rachel
+      status: "passed"
+      date: "2024-11-01"
+      avg_reliability: 80
+      data_count: 8
+      comment: "근거 데이터 8개, 평균 신뢰도 80%. 코웨이 사례 신뢰함."
+    overall:
+      status: "passed"
+      conditions: null
+  
+  scores:
+    market_size: 8
+    feasibility: 7
+    defensibility: 9
+    timing: 8
+    differentiation: 7
+    total: 7.9
+  
+  priority: 1
+  
+  tags: ["subscription", "b2c", "switching_costs"]
+  
+  frameworks:
+    seven_powers: ["switching_costs", "scale_economics"]
+    business_model: "subscription_model"
+    disruption: null
+  ---
+  
+  # Opportunity Hypothesis: 피아노 구독 서비스
+  
+  **ID**: OPP_20241031_001
+  **작성일**: 2024-10-31
+  **상태**: ✅ validated
+  
+  (마크다운 본문 계속...)
+

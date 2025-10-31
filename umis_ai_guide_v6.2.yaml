@@ -68,8 +68,8 @@ umis_definition:
     - "경쟁 전략 수립"
   
   v6_2_2_features:
-    _description: "Support & Validation System Redesign"
-    release: "2024-10-30"
+    _description: "Support & Validation System Redesign + Deliverable Standards"
+    release: "2024-10-30 (v6.2.2) / 2024-10-31 (Deliverable Standards)"
     
     core_principle: "가설과 판단에는 근거와 검증이 필요하다"
     
@@ -84,6 +84,12 @@ umis_definition:
         content: "Albert(3명), Steve(3명), Bill(2명), Owner(1명)"
       - name: "협업 우아함"
         content: "복잡한 프로토콜 제거, 1개 간단한 원칙"
+      - name: "산출물 표준화 (v6.2 신규)"
+        content: "에이전트별 산출물 표준 + 재검증 프레임워크"
+      - name: "프로젝트 생명주기 (v6.2 신규)"
+        content: "Call Sign 시스템 ([PROJECT_START] / [PROJECT_END])"
+      - name: "추정 논리 투명화 (v6.2 신규)"
+        content: "Bill Estimation_Details 시트 (Guesstimation 7개 섹션)"
 
 # ========================================
 # Quick Start Guide
@@ -94,6 +100,32 @@ quick_start:
   _id: "quick_start_guide"
   _description: "프로젝트 즉시 시작 가이드"
   
+  project_initiation:
+    method_1_automatic:
+      type: "자동 감지 (기본값, 권장)"
+      trigger: "첫 시장 분석 질문"
+      example: '"피아노 구독 서비스 시장 분석해줘"'
+      
+      stewart_smart_detection:
+        step_1: "💡 프로젝트 감지 알림"
+        step_2: "📁 폴더 옵션 제시 (A/B/C)"
+        step_3: "📝 프로젝트명 제안 및 확인"
+        step_4: "✅ 폴더 생성 완료"
+      
+      user_burden: "최소 (옵션 선택 + 프로젝트명 확인만)"
+    
+    method_2_call_sign:
+      type: "명시적 선언 (선택사항, 파워 유저)"
+      call_sign: "[PROJECT_START]"
+      example: '[PROJECT_START] 피아노 구독 서비스 시장 분석'
+      
+      stewart_fast_track:
+        step_1: "📝 프로젝트명 확인만"
+        step_2: "✅ 즉시 생성"
+      
+      user_burden: "최소 (프로젝트명만)"
+      benefit: "2단계 생략"
+  
   basic_process:
     name: "작업리스트 기반 실행"
     steps:
@@ -102,6 +134,15 @@ quick_start:
       - "각 작업 완료 후 재평가하여 적응적 진행"
       - "개별 작업은 가용 토큰의 50% 이하로 설계"
     protocol: "umis_execution_protocol (필수 적용)"
+  
+  deliverable_standards:
+    note: "v6.2 신규 - 산출물 표준화 및 재검증 가능성"
+    reference: "umis_deliverable_standards_v6.2.yaml"
+    key_features:
+      - "Rachel: source_registry.yaml (모든 데이터 출처)"
+      - "Bill: 9개 시트 Excel (Estimation_Details 포함)"
+      - "Albert/Steve: 근거 링크 필수"
+      - "프로젝트 생명주기: [PROJECT_START] / [PROJECT_END]"
   
   step_1_discovery_sprint:
     _concept: "적응형 시작"
@@ -686,9 +727,20 @@ reference_map:
   sections:
     section_0: "system_architecture_overview"
     section_4: "support_validation_system"
+    section_5: "data_integrity_system"
+    section_5_deliverables: "deliverable_standards_integration"
+    section_5_lifecycle: "project_lifecycle_protocols"
+    section_5_reproducibility: "reproducibility_framework"
+    section_5_callsign: "call_sign_system"
     section_6: "agents:"
     section_9: "implementation_guide:"
     token_mgmt: "token_management_protocol"
+  
+  detailed_standards:
+    deliverables: "umis_deliverable_standards_v6.2.yaml"
+    business_models: "umis_business_model_patterns_v6.2.yaml"
+    disruption: "umis_disruption_patterns_v6.2.yaml"
+    examples: "umis_examples_v6.2.yaml"
 
 # ========================================
 # UMIS Guidelines 파일 구조 (참조용)
@@ -729,8 +781,14 @@ umis_guidelines_structure:
     
     section_5:
       name: "DATA INTEGRITY"
-      content: "데이터 무결성 보장"
+      content:
+        - "데이터 무결성 보장"
+        - "산출물 표준화 (v6.2 신규)"
+        - "프로젝트 생명주기 관리 (v6.2 신규)"
+        - "재검증 프레임워크 (v6.2 신규)"
+        - "Call Sign 시스템 (v6.2 신규)"
       search: "# SECTION 5:"
+      detail_file: "umis_deliverable_standards_v6.2.yaml"
     
     section_6:
       name: "AGENTS"
@@ -842,6 +900,183 @@ version_history:
     change: "AI-Optimized Edition"
   
   changelog: "CHANGELOG.md 참조"
+
+# ========================================
+# Call Sign Quick Reference (v6.2 신규)
+# @id: call_sign_reference
+# ========================================
+
+call_sign_reference:
+  _id: "call_sign_reference"
+  _description: "프로젝트 생명주기 신호 빠른 참조 (선택사항)"
+  _version: "v6.2"
+  _type: "파워 유저용 - 기본은 자동 감지"
+  
+  usage_context: "빠른 시작 원하는 경우 선택적 사용"
+  
+  default_behavior:
+    note: "Call Sign 없이도 자동 작동"
+    how: "Stewart가 첫 시장 분석 질문 감지 → 자동 폴더 제안"
+    user_experience: "옵션 선택 + 프로젝트명 확인만"
+  
+  primary_signals:
+    
+    project_start:
+      call_sign: "[PROJECT_START]"
+      type: "선택사항 (파워 유저)"
+      when: "빠른 시작 원할 때"
+      format: "[PROJECT_START] {프로젝트명}"
+      example: "[PROJECT_START] 피아노 구독 서비스 시장 분석"
+      
+      advantage: "옵션 선택 단계 생략, 즉시 폴더 생성"
+      
+      stewart_auto_execution:
+        - "프로젝트 폴더 생성 (17개 하위 폴더)"
+        - ".project_meta.yaml 초기화"
+        - "project_charter.md 생성"
+        - "progress_tracker.md 생성"
+        - "README.md 생성"
+      
+      vs_automatic:
+        with_call_sign: "1단계 (프로젝트명 확인)"
+        without_call_sign: "3단계 (감지 → 옵션 선택 → 프로젝트명)"
+        recommendation: "처음 사용자는 자동 감지 권장"
+    
+    project_end:
+      automatic_detection:
+        trigger: "Owner 최종 의사결정 완료 + Stewart 검증 통과"
+        stewart_proposal: |
+          ✅ 최종 의사결정이 완료되었습니다.
+          
+          프로젝트를 종료하고 아카이빙하시겠습니까?
+          (Y = 종료 / N = 계속 작업)
+      
+      call_sign_optional:
+        call_sign: "[PROJECT_END]"
+        type: "선택사항 (명시적 종료)"
+        format: "[PROJECT_END]"
+        example: "[PROJECT_END]"
+        benefit: "즉시 종료 프로토콜 실행"
+      
+      stewart_auto_execution:
+        - "완결성 체크 (필수 산출물)"
+        - "품질 평가 (A/B/C/D)"
+        - "executive_summary.md 생성"
+        - "아카이브 생성 및 압축"
+        - "project_index.yaml 업데이트"
+      
+      completion_report: "프로젝트 요약 + 품질 등급 + 아카이브 위치"
+    
+    project_cleanup:
+      call_sign: "[PROJECT_CLEANUP]"
+      type: "선택사항"
+      when: "종료 후 추가 정리 필요시"
+      options: ["문서 품질 향상", "검증 보완", "포맷 표준화", "아카이브 최적화"]
+  
+  agent_signals:
+    note: "에이전트 내부 신호 - 사용자가 직접 사용할 필요 없음"
+    
+    deliverable_complete:
+      call_sign: "[DELIVERABLE_COMPLETE]"
+      type: "자동 (에이전트 내부)"
+      usage: "에이전트가 산출물 완료시 자동 발행"
+      format: "[DELIVERABLE_COMPLETE] {agent} {filename}"
+      example: "[DELIVERABLE_COMPLETE] Rachel source_registry.yaml"
+      stewart_action: "deliverables_registry.yaml 자동 등록"
+      user_action_needed: "없음 (완전 자동)"
+    
+    validation_request:
+      call_sign: "[VALIDATION_REQUEST]"
+      type: "자동 트리거 (수동도 가능)"
+      automatic: "4개 체크포인트에서 자동 트리거"
+      manual: "추가 검증 필요시 선택적 사용"
+      format: "[VALIDATION_REQUEST] {agent} {deliverable}"
+      example: "[VALIDATION_REQUEST] Albert market_reality_report.md"
+      stewart_action: "필수 검증자에게 알림"
+  
+  user_friendly_summary:
+    for_beginners:
+      message: |
+        🎯 처음 사용자를 위한 요약
+        
+        **필요한 것**: 없음! 그냥 질문하세요.
+        
+        예: "피아노 구독 서비스 시장 분석해줘"
+        
+        → Stewart가 자동으로:
+        1. 프로젝트 감지
+        2. 폴더 옵션 제시
+        3. 프로젝트명 제안
+        4. 폴더 생성 완료
+        
+        **Call Sign은 몰라도 됩니다!**
+    
+    for_power_users:
+      message: |
+        ⚡ 파워 유저를 위한 빠른 시작
+        
+        즉시 시작: [PROJECT_START] 프로젝트명
+        즉시 종료: [PROJECT_END]
+        
+        → 대화 단계 생략, 즉시 실행
+
+# ========================================
+# Deliverable Standards Summary (v6.2 신규)
+# @id: deliverable_standards_summary
+# ========================================
+
+deliverable_standards_summary:
+  _id: "deliverable_standards_summary"
+  _description: "산출물 표준 핵심 요약"
+  _detail_file: "umis_deliverable_standards_v6.2.yaml"
+  
+  agent_outputs:
+    
+    rachel:
+      files:
+        - "source_registry.yaml (필수)"
+        - "data_verification_report.md (필수)"
+      key_standard: "모든 데이터에 SRC_ID + 정의 Gap 분석"
+    
+    bill:
+      files:
+        - "market_sizing_[name].xlsx - 9개 시트 (필수)"
+        - "  · Estimation_Details: 추정 논리 투명 공개 ⭐"
+        - "market_sizing_[name].pdf (필수)"
+        - "sam_calculation_report.md (필수)"
+      key_standard: "Excel 함수 100% + 추정치는 EST_ID로 7개 섹션 문서화"
+    
+    albert:
+      files:
+        - "market_reality_report.md (필수)"
+        - "structure_observations/[topic].md (선택)"
+      key_standard: "모든 주장에 근거 링크 (SRC_ID 또는 Bill 계산)"
+    
+    steve:
+      files:
+        - "opportunity_portfolio.md (필수)"
+        - "opportunity_hypotheses/OPP_*.md - 최소 3개 (필수)"
+      key_standard: "모든 가설에 근거 (Albert/Bill/Rachel 참조)"
+  
+  traceability_principle:
+    core: "결론 → 분석 → 계산 → 데이터 → 원본 출처"
+    example: "Steve 가설 → Albert 구조 → Bill SAM → Rachel SRC_ID → 정부 통계"
+    verification: "역방향 완전 추적 가능"
+  
+  guesstimation_standard:
+    description: "Bill 추정치의 투명한 논리 문서화"
+    sheet: "Estimation_Details (9개 시트 중 2번째)"
+    
+    documentation_sections:
+      - "[1] 추정 필요 이유"
+      - "[2] 사용한 데이터 (SRC_ID)"
+      - "[3] 추정 논리 (단계별)"
+      - "[4] 신뢰도 평가"
+      - "[5] 검증 방법"
+      - "[6] 대체 접근법 시도"
+      - "[7] 사용 위치"
+    
+    example: "피아노 학원 비중 30% → EST_001 블록에 상세 논리"
 
 # ========================================
 # END OF AI GUIDE
