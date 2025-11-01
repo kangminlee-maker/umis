@@ -1,0 +1,121 @@
+[project]
+name = "umis-rag"
+version = "0.1.0"
+description = "UMIS Multi-Agent RAG System - Knowledge base for market intelligence"
+authors = [
+    {name = "UMIS Team"}
+]
+readme = "README_RAG.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+dependencies = [
+    # Core RAG Framework
+    "langchain>=0.1.0",
+    "langchain-openai>=0.0.5",
+    "langchain-community>=0.0.20",
+    
+    # Vector Stores
+    "chromadb>=0.4.22",  # Local vector DB (프로토타입)
+    "pinecone-client>=3.0.0",  # Production vector DB
+    
+    # Embeddings
+    "openai>=1.10.0",
+    "tiktoken>=0.5.2",  # Token counting
+    
+    # Document Processing
+    "pyyaml>=6.0.1",
+    "pypdf>=4.0.0",
+    "python-docx>=1.1.0",
+    "markdown>=3.5.0",
+    
+    # Data Validation
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    
+    # Utilities
+    "python-dotenv>=1.0.0",
+    "tqdm>=4.66.1",
+    "rich>=13.7.0",  # Beautiful console output
+    
+    # Monitoring & Logging
+    "loguru>=0.7.2",
+    "tenacity>=8.2.3",  # Retry logic
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.1.0",
+    
+    # Code Quality
+    "ruff>=0.1.0",  # Fast linter/formatter
+    "mypy>=1.8.0",
+    "pre-commit>=3.6.0",
+    
+    # Development
+    "ipython>=8.20.0",
+    "jupyter>=1.0.0",
+    "notebook>=7.0.0",
+]
+
+production = [
+    # Advanced Vector DB
+    "weaviate-client>=4.4.0",
+    
+    # Hybrid Search
+    "elasticsearch>=8.12.0",
+    
+    # Monitoring
+    "prometheus-client>=0.19.0",
+    "langsmith>=0.0.80",  # LangChain monitoring
+]
+
+experimental = [
+    # Advanced RAG
+    "llama-index>=0.10.0",
+    
+    # Graph RAG
+    "neo4j>=5.16.0",
+    
+    # Agentic Tools
+    "langchain-experimental>=0.0.50",
+]
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "C90", # mccabe complexity
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --cov=umis_rag --cov-report=html --cov-report=term"
+

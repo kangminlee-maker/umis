@@ -1,92 +1,77 @@
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
-# 산출물 및 빌드 결과물
-dist/
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
 build/
-output/
-out/
-*.out
-*.exe
-*.app
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# 시장 분석 문서 (민감한 비즈니스 정보)
-docs/market_analysis/
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
 
-# 로그 파일
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# 임시 파일
-tmp/
-temp/
-*.tmp
-*.temp
+# IDEs
+.vscode/
+.idea/
 *.swp
 *.swo
 *~
+.DS_Store
 
-# 캐시
-.cache/
-*.cache
-__pycache__/
-*.pyc
-*.pyo
-
-# 의존성 패키지
-node_modules/
-venv/
-env/
+# Environment Variables
 .env
-.venv
+.env.local
+.env.*.local
 
-# 데이터 파일 (필요시 특정 확장자만 선택적으로 추가)
-*.csv
-*.xlsx
+# RAG Data
+data/chroma/
+data/pinecone/
+data/cache/
 *.db
 *.sqlite
-*.sqlite3
 
-# 백업 파일
-*.bak
-*.backup
-*_backup
-*_old
+# Logs
+logs/
+*.log
 
-# 압축 파일
-*.zip
-*.tar
-*.tar.gz
-*.rar
-*.7z
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
 
-# IDE 및 에디터 설정 (선택적)
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
 
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Ruff
+.ruff_cache/
+
+# Documentation
+site/
+
+# Temporary files
+tmp/
+temp/
+*.tmp

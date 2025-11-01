@@ -1,0 +1,42 @@
+# ========================================
+# UMIS Multi-Agent RAG Requirements
+# ========================================
+# 
+# Installation:
+#   pip install -r requirements.txt
+#
+# For development:
+#   pip install -r requirements-dev.txt
+#
+# ========================================
+
+# Core RAG Framework
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-community>=0.0.20
+
+# Vector Stores
+chromadb>=0.4.22
+pinecone-client>=3.0.0
+
+# Embeddings & LLMs
+openai>=1.10.0
+tiktoken>=0.5.2
+
+# Document Processing
+pyyaml>=6.0.1
+pypdf>=4.0.0
+python-docx>=1.1.0
+markdown>=3.5.0
+
+# Data Validation
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# Utilities
+python-dotenv>=1.0.0
+tqdm>=4.66.1
+rich>=13.7.0
+loguru>=0.7.2
+tenacity>=8.2.3
+

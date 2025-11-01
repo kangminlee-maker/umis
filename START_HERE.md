@@ -1,0 +1,62 @@
+# UMIS 프로젝트
+
+Universal Market Intelligence System v6.2
+
+---
+
+## 📁 프로젝트 구조
+
+```
+umis-main/
+├── 📚 UMIS Core (기존)
+│   ├── umis_guidelines_v6.2.yaml
+│   ├── umis_business_model_patterns_v6.2.yaml
+│   ├── umis_disruption_patterns_v6.2.yaml
+│   ├── umis_ai_guide_v6.2.yaml
+│   ├── umis_deliverable_standards_v6.2.yaml
+│   ├── umis_examples_v6.2.yaml
+│   ├── CHANGELOG.md
+│   └── docs/ (기존 시장 분석 등)
+│
+└── 🤖 UMIS RAG (신규)
+    └── rag/ ⭐
+        ├── quick_umis.sh (30초 시작)
+        ├── Makefile
+        ├── docs/ (26개 문서)
+        ├── code/ (scripts, umis_rag)
+        └── config/ (설정)
+```
+
+---
+
+## 🚀 사용 방법
+
+### UMIS 기존 방식
+
+```
+Cursor:
+  @umis_guidelines_v6.2.yaml
+  "시장 분석해줘"
+```
+
+### UMIS RAG (신규)
+
+```bash
+cd rag/
+./quick_umis.sh
+
+# IPython에서
+steve.search_patterns("구독")
+```
+
+---
+
+## 📖 문서
+
+- **UMIS 기존:** `docs/UMIS_v6.2_Complete_Guide.md`
+- **UMIS RAG:** `rag/docs/INDEX.md`
+
+---
+
+**UMIS:** 기존 YAML 기반 시스템  
+**RAG:** 검색 증강 확장 (선택적)
