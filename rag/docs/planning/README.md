@@ -12,7 +12,6 @@
 개발 방법:
   ❌ Cursor 명령
   ❌ Python 코딩
-  ❌ Hot-Reload
   
   ✅ Cursor Composer (Cmd+I)
   ✅ 대화로 요청

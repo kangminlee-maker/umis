@@ -998,7 +998,6 @@ Phase 2D (목표 정렬):
 
 ```
 Week 1:
-  Day 1: Hot-Reload ✅
   Day 2-3: Knowledge Graph
   Day 4: 순환 감지 (Memory-RAG + LLM)
   Day 5: 목표 정렬 (Memory-RAG + LLM)

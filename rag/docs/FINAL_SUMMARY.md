@@ -19,7 +19,6 @@ Vector RAG Prototype:
   ✅ Dual Mode 즉시 사용 가능
   
 개발 환경:
-  ✅ Hot-Reload (YAML → 2초 → 반영)
   ✅ Makefile (간단한 명령)
   ✅ query_rag.py (Cursor 통합)
   
@@ -69,7 +68,6 @@ Vector RAG Prototype:
      → YAML 중심, RAG 보조
   
   7. 사용 = 개발
-     → Hot-Reload, 2초 반영
   
   8. Memory-Augmented RAG ⭐
      → 순환/목표를 RAG 문제로!
@@ -124,7 +122,6 @@ Hybrid (Memory-RAG + LLM):
 ### 🔴 P0 - 필수 핵심 (10일)
 
 ```
-Day 1: Hot-Reload ⚡
   → YAML 수정 → 2초 → 반영
   
 Day 2-3: Knowledge Graph 🔗
@@ -166,7 +163,6 @@ Multi-View + Meta-RAG
 
 ## 🎯 즉시 실행 (오늘!)
 
-### Hot-Reload 완성 및 테스트
 
 ```bash
 # 1. 테스트
@@ -223,7 +219,6 @@ Q8: "YAML vs RAG 균형?"
    → Dual Mode 즉시 사용
 
 Q9: "사용 = 개발 환경?"
-   → Hot-Reload!
    → 2초 반영
 
 Q10: "Memory-Augmented RAG?"
@@ -243,7 +238,6 @@ Q10: "Memory-Augmented RAG?"
 ✅ 작동하는 Vector RAG
 ✅ text-embedding-3-large 검증
 ✅ 54개 청크 최적 품질
-✅ Hot-Reload 개발 환경
 ✅ Hybrid 감시 시스템 설계
 ```
 
@@ -274,7 +268,6 @@ Q10: "Memory-Augmented RAG?"
 ### 즉시 (오늘)
 
 ```
-✅ Hot-Reload 완성
 ✅ 실전 테스트
 ✅ 피드백 수집
 ```
@@ -308,7 +301,6 @@ Q10: "Memory-Augmented RAG?"
 ### 구현
 
 4. **IMPLEMENTATION_PLAN.md** - 10일 실행 계획
-5. **DEPLOYMENT_STRATEGY.md** - Hot-Reload 가이드
 6. **USER_DEVELOPER_WORKFLOW.md** - 개발/사용 분리
 
 ### 통합
@@ -367,7 +359,6 @@ Q10: "Memory-Augmented RAG?"
 **다음 단계:**
 
 ```
-지금: Hot-Reload 테스트
 내일: Track 1 시작 (10일)
 2주 후: UMIS RAG 80% 완성!
 ```
