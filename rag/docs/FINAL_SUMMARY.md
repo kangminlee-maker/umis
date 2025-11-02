@@ -170,9 +170,8 @@ Multi-View + Meta-RAG
 
 ```bash
 # 1. 테스트
-make dev
 
-# (새 터미널)
+# (새 Cursor)
 # VS Code에서 YAML 수정
 # → 자동 반영 확인
 

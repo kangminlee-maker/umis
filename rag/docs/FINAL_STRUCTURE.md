@@ -96,7 +96,6 @@ umis-main/
 사용:
   cd rag/
   ./quick_umis.sh
-  → IPython RAG 검색
 ```
 
 ---

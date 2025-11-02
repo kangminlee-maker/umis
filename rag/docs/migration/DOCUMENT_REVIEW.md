@@ -31,10 +31,9 @@
 ### ⚠️ 개발자용 (삭제 후보)
 
 **guides/**
-  ❌ SIMPLEST_WORKFLOW.md - IPython (개발자용)
   ❌ LIGHTEST_SETUP.md - Python 코드 (개발자용)
   ❌ QUICK_START.md - Jupyter (개발자용)
-  ❌ SETUP_GUIDE.md - 터미널 명령 (개발자용)
+  ❌ SETUP_GUIDE.md - Cursor 명령 (개발자용)
   ⚠️ USAGE_COMPARISON.md - 일부만 필요
   
 **planning/**

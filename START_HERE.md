@@ -31,22 +31,24 @@ umis-main/
 
 ## 🚀 사용 방법
 
-### UMIS 기존 방식
+### UMIS 기본 (YAML만)
 
 ```
-Cursor:
+Cursor Composer (Cmd+I):
   @umis_guidelines_v6.2.yaml
-  "시장 분석해줘"
+  "피아노 구독 서비스 시장 분석해줘"
 ```
 
-### UMIS RAG (신규)
+### UMIS v6.3.0-alpha (RAG 자동 활용!)
 
-```bash
-cd rag/
-./quick_umis.sh
-
-# IPython에서
-steve.search_patterns("구독")
+```
+Cursor Composer (Cmd+I):
+  @umis_guidelines_v6.2.yaml
+  
+  "@Steve, 음악 스트리밍 구독 기회 분석해줘"
+  
+  → Steve (Explorer)가 RAG 자동 활용!
+  → 대화만! 코딩 불필요! ✨
 ```
 
 ---

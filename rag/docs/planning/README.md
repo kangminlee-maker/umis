@@ -10,7 +10,7 @@
 
 ```yaml
 개발 방법:
-  ❌ 터미널 명령
+  ❌ Cursor 명령
   ❌ Python 코딩
   ❌ Hot-Reload
   
@@ -99,7 +99,7 @@ Cursor Composer:
 **백업 (개발자용):**
 - DETAILED_TASK_LIST_DEV_ONLY.md.backup
 - IMPLEMENTATION_PLAN_DEV_ONLY.md.backup
-  - 터미널, Python 코드 등
+  - Cursor, Python 코드 등
   - 참조용으로만
 
 ---

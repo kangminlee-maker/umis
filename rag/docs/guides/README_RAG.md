@@ -59,17 +59,13 @@ umis-main/
 python --version
 
 # 가상환경 생성
-python -m venv venv
 
 # 가상환경 활성화
-source venv/bin/activate  # macOS/Linux
 # venv\Scripts\activate   # Windows
 
 # 패키지 설치
-pip install -r requirements.txt
 
 # 개발 패키지 설치 (선택)
-pip install -r requirements-dev.txt
 ```
 
 ### 2. 환경 변수 설정
@@ -111,7 +107,6 @@ python scripts/03_test_search.py --agent steve --query "플랫폼 비즈니스 �
 jupyter notebook notebooks/prototype.ipynb
 ```
 
-### 대화형 테스트 (IPython)
 
 ```bash
 ipython

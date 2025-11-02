@@ -247,7 +247,6 @@ Explorer가 Quantifier에게 데이터 요청:
 
 ### 환경 활성화
 ```bash
-source venv/bin/activate
 ```
 
 ### 스크립트 실행
