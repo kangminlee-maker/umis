@@ -28,7 +28,7 @@ Show result: "✅ RAG 업데이트 완료!"
 
 ## UMIS 분석 중 자동 RAG 활용
 
-When Steve (Explorer) needs pattern matching:
+When Explorer needs pattern matching:
   - Detect: "패턴 매칭 필요" or "트리거 시그널 발견"
   - Automatically run:
     ```bash
@@ -37,7 +37,7 @@ When Steve (Explorer) needs pattern matching:
   - Integrate results into analysis
   - Show: "🔍 RAG 검색: {pattern_id} 발견!"
 
-When Steve needs case studies:
+When Explorer needs case studies:
   - Detect: "유사 사례" or "성공 사례"
   - Automatically run:
     ```bash
@@ -86,7 +86,7 @@ Auto execute and show results.
 
 When doing UMIS analysis:
   1. Always use @umis_guidelines_v6.2.yaml
-  2. Follow UMIS process (Albert → Steve → Bill → Rachel)
+  2. Follow UMIS process (Observer → Explorer → Quantifier → Validator)
   3. Use RAG when needed (automatic)
   4. Save improvements to YAML (automatic)
   

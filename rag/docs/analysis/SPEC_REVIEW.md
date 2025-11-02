@@ -24,7 +24,7 @@ RAG: Graph로 검증 체인 추적
 
 ### 3. Agent 협업 (source_id 기반) ✅
 ```yaml
-UMIS: "Steve → Bill 자연스러운 질문"
+UMIS: "Explorer → Quantifier 자연스러운 질문"
 RAG: source_id로 cross-reference
 
 → 구현 가능! ✅
@@ -34,22 +34,22 @@ RAG: source_id로 cross-reference
 
 ## ⚠️ 누락되거나 보완 필요한 것
 
-### 🔴 Critical 1: 순환 패턴 감지 (Stewart 핵심!)
+### 🔴 Critical 1: 순환 패턴 감지 (Guardian 핵심!)
 
 **UMIS v6.2 명세:**
 ```yaml
-Stewart 자율 개입:
+Guardian 자율 개입:
   circular_motion:
     threshold: "동일 주제 3회 반복"
     detection: |
-      Albert → Steve → Bill → Albert (1회)
-      Albert → Steve → Bill → Albert (2회) [Stewart 주시]
-      Albert → Steve → Bill → ... [Stewart 개입: "순환 패턴 감지"]
+      Observer → Explorer → Quantifier → Observer (1회)
+      Observer → Explorer → Quantifier → Observer (2회) [Guardian 주시]
+      Observer → Explorer → Quantifier → ... [Guardian 개입: "순환 패턴 감지"]
     
     intervention: |
       🔄 순환 패턴 감지
       
-      관찰: Albert ↔ Steve 간 '시장 정의'에 대해 3회 순환
+      관찰: Observer ↔ Explorer 간 '시장 정의'에 대해 3회 순환
       영향: 시간 소비 4시간, 진전도 5%
       
       제안:
@@ -123,7 +123,7 @@ stewart_circular_detection:
       level: "nudge"
       action: "가벼운 알림"
       message: |
-        💡 Stewart: "{topic}에 대해 반복 논의 중입니다.
+        💡 Guardian: "{topic}에 대해 반복 논의 중입니다.
         다른 각도로 접근해보시겠어요?"
     
     repetition_4:
@@ -156,7 +156,7 @@ stewart_circular_detection:
 
 **UMIS v6.2 명세:**
 ```yaml
-Stewart 모니터링:
+Guardian 모니터링:
   goal_alignment:
     target: "60% 이상 유지"
     measurement: "현재 작업이 목표에 기여하는 정도"
@@ -391,7 +391,7 @@ state_aware_rag:
       
       bill_rachel_ready:
         mode: "on_demand"
-        response: "Albert 질문 시 즉시 검색"
+        response: "Observer 질문 시 즉시 검색"
     
     opportunity_discovery_state:
       active_agents: ["steve"]
@@ -405,29 +405,29 @@ state_aware_rag:
           stage_1: "패턴 매칭"
           stage_2: "사례 검색"
           stage_3: "검증 프레임워크"
-          stage_4: "Bill 협업"
-          stage_5: "Rachel 협업"
+          stage_4: "Quantifier 협업"
+          stage_5: "Validator 협업"
   
   state_transitions:
     trigger_by_quality_gate:
       - from: "structure_analysis"
         to: "opportunity_discovery"
-        condition: "Albert 결론 + 3명 검증 통과"
+        condition: "Observer 결론 + 3명 검증 통과"
         
         rag_check:
           graph_query: |
-            MATCH (a:AlbertConclusion)
+            MATCH (a:ObserverConclusion)
                   -[:VERIFIED_BY]->(v:Verification)
             WHERE v.validators = ['bill', 'rachel', 'stewart']
             RETURN count(v) >= 3
       
       - from: "opportunity_discovery"
         to: "quantification"
-        condition: "Steve 가설 + 3명 검증 통과"
+        condition: "Explorer 가설 + 3명 검증 통과"
         
         rag_check:
           graph_query: |
-            MATCH (s:SteveHypothesis)
+            MATCH (s:ExplorerHypothesis)
                   -[:VERIFIED_BY]->(v:Validation)
             WHERE v.validators IN ['albert', 'bill', 'rachel']
             RETURN count(DISTINCT v.validator) >= 3
@@ -444,7 +444,7 @@ state_aware_rag:
   일상 지원 (자연스러움):
     - 언제든 질문 가능
     - 복잡한 프로토콜 없음
-    - "Bill, 이 시장 규모는?" (간단)
+    - "Quantifier, 이 시장 규모는?" (간단)
   
   의무 검증 (엄격함):
     - 4개 체크포인트에서만
@@ -478,11 +478,11 @@ collaboration_modes:
         no_formality: true
       
       code_example: |
-        # Steve 작업 중
+        # Explorer 작업 중
         bill_data = steve.ask_bill(
           source_id=current_case.source_id
         )
-        # → Bill retriever로 즉시 검색
+        # → Quantifier retriever로 즉시 검색
         # → 간단!
   
   mode_2_mandatory_validation:
@@ -492,7 +492,7 @@ collaboration_modes:
     
     checkpoints:
       checkpoint_1:
-        phase: "Albert 구조 분석 완료"
+        phase: "Observer 구조 분석 완료"
         mandatory_validators: ["bill", "rachel", "stewart"]
         
         implementation:
@@ -500,23 +500,23 @@ collaboration_modes:
           
           validation_process:
             - stewart_initiate: "검증 요청 자동 발행"
-            - bill_search: "Albert 결론의 정량 근거 검색"
-            - rachel_search: "Albert 데이터의 출처 검색"
+            - bill_search: "Observer 결론의 정량 근거 검색"
+            - rachel_search: "Observer 데이터의 출처 검색"
             - stewart_search: "검증 규칙 검색"
             
             - graph_check: |
-                MATCH (a:AlbertConclusion)
-                      -[:REQUIRES_VALIDATION]->(v1:BillCheck),
-                      (a)-[:REQUIRES_VALIDATION]->(v2:RachelCheck),
-                      (a)-[:REQUIRES_VALIDATION]->(v3:StewartCheck)
+                MATCH (a:ObserverConclusion)
+                      -[:REQUIRES_VALIDATION]->(v1:QuantifierCheck),
+                      (a)-[:REQUIRES_VALIDATION]->(v2:ValidatorCheck),
+                      (a)-[:REQUIRES_VALIDATION]->(v3:GuardianCheck)
                 WHERE v1.passed AND v2.passed AND v3.passed
                 RETURN count(*) = 3
           
           pass_criteria: "3명 모두 통과"
-          fail_action: "Albert 재작업 요청"
+          fail_action: "Observer 재작업 요청"
       
       checkpoint_2:
-        phase: "Steve 가설 생성 완료"
+        phase: "Explorer 가설 생성 완료"
         mandatory_validators: ["albert", "bill", "rachel"]
         # ... 동일 패턴
 ```
@@ -527,7 +527,7 @@ collaboration_modes:
 
 **UMIS v6.2 명세:**
 ```yaml
-Stewart 개입:
+Guardian 개입:
   superior_opportunity:
     signal: "10x 이상 가치 차이 기회 발견"
     action: "즉시 피벗 검토 제안"
@@ -545,7 +545,7 @@ opportunity_value_comparison:
   
   value_estimation:
     when_steve_finds_opportunity:
-      - estimate: "Bill에게 시장 규모 계산"
+      - estimate: "Quantifier에게 시장 규모 계산"
       - compare: "현재 목표 vs 새 기회"
       - ratio: "value_new / value_current"
     
@@ -582,11 +582,11 @@ opportunity_value_comparison:
 
 ---
 
-### 🟢 Nice to Have 7: Rachel의 창의적 소싱
+### 🟢 Nice to Have 7: Validator의 창의적 소싱
 
 **UMIS v6.2 명세:**
 ```yaml
-Rachel 특성:
+Validator 특성:
   creative_sourcing:
     - "전문가 용어로 찾을 수 없는 데이터 발굴"
     - "사용자 관점 검색으로 3배 더 많은 정보"
@@ -739,7 +739,7 @@ discovery_sprint_rag:
 | 항목 | 현재 | 수정 후 | 이유 |
 |------|------|---------|------|
 | **feedback_loop** | 단순 반복 | + 순환 감지 | UMIS 필수 기능 |
-| **stewart_validation** | 3단계만 | + 순환/목표 모니터링 | Stewart 역할 불완전 |
+| **stewart_validation** | 3단계만 | + 순환/목표 모니터링 | Guardian 역할 불완전 |
 | **query_refinement** | 품질만 | + 정렬도/명확도 | UMIS 철학 반영 |
 
 ### ❌ 삭제 가능
@@ -765,7 +765,7 @@ reinforcement_learning:
 - 🆕 상태 기계 통합
 - 🆕 순환 패턴 감지용 쿼리
 
-### Phase 2B: Stewart Meta-RAG (Week 2) ⭐⭐⭐⭐⭐
+### Phase 2B: Guardian Meta-RAG (Week 2) ⭐⭐⭐⭐⭐
 
 **유지 + 추가:**
 - ✅ 3단계 검증 (기존)
@@ -785,14 +785,14 @@ reinforcement_learning:
 
 ---
 
-## 💡 가장 Critical한 누락: Stewart의 2가지 핵심 역할
+## 💡 가장 Critical한 누락: Guardian의 2가지 핵심 역할
 
 ### 1. 순환 패턴 감지
 
 ```python
 # 현재 스펙에 없는 것!
 
-class StewartCircularDetector:
+class GuardianCircularDetector:
     """
     UMIS의 핵심: 3회 반복 자동 감지
     """
@@ -846,7 +846,7 @@ class StewartCircularDetector:
 ```python
 # 현재 스펙에 없는 것!
 
-class StewartGoalAlignmentMonitor:
+class GuardianGoalAlignmentMonitor:
     """
     UMIS의 핵심: 목표 이탈 자동 감지
     """
@@ -903,13 +903,13 @@ class StewartGoalAlignmentMonitor:
 
 1. **순환 패턴 감지 시스템**
    - UMIS의 핵심 차별점
-   - Stewart 역할의 본질
+   - Guardian 역할의 본질
    - 없으면 UMIS가 아님
 
 2. **목표 정렬도 모니터링**
    - UMIS의 "목표 지향" 보장
    - 작업 효율성 핵심
-   - Stewart의 가이드 역할
+   - Guardian의 가이드 역할
 
 ### 꼭 추가하면 좋을 것 (P1)
 
@@ -935,7 +935,7 @@ class StewartGoalAlignmentMonitor:
 - UMIS 철학 반영: 60% ⚠️
 
 **누락된 핵심:**
-- Stewart의 2가지 감시 역할
+- Guardian의 2가지 감시 역할
   - 순환 감지
   - 목표 정렬
   

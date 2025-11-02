@@ -14,7 +14,7 @@
 Vector RAG Prototype:
   ✅ 54개 청크 (Business 31 + Disruption 23)
   ✅ text-embedding-3-large (3072 dim)
-  ✅ Steve RAG 에이전트
+  ✅ Explorer RAG 에이전트
   ✅ 검색 품질 검증 완료
   ✅ Dual Mode 즉시 사용 가능
   
@@ -56,7 +56,7 @@ Vector RAG Prototype:
   2. Multi-View 아키텍처
      → Single Source, agent별 view
   
-  3. Stewart Meta-RAG
+  3. Guardian Meta-RAG
      → 다른 agent 평가 역할
   
   4. Knowledge Graph
@@ -207,7 +207,7 @@ Q4: "구조 제대로 이해했나?"
    → ✅ 100% 정확!
    → Single Source + Multi-View
 
-Q5: "Stewart Meta-RAG 필요?"
+Q5: "Guardian Meta-RAG 필요?"
    → ✅ 필요!
    → 다른 agent 평가 역할
 

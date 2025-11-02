@@ -85,7 +85,7 @@ rag_project/
 
 **3가지 도전:**
 - `../../docs/ADVANCED_RAG_CHALLENGES.md`
-  - Stewart Meta-RAG
+  - Guardian Meta-RAG
   - Knowledge Graph
   - 피드백 학습
 

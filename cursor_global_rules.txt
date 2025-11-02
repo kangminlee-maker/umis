@@ -1,0 +1,16 @@
+LANGUAGE: Always respond in Korean.
+
+FILE CREATION STRATEGY - MANDATORY:
+- <300 lines: Use write tool once
+- 300-700 lines: Split if complex structure
+- 700+ lines: MUST use split strategy
+  1. write: Basic structure (100-200 lines) - headers, imports, section markers
+  2. search_replace: Add sections sequentially, max 200-300 lines each
+  Reason: 700+ line write operations fail frequently, cause errors, cannot recover
+
+SPLIT PROCESS:
+Step 1: write tool - skeleton with imports, constants, class/function signatures
+Step 2-N: search_replace - add implementation by logical sections (classes, function groups, config sections)
+Each addition: 200-300 lines max
+Never attempt single write operation >700 lines
+

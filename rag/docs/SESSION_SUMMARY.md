@@ -15,7 +15,7 @@
   ✅ Python 환경 (LangChain + OpenAI + Chroma)
   ✅ YAML → 청크 변환 (54개)
   ✅ 벡터 인덱스 (text-embedding-3-large, 3072 dim)
-  ✅ Steve RAG 에이전트
+  ✅ Explorer RAG 에이전트
   ✅ 검색 테스트 (모두 통과!)
   ✅ Jupyter 프로토타입
   
@@ -103,7 +103,7 @@ UMIS 철학 반영: 95% ✅
 
 ```yaml
 당신의 발견:
-  1. Stewart = Meta-RAG 필요
+  1. Guardian = Meta-RAG 필요
   2. 지식 연계 = Knowledge Graph 필요
   3. 피드백 = 학습 필요
   
@@ -222,7 +222,7 @@ UMIS 철학 반영: 95% ✅
 ```yaml
 v1.1 Enhanced 전체:
   Week 1: Graph + 순환/목표
-  Week 2: Stewart Meta-RAG
+  Week 2: Guardian Meta-RAG
   Week 3: 명확도 적응 + 학습
   
 완성:
@@ -318,7 +318,7 @@ ROI: 게임 체인저 수준
 
 ```
 추가 가치:
-  - Stewart 순환 감지
+  - Guardian 순환 감지
   - 목표 정렬 자동
   - Knowledge Graph
   - 학습 및 진화

@@ -404,7 +404,7 @@
   검증: < 200ms 응답 시간
 ```
 
-### Task 4.3: Stewart 개입 로직 (2시간)
+### Task 4.3: Guardian 개입 로직 (2시간)
 
 ```yaml
 □ 4.3.1 반복 횟수 추적 (1시간)
@@ -422,7 +422,7 @@
   
   검증: Graph에 순환 기록됨
 
-□ 4.3.2 Stewart 메시지 생성 (30분)
+□ 4.3.2 Guardian 메시지 생성 (30분)
   - 반복 2회: 로그만
   - 반복 3회: Nudge 메시지
   - 반복 4회: 에스컬레이션
@@ -446,7 +446,7 @@
 □ 4.3.3 통합 테스트 (30분)
   - 순환 시나리오 재현
   - 자동 감지 확인
-  - Stewart 개입 확인
+  - Guardian 개입 확인
   
   검증: E2E 작동
 ```
@@ -458,7 +458,7 @@
 ✅ Memory-RAG로 유사 쿼리 검색
 ✅ LLM으로 순환 정밀 검증
 ✅ 3회 반복 자동 감지
-✅ Stewart Nudge 메시지 출력
+✅ Guardian Nudge 메시지 출력
 ✅ Graph에 CircularPattern 기록
 
 → UMIS 순환 감지 완성! 🔄
@@ -582,7 +582,7 @@
   검증: < 100ms (정렬 시), < 2s (이탈 시)
 ```
 
-### Task 5.3: Stewart 모니터링 통합 (2시간)
+### Task 5.3: Guardian 모니터링 통합 (2시간)
 
 ```yaml
 □ 5.3.1 실시간 모니터링 (1시간)
@@ -599,7 +599,7 @@
   
   검증: 평균 정렬도 추적됨
 
-□ 5.3.2 Stewart 경고 메시지 (30분)
+□ 5.3.2 Guardian 경고 메시지 (30분)
   
   템플릿:
     🎯 목표 정렬도 경고
@@ -681,10 +681,10 @@
 ### Task 6.2: 5-View 청킹 구현 (4시간)
 
 ```yaml
-□ 6.2.1 Albert View 청킹 (1시간)
+□ 6.2.1 Observer View 청킹 (1시간)
   - convert_to_albert_view()
   
-  배달의민족 → Albert 청크:
+  배달의민족 → Observer 청크:
     chunk_id: "albert_baemin_market_structure"
     content: """
       시장 구조 변화 (2010-2020)
@@ -708,12 +708,12 @@
       albert_chunking_level: "meso"
       source_id: "baemin_case"
   
-  검증: Albert 관점 청크 생성
+  검증: Observer 관점 청크 생성
 
-□ 6.2.2 Steve View 청킹 (1시간)
+□ 6.2.2 Explorer View 청킹 (1시간)
   - convert_to_steve_view()
   
-  배달의민족 → Steve 청크:
+  배달의민족 → Explorer 청크:
     chunk_id: "steve_baemin_platform_opportunity"
     content: """
       플랫폼 비즈니스 모델 실행 사례
@@ -739,12 +739,12 @@
       steve_csf: '["양측확보", "밀도전략"]'
       source_id: "baemin_case"
   
-  검증: Steve 관점 청크 생성
+  검증: Explorer 관점 청크 생성
 
-□ 6.2.3 Bill View 청킹 (30분)
+□ 6.2.3 Quantifier View 청킹 (30분)
   - convert_to_bill_view()
   
-  배달의민족 → Bill 청크들:
+  배달의민족 → Quantifier 청크들:
     
     청크 1 (성장 지표):
       chunk_id: "bill_baemin_growth_metrics"
@@ -779,12 +779,12 @@
         bill_view_type: "calculation"
         bill_formulas: '["GMV = MAU × 빈도 × 객단가"]'
   
-  검증: Bill 관점 청크 생성 (여러 개)
+  검증: Quantifier 관점 청크 생성 (여러 개)
 
-□ 6.2.4 Rachel View 청킹 (30분)
+□ 6.2.4 Validator View 청킹 (30분)
   - convert_to_rachel_view()
   
-  배달의민족 → Rachel 청크들:
+  배달의민족 → Validator 청크들:
     
     청크 1 (Wikipedia):
       chunk_id: "rachel_baemin_src001"
@@ -816,18 +816,18 @@
       metadata:
         rachel_reliability: "high"
   
-  검증: Rachel 관점 청크 생성
+  검증: Validator 관점 청크 생성
 
-□ 6.2.5 Stewart View 청킹 (30분)
+□ 6.2.5 Guardian View 청킹 (30분)
   - convert_to_stewart_view()
   
-  배달의민족 → Stewart 청크:
+  배달의민족 → Guardian 청크:
     chunk_id: "stewart_baemin_validation"
     content: """
       검증 상태 요약
       
       등급: A
-      검증: Albert, Steve, Bill, Rachel ✅
+      검증: Observer, Explorer, Quantifier, Validator ✅
       사용 승인:
         - Phase 2 (패턴 매칭) ✅
         - Phase 5 (사례 참조) ✅
@@ -843,7 +843,7 @@
       stewart_validated: true
       stewart_chunking_level: "summary"
   
-  검증: Stewart 관점 청크
+  검증: Guardian 관점 청크
 
 □ 6.2.6 Owner View 청킹 (30분)
   - convert_to_owner_view()
@@ -916,13 +916,13 @@
   - 6-view 청크 모두 저장
   
   예상 청크 수:
-    - 기존 54개 (Steve only)
+    - 기존 54개 (Explorer only)
     - → 6-view: ~200개
-      - Albert view: 40개
-      - Steve view: 54개 (기존)
-      - Bill view: 60개 (계산 단위)
-      - Rachel view: 30개 (출처별)
-      - Stewart view: 10개 (요약)
+      - Observer view: 40개
+      - Explorer view: 54개 (기존)
+      - Quantifier view: 60개 (계산 단위)
+      - Validator view: 30개 (출처별)
+      - Guardian view: 10개 (요약)
       - Owner view: 10개 (의사결정)
   
   검증: 200개 청크 인덱싱 완료
@@ -994,10 +994,10 @@
 ### Task 7.2: Agent별 Retriever 구현 (4시간)
 
 ```yaml
-□ 7.2.1 AlbertRetriever (1시간)
+□ 7.2.1 ObserverRetriever (1시간)
   - umis_rag/retrievers/albert.py
   
-  class AlbertRetriever(BaseAgentRetriever):
+  class ObserverRetriever(BaseAgentRetriever):
       def __init__(self):
           super().__init__("albert")
       
@@ -1021,12 +1021,12 @@
               }
           )
   
-  검증: Albert 전용 검색 작동
+  검증: Observer 전용 검색 작동
 
-□ 7.2.2 SteveRetriever (1시간)
+□ 7.2.2 ExplorerRetriever (1시간)
   - umis_rag/retrievers/steve.py
   
-  class SteveRetriever(BaseAgentRetriever):
+  class ExplorerRetriever(BaseAgentRetriever):
       def __init__(self):
           super().__init__("steve")
       
@@ -1052,27 +1052,27 @@
           )
       
       def ask_bill_for_metrics(self, source_id: str):
-          """Bill에게 정량 데이터 요청"""
-          bill = BillRetriever()
+          """Quantifier에게 정량 데이터 요청"""
+          bill = QuantifierRetriever()
           return bill.search(
               "",  # 쿼리 없음
               additional_filter={"source_id": source_id}
           )
       
       def ask_rachel_for_sources(self, source_id: str):
-          """Rachel에게 출처 확인"""
-          rachel = RachelRetriever()
+          """Validator에게 출처 확인"""
+          rachel = ValidatorRetriever()
           return rachel.search(
               "",
               additional_filter={"source_id": source_id}
           )
   
-  검증: Steve 협업 검색 작동
+  검증: Explorer 협업 검색 작동
 
-□ 7.2.3 BillRetriever (30분)
+□ 7.2.3 QuantifierRetriever (30분)
   - umis_rag/retrievers/bill.py
   
-  class BillRetriever(BaseAgentRetriever):
+  class QuantifierRetriever(BaseAgentRetriever):
       def search_metric(self, metric_name: str):
           """특정 메트릭만"""
           return self.search(
@@ -1093,12 +1093,12 @@
               }
           )
   
-  검증: Bill 빠른 검색
+  검증: Quantifier 빠른 검색
 
-□ 7.2.4 RachelRetriever (30min)
+□ 7.2.4 ValidatorRetriever (30min)
   - umis_rag/retrievers/rachel.py
   
-  class RachelRetriever(BaseAgentRetriever):
+  class ValidatorRetriever(BaseAgentRetriever):
       def search_by_source(self, source_id: str):
           """특정 데이터의 출처"""
           return self.search(
@@ -1118,12 +1118,12 @@
               }
           )
   
-  검증: Rachel 검증 검색
+  검증: Validator 검증 검색
 
-□ 7.2.5 StewartRetriever (30분)
+□ 7.2.5 GuardianRetriever (30분)
   - umis_rag/retrievers/stewart.py
   
-  class StewartRetriever(BaseAgentRetriever):
+  class GuardianRetriever(BaseAgentRetriever):
       def check_validation_status(self, source_id: str):
           """검증 상태 빠른 확인"""
           return self.search(
@@ -1144,7 +1144,7 @@
               }
           )
   
-  검증: Stewart 품질 검색
+  검증: Guardian 품질 검색
 
 □ 7.2.6 OwnerRetriever (30min)
   - umis_rag/retrievers/owner.py
@@ -1165,50 +1165,50 @@
 ### Task 7.3: Cross-Agent 협업 테스트 (2시간)
 
 ```yaml
-□ 7.3.1 Steve → Bill 협업 (1시간)
+□ 7.3.1 Explorer → Quantifier 협업 (1시간)
   
   시나리오:
-    1. Steve: "배달의민족 사례" 검색
+    1. Explorer: "배달의민족 사례" 검색
        → steve_baemin_opportunity 발견
        → source_id: "baemin_case" 획득
     
-    2. Steve: "정량 데이터 필요"
+    2. Explorer: "정량 데이터 필요"
        → steve.ask_bill_for_metrics("baemin_case")
-       → Bill retriever 호출
+       → Quantifier retriever 호출
     
-    3. Bill: source_id로 검색
+    3. Quantifier: source_id로 검색
        → bill_baemin_growth_metrics 반환
        → "MAU: 1,000만" 획득
     
-    4. Steve: Bill 데이터로 가설 생성
+    4. Explorer: Quantifier 데이터로 가설 생성
        → "국내 배달앱 MAU 1,000만 검증됨"
   
   검증: 자동 협업 성공! ✨
 
-□ 7.3.2 Steve → Rachel 협업 (30분)
+□ 7.3.2 Explorer → Validator 협업 (30분)
   
   시나리오:
-    1. Steve: Bill 데이터 사용
+    1. Explorer: Quantifier 데이터 사용
        → "출처 신뢰도 확인 필요"
     
-    2. Steve → Rachel:
+    2. Explorer → Validator:
        → steve.ask_rachel_for_sources("baemin_case")
     
-    3. Rachel: 출처 반환
+    3. Validator: 출처 반환
        → rachel_baemin_src002
        → "공식 발표 (High 신뢰도)"
     
-    4. Steve: 신뢰도 확인하여 가설 작성
+    4. Explorer: 신뢰도 확인하여 가설 작성
   
   검증: 출처 확인 자동
 
-□ 7.3.3 Stewart 검증 체인 (30분)
+□ 7.3.3 Guardian 검증 체인 (30분)
   
   시나리오:
-    1. Stewart: "steve_baemin_opportunity" 검증
+    1. Guardian: "steve_baemin_opportunity" 검증
        → source_id 확인
     
-    2. Stewart: Bill/Rachel 검증 확인
+    2. Guardian: Quantifier/Validator 검증 확인
        → bill_retriever.search(source_id)
        → rachel_retriever.search(source_id)
     
@@ -1223,9 +1223,9 @@
 ```yaml
 ✅ 6개 Agent Retriever 작동
 ✅ 각 Agent가 자기 view만 검색
-✅ Steve → Bill 자동 협업
-✅ Steve → Rachel 자동 협업
-✅ Stewart 검증 체인 확인
+✅ Explorer → Quantifier 자동 협업
+✅ Explorer → Validator 자동 협업
+✅ Guardian 검증 체인 확인
 ✅ source_id 기반 협업 완벽
 
 → Modular RAG 완성! 👥
@@ -1378,13 +1378,13 @@
 
 ---
 
-## 📅 Day 8-9: Steve 통합 및 고도화 (월-화요일)
+## 📅 Day 8-9: Explorer 통합 및 고도화 (월-화요일)
 
-**목표:** Steve에 모든 기능 통합  
+**목표:** Explorer에 모든 기능 통합  
 **시간:** 12시간  
 **중요도:** 🔴 P0 (사용자 인터페이스)
 
-### Task 8.1: Steve 메서드 확장 (4시간)
+### Task 8.1: Explorer 메서드 확장 (4시간)
 
 ```yaml
 □ 8.1.1 search_hybrid_patterns() (2시간)
@@ -1403,25 +1403,25 @@
   검증: 조합 제안 작동
 
 □ 8.1.2 ask_bill_for_data() (1시간)
-  - Bill Retriever 호출 (향후 구현)
+  - Quantifier Retriever 호출 (향후 구현)
   - 현재는 기본 검색
   
-  검증: source_id로 Bill 데이터 찾기
+  검증: source_id로 Quantifier 데이터 찾기
 
 □ 8.1.3 ask_rachel_for_verification() (1시간)
-  - Rachel Retriever 호출 (향후)
+  - Validator Retriever 호출 (향후)
   - 현재는 기본 검색
   
-  검증: source_id로 Rachel 검증 찾기
+  검증: source_id로 Validator 검증 찾기
 ```
 
-### Task 8.2: Stewart 통합 (4시간)
+### Task 8.2: Guardian 통합 (4시간)
 
 ```yaml
-□ 8.2.1 StewartMonitor 클래스 (2시간)
+□ 8.2.1 GuardianMonitor 클래스 (2시간)
   - umis_rag/agents/stewart.py
   
-  class StewartMonitor:
+  class GuardianMonitor:
       def __init__(self):
           self.query_memory = QueryMemoryRAG()
           self.goal_memory = GoalMemoryRAG()
@@ -1467,19 +1467,19 @@
     1. [PROJECT_START] "피아노 구독"
        → Goal 저장됨
     
-    2. Steve: "플랫폼 기회" 검색
+    2. Explorer: "플랫폼 기회" 검색
        → Query 기록됨
        → Alignment: 95% ✅
     
-    3. Steve: "플랫폼 검증" 검색 (2회)
+    3. Explorer: "플랫폼 검증" 검색 (2회)
        → Query 기록됨
        → 유사 쿼리 1개 발견
     
-    4. Steve: "플랫폼 수익성" 검색 (3회)
+    4. Explorer: "플랫폼 수익성" 검색 (3회)
        → 순환 감지! 🔄
-       → Stewart Nudge
+       → Guardian Nudge
     
-    5. Steve: "바이올린" 검색
+    5. Explorer: "바이올린" 검색
        → Alignment: 42% ⚠️
        → 목표 이탈 경고! 🎯
     
@@ -1506,9 +1506,9 @@
 ### Day 8-9 완료 기준
 
 ```yaml
-✅ Steve Hybrid 검색 작동
-✅ Stewart 순환 감지 통합
-✅ Stewart 목표 정렬 통합
+✅ Explorer Hybrid 검색 작동
+✅ Guardian 순환 감지 통합
+✅ Guardian 목표 정렬 통합
 ✅ E2E 시나리오 통과
 ✅ 복잡한 케이스 처리
 
@@ -1565,7 +1565,7 @@
 
 □ 10.2.2 프로젝트 2: "피트니스 앱 D2C" (1.5시간)
   - 다른 도메인 테스트
-  - Stewart 개입 시나리오
+  - Guardian 개입 시나리오
   - Hybrid 검색 활용
   
   검증: 도메인 무관 작동
@@ -1598,13 +1598,13 @@
 
 ---
 
-## 📅 Day 10-11: Steve & Stewart 통합 (수-목요일)
+## 📅 Day 10-11: Explorer & Guardian 통합 (수-목요일)
 
 **목표:** 모든 기능을 Agent에 통합  
 **시간:** 12시간  
 **중요도:** 🔴 P0
 
-### Task 10.1: Steve 전체 통합 (6시간)
+### Task 10.1: Explorer 전체 통합 (6시간)
 
 ```yaml
 □ 10.1.1 search_hybrid_patterns() (2시간)
@@ -1623,10 +1623,10 @@
   - 전체 흐름 테스트
 ```
 
-### Task 10.2: Stewart 전체 통합 (6시간)
+### Task 10.2: Guardian 전체 통합 (6시간)
 
 ```yaml
-□ 10.2.1 StewartMonitor 통합 (3시간)
+□ 10.2.1 GuardianMonitor 통합 (3시간)
   - QueryMemory + GoalMemory
   - CircularDetector + AlignmentChecker
   - 자동 모니터링
@@ -1645,8 +1645,8 @@
 ### Day 10-11 완료 기준
 
 ```yaml
-✅ Steve 모든 기능 통합
-✅ Stewart 자동 모니터링
+✅ Explorer 모든 기능 통합
+✅ Guardian 자동 모니터링
 ✅ 순환 + 목표 동시 작동
 ✅ Cross-agent 협업 자동
 
@@ -1688,7 +1688,7 @@
   
 □ 12.2.2 프로젝트 2 (1.5시간)
   - "피트니스 앱 D2C"
-  - Stewart 개입 시나리오
+  - Guardian 개입 시나리오
 ```
 
 ### Task 12.3: 문서화 (1시간)
@@ -1774,7 +1774,7 @@ Day 5 🎯: 목표 정렬
   → 60% 기준 자동 경고
 
 Day 6 👥: Modular RAG (6-View 청킹) ⭐
-  → Albert, Steve, Bill, Rachel, Stewart, Owner
+  → Observer, Explorer, Quantifier, Validator, Guardian, Owner
   → 같은 사례를 6개 관점으로!
 
 Day 7 🔗: Agent별 Retriever ⭐
@@ -1812,7 +1812,7 @@ Day 2-3 병렬:
   Day 3: Graph 완성 + 순환 감지 시작 (8h)
   Day 4: 순환 감지 완성 + 목표 정렬 (8h)
   Day 5-6: Hybrid 검색 (12h)
-  Day 7-8: Steve 통합 (12h)
+  Day 7-8: Explorer 통합 (12h)
   Day 9: 테스트 (8h)
   
   총: 9일! (1일 단축)
@@ -1845,7 +1845,7 @@ Day 3 - Graph 관계 + 순환 기초:
   
 Day 4 - 순환 감지 완성:
   [ ] LLM 정밀 검증
-  [ ] Stewart 개입 로직
+  [ ] Guardian 개입 로직
   [ ] Graph CircularPattern
   [ ] 통합 테스트
   
@@ -1853,7 +1853,7 @@ Day 5 - 목표 정렬:
   [ ] GoalMemory 컬렉션
   [ ] 정렬도 측정 (RAG)
   [ ] 이탈 분석 (LLM)
-  [ ] Stewart 경고
+  [ ] Guardian 경고
 ```
 
 ### Week 2 (Day 6-10)
@@ -1865,9 +1865,9 @@ Day 6-7 - Hybrid 검색:
   [ ] Re-ranking
   [ ] 테스트 케이스
   
-Day 8-9 - Steve 통합:
+Day 8-9 - Explorer 통합:
   [ ] search_hybrid_patterns()
-  [ ] Stewart 모니터링 통합
+  [ ] Guardian 모니터링 통합
   [ ] E2E 워크플로우
   [ ] 복잡한 시나리오
   
@@ -1921,7 +1921,7 @@ Memory-Augmented: ████████████████████�
   ✅ Hybrid 순환 감지
   ✅ Hybrid 목표 정렬
 
-Stewart Monitoring: ████████████████░░░░ 80%
+Guardian Monitoring: ████████████████░░░░ 80%
   ✅ 순환 감지
   ✅ 목표 정렬
   ⚠️  명확도 진화 (미구현)
@@ -1939,7 +1939,7 @@ Stewart Monitoring: ████████████████░░░░
 ✅ 실전 프로젝트 가능
 
 제한사항:
-  ⚠️  Steve view만 (Albert, Bill, Rachel 미구현)
+  ⚠️  Explorer view만 (Observer, Quantifier, Validator 미구현)
   ⚠️  자동 검증 부분적 (Meta-RAG 미구현)
   ⚠️  MCP Tool 없음 (수동 query_rag.py)
 ```
@@ -2049,7 +2049,7 @@ pip install neo4j
 경험:
   ✅ YAML 수정 즉시 반영
   ✅ Cursor 사용 자연스러움
-  ✅ Stewart 개입 명확함
+  ✅ Guardian 개입 명확함
 ```
 
 ---
@@ -2169,7 +2169,7 @@ P0 (10일):
   [ ] Day 4: 순환 감지 (Memory-RAG Hybrid)
   [ ] Day 5: 목표 정렬 (Memory-RAG Hybrid)
   [ ] Day 6-7: Hybrid 검색
-  [ ] Day 8-9: Steve 통합
+  [ ] Day 8-9: Explorer 통합
   [ ] Day 10: 통합 테스트
 
 P1 (선택):

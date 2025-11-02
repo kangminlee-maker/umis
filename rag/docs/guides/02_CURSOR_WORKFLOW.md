@@ -21,7 +21,7 @@ AI:
   🚀 UMIS 시장 분석 시작
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   
-  [Observer (Albert) 작업]
+  [Observer (Observer) 작업]
   
   시장 관찰:
   - 피아노 구매: 300-800만원 (높은 진입장벽)
@@ -41,7 +41,7 @@ AI:
 
 ```
 AI:
-  [Explorer (Steve) 작업]
+  [Explorer (Explorer) 작업]
   
   패턴 매칭이 필요합니다. RAG에서 검색하겠습니다.
   
@@ -254,24 +254,24 @@ AI:
 ## 🎨 Agent 역할 (ID 기준)
 
 ```yaml
-Observer (Albert):
+Observer (Observer):
   • 시장 구조 관찰
   • 트리거 시그널 발견
   
-Explorer (Steve):
+Explorer (Explorer):
   • 패턴 매칭 (RAG 활용!)
   • 기회 가설 생성
   • 사례 학습 (RAG 활용!)
   
-Quantifier (Bill):
+Quantifier (Quantifier):
   • 시장 규모 계산
   • 수익성 분석
   
-Validator (Rachel):
+Validator (Validator):
   • 데이터 검증
   • 출처 확인
   
-Guardian (Stewart):
+Guardian (Guardian):
   • 품질 관리
   • 순환 감지 (Memory-RAG!)
   • 목표 정렬 (Memory-RAG!)

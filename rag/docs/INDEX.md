@@ -71,7 +71,7 @@
 **참조용 (선택):**
 - **MEMORY_AUGMENTED_RAG_ANALYSIS.md**
   - Memory-RAG 접근
-  - Guardian (Stewart) 감시 시스템
+  - Guardian (Guardian) 감시 시스템
 
 - **SPEC_REVIEW.md**
   - UMIS v6.2 대조
@@ -141,11 +141,11 @@
 
 ```yaml
 UMIS v6.2 Agent:
-  Observer (Albert) - 시장 구조 관찰
-  Explorer (Steve) - 기회 발굴
-  Quantifier (Bill) - 정량 분석
-  Validator (Rachel) - 데이터 검증
-  Guardian (Stewart) - 프로세스 감시
+  Observer (Observer) - 시장 구조 관찰
+  Explorer (Explorer) - 기회 발굴
+  Quantifier (Quantifier) - 정량 분석
+  Validator (Validator) - 데이터 검증
+  Guardian (Guardian) - 프로세스 감시
   Owner - 의사결정
 ```
 

@@ -17,7 +17,7 @@
   2. Cursor 채팅: "피아노 구독 서비스 분석"
   
   3. AI가 자동 판단:
-     "Albert의 관찰에서 트리거 발견"
+     "Observer의 관찰에서 트리거 발견"
      → Tool 사용: umis_rag_search_patterns()
      → "subscription_model 패턴 발견"
      → "코웨이 사례 검색"
@@ -43,7 +43,7 @@ umis_rag_tools = [
         UMIS 패턴 라이브러리 검색
         
         사용 시점:
-        - Albert가 트리거 시그널 발견 시
+        - Observer가 트리거 시그널 발견 시
         - 적용 가능한 사업모델 패턴 찾기
         
         예: "높은 초기 비용, 정기 사용"
@@ -54,7 +54,7 @@ umis_rag_tools = [
             "properties": {
                 "trigger_signals": {
                     "type": "string",
-                    "description": "Albert가 발견한 트리거 시그널"
+                    "description": "Observer가 발견한 트리거 시그널"
                 },
                 "pattern_type": {
                     "type": "string",
@@ -73,7 +73,7 @@ umis_rag_tools = [
         유사 산업 성공 사례 검색
         
         사용 시점:
-        - Steve가 패턴 적용 시 참고할 사례 필요
+        - Explorer가 패턴 적용 시 참고할 사례 필요
         
         예: "음악 스트리밍 구독"
         → Netflix, Spotify 사례 반환
@@ -91,10 +91,10 @@ umis_rag_tools = [
     Tool(
         name="umis_verify_data",
         description="""
-        Rachel의 데이터 검증
+        Validator의 데이터 검증
         
         사용 시점:
-        - Bill이 계산에 데이터 사용 전
+        - Quantifier이 계산에 데이터 사용 전
         - 데이터 정의 및 신뢰도 확인 필요
         
         예: "학습자 수 50만명"
@@ -112,13 +112,13 @@ umis_rag_tools = [
     Tool(
         name="umis_check_validation",
         description="""
-        Stewart의 검증 상태 확인
+        Guardian의 검증 상태 확인
         
         사용 시점:
         - Agent가 결과물 완성 시
         - 품질 체크 필요
         
-        예: "Steve 가설 완료"
+        예: "Explorer 가설 완료"
         → 검증 체크리스트 반환
         """,
         input_schema={
@@ -140,7 +140,7 @@ umis_rag_tools = [
 
 AI (내부):
   1. umis_guidelines_v6.2.yaml 읽기
-  2. "Albert 시작 → 트리거 발견"
+  2. "Observer 시작 → 트리거 발견"
   3. [Tool 사용] umis_search_patterns("높은 초기 비용, 정기 사용")
   4. [Tool 결과] subscription_model 패턴
   5. [Tool 사용] umis_search_cases("정수기 렌탈", "subscription_model")
@@ -184,7 +184,7 @@ AI (내부):
 
 agents:
   - id: Explorer
-    name: "Steve"
+    name: "Explorer"
     
     # 기존 YAML 정의
     core_competencies: [...]
@@ -197,7 +197,7 @@ agents:
       pattern_library:
         source: "umis_rag://patterns"
         usage: |
-          Steve가 패턴 매칭 시:
+          Explorer가 패턴 매칭 시:
           1. YAML의 트리거 정의 먼저 확인
           2. 부족하면 RAG 검색 (자동)
           3. 결과 통합
@@ -218,7 +218,7 @@ AI 읽기:
   
 분석 중:
   1. YAML 기본 프로세스 따름
-  2. Steve 패턴 매칭 필요
+  2. Explorer 패턴 매칭 필요
   3. YAML에 7개 패턴 개요 있음 (기본)
   4. "더 상세한 사례 필요" 판단
   5. RAG 검색 (knowledge_base.case_library)
@@ -254,7 +254,7 @@ AI 읽기:
 # AI가 실제로 보는 것: (런타임에 확장됨)
 agents:
   - id: Explorer
-    name: "Steve"
+    name: "Explorer"
     
     # YAML 원본 내용
     core_competencies: [...]
@@ -269,7 +269,7 @@ agents:
       
       context_from_past_projects:
         - "3개월 전 '악기 렌탈' 프로젝트에서 유사 분석"
-        - "재사용 가능한 Bill 계산식 발견"
+        - "재사용 가능한 Quantifier 계산식 발견"
 ```
 
 ### 사용 흐름
@@ -320,7 +320,7 @@ if rag_available:
 
 agents:
   - id: Explorer
-    name: "Steve"
+    name: "Explorer"
     
     # 함수 호출 힌트 추가
     external_functions:
@@ -338,7 +338,7 @@ agents:
 ````
 AI (Claude/GPT):
   1. YAML 읽기
-  2. "Steve 작업 중 - 패턴 매칭 필요"
+  2. "Explorer 작업 중 - 패턴 매칭 필요"
   3. YAML에서 external_functions 발견
   4. Function Calling:
      ```json
@@ -379,7 +379,7 @@ AI (Claude/GPT):
 
 agents:
   - id: Explorer
-    name: "Steve"
+    name: "Explorer"
     
     pattern_matching:
       # YAML 기본 정의
@@ -485,7 +485,7 @@ Mode B: YAML + RAG (Advanced)
 ```yaml
 YAML 역할:
   ✅ 프로세스 정의 (상태 기계, 체크포인트)
-  ✅ Agent 역할 (Albert, Steve, Bill, Rachel, Stewart)
+  ✅ Agent 역할 (Observer, Explorer, Quantifier, Validator, Guardian)
   ✅ 원칙 (가설과 판단에는 근거 필요)
   ✅ 워크플로우 (Discovery → Comprehensive)
 
@@ -493,7 +493,7 @@ RAG 역할:
   ✅ 대용량 패턴 라이브러리 (7+5 패턴, 30+ 사례)
   ✅ 의미 검색 (트리거 → 패턴 매칭)
   ✅ 과거 프로젝트 학습
-  ✅ Stewart 순환 감지, 목표 정렬
+  ✅ Guardian 순환 감지, 목표 정렬
 
 통합:
   - AI가 YAML 읽으며 진행
@@ -616,7 +616,7 @@ Cursor에 첨부:
   
 AI 분석:
   1. 5,428줄 읽기 (프로세스만)
-  2. Steve 패턴 매칭 필요 판단
+  2. Explorer 패턴 매칭 필요 판단
   3. [Tool] umis_search_patterns("높은 초기 비용")
   4. [결과] subscription_model (200 토큰)
   5. [Tool] umis_search_cases("코웨이")
@@ -695,7 +695,7 @@ Option B: YAML 1개 + Python RAG
 ```yaml
 완성:
   - MCP Tool + Knowledge Graph
-  - Stewart 순환/목표 감지
+  - Guardian 순환/목표 감지
   - 학습 및 피드백
   
 경험:
@@ -722,7 +722,7 @@ Option B: YAML 1개 + Python RAG
    - 20-30% 명확도로 시작
    
 ✅ Agent 역할:
-   - Albert, Steve, Bill, Rachel, Stewart
+   - Observer, Explorer, Quantifier, Validator, Guardian
    - 역할, 책임, 경계
    
 ✅ 가이드라인:
@@ -787,26 +787,26 @@ Option B: YAML 1개 + Python RAG
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  1. YAML 읽기 (프로세스, 역할, 원칙) ✅                      │
-│     → Stewart: 프로젝트 시작                                 │
+│     → Guardian: 프로젝트 시작                                 │
 │     → Discovery Sprint 또는 바로 분석                        │
 │                                                              │
-│  2. Albert 작업                                              │
+│  2. Observer 작업                                              │
 │     → YAML 지침 따름                                         │
 │     → 트리거 발견: "높은 초기 비용, 정기 사용"               │
 │                                                              │
-│  3. Steve 작업                                               │
+│  3. Explorer 작업                                               │
 │     → YAML: "패턴 매칭 필요"                                 │
 │     → [Tool 호출] umis_search_patterns() ← RAG!             │
 │     → [결과] subscription_model + 코웨이 사례                │
 │     → YAML + RAG 통합 분석                                   │
 │                                                              │
-│  4. Bill 작업                                                │
+│  4. Quantifier 작업                                                │
 │     → YAML: "SAM 4가지 방법"                                 │
 │     → [Tool 호출] umis_verify_data() ← RAG!                 │
 │     → [결과] 데이터 정의 + 신뢰도                            │
 │     → 계산 진행                                              │
 │                                                              │
-│  5. Stewart 검증                                             │
+│  5. Guardian 검증                                             │
 │     → YAML: "4개 체크포인트"                                 │
 │     → [Tool 호출] umis_check_validation() ← RAG!            │
 │     → [결과] 검증 상태 + Gap                                 │
@@ -858,7 +858,7 @@ Day 5-7: 통합 테스트
 ### Week 2-3: 고급 기능 (v1.1)
 
 ```python
-Week 2: Stewart Tools
+Week 2: Guardian Tools
   - check_circular tool
   - check_goal_alignment tool
   - Knowledge Graph 연동

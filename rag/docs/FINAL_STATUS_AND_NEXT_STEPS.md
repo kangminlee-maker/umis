@@ -9,7 +9,7 @@
   ✅ Python 환경 (LangChain + OpenAI + Chroma)
   ✅ YAML → 청크 변환 (54개)
   ✅ 벡터 인덱스 (text-embedding-3-large, 3072 dim)
-  ✅ Steve RAG 에이전트
+  ✅ Explorer RAG 에이전트
   ✅ 검색 테스트 (모두 통과)
   ✅ Jupyter 프로토타입 (실행 중!)
   
@@ -52,7 +52,7 @@
   ✅ 적응형 청킹 레벨
   
 검증:
-  ✅ Steve view 작동
+  ✅ Explorer view 작동
   ✅ Cross-reference 가능
   ✅ 확장 경로 명확
 ```
@@ -60,7 +60,7 @@
 ### 3. 3가지 핵심 도전 과제 (정확!)
 
 ```yaml
-도전 1: Stewart Meta-RAG
+도전 1: Guardian Meta-RAG
   문제: Agent 결과물 검증 불가
   해결: Graph + 전용 인덱스
   중요도: ⭐⭐⭐⭐⭐
@@ -118,7 +118,7 @@
 강점:
   ✅ Vector RAG 완전 설계
   ✅ Knowledge Graph 계획
-  ✅ Stewart 3단계 검증
+  ✅ Guardian 3단계 검증
   ✅ 피드백 학습
 
 약점:
@@ -140,7 +140,7 @@ UMIS 구현도: 65%
   🆕 상태 기계 통합
   🆕 자연스러운 지원 vs 의무 검증 구분
   🆕 10x 기회 자동 감지
-  🆕 Rachel 정의 검증
+  🆕 Validator 정의 검증
 
 UMIS 구현도: 95% ✅
 완전한 UMIS RAG!
@@ -155,7 +155,7 @@ UMIS 구현도: 95% ✅
 ```yaml
 현재:
   ✅ Vector RAG 작동
-  ✅ Steve 에이전트 사용 가능
+  ✅ Explorer 에이전트 사용 가능
   ✅ 기본 검색 정확
   
 완성도: 50%
@@ -178,7 +178,7 @@ UMIS 구현: 50%
 활용: 패턴 조합 가능, 검증은 수동
 
 추천: ⚠️ 부분적
-이유: Stewart 역할 불완전
+이유: Guardian 역할 불완전
 ```
 
 ### Path C: v1.1 Enhanced 완전 구현 ⭐
@@ -186,7 +186,7 @@ UMIS 구현: 50%
 ```yaml
 +3주:
   Week 1: Graph + 순환/목표 감지
-  Week 2: Stewart Meta-RAG + 상태 기계
+  Week 2: Guardian Meta-RAG + 상태 기계
   Week 3: 명확도 적응 + 학습
   
 완성도: 95%
@@ -205,19 +205,19 @@ UMIS 구현: 95%
 
 **없으면 발생할 문제:**
 ```
-Steve: "플랫폼 기회 평가"
-Stewart: "Bill 데이터 부족"
+Explorer: "플랫폼 기회 평가"
+Guardian: "Quantifier 데이터 부족"
 
-Steve: "플랫폼 + Bill 데이터"
-Stewart: "Rachel 검증 부족"
+Explorer: "플랫폼 + Quantifier 데이터"
+Guardian: "Validator 검증 부족"
 
-Steve: "플랫폼 + Bill + Rachel"
-Stewart: "Albert 관찰 불충분"
+Explorer: "플랫폼 + Quantifier + Validator"
+Guardian: "Observer 관찰 불충분"
 
-Steve: "플랫폼 + 모두 포함"
-Stewart: "Bill 데이터 부족" ← 1회차와 동일!
+Explorer: "플랫폼 + 모두 포함"
+Guardian: "Quantifier 데이터 부족" ← 1회차와 동일!
 
-Steve: ... (무한 루프!)
+Explorer: ... (무한 루프!)
 
 → 3회에서 감지 안 되면 영원히 순환! 💀
 ```
@@ -225,7 +225,7 @@ Steve: ... (무한 루프!)
 **UMIS v6.2 해결책:**
 ```
 3회 반복 자동 감지
-→ Stewart 개입
+→ Guardian 개입
 → Owner 에스컬레이션
 → 강제 결정
 
@@ -259,7 +259,7 @@ Query 5: "현악기 수입 동향" (38% 정렬) ← 더 이탈!
 ```
 목표 정렬도 60% 기준
 → 평균 < 60% 감지
-→ Stewart 경고
+→ Guardian 경고
 → 목표 재확인
 
 → 궤도 복귀! ✅
@@ -278,39 +278,39 @@ Query 5: "현악기 수입 동향" (38% 정렬) ← 더 이탈!
 ### v1.0의 치명적 한계
 
 ```yaml
-시나리오: Steve가 기회 발굴 중
+시나리오: Explorer가 기회 발굴 중
 
 v1.0 (순환 감지 없음):
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Steve: "플랫폼 기회" 검색
-  Bill: "데이터 부족" 피드백
+  Explorer: "플랫폼 기회" 검색
+  Quantifier: "데이터 부족" 피드백
   
-  Steve: "플랫폼 + 데이터" 검색
-  Rachel: "출처 불명" 피드백
+  Explorer: "플랫폼 + 데이터" 검색
+  Validator: "출처 불명" 피드백
   
-  Steve: "플랫폼 + 출처" 검색
-  Bill: "계산 불충분" 피드백
+  Explorer: "플랫폼 + 출처" 검색
+  Quantifier: "계산 불충분" 피드백
   
-  Steve: "플랫폼 + 계산" 검색
-  Rachel: "검증 부족" 피드백
+  Explorer: "플랫폼 + 계산" 검색
+  Validator: "검증 부족" 피드백
   
   (무한 반복... 💀)
   
 v1.1 Enhanced (순환 감지 있음):
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Steve: "플랫폼 기회" 검색 (1회)
-  Bill: "데이터 부족"
+  Explorer: "플랫폼 기회" 검색 (1회)
+  Quantifier: "데이터 부족"
   
-  Steve: "플랫폼 + 데이터" 검색 (2회)
-  Rachel: "출처 불명"
-  [Stewart 모니터링 강화]
+  Explorer: "플랫폼 + 데이터" 검색 (2회)
+  Validator: "출처 불명"
+  [Guardian 모니터링 강화]
   
-  Steve: "플랫폼 + 출처" 검색 (3회)
-  Bill: "계산 불충분"
+  Explorer: "플랫폼 + 출처" 검색 (3회)
+  Quantifier: "계산 불충분"
   
-  Stewart: "🔄 순환 패턴 감지!" 
+  Guardian: "🔄 순환 패턴 감지!" 
   → Owner 에스컬레이션
-  → "Bill/Rachel 동시 검증" 결정
+  → "Quantifier/Validator 동시 검증" 결정
   → 순환 탈출! ✅
 ```
 
@@ -318,7 +318,7 @@ v1.1 Enhanced (순환 감지 있음):
 
 ```yaml
 UMIS 본질 구현:
-  ✅ Stewart의 감시 역할 (순환/목표)
+  ✅ Guardian의 감시 역할 (순환/목표)
   ✅ 점진적 지능 (명확도 진화)
   ✅ 적응형 실행 (상태별 전략)
   ✅ 피드백 루프 (학습)
@@ -346,10 +346,10 @@ v1.0:
   
 가치:
   ✅ 완전한 UMIS 구현
-  ✅ Stewart 핵심 역할 (순환/목표)
+  ✅ Guardian 핵심 역할 (순환/목표)
   ✅ 프로덕션 레디
   ✅ 경쟁 우위 시스템
-  ✅ 확장 가능 (Albert, Bill, Rachel)
+  ✅ 확장 가능 (Observer, Quantifier, Validator)
   
 ROI:
   - 단기 (3주): 완전한 프로토타입
@@ -369,7 +369,7 @@ Week 1 완료 후:
   → 이미 프로토타입보다 10배 가치
 
 Week 2 완료 후:
-  ✅ Stewart 검증 자동화
+  ✅ Guardian 검증 자동화
   ✅ 4개 체크포인트 자동
   ✅ 상태 기계 작동
   
@@ -422,7 +422,7 @@ Week 3 완료 후:
 URL: http://localhost:8888/?token=b836d7e4baf1d0405489f71edb49237c4566e04e57493760
 
 다음 셀 실행:
-  Cell 3: Albert 관찰 입력
+  Cell 3: Observer 관찰 입력
   Cell 4: 패턴 매칭 (subscription_model)
   Cell 5: 사례 검색 (코웨이)
   Cell 6: 검증 프레임워크
@@ -470,7 +470,7 @@ python scripts/05_setup_goal_alignment.py
 ```yaml
 1. Jupyter 노트북 완주 (10분)
    → 현재 프로토타입 체험
-   → Steve의 검색 품질 확인
+   → Explorer의 검색 품질 확인
    → 가능성 검증
 
 2. v1.1 Enhanced 스펙 검토 (30분)
@@ -486,7 +486,7 @@ Week 1: Graph + 순환/목표 (P0)
   → UMIS 핵심 50% 구현
   → 순환 탈출, 목표 유지 보장
   
-Week 2: Stewart Meta-RAG (P0)
+Week 2: Guardian Meta-RAG (P0)
   → UMIS 핵심 80% 구현
   → 검증 자동화
   
@@ -515,7 +515,7 @@ Week 3: 명확도 적응 + 학습 (P1)
 ```
 ✅ text-embedding-3-large 선택
 ✅ Multi-View 아키텍처
-✅ Stewart Meta-RAG 필요성
+✅ Guardian Meta-RAG 필요성
 ✅ Knowledge Graph 필요성
 ✅ 피드백 학습 필요성
 

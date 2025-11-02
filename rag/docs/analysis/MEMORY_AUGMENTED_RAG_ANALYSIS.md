@@ -1,4 +1,4 @@
-# Memory-Augmented RAG for Stewart Monitoring
+# Memory-Augmented RAG for Guardian Monitoring
 
 ## 🎯 핵심 아이디어
 
@@ -146,7 +146,7 @@ class QueryMemoryRAG:
                     doc.page_content 
                     for doc, score in similar_queries[:3]
                 ],
-                "recommendation": "Stewart 개입 필요"
+                "recommendation": "Guardian 개입 필요"
             }
         
         return {"circular": False}
@@ -212,9 +212,9 @@ class QueryMemoryRAG:
         pass
 
 
-class StewartMemoryRAG:
+class GuardianMemoryRAG:
     """
-    Stewart의 Memory-Augmented RAG
+    Guardian의 Memory-Augmented RAG
     
     3개 메모리 Index:
     ----------------
@@ -253,7 +253,7 @@ class StewartMemoryRAG:
             )
         }
         
-        # Stewart 판단
+        # Guardian 판단
         alerts = []
         
         if results["circular"]["circular"]:
@@ -653,7 +653,7 @@ if alignment_score < 60:
 ### 구현 예시
 
 ```python
-class HybridStewartMonitor:
+class HybridGuardianMonitor:
     """
     Memory-RAG + 명시적 검증 결합
     """

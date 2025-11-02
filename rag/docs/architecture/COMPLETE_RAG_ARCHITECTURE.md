@@ -6,7 +6,7 @@
 
 ```
 Layer 1: Agent-Level Modular RAG      (agent별 최적화)
-Layer 2: Stewart Meta-RAG             (결과 평가/조합)
+Layer 2: Guardian Meta-RAG             (결과 평가/조합)
 Layer 3: Knowledge Graph RAG          (연결성/대안)
 Layer 4: Memory-Augmented RAG         (프로세스 감독)
 ```
@@ -47,28 +47,28 @@ Layer 4: Memory-Augmented RAG         (프로세스 감독)
     - source_id로 cross-reference
 
 조회 (Retrieval Layer):
-  SteveRetriever:
+  ExplorerRetriever:
     filter: agent_view="steve"
     chunking: case (사례 완결성)
     
-  BillRetriever:
+  QuantifierRetriever:
     filter: agent_view="bill"
     chunking: metric/calculation (재사용)
   
   협업:
     steve.ask_bill(source_id)
-    → BillRetriever.search(filter={source_id})
-    → 같은 사례의 Bill view!
+    → QuantifierRetriever.search(filter={source_id})
+    → 같은 사례의 Quantifier view!
 
 View (Projection):
-  Steve가 보는 메타데이터:
+  Explorer가 보는 메타데이터:
     - source_id ✅
     - steve_pattern_id ✅
     - steve_csf ✅
     - related_chunks ✅ (협업용)
     - bill_metrics ❌ (안 보임)
   
-  Bill이 보는 메타데이터:
+  Quantifier이 보는 메타데이터:
     - source_id ✅
     - bill_metrics ✅
     - bill_formulas ✅
@@ -79,13 +79,13 @@ View (Projection):
 
 ---
 
-### Layer 2: Stewart Meta-RAG
+### Layer 2: Guardian Meta-RAG
 
 **목적:** 다른 agent 결과물 평가 및 조합
 
 ```yaml
 문제:
-  "Stewart는 agent들의 결과물을 평가한다"
+  "Guardian는 agent들의 결과물을 평가한다"
   → 일반 RAG로는 불가능!
   
 해결:
@@ -100,7 +100,7 @@ View (Projection):
 #### Option A: LLM Reranker (추천!) ⭐
 
 ```python
-class StewartReranker:
+class GuardianReranker:
     """
     LLM으로 결과물 재순위화
     
@@ -158,7 +158,7 @@ class StewartReranker:
 ```python
 from sentence_transformers import CrossEncoder
 
-class StewartCrossEncoder:
+class GuardianCrossEncoder:
     """
     Cross-Encoder로 정밀 재순위화
     
@@ -214,7 +214,7 @@ class StewartCrossEncoder:
 #### Option C: Weighted Scoring (규칙 기반)
 
 ```python
-class StewartWeightedScorer:
+class GuardianWeightedScorer:
     """
     규칙 기반 가중치 점수
     
@@ -256,7 +256,7 @@ class StewartWeightedScorer:
         # Graph 쿼리로 근거 체인 확인
         chain = graph.trace_chain(doc.metadata['hypothesis_id'])
         
-        # Albert ← Steve ← Bill ← Rachel ← Source
+        # Observer ← Explorer ← Quantifier ← Validator ← Source
         if len(chain) >= 5:
             return 10.0
         elif len(chain) >= 3:
@@ -279,10 +279,10 @@ class StewartWeightedScorer:
 ❌ 유지보수: 규칙 계속 조정 필요
 ```
 
-#### 🎯 Stewart Meta-RAG 추천: Hybrid!
+#### 🎯 Guardian Meta-RAG 추천: Hybrid!
 
 ```python
-class StewartMetaRAG:
+class GuardianMetaRAG:
     """
     3단계 Hybrid Meta-RAG
     
@@ -319,7 +319,7 @@ class StewartMetaRAG:
         
         # Stage 3: LLM 최종 판단 (복잡한 케이스만)
         llm_judgment = llm.invoke(f"""
-        Stewart로서 다음 결과물을 평가하세요:
+        Guardian로서 다음 결과물을 평가하세요:
         
         {deliverable.content}
         
@@ -353,7 +353,7 @@ class StewartMetaRAG:
   → 정확합니다!
 
 예시:
-  Steve: "플랫폼 + 구독" 조합 검색
+  Explorer: "플랫폼 + 구독" 조합 검색
   
   Vector RAG만:
     - "플랫폼" 검색
@@ -389,7 +389,7 @@ class StewartMetaRAG:
 
 ### Layer 4: Memory-Augmented RAG
 
-**목적:** Stewart 프로세스 감독
+**목적:** Guardian 프로세스 감독
 
 ```yaml
 당신의 언급:
@@ -441,11 +441,11 @@ class StewartMetaRAG:
 │  │      └─ owner_view chunks                              │ │
 │  │                                                         │ │
 │  │  Retrieval Layer:                                      │ │
-│  │    - AlbertRetriever (filter: agent_view="albert")     │ │
-│  │    - SteveRetriever (filter: agent_view="steve")       │ │
-│  │    - BillRetriever                                     │ │
-│  │    - RachelRetriever                                   │ │
-│  │    - StewartRetriever                                  │ │
+│  │    - ObserverRetriever (filter: agent_view="albert")     │ │
+│  │    - ExplorerRetriever (filter: agent_view="steve")       │ │
+│  │    - QuantifierRetriever                                     │ │
+│  │    - ValidatorRetriever                                   │ │
+│  │    - GuardianRetriever                                  │ │
 │  │    - OwnerRetriever                                    │ │
 │  │                                                         │ │
 │  │  View Layer (Projection):                              │ │
@@ -455,7 +455,7 @@ class StewartMetaRAG:
 │  └────────────────────────────────────────────────────────┘ │
 │                          ↓                                   │
 │  ┌────────────────────────────────────────────────────────┐ │
-│  │  Layer 2: Stewart Meta-RAG                             │ │
+│  │  Layer 2: Guardian Meta-RAG                             │ │
 │  ├────────────────────────────────────────────────────────┤ │
 │  │                                                         │ │
 │  │  Indices:                                               │ │
@@ -529,17 +529,17 @@ class StewartMetaRAG:
 └─────────────────────────────────────────────────────────────┘
                           ↓
 ┌─────────────────────────────────────────────────────────────┐
-│  Albert 작업 (Layer 1: Modular RAG)                          │
+│  Observer 작업 (Layer 1: Modular RAG)                          │
 ├─────────────────────────────────────────────────────────────┤
-│  1. AlbertRetriever.search_structure("피아노 시장")          │
+│  1. ObserverRetriever.search_structure("피아노 시장")          │
 │  2. albert_view 청크 검색                                    │
 │  3. 트리거 발견: "높은 초기 비용, 정기 사용"                 │
 └─────────────────────────────────────────────────────────────┘
                           ↓
 ┌─────────────────────────────────────────────────────────────┐
-│  Steve 작업 (Layer 1 + Layer 3)                              │
+│  Explorer 작업 (Layer 1 + Layer 3)                              │
 ├─────────────────────────────────────────────────────────────┤
-│  1. SteveRetriever.search_by_trigger("높은 초기 비용...")    │
+│  1. ExplorerRetriever.search_by_trigger("높은 초기 비용...")    │
 │     → steve_view: subscription_model                         │
 │                                                              │
 │  2. Layer 3 (Graph): 조합 가능성 확인                        │
@@ -552,25 +552,25 @@ class StewartMetaRAG:
 │           Synergy: "직접 관계 + 반복 수익"                   │
 │           Example: "Dollar Shave Club"                       │
 │                                                              │
-│  3. SteveRetriever.search_cases("정수기 렌탈")               │
+│  3. ExplorerRetriever.search_cases("정수기 렌탈")               │
 │     → steve_view: 코웨이 사례                                │
 │                                                              │
-│  4. Steve → Bill 협업:                                       │
+│  4. Explorer → Quantifier 협업:                                       │
 │     source_id = "coway_case"                                 │
 │     steve.ask_bill_for_metrics(source_id)                    │
-│     → BillRetriever.search(filter={source_id})               │
+│     → QuantifierRetriever.search(filter={source_id})               │
 │     → bill_view: "월 3만원, 해지율 3-5%"                     │
 │                                                              │
-│  5. Steve → Rachel 협업:                                     │
+│  5. Explorer → Validator 협업:                                     │
 │     steve.ask_rachel_for_sources(source_id)                  │
-│     → RachelRetriever.search(filter={source_id})             │
+│     → ValidatorRetriever.search(filter={source_id})             │
 │     → rachel_view: "SRC_002 공식발표 (High)"                 │
 │                                                              │
-│  6. Steve: 가설 생성                                         │
+│  6. Explorer: 가설 생성                                         │
 │     "피아노 구독 서비스 (월 10-15만원)                       │
-│      근거: 코웨이 유사 구조 (Albert 관찰)                    │
-│            월 3만원 벤치마크 (Bill 데이터)                   │
-│            공식 발표 검증 (Rachel 확인)"                     │
+│      근거: 코웨이 유사 구조 (Observer 관찰)                    │
+│            월 3만원 벤치마크 (Quantifier 데이터)                   │
+│            공식 발표 검증 (Validator 확인)"                     │
 └─────────────────────────────────────────────────────────────┘
                           ↓
 ┌─────────────────────────────────────────────────────────────┐
@@ -589,11 +589,11 @@ class StewartMetaRAG:
 └─────────────────────────────────────────────────────────────┘
                           ↓
 ┌─────────────────────────────────────────────────────────────┐
-│  Layer 2: Stewart Meta-RAG (검증)                            │
+│  Layer 2: Guardian Meta-RAG (검증)                            │
 ├─────────────────────────────────────────────────────────────┤
 │  1. Weighted Scoring:                                        │
-│     - 근거 완결성: 9/10 (Albert ✅, Bill ✅, Rachel ✅)      │
-│     - 데이터 신뢰도: 8/10 (Rachel High)                     │
+│     - 근거 완결성: 9/10 (Observer ✅, Quantifier ✅, Validator ✅)      │
+│     - 데이터 신뢰도: 8/10 (Validator High)                     │
 │     - 논리 건전성: 9/10 (Graph 체인 완전)                   │
 │     - 실현 가능성: 7/10 (코웨이 검증됨)                     │
 │     총점: 8.3/10                                             │
@@ -614,13 +614,13 @@ class StewartMetaRAG:
 | Layer | 목적 | 기술 | 검색 대상 | 사용 Agent |
 |-------|------|------|-----------|-----------|
 | **1. Modular** | Agent별 최적화 | Chroma + 메타데이터 필터 | 도메인 지식 | 모든 Agent |
-| **2. Meta-RAG** | 결과 평가/조합 | 3-Stage Hybrid | 품질 패턴 | Stewart |
-| **3. Graph** | 연결성/대안 | Neo4j + Vector | 관계 | Steve, Stewart |
-| **4. Memory** | 프로세스 감독 | Memory-RAG + LLM | 과거 쿼리/목표 | Stewart |
+| **2. Meta-RAG** | 결과 평가/조합 | 3-Stage Hybrid | 품질 패턴 | Guardian |
+| **3. Graph** | 연결성/대안 | Neo4j + Vector | 관계 | Explorer, Guardian |
+| **4. Memory** | 프로세스 감독 | Memory-RAG + LLM | 과거 쿼리/목표 | Guardian |
 
 ---
 
-## 🔧 Stewart Meta-RAG 상세 (보완)
+## 🔧 Guardian Meta-RAG 상세 (보완)
 
 ### 가능한 방법들
 
@@ -663,7 +663,7 @@ class StewartMetaRAG:
 #### 4. Ensemble Voting (추가 옵션)
 
 ```python
-class EnsembleStewart:
+class EnsembleGuardian:
     """
     여러 방법의 투표
     
@@ -711,7 +711,7 @@ class EnsembleStewart:
 #### 5. Retrieval-Augmented Evaluation (추가 옵션)
 
 ```python
-class RAEStewart:
+class RAEGuardian:
     """
     RAG + LLM Evaluation
     
@@ -758,7 +758,7 @@ class RAEStewart:
 
 ---
 
-## 🎯 Stewart Meta-RAG 최종 추천
+## 🎯 Guardian Meta-RAG 최종 추천
 
 ### Hybrid 3-Stage (강력 추천!)
 
@@ -802,13 +802,13 @@ class UMISCompleteSystem:
     
     def __init__(self):
         # Layer 1: Modular RAG
-        self.albert = AlbertRetriever()
-        self.steve = SteveRetriever()
-        self.bill = BillRetriever()
-        self.rachel = RachelRetriever()
+        self.albert = ObserverRetriever()
+        self.steve = ExplorerRetriever()
+        self.bill = QuantifierRetriever()
+        self.rachel = ValidatorRetriever()
         
         # Layer 2: Meta-RAG
-        self.stewart_evaluator = StewartMetaRAG()
+        self.stewart_evaluator = GuardianMetaRAG()
         
         # Layer 3: Graph
         self.graph = KnowledgeGraph()
@@ -816,7 +816,7 @@ class UMISCompleteSystem:
         # Layer 4: Memory
         self.query_memory = QueryMemoryRAG()
         self.goal_memory = GoalMemoryRAG()
-        self.stewart_monitor = StewartMonitor()
+        self.stewart_monitor = GuardianMonitor()
     
     def analyze_opportunity(self, user_query: str, project_id: str):
         """
@@ -826,11 +826,11 @@ class UMISCompleteSystem:
         # 0. 목표 저장 (Layer 4)
         self.goal_memory.store(project_id, user_query)
         
-        # 1. Albert 관찰 (Layer 1)
+        # 1. Observer 관찰 (Layer 1)
         albert_observation = self.albert.search_structure(user_query)
         triggers = extract_triggers(albert_observation)
         
-        # 2. Steve 패턴 매칭 (Layer 1 + Layer 3)
+        # 2. Explorer 패턴 매칭 (Layer 1 + Layer 3)
         # Layer 1: Vector search
         patterns = self.steve.search_by_trigger(triggers)
         
@@ -838,17 +838,17 @@ class UMISCompleteSystem:
         pattern_id = patterns[0].metadata['pattern_id']
         combinations = self.graph.find_combinations(pattern_id)
         
-        # Steve: 조합 제안!
+        # Explorer: 조합 제안!
         # "subscription_model + d2c 조합 가능"
         
-        # 3. Steve → Bill 협업 (Layer 1)
+        # 3. Explorer → Quantifier 협업 (Layer 1)
         source_id = patterns[0].metadata['source_id']
         bill_data = self.steve.ask_bill_for_metrics(source_id)
         
-        # 4. Steve → Rachel 협업 (Layer 1)
+        # 4. Explorer → Validator 협업 (Layer 1)
         rachel_sources = self.steve.ask_rachel_for_sources(source_id)
         
-        # 5. Steve 가설 생성
+        # 5. Explorer 가설 생성
         hypothesis = generate_hypothesis(
             patterns, combinations, bill_data, rachel_sources
         )
@@ -870,7 +870,7 @@ class UMISCompleteSystem:
         if alignment['score'] < 60:
             return {'alert': 'goal_deviation', ...}
         
-        # 7. Layer 2: Stewart 검증
+        # 7. Layer 2: Guardian 검증
         evaluation = self.stewart_evaluator.evaluate(hypothesis)
         
         # Stage 1: Weighted
@@ -914,7 +914,7 @@ class UMISCompleteSystem:
    
    → 100% 정확!
 
-2. Stewart Meta-RAG:
+2. Guardian Meta-RAG:
    당신: "LLM reranker나 weighted scoring"
    추가: Cross-Encoder, Ensemble, RAE
    추천: 3-Stage Hybrid
@@ -955,7 +955,7 @@ Day 5: 목표 정렬 🎯 (Layer 4 - Memory)
 Day 6: 6-View 청킹 👥 (Layer 1 - Modular)
 Day 7: Agent Retriever 🔗 (Layer 1 - Modular)
 Day 8-9: Hybrid 검색 🔍 (Layer 3 통합)
-Day 10-11: Stewart Meta-RAG 🎨 (Layer 2)
+Day 10-11: Guardian Meta-RAG 🎨 (Layer 2)
 Day 12: 통합 테스트 ✅
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

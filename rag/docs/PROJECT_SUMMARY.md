@@ -12,7 +12,7 @@
 - [x] YAML → 청크 변환 스크립트 (`01_convert_yaml.py`)
 - [x] Business Model 패턴 31개 청크
 - [x] Disruption 패턴 23개 청크
-- [x] 총 54개 Steve view 청크 생성
+- [x] 총 54개 Explorer view 청크 생성
 
 ### Phase 3: 벡터 인덱스 ✅
 - [x] 벡터 인덱스 구축 스크립트 (`02_build_index.py`)
@@ -20,8 +20,8 @@
 - [x] Chroma DB에 54개 청크 저장
 - [x] 검색 테스트 통과
 
-### Phase 4: Steve RAG 에이전트 ✅
-- [x] Steve 에이전트 모듈 (`umis_rag/agents/steve.py`)
+### Phase 4: Explorer RAG 에이전트 ✅
+- [x] Explorer 에이전트 모듈 (`umis_rag/agents/steve.py`)
 - [x] 패턴 매칭 검색
 - [x] 사례 검색 (필터링)
 - [x] 검증 프레임워크 조회
@@ -59,13 +59,13 @@
   - source_id로 cross-reference
 
 조회: Agent별 Retrieval Layer
-  - SteveRetriever (기회 관점)
-  - BillRetriever (정량 관점)
-  - RachelRetriever (출처 관점)
+  - ExplorerRetriever (기회 관점)
+  - QuantifierRetriever (정량 관점)
+  - ValidatorRetriever (출처 관점)
 
 협업: source_id 기반
-  - Steve → Bill 데이터 요청
-  - Steve → Rachel 검증 요청
+  - Explorer → Quantifier 데이터 요청
+  - Explorer → Validator 검증 요청
 ```
 
 ### 2. **Embeddings 모델 선택**
@@ -87,16 +87,16 @@ text-embedding-3-large 선택:
 
 ```yaml
 Agent별 최적 레벨:
-  Steve: section (300-600 토큰)
+  Explorer: section (300-600 토큰)
     - 패턴 완결성과 검색 정확도 균형
     
-  Albert (향후): meso (500-800 토큰)
+  Observer (향후): meso (500-800 토큰)
     - 구조 요소별 분리
     
-  Bill (향후): calculation (200-400 토큰)
+  Quantifier (향후): calculation (200-400 토큰)
     - 계산 단위로 재사용
     
-  Rachel (향후): source (200-400 토큰)
+  Validator (향후): source (200-400 토큰)
     - 출처별 독립 검증
 ```
 
@@ -131,7 +131,7 @@ umis-main/
 │   │   ├── config.py            ✅ 설정 관리
 │   │   └── metadata_schema.py   ✅ 스키마 설계
 │   ├── agents/
-│   │   └── steve.py             ✅ Steve RAG
+│   │   └── steve.py             ✅ Explorer RAG
 │   └── utils/
 │       └── logger.py            ✅ 로깅
 │
@@ -198,10 +198,10 @@ Chroma DB:
 Single Source with Multi-Perspective
 
 같은 데이터, 다른 관점:
-  - Albert: 구조 분석
-  - Steve: 기회 발굴
-  - Bill: 정량 분석
-  - Rachel: 출처 검증
+  - Observer: 구조 분석
+  - Explorer: 기회 발굴
+  - Quantifier: 정량 분석
+  - Validator: 출처 검증
 
 source_id로 연결!
 ```
@@ -226,17 +226,17 @@ text-embedding-3-large: $0.13/1M (6.5배 비쌈)
 너무 작음: 맥락 부족, 의미 손실
 최적: Agent별 정보 요구 특성 기반
 
-Steve: case (400-800) - 전략 완결성
-Bill: calculation (200-400) - 재사용성
+Explorer: case (400-800) - 전략 완결성
+Quantifier: calculation (200-400) - 재사용성
 ```
 
 ### 3. **Cross-Agent 협업**
 ```
-Steve가 Bill에게 데이터 요청:
-  1. Steve가 사례 발견 (steve_baemin_...)
+Explorer가 Quantifier에게 데이터 요청:
+  1. Explorer가 사례 발견 (steve_baemin_...)
   2. source_id 획득 ("baemin_case")
-  3. Bill retriever로 같은 source_id 검색
-  4. Bill의 정량 데이터 획득
+  3. Quantifier retriever로 같은 source_id 검색
+  4. Quantifier의 정량 데이터 획득
   
 → 자연스러운 협업! ✨
 ```
@@ -273,8 +273,8 @@ jupyter notebook notebooks/steve_rag_prototype.ipynb
 
 ### 현재 상태로 할 수 있는 것
 ```yaml
-✅ Steve 단독 기회 발굴:
-  - Albert 관찰 입력
+✅ Explorer 단독 기회 발굴:
+  - Observer 관찰 입력
   - 패턴 자동 매칭
   - 사례 검색
   - 검증 프레임워크 확인
@@ -288,7 +288,7 @@ jupyter notebook notebooks/steve_rag_prototype.ipynb
 ### 추가 확장 시 가능한 것
 ```yaml
 🔄 Multi-View 구현:
-  - Albert/Bill/Rachel view 추가
+  - Observer/Quantifier/Validator view 추가
   - Cross-agent 실시간 협업
   - 완벽한 UMIS 구현
 

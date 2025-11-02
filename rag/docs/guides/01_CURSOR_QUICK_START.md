@@ -25,10 +25,10 @@ Cmd+I (Mac) 또는 Ctrl+I (Windows)
 ### Step 3: AI가 자동으로
 
 ```
-Observer (Albert): 시장 관찰...
+Observer (Observer): 시장 관찰...
   → 트리거 발견: "높은 초기 비용, 정기 사용"
 
-Explorer (Steve): 패턴 매칭 필요
+Explorer (Explorer): 패턴 매칭 필요
   → [Agent 자동 실행] RAG 검색
   → subscription_model 발견!
   

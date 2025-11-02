@@ -6,11 +6,11 @@ Universal Market Intelligence System의 지식 베이스를 위한 Multi-Agent R
 
 5명의 전문 에이전트가 각자의 관점으로 시장 정보를 분석하고 협업합니다:
 
-- **Albert** (Observer): 시장 구조 관찰
-- **Steve** (Explorer): 기회 발굴
-- **Bill** (Quantifier): 정량 분석
-- **Rachel** (Validator): 데이터 검증
-- **Stewart** (Guardian): 프로세스 관리
+- **Observer** (Observer): 시장 구조 관찰
+- **Explorer** (Explorer): 기회 발굴
+- **Quantifier** (Quantifier): 정량 분석
+- **Validator** (Validator): 데이터 검증
+- **Guardian** (Guardian): 프로세스 관리
 
 ## 📁 프로젝트 구조
 
@@ -99,7 +99,7 @@ python scripts/02_build_index.py --agents all
 ### 5. 검색 테스트
 
 ```bash
-# Steve 에이전트 검색 테스트
+# Explorer 에이전트 검색 테스트
 python scripts/03_test_search.py --agent steve --query "플랫폼 비즈니스 모델"
 ```
 
@@ -116,8 +116,8 @@ jupyter notebook notebooks/prototype.ipynb
 ```bash
 ipython
 
->>> from umis_rag.agents.steve import SteveRAG
->>> steve = SteveRAG()
+>>> from umis_rag.agents.steve import ExplorerRAG
+>>> steve = ExplorerRAG()
 >>> results = steve.search_patterns("구독 서비스")
 >>> print(results)
 ```
@@ -127,18 +127,18 @@ ipython
 ### Phase 1: MVP (현재)
 - [x] 환경 설정
 - [ ] YAML → 청크 변환기
-- [ ] Steve 인덱스 구축
+- [ ] Explorer 인덱스 구축
 - [ ] 기본 검색 테스트
 
 ### Phase 2: Multi-Agent
 - [ ] 5개 에이전트 인덱스
 - [ ] 에이전트별 청킹 전략
-- [ ] 협업 로직 (Steve ↔ Bill/Rachel)
+- [ ] 협업 로직 (Explorer ↔ Quantifier/Validator)
 
 ### Phase 3: Agentic RAG
 - [ ] LangChain Agent 통합
 - [ ] 자율 실행 워크플로우
-- [ ] Stewart 자동 검증
+- [ ] Guardian 자동 검증
 
 ## 🧪 테스트
 

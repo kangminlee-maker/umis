@@ -17,7 +17,7 @@ Status: ✅ 100% 완료
   ✅ Python 환경 (LangChain + OpenAI + Chroma)
   ✅ YAML → 청크 변환 (54개)
   ✅ 벡터 인덱스 (text-embedding-3-large)
-  ✅ Steve RAG 에이전트
+  ✅ Explorer RAG 에이전트
   ✅ 검색 테스트
   ✅ query_rag.py 스크립트
 
@@ -104,7 +104,7 @@ Priority: 🔴 P0 (UMIS 핵심 가치)
     □ hybrid_search() 메서드
     시간: 8시간
   
-  Day 5: Steve 통합 및 테스트
+  Day 5: Explorer 통합 및 테스트
     □ steve.search_hybrid_patterns()
     □ 패턴 조합 자동 제안
     □ E2E 테스트
@@ -124,7 +124,7 @@ Priority: 🔴 P0 (UMIS 핵심 가치)
 
 ---
 
-### 🔄 Phase 2C: Stewart 순환 패턴 감지
+### 🔄 Phase 2C: Guardian 순환 패턴 감지
 
 ```yaml
 Priority: 🔴 P0 (UMIS 핵심 - 무한 루프 방지!)
@@ -149,7 +149,7 @@ Priority: 🔴 P0 (UMIS 핵심 - 무한 루프 방지!)
     □ CircularPattern 노드 생성 (Graph)
     시간: 6시간
   
-  Day 3: Stewart 개입 시스템
+  Day 3: Guardian 개입 시스템
     □ 반복 2회: 모니터링 강화
     □ 반복 3회: Nudge 메시지
     □ 반복 4회: Owner 에스컬레이션
@@ -159,18 +159,18 @@ Priority: 🔴 P0 (UMIS 핵심 - 무한 루프 방지!)
 산출물:
   ✅ query_history.db
   ✅ 순환 감지 엔진
-  ✅ Stewart 자동 개입
+  ✅ Guardian 자동 개입
   ✅ UMIS v6.2 핵심 구현!
 
 완료 기준:
   - 같은 주제 3회 반복 → 자동 감지
-  - Stewart 메시지 출력
+  - Guardian 메시지 출력
   - Graph에 CircularPattern 기록
 ```
 
 ---
 
-### 🔄 Phase 2D: Stewart 목표 정렬도 모니터링
+### 🔄 Phase 2D: Guardian 목표 정렬도 모니터링
 
 ```yaml
 Priority: 🔴 P0 (UMIS 핵심 - 목표 이탈 방지!)
@@ -187,7 +187,7 @@ Priority: 🔴 P0 (UMIS 핵심 - 목표 이탈 방지!)
     □ 5개 윈도우 평균 추적
     시간: 6시간
   
-  Day 2: Stewart 모니터링 및 개입
+  Day 2: Guardian 모니터링 및 개입
     □ 평균 < 60% 감지
     □ 목표 이탈 경고
     □ 이탈 쿼리 리스트
@@ -198,7 +198,7 @@ Priority: 🔴 P0 (UMIS 핵심 - 목표 이탈 방지!)
 산출물:
   ✅ 목표 정렬도 실시간 측정
   ✅ 60% 기준 자동 모니터링
-  ✅ Stewart 이탈 경고
+  ✅ Guardian 이탈 경고
   ✅ UMIS v6.2 핵심 구현!
 
 완료 기준:
@@ -213,7 +213,7 @@ Priority: 🔴 P0 (UMIS 핵심 - 목표 이탈 방지!)
 
 ```yaml
 Priority: 🟡 P1 (완전한 Multi-Agent 구현)
-이유: Albert, Bill, Rachel view 필요
+이유: Observer, Quantifier, Validator view 필요
 기간: 3일
 의존성: Phase 1
 
@@ -236,9 +236,9 @@ Priority: 🟡 P1 (완전한 Multi-Agent 구현)
     시간: 8시간
   
   Day 3: Agent별 Retriever
-    □ AlbertRetriever
-    □ BillRetriever
-    □ RachelRetriever
+    □ ObserverRetriever
+    □ QuantifierRetriever
+    □ ValidatorRetriever
     □ Cross-agent 협업 테스트
     시간: 8시간
 
@@ -249,14 +249,14 @@ Priority: 🟡 P1 (완전한 Multi-Agent 구현)
   ✅ 완전한 Multi-View 구현
 
 완료 기준:
-  - Steve → Bill (source_id로 정량 데이터 요청)
-  - Steve → Rachel (출처 검증 요청)
+  - Explorer → Quantifier (source_id로 정량 데이터 요청)
+  - Explorer → Validator (출처 검증 요청)
   - 모두 자동 작동
 ```
 
 ---
 
-### 🟠 Phase 3B: Stewart Meta-RAG (선택)
+### 🟠 Phase 3B: Guardian Meta-RAG (선택)
 
 ```yaml
 Priority: 🟡 P1 (품질 자동화)
@@ -267,9 +267,9 @@ Priority: 🟡 P1 (품질 자동화)
 작업:
   Day 1-2: 검증 규칙 Index
     □ validation_rules 청킹
-      - Steve 가설 필수 규칙
-      - Albert 구조 필수 규칙
-      - Bill 계산 필수 규칙
+      - Explorer 가설 필수 규칙
+      - Observer 구조 필수 규칙
+      - Quantifier 계산 필수 규칙
     □ validation_rules_index 구축
     □ Rule-based 검증 엔진
     시간: 12시간
@@ -284,18 +284,18 @@ Priority: 🟡 P1 (품질 자동화)
   Day 4: Graph 검증 체인
     □ 논리 체인 추적 Cypher 쿼리
     □ Gap 자동 발견
-    □ Stewart 3단계 검증 통합
+    □ Guardian 3단계 검증 통합
     □ E2E 테스트
     시간: 8시간
 
 산출물:
   ✅ validation_rules_index
   ✅ quality_patterns_index
-  ✅ Stewart 3단계 자동 검증
+  ✅ Guardian 3단계 자동 검증
   ✅ Gap 자동 발견
 
 완료 기준:
-  - Steve 가설 → 자동 검증
+  - Explorer 가설 → 자동 검증
   - 누락 사항 자동 발견
   - Grade A/B/C/D 자동 부여
 ```
@@ -352,7 +352,7 @@ Priority: 🟢 P2 (장기 가치)
 작업:
   Day 1: Query Refinement
     □ LLM 기반 쿼리 개선
-    □ Stewart 피드백 → 쿼리 재작성
+    □ Guardian 피드백 → 쿼리 재작성
     □ 반복 검색 로직
     시간: 6시간
   
@@ -412,7 +412,7 @@ Priority: 🔵 P4 (당분간 불필요)
 
 ### 🥇 Track 1: 필수 핵심 (2주)
 
-**"UMIS 본질 구현 - Stewart의 2가지 감시"**
+**"UMIS 본질 구현 - Guardian의 2가지 감시"**
 
 ```yaml
 Week 1: Graph + 순환 감지
@@ -427,7 +427,7 @@ Week 1: Graph + 순환 감지
   Day 4-5: 순환 감지 시스템 (P0)
     → query_history DB
     → 3회 반복 자동 감지
-    → Stewart 개입
+    → Guardian 개입
   
   완성도: 50% → 70%
   UMIS 구현: 30% → 65%
@@ -437,19 +437,19 @@ Week 2: 목표 정렬 + Hybrid 검색
   Day 1-2: 목표 정렬도 모니터링 (P0)
     → goal embedding
     → 60% 기준 자동 경고
-    → Stewart 이탈 방지
+    → Guardian 이탈 방지
   
   Day 3-5: Hybrid 검색 완성
     → Vector + Graph 통합
-    → Steve에 적용
+    → Explorer에 적용
     → 전체 테스트
   
   완성도: 70% → 85%
   UMIS 구현: 65% → 80%
 
 🎯 2주 후 상태:
-  ✅ Stewart 순환 감지 작동
-  ✅ Stewart 목표 정렬 작동
+  ✅ Guardian 순환 감지 작동
+  ✅ Guardian 목표 정렬 작동
   ✅ Knowledge Graph 기본
   ✅ Hybrid 검색 가능
   
@@ -470,7 +470,7 @@ Week 3: Multi-View + Meta-RAG
     → 5개 agent view
     → Cross-agent 협업
   
-  Day 4-5: Stewart Meta-RAG (P1)
+  Day 4-5: Guardian Meta-RAG (P1)
     → 검증 규칙/품질 패턴
     → 3단계 자동 검증
   
@@ -536,7 +536,7 @@ Week 2:
   주말: E2E 테스트, 실전 프로젝트
 
 결과:
-  ✅ Stewart 2가지 핵심 (순환, 목표)
+  ✅ Guardian 2가지 핵심 (순환, 목표)
   ✅ Knowledge Graph (패턴 조합)
   ✅ Hybrid 검색 (Vector + Graph)
   ✅ UMIS 80% 구현
@@ -600,7 +600,7 @@ Day 4:
                  - 주제 유사도
 
 Day 5:
-[ ] 09:00-12:00  Stewart 개입 로직
+[ ] 09:00-12:00  Guardian 개입 로직
                  - 3회 감지 → Nudge
                  - 4회 → 에스컬레이션
                  - 메시지 템플릿
@@ -633,7 +633,7 @@ Day 1:
                  - query_history 통합
 
 Day 2:
-[ ] 09:00-12:00  Stewart 모니터링
+[ ] 09:00-12:00  Guardian 모니터링
                  - < 60% 자동 감지
                  - 이탈 쿼리 분석
                  - 경고 메시지
@@ -655,7 +655,7 @@ Day 3:
                  - hybrid_search() 메서드
 
 Day 4:
-[ ] 09:00-12:00  Steve 통합
+[ ] 09:00-12:00  Explorer 통합
                  - search_hybrid_patterns()
                  - 패턴 조합 제안
 [ ] 13:00-17:00  테스트 케이스
