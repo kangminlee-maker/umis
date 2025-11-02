@@ -1,6 +1,9 @@
 # UMIS - Universal Market Intelligence System
 
-범용 시장 정보 분석 시스템 v6.2 + Multi-Agent RAG
+범용 시장 정보 분석 시스템
+
+**버전:** 6.3.0-alpha  
+**날짜:** 2025-11-02
 
 ---
 
@@ -8,42 +11,47 @@
 
 **UMIS**는 AI 에이전트 5명이 협업하여 시장을 분석하는 프레임워크입니다.
 
-**UMIS RAG**는 UMIS에 검증된 패턴 라이브러리와 의미 검색을 추가한 확장입니다.
+**UMIS RAG (v6.3.0-alpha)**는 Explorer에게 검증된 패턴 라이브러리와 의미 검색을 제공하는 확장입니다.
 
 ---
 
 ## ⚡ 빠른 시작
 
-### YAML Only (가장 간단)
+### UMIS 기본 (YAML만)
 
 ```
-Cursor 새 채팅:
+Cursor Composer (Cmd+I):
   @umis_guidelines_v6.2.yaml
   
   "피아노 구독 서비스 시장 분석해줘"
   
-→ 즉시 시작!
+→ Observer, Explorer, Quantifier, Validator가 협업!
 ```
 
-### YAML + RAG (고품질)
+### UMIS v6.3.0-alpha (RAG 추가!)
 
-```bash
-# 1. 설치 (최초 1회)
-./setup.sh
+```
+Cursor Composer (Cmd+I):
+  @umis_guidelines_v6.2.yaml
+  
+  "@Steve, 음악 스트리밍 구독 기회 분석해줘"
+  
+  → Steve (Explorer)가 RAG 자동 활용!
+  → 54개 검증된 패턴/사례 검색
+  → subscription_model 발견!
+  → 코웨이 사례 학습!
+  
+  → 대화만! 코딩 불필요! ✨
+```
 
-# 2. .env 설정
-OPENAI_API_KEY=sk-...
+**Agent 커스터마이징:**
+```yaml
+agent_names.yaml:
+  explorer: Alex  # ← 1줄!
 
-# 3. 인덱스 구축 (2분)
-make rebuild
-
-# 4. Cursor에서 사용
-@umis_guidelines_v6.2.yaml
-
-"피아노 구독 서비스 시장 분석"
-
-# 5. 필요 시 RAG 검색
-python scripts/query_rag.py pattern "구독 서비스"
+Cursor:
+  "@Alex, 기회 찾아봐"
+  → Alex가 패턴을 검색합니다...
 ```
 
 ---
