@@ -17,7 +17,7 @@ Cmd+I (Mac) 또는 Ctrl+I (Windows)
 ### Step 2: UMIS 분석 시작
 
 ```
-@umis_guidelines.yaml를 첨부하고:
+@umis.yaml를 첨부하고:
 
 "피아노 구독 서비스 시장 기회를 분석해줘"
 ```
@@ -133,7 +133,7 @@ Explorer가 패턴 필요 시:
 
 ```
 1. Cmd+I (Composer)
-2. @umis_guidelines.yaml
+2. @umis.yaml
 3. "시장 분석해줘"
 4. AI 자동 분석 (RAG 활용)
 5. "데이터 추가해"
