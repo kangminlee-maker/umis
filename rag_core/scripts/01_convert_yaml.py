@@ -9,8 +9,8 @@ RAG 시스템에 최적화된 JSON Lines 형식으로 변환합니다.
     python scripts/01_convert_yaml.py
 
 출력:
-    ../../data/chunks/explorer_chunks.jsonl  (Explorer 전용 청크)
-    ../../data/chunks/observer_chunks.jsonl (향후 확장)
+    ../data/chunks/explorer_chunks.jsonl  (Explorer 전용 청크)
+    ../data/chunks/observer_chunks.jsonl (향후 확장)
     ...
 """
 
