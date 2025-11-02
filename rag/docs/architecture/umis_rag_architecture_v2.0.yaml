@@ -3,7 +3,7 @@
 # ========================================
 #
 # 날짜: 2025-11-02
-# 상태: 설계 완료 (7가지 개선안 반영)
+# 상태: 설계 완료 (8가지 개선안 반영)
 # 목적: AI가 파악 가능한 전체 아키텍처
 #
 # ========================================
@@ -11,7 +11,7 @@
 _meta:
   version: "2.0"
   base_version: "1.1_enhanced"
-  improvements: 7
+  improvements: 8
   status: "design_complete"
   umis_version: "6.3.0-alpha"
 
@@ -429,6 +429,85 @@ cross_cutting:
     search_order: [personal, team, core]
     
     promotion: "personal → team → core"
+  
+  system_rag:
+    _improvement: "8번 개선안 - System RAG + Tool Registry"
+    _status: "future"
+    
+    concept: "umis.yaml을 도구 라이브러리로, Guardian이 동적 오케스트레이션"
+    
+    tool_registry:
+      file: "tool_registry.yaml"
+      count: 30
+      
+      structure:
+        id: "도구 고유 ID"
+        agent: "소속 Agent"
+        type: "analytical_framework / workflow / quality_gate"
+        
+        when_to_use:
+          triggers: ["트리거 조건"]
+          prerequisites: ["선행 산출물"]
+          context_signals: ["쿼리 패턴"]
+        
+        what_it_does:
+          description: "도구 설명"
+          inputs: ["입력"]
+          process: "프로세스"
+          outputs: ["출력"]
+        
+        deliverables:
+          intermediate: ["중간 산출물"]
+          final: ["최종 산출물"]
+          validation: ["검증자"]
+        
+        rag_chunk_id: "청크 ID"
+    
+    guidelines_rag:
+      source: "umis.yaml (5,428줄)"
+      chunking: "30개 도구별 청크"
+      collection: "system_knowledge"
+      
+      context_reduction:
+        before: "5,428줄 전체"
+        after: "200줄 필요한 것만"
+        savings: "95%"
+    
+    guardian_orchestration:
+      role: "동적 PM (Project Manager)"
+      
+      responsibilities:
+        tool_selection:
+          process: "System RAG 검색 → 조건 확인 → 도구 선택"
+        
+        workflow_generation:
+          process: "도구 조합 → 순서 결정 → 타임라인 계산"
+        
+        execution_monitoring:
+          process: "산출물 추적 → 조건 평가 → 동적 조정"
+        
+        adaptive_adjustment:
+          triggers:
+            - "10x 기회 발견"
+            - "목표 정렬도 < 60%"
+            - "검증 실패"
+          
+          actions:
+            - "도구 추가/제거"
+            - "Workflow 재생성"
+            - "Owner에게 제안"
+    
+    universal_deliverables:
+      _status: "future_evolution"
+      
+      concept: "질문 유형 → 표준 산출물 자동 결정"
+      
+      features:
+        - "산출물 템플릿 RAG"
+        - "질문 유형 매핑"
+        - "자동 생성 및 검증"
+      
+      value: "Universal 결과물 시스템"
 
 # ========================================
 # 구현 우선순위
@@ -574,6 +653,25 @@ improvements_summary:
     
     tiers: 3
     value: "항상 작동 보장"
+  
+  improvement_8_system_rag:
+    decision: "채택"
+    solution: "System RAG + Tool Registry + Meta-RAG"
+    priority: "P1 (향후)"
+    why: "컨텍스트 95% 절감, 동적 Workflow"
+    
+    components:
+      - tool_registry: "30개 도구 정의"
+      - guidelines_rag: "5,428줄 → 200줄"
+      - guardian_orchestration: "동적 Workflow 생성"
+      - universal_deliverables: "표준 산출물 자동"
+    
+    trigger: "umis.yaml > 10,000줄"
+    
+    value:
+      context_savings: "95%"
+      dynamic_workflow: true
+      intelligent_system: true
 
 # ========================================
 # 핵심 가치
