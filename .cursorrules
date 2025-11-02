@@ -1,0 +1,138 @@
+# UMIS RAG Cursor Rules
+# 
+# 목적: Cursor만으로 UMIS 사용 + RAG 개발 병행
+# 사용자: 코딩 못 하는 사용자
+# 환경: Cursor Composer + Agent 모드
+#
+# ========================================
+
+## 자동 RAG 재구축
+
+When user modifies these YAML files:
+  - umis_business_model_patterns_v6.2.yaml
+  - umis_disruption_patterns_v6.2.yaml
+  - umis_ai_guide_v6.2.yaml
+
+After saving, automatically suggest:
+  "RAG 인덱스를 재구축할까요? (2초 소요)"
+  
+If user approves, run:
+  ```bash
+  cd /Users/kangmin/Documents/AI_dev/umis-main
+  source venv/bin/activate
+  python scripts/01_convert_yaml.py
+  python scripts/02_build_index.py --agent steve
+  ```
+  
+Show result: "✅ RAG 업데이트 완료!"
+
+## UMIS 분석 중 자동 RAG 활용
+
+When Steve (Explorer) needs pattern matching:
+  - Detect: "패턴 매칭 필요" or "트리거 시그널 발견"
+  - Automatically run:
+    ```bash
+    python scripts/query_rag.py pattern "{trigger_signals}"
+    ```
+  - Integrate results into analysis
+  - Show: "🔍 RAG 검색: {pattern_id} 발견!"
+
+When Steve needs case studies:
+  - Detect: "유사 사례" or "성공 사례"
+  - Automatically run:
+    ```bash
+    python scripts/query_rag.py case "{industry}" --pattern {pattern_id}
+    ```
+  - Show results in analysis
+
+## 데이터 추가 워크플로우
+
+When user says:
+  - "데이터 추가", "수정해줘", "넣어줘"
+  
+Action:
+  1. Open relevant YAML file
+  2. Find correct section (use pattern matching)
+  3. Show suggested addition with diff
+  4. On user approval:
+     - Save file
+     - Auto rebuild RAG
+     - Confirm: "✅ 추가 및 RAG 반영 완료"
+
+Example:
+  User: "코웨이에 해지율 3-5% 추가"
+  
+  AI:
+    - Opens: umis_business_model_patterns_v6.2.yaml
+    - Finds: 코웨이 section (line 348)
+    - Suggests:
+      ```yaml
+      + churn_rate: "3-5%"
+      ```
+    - Saves + Rebuilds
+    - "✅ 완료!"
+
+## 단축 명령어
+
+User can say:
+  - "rag 검색 {쿼리}" → Run query_rag.py
+  - "rag 재구축" → Full rebuild
+  - "rag 통계" → Show stats
+  - "rag 테스트" → Run test search
+
+Auto execute and show results.
+
+## UMIS 분석 프로세스 지원
+
+When doing UMIS analysis:
+  1. Always use @umis_guidelines_v6.2.yaml
+  2. Follow UMIS process (Albert → Steve → Bill → Rachel)
+  3. Use RAG when needed (automatic)
+  4. Save improvements to YAML (automatic)
+  
+Maintain feedback loop:
+  Analysis → Discovery → Addition → Update → Re-analysis
+
+## 파일 경로 자동 처리
+
+Project root: /Users/kangmin/Documents/AI_dev/umis-main
+
+When executing commands:
+  - Auto cd to project root
+  - Auto activate venv
+  - Use relative paths from root
+
+## 에러 처리
+
+If RAG rebuild fails:
+  - Show clear error message
+  - Suggest: "인덱스를 처음부터 재구축할까요?"
+  - Provide recovery command
+
+If YAML syntax error:
+  - Point to exact line
+  - Suggest fix
+  - Validate before rebuild
+
+## 성능 최적화
+
+- Cache query results (avoid duplicate searches)
+- Batch multiple YAML changes (rebuild once)
+- Show progress for long operations
+
+## 사용자 친화적 메시지
+
+Instead of:
+  "Executing python scripts/query_rag.py..."
+  
+Use:
+  "🔍 RAG에서 패턴 검색 중..."
+  "✅ subscription_model 발견!"
+  "💾 YAML 저장 및 RAG 업데이트 중... (2초)"
+  "✅ 완료! 즉시 사용 가능합니다."
+
+## 한국어 우선
+
+- 모든 응답 한국어
+- 기술 용어도 쉽게 설명
+- 사용자가 코딩 못 해도 이해 가능하게
