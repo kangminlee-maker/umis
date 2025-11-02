@@ -79,7 +79,7 @@
 
 ```
 Cursor Composer (Cmd+I):
-  @umis_guidelines.yaml
+  @umis.yaml
   "@Steve, 음악 스트리밍 구독 서비스 시장 기회 분석해줘"
 ```
 
@@ -133,7 +133,7 @@ agent_names.yaml:
 - VERSION_UPDATE_CHECKLIST.md 추가 (버전 관리 가이드)
 
 **아키텍처 v2.0 설계**
-- 7가지 구조적 개선안 검토 (26개 문서)
+- 8가지 구조적 개선안 검토 (50개 문서)
   1. Dual-Index (채택, P0)
   2. Schema-Registry (채택, P0)
   3. Routing YAML (채택, P0)
@@ -141,8 +141,24 @@ agent_names.yaml:
   5. RAE Index (제외, 오버엔지니어링)
   6. Overlay Layer (설계만, 향후)
   7. Fail-Safe (채택, P0)
+  8. System RAG + Tool Registry (채택, P1) ⭐
 - COMPLETE_ARCHITECTURE_V2.md 작성
 - umis_rag_architecture_v2.0.yaml 작성
+- IMPLEMENTATION_ROADMAP_V2.md 작성
+
+**Clean Design**
+- umis_guidelines.yaml → umis.yaml
+- name 필드 제거 (단일 진실: agent_names.yaml)
+- patterns → data/raw/ 이동
+- ai_guide → data/raw/ 백업
+- .cursorrules 최적화 (243줄 → 148줄, 40% 압축)
+- 루트 YAML: 7개 → 4개
+
+**전체 QA 통과**
+- 논리적 무결성: ✅
+- 구조적 건전성: ✅
+- 실행 테스트: ✅ (3/3)
+- YAML 문법: ✅ (7/7)
 
 **날짜 정정**
 - 2024-11-01/02 → 2025-11-01/02 (33개 항목)

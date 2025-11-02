@@ -84,7 +84,7 @@ Cursor Composer (Cmd+I):
 ✅ agent_names.yaml
    → Agent 이름 커스터마이징
    
-✅ umis_guidelines.yaml 등
+✅ umis.yaml 등
    → 데이터 추가 (Cursor가 도움)
 ```
 
