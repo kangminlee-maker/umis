@@ -1,159 +1,99 @@
 # UMIS RAG 문서 인덱스
 
-**대상:** Cursor 사용자 (코딩 불필요)  
-**환경:** Cursor Composer만!
+**버전:** 6.3.0-alpha  
+**대상:** Cursor 사용자 (코딩 불필요)
 
 ---
 
-## 🚀 빠른 시작
-
-**30초 시작:**
-1. `guides/01_CURSOR_QUICK_START.md` (필독!)
-2. Cursor Composer (Cmd+I)
-3. @umis_guidelines_v6.2.yaml 첨부
-4. "시장 분석해줘"
-
-**끝!** 🎉
-
----
-
-## 📚 문서 구조
-
-### 1. 가이드 (guides/)
-
-**필수:**
-- **01_CURSOR_QUICK_START.md** ⭐ 30초 시작!
-  - Cmd+I → 즉시 사용
-  - RAG 자동 활용
-  - 데이터 추가 워크플로우
-
-- **02_CURSOR_WORKFLOW.md** ⭐ 상세 가이드!
-  - 전체 프로세스
-  - 실전 시나리오
-  - 고급 팁
-
-- **README_RAG.md**
-  - 프로젝트 개요
-  - 기술 스택
-
----
-
-### 2. 아키텍처 (architecture/)
-
-**선택 (이해 심화용):**
-- **COMPLETE_RAG_ARCHITECTURE.md**
-  - 4-Layer RAG 설명
-  - Observer/Explorer/Quantifier/Validator/Guardian
-  - 실제 동작 방식
-
-- **umis_rag_architecture_v1.1_enhanced.yaml**
-  - 완전한 스펙
-  - 향후 개발 참조
-
----
-
-### 3. 구현 계획 (planning/)
-
-**Cursor 사용자용:**
-- **README.md** ⭐ 계획 개요
-  - 12일 요약
-  - Cursor로 개발하는 방법
-
-- **CURSOR_IMPLEMENTATION_PLAN.md** ⭐ 상세
-  - Cursor 대화로 구현
-  - 코딩 불필요
-
-**참조 (백업):**
-- DETAILED_TASK_LIST_DEV_ONLY.md.backup (개발자용)
-- IMPLEMENTATION_PLAN_DEV_ONLY.md.backup (개발자용)
-
----
-
-### 4. 분석 (analysis/)
-
-**참조용 (선택):**
-- **MEMORY_AUGMENTED_RAG_ANALYSIS.md**
-  - Memory-RAG 접근
-  - Guardian (Guardian) 감시 시스템
-
-- **SPEC_REVIEW.md**
-  - UMIS v6.2 대조
-  - 설계 철학
-
-- **RAG_INTEGRATION_OPTIONS.md**
-  - YAML vs RAG 균형
-  - 통합 전략
-
----
-
-### 5. 요약 (루트)
-
-**성과 정리:**
-- **PROJECT_SUMMARY.md** - 프로젝트 성과
-- **SESSION_SUMMARY.md** - 개발 과정
-- **FINAL_SUMMARY.md** - 최종 정리
-- **FINAL_STATUS_AND_NEXT_STEPS.md** - 다음 단계
-
----
-
-## 🎯 읽는 순서 (Cursor 사용자)
-
-### 필수 (10분)
+## 🚀 즉시 시작
 
 ```
-1. guides/01_CURSOR_QUICK_START.md (5분)
-   → 즉시 시작 방법
+Cursor Composer (Cmd+I)
 
-2. guides/02_CURSOR_WORKFLOW.md (5분)
-   → 실전 사용법
+@umis_guidelines_v6.2.yaml
 
-3. 바로 사용!
-   Cmd+I → 분석 시작
+"@Steve, 음악 스트리밍 구독 기회 분석해줘"
 ```
 
-### 선택 (이해 심화)
-
-```
-4. architecture/COMPLETE_RAG_ARCHITECTURE.md (30분)
-   → 4-Layer 이해
-
-5. analysis/ 문서들 (1시간)
-   → 설계 철학, 기술 상세
-```
+**그게 전부입니다!** 🎉
 
 ---
 
-## 📊 문서 통계
+## 📚 필수 문서 (3개)
+
+### 1. 빠른 시작
+- **guides/01_CURSOR_QUICK_START.md** ⭐
+  - 30초 시작
+  - Cursor Composer 사용법
+
+### 2. 상세 가이드
+- **guides/02_CURSOR_WORKFLOW.md**
+  - 실전 워크플로우
+  - 데이터 추가 방법
+
+### 3. 커스터마이징
+- **guides/AGENT_CUSTOMIZATION.md**
+  - agent_names.yaml 수정
+  - Albert → Jane 등
+
+---
+
+## 📖 참고 문서 (선택)
+
+### Architecture (설계)
+- 4-Layer RAG 아키텍처
+- 향후 구현 계획
+
+### Planning (계획)
+- Cursor 기반 개발 방법
+- 12일 로드맵
+
+### Analysis (분석)
+- 설계 철학
+- 기술 분석
+
+### Summary (요약)
+- 프로젝트 성과
+- 개발 과정
+
+---
+
+## 🎯 v6.3.0-alpha 현황
+
+### 구현됨 ✅
 
 ```yaml
-필수:
-  guides: 3개 (Cursor 중심)
+Explorer RAG:
+  • 54개 검증된 패턴/사례
+  • text-embedding-3-large
+  • 자동 검색
+
+Cursor 통합:
+  • .cursorrules 자동화
+  • Agent 모드
+  • 대화만!
+
+Agent 커스터마이징:
+  • agent_names.yaml
+  • 양방향 매핑
+```
+
+### 계획 중 📋
+
+```yaml
+Knowledge Graph:
+  • 패턴 조합
   
-선택:
-  architecture: 2개 (이해용)
-  planning: 2개 (개발용)
-  analysis: 3개 (참조용)
-  summary: 4개 (요약)
+Guardian 감시:
+  • 순환 감지
+  • 목표 정렬
 
-총: 14개 (간결!)
+Multi-Agent:
+  • 6-Agent view
 ```
+
+**상세:** architecture/, planning/ 참조
 
 ---
 
-## 🎯 Agent ID 매핑
-
-```yaml
-UMIS v6.2 Agent:
-  Observer (Observer) - 시장 구조 관찰
-  Explorer (Explorer) - 기회 발굴
-  Quantifier (Quantifier) - 정량 분석
-  Validator (Validator) - 데이터 검증
-  Guardian (Guardian) - 프로세스 감시
-  Owner - 의사결정
-```
-
----
-
-**모든 문서가 Cursor 사용자 중심으로 정리되었습니다!** 🎯
-
-다음: `guides/01_CURSOR_QUICK_START.md`에서 시작!
+**시작:** guides/01_CURSOR_QUICK_START.md
