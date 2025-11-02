@@ -95,6 +95,58 @@ agent_names.yaml:
 - rag/docs/guides/01_CURSOR_QUICK_START.md: 상세 가이드
 - rag/docs/architecture/: 4-Layer 설계 (향후 계획)
 
+### 🔄 추가 변경사항 (v6.3.0-alpha 개선)
+
+**파일명 버전 제거**
+- 모든 UMIS YAML 파일명에서 v6.2 제거
+- umis_guidelines.yaml (v6.2 제거, 영구 고정!)
+- Cursor 참조 안정성 향상: @umis_guidelines.yaml (항상 동일)
+- 각 YAML 첫 줄에 버전 표기: "Compatible with v6.3.0-alpha"
+
+**Agent ID 완전 통일**
+- 문서 + 코드 완전 일치
+- Python: observer, explorer, quantifier, validator, guardian
+- 파일: explorer.py, explorer_*.jsonl
+- Collection: explorer_knowledge_base
+- 총 124개 항목 변경
+
+**Agent 이름 커스터마이징 강화**
+- agent_names.yaml 최소화 (1줄로 설정!)
+- 양방향 매핑: @Steve → Explorer, Explorer → Steve
+- 기본값: Albert, Steve, Bill, Rachel, Stewart
+- 커스텀: Jane, Alex, 관찰자, 탐색자 등
+
+**대규모 리팩토링**
+- 레거시 완전 제거: -10,610줄!
+- 파일 삭제: 47개 (개발자 전용, 중복, 백업)
+- 문서 정리: 30개 → 15개 핵심
+- rag/ 폴더: 순수 문서 모음으로 명확화
+
+**Cursor Composer 완전 전환**
+- 모든 문서 Cursor 중심 재편성
+- 개발자 전용 내용 완전 제거 (Hot-Reload, make dev, IPython 등)
+- .cursorrules 최소화 형식 반영
+
+**루트 디렉토리 정리**
+- .md 파일: 10개 → 5개 핵심만
+- .yaml 파일: 버전 제거, 영구 고정
+- VERSION_UPDATE_CHECKLIST.md 추가 (버전 관리 가이드)
+
+**아키텍처 v2.0 설계**
+- 7가지 구조적 개선안 검토 (26개 문서)
+  1. Dual-Index (채택, P0)
+  2. Schema-Registry (채택, P0)
+  3. Routing YAML (채택, P0)
+  4. Multi-Dimensional Confidence (채택, P0)
+  5. RAE Index (제외, 오버엔지니어링)
+  6. Overlay Layer (설계만, 향후)
+  7. Fail-Safe (채택, P0)
+- COMPLETE_ARCHITECTURE_V2.md 작성
+- umis_rag_architecture_v2.0.yaml 작성
+
+**날짜 정정**
+- 2024-11-01/02 → 2025-11-01/02 (33개 항목)
+
 ---
 
 ## v6.2.2 (2024-10-30) - Support & Validation System Redesign [MAJOR UPDATE]
