@@ -1,0 +1,649 @@
+# ========================================
+# UMIS RAG Architecture v2.0
+# ========================================
+#
+# 날짜: 2025-11-02
+# 상태: 설계 완료 (7가지 개선안 반영)
+# 목적: AI가 파악 가능한 전체 아키텍처
+#
+# ========================================
+
+_meta:
+  version: "2.0"
+  base_version: "1.1_enhanced"
+  improvements: 7
+  status: "design_complete"
+  umis_version: "6.3.0-alpha"
+
+# ========================================
+# 아키텍처 철학
+# ========================================
+
+philosophy:
+  principles:
+    - name: "품질 우선"
+      description: "검색 품질 > 저장 효율, 일관성 > 복잡도"
+    
+    - name: "단순성"
+      description: "YAML 중심, Cursor 기반, 점진적 복잡화"
+    
+    - name: "실용성"
+      description: "오버엔지니어링 방지, 가치 있는 것만"
+    
+    - name: "안정성"
+      description: "Fail-Safe 다층 방어, 항상 작동"
+
+  anti_patterns:
+    - "오버엔지니어링 (RAE Index 제외)"
+    - "복잡도 과대평가 (Routing YAML 재평가)"
+    - "단일 차원 평가 (Multi-Dimensional 채택)"
+
+# ========================================
+# Layer 1: Dual-Index Modular RAG
+# ========================================
+
+layer_1_modular_rag:
+  _improvement: "1번 개선안 - Projection-at-Retrieval"
+  _status: "phase_1"
+  
+  architecture: "dual_index"
+  
+  canonical_index:
+    purpose: "업데이트용"
+    description: "정규화된 단일 청크"
+    
+    structure:
+      chunk_count: 5000  # 사례 기준
+      content_type: "normalized_full"
+      
+      metadata:
+        core:
+          - source_id
+          - domain
+          - quality_grade
+        
+        sections:
+          observer: {start, end}
+          explorer: {start, end}
+          quantifier: {start, end}
+          validator: {start, end}
+          guardian: {start, end}
+    
+    write:
+      who: "사용자 (Cursor)"
+      where: "1곳만"
+      consistency: "보장됨"
+  
+  projected_index:
+    purpose: "검색용"
+    description: "Agent별 투영된 청크"
+    
+    structure:
+      chunk_count: 30000  # 5000 × 6 agents
+      content_type: "agent_specific"
+      
+      metadata:
+        core: "source_id, domain, quality_grade"
+        agent_specific: "observer_*, explorer_*, quantifier_*, ..."
+    
+    read:
+      who: "모든 Agent"
+      quality: "노이즈 0%, 품질 우수"
+      speed: "빠름 (agent 필터링)"
+  
+  hybrid_projection:
+    _improvement: "자동화 + Learning Loop"
+    
+    method: "규칙 90% + LLM 10%"
+    
+    rule_based:
+      file: "projection_rules.yaml"
+      coverage: "90%"
+      speed: "< 1초"
+      cost: "무료"
+    
+    llm_based:
+      coverage: "10% (새 필드)"
+      speed: "~2초"
+      cost: "$0.001/호출"
+    
+    learning_loop:
+      log: "llm_projection_log.jsonl"
+      analysis: "주간"
+      rule_generation: "자동"
+      
+      effect:
+        llm_ratio: "10% → 5% → 1%"
+        cost: "↓"
+        speed: "↑"
+  
+  performance:
+    search_speed: "140ms (Lazy보다 빠름!)"
+    update_time: "32초 (1곳만)"
+    consistency: "완벽 (1 source of truth)"
+    quality: "Pre 수준 (노이즈 0%)"
+
+# ========================================
+# Layer 2: Guardian Meta-RAG
+# ========================================
+
+layer_2_meta_rag:
+  _status: "planned"
+  
+  architecture: "3_stage_hybrid"
+  
+  stage_1_weighted:
+    method: "규칙 기반"
+    coverage: "80%"
+    speed: "< 10ms"
+    
+    dimensions:
+      evidence_completeness: 0.3
+      data_reliability: 0.25
+      logical_soundness: 0.25
+      feasibility: 0.2
+    
+    decision:
+      score_8_plus: "즉시 승인 (Grade A)"
+      score_5_minus: "즉시 거부 (Grade D)"
+      score_5_8: "Stage 2로"
+  
+  stage_2_cross_encoder:
+    method: "정밀 재순위"
+    coverage: "15%"
+    speed: "< 100ms"
+    
+    comparison: "Grade A 예시와 비교"
+    threshold: 0.7
+  
+  stage_3_llm:
+    method: "최종 판단"
+    coverage: "5%"
+    speed: "~2초"
+    cost: "$0.01"
+    
+    features:
+      - "과거 유사 평가 검색 (RAE 컨셉)"
+      - "LLM 최종 판단"
+      - "설명 포함"
+  
+  simple_cache:
+    _improvement: "5번 대안 - RAE 대신 캐싱"
+    
+    method: "dict 캐싱 (5줄)"
+    scope: "정확히 동일한 것만"
+    safety: "높음 (과도한 재사용 방지)"
+    
+    vs_rae_index:
+      cost_saving: "동일 ($6.50/년 미미)"
+      time_saving: "동일 (33분/년 미미)"
+      quality_risk: "낮음 (동일만 재사용)"
+      complexity: "100배 단순"
+
+# ========================================
+# Layer 3: Knowledge Graph
+# ========================================
+
+layer_3_knowledge_graph:
+  _status: "planned"
+  
+  architecture: "neo4j_hybrid"
+  
+  confidence_model:
+    _improvement: "4번 개선안 - Multi-Dimensional"
+    
+    dimensions:
+      
+      similarity:
+        _description: "질적 평가"
+        method: "vector_embedding"
+        model: "text-embedding-3-large"
+        
+        metric: "best_case_similarity"
+        
+        judgment:
+          excellent: ">= 0.90"
+          good: ">= 0.70"
+          moderate: ">= 0.50"
+          weak: "< 0.50"
+        
+        example:
+          query: "platform + subscription"
+          case: "Amazon Prime"
+          similarity: 0.92
+          → "excellent"
+      
+      coverage:
+        _description: "양적 평가 (패턴 강도)"
+        method: "distribution_analysis"
+        
+        metric: "pattern_strength"
+        calculation: "threshold_0.5_plus / total_cases"
+        
+        judgment:
+          strong: ">= 10%"
+          moderate: ">= 5%"
+          weak: "< 5%"
+        
+        example:
+          total: 50000
+          threshold_0.5: 5000
+          strength: 0.10
+          → "strong"
+      
+      validation:
+        _description: "검증 여부 (이진)"
+        method: "qualitative_checklist"
+        
+        criteria:
+          required:
+            - proven_case: "실제 성공 사례"
+            - validator_approved: "Validator 검증"
+          
+          optional:
+            - time_tested: "3년+ 검증"
+            - multiple_markets: "여러 시장"
+          
+          disqualifiers:
+            - counter_evidence: "실패 사례"
+        
+        judgment: "yes / no"
+    
+    overall_confidence:
+      method: "rule_based"
+      
+      rules:
+        high:
+          - "similarity >= 0.90 AND validation == yes"
+          - "OR coverage >= 0.10"
+        
+        medium:
+          - "similarity >= 0.70 OR coverage >= 0.05"
+        
+        low:
+          - "그 외"
+      
+      output: "high / medium / low"
+      
+      reasoning: "자동 생성 (어떤 기준 충족)"
+  
+  relationships:
+    - type: "COMBINES_WITH"
+      example: "(platform)-[:COMBINES_WITH]->(subscription)"
+      
+      properties:
+        synergy: "충성도 + 안정수익"
+        
+        confidence:
+          similarity: 0.92
+          coverage: 0.10
+          validation: yes
+          overall: high
+          reasoning: ["Best case 0.92", "10% pattern", "Validated"]
+
+# ========================================
+# Layer 4: Memory-Augmented
+# ========================================
+
+layer_4_memory:
+  _status: "planned"
+  
+  architecture: "memory_rag_hybrid"
+  
+  query_memory:
+    purpose: "순환 감지"
+    method: "Memory-RAG + LLM"
+    
+    process:
+      stage_1: "유사 쿼리 검색 (Memory-RAG)"
+      stage_2: "LLM 순환 판단"
+      threshold: "3회 반복"
+  
+  goal_memory:
+    purpose: "목표 정렬"
+    method: "Memory-RAG + LLM"
+    
+    process:
+      stage_1: "목표 vs 쿼리 유사도 (Memory-RAG)"
+      stage_2: "LLM 이탈 분석"
+      threshold: "60%"
+
+# ========================================
+# 횡단 관심사 (Cross-Cutting Concerns)
+# ========================================
+
+cross_cutting:
+  
+  schema_registry:
+    _improvement: "2번 개선안"
+    _status: "phase_1"
+    
+    file: "schema_registry.yaml"
+    
+    purpose:
+      - "모든 필드 중앙 정의"
+      - "Layer 간 매핑"
+      - "타입 검증"
+      - "버전 호환성"
+    
+    features:
+      field_definition:
+        example:
+          source_id:
+            type: string
+            required: true
+            used_by: [layer1, layer2, layer3, layer4]
+      
+      layer_mapping:
+        example:
+          explorer_pattern_id:
+            layer1: "explorer_pattern_id"
+            layer3: "pattern_id"
+      
+      validation:
+        - "타입 체크"
+        - "필수 필드 확인"
+    
+    contract_tests:
+      file: "tests/test_schema_contract.py"
+      purpose: "Layer 간 호환성 실제 검증"
+      when: "배포 시"
+  
+  routing_policy:
+    _improvement: "3번 개선안"
+    _status: "phase_1"
+    
+    file: "routing_policy.yaml"
+    
+    purpose:
+      - "워크플로우 가시화"
+      - "호출 순서 명확"
+      - "조건 실행"
+    
+    example:
+      explorer_workflow:
+        steps:
+          - pattern_search: always
+          - case_search: "when patterns.count > 0"
+          - quantifier: "when needs_quantitative"
+          - hypothesis: always
+    
+    executor:
+      file: "workflow_executor.py"
+      lines: 30
+      complexity: "낮음"
+  
+  fail_safe:
+    _improvement: "7번 개선안"
+    _status: "phase_1"
+    
+    tiers:
+      tier_1_degradation:
+        method: "try-except"
+        effect: "실패해도 계속"
+        priority: "P0"
+      
+      tier_2_toggle:
+        file: "runtime_config.yaml"
+        purpose: "Layer별 on/off"
+        priority: "P0"
+      
+      tier_3_circuit:
+        method: "Circuit Breaker"
+        threshold: "3회 실패"
+        priority: "P1"
+  
+  learning_loop:
+    _improvement: "1번 부가 - 자동 개선"
+    
+    process:
+      log: "llm_projection_log.jsonl"
+      analysis: "주간"
+      rule_generation: "자동"
+    
+    effect:
+      llm_ratio: "10% → 1%"
+      cost: "↓"
+      quality: "↑"
+  
+  overlay_layer:
+    _improvement: "6번 개선안"
+    _status: "design_only"
+    
+    layers:
+      core:
+        priority: 3
+        write_access: "admin"
+        content: "공식 검증"
+      
+      team:
+        priority: 2
+        write_access: "team_members"
+        content: "팀 표준"
+      
+      personal:
+        priority: 1
+        write_access: "owner"
+        content: "개인 실험"
+    
+    search_order: [personal, team, core]
+    
+    promotion: "personal → team → core"
+
+# ========================================
+# 구현 우선순위
+# ========================================
+
+implementation_priority:
+  
+  phase_1_immediate:
+    duration: "2주"
+    priority: "P0"
+    
+    items:
+      - name: "Dual-Index"
+        days: 5
+        value: "품질 + 일관성"
+      
+      - name: "Schema Registry"
+        days: 3
+        value: "필드 일관성"
+      
+      - name: "Routing YAML"
+        days: 0.25
+        value: "가독성"
+      
+      - name: "Fail-Safe Tier 1-2"
+        days: 2
+        value: "안정성"
+  
+  phase_2_core:
+    duration: "2주"
+    priority: "P0"
+    
+    items:
+      - name: "Knowledge Graph"
+        days: 5
+        value: "패턴 조합"
+      
+      - name: "Multi-Dimensional Confidence"
+        days: 2
+        value: "평가 품질"
+      
+      - name: "Circuit Breaker"
+        days: 2
+        value: "자동 보호"
+  
+  phase_3_advanced:
+    duration: "2주"
+    priority: "P1"
+    
+    items:
+      - name: "Guardian Memory"
+        days: 5
+        value: "감시 자동화"
+      
+      - name: "Learning Loop"
+        days: 3
+        value: "자동 개선"
+  
+  phase_4_future:
+    duration: "TBD"
+    priority: "P2"
+    
+    items:
+      - name: "Overlay Layer"
+        trigger: "팀 확장 (3명+)"
+        days: 2
+
+# ========================================
+# 개선안 결정 요약
+# ========================================
+
+improvements_summary:
+  
+  improvement_1_projection:
+    decision: "채택"
+    solution: "Dual-Index + Hybrid + Learning"
+    priority: "P0"
+    why: "품질(Pre) + 일관성(Lazy) 동시 확보"
+    
+    metrics:
+      search_quality: "노이즈 0% (Pre 수준)"
+      update_safety: "1곳 수정 (Lazy 수준)"
+      speed: "140ms (Lazy보다 빠름)"
+      storage: "+90MB (무시 가능)"
+  
+  improvement_2_schema:
+    decision: "채택"
+    solution: "Schema Registry + Contract Tests"
+    priority: "P0"
+    why: "필드 일관성, 단순성 (Pydantic 제외)"
+    
+    layers: 2  # Registry + Tests (Pydantic 제외)
+    reason: "Cursor 중심, YAML 충분"
+  
+  improvement_3_routing:
+    decision: "채택"
+    solution: "routing_policy.yaml"
+    priority: "P0"
+    why: "가독성, YAML 친화, 단순 (30줄)"
+    
+    complexity: "과대평가 수정 (1주 → 2시간)"
+    value: "이해 용이성"
+  
+  improvement_4_confidence:
+    decision: "채택"
+    solution: "Multi-Dimensional"
+    priority: "P0"
+    why: "질적 + 양적 + 검증 (예외 없음)"
+    
+    dimensions: 3
+      - similarity: "Vector 임베딩"
+      - coverage: "분포 분석"
+      - validation: "질적 체크리스트"
+    
+    judgment: "high / medium / low"
+  
+  improvement_5_rae:
+    decision: "제외"
+    reason: "오버엔지니어링"
+    why: "비용/시간 절감 미미, 품질 위험"
+    
+    alternative: "간단한 캐싱 (5줄)"
+    
+    analysis:
+      cost_saving: "$6.50/년 (미미)"
+      time_saving: "33분/년 (미미)"
+      roi: "123년 (불합리)"
+  
+  improvement_6_overlay:
+    decision: "설계만"
+    solution: "Core/Team/Personal"
+    priority: "설계 P0, 구현 P2"
+    why: "향후 팀 확장 대비"
+    
+    trigger: "사용자 3명+"
+    implementation: "향후"
+  
+  improvement_7_failsafe:
+    decision: "채택"
+    solution: "3-Tier (Degradation + Toggle + Circuit)"
+    priority: "P0"
+    why: "Layer 실패 → 전체 중단 방지"
+    
+    tiers: 3
+    value: "항상 작동 보장"
+
+# ========================================
+# 핵심 가치
+# ========================================
+
+core_values:
+  
+  quality:
+    - "검색 정확도 (Dual-Index)"
+    - "평가 신뢰성 (Multi-Dimensional)"
+    - "일관성 (1곳 수정)"
+  
+  efficiency:
+    - "업데이트 간단 (Canonical)"
+    - "자동 학습 (LLM → 규칙)"
+    - "비용 최적화"
+  
+  stability:
+    - "항상 작동 (Fail-Safe)"
+    - "Layer 독립성 (Toggle)"
+    - "자동 복구 (Circuit)"
+  
+  scalability:
+    - "팀 협업 (Overlay)"
+    - "개인 실험 (Personal)"
+    - "점진적 (설계 먼저)"
+  
+  usability:
+    - "Cursor 중심"
+    - "YAML 수정"
+    - "대화만"
+
+# ========================================
+# 검증 포인트 (AI 확인용)
+# ========================================
+
+validation_points:
+  
+  logical_consistency:
+    - question: "Dual-Index 업데이트 플로우 완결?"
+      check: "Canonical 수정 → Hybrid Projection → Projected 생성"
+      status: "완결"
+    
+    - question: "Schema Registry가 모든 Layer 커버?"
+      check: "Layer 1-4 필드 정의 및 매핑"
+      status: "완결"
+    
+    - question: "Fail-Safe가 모든 Layer 보호?"
+      check: "Vector, Graph, Memory, Meta 모두"
+      status: "완결"
+  
+  structural_soundness:
+    - question: "Layer 간 의존성 순환?"
+      check: "Layer 1 → 2 → 3 → 4 (단방향)"
+      status: "순환 없음"
+    
+    - question: "횡단 관심사 간 충돌?"
+      check: "Schema, Routing, Fail-Safe, Learning 독립"
+      status: "충돌 없음"
+  
+  implementation_feasibility:
+    - question: "Phase 1-3 실현 가능?"
+      check: "기술 스택, 시간, 복잡도"
+      status: "실현 가능"
+    
+    - question: "오버엔지니어링 방지?"
+      check: "RAE Index 제외, Pydantic 제외"
+      status: "적절함"
+
+# ========================================
+# END OF ARCHITECTURE v2.0
+# ========================================
+
