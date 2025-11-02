@@ -1,143 +1,156 @@
-# UMIS RAG 프로젝트 전체 인덱스
+# UMIS RAG 문서 인덱스
 
-## 📂 폴더별 문서
+**대상:** Cursor 사용자 (코딩 불필요)  
+**환경:** Cursor Composer만!
 
-### 📐 architecture/ (아키텍처 설계)
+---
 
-- **COMPLETE_RAG_ARCHITECTURE.md** ⭐ 필독!
-  - 4-Layer RAG 완전 설명
-  - 실제 사용 시나리오
-  - Layer 간 상호작용
+## 🚀 빠른 시작
+
+**30초 시작:**
+1. `guides/01_CURSOR_QUICK_START.md` (필독!)
+2. Cursor Composer (Cmd+I)
+3. @umis_guidelines_v6.2.yaml 첨부
+4. "시장 분석해줘"
+
+**끝!** 🎉
+
+---
+
+## 📚 문서 구조
+
+### 1. 가이드 (guides/)
+
+**필수:**
+- **01_CURSOR_QUICK_START.md** ⭐ 30초 시작!
+  - Cmd+I → 즉시 사용
+  - RAG 자동 활용
+  - 데이터 추가 워크플로우
+
+- **02_CURSOR_WORKFLOW.md** ⭐ 상세 가이드!
+  - 전체 프로세스
+  - 실전 시나리오
+  - 고급 팁
+
+- **README_RAG.md**
+  - 프로젝트 개요
+  - 기술 스택
+
+---
+
+### 2. 아키텍처 (architecture/)
+
+**선택 (이해 심화용):**
+- **COMPLETE_RAG_ARCHITECTURE.md**
+  - 4-Layer RAG 설명
+  - Observer/Explorer/Quantifier/Validator/Guardian
+  - 실제 동작 방식
 
 - **umis_rag_architecture_v1.1_enhanced.yaml**
-  - YAML 완전 스펙
-  - 모든 구현 세부사항
-  
-- umis_rag_architecture_v1.0.yaml (초기 버전)
-- umis_guidelines_v6.2_rag_enabled.yaml (통합 힌트)
+  - 완전한 스펙
+  - 향후 개발 참조
 
-### 📋 planning/ (구현 계획)
+---
 
-- **DETAILED_TASK_LIST.md** ⭐ 필수!
-  - 12일 Day별 상세 작업
-  - 시간 추정, 체크리스트
-  - 완료 기준
+### 3. 구현 계획 (planning/)
+
+**개발자용 (선택):**
+- **DETAILED_TASK_LIST.md**
+  - 12일 구현 계획
+  - Day별 상세 Task
+  - 향후 확장 시 참조
 
 - **IMPLEMENTATION_PLAN.md**
-  - 전체 우선순위 (P0-P4)
+  - 전체 우선순위
   - 의존성 그래프
-  - 병렬 작업 전략
 
-- DEPLOYMENT_STRATEGY.md (Hot-Reload)
-- USER_DEVELOPER_WORKFLOW.md (개발/사용)
-- IMPLEMENTATION_ROADMAP.md (로드맵)
+---
 
-### 📖 guides/ (사용 가이드)
+### 4. 분석 (analysis/)
 
-- **START_HERE.md** (루트로 이동됨)
-  - 30초 빠른 시작
-
-- **SIMPLEST_WORKFLOW.md** ⭐ 추천!
-  - IPython + autoreload
-  - 가장 간단한 환경
-
-- **CURSOR_QUICK_START.md**
-  - Cursor 통합 사용법
-  
-- SETUP_GUIDE.md (환경 설정)
-- USAGE_COMPARISON.md (3가지 모드)
-- README_RAG.md (프로젝트 개요)
-
-### 🔬 analysis/ (분석 문서)
-
-- **MEMORY_AUGMENTED_RAG_ANALYSIS.md** ⭐
-  - Memory-RAG Hybrid 접근
-  - 순환/목표 감지
-  - 장단점 비교
+**참조용 (선택):**
+- **MEMORY_AUGMENTED_RAG_ANALYSIS.md**
+  - Memory-RAG 접근
+  - Guardian (Stewart) 감시 시스템
 
 - **SPEC_REVIEW.md**
   - UMIS v6.2 대조
-  - Critical Gap 발견
-  - 추가/수정/삭제 목록
+  - 설계 철학
 
 - **RAG_INTEGRATION_OPTIONS.md**
-  - 6가지 통합 옵션
   - YAML vs RAG 균형
-
-- ADVANCED_RAG_CHALLENGES.md (3가지 도전)
-
-### 📊 요약 (rag_project/ 루트)
-
-- PROJECT_SUMMARY.md (프로젝트 완성 요약)
-- SESSION_SUMMARY.md (세션 요약)
-- FINAL_SUMMARY.md (최종 정리)
-- FINAL_STATUS_AND_NEXT_STEPS.md (상태 및 다음 단계)
-- CLEANUP_PLAN.md (정리 계획)
+  - 통합 전략
 
 ---
 
-## 🎯 읽는 순서
+### 5. 요약 (루트)
 
-### 1단계: 빠른 시작 (10분)
+**성과 정리:**
+- **PROJECT_SUMMARY.md** - 프로젝트 성과
+- **SESSION_SUMMARY.md** - 개발 과정
+- **FINAL_SUMMARY.md** - 최종 정리
+- **FINAL_STATUS_AND_NEXT_STEPS.md** - 다음 단계
 
-```
-../START_HERE.md
-→ guides/SIMPLEST_WORKFLOW.md (IPython)
-→ 즉시 사용!
-```
+---
 
-### 2단계: 아키텍처 이해 (30분)
+## 🎯 읽는 순서 (Cursor 사용자)
 
-```
-architecture/COMPLETE_RAG_ARCHITECTURE.md
-→ 4-Layer 이해
-→ 설계 철학 파악
-```
-
-### 3단계: 구현 계획 (20분)
+### 필수 (10분)
 
 ```
-planning/DETAILED_TASK_LIST.md
-→ 12일 계획 확인
-→ Day별 Task 파악
+1. guides/01_CURSOR_QUICK_START.md (5분)
+   → 즉시 시작 방법
+
+2. guides/02_CURSOR_WORKFLOW.md (5분)
+   → 실전 사용법
+
+3. 바로 사용!
+   Cmd+I → 분석 시작
 ```
 
-### 4단계: 심화 (선택)
+### 선택 (이해 심화)
 
 ```
-analysis/ 문서들
-→ Memory-RAG 접근
-→ UMIS 철학 대조
-→ 통합 전략
+4. architecture/COMPLETE_RAG_ARCHITECTURE.md (30분)
+   → 4-Layer 이해
+
+5. analysis/ 문서들 (1시간)
+   → 설계 철학, 기술 상세
 ```
 
 ---
 
-## 📊 프로젝트 통계
+## 📊 문서 통계
 
 ```yaml
-문서: 30+개
-아키텍처: 4개
-계획: 5개
-가이드: 6개
-분석: 4개
-요약: 5개
+필수:
+  guides: 3개 (Cursor 중심)
+  
+선택:
+  architecture: 2개 (이해용)
+  planning: 2개 (개발용)
+  analysis: 3개 (참조용)
+  summary: 4개 (요약)
 
-Python 코드: 15+개
-YAML 스펙: 3개
-스크립트: 7개
+총: 14개 (간결!)
 ```
 
 ---
 
-## 🚀 다음 단계
+## 🎯 Agent ID 매핑
 
-```
-지금: IPython으로 즉시 사용
-내일: DETAILED_TASK_LIST.md Day 1 시작
-12일 후: UMIS RAG v1.0 완성!
+```yaml
+UMIS v6.2 Agent:
+  Observer (Albert) - 시장 구조 관찰
+  Explorer (Steve) - 기회 발굴
+  Quantifier (Bill) - 정량 분석
+  Validator (Rachel) - 데이터 검증
+  Guardian (Stewart) - 프로세스 감시
+  Owner - 의사결정
 ```
 
 ---
 
-**모든 문서가 체계적으로 정리되었습니다!** 🎯
+**모든 문서가 Cursor 사용자 중심으로 정리되었습니다!** 🎯
+
+다음: `guides/01_CURSOR_QUICK_START.md`에서 시작!
