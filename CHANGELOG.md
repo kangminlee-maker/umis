@@ -5,6 +5,98 @@
 
 ---
 
+## v6.3.0-alpha (2025-11-02) - Multi-Agent RAG System [ALPHA RELEASE]
+
+### 🎉 주요 추가사항
+
+**Multi-Agent RAG System**
+- Vector RAG 시스템 추가 (54 chunks, text-embedding-3-large)
+- Explorer (Steve) agent에 검증된 패턴 라이브러리 통합
+- 사업모델 패턴 31개 + Disruption 패턴 23개 자동 검색
+
+**Cursor Composer 통합**
+- `.cursorrules` 자동화: YAML 수정 → RAG 자동 재구축
+- Agent 모드 자동 실행: 코딩 불필요
+- 30초 피드백 루프: 발견 → 추가 → 반영
+
+**Agent 커스터마이징**
+- `agent_names.yaml` 추가: 양방향 이름 매핑
+- 기본값: Albert, Steve, Bill, Rachel, Stewart
+- 커스텀: Jane, Alex, 관찰자, 탐색자 등 자유 변경
+- 입력: @Steve → Explorer / 출력: Explorer → Steve
+
+**Agent ID 통일**
+- 문서: Observer, Explorer, Quantifier, Validator, Guardian
+- 코드: observer, explorer, quantifier, validator, guardian
+- 파일: explorer.py, explorer_*.jsonl
+
+**문서 체계화**
+- rag/docs/ 폴더: 15개 RAG 관련 문서
+- guides/ (3개): Cursor 사용 가이드
+- architecture/ (3개): 4-Layer 설계 (향후 계획)
+- 레거시 완전 제거: -10,610줄
+
+### 🔄 변경사항
+
+**구현**
+- Vector RAG with text-embedding-3-large (3072 dim)
+- Explorer agent: pattern matching, case search
+- Chroma vector database
+- LangChain 1.0 integration
+
+**문서**
+- Cursor Composer 중심 재편성
+- 실제 구현 vs 향후 계획 명확 구분
+- 개발자 전용 내용 완전 제거
+
+**구조**
+- rag/ 폴더: 순수 문서 모음
+- 실행: umis-main 루트에서
+- 중복 파일 제거: rag/code/, rag/config/
+
+### ⚠️ 주의사항
+
+**v6.3.0-alpha 제한사항**
+- Explorer만 RAG 사용 (Observer, Quantifier, Validator, Guardian은 YAML 기반)
+- Layer 1 (Vector RAG)만 구현
+- Layer 2-4 (Meta-RAG, Graph, Memory)는 설계만 완료
+
+**향후 개발 계획**
+- Knowledge Graph RAG (패턴 조합)
+- Guardian monitoring (순환 감지, 목표 정렬)
+- Multi-agent modular RAG (6개 Agent 전체)
+- Meta-RAG evaluation (품질 자동 평가)
+
+### 📦 릴리스 정보
+
+- GitHub Branch: alpha
+- Tag: v6.3.0-alpha
+- 날짜: 2025-11-02
+- 개발 시간: 4시간
+- Commits: 17개
+
+### 🚀 사용 방법
+
+```
+Cursor Composer (Cmd+I):
+  @umis_guidelines_v6.2.yaml
+  "@Steve, 음악 스트리밍 구독 서비스 시장 기회 분석해줘"
+```
+
+Agent 커스터마이징:
+```yaml
+agent_names.yaml:
+  explorer: Alex
+```
+
+### 📚 문서
+
+- START_HERE.md: 빠른 시작
+- rag/docs/guides/01_CURSOR_QUICK_START.md: 상세 가이드
+- rag/docs/architecture/: 4-Layer 설계 (향후 계획)
+
+---
+
 ## v6.2.2 (2024-10-30) - Support & Validation System Redesign [MAJOR UPDATE]
 
 ### 🔄 시스템 아키텍처 재설계
