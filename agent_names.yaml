@@ -1,118 +1,82 @@
-# UMIS Agent 이름 설정
+# UMIS Agent Names
 # 
-# 사용자가 자유롭게 에이전트 이름을 변경할 수 있습니다.
-# Cursor에서 이 파일을 수정하면 즉시 반영됩니다.
+# Agent 이름을 자유롭게 변경할 수 있습니다.
+# 원하는 이름으로 수정 → 저장 → Cursor가 즉시 인식!
 #
 # ========================================
 
-agents:
-  observer:
-    id: observer
-    default_name: "Observer"
-    display_name: "Observer"  # ← 원하는 이름으로 변경!
-    role: "Market Structure Analyst"
-    description: "시장 구조를 관찰하고 트리거 시그널을 발견"
-    
-    # 예시:
-    # display_name: "Jane"  (자기 이름)
-    # display_name: "시장분석가"  (한국어)
-    # display_name: "MarketBot"  (봇 이름)
-  
-  explorer:
-    id: explorer
-    default_name: "Explorer"
-    display_name: "Explorer"  # ← 원하는 이름으로 변경!
-    role: "Opportunity Finder"
-    description: "사업모델 패턴 매칭 및 기회 가설 생성"
-    
-    # 예시:
-    # display_name: "Alex"
-    # display_name: "기회발굴가"
-    # display_name: "OpportunityBot"
-  
-  quantifier:
-    id: quantifier
-    default_name: "Quantifier"
-    display_name: "Quantifier"  # ← 원하는 이름으로 변경!
-    role: "Market Quantifier"
-    description: "TAM/SAM 계산 및 정량 분석"
-    
-    # 예시:
-    # display_name: "Bill"
-    # display_name: "계산가"
-  
-  validator:
-    id: validator
-    default_name: "Validator"
-    display_name: "Validator"  # ← 원하는 이름으로 변경!
-    role: "Data Validator"
-    description: "데이터 정의 검증 및 출처 확인"
-    
-    # 예시:
-    # display_name: "Rachel"
-    # display_name: "검증가"
-  
-  guardian:
-    id: guardian
-    default_name: "Guardian"
-    display_name: "Guardian"  # ← 원하는 이름으로 변경!
-    role: "Process Guardian"
-    description: "품질 관리 및 프로세스 감시"
-    
-    # 예시:
-    # display_name: "Stewart"
-    # display_name: "품질관리자"
+# 기본값 (UMIS v6.2 전통적 이름)
+observer: Albert
+explorer: Steve
+quantifier: Bill
+validator: Rachel
+guardian: Stewart
+owner: Owner
 
 # ========================================
-# 사용 예시
+# 커스터마이징 예시
 # ========================================
-
-# 기본 (변경 안 함):
-#   "Observer가 시장을 관찰합니다..."
-#   "Explorer가 패턴을 찾습니다..."
 
 # 자기 이름으로:
-#   display_name을 "Jane", "Alex" 등으로 변경
-#   → "Jane이 시장을 관찰합니다..."
-#   → "Alex가 패턴을 찾습니다..."
+# observer: Jane
+# explorer: Alex
+# quantifier: Mike
 
 # 한국어로:
-#   display_name을 "관찰자", "탐색자" 등으로 변경
-#   → "관찰자가 시장을 관찰합니다..."
-#   → "탐색자가 패턴을 찾습니다..."
+# observer: 관찰자
+# explorer: 탐색자
+# quantifier: 계산가
+
+# 봇 이름으로:
+# observer: MarketBot
+# explorer: OpportunityBot
+# quantifier: DataBot
+
+# 팀원 이름으로:
+# observer: 김철수
+# explorer: 이영희
+# quantifier: 박민수
 
 # ========================================
-# Cursor에서 즉시 반영
+# 사용 방법
 # ========================================
 
-# 이 파일 수정 → 저장
-# → Cursor가 자동으로 인식
-# → 다음 분석부터 변경된 이름 사용!
-
-
-# ========================================
-# 양방향 작동 확인
-# ========================================
-
-# 설정 예시:
-#   observer:
-#     display_name: "Jane"
+# 호출 (입력):
+#   "@Albert, 시장 분석해"  → Observer 실행
+#   "@Steve, 기회 찾아봐"    → Explorer 실행
 #   
-#   explorer:
-#     display_name: "Alex"
-
-# 사용 (입력):
-#   "@Jane, 시장 분석해"     → Observer 실행
-#   "@Alex, 패턴 찾아봐"      → Explorer 실행
-#   
-#   "Observer, 분석해"        → Observer 실행 (ID로도 가능)
-#   "Jane, 분석해"            → Observer 실행 (이름으로도 가능)
+#   "Observer, 분석해"       → Observer 실행 (ID로도 가능)
+#   "Albert, 분석해"         → Observer 실행 (이름으로도 가능)
 
 # 표시 (출력):
 #   Observer 작업 중...
-#   → "Jane이 시장을 관찰합니다..."
+#   → "Albert가 시장을 관찰합니다..."
 #   
 #   Explorer 작업 중...
-#   → "Alex가 패턴을 찾습니다..."
+#   → "Steve가 패턴을 검색합니다..."
 
-# → 양방향 완벽 작동! ✨
+# ========================================
+# 양방향 매핑
+# ========================================
+
+# Cursor가 자동으로:
+#   1. 이 파일 읽기
+#   2. 매핑 생성: {"Albert": "observer", "Steve": "explorer", ...}
+#   3. 입력: "@Albert" → observer 호출
+#   4. 출력: observer → "Albert" 표시
+
+# 즉시 반영:
+#   이 파일 수정 → Cmd+S
+#   → 다음 분석부터 변경된 이름 사용!
+
+# ========================================
+# 기본값 복구
+# ========================================
+
+# UMIS v6.2 전통 이름으로 돌아가려면:
+#   observer: Albert
+#   explorer: Steve
+#   quantifier: Bill
+#   validator: Rachel
+#   guardian: Stewart
+#   owner: Owner
