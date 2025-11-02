@@ -11,7 +11,7 @@ RAG 검색 테스트 스크립트
    - "플랫폼" 검색 → "배달의민족", "우버" 찾음
 
 2. **Metadata Filtering (메타데이터 필터링)**
-   - agent="steve", pattern_type="disruption"
+   - agent="explorer", pattern_type="disruption"
    - 특정 조건의 청크만 검색
 
 3. **Top-K Retrieval**
@@ -20,13 +20,13 @@ RAG 검색 테스트 스크립트
 
 사용법:
     # 기본 검색
-    python scripts/03_test_search.py --agent steve --query "플랫폼 비즈니스 모델"
+    python scripts/03_test_search.py --agent explorer --query "플랫폼 비즈니스 모델"
     
     # 필터링 검색
-    python scripts/03_test_search.py --agent steve --query "추월 전략" --filter disruption
+    python scripts/03_test_search.py --agent explorer --query "추월 전략" --filter disruption
     
     # Top-K 조정
-    python scripts/03_test_search.py --agent steve --query "구독" --top-k 3
+    python scripts/03_test_search.py --agent explorer --query "구독" --top-k 3
 """
 
 import argparse
@@ -70,7 +70,7 @@ class UMISSearchTester:
     - Similarity with Score: 유사도 점수 포함
     """
     
-    def __init__(self, agent: str = "steve"):
+    def __init__(self, agent: str = "explorer"):
         self.agent = agent
         self.chroma_dir = settings.chroma_persist_dir
         
@@ -203,7 +203,7 @@ class UMISSearchTester:
         다양한 검색 시나리오 테스트
         
         UMIS 실제 사용 케이스:
-        1. 패턴 매칭: Albert 관찰 → Steve 패턴 찾기
+        1. 패턴 매칭: Observer 관찰 → Explorer 패턴 찾기
         2. 사례 검색: 유사 산업 성공 사례
         3. 검증 방법: 특정 패턴의 검증 프레임워크
         """
@@ -214,7 +214,7 @@ class UMISSearchTester:
                 "name": "시나리오 1: 트리거 시그널 → 패턴 매칭",
                 "query": "파편화된 공급자와 수요자, 높은 중개 비용",
                 "filter": {"chunk_type": "pattern_overview"},
-                "description": "Albert가 발견한 시장 구조 → Steve가 어떤 패턴을 찾을까?"
+                "description": "Observer가 발견한 시장 구조 → Explorer가 어떤 패턴을 찾을까?"
             },
             {
                 "name": "시나리오 2: 산업 유사성 → 사례 검색",
@@ -230,7 +230,7 @@ class UMISSearchTester:
             },
             {
                 "name": "시나리오 4: 검증 프레임워크",
-                "query": "Bill에게 물어봐야 할 정량 지표",
+                "query": "Quantifier에게 물어봐야 할 정량 지표",
                 "filter": {"chunk_type": "validation_framework"},
                 "description": "특정 패턴의 검증 방법 찾기"
             },
@@ -262,8 +262,8 @@ def main():
     parser = argparse.ArgumentParser(description="UMIS RAG 검색 테스트")
     parser.add_argument(
         "--agent",
-        choices=["steve", "albert", "bill", "rachel"],
-        default="steve",
+        choices=["explorer", "observer", "quantifier", "validator"],
+        default="explorer",
         help="검색할 에이전트 인덱스"
     )
     parser.add_argument(

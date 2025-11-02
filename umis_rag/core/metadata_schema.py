@@ -66,7 +66,7 @@ class CoreMetadata(BaseModel):
     
     # 품질
     validation_status: Literal[
-        "verified",      # Rachel 검증 완료
+        "verified",      # Validator 검증 완료
         "estimated",     # 추정치 포함
         "unverified"     # 미검증
     ] = "unverified"
@@ -78,9 +78,9 @@ class CoreMetadata(BaseModel):
 # Agent-Specific Metadata
 # ========================================
 
-class AlbertMetadata(BaseModel):
+class ObserverMetadata(BaseModel):
     """
-    Albert (Observer) 관점 메타데이터
+    Observer (Observer) 관점 메타데이터
     
     관심사:
     -------
@@ -89,7 +89,7 @@ class AlbertMetadata(BaseModel):
     - 트렌드 패턴
     """
     
-    agent_view: Literal["albert"] = "albert"
+    agent_view: Literal["observer"] = "observer"
     view_type: Literal[
         "structural",        # 구조 분석
         "competitive",       # 경쟁 구도
@@ -97,7 +97,7 @@ class AlbertMetadata(BaseModel):
         "dynamics"          # 시장 역학
     ]
     
-    # Albert 특화 필드
+    # Observer 특화 필드
     structural_patterns: List[str] = Field(
         default_factory=list,
         description="발견된 구조 패턴 (예: ['중개_플랫폼', '3면_시장'])"
@@ -119,9 +119,9 @@ class AlbertMetadata(BaseModel):
     )
 
 
-class SteveMetadata(BaseModel):
+class ExplorerMetadata(BaseModel):
     """
-    Steve (Explorer) 관점 메타데이터
+    Explorer (Explorer) 관점 메타데이터
     
     관심사:
     -------
@@ -130,7 +130,7 @@ class SteveMetadata(BaseModel):
     - 성공 요인
     """
     
-    agent_view: Literal["steve"] = "steve"
+    agent_view: Literal["explorer"] = "explorer"
     view_type: Literal[
         "opportunity",       # 기회 발견
         "strategy",          # 전략 실행
@@ -138,7 +138,7 @@ class SteveMetadata(BaseModel):
         "case_learning"      # 사례 학습
     ]
     
-    # Steve 특화 필드
+    # Explorer 특화 필드
     pattern_id: str = Field(
         description="적용 패턴 ID (예: 'platform_business_model')"
     )
@@ -171,9 +171,9 @@ class SteveMetadata(BaseModel):
     )
 
 
-class BillMetadata(BaseModel):
+class QuantifierMetadata(BaseModel):
     """
-    Bill (Quantifier) 관점 메타데이터
+    Quantifier (Quantifier) 관점 메타데이터
     
     관심사:
     -------
@@ -182,7 +182,7 @@ class BillMetadata(BaseModel):
     - 메트릭
     """
     
-    agent_view: Literal["bill"] = "bill"
+    agent_view: Literal["quantifier"] = "quantifier"
     view_type: Literal[
         "quantitative",      # 정량 데이터
         "calculation",       # 계산식
@@ -190,7 +190,7 @@ class BillMetadata(BaseModel):
         "forecast"           # 예측
     ]
     
-    # Bill 특화 필드
+    # Quantifier 특화 필드
     metrics: str = Field(  # JSON string
         default="[]",
         description="포함된 메트릭 (예: [{name: 'MAU', value: 10M}])"
@@ -220,9 +220,9 @@ class BillMetadata(BaseModel):
     )
 
 
-class RachelMetadata(BaseModel):
+class ValidatorMetadata(BaseModel):
     """
-    Rachel (Validator) 관점 메타데이터
+    Validator (Validator) 관점 메타데이터
     
     관심사:
     -------
@@ -231,7 +231,7 @@ class RachelMetadata(BaseModel):
     - 검증 상태
     """
     
-    agent_view: Literal["rachel"] = "rachel"
+    agent_view: Literal["validator"] = "validator"
     view_type: Literal[
         "source",            # 출처 정보
         "verification",      # 검증 리포트
@@ -239,7 +239,7 @@ class RachelMetadata(BaseModel):
         "reliability"        # 신뢰도 평가
     ]
     
-    # Rachel 특화 필드
+    # Validator 특화 필드
     sources: str = Field(  # JSON string
         default="[]",
         description="출처 리스트 (예: [{src_id: 'SRC_001', type: 'official'}])"
@@ -260,9 +260,9 @@ class RachelMetadata(BaseModel):
     )
 
 
-class StewartMetadata(BaseModel):
+class GuardianMetadata(BaseModel):
     """
-    Stewart (Guardian) 관점 메타데이터
+    Guardian (Guardian) 관점 메타데이터
     
     관심사:
     -------
@@ -271,7 +271,7 @@ class StewartMetadata(BaseModel):
     - 프로세스 준수
     """
     
-    agent_view: Literal["stewart"] = "stewart"
+    agent_view: Literal["guardian"] = "guardian"
     view_type: Literal[
         "governance",        # 거버넌스
         "quality",          # 품질 평가
@@ -279,7 +279,7 @@ class StewartMetadata(BaseModel):
         "approval"          # 승인 상태
     ]
     
-    # Stewart 특화 필드
+    # Guardian 특화 필드
     quality_grade: Literal["A", "B", "C", "D"]
     
     validation_complete: bool = False
@@ -332,12 +332,12 @@ class UnifiedChunkMetadata(BaseModel):
         "source_id": "baemin_case",
         "domain": "case_study",
         
-        # Steve-specific
-        "agent_view": "steve",
+        # Explorer-specific
+        "agent_view": "explorer",
         "pattern_id": "platform_business_model",
         
         # Cross-reference
-        "related_chunks": ["albert_baemin_structure", "bill_baemin_metrics"]
+        "related_chunks": ["observer_baemin_structure", "quantifier_baemin_metrics"]
     }
     """
     
@@ -350,14 +350,14 @@ class UnifiedChunkMetadata(BaseModel):
     core: CoreMetadata
     
     # Agent view (하나만 선택)
-    agent_view: Literal["albert", "steve", "bill", "rachel", "stewart"]
+    agent_view: Literal["observer", "explorer", "quantifier", "validator", "guardian"]
     
     # Agent-specific (선택적으로 하나만 존재)
-    albert: Optional[AlbertMetadata] = None
-    steve: Optional[SteveMetadata] = None
-    bill: Optional[BillMetadata] = None
-    rachel: Optional[RachelMetadata] = None
-    stewart: Optional[StewartMetadata] = None
+    observer: Optional[ObserverMetadata] = None
+    explorer: Optional[ExplorerMetadata] = None
+    quantifier: Optional[QuantifierMetadata] = None
+    validator: Optional[ValidatorMetadata] = None
+    guardian: Optional[GuardianMetadata] = None
     
     # Cross-reference (agent간 참조)
     related_chunks: List[str] = Field(
@@ -393,50 +393,50 @@ class UnifiedChunkMetadata(BaseModel):
         }
         
         # Agent-specific 추가
-        if self.steve:
+        if self.explorer:
             flat.update({
-                "steve_view_type": self.steve.view_type,
-                "steve_pattern_id": self.steve.pattern_id,
-                "steve_pattern_type": self.steve.pattern_type,
-                "steve_triggers": self.steve.triggers,
-                "steve_csf": self.steve.critical_success_factors,
-                "steve_difficulty": self.steve.difficulty,
-                "steve_chunking_level": self.steve.chunking_level,
+                "explorer_view_type": self.explorer.view_type,
+                "explorer_pattern_id": self.explorer.pattern_id,
+                "explorer_pattern_type": self.explorer.pattern_type,
+                "explorer_triggers": self.explorer.triggers,
+                "explorer_csf": self.explorer.critical_success_factors,
+                "explorer_difficulty": self.explorer.difficulty,
+                "explorer_chunking_level": self.explorer.chunking_level,
             })
         
-        if self.albert:
+        if self.observer:
             flat.update({
-                "albert_view_type": self.albert.view_type,
-                "albert_patterns": str(self.albert.structural_patterns),
-                "albert_dynamics": str(self.albert.market_dynamics),
-                "albert_chunking_level": self.albert.chunking_level,
+                "observer_view_type": self.observer.view_type,
+                "observer_patterns": str(self.observer.structural_patterns),
+                "observer_dynamics": str(self.observer.market_dynamics),
+                "observer_chunking_level": self.observer.chunking_level,
             })
         
-        if self.bill:
+        if self.quantifier:
             flat.update({
-                "bill_view_type": self.bill.view_type,
-                "bill_metrics": self.bill.metrics,
-                "bill_formulas": self.bill.formulas,
-                "bill_data_quality": self.bill.data_quality,
-                "bill_has_numbers": self.bill.has_numbers,
-                "bill_chunking_level": self.bill.chunking_level,
+                "quantifier_view_type": self.quantifier.view_type,
+                "quantifier_metrics": self.quantifier.metrics,
+                "quantifier_formulas": self.quantifier.formulas,
+                "quantifier_data_quality": self.quantifier.data_quality,
+                "quantifier_has_numbers": self.quantifier.has_numbers,
+                "quantifier_chunking_level": self.quantifier.chunking_level,
             })
         
-        if self.rachel:
+        if self.validator:
             flat.update({
-                "rachel_view_type": self.rachel.view_type,
-                "rachel_sources": self.rachel.sources,
-                "rachel_reliability": self.rachel.reliability,
-                "rachel_chunking_level": self.rachel.chunking_level,
+                "validator_view_type": self.validator.view_type,
+                "validator_sources": self.validator.sources,
+                "validator_reliability": self.validator.reliability,
+                "validator_chunking_level": self.validator.chunking_level,
             })
         
-        if self.stewart:
+        if self.guardian:
             flat.update({
-                "stewart_view_type": self.stewart.view_type,
-                "stewart_quality": self.stewart.quality_grade,
-                "stewart_validated": self.stewart.validation_complete,
-                "stewart_checked_by": self.stewart.checked_by,
-                "stewart_chunking_level": self.stewart.chunking_level,
+                "guardian_view_type": self.guardian.view_type,
+                "guardian_quality": self.guardian.quality_grade,
+                "guardian_validated": self.guardian.validation_complete,
+                "guardian_checked_by": self.guardian.checked_by,
+                "guardian_chunking_level": self.guardian.chunking_level,
             })
         
         return flat
@@ -447,7 +447,7 @@ class UnifiedChunkMetadata(BaseModel):
 # ========================================
 
 CHUNKING_GUIDELINES = {
-    "albert": {
+    "observer": {
         "macro": {
             "size": "1500-2000 tokens",
             "scope": "전체 시장 구조",
@@ -468,7 +468,7 @@ CHUNKING_GUIDELINES = {
         }
     },
     
-    "steve": {
+    "explorer": {
         "pattern": {
             "size": "800-1200 tokens",
             "scope": "패턴 전체",
@@ -489,7 +489,7 @@ CHUNKING_GUIDELINES = {
         }
     },
     
-    "bill": {
+    "quantifier": {
         "report": {
             "size": "1000-1500 tokens",
             "scope": "전체 정량 리포트",
@@ -510,7 +510,7 @@ CHUNKING_GUIDELINES = {
         }
     },
     
-    "rachel": {
+    "validator": {
         "full_report": {
             "size": "800-1200 tokens",
             "scope": "전체 검증 리포트",
@@ -531,7 +531,7 @@ CHUNKING_GUIDELINES = {
         }
     },
     
-    "stewart": {
+    "guardian": {
         "summary": {
             "size": "300-500 tokens",
             "scope": "검증 상태 요약",
@@ -561,33 +561,33 @@ Collection: umis_knowledge_base (단일!)
 같은 "배달의민족 사례"를 여러 관점으로 청킹:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. Albert View (구조 중심):
-   chunk_id: albert_baemin_market_structure
-   agent_view: albert
+1. Observer View (구조 중심):
+   chunk_id: observer_baemin_market_structure
+   agent_view: observer
    content: "시장 구조 변화 (파편화 → 집중화)..."
    chunking_level: meso
 
-2. Steve View (기회 중심):
-   chunk_id: steve_baemin_platform_opportunity
-   agent_view: steve
+2. Explorer View (기회 중심):
+   chunk_id: explorer_baemin_platform_opportunity
+   agent_view: explorer
    content: "플랫폼 비즈니스 모델 실행 사례..."
    chunking_level: case
 
-3. Bill View (정량 중심):
-   chunk_id: bill_baemin_growth_metrics
-   agent_view: bill
+3. Quantifier View (정량 중심):
+   chunk_id: quantifier_baemin_growth_metrics
+   agent_view: quantifier
    content: "MAU: 1,000만, 점유율: 60%, GMV: 6조..."
    chunking_level: calculation
 
-4. Rachel View (출처 중심):
-   chunk_id: rachel_baemin_sources
-   agent_view: rachel
+4. Validator View (출처 중심):
+   chunk_id: validator_baemin_sources
+   agent_view: validator
    content: "SRC_001: Wikipedia, SRC_002: 공식 발표..."
    chunking_level: source
 
-5. Stewart View (검증 중심):
-   chunk_id: stewart_baemin_validation_status
-   agent_view: stewart
+5. Guardian View (검증 중심):
+   chunk_id: guardian_baemin_validation_status
+   agent_view: guardian
    content: "등급 A, 검증 완료, 주의사항..."
    chunking_level: summary
 
@@ -601,13 +601,13 @@ Collection: umis_knowledge_base (단일!)
 
 검색:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Filter: agent_view="steve"
-→ Steve가 볼 청크만 검색
+Filter: agent_view="explorer"
+→ Explorer가 볼 청크만 검색
 
 Filter: source_id="baemin_case"
 → 배달의민족의 모든 관점 청크 검색
 
-Filter: agent_view="steve" AND pattern_type="disruption"
-→ Steve의 Disruption 청크만
+Filter: agent_view="explorer" AND pattern_type="disruption"
+→ Explorer의 Disruption 청크만
 """
 

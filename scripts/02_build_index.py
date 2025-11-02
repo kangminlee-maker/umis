@@ -15,11 +15,11 @@
    - 프로덕션에서는 Pinecone 사용 권장
 
 3. **Agent별 Collection**: 
-   - Steve용 컬렉션 따로 관리
-   - 향후 Albert, Bill, Rachel 컬렉션 추가
+   - Explorer용 컬렉션 따로 관리
+   - 향후 Observer, Quantifier, Validator 컬렉션 추가
 
 사용법:
-    python scripts/02_build_index.py --agent steve
+    python scripts/02_build_index.py --agent explorer
     python scripts/02_build_index.py --agent all
 """
 
@@ -139,9 +139,9 @@ class UMISIndexBuilder:
         logger.info(f"  ✅ {len(documents)}개 Document 생성")
         return documents
     
-    def build_steve_index(self) -> None:
+    def build_explorer_index(self) -> None:
         """
-        Steve 에이전트용 벡터 인덱스 구축
+        Explorer 에이전트용 벡터 인덱스 구축
         
         프로세스:
         1. Business Model 청크 로드
@@ -155,12 +155,12 @@ class UMISIndexBuilder:
         - API 호출 비용 발생 (54개 청크 × $0.00002 ≈ $0.001)
         - 1-2분 소요 (API 속도 의존)
         """
-        console.print("\n[bold blue]📊 Steve 인덱스 구축 시작[/bold blue]\n")
+        console.print("\n[bold blue]📊 Explorer 인덱스 구축 시작[/bold blue]\n")
         
         # 1. 청크 로드
         console.print("[yellow]Step 1/4: 청크 파일 로딩...[/yellow]")
-        bm_chunks = self.load_chunks("steve_business_models.jsonl")
-        dp_chunks = self.load_chunks("steve_disruption_patterns.jsonl")
+        bm_chunks = self.load_chunks("explorer_business_models.jsonl")
+        dp_chunks = self.load_chunks("explorer_disruption_patterns.jsonl")
         all_chunks = bm_chunks + dp_chunks
         
         if not all_chunks:
@@ -184,7 +184,7 @@ class UMISIndexBuilder:
         console.print("  ⏳ 1-2분 소요 예상... (API 속도 의존)\n")
         
         # Chroma DB 생성 (자동으로 임베딩 + 저장)
-        collection_name = "steve_knowledge_base"
+        collection_name = "explorer_knowledge_base"
         
         logger.info(f"Chroma Collection 생성: {collection_name}")
         vectorstore = Chroma.from_documents(
@@ -203,12 +203,12 @@ class UMISIndexBuilder:
         # 통계 출력
         self._print_statistics(all_chunks)
         
-        console.print("\n[bold green]✅ Steve 인덱스 구축 완료![/bold green]\n")
+        console.print("\n[bold green]✅ Explorer 인덱스 구축 완료![/bold green]\n")
         console.print(f"📁 저장 위치: {self.chroma_dir}")
         console.print(f"📊 Collection: {collection_name}")
         console.print(f"📝 Document 수: {len(documents)}")
         console.print("\n다음 단계:")
-        console.print("  python scripts/03_test_search.py --agent steve")
+        console.print("  python scripts/03_test_search.py --agent explorer")
     
     def _validate_index(self, vectorstore: Chroma, documents: List[Document]) -> None:
         """
@@ -246,7 +246,7 @@ class UMISIndexBuilder:
         pattern_types = Counter(c["metadata"]["pattern_type"] for c in chunks)
         
         # 테이블 생성
-        table = Table(title="📊 Steve 인덱스 통계")
+        table = Table(title="📊 Explorer 인덱스 통계")
         table.add_column("구분", style="cyan")
         table.add_column("개수", style="magenta")
         
@@ -262,8 +262,8 @@ def main():
     parser = argparse.ArgumentParser(description="UMIS RAG 벡터 인덱스 구축")
     parser.add_argument(
         "--agent",
-        choices=["steve", "albert", "bill", "rachel", "all"],
-        default="steve",
+        choices=["explorer", "observer", "quantifier", "validator", "all"],
+        default="explorer",
         help="구축할 에이전트 인덱스"
     )
     args = parser.parse_args()
@@ -282,14 +282,14 @@ def main():
     builder = UMISIndexBuilder()
     
     # 에이전트별 실행
-    if args.agent == "steve":
-        builder.build_steve_index()
+    if args.agent == "explorer":
+        builder.build_explorer_index()
     elif args.agent == "all":
-        builder.build_steve_index()
+        builder.build_explorer_index()
         # TODO: 향후 다른 에이전트 추가
     else:
         console.print(f"[yellow]⚠️  {args.agent} 인덱스는 아직 구현되지 않았습니다.[/yellow]")
-        console.print("현재 사용 가능: steve")
+        console.print("현재 사용 가능: explorer")
 
 
 if __name__ == "__main__":

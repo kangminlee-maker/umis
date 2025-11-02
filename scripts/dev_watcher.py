@@ -157,10 +157,10 @@ class UMISYAMLWatcher(FileSystemEventHandler):
             console.print("  [cyan]1/3[/cyan] 청크 재생성 중...")
             
             if "business_model" in filepath.name:
-                new_chunks = self.converter.convert_business_model_patterns_for_steve()
+                new_chunks = self.converter.convert_business_model_patterns_for_explorer()
                 source_file = "umis_business_model_patterns_v6.2.yaml"
             elif "disruption" in filepath.name:
-                new_chunks = self.converter.convert_disruption_patterns_for_steve()
+                new_chunks = self.converter.convert_disruption_patterns_for_explorer()
                 source_file = "umis_disruption_patterns_v6.2.yaml"
             else:
                 console.print("  [yellow]⚠️  처리 안 함[/yellow]")

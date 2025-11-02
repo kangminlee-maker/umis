@@ -9,8 +9,8 @@ RAG 시스템에 최적화된 JSON Lines 형식으로 변환합니다.
     python scripts/01_convert_yaml.py
 
 출력:
-    data/chunks/steve_chunks.jsonl  (Steve 전용 청크)
-    data/chunks/albert_chunks.jsonl (향후 확장)
+    data/chunks/explorer_chunks.jsonl  (Explorer 전용 청크)
+    data/chunks/observer_chunks.jsonl (향후 확장)
     ...
 """
 
@@ -39,9 +39,9 @@ class UMISYAMLConverter:
     개념:
     ------
     1. **청킹 전략**: 에이전트별로 다른 관점으로 같은 데이터를 청킹
-       - Steve: 기회/전략 중심
-       - Albert: 구조/패턴 중심 (향후)
-       - Bill: 정량 데이터 중심 (향후)
+       - Explorer: 기회/전략 중심
+       - Observer: 구조/패턴 중심 (향후)
+       - Quantifier: 정량 데이터 중심 (향후)
     
     2. **메타데이터**: 각 청크에 검색 최적화를 위한 메타데이터 첨부
        - agent: 어느 에이전트용인가
@@ -73,11 +73,11 @@ class UMISYAMLConverter:
         logger.info(f"  ✅ {len(data)} 개 최상위 키 로드됨")
         return data
     
-    def convert_business_model_patterns_for_steve(self) -> List[Dict[str, Any]]:
+    def convert_business_model_patterns_for_explorer(self) -> List[Dict[str, Any]]:
         """
-        비즈니스 모델 패턴을 Steve 관점으로 청킹
+        비즈니스 모델 패턴을 Explorer 관점으로 청킹
         
-        Steve의 관심사:
+        Explorer의 관심사:
         - 어떤 트리거 시그널이 이 패턴을 시사하는가?
         - 기회 구조는 무엇인가?
         - 검증 방법은?
@@ -87,7 +87,7 @@ class UMISYAMLConverter:
         - 1개 패턴 = 여러 청크로 분할
         - 섹션별로 독립 청크 (concept, triggers, structure, validation, cases)
         """
-        logger.info("📊 비즈니스 모델 패턴 → Steve 청크 변환 시작")
+        logger.info("📊 비즈니스 모델 패턴 → Explorer 청크 변환 시작")
         
         data = self.load_yaml("umis_business_model_patterns_v6.2.yaml")
         chunks = []
@@ -125,7 +125,7 @@ class UMISYAMLConverter:
             if "success_case_library" in pattern:
                 chunks.extend(self._create_case_chunks(pattern_id, pattern))
         
-        logger.info(f"  ✅ 총 {len(chunks)}개 Steve 청크 생성")
+        logger.info(f"  ✅ 총 {len(chunks)}개 Explorer 청크 생성")
         return chunks
     
     def _create_pattern_overview_chunk(
@@ -140,9 +140,9 @@ class UMISYAMLConverter:
         - Concept (핵심 개념)
         - Trigger Observations (트리거 시그널)
         
-        Steve가 사용하는 시나리오:
-        "Albert가 '높은 초기 비용 + 정기 유지관리' 발견"
-        → Steve가 트리거 검색
+        Explorer가 사용하는 시나리오:
+        "Observer가 '높은 초기 비용 + 정기 유지관리' 발견"
+        → Explorer가 트리거 검색
         → subscription_model 매칭!
         """
         concept = pattern.get("concept", {})
@@ -156,7 +156,7 @@ class UMISYAMLConverter:
 - **본질**: {concept.get('essence', 'N/A')}
 - **핵심 가치**: {concept.get('core_value', 'N/A')}
 
-### 트리거 시그널 (Albert 관찰에서 찾을 신호)
+### 트리거 시그널 (Observer 관찰에서 찾을 신호)
 """
         
         # 트리거 시그널 추가
@@ -168,7 +168,7 @@ class UMISYAMLConverter:
         metadata = {
             "chunk_id": f"{pattern_id}_overview",
             "chunk_type": "pattern_overview",
-            "agent": "steve",
+            "agent": "explorer",
             "pattern_id": pattern_id,
             "pattern_type": "business_model",
             "section": "concept_and_triggers",
@@ -195,7 +195,7 @@ class UMISYAMLConverter:
         """
         기회 구조 청크 생성
         
-        Steve의 Phase 2 (다차원 분석)에서 사용
+        Explorer의 Phase 2 (다차원 분석)에서 사용
         - 가치 제안은?
         - 수익 모델은?
         - 구조적 요건은?
@@ -232,7 +232,7 @@ class UMISYAMLConverter:
         metadata = {
             "chunk_id": f"{pattern_id}_opportunity_structure",
             "chunk_type": "opportunity_structure",
-            "agent": "steve",
+            "agent": "explorer",
             "pattern_id": pattern_id,
             "pattern_type": "business_model",
             "section": "opportunity_structure",
@@ -253,10 +253,10 @@ class UMISYAMLConverter:
         """
         검증 프레임워크 청크
         
-        Steve가 가설 생성 후 검증할 때 사용
-        - Bill에게 뭘 물어봐야 하나?
-        - Rachel에게 뭘 확인해야 하나?
-        - Albert에게 뭘 검증받아야 하나?
+        Explorer가 가설 생성 후 검증할 때 사용
+        - Quantifier에게 뭘 물어봐야 하나?
+        - Validator에게 뭘 확인해야 하나?
+        - Observer에게 뭘 검증받아야 하나?
         """
         val_framework = pattern["validation_framework"]
         
@@ -271,13 +271,13 @@ class UMISYAMLConverter:
         metadata = {
             "chunk_id": f"{pattern_id}_validation",
             "chunk_type": "validation_framework",
-            "agent": "steve",
+            "agent": "explorer",
             "pattern_id": pattern_id,
             "pattern_type": "business_model",
             "section": "validation",
             
             # 검증 필요 에이전트 태그
-            "validation_agents": ["bill", "rachel", "albert"],
+            "validation_agents": ["quantifier", "validator", "observer"],
             
             "source_file": "umis_business_model_patterns_v6.2.yaml",
             "token_count": len(content.split()),
@@ -297,7 +297,7 @@ class UMISYAMLConverter:
         성공 사례들을 각각 독립 청크로 생성
         
         왜 사례별로 분할?
-        - Steve가 "유사한 산업 사례" 검색 시
+        - Explorer가 "유사한 산업 사례" 검색 시
         - 특정 사례만 정확하게 검색 가능
         - 예: "음식 배달" 검색 → "배달의민족" 청크만 매칭
         """
@@ -327,7 +327,7 @@ class UMISYAMLConverter:
                 metadata = {
                     "chunk_id": f"{pattern_id}_case_{company_name}",
                     "chunk_type": "success_case",
-                    "agent": "steve",
+                    "agent": "explorer",
                     "pattern_id": pattern_id,
                     "pattern_type": "business_model",
                     "section": "case_study",
@@ -349,11 +349,11 @@ class UMISYAMLConverter:
         
         return chunks
     
-    def convert_disruption_patterns_for_steve(self) -> List[Dict[str, Any]]:
+    def convert_disruption_patterns_for_explorer(self) -> List[Dict[str, Any]]:
         """
-        Disruption 패턴을 Steve 관점으로 청킹
+        Disruption 패턴을 Explorer 관점으로 청킹
         
-        Steve의 관심사 (Disruption 특화):
+        Explorer의 관심사 (Disruption 특화):
         - 1등의 어떤 약점을 공략하나?
         - Counter-Positioning 메커니즘은?
         - 1등이 못 따라오는 이유는?
@@ -363,7 +363,7 @@ class UMISYAMLConverter:
         - 1개 패턴 = 여러 청크
         - 사례별로 상세 청킹 (사례가 매우 중요!)
         """
-        logger.info("🔥 Disruption 패턴 → Steve 청크 변환 시작")
+        logger.info("🔥 Disruption 패턴 → Explorer 청크 변환 시작")
         
         data = self.load_yaml("umis_disruption_patterns_v6.2.yaml")
         chunks = []
@@ -453,7 +453,7 @@ class UMISYAMLConverter:
         metadata = {
             "chunk_id": f"{pattern_id}_overview",
             "chunk_type": "disruption_overview",
-            "agent": "steve",
+            "agent": "explorer",
             "pattern_id": pattern_id,
             "pattern_type": "disruption",
             "section": "concept_and_dilemma",
@@ -486,7 +486,7 @@ class UMISYAMLConverter:
         metadata = {
             "chunk_id": f"{pattern_id}_strategy",
             "chunk_type": "attacker_strategy",
-            "agent": "steve",
+            "agent": "explorer",
             "pattern_id": pattern_id,
             "pattern_type": "disruption",
             "section": "strategy",
@@ -522,11 +522,11 @@ class UMISYAMLConverter:
         metadata = {
             "chunk_id": f"{pattern_id}_validation",
             "chunk_type": "disruption_validation",
-            "agent": "steve",
+            "agent": "explorer",
             "pattern_id": pattern_id,
             "pattern_type": "disruption",
             "section": "validation",
-            "validation_agents": ["albert", "bill", "rachel"],
+            "validation_agents": ["observer", "quantifier", "validator"],
             "source_file": "umis_disruption_patterns_v6.2.yaml",
             "token_count": len(content.split()),
         }
@@ -620,7 +620,7 @@ class UMISYAMLConverter:
         metadata = {
             "chunk_id": f"{pattern_id}_{case_id}",
             "chunk_type": "disruption_case",
-            "agent": "steve",
+            "agent": "explorer",
             "pattern_id": pattern_id,
             "pattern_type": "disruption",
             "section": "case_study",
@@ -702,23 +702,23 @@ def main():
     # 컨버터 초기화
     converter = UMISYAMLConverter(data_dir)
     
-    # Phase 1: 비즈니스 모델 패턴 → Steve 청크
+    # Phase 1: 비즈니스 모델 패턴 → Explorer 청크
     console.print("[yellow]📊 Phase 1: 비즈니스 모델 패턴 변환[/yellow]")
-    steve_bm_chunks = converter.convert_business_model_patterns_for_steve()
-    converter.save_chunks(steve_bm_chunks, "steve_business_models.jsonl")
+    explorer_bm_chunks = converter.convert_business_model_patterns_for_explorer()
+    converter.save_chunks(explorer_bm_chunks, "explorer_business_models.jsonl")
     
-    # Phase 2: Disruption 패턴 → Steve 청크
+    # Phase 2: Disruption 패턴 → Explorer 청크
     console.print("\n[yellow]🔥 Phase 2: Disruption 패턴 변환[/yellow]")
-    steve_dp_chunks = converter.convert_disruption_patterns_for_steve()
-    converter.save_chunks(steve_dp_chunks, "steve_disruption_patterns.jsonl")
+    explorer_dp_chunks = converter.convert_disruption_patterns_for_explorer()
+    converter.save_chunks(explorer_dp_chunks, "explorer_disruption_patterns.jsonl")
     
-    # TODO: Phase 3: Albert 관점 청크 (향후)
-    # TODO: Phase 4: Bill 관점 청크 (향후)
+    # TODO: Phase 3: Observer 관점 청크 (향후)
+    # TODO: Phase 4: Quantifier 관점 청크 (향후)
     
     console.print("\n[bold green]✅ 변환 완료![/bold green]\n")
     console.print(f"출력 디렉토리: {converter.chunks_dir}")
     console.print("\n다음 단계:")
-    console.print("  python scripts/02_build_index.py --agent steve")
+    console.print("  python scripts/02_build_index.py --agent explorer")
 
 
 if __name__ == "__main__":

@@ -110,7 +110,7 @@ def build_release(version: str, include_index: bool = None):
 
 ## 📦 포함 내용
 - ✅ UMIS Guidelines v6.2
-- ✅ Steve RAG 에이전트
+- ✅ Explorer RAG 에이전트
 - ✅ 54개 패턴/사례 청크
 {f'- ✅ 사전 구축 벡터 인덱스 ({index_size / (1024*1024):.1f} MB)' if include_index else '- ⚠️ 인덱스 미포함 (직접 구축 필요)'}
 

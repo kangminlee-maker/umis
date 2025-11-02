@@ -23,7 +23,7 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from umis_rag.agents.steve import create_steve_agent
+from umis_rag.agents.explorer import create_explorer_agent
 from rich.console import Console
 from rich.panel import Panel
 
@@ -34,8 +34,8 @@ def search_patterns(query: str, top_k: int = 2):
     """패턴 검색"""
     console.print(f"\n[yellow]🔍 패턴 검색: {query}[/yellow]\n")
     
-    steve = create_steve_agent()
-    results = steve.search_patterns(query, top_k=top_k)
+    explorer = create_explorer_agent()
+    results = explorer.search_patterns(query, top_k=top_k)
     
     console.print(f"[green]✅ {len(results)}개 패턴 발견[/green]\n")
     
@@ -62,8 +62,8 @@ def search_cases(query: str, pattern_id: str = None, top_k: int = 3):
     if pattern_id:
         console.print(f"[dim]패턴 필터: {pattern_id}[/dim]\n")
     
-    steve = create_steve_agent()
-    results = steve.search_cases(query, pattern_id=pattern_id, top_k=top_k)
+    explorer = create_explorer_agent()
+    results = explorer.search_cases(query, pattern_id=pattern_id, top_k=top_k)
     
     console.print(f"[green]✅ {len(results)}개 사례 발견[/green]\n")
     
@@ -79,11 +79,11 @@ def search_cases(query: str, pattern_id: str = None, top_k: int = 3):
 def verify_data(data_point: str):
     """데이터 검증 (향후 구현)"""
     console.print(f"\n[yellow]🔍 데이터 검증: {data_point}[/yellow]\n")
-    console.print("[dim]Rachel retriever는 향후 구현 예정입니다.[/dim]\n")
-    console.print("현재는 Steve retriever로 관련 정보 검색:\n")
+    console.print("[dim]Validator retriever는 향후 구현 예정입니다.[/dim]\n")
+    console.print("현재는 Explorer retriever로 관련 정보 검색:\n")
     
-    steve = create_steve_agent()
-    results = steve.vectorstore.similarity_search(data_point, k=2)
+    explorer = create_explorer_agent()
+    results = explorer.vectorstore.similarity_search(data_point, k=2)
     
     for i, doc in enumerate(results, 1):
         console.print(f"{i}. {doc.metadata.get('chunk_id', 'N/A')}")
@@ -134,7 +134,7 @@ def main():
     except Exception as e:
         console.print(f"\n[red]❌ 에러: {e}[/red]\n")
         console.print("[dim]RAG 인덱스가 구축되어 있는지 확인하세요:[/dim]")
-        console.print("[dim]  python scripts/02_build_index.py --agent steve[/dim]\n")
+        console.print("[dim]  python scripts/02_build_index.py --agent explorer[/dim]\n")
 
 
 if __name__ == "__main__":
