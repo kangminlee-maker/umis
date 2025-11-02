@@ -258,7 +258,7 @@ Option 2    ████                20%  ← 대부분 버림
 - 데이터 기반 의사결정
 
 ### 더 알아보기
-- [UMIS Guidelines](../../../umis_guidelines_v6.2.yaml)
+- [UMIS Guidelines](../../../umis_guidelines.yaml)
 - [UMIS Complete Guide](../../../docs/UMIS_v6.2_Complete_Guide.md)
 - [Business Model Patterns](../../../umis_business_model_patterns_v6.2.yaml)
 

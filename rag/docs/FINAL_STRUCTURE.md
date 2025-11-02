@@ -19,12 +19,12 @@ umis-main/
 │   │   └── IMPLEMENTATION_SUMMARY.md
 │   │
 │   ├── UMIS YAML (6개)
-│   │   ├── umis_guidelines_v6.2.yaml
-│   │   ├── umis_business_model_patterns_v6.2.yaml
-│   │   ├── umis_disruption_patterns_v6.2.yaml
-│   │   ├── umis_ai_guide_v6.2.yaml
-│   │   ├── umis_deliverable_standards_v6.2.yaml
-│   │   └── umis_examples_v6.2.yaml
+│   │   ├── umis_guidelines.yaml
+│   │   ├── umis_business_model_patterns.yaml
+│   │   ├── umis_disruption_patterns.yaml
+│   │   ├── umis_ai_guide.yaml
+│   │   ├── umis_deliverable_standards.yaml
+│   │   └── umis_examples.yaml
 │   │
 │   ├── docs/
 │   │   ├── UMIS_v6.2_Complete_Guide.md
@@ -104,7 +104,7 @@ umis-main/
 
 ```yaml
 RAG → UMIS:
-  • ../umis_guidelines_v6.2.yaml 참조
+  • ../umis_guidelines.yaml 참조
   • ../data/ 공유 (심볼릭 링크)
   • from umis_rag import ... (Python)
 
@@ -138,7 +138,7 @@ RAG 문서:
 
 ```
 Cursor:
-  @umis_guidelines_v6.2.yaml
+  @umis_guidelines.yaml
 ```
 
 ### RAG

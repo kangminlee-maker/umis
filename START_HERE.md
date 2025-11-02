@@ -9,12 +9,12 @@ Universal Market Intelligence System v6.2
 ```
 umis-main/
 ├── 📚 UMIS Core (기존)
-│   ├── umis_guidelines_v6.2.yaml
-│   ├── umis_business_model_patterns_v6.2.yaml
-│   ├── umis_disruption_patterns_v6.2.yaml
-│   ├── umis_ai_guide_v6.2.yaml
-│   ├── umis_deliverable_standards_v6.2.yaml
-│   ├── umis_examples_v6.2.yaml
+│   ├── umis_guidelines.yaml
+│   ├── umis_business_model_patterns.yaml
+│   ├── umis_disruption_patterns.yaml
+│   ├── umis_ai_guide.yaml
+│   ├── umis_deliverable_standards.yaml
+│   ├── umis_examples.yaml
 │   ├── CHANGELOG.md
 │   └── docs/ (기존 시장 분석 등)
 │
@@ -35,7 +35,7 @@ umis-main/
 
 ```
 Cursor Composer (Cmd+I):
-  @umis_guidelines_v6.2.yaml
+  @umis_guidelines.yaml
   "피아노 구독 서비스 시장 분석해줘"
 ```
 
@@ -43,7 +43,7 @@ Cursor Composer (Cmd+I):
 
 ```
 Cursor Composer (Cmd+I):
-  @umis_guidelines_v6.2.yaml
+  @umis_guidelines.yaml
   
   "@Steve, 음악 스트리밍 구독 기회 분석해줘"
   

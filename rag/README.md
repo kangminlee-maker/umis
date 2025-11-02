@@ -15,7 +15,7 @@
 ```
 Cmd+I (또는 Ctrl+I)
 
-@umis_guidelines_v6.2.yaml
+@umis_guidelines.yaml
 
 "피아노 구독 서비스 시장 분석해줘"
 ```

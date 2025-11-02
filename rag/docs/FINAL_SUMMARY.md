@@ -173,7 +173,7 @@ Multi-View + Meta-RAG
 
 # 2. 실전 사용
 # Cursor 새 채팅
-@umis_guidelines_v6.2.yaml
+@umis_guidelines.yaml
 "음악 스트리밍 구독 기회"
 
 # 3. 필요 시

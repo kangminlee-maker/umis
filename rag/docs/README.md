@@ -10,7 +10,7 @@
 **30초:**
 ```
 Cursor Composer (Cmd+I)
-@umis_guidelines_v6.2.yaml
+@umis_guidelines.yaml
 "@Steve, 음악 스트리밍 구독 기회 분석해줘"
 ```
 

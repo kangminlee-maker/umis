@@ -289,7 +289,7 @@ ROI: 게임 체인저 수준
 
 ```bash
 # Cursor 테스트
-1. @umis_guidelines_v6.2.yaml 첨부
+1. @umis_guidelines.yaml 첨부
 2. "음악 스트리밍 구독 기회 분석"
 3. 필요 시:
    python scripts/query_rag.py pattern "구독 서비스"

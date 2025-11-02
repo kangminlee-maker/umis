@@ -23,7 +23,7 @@ AI 에이전트 5명이 협업하여 시장을 분석하는 프레임워크입�
 **Cursor Composer (Cmd+I):**
 
 ```
-@umis_guidelines_v6.2.yaml
+@umis_guidelines.yaml
 
 "@Steve, 음악 스트리밍 구독 서비스 시장 기회 분석해줘"
 ```
@@ -121,9 +121,9 @@ Agent 커스터마이징:
 ```
 umis-main/
 ├── UMIS Core
-│   ├── umis_guidelines_v6.2.yaml
-│   ├── umis_business_model_patterns_v6.2.yaml
-│   ├── umis_disruption_patterns_v6.2.yaml
+│   ├── umis_guidelines.yaml
+│   ├── umis_business_model_patterns.yaml
+│   ├── umis_disruption_patterns.yaml
 │   └── ... (3개 더)
 │
 ├── RAG (v6.3.0-alpha)
@@ -143,7 +143,7 @@ umis-main/
 
 ```
 1. Cursor Composer (Cmd+I)
-2. @umis_guidelines_v6.2.yaml 첨부
+2. @umis_guidelines.yaml 첨부
 3. "@Steve, 시장 분석해줘"
 
 → Observer 관찰

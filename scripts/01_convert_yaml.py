@@ -89,7 +89,7 @@ class UMISYAMLConverter:
         """
         logger.info("📊 비즈니스 모델 패턴 → Explorer 청크 변환 시작")
         
-        data = self.load_yaml("umis_business_model_patterns_v6.2.yaml")
+        data = self.load_yaml("umis_business_model_patterns.yaml")
         chunks = []
         
         # 7개 패턴 ID
@@ -178,7 +178,7 @@ class UMISYAMLConverter:
             "triggers": triggers.get("signals", []) if isinstance(triggers.get("signals"), list) else [],
             
             # 메타 정보
-            "source_file": "umis_business_model_patterns_v6.2.yaml",
+            "source_file": "umis_business_model_patterns.yaml",
             "token_count": len(content.split()),  # 대략적 토큰 수
         }
         
@@ -236,7 +236,7 @@ class UMISYAMLConverter:
             "pattern_id": pattern_id,
             "pattern_type": "business_model",
             "section": "opportunity_structure",
-            "source_file": "umis_business_model_patterns_v6.2.yaml",
+            "source_file": "umis_business_model_patterns.yaml",
             "token_count": len(content.split()),
         }
         
@@ -279,7 +279,7 @@ class UMISYAMLConverter:
             # 검증 필요 에이전트 태그
             "validation_agents": ["quantifier", "validator", "observer"],
             
-            "source_file": "umis_business_model_patterns_v6.2.yaml",
+            "source_file": "umis_business_model_patterns.yaml",
             "token_count": len(content.split()),
         }
         
@@ -338,7 +338,7 @@ class UMISYAMLConverter:
                     "industry": case_data.get("market", "unknown"),
                     "critical_success_factors": csf if isinstance(csf, list) else [],
                     
-                    "source_file": "umis_business_model_patterns_v6.2.yaml",
+                    "source_file": "umis_business_model_patterns.yaml",
                     "token_count": len(content.split()),
                 }
                 
@@ -365,7 +365,7 @@ class UMISYAMLConverter:
         """
         logger.info("🔥 Disruption 패턴 → Explorer 청크 변환 시작")
         
-        data = self.load_yaml("umis_disruption_patterns_v6.2.yaml")
+        data = self.load_yaml("umis_disruption_patterns.yaml")
         chunks = []
         
         # 5개 Disruption 패턴
@@ -459,7 +459,7 @@ class UMISYAMLConverter:
             "section": "concept_and_dilemma",
             
             "keywords": self._extract_keywords(concept),
-            "source_file": "umis_disruption_patterns_v6.2.yaml",
+            "source_file": "umis_disruption_patterns.yaml",
             "token_count": len(content.split()),
         }
         
@@ -490,7 +490,7 @@ class UMISYAMLConverter:
             "pattern_id": pattern_id,
             "pattern_type": "disruption",
             "section": "strategy",
-            "source_file": "umis_disruption_patterns_v6.2.yaml",
+            "source_file": "umis_disruption_patterns.yaml",
             "token_count": len(content.split()),
         }
         
@@ -527,7 +527,7 @@ class UMISYAMLConverter:
             "pattern_type": "disruption",
             "section": "validation",
             "validation_agents": ["observer", "quantifier", "validator"],
-            "source_file": "umis_disruption_patterns_v6.2.yaml",
+            "source_file": "umis_disruption_patterns.yaml",
             "token_count": len(content.split()),
         }
         
@@ -632,7 +632,7 @@ class UMISYAMLConverter:
             "outcome": case_data.get("outcome", "unknown"),
             "critical_success_factors": csf if isinstance(csf, list) else [],
             
-            "source_file": "umis_disruption_patterns_v6.2.yaml",
+            "source_file": "umis_disruption_patterns.yaml",
             "token_count": len(content.split()),
         }
         

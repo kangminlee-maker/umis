@@ -10,21 +10,21 @@
 ### 루트 YAML (7개)
 
 - agent_names.yaml:       82줄
-- umis_ai_guide_v6.2.yaml:     1083줄
-- umis_business_model_patterns_v6.2.yaml:      985줄
-- umis_deliverable_standards_v6.2.yaml:     2876줄
-- umis_disruption_patterns_v6.2.yaml:     1912줄
-- umis_examples_v6.2.yaml:      745줄
-- umis_guidelines_v6.2.yaml:     5427줄
+- umis_ai_guide.yaml:     1083줄
+- umis_business_model_patterns.yaml:      985줄
+- umis_deliverable_standards.yaml:     2876줄
+- umis_disruption_patterns.yaml:     1912줄
+- umis_examples.yaml:      745줄
+- umis_guidelines.yaml:     5427줄
 
 검토:
   ✅ agent_names.yaml: 사용자 설정 (필수)
-  ✅ umis_guidelines_v6.2.yaml: UMIS 메인 (필수)
-  ✅ umis_business_model_patterns_v6.2.yaml: RAG 소스 (필수)
-  ✅ umis_disruption_patterns_v6.2.yaml: RAG 소스 (필수)
-  ✅ umis_ai_guide_v6.2.yaml: AI 가이드 (필수)
-  ✅ umis_deliverable_standards_v6.2.yaml: 산출물 표준 (필수)
-  ✅ umis_examples_v6.2.yaml: 예시 (필수)
+  ✅ umis_guidelines.yaml: UMIS 메인 (필수)
+  ✅ umis_business_model_patterns.yaml: RAG 소스 (필수)
+  ✅ umis_disruption_patterns.yaml: RAG 소스 (필수)
+  ✅ umis_ai_guide.yaml: AI 가이드 (필수)
+  ✅ umis_deliverable_standards.yaml: 산출물 표준 (필수)
+  ✅ umis_examples.yaml: 예시 (필수)
 
 → 모두 필요! ✅
 

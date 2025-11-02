@@ -30,7 +30,7 @@
 
 ## ✅ 완료 현황
 
-### Phase 1: `umis_deliverable_standards_v6.2.yaml` ✅
+### Phase 1: `umis_deliverable_standards.yaml` ✅
 
 **생성**: 2,877줄 / 101KB  
 **내용**: 4개 Part
@@ -65,7 +65,7 @@
 
 ### Phase 2: Guidelines & AI Guide 확장 ✅
 
-#### umis_guidelines_v6.2.yaml
+#### umis_guidelines.yaml
 **변경**: 5,005줄 → 5,428줄 (+423줄, +17KB)
 
 **추가 내용** (SECTION 5):
@@ -78,7 +78,7 @@
   - Progressive Onboarding
 - § 9: Call Sign 시스템 (선택사항) (Line 2395-2441)
 
-#### umis_ai_guide_v6.2.yaml
+#### umis_ai_guide.yaml
 **변경**: 849줄 → 1,084줄 (+235줄, +9KB)
 
 **추가 내용**:
@@ -343,9 +343,9 @@ for file in glob("projects/*/02_analysis/explorer/OPP_*.md"):
 
 | 파일 | Before | After | 변화 | 상태 |
 |------|--------|-------|------|------|
-| umis_guidelines_v6.2.yaml | 5,005줄<br>199KB | 5,428줄<br>216KB | +423줄<br>+17KB | ✅ |
-| umis_ai_guide_v6.2.yaml | 849줄<br>24KB | 1,084줄<br>33KB | +235줄<br>+9KB | ✅ |
-| umis_deliverable_standards_v6.2.yaml | - | 2,877줄<br>101KB | 신규 | ✅ |
+| umis_guidelines.yaml | 5,005줄<br>199KB | 5,428줄<br>216KB | +423줄<br>+17KB | ✅ |
+| umis_ai_guide.yaml | 849줄<br>24KB | 1,084줄<br>33KB | +235줄<br>+9KB | ✅ |
+| umis_deliverable_standards.yaml | - | 2,877줄<br>101KB | 신규 | ✅ |
 
 **합계**: +3,535줄, +127KB
 
@@ -472,13 +472,13 @@ EST_001 생성
 ```
 ┌─────────────────────────────────────────┐
 │ Tier 1: Guidelines (개념/원칙)          │
-│ umis_guidelines_v6.2.yaml (5,428줄)    │
+│ umis_guidelines.yaml (5,428줄)    │
 │ └─ SECTION 5: DATA INTEGRITY SYSTEM    │
 └─────────────────────────────────────────┘
            ↓ 상세 설명
 ┌─────────────────────────────────────────┐
 │ Tier 2: Standards (상세 표준)           │
-│ umis_deliverable_standards_v6.2.yaml   │
+│ umis_deliverable_standards.yaml   │
 │ (2,877줄)                              │
 │ ├─ Part 1: 산출물 표준                 │
 │ ├─ Part 2: 생명주기                    │
@@ -806,7 +806,7 @@ sorted_by_score = sorted(files, key=lambda f:
 
 ### 사용자가 읽어야 할 것
 
-1. **umis_ai_guide_v6.2.yaml** (1,084줄)
+1. **umis_ai_guide.yaml** (1,084줄)
    - 빠른 시작 가이드
    - Call Sign (선택사항)
    - 사용자 친화적 요약
@@ -819,11 +819,11 @@ sorted_by_score = sorted(files, key=lambda f:
 
 ### AI가 읽어야 할 것
 
-1. **umis_guidelines_v6.2.yaml** (5,428줄)
+1. **umis_guidelines.yaml** (5,428줄)
    - 전체 시스템 정의
    - SECTION 5: DATA INTEGRITY
 
-2. **umis_deliverable_standards_v6.2.yaml** (2,877줄)
+2. **umis_deliverable_standards.yaml** (2,877줄)
    - 산출물 상세 표준
    - 프로젝트 생명주기
    - 재검증 프레임워크
@@ -939,7 +939,7 @@ emit_signal("[DELIVERABLE_COMPLETE] explorer OPP_001.md")
 
 ### 핵심 파일 (반드시 읽기)
 
-1. **umis_ai_guide_v6.2.yaml**
+1. **umis_ai_guide.yaml**
    - AI 빠른 시작
    - § quick_start_guide
    - § deliverable_standards_summary
@@ -949,7 +949,7 @@ emit_signal("[DELIVERABLE_COMPLETE] explorer OPP_001.md")
    - AI 사용 방법
    - 예시 코드
 
-3. **umis_deliverable_standards_v6.2.yaml**
+3. **umis_deliverable_standards.yaml**
    - 산출물 상세 표준
    - Part 1-4 전체
 

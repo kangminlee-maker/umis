@@ -13,7 +13,7 @@
 ```yaml
 사용자 경험:
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  1. umis_guidelines_v6.2.yaml 첨부 (기존 방식)
+  1. umis_guidelines.yaml 첨부 (기존 방식)
   2. Cursor 채팅: "피아노 구독 서비스 분석"
   
   3. AI가 자동 판단:
@@ -139,7 +139,7 @@ umis_rag_tools = [
 사용자: "피아노 구독 서비스 시장 분석해줘"
 
 AI (내부):
-  1. umis_guidelines_v6.2.yaml 읽기
+  1. umis_guidelines.yaml 읽기
   2. "Observer 시작 → 트리거 발견"
   3. [Tool 사용] umis_search_patterns("높은 초기 비용, 정기 사용")
   4. [Tool 결과] subscription_model 패턴
@@ -249,7 +249,7 @@ AI 읽기:
 ### 개념: RAG가 YAML을 동적으로 확장
 
 ```yaml
-# 사용자가 보는 것: umis_guidelines_v6.2.yaml (기존)
+# 사용자가 보는 것: umis_guidelines.yaml (기존)
 
 # AI가 실제로 보는 것: (런타임에 확장됨)
 agents:
@@ -276,7 +276,7 @@ agents:
 
 ```python
 # 1. 사용자가 YAML 첨부
-original_yaml = load("umis_guidelines_v6.2.yaml")
+original_yaml = load("umis_guidelines.yaml")
 
 # 2. RAG가 컨텍스트 기반 증강
 if rag_available:
@@ -316,7 +316,7 @@ if rag_available:
 ### 개념: AI가 필요 시 RAG 함수 직접 호출
 
 ```yaml
-# umis_guidelines_v6.2.yaml (기존 유지)
+# umis_guidelines.yaml (기존 유지)
 
 agents:
   - id: Explorer
@@ -436,13 +436,13 @@ if '```python' in yaml_section:
 # 사용자 선택
 
 Mode A: YAML Only (Simple)
-  - umis_guidelines_v6.2.yaml만
+  - umis_guidelines.yaml만
   - RAG 없음
   - 빠르고 간단
   - 기본 품질
 
 Mode B: YAML + RAG (Advanced)
-  - umis_guidelines_v6.2.yaml (메인)
+  - umis_guidelines.yaml (메인)
   - + umis_rag (보조)
   - 느리지만 고품질
   - 대용량 데이터 가능
@@ -452,11 +452,11 @@ Mode B: YAML + RAG (Advanced)
 
 ```
 # Mode A (Simple)
-@umis_guidelines_v6.2.yaml 첨부
+@umis_guidelines.yaml 첨부
 → YAML만 사용
 
 # Mode B (Advanced)  
-@umis_guidelines_v6.2.yaml 첨부
+@umis_guidelines.yaml 첨부
 + .cursorrules에 "use UMIS RAG"
 → RAG 자동 활성화
 ```
@@ -545,13 +545,13 @@ RAG 역할:
 현재 상태 활용:
   
   Mode A (YAML Only): ✅ 지금도 가능
-    - umis_guidelines_v6.2.yaml
-    - umis_business_model_patterns_v6.2.yaml
-    - umis_disruption_patterns_v6.2.yaml
+    - umis_guidelines.yaml
+    - umis_business_model_patterns.yaml
+    - umis_disruption_patterns.yaml
     → 3개 파일 첨부
   
   Mode B (YAML + RAG): ✅ 프로토타입 완료
-    - umis_guidelines_v6.2.yaml (메인)
+    - umis_guidelines.yaml (메인)
     - Python 스크립트로 RAG 호출
     - 결과를 수동으로 참조
   
@@ -590,9 +590,9 @@ RAG 역할:
 
 ```
 Cursor에 첨부:
-  - umis_guidelines_v6.2.yaml (5,428줄)
-  - umis_business_model_patterns_v6.2.yaml (986줄)
-  - umis_disruption_patterns_v6.2.yaml (1,912줄)
+  - umis_guidelines.yaml (5,428줄)
+  - umis_business_model_patterns.yaml (986줄)
+  - umis_disruption_patterns.yaml (1,912줄)
   
 총: 8,326줄 (약 200K 토큰)
 
@@ -612,7 +612,7 @@ AI 분석:
 
 ```
 Cursor에 첨부:
-  - umis_guidelines_v6.2.yaml (5,428줄만!)
+  - umis_guidelines.yaml (5,428줄만!)
   
 AI 분석:
   1. 5,428줄 읽기 (프로세스만)
@@ -634,7 +634,7 @@ AI 분석:
 
 ```
 Cursor에 첨부:
-  - umis_guidelines_v6.2.yaml (5,428줄)
+  - umis_guidelines.yaml (5,428줄)
   
 시스템 처리:
   1. 사용자 쿼리 분석: "피아노 구독"
@@ -777,7 +777,7 @@ Option B: YAML 1개 + Python RAG
 │  사용자 인터페이스 (Cursor)                                  │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
-│  📎 umis_guidelines_v6.2.yaml 첨부                          │
+│  📎 umis_guidelines.yaml 첨부                          │
 │  💬 "피아노 구독 서비스 분석해줘"                            │
 │                                                              │
 └────────────────────┬────────────────────────────────────────┘

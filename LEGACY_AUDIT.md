@@ -14,7 +14,7 @@
 
 사용 방법:
   Cmd+I
-  @umis_guidelines_v6.2.yaml
+  @umis_guidelines.yaml
   "@Steve, 분석해줘"
 ```
 

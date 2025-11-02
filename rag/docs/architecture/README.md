@@ -39,7 +39,7 @@
 
 **Cursor (Cmd+I):**
 ```
-@umis_guidelines_v6.2.yaml
+@umis_guidelines.yaml
 "@Steve, 시장 분석해줘"
 ```
 

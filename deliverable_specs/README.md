@@ -286,7 +286,7 @@ generate_portfolio_dashboard(sorted_opps)
 ## 📖 참조
 
 - **Parent**: `umis_deliverable_standards_v6.2.yaml`
-- **Guidelines**: `umis_guidelines_v6.2.yaml` SECTION 5
+- **Guidelines**: `umis_guidelines.yaml` SECTION 5
 - **Examples**: `umis_examples_v6.2.yaml`
 
 ---

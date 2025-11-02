@@ -14,7 +14,7 @@ Cursor Composer (Cmd+I):
 
 You: "피아노 학원 구독 서비스로 전환하는 시장 기회 분석
      
-     @umis_guidelines_v6.2.yaml"
+     @umis_guidelines.yaml"
 
 AI: 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -95,7 +95,7 @@ AI:
   알겠습니다. YAML 파일을 수정하겠습니다.
   
   [파일 열기]
-  umis_business_model_patterns_v6.2.yaml
+  umis_business_model_patterns.yaml
   
   [위치 찾기]
   라인 348: 코웨이 섹션
@@ -306,7 +306,7 @@ Guardian (Guardian):
 ```
 Cmd+I
 
-@umis_guidelines_v6.2.yaml
+@umis_guidelines.yaml
 
 "음악 스트리밍 구독 서비스 시장 기회 분석해줘"
 ```
