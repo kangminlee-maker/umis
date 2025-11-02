@@ -23,7 +23,7 @@ AI 에이전트 5명이 협업하여 시장을 분석하는 프레임워크입�
 **Cursor Composer (Cmd+I):**
 
 ```
-@umis_guidelines.yaml
+@umis.yaml
 
 "@Steve, 음악 스트리밍 구독 서비스 시장 기회 분석해줘"
 ```
@@ -143,7 +143,7 @@ umis-main/
 
 ```
 1. Cursor Composer (Cmd+I)
-2. @umis_guidelines.yaml 첨부
+2. @umis.yaml 첨부
 3. "@Steve, 시장 분석해줘"
 
 → Observer 관찰

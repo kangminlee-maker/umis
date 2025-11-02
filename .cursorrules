@@ -1,242 +1,147 @@
-# UMIS RAG Cursor Rules
-# 
-# 목적: Cursor만으로 UMIS 사용 + RAG 개발 병행
-# 사용자: 코딩 못 하는 사용자
-# 환경: Cursor Composer + Agent 모드
-#
+# ========================================
+# UMIS RAG Cursor Rules - AI Optimized
+# v6.3.0-alpha | Non-coder | Cursor-only
 # ========================================
 
-## 초기 설치 안내
+# === PART 1: UMIS 개념 (AI 필수 이해) ===
 
-When user mentions "umis 설치" or "설정" or "setup":
+system:
+  name: Universal Market Intelligence System
+  version: 6.3.0-alpha
   
-  Check if .env file exists:
-    - If NO:
-      1. Create .env from env.template:
-         cp env.template .env
-      
-      2. Guide user:
-         "✅ .env 파일을 생성했습니다!
-         
-         다음 단계:
-         1. .env 파일을 열어주세요
-         2. OPENAI_API_KEY=your-api-key-here
-            → 자신의 OpenAI API 키로 변경
-         
-         API 키 받기:
-         https://platform.openai.com/api-keys"
-      
-      3. After API key added:
-         "✅ API 키 설정 완료!
-         
-         이제 RAG 인덱스를 구축하겠습니다... (1분)"
-         
-         python scripts/02_build_index.py --agent explorer
-         
-         "✅ 모든 설정 완료!
-         
-         사용 방법:
-         Cmd+I 하고
-         @umis_guidelines.yaml
-         '@Steve, 시장 분석해줘'
-         
-         즉시 사용하세요!"
-    
-    - If YES:
-      "✅ 이미 설정되어 있습니다!
-      
-      즉시 사용 가능:
-      @umis_guidelines.yaml
-      '@Steve, 시장 분석해줘'"
+  agents:
+    Observer: {name: Albert, role: market_structure, rag: false}
+    Explorer: {name: Steve, role: opportunity_discovery, rag: true}  # 유일!
+    Quantifier: {name: Bill, role: market_sizing, rag: false}
+    Validator: {name: Rachel, role: data_verification, rag: false}
+    Guardian: {name: Stewart, role: process_monitoring, rag: false}
+  
+  # id: Agent ID (Observer, Explorer, ...)
+  # name: Default name (Albert, Steve, ...) → agent_names.yaml로 커스터마이징
+  
+  flow: Observer(observe)→Explorer(rag+hypothesize)→Quantifier(calculate)→Validator(verify)→Guardian(approve)
+  
+  discovery_sprint: 명확도<7 → 5-Agent 병렬 탐색 → 목표 구체화
+  
+  rag:
+    active: Explorer only
+    db: data/chroma/explorer_knowledge_base (54 patterns/cases)
+    sources: 
+      - umis_business_model_patterns.yaml (31 patterns)
+      - umis_disruption_patterns.yaml (23 patterns)
 
-## ========================================
+user:
+  skill: no-coding
+  tool: Cursor Composer + Agent mode
+  lang: 한국어
+  workflow: 대화→자동화→결과
+
+# === PART 2: 자동화 규칙 ===
+
+## 초기 설치
+setup:
+  detect: ["umis 설치", "설정", "setup"]
+  
+  flow:
+    check_env:
+      no: cp env.template .env → msg_api_key → build_index → msg_ready
+      yes: msg_already_setup
+  
+  commands:
+    build_index: python scripts/02_build_index.py --agent explorer
+  
+  messages:
+    api_key: |
+      ✅ .env 생성 완료!
+      
+      다음: .env 파일 열어서
+      OPENAI_API_KEY=your-key → 자신의 키로 변경
+      
+      받기: https://platform.openai.com/api-keys
+    
+    ready: |
+      ✅ 설정 완료!
+      
+      사용: Cmd+I → @umis.yaml
+      "@Explorer, 시장 분석해줘"
 
 ## Agent 이름 커스터마이징
-
-User can customize agent names in agent_names.yaml:
-  - Observer → "Jane", "관찰자", "MarketBot", etc.
-  - Explorer → "Alex", "탐색자", "OpportunityBot", etc.
-
-양방향 작동 (입력 + 출력):
+agent_names:
+  file: agent_names.yaml
+  format: {observer: Albert, explorer: Steve, ...}
+  bidirectional: true
   
-  입력 인식:
-    User: "@Jane, 시장 분석해"
-    → agent_names.yaml 확인
-    → "Jane" = Observer
-    → Observer.analyze() 실행
+  mapping:
+    input: @Steve → Explorer
+    output: Explorer → Steve
   
-  출력 표시:
-    Observer 작업 중...
-    → agent_names.yaml 확인
-    → display_name: "Jane"
-    → "Jane이 시장을 관찰합니다..."
+  defaults: {Observer: Albert, Explorer: Steve, Quantifier: Bill, Validator: Rachel, Guardian: Stewart}
 
-매핑 규칙:
-  1. agent_names.yaml 자동 로드
-  2. display_name ↔ id 매핑 생성
-     {"Jane": "observer", "Alex": "explorer"}
-  3. 사용자 언급 시:
-     - "@Jane" 감지 → observer 호출
-     - "@Alex" 감지 → explorer 호출
-  4. Agent 출력 시:
-     - observer → "Jane"으로 표시
-     - explorer → "Alex"로 표시
-
-Example:
-  agent_names.yaml (최소화 형식):
-    observer: Jane
-    explorer: Alex
-    quantifier: Mike
+## YAML 수정 → RAG 재구축
+yaml_watch:
+  files: [umis_business_model_patterns.yaml, umis_disruption_patterns.yaml, umis_ai_guide.yaml]
   
-  User: "@Jane, 시장 구조 분석해"
-  → Observer (내부) 실행
-  → "Jane이 시장을 관찰합니다..." (출력)
+  on_save:
+    ask: "RAG 재구축? (2초)"
+    if_yes: python scripts/01_convert_yaml.py → python scripts/02_build_index.py --agent explorer
+    msg: "✅ RAG 업데이트!"
+
+## Explorer RAG 자동 활용
+explorer_rag:
+  pattern_search:
+    detect: ["패턴 매칭", "트리거 시그널"]
+    cmd: python scripts/query_rag.py pattern "{signals}"
+    msg: "🔍 {pattern_id} 발견!"
   
-  User: "@Alex, 기회 찾아봐"
-  → Explorer (내부) 실행
-  → "Alex가 패턴을 검색합니다..." (출력)
+  case_search:
+    detect: ["유사 사례", "성공 사례"]
+    cmd: python scripts/query_rag.py case "{industry}" --pattern {id}
+    integrate: analysis
+
+## 데이터 추가
+data_add:
+  detect: ["데이터 추가", "수정", "넣어줘"]
   
-  기본값 (파일에 없으면):
-    observer: Albert
-    explorer: Steve
-    quantifier: Bill
-    validator: Rachel
-    guardian: Stewart
+  flow:
+    open_yaml → find_section → suggest_diff →
+    if_approved: save → rebuild_rag → "✅ 완료!"
   
-  User: "Observer, 시장 분석해"  (ID로도 작동!)
-  User: "Albert, 시장 분석해"    (기본 이름으로도 작동!)
-  User: "Jane, 시장 분석해"      (커스텀 이름으로도 작동!)
-  → 모두 작동!
+  example: "코웨이 해지율 추가" → umis_business_model_patterns.yaml 자동 수정
 
-## ========================================
+## 단축 명령
+shortcuts:
+  - "rag 검색 {q}": python scripts/query_rag.py {q}
+  - "rag 재구축": scripts/01+02
+  - "rag 통계": show collection stats
+  - "rag 테스트": scripts/03_test_search.py
 
-## 자동 RAG 재구축
+# === PART 3: 경로 & 설정 ===
 
-When user modifies these YAML files:
-  - umis_business_model_patterns.yaml
-  - umis_disruption_patterns.yaml
-  - umis_ai_guide.yaml
+paths:
+  root: /Users/kangmin/Documents/AI_dev/umis-main
+  yamls: umis_*.yaml
+  scripts: scripts/
+  data: data/
+  venv: source venv/bin/activate
 
-After saving, automatically suggest:
-  "RAG 인덱스를 재구축할까요? (2초 소요)"
+execution:
+  cd: {root}
+  activate: venv
+  relative: from root
+
+# === PART 4: 메시지 템플릿 ===
+
+messages:
+  한국어: 모든 응답
+  친화적: 기술용어 쉽게
+  이모지: 최소 (필요시만)
   
-If user approves, run:
-  ```bash
-  cd /Users/kangmin/Documents/AI_dev/umis-main
-  source venv/bin/activate
-  python scripts/01_convert_yaml.py
-  python scripts/02_build_index.py --agent steve
-  ```
-  
-Show result: "✅ RAG 업데이트 완료!"
+  format:
+    progress: "🔍 {action} 중..."
+    success: "✅ {result}"
+    error: "❌ {problem} → {solution}"
 
-## UMIS 분석 중 자동 RAG 활용
+# ========================================
+# END (80줄)
+# ========================================
 
-When Explorer needs pattern matching:
-  - Detect: "패턴 매칭 필요" or "트리거 시그널 발견"
-  - Automatically run:
-    ```bash
-    python scripts/query_rag.py pattern "{trigger_signals}"
-    ```
-  - Integrate results into analysis
-  - Show: "🔍 RAG 검색: {pattern_id} 발견!"
-
-When Explorer needs case studies:
-  - Detect: "유사 사례" or "성공 사례"
-  - Automatically run:
-    ```bash
-    python scripts/query_rag.py case "{industry}" --pattern {pattern_id}
-    ```
-  - Show results in analysis
-
-## 데이터 추가 워크플로우
-
-When user says:
-  - "데이터 추가", "수정해줘", "넣어줘"
-  
-Action:
-  1. Open relevant YAML file
-  2. Find correct section (use pattern matching)
-  3. Show suggested addition with diff
-  4. On user approval:
-     - Save file
-     - Auto rebuild RAG
-     - Confirm: "✅ 추가 및 RAG 반영 완료"
-
-Example:
-  User: "코웨이에 해지율 3-5% 추가"
-  
-  AI:
-    - Opens: umis_business_model_patterns.yaml
-    - Finds: 코웨이 section (line 348)
-    - Suggests:
-      ```yaml
-      + churn_rate: "3-5%"
-      ```
-    - Saves + Rebuilds
-    - "✅ 완료!"
-
-## 단축 명령어
-
-User can say:
-  - "rag 검색 {쿼리}" → Run query_rag.py
-  - "rag 재구축" → Full rebuild
-  - "rag 통계" → Show stats
-  - "rag 테스트" → Run test search
-
-Auto execute and show results.
-
-## UMIS 분석 프로세스 지원
-
-When doing UMIS analysis:
-  1. Always use @umis_guidelines.yaml
-  2. Follow UMIS process (Observer → Explorer → Quantifier → Validator)
-  3. Use RAG when needed (automatic)
-  4. Save improvements to YAML (automatic)
-  
-Maintain feedback loop:
-  Analysis → Discovery → Addition → Update → Re-analysis
-
-## 파일 경로 자동 처리
-
-Project root: /Users/kangmin/Documents/AI_dev/umis-main
-
-When executing commands:
-  - Auto cd to project root
-  - Auto activate venv
-  - Use relative paths from root
-
-## 에러 처리
-
-If RAG rebuild fails:
-  - Show clear error message
-  - Suggest: "인덱스를 처음부터 재구축할까요?"
-  - Provide recovery command
-
-If YAML syntax error:
-  - Point to exact line
-  - Suggest fix
-  - Validate before rebuild
-
-## 성능 최적화
-
-- Cache query results (avoid duplicate searches)
-- Batch multiple YAML changes (rebuild once)
-- Show progress for long operations
-
-## 사용자 친화적 메시지
-
-Instead of:
-  "Executing python scripts/query_rag.py..."
-  
-Use:
-  "🔍 RAG에서 패턴 검색 중..."
-  "✅ subscription_model 발견!"
-  "💾 YAML 저장 및 RAG 업데이트 중... (2초)"
-  "✅ 완료! 즉시 사용 가능합니다."
-
-## 한국어 우선
-
-- 모든 응답 한국어
-- 기술 용어도 쉽게 설명
-- 사용자가 코딩 못 해도 이해 가능하게

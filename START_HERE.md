@@ -35,7 +35,7 @@ umis-main/
 
 ```
 Cursor Composer (Cmd+I):
-  @umis_guidelines.yaml
+  @umis.yaml
   "피아노 구독 서비스 시장 분석해줘"
 ```
 
@@ -43,7 +43,7 @@ Cursor Composer (Cmd+I):
 
 ```
 Cursor Composer (Cmd+I):
-  @umis_guidelines.yaml
+  @umis.yaml
   
   "@Steve, 음악 스트리밍 구독 기회 분석해줘"
   

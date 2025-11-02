@@ -67,7 +67,7 @@ python scripts/02_build_index.py --agent explorer
 ```
 Cursor Composer (Cmd+I):
 
-@umis_guidelines.yaml
+@umis.yaml
 
 "@Steve, 음악 스트리밍 구독 서비스 시장 분석해줘"
 ```
