@@ -702,19 +702,19 @@ example_output: |
   validation:
     observer:  # Albert
       status: "passed"
-      date: "2024-11-01"
+      date: "2025-11-01"
       score: 8
       comment: "B2C 직판 70% 구조에서 구독 모델 충분히 가능. 유통망 충돌 관리 필요."
     quantifier:  # Bill
       status: "passed"
-      date: "2024-11-01"
+      date: "2025-11-01"
       sam: 270
       ltv_cac: 7.0
       roi: 4.5
       comment: "건전한 Unit Economics. LTV 70만원, CAC 10만원."
     validator:  # Rachel
       status: "passed"
-      date: "2024-11-01"
+      date: "2025-11-01"
       avg_reliability: 80
       data_count: 8
       comment: "근거 데이터 8개, 평균 신뢰도 80%. 코웨이 사례 신뢰함."

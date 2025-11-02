@@ -307,7 +307,7 @@ Bill 검증: 통과
 ```yaml
 ---
 validation:
-  observer: {status: "passed", date: "2024-11-01"}
+  observer: {status: "passed", date: "2025-11-01"}
   quantifier: {status: "passed", ltv_cac: 7.0}
   validator: {status: "passed", reliability: 80}
   overall: {status: "passed"}
@@ -769,7 +769,7 @@ agent_name:
 validation:
   observer:    # Albert
     status: "pending" → "passed"  # 자동 업데이트
-    date: null → "2024-11-01"
+    date: null → "2025-11-01"
     score: null → 8
   
   quantifier:  # Bill

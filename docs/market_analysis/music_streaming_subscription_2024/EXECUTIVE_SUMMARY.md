@@ -1,7 +1,7 @@
 # 음악 스트리밍 구독 서비스 시장 분석
 ## Executive Summary
 
-**분석일**: 2024-11-01  
+**분석일**: 2025-11-01  
 **프레임워크**: UMIS v6.2 (RAG-Enabled)  
 **담당**: Albert, Steve, Bill, Rachel, Stewart
 

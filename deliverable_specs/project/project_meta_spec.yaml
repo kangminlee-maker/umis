@@ -348,14 +348,14 @@ example_output: |
     target_score: 7
     evolution_log:
       - {date: "2024-10-31", score: 3, phase: "initial", reason: "프로젝트 시작"}
-      - {date: "2024-11-02", score: 6, phase: "discovery", reason: "방향 수렴"}
+      - {date: "2025-11-02", score: 6, phase: "discovery", reason: "방향 수렴"}
       - {date: "2024-11-14", score: 9, phase: "completed", reason: "분석 완료"}
   
   discovery_sprint:
     type: "full_sprint"
     start_date: "2024-10-31"
-    target_completion: "2024-11-02"
-    actual_completion: "2024-11-02"
+    target_completion: "2025-11-02"
+    actual_completion: "2025-11-02"
     completed: true
     findings:
       - "B2C 직판 구조 확인"
@@ -382,7 +382,7 @@ example_output: |
       deliverables: 4
   
   milestones:
-    - {milestone: "Discovery Sprint 완료", date: "2024-11-02", status: "completed"}
+    - {milestone: "Discovery Sprint 완료", date: "2025-11-02", status: "completed"}
     - {milestone: "시장 구조 분석 완료", date: "2024-11-07", status: "completed"}
     - {milestone: "기회 발굴 완료", date: "2024-11-12", status: "completed"}
     - {milestone: "최종 의사결정", date: "2024-11-14", status: "completed"}
