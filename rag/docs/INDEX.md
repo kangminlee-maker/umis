@@ -60,37 +60,45 @@ Cursor Composer (Cmd+I)
 
 ## 🎯 v6.3.0-alpha 현황
 
-### 구현됨 ✅
+### ✅ 구현됨 (현재 사용 가능!)
 
 ```yaml
-Explorer RAG:
+Vector RAG:
   • 54개 검증된 패턴/사례
   • text-embedding-3-large
-  • 자동 검색
+  • Explorer만 RAG 사용! ⭐
 
 Cursor 통합:
   • .cursorrules 자동화
-  • Agent 모드
-  • 대화만!
+  • Agent 모드 자동 실행
+  • 대화만! 코딩 불필요!
 
 Agent 커스터마이징:
   • agent_names.yaml
   • 양방향 매핑
+  • Albert, Steve, Bill, ... (기본)
+  → Jane, Alex, ... (커스텀)
 ```
 
-### 계획 중 📋
+### 📋 향후 계획 (미구현)
 
 ```yaml
-Knowledge Graph:
-  • 패턴 조합
+Knowledge Graph (Layer 3):
+  • 패턴 조합 자동 발견
   
-Guardian 감시:
-  • 순환 감지
-  • 목표 정렬
+Guardian 감시 (Layer 4):
+  • 순환 패턴 감지
+  • 목표 정렬 모니터링
 
-Multi-Agent:
-  • 6-Agent view
+Multi-Agent (Layer 1 확장):
+  • 6-Agent modular RAG
+  • Observer/Quantifier/Validator/Guardian RAG
+
+Meta-RAG (Layer 2):
+  • 품질 자동 평가
 ```
+
+**주의:** architecture/, planning/ 문서는 **향후 계획**입니다!
 
 **상세:** architecture/, planning/ 참조
 

@@ -1,9 +1,19 @@
-# UMIS RAG 구현 계획 (Cursor 사용자용)
+# UMIS RAG 향후 개발 계획 (Cursor 기반)
+
+**⚠️ 주의:** 이 문서는 **향후 개발 계획**입니다!
+
+**현재 (v6.3.0-alpha):**
+- ✅ Vector RAG (Explorer용)
+
+**계획:**
+- 📋 Knowledge Graph
+- 📋 Guardian monitoring
+- 📋 Multi-agent RAG
 
 **대상:** 코딩 못 하는 UMIS 사용자  
-**도구:** Cursor Composer + Agent 모드만!  
+**도구:** Cursor Composer + Agent 모드  
 **기간:** 12일 (Cursor로 개발)  
-**목표:** UMIS 핵심 85% 구현
+**목표:** 4-Layer 완전 구현
 
 ---
 
