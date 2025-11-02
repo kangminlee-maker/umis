@@ -1,19 +1,24 @@
-# UMIS RAG 향후 개발 계획 (Cursor 기반)
+# UMIS RAG 구현 계획 (Cursor 기반)
 
-**⚠️ 주의:** 이 문서는 **향후 개발 계획**입니다!
+**⚠️ 노트:** 초기 12일 계획 (참조용)  
+**최신:** architecture/planning/IMPLEMENTATION_ROADMAP_V2.md 참조!
 
 **현재 (v6.3.0-alpha):**
 - ✅ Vector RAG (Explorer용)
 
-**계획:**
-- 📋 Knowledge Graph
-- 📋 Guardian monitoring
-- 📋 Multi-agent RAG
+**v2.0 계획 (ROADMAP_V2 참조):**
+- 📋 8개 개선안 기반
+- 📋 Phase 1-4 (6주)
+- 📋 4-Layer + 6개 횡단 관심사
 
 **대상:** 코딩 못 하는 UMIS 사용자  
 **도구:** Cursor Composer + Agent 모드  
-**기간:** 12일 (Cursor로 개발)  
-**목표:** 4-Layer 완전 구현
+**업데이트:** 2025-11-02 (Architecture v2.0)
+
+---
+
+**⭐ 최신 로드맵:**  
+`architecture/planning/IMPLEMENTATION_ROADMAP_V2.md`
 
 ---
 
