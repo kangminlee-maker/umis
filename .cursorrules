@@ -124,8 +124,8 @@ If user approves, run:
   ```bash
   cd /Users/kangmin/Documents/AI_dev/umis-main
   source venv/bin/activate
-  python rag_core/scripts/01_convert_yaml.py
-  python rag_core/scripts/02_build_index.py --agent steve
+  python scripts/01_convert_yaml.py
+  python scripts/02_build_index.py --agent steve
   ```
   
 Show result: "✅ RAG 업데이트 완료!"
@@ -136,7 +136,7 @@ When Explorer needs pattern matching:
   - Detect: "패턴 매칭 필요" or "트리거 시그널 발견"
   - Automatically run:
     ```bash
-    python rag_core/scripts/query_rag.py pattern "{trigger_signals}"
+    python scripts/query_rag.py pattern "{trigger_signals}"
     ```
   - Integrate results into analysis
   - Show: "🔍 RAG 검색: {pattern_id} 발견!"
@@ -145,7 +145,7 @@ When Explorer needs case studies:
   - Detect: "유사 사례" or "성공 사례"
   - Automatically run:
     ```bash
-    python rag_core/scripts/query_rag.py case "{industry}" --pattern {pattern_id}
+    python scripts/query_rag.py case "{industry}" --pattern {pattern_id}
     ```
   - Show results in analysis
 
