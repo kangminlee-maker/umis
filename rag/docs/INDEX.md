@@ -54,15 +54,18 @@
 
 ### 3. 구현 계획 (planning/)
 
-**개발자용 (선택):**
-- **DETAILED_TASK_LIST.md**
-  - 12일 구현 계획
-  - Day별 상세 Task
-  - 향후 확장 시 참조
+**Cursor 사용자용:**
+- **README.md** ⭐ 계획 개요
+  - 12일 요약
+  - Cursor로 개발하는 방법
 
-- **IMPLEMENTATION_PLAN.md**
-  - 전체 우선순위
-  - 의존성 그래프
+- **CURSOR_IMPLEMENTATION_PLAN.md** ⭐ 상세
+  - Cursor 대화로 구현
+  - 코딩 불필요
+
+**참조 (백업):**
+- DETAILED_TASK_LIST_DEV_ONLY.md.backup (개발자용)
+- IMPLEMENTATION_PLAN_DEV_ONLY.md.backup (개발자용)
 
 ---
 
