@@ -14,7 +14,7 @@ Cursor Composer (Cmd+I):
 
 You: "피아노 학원 구독 서비스로 전환하는 시장 기회 분석
      
-     @umis_guidelines.yaml"
+     @umis.yaml"
 
 AI: 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -306,7 +306,7 @@ Guardian (Guardian):
 ```
 Cmd+I
 
-@umis_guidelines.yaml
+@umis.yaml
 
 "음악 스트리밍 구독 서비스 시장 기회 분석해줘"
 ```
