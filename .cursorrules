@@ -38,9 +38,10 @@ User can customize agent names in agent_names.yaml:
      - explorer → "Alex"로 표시
 
 Example:
-  agent_names.yaml:
-    observer: display_name: "Jane"
-    explorer: display_name: "Alex"
+  agent_names.yaml (최소화 형식):
+    observer: Jane
+    explorer: Alex
+    quantifier: Mike
   
   User: "@Jane, 시장 구조 분석해"
   → Observer (내부) 실행
@@ -50,9 +51,17 @@ Example:
   → Explorer (내부) 실행
   → "Alex가 패턴을 검색합니다..." (출력)
   
+  기본값 (파일에 없으면):
+    observer: Albert
+    explorer: Steve
+    quantifier: Bill
+    validator: Rachel
+    guardian: Stewart
+  
   User: "Observer, 시장 분석해"  (ID로도 작동!)
-  User: "Jane, 시장 분석해"      (이름으로도 작동!)
-  → 둘 다 같은 결과!
+  User: "Albert, 시장 분석해"    (기본 이름으로도 작동!)
+  User: "Jane, 시장 분석해"      (커스텀 이름으로도 작동!)
+  → 모두 작동!
 
 ## ========================================
 
