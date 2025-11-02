@@ -1,6 +1,8 @@
 # UMIS RAG
 
-**Universal Market Intelligence System - Multi-Agent RAG**
+**Universal Market Intelligence System - Multi-Agent RAG**  
+**버전:** 6.3.0-alpha  
+**날짜:** 2025-11-02
 
 검증된 패턴 라이브러리 + 의미 검색으로 UMIS를 강화합니다.
 
