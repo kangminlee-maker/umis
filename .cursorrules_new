@@ -10,11 +10,14 @@ system:
   version: 6.3.0-alpha
   
   agents:
-    Observer: {role: market_structure, rag: false}
-    Explorer: {role: opportunity_discovery, rag: true}  # 유일!
-    Quantifier: {role: market_sizing, rag: false}
-    Validator: {role: data_verification, rag: false}
-    Guardian: {role: process_monitoring, rag: false}
+    Observer: {name: Albert, role: market_structure, rag: false}
+    Explorer: {name: Steve, role: opportunity_discovery, rag: true}  # 유일!
+    Quantifier: {name: Bill, role: market_sizing, rag: false}
+    Validator: {name: Rachel, role: data_verification, rag: false}
+    Guardian: {name: Stewart, role: process_monitoring, rag: false}
+  
+  # id: Agent ID (Observer, Explorer, ...)
+  # name: Default name (Albert, Steve, ...) → agent_names.yaml로 커스터마이징
   
   flow: Observer(observe)→Explorer(rag+hypothesize)→Quantifier(calculate)→Validator(verify)→Guardian(approve)
   
