@@ -31,7 +31,7 @@ When user mentions "umis 설치" or "설정" or "setup":
          
          이제 RAG 인덱스를 구축하겠습니다... (1분)"
          
-         python rag_core/scripts/02_build_index.py --agent explorer
+         python scripts/02_build_index.py --agent explorer
          
          "✅ 모든 설정 완료!
          
