@@ -6,6 +6,51 @@
 #
 # ========================================
 
+## 초기 설치 안내
+
+When user mentions "umis 설치" or "설정" or "setup":
+  
+  Check if .env file exists:
+    - If NO:
+      1. Create .env from env.template:
+         cp env.template .env
+      
+      2. Guide user:
+         "✅ .env 파일을 생성했습니다!
+         
+         다음 단계:
+         1. .env 파일을 열어주세요
+         2. OPENAI_API_KEY=your-api-key-here
+            → 자신의 OpenAI API 키로 변경
+         
+         API 키 받기:
+         https://platform.openai.com/api-keys"
+      
+      3. After API key added:
+         "✅ API 키 설정 완료!
+         
+         이제 RAG 인덱스를 구축하겠습니다... (1분)"
+         
+         python rag_core/scripts/02_build_index.py --agent explorer
+         
+         "✅ 모든 설정 완료!
+         
+         사용 방법:
+         Cmd+I 하고
+         @umis_guidelines.yaml
+         '@Steve, 시장 분석해줘'
+         
+         즉시 사용하세요!"
+    
+    - If YES:
+      "✅ 이미 설정되어 있습니다!
+      
+      즉시 사용 가능:
+      @umis_guidelines.yaml
+      '@Steve, 시장 분석해줘'"
+
+## ========================================
+
 ## Agent 이름 커스터마이징
 
 User can customize agent names in agent_names.yaml:
@@ -79,8 +124,8 @@ If user approves, run:
   ```bash
   cd /Users/kangmin/Documents/AI_dev/umis-main
   source venv/bin/activate
-  python scripts/01_convert_yaml.py
-  python scripts/02_build_index.py --agent steve
+  python rag_core/scripts/01_convert_yaml.py
+  python rag_core/scripts/02_build_index.py --agent steve
   ```
   
 Show result: "✅ RAG 업데이트 완료!"
@@ -91,7 +136,7 @@ When Explorer needs pattern matching:
   - Detect: "패턴 매칭 필요" or "트리거 시그널 발견"
   - Automatically run:
     ```bash
-    python scripts/query_rag.py pattern "{trigger_signals}"
+    python rag_core/scripts/query_rag.py pattern "{trigger_signals}"
     ```
   - Integrate results into analysis
   - Show: "🔍 RAG 검색: {pattern_id} 발견!"
@@ -100,7 +145,7 @@ When Explorer needs case studies:
   - Detect: "유사 사례" or "성공 사례"
   - Automatically run:
     ```bash
-    python scripts/query_rag.py case "{industry}" --pattern {pattern_id}
+    python rag_core/scripts/query_rag.py case "{industry}" --pattern {pattern_id}
     ```
   - Show results in analysis
 

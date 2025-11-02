@@ -40,11 +40,9 @@ ENV/
 .env.*.local
 
 # RAG Data
-data/chroma/
+# data/chroma/ - Git 포함! (즉시 사용, 2.4MB)
 data/pinecone/
 data/cache/
-*.db
-*.sqlite
 
 # Logs
 logs/
@@ -70,6 +68,7 @@ dmypy.json
 
 # Documentation
 site/
+docs/market_analysis/  # 개인 분석 결과물 제외
 
 # Temporary files
 tmp/
