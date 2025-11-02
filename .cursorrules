@@ -12,14 +12,47 @@ User can customize agent names in agent_names.yaml:
   - Observer → "Jane", "관찰자", "MarketBot", etc.
   - Explorer → "Alex", "탐색자", "OpportunityBot", etc.
 
-When displaying agent actions:
-  - Load display_name from agent_names.yaml
-  - Use in messages: "{display_name}이(가) {action}..."
-  - Fallback to default_name if not set
+양방향 작동 (입력 + 출력):
+  
+  입력 인식:
+    User: "@Jane, 시장 분석해"
+    → agent_names.yaml 확인
+    → "Jane" = Observer
+    → Observer.analyze() 실행
+  
+  출력 표시:
+    Observer 작업 중...
+    → agent_names.yaml 확인
+    → display_name: "Jane"
+    → "Jane이 시장을 관찰합니다..."
+
+매핑 규칙:
+  1. agent_names.yaml 자동 로드
+  2. display_name ↔ id 매핑 생성
+     {"Jane": "observer", "Alex": "explorer"}
+  3. 사용자 언급 시:
+     - "@Jane" 감지 → observer 호출
+     - "@Alex" 감지 → explorer 호출
+  4. Agent 출력 시:
+     - observer → "Jane"으로 표시
+     - explorer → "Alex"로 표시
 
 Example:
-  agent_names.yaml에서 Explorer → "Alex"로 설정
-  → 메시지: "Alex가 패턴을 검색합니다..."
+  agent_names.yaml:
+    observer: display_name: "Jane"
+    explorer: display_name: "Alex"
+  
+  User: "@Jane, 시장 구조 분석해"
+  → Observer (내부) 실행
+  → "Jane이 시장을 관찰합니다..." (출력)
+  
+  User: "@Alex, 기회 찾아봐"
+  → Explorer (내부) 실행
+  → "Alex가 패턴을 검색합니다..." (출력)
+  
+  User: "Observer, 시장 분석해"  (ID로도 작동!)
+  User: "Jane, 시장 분석해"      (이름으로도 작동!)
+  → 둘 다 같은 결과!
 
 ## ========================================
 

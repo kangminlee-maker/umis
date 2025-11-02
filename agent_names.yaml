@@ -89,3 +89,30 @@ agents:
 # → Cursor가 자동으로 인식
 # → 다음 분석부터 변경된 이름 사용!
 
+
+# ========================================
+# 양방향 작동 확인
+# ========================================
+
+# 설정 예시:
+#   observer:
+#     display_name: "Jane"
+#   
+#   explorer:
+#     display_name: "Alex"
+
+# 사용 (입력):
+#   "@Jane, 시장 분석해"     → Observer 실행
+#   "@Alex, 패턴 찾아봐"      → Explorer 실행
+#   
+#   "Observer, 분석해"        → Observer 실행 (ID로도 가능)
+#   "Jane, 분석해"            → Observer 실행 (이름으로도 가능)
+
+# 표시 (출력):
+#   Observer 작업 중...
+#   → "Jane이 시장을 관찰합니다..."
+#   
+#   Explorer 작업 중...
+#   → "Alex가 패턴을 찾습니다..."
+
+# → 양방향 완벽 작동! ✨

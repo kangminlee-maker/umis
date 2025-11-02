@@ -45,7 +45,11 @@ agents:
 Cmd+S
 ```
 
-**끝!** 다음 분석부터 "Alex"로 표시됩니다! ✨
+**끝!** 이제:
+- 표시: "Alex가 패턴을 찾습니다..." ✅
+- 호출: "@Alex, 패턴 찾아봐" ✅
+
+**양방향 작동!** ✨
 
 ---
 
@@ -65,11 +69,27 @@ agents:
     display_name: "Mike"
 ```
 
+**사용:**
+```
+User: "@Jane, 시장 분석해"
+→ Observer 실행
+
+User: "@Alex, 기회 찾아봐"
+→ Explorer 실행
+```
+
 **결과:**
 ```
 Jane이 시장을 관찰합니다...
 Alex가 subscription_model 패턴을 발견했습니다!
 Mike가 시장 규모를 계산합니다...
+```
+
+**양방향:**
+```
+호출: "@Jane" → Observer
+표시: Observer → "Jane"
+→ 완벽! ✨
 ```
 
 ---
