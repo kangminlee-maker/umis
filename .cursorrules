@@ -6,6 +6,23 @@
 #
 # ========================================
 
+## Agent 이름 커스터마이징
+
+User can customize agent names in agent_names.yaml:
+  - Observer → "Jane", "관찰자", "MarketBot", etc.
+  - Explorer → "Alex", "탐색자", "OpportunityBot", etc.
+
+When displaying agent actions:
+  - Load display_name from agent_names.yaml
+  - Use in messages: "{display_name}이(가) {action}..."
+  - Fallback to default_name if not set
+
+Example:
+  agent_names.yaml에서 Explorer → "Alex"로 설정
+  → 메시지: "Alex가 패턴을 검색합니다..."
+
+## ========================================
+
 ## 자동 RAG 재구축
 
 When user modifies these YAML files:
