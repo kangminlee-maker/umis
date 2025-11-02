@@ -69,9 +69,15 @@ Vector RAG:
   • Explorer만 RAG 사용! ⭐
 
 Cursor 통합:
-  • .cursorrules 자동화
+  • .cursorrules 최적화 (148줄, 40% 압축)
+  • UMIS 개념 최우선 로딩
   • Agent 모드 자동 실행
-  • 대화만! 코딩 불필요!
+  • 초기 설치 자동 안내
+
+Clean Design:
+  • umis.yaml (name 필드 제거)
+  • agent_names.yaml (단일 진실)
+  • 완벽한 관심사 분리
 
 Agent 커스터마이징:
   • agent_names.yaml
@@ -80,25 +86,30 @@ Agent 커스터마이징:
   → Jane, Alex, ... (커스텀)
 ```
 
-### 📋 향후 계획 (미구현)
+### 📋 Architecture v2.0 (8개 개선안 설계 완료!)
 
 ```yaml
-Knowledge Graph (Layer 3):
-  • 패턴 조합 자동 발견
-  
-Guardian 감시 (Layer 4):
-  • 순환 패턴 감지
-  • 목표 정렬 모니터링
+채택 (6개):
+  1. Dual-Index (품질+일관성)
+  2. Schema-Registry (필드 일관성)
+  3. Routing YAML (가독성)
+  4. Multi-Dimensional Confidence (질적+양적)
+  7. Fail-Safe (안정성)
+  8. System RAG (컨텍스트 95% 절감!) ⭐
 
-Multi-Agent (Layer 1 확장):
-  • 6-Agent modular RAG
-  • Observer/Quantifier/Validator/Guardian RAG
+설계만 (1개):
+  6. Overlay Layer (팀 확장 시)
 
-Meta-RAG (Layer 2):
-  • 품질 자동 평가
+제외 (1개):
+  5. RAE Index (오버엔지니어링)
+
+문서:
+  • architecture/COMPLETE_ARCHITECTURE_V2.md
+  • architecture/umis_rag_architecture_v2.0.yaml
+  • architecture/planning/IMPLEMENTATION_ROADMAP_V2.md
 ```
 
-**주의:** architecture/, planning/ 문서는 **향후 계획**입니다!
+**로드맵:** `architecture/planning/IMPLEMENTATION_ROADMAP_V2.md` 참조
 
 **상세:** architecture/, planning/ 참조
 
