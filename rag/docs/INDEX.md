@@ -40,6 +40,12 @@ Cursor Composer (Cmd+I)
 
 ## 📖 참고 문서 (선택)
 
+### Dev History (개발 히스토리) ⭐ 신규!
+- **dev_history/** - 주요 개발 단계별 산출물
+  - Week 2: Dual-Index (2024-11-02, 13시간)
+  - Week 3: Knowledge Graph (2024-11-03, 4시간)
+  - DEVELOPMENT_TIMELINE.md - 전체 타임라인
+
 ### Architecture (설계)
 - 4-Layer RAG 아키텍처
 - 향후 구현 계획
@@ -64,9 +70,20 @@ Cursor Composer (Cmd+I)
 
 ```yaml
 Vector RAG:
-  • 54개 검증된 패턴/사례
+  • 354개 검증된 패턴/사례
   • text-embedding-3-large
   • Explorer만 RAG 사용! ⭐
+
+Knowledge Graph: ⭐ 신규! (Week 3)
+  • Neo4j 5.13
+  • 13 패턴 노드, 45 관계
+  • Multi-Dimensional Confidence
+  • Hybrid Search (Vector + Graph)
+
+Dual-Index: ⭐ 신규! (Week 2)
+  • Canonical Index (CAN-xxx)
+  • Projected Index (PRJ-xxx)
+  • Hybrid Projection (규칙 + LLM)
 
 Cursor 통합:
   • .cursorrules 최적화 (148줄, 40% 압축)
