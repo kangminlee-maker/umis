@@ -41,8 +41,12 @@ ENV/
 
 # RAG Data
 # data/chroma/ - Git 포함! (즉시 사용, 2.4MB)
+# 단, 바이너리와 SQLite는 제외 (변경 추적 불필요)
+data/chroma/**/*.bin
+data/chroma/**/*.sqlite3
 data/pinecone/
 data/cache/
+data/neo4j/  # Neo4j 데이터 (Docker 볼륨)
 
 # Logs
 logs/
@@ -74,3 +78,6 @@ docs/market_analysis/  # 개인 분석 결과물 제외
 tmp/
 temp/
 *.tmp
+data/neo4j/
+data/chroma/*.bin
+data/chroma/*.sqlite3

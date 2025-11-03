@@ -1,0 +1,28 @@
+# UMIS RAG Dependencies
+# Python 3.13+
+
+# Core
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+python-dotenv>=1.0.0
+PyYAML>=6.0.0
+
+# OpenAI & Embeddings
+openai>=1.0.0
+
+# Vector DB
+chromadb>=0.4.0
+
+# Graph DB (Week 3)
+neo4j>=5.13.0
+
+# Utilities
+click>=8.0.0
+tqdm>=4.65.0
+
+# Development
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=23.0.0
+ruff>=0.1.0
+
