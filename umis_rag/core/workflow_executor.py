@@ -19,6 +19,7 @@ project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from umis_rag.utils.logger import get_logger
+from umis_rag.core.condition_parser import ConditionParser
 
 logger = get_logger(__name__)
 
@@ -43,9 +44,11 @@ class WorkflowExecutor:
         """
         self.policy_path = Path(policy_path)
         self.policy = self._load_policy()
+        self.condition_parser = ConditionParser()  # Phase 2: 고급 조건 파서
         
         logger.info(f"WorkflowExecutor 초기화: {policy_path}")
         logger.info(f"  Workflows: {list(self.policy.keys() if self.policy else [])}")
+        logger.info(f"  ✅ Phase 2: 고급 조건 파서 활성화")
     
     def _load_policy(self) -> Dict[str, Any]:
         """routing_policy.yaml 로드"""
@@ -110,61 +113,36 @@ class WorkflowExecutor:
     
     def _should_run(self, condition: str, context: Dict[str, Any]) -> bool:
         """
-        실행 조건 평가
+        실행 조건 평가 (Phase 2: 고급 조건 지원)
         
         Args:
-            condition: 조건 문자열 (always, patterns.count > 0 등)
+            condition: 조건 문자열
+                - Simple: "always", "never"
+                - Comparison: "count > 5", "confidence >= 0.7"
+                - Logical: "A AND B", "A OR B", "NOT A"
+                - Deep ref: "patterns[0].metadata.confidence >= 0.8"
             context: 현재 컨텍스트
         
         Returns:
             실행 여부
         """
-        if condition == 'always':
-            return True
-        
-        if condition == 'never':
-            return False
-        
-        # 간단한 조건 파싱 (예: "patterns.count > 0")
         try:
-            # needs_quantitative 같은 named condition
+            # Named condition (routing_policy.yaml의 conditions 섹션)
             if condition in self.policy.get('conditions', {}):
                 cond_def = self.policy['conditions'][condition]
-                # 간단히 default 반환 (실제로는 check 평가)
+                # check 필드가 있으면 재귀 평가
+                if 'check' in cond_def:
+                    return self.condition_parser.evaluate(cond_def['check'], context)
+                # 없으면 default
                 return cond_def.get('default', False)
             
-            # 간단한 표현식 평가
-            # 보안상 eval은 피하고, 간단한 패턴만 지원
-            if '.count' in condition:
-                # "patterns.count > 0" 형태
-                parts = condition.split()
-                if len(parts) >= 3:
-                    var_path = parts[0]  # patterns.count
-                    operator = parts[1]  # >
-                    threshold = int(parts[2])  # 0
-                    
-                    # 변수 추출 (patterns)
-                    var_name = var_path.split('.')[0]
-                    value = context.get(var_name, [])
-                    count = len(value) if isinstance(value, list) else 0
-                    
-                    if operator == '>':
-                        return count > threshold
-                    elif operator == '>=':
-                        return count >= threshold
-                    elif operator == '<':
-                        return count < threshold
-                    elif operator == '<=':
-                        return count <= threshold
-                    elif operator == '==':
-                        return count == threshold
-            
-            # 기본값
-            return False
+            # ConditionParser로 평가 (Phase 2)
+            return self.condition_parser.evaluate(condition, context)
             
         except Exception as e:
             logger.warning(f"  ⚠️  조건 평가 실패: {condition} - {e}")
-            return False
+            # Phase 2: 에러 시 기본값 (안전)
+            return self.policy.get('execution', {}).get('error_default', False)
     
     def _run_step(
         self,
