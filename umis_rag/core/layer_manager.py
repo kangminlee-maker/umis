@@ -31,16 +31,16 @@ class LayerManager:
     
     사용:
     -----
-    manager = LayerManager('layer_config.yaml')
+    manager = LayerManager('config/overlay_layer.yaml')
     
     # Personal > Team > Core 순서로 검색
     data = manager.load_with_overlay('patterns.yaml')
     """
     
-    def __init__(self, config_path: str = "layer_config.yaml"):
+    def __init__(self, config_path: str = "config/overlay_layer.yaml"):
         """
         Args:
-            config_path: layer_config.yaml 경로
+            config_path: config/overlay_layer.yaml 경로
         """
         self.config_path = Path(config_path)
         self.config = self._load_config()
@@ -53,7 +53,7 @@ class LayerManager:
             logger.info(f"  검색 순서: {self.config.get('search_order', [])}")
     
     def _load_config(self) -> Dict[str, Any]:
-        """layer_config.yaml 로드"""
+        """config/overlay_layer.yaml 로드"""
         if not self.config_path.exists():
             logger.warning(f"  ⚠️  Layer config 없음: {self.config_path}")
             return {'enabled': False}
@@ -264,7 +264,7 @@ if __name__ == "__main__":
     print("LayerManager 테스트")
     print("=" * 60)
     
-    manager = LayerManager('layer_config.yaml')
+    manager = LayerManager('config/overlay_layer.yaml')
     
     # 1. Layer 설정 확인
     print("\n[1] Layer 설정")

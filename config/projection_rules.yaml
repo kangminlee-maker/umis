@@ -76,7 +76,7 @@ pattern_defaults:
     priority_agents: [explorer, observer]
 
 # LLM 판단 로그
-llm_log_path: "llm_projection_log.jsonl"
+llm_log_path: "data/llm_projection_log.jsonl"
 
 # 학습 설정
 learning:

@@ -1,7 +1,7 @@
 """
 Schema Registry 로더 및 검증
 
-schema_registry.yaml 기반으로 메타데이터 검증
+config/schema_registry.yaml 기반으로 메타데이터 검증
 """
 
 import yaml
@@ -13,12 +13,12 @@ from datetime import datetime
 class SchemaRegistry:
     """Schema Registry 관리"""
     
-    def __init__(self, registry_path: str = "schema_registry.yaml"):
+    def __init__(self, registry_path: str = "config/schema_registry.yaml"):
         self.registry_path = Path(registry_path)
         self.schema = self._load_schema()
     
     def _load_schema(self) -> Dict[str, Any]:
-        """schema_registry.yaml 로드"""
+        """config/schema_registry.yaml 로드"""
         with open(self.registry_path, 'r', encoding='utf-8') as f:
             return yaml.safe_load(f)
     

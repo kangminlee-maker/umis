@@ -1,7 +1,7 @@
 """
 Multi-Dimensional Confidence Calculator
 
-schema_registry.yaml 준수:
+config/schema_registry.yaml 준수:
 - similarity (Vector 임베딩, 질적)
 - coverage (분포 분석, 양적)
 - validation (체크리스트, 검증)
@@ -54,7 +54,7 @@ class ConfidenceCalculator:
     """
     Multi-Dimensional Confidence 계산기
     
-    schema_registry.yaml 기반:
+    config/schema_registry.yaml 기반:
     - similarity: 질적 평가 (best case similarity)
     - coverage: 양적 평가 (pattern strength)
     - validation: 검증 여부 (checklist)
@@ -138,7 +138,7 @@ class ConfidenceCalculator:
         """
         Overall Confidence 계산 (Rule-based)
         
-        schema_registry.yaml 규칙:
+        config/schema_registry.yaml 규칙:
         - High (0.80-1.00): similarity >= 0.90 AND validation OR coverage >= 0.10
         - Medium (0.60-0.79): similarity >= 0.70 OR coverage >= 0.05
         - Low (0.00-0.59): 그 외

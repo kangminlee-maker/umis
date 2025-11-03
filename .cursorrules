@@ -1,13 +1,13 @@
 # ========================================
 # UMIS RAG Cursor Rules - AI Optimized
-# v6.3.0-alpha | Non-coder | Cursor-only
+# v7.0.0 | Non-coder | Cursor-only
 # ========================================
 
 # === PART 1: UMIS 개념 (AI 필수 이해) ===
 
 system:
   name: Universal Market Intelligence System
-  version: 6.3.0-alpha
+  version: 7.0.0
   
   agents:
     Observer: {name: Albert, role: market_structure, rag: false}
@@ -25,10 +25,14 @@ system:
   
   rag:
     active: Explorer only
-    db: data/chroma/explorer_knowledge_base (54 patterns/cases)
+    architecture: v3.0 (Canonical → Projected → Graph)
+    layers:
+      vector: data/chroma/ (canonical_index, projected_index)
+      graph: Neo4j (optional, 13 patterns, 45 relationships)
+      memory: Query/Goal/RAE Memory
     sources: 
-      - umis_business_model_patterns.yaml (31 patterns)
-      - umis_disruption_patterns.yaml (23 patterns)
+      - data/raw/umis_business_model_patterns.yaml (31 patterns)
+      - data/raw/umis_disruption_patterns.yaml (23 patterns)
 
 user:
   skill: no-coding
@@ -40,17 +44,28 @@ user:
 
 ## 초기 설치
 setup:
-  detect: ["umis 설치", "설정", "setup"]
+  detect: ["umis 설치", "설정", "setup", "@setup"]
   
   flow:
     check_env:
-      no: cp env.template .env → msg_api_key → build_index → msg_ready
-      yes: msg_already_setup
+      no: python setup/setup.py → 자동 설치
+      yes: python setup/setup.py --check → 상태 확인
   
   commands:
+    auto_install: python setup/setup.py
+    minimal_install: python setup/setup.py --minimal
+    check_status: python setup/setup.py --check
     build_index: python scripts/02_build_index.py --agent explorer
   
+  guide: setup/AI_SETUP_GUIDE.md (AI 자동 설치 가이드)
+  
   messages:
+    start: |
+      🚀 UMIS v7.0.0 자동 설치 시작
+      
+      setup/AI_SETUP_GUIDE.md 참조하여 진행합니다.
+      소요 시간: 2-3분
+    
     api_key: |
       ✅ .env 생성 완료!
       
@@ -60,7 +75,7 @@ setup:
       받기: https://platform.openai.com/api-keys
     
     ready: |
-      ✅ 설정 완료!
+      ✅ 설치 완료!
       
       사용: Cmd+I → @umis.yaml
       "@Explorer, 시장 분석해줘"
@@ -118,15 +133,23 @@ shortcuts:
 # === PART 3: 경로 & 설정 ===
 
 paths:
-  root: /Users/kangmin/Documents/AI_dev/umis-main
-  yamls: umis_*.yaml
+  root: {workspace_root}
+  setup: setup/
   scripts: scripts/
   data: data/
-  venv: source venv/bin/activate
-
+  docs: docs/
+  dev_docs: dev_docs/
+  projects: projects/
+  
+files:
+  main_guide: umis.yaml
+  architecture: UMIS_ARCHITECTURE_BLUEPRINT.md
+  install: INSTALL.md
+  schema: schema_registry.yaml
+  
 execution:
   cd: {root}
-  activate: venv
+  venv: source venv/bin/activate (optional)
   relative: from root
 
 # === PART 4: 메시지 템플릿 ===
@@ -141,7 +164,19 @@ messages:
     success: "✅ {result}"
     error: "❌ {problem} → {solution}"
 
+# === PART 5: 폴더 구조 (v7.0.0) ===
+
+folders:
+  setup: 설치 관련 (AI_SETUP_GUIDE.md, setup.py)
+  umis_rag: RAG 코드 (실제 시스템)
+  scripts: RAG 스크립트
+  data: Vector DB + 패턴
+  docs: 활성 프로토콜
+  dev_docs: 개발 히스토리 (시스템 비의존)
+  projects: 분석 프로젝트 (Git 제외)
+  archive: Deprecated (main 브랜치에서 제외)
+
 # ========================================
-# END (80줄)
+# END
 # ========================================
 

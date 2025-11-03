@@ -1,33 +1,36 @@
 # UMIS guidelines - Compatible with v7.0.0
 # ========================================
-# AI USAGE GUIDE
+# UMIS v7.0.0 QUICK REFERENCE
 # ========================================
 # 
-# AI 사용 가이드는 별도 파일로 분리되었습니다:
-# 📖 umis_ai_guide_v6.2.yaml 참조
+# 📖 핵심 문서:
+# - UMIS_ARCHITECTURE_BLUEPRINT.md: 전체 시스템 구조 (Comprehensive)
+# - umis_examples.yaml: v7.0.0 사용 예시 (RAG 포함)
+# - config/: 모든 설정 파일
+#   · agent_names.yaml: Agent 이름 커스터마이징
+#   · schema_registry.yaml: RAG 레이어 스키마
+#   · runtime.yaml: 실행 모드 (hybrid)
 # 
-# 사용법:
-# 1. UMIS를 처음 사용하는 경우: umis_ai_guide_v6.2.yaml 먼저 읽기
-# 2. 시스템 정의 및 구현: 이 파일 (umis_guidelines_v6.2.yaml) 참조
+# 🚀 빠른 시작:
+# 1. 설치: "UMIS 설치해줘" (AI 자동) 또는 python setup/setup.py
+# 2. 사용: Cursor Composer → "@Explorer, 시장 분석해줘"
 # 
-# 주요 내용:
-# - Quick Start Guide (@id: quick_start_guide)
-# - Agent Summary (@id: agent_summary)
-# - Token Management Protocols (@id: token_management_protocol)
-#   · 동적 토큰 관리: 에이전트별 계수 (0.75-0.85)
-#   · 권장 모델: Claude-4-sonnet-1m / Claude-4.5-sonnet (1M)
-#   · 지원 모델: GPT-5 (272K), Claude-4.1-opus (200K, 제한적)
-# - Reference Map (@id: reference_map)
+# 🎯 v7.0.0 주요 기능:
+# - Explorer RAG (54개 패턴/사례 자동 검색)
+# - Knowledge Graph (패턴 조합 자동 발견)
+# - 5-Agent 협업 시스템 안정화
+# - config/ 폴더 중앙 관리
 # 
 # ========================================
 
-# Universal Market Intelligence System v6.2 - Autonomous Intelligence Edition
-# 범용 시장 정보 분석 시스템 - 자율 지능 에디션 (AI 자율성과 체계적 관리의 균형)
+# Universal Market Intelligence System v7.0.0
+# 범용 시장 정보 분석 시스템 - RAG 기반 지능형 분석
 # 
 # 적용 범위: 모든 산업, 모든 규모, 모든 지역, 모든 비즈니스 모델
-# 핵심 원칙: MECE 기반 역할 분담, 범용성, 확장성, 체계적 협업, 점진적 지능
+# 핵심 원칙: MECE 기반 역할 분담, RAG 지식 활용, 완전한 추적성, 재검증 가능성
 # 
 # 버전 히스토리: CHANGELOG.md 참조
+# 전체 아키텍처: UMIS_ARCHITECTURE_BLUEPRINT.md 참조
 # ========================================
 # SECTION 0: SYSTEM ARCHITECTURE OVERVIEW
 # @id: system_architecture_overview
@@ -259,21 +262,42 @@ system_architecture:
 # SECTION 1: SYSTEM DEFINITION
 # ========================================
 system:
-  name: "Universal Market Intelligence System - Validated Intelligence Edition"
-  version: "6.2.2"
-  purpose: "불확실한 상황에서도 적응하며 진화하는 범용 시장 분석 시스템"
-  description: "낮은 명확도로 시작해 발견을 통해 성장하는 차세대 시장 정보 시스템 (정보 흐름 최적화)"
+  name: "Universal Market Intelligence System"
+  version: "7.0.0"
+  release_date: "2025-11-03"
+  status: "Stable Release"
+  purpose: "RAG 기반 5-Agent 협업 시장 분석 시스템"
+  description: "54개 검증된 패턴/사례 자동 검색으로 시장 기회를 발굴하는 지능형 시스템"
   default_mode: "Discovery Sprint → Comprehensive Study (2-4주) - 별도 언급 없으면 자동 적용"
+  
+  rag_architecture:
+    version: "v3.0"
+    active_agent: "Explorer (Steve)"
+    layers:
+      layer_1_vector: "Canonical Index + Projected Index (ChromaDB)"
+      layer_3_graph: "Knowledge Graph (Neo4j, 선택)"
+      layer_4_memory: "Query/Goal/RAE Memory"
+    
+    knowledge_base:
+      business_models: "31개 패턴 (data/raw/umis_business_model_patterns.yaml)"
+      disruptions: "23개 패턴 (data/raw/umis_disruption_patterns.yaml)"
+      total_chunks: "354개"
+    
+    projection_mechanism:
+      rules_based: "90% (config/projection_rules.yaml)"
+      llm_based: "10% (자동 학습 → data/llm_projection_log.jsonl)"
+      learning: "3회 일관성 → 자동 규칙화"
   
   core_capabilities:
     - "Multi-Industry Coverage: 제조업부터 서비스업, 전통산업부터 신산업까지"
     - "Scale Flexibility: 글로벌 수조 달러부터 로컬 니치 시장까지"
     - "Universal Framework: B2B, B2C, B2G, C2C, Platform 등 모든 비즈니스 모델"
-    - "Adaptive Analysis: 시장 특성에 맞춘 유연한 분석 깊이와 방법론"
+    - "RAG Knowledge Utilization: 54개 검증된 패턴/사례 자동 검색 및 매칭"
+    - "Knowledge Graph: 패턴 조합 자동 발견 (Hybrid Search)"
     - "Progressive Intelligence: 낮은 명확도에서 시작해 발견을 통한 목표 구체화"
     - "Autonomous Monitoring: 능동적 목표 정렬과 개입"
-    - "Data Protection: 자동 무결성 보장과 복구"
-    - "Creative Boost: 필요시 10개 AI 브레인스토밍 도구 활용한 창의성 증강"
+    - "Complete Traceability: 모든 결론 → 원본 데이터 역추적 (ID Namespace)"
+    - "Reproducibility: Excel 함수, YAML 스키마로 재검증 가능"
   adaptive_principles:
     - principle: "Start with Ambiguity"
       description: "불확실성을 받아들이고 시작"
@@ -2019,9 +2043,10 @@ data_integrity_system:
       - "프로젝트 구조 표준화"
   
   # 5. Deliverable Standards 통합 (v6.2 신규)
-  deliverable_standards_integration:
-    description: "산출물 표준화 및 재검증 가능성 보장"
-    reference: "📖 umis_deliverable_standards_v6.2.yaml (상세)"
+    deliverable_standards_integration:
+      description: "산출물 표준화 및 재검증 가능성 보장"
+      reference: "umis_deliverable_standards.yaml (v7.0.0 호환)"
+      specs: "deliverable_specs/ (AI 최적화 YAML 스펙 6개)"
     
     core_principle: "모든 결론은 원본 데이터까지 추적 가능해야 한다"
     
@@ -2091,9 +2116,10 @@ data_integrity_system:
       verification_path: "역방향으로 완전히 추적 가능"
   
   # 6. 프로젝트 생명주기 관리 (v6.2 신규)
-  project_lifecycle_protocols:
-    description: "프로젝트 시작부터 종료까지의 체계적 관리"
-    reference: "📖 umis_deliverable_standards_v6.2.yaml § project_lifecycle_management"
+    project_lifecycle_protocols:
+      description: "프로젝트 시작부터 종료까지의 체계적 관리"
+      reference: "umis_deliverable_standards.yaml § project_lifecycle_management"
+      project_folder: "projects/YYYYMMDD_name/ (v7.0.0 표준 구조)"
     
     lifecycle_phases:
       
@@ -2700,9 +2726,35 @@ agents:
             - "기회 영역 시사점"
   - id: Explorer
     # ===== 1. IDENTITY =====
-    role: "Market Explorer"
-    description: "가설적 해석을 통해 시장 기회를 발굴하고 가치를 창출하는 전략가"
-    character: "관찰에서 의미를, 패턴에서 기회를, 제약에서 혁신을 발견하는 통찰가"
+    role: "Market Explorer (RAG-Powered)"
+    description: "RAG 기반 패턴 검색으로 시장 기회를 발굴하고 가치를 창출하는 전략가"
+    character: "관찰에서 의미를, 패턴에서 기회를, 제약에서 혁신을 발견하는 통찰가. 54개 검증된 패턴/사례를 자동으로 활용"
+    
+    rag_capabilities:
+      enabled: true
+      version: "v3.0"
+      
+      vector_search:
+        collection: "projected_index (agent_view=explorer)"
+        embedding: "text-embedding-3-large (3072 dim)"
+        top_k: 5
+        
+      graph_search:
+        database: "Neo4j (선택)"
+        patterns: "13개 노드, 45개 관계"
+        combinations: "패턴 조합 자동 발견"
+        
+      search_workflow:
+        step_1: "pattern_search (vector + graph)"
+        step_2: "case_search (성공 사례)"
+        step_3: "quantifier_collaboration (조건부)"
+        step_4: "hypothesis_generation (memory 체크)"
+      
+      knowledge_base:
+        - "31개 비즈니스 모델 패턴"
+        - "23개 Disruption 패턴"
+        - "50+ 검증된 성공 사례"
+        - "자동 검색 및 매칭"
     
     # ===== 2. CAPABILITIES =====
     core_competencies:
@@ -2804,11 +2856,24 @@ agents:
             output: "관계 기반 가치 창출 가능성"
           
           business_model_pattern_recognition:
-            time_allocation: "1시간"
-            description: "검증된 사업모델 패턴을 시장 구조에 매칭"
+            time_allocation: "자동 (RAG 검색)"
+            description: "RAG로 검증된 사업모델 패턴 자동 검색 및 매칭"
             
-            purpose: "Albert 관찰 → 검증된 사업모델 기회 발견"
-            reference: "📖 umis_business_model_patterns_v6.2.yaml (상세)"
+            purpose: "Albert 관찰 → RAG 패턴 검색 → 기회 발견"
+            reference: "data/raw/umis_business_model_patterns.yaml (31개 패턴)"
+            
+            rag_search_process:
+              step_1: "Vector Search (Projected Index, agent_view=explorer)"
+              step_2: "Graph Search (패턴 조합 발견)"
+              step_3: "Case Search (성공 사례)"
+              step_4: "Hypothesis Generation"
+              
+              example: |
+                Query: "구독 모델"
+                → Vector: subscription_model (0.95 similarity)
+                → Graph: subscription + platform (0.87 confidence)
+                → Cases: Spotify, Netflix, Adobe
+                → Hypothesis: "하이브리드 구독 + 플랫폼 모델"
             
             pattern_triggers:
               
@@ -2879,11 +2944,22 @@ agents:
             output: "사업모델 패턴 기반 기회 후보"
           
           counter_positioning_pattern_recognition:
-            time_allocation: "1시간"
-            description: "지배적 사업자의 구조적 약점을 파괴적 기회로 전환"
+            time_allocation: "자동 (RAG 검색)"
+            description: "RAG로 파괴적 혁신 패턴 자동 검색 및 매칭"
             
             purpose: "1등이 따라할 수 없는 후발 전략 설계"
-            reference: "📖 umis_disruption_patterns_v6.2.yaml (상세)"
+            reference: "data/raw/umis_disruption_patterns.yaml (23개 패턴)"
+            
+            rag_search_process:
+              search: "Disruption 패턴 자동 검색"
+              match: "시장 구조와 패턴 매칭"
+              cases: "추월 성공 사례 참조"
+              
+              example: |
+                관찰: "1등이 레거시 시스템 의존도 높음"
+                → RAG 검색: innovation_disruption 패턴 발견
+                → 사례: Netflix vs Blockbuster
+                → 전략: 스트리밍으로 Counter-Positioning
             
             disruption_triggers:
               
@@ -5361,10 +5437,13 @@ implementation_guide:
         - "Exit Strategy Planner"
     
     external_resources:
-      detailed_examples: "umis_examples_v6.2.yaml"
-      market_templates: "market_analysis_templates/"
-      collaboration_scripts: "collaboration_scripts/"
-      case_studies: "umis_case_studies/"
+      examples: "umis_examples.yaml (v7.0.0 RAG 예시)"
+      architecture: "UMIS_ARCHITECTURE_BLUEPRINT.md (전체 시스템)"
+      folder_structure: "FOLDER_STRUCTURE.md (폴더 구조)"
+      current_status: "CURRENT_STATUS.md (현재 상태)"
+      configuration: "config/ (모든 설정)"
+      installation: "setup/ (설치 가이드)"
+      rag_source: "data/raw/ (패턴 원본 YAML)"
     
     automation_tools:
       - "UMIS CLI for project setup"
@@ -5408,15 +5487,22 @@ implementation_guide:
       level_5_master: "Teaching others"
 
 # ========================================
-# END OF UMIS v6.0 GUIDELINES
+# END OF UMIS v7.0.0 GUIDELINES
 # ========================================
 # 
-# UMIS v6.0 - Progressive Intelligence Edition
+# UMIS v7.0.0 - RAG-Powered Intelligence
 # 
 # 핵심 메시지:
-# - 불확실성을 기회로 바꾸는 시장 분석 시스템
+# - RAG 기반 검증된 패턴/사례 자동 활용
+# - 5-Agent 협업으로 완전한 추적성 보장
 # - 20-30% 명확도로도 시작 가능
-# - 체계적인 프레임워크와 적응형 지능의 결합
+# - Cursor Composer로 코딩 불필요
 # 
-# "시장 분석은 완벽한 계획이 아닌 지속적인 발견과 적응의 과정입니다."
+# 📖 더 알아보기:
+# - UMIS_ARCHITECTURE_BLUEPRINT.md: 전체 시스템 구조
+# - umis_examples.yaml: v7.0.0 실제 사용 예시
+# - config/: 설정 커스터마이징
+# - CHANGELOG.md: 버전 변경 이력
+# 
+# "시장 분석은 검증된 지식(RAG)과 지속적인 발견의 결합입니다."
 

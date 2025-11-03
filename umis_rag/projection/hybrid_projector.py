@@ -2,7 +2,7 @@
 Hybrid Projector
 
 Canonical → Projected 변환
-- 90% projection_rules.yaml
+- 90% config/projection_rules.yaml
 - 10% LLM 판단
 - LLM 로그 저장
 """
@@ -24,19 +24,19 @@ class HybridProjector:
     Hybrid Projection: 규칙 90% + LLM 10%
     """
     
-    def __init__(self, rules_path: str = "projection_rules.yaml"):
+    def __init__(self, rules_path: str = "config/projection_rules.yaml"):
         self.rules = self._load_rules(rules_path)
         self.llm = ChatOpenAI(
             model=settings.llm_model,
             temperature=settings.llm_temperature,
             openai_api_key=settings.openai_api_key
         )
-        self.log_path = Path(self.rules.get('llm_log_path', 'llm_projection_log.jsonl'))
+        self.log_path = Path(self.rules.get('llm_log_path', 'data/llm_projection_log.jsonl'))
         
         logger.info("HybridProjector 초기화")
     
     def _load_rules(self, path: str) -> Dict:
-        """projection_rules.yaml 로드"""
+        """config/projection_rules.yaml 로드"""
         with open(path, 'r', encoding='utf-8') as f:
             return yaml.safe_load(f)
     

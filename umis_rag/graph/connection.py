@@ -1,7 +1,7 @@
 """
 Neo4j Connection Manager
 
-schema_registry.yaml 준수:
+config/schema_registry.yaml 준수:
 - GND-xxx (Graph Node ID)
 - GED-xxx (Graph Edge ID)
 """

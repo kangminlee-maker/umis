@@ -5,6 +5,31 @@
 
 ---
 
+## 🤖 AI 자동 설치 (권장)
+
+Cursor나 AI Assistant를 사용 중이라면:
+
+```
+"UMIS 설치해줘" 또는 "@setup"
+```
+
+AI가 자동으로:
+1. `setup.py` 실행
+2. 패키지 설치
+3. .env 파일 생성
+4. RAG 인덱스 빌드
+5. 완료 확인
+
+**AI 가이드**: `AI_SETUP_GUIDE.md` 참조
+
+---
+
+## 💻 수동 설치
+
+또는 아래 단계를 직접 실행:
+
+---
+
 ## 1️⃣ Repository Clone
 
 ```bash
@@ -81,7 +106,7 @@ umis.yaml 첨부
 ### 사용자가 수정하는 파일
 
 ```
-✅ agent_names.yaml
+✅ config/agent_names.yaml
    → Agent 이름 커스터마이징
    
 ✅ umis.yaml 등

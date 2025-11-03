@@ -146,11 +146,11 @@ def test_runtime_config():
     
     import yaml
     
-    # runtime_config.yaml 로드
-    config_path = project_root / "runtime_config.yaml"
+    # config/runtime.yaml 로드
+    config_path = project_root / "config/runtime.yaml"
     
     if not config_path.exists():
-        logger.error("  ❌ runtime_config.yaml 없음")
+        logger.error("  ❌ config/runtime.yaml 없음")
         return False
     
     with open(config_path, 'r', encoding='utf-8') as f:
