@@ -176,6 +176,56 @@ folders:
   projects: 분석 프로젝트 (Git 제외)
   archive: Deprecated (main 브랜치에서 제외)
 
+# === PART 6: Guardian Meta-RAG (v7.1.0) ===
+
+guardian_meta_rag:
+  enabled: true
+  
+  # 프로젝트 시작 시
+  project_start:
+    detect: ["프로젝트 시작", "[PROJECT_START]", "새 프로젝트"]
+    
+    action: |
+      from umis_rag.guardian import GuardianMetaRAG
+      
+      guardian = GuardianMetaRAG()
+      goal_id = guardian.set_goal("{project_goal}")
+      
+      print("✅ Guardian 활성화: 목표 설정 완료")
+      print("  - 순환 패턴 감지")
+      print("  - 목표 정렬 모니터링")
+      print("  - 품질 자동 평가")
+  
+  # 쿼리 모니터링
+  circular_detection:
+    check: "매 쿼리마다"
+    
+    action: |
+      result = guardian.memory.check_circular(query_text)
+      
+      if result['is_circular']:
+          print("⚠️ 순환 감지: 같은 주제 3회 반복")
+          print(f"💡 제안: {result['suggestion']}")
+  
+  # 산출물 평가
+  deliverable_evaluation:
+    detect: ["[DELIVERABLE_COMPLETE]", "산출물 완성"]
+    
+    action: |
+      result = guardian.evaluate_deliverable({
+          'id': deliverable_id,
+          'content': content,
+          'task_description': task
+      })
+      
+      if result.passed:
+          print(f"✅ 품질 검증 통과: {result.grade}")
+      else:
+          for warning in result.warnings:
+              print(f"⚠️ {warning}")
+          for rec in result.recommendations:
+              print(f"💡 {rec}")
+
 # ========================================
 # END
 # ========================================
