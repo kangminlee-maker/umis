@@ -1,7 +1,9 @@
 # UMIS RAG 메타 인덱스 설계
 
 **날짜:** 2025-11-02  
-**목적:** 전체 RAG 시스템의 통합 메타데이터 구조 확정
+**버전:** v3.0 (전문가 피드백 반영)  
+**목적:** 전체 RAG 시스템의 통합 메타데이터 구조 확정  
+**강화:** ID/Lineage, anchor, 근거, 감사성(A), 재현성(A)
 
 ---
 
@@ -48,23 +50,32 @@
 
 ## 📊 전체 RAG 시스템 구조
 
-### 5개 Collection
+### 6개 Collection (v3.0 확장!)
 
 ```yaml
 1. canonical_index (Canonical Index)
    목적: 업데이트용, 정규화 청크
+   ID: CAN-xxxxxxxx
    
 2. projected_index (Projected Index)
-   목적: 검색용, Agent별 투영 청크
+   목적: 검색용, TTL + 온디맨드
+   ID: PRJ-xxxxxxxx
    
 3. knowledge_graph (Knowledge Graph - Neo4j)
    목적: 패턴 관계, 조합 발견
+   ID: GND-xxx (노드), GED-xxx (간선)
    
 4. query_memory (QueryMemory)
    목적: 순환 감지
+   ID: MEM-xxxxxxxx
    
 5. goal_memory (GoalMemory)
    목적: 목표 정렬
+   ID: MEM-xxxxxxxx
+
+6. rae_index (RAE Index) ⭐ v3.0 추가!
+   목적: 평가 메모리 (일관성)
+   ID: RAE-xxxxxxxx
 
 + system_knowledge (System RAG, 향후)
    목적: umis.yaml 도구 검색
@@ -74,17 +85,74 @@
 
 ## 🔑 통합 메타데이터 스키마
 
-### Core Fields (모든 Collection 공유)
+### Core Fields (모든 Collection 공유) - v3.0 강화!
 
 ```yaml
 core_metadata:
-  # === Identity ===
-  source_id:
-    type: string
-    required: true
-    description: "사례/패턴 고유 ID"
-    example: "baemin_case"
-    used_by: [canonical, projected, graph]
+  # === Identity (v3.0 강화!) ===
+  identity:
+    source_id:
+      type: string
+      required: true
+      description: "사례/패턴 고유 ID"
+      example: "baemin_case"
+    
+    canonical_chunk_id:
+      type: string
+      pattern: "CAN-[a-z0-9]{8}"
+      description: "Canonical 청크 ID"
+    
+    projected_chunk_id:
+      type: string
+      pattern: "PRJ-[a-z0-9]{8}"
+      description: "Projected 청크 ID"
+    
+    graph_node_id:
+      type: string
+      pattern: "GND-[a-z0-9]{8}"
+      description: "Graph 노드 ID"
+    
+    graph_edge_id:
+      type: string
+      pattern: "GED-[a-z0-9]{8}"
+      description: "Graph 간선 ID"
+    
+    memory_id:
+      type: string
+      pattern: "MEM-[a-z0-9]{8}"
+      description: "Memory ID"
+    
+    rae_id:
+      type: string
+      pattern: "RAE-[a-z0-9]{8}"
+      description: "RAE Index ID"
+  
+  # === Lineage (v3.0 신규!) ===
+  lineage:
+    from:
+      type: string
+      description: "원본 Canonical ID"
+      example: "CAN-baemin-001"
+    
+    via:
+      type: array
+      description: "변환 경로"
+      items:
+        - projection_rule_id: "RULE-5678"
+          projected_chunk_id: "PRJ-9012"
+        - graph_node_id: "GND-3456"
+    
+    evidence_ids:
+      type: array
+      description: "근거 청크 ID"
+      example: ["CAN-1234", "PRJ-5678"]
+    
+    created_by:
+      type: object
+      properties:
+        agent: string
+        overlay_layer: enum[core, team, personal]
+        tenant_id: string
   
   domain:
     type: enum
@@ -417,18 +485,41 @@ canonical_fields:
     required: true
   
   sections:
-    type: object
+    type: array
     required: true
-    properties:
-      observer: {start: int, end: int}
-      explorer: {start: int, end: int}
-      quantifier: {start: int, end: int}
-      validator: {start: int, end: int}
-      guardian: {start: int, end: int}
+    description: "v3.0: anchor_path + hash 방식!"
+    items:
+      anchor_path:
+        type: string
+        description: "YAML 경로"
+        example: "subscription_model.trigger_observations"
+        required: true
+      
+      content_hash:
+        type: string
+        pattern: "sha256:[a-f0-9]{64}"
+        description: "내용 SHA-256 해시"
+        required: true
+      
+      span_hint:
+        type: object
+        description: "성능 힌트 (선택)"
+        properties:
+          paragraphs: string
+          tokens: int
   
   total_tokens:
     type: int
     required: true
+  
+  # v3.0 추가: Embedding 버전
+  embedding:
+    model:
+      type: string
+      example: "text-embedding-3-large"
+    dimension:
+      type: int
+      example: 3072
 
 # === Layer 1: Projected ===
 
@@ -448,6 +539,21 @@ projected_fields:
     values: [rule, llm]
     required: true
   
+  # v3.0 추가: TTL/온디맨드
+  materialization:
+    strategy:
+      type: enum
+      values: [on_demand, persistent]
+      default: "on_demand"
+    
+    cache_ttl_hours:
+      type: int
+      default: 24
+    
+    persist_profile:
+      type: string
+      example: "explorer_high_traffic"
+  
   # Agent별 동적 필드
   agent_specific_pattern:
     pattern: "{agent}_*"
@@ -456,6 +562,17 @@ projected_fields:
       - "explorer_csf"
       - "quantifier_metrics"
       - "observer_dynamics"
+  
+  # v3.0 추가: Overlay
+  overlay:
+    layer:
+      type: enum
+      values: [core, team, personal]
+    tenant_id:
+      type: string
+    merge_strategy:
+      type: enum
+      values: [append, replace, patch]
 
 # === Layer 3: Knowledge Graph ===
 
@@ -481,6 +598,23 @@ graph_relationship_fields:
     type: enum
     values: [COMBINES_WITH, COUNTERS, PREREQUISITE]
   
+  # v3.0 추가: Evidence & Provenance
+  evidence_ids:
+    type: array
+    description: "근거 청크 ID"
+    example: ["CAN-amazon-001", "PRJ-spotify-002"]
+  
+  provenance:
+    source:
+      type: enum
+      values: [humn_review, auto_rule, llm_infer]
+    reviewer_id:
+      type: string
+      example: "stewart|rachel"
+    timestamp:
+      type: datetime
+      format: "ISO 8601"
+  
   confidence:
     type: object
     required: true
@@ -488,7 +622,7 @@ graph_relationship_fields:
       similarity: float
       coverage: float
       validation: enum [yes, no]
-      overall: enum [high, medium, low]
+      overall: float  # v3.0: 숫자 (0-1)!
       reasoning: array[string]
 
 # === Layer 4: Memory ===
