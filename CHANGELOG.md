@@ -5,6 +5,40 @@
 
 ---
 
+## v6.3.0-alpha (2025-11-03) - Repository Rename & Documentation Update
+
+### 📝 문서 업데이트
+
+**레포지토리 이름 변경**
+- 구: `umis-monolithic-guidelines`
+- 신: `umis`
+- 이유: "monolithic"은 더 이상 구조를 반영하지 않음. RAG + Multi-Agent 플랫폼에 적합한 간결한 이름으로 변경
+
+**파일명 참조 수정 (Deprecated 정보 제거)**
+- ~~`@umis.yaml`~~ → `umis.yaml` (@ 제거, Cursor 첨부 방식 명확화)
+- ~~`umis_guidelines.yaml`~~ → `umis.yaml` (실제 파일명 반영)
+- `.cursorrules` 경로 수정 (UMIS 자동화 규칙)
+- 날짜 업데이트: 2025-11-02 → 2025-11-03
+
+**업데이트된 파일**
+- README.md: 
+  - GitHub 배지 추가 (GitHub, Version, License)
+  - 설치 가이드 추가
+  - 프로젝트 구조 상세화 (실제 파일명 반영)
+  - 기여 가이드라인 추가
+  - 문의 섹션 추가 (Issues, Discussions)
+  - 📚 주요 파일 섹션 추가
+- START_HERE.md: 레포 URL 업데이트, 프로젝트 구조 수정, 링크 섹션 추가
+- SETUP.md: 클론 명령어 및 사용법 업데이트
+- CHANGELOG.md: 레포 이름 및 변경 이력 업데이트
+- .gitignore: `docs/market_analysis/` 추가, `data/chroma/` Git 포함으로 변경
+
+**Git 연결**
+- Remote URL: `https://github.com/kangminlee-maker/umis.git`
+- GitHub 자동 리다이렉트 제공 (기존 링크도 작동)
+
+---
+
 ## v6.3.0-alpha (2025-11-02) - Multi-Agent RAG System [ALPHA RELEASE]
 
 ### 🎉 주요 추가사항
@@ -597,7 +631,7 @@ max_query_size = remaining_context × agent_coefficient
 
 ### 📁 간소화된 구조
 ```
-umis-monolithic-guidelines/
+umis/
 ├── umis_guidelines_v6.0.yaml   # 기준 버전
 ├── umis_guidelines_v6.1a.yaml  # 모듈화 버전
 ├── VERSION.txt                 # 현재 버전

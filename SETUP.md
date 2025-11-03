@@ -8,8 +8,8 @@
 ## 1️⃣ Repository Clone
 
 ```bash
-git clone -b alpha https://github.com/kangminlee-maker/umis-monolithic-guidelines
-cd umis-monolithic-guidelines
+git clone -b alpha https://github.com/kangminlee-maker/umis
+cd umis
 ```
 
 ---
@@ -67,7 +67,7 @@ python scripts/02_build_index.py --agent explorer
 ```
 Cursor Composer (Cmd+I):
 
-@umis.yaml
+umis.yaml 첨부
 
 "@Steve, 음악 스트리밍 구독 서비스 시장 분석해줘"
 ```
