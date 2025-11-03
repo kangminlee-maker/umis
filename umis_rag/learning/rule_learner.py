@@ -5,7 +5,7 @@ FINAL_DECISION 01_projection 스펙:
 - LLM 판단 로그 분석
 - 반복 패턴 발견
 - 자동 규칙 생성
-- projection_rules.yaml 업데이트
+- config/projection_rules.yaml 업데이트
 
 효과: LLM 10% → 1% (90% 절감)
 """
@@ -30,16 +30,16 @@ class RuleLearner:
     LLM 로그에서 규칙 학습
     
     워크플로우:
-    1. llm_projection_log.jsonl 읽기
+    1. data/llm_projection_log.jsonl 읽기
     2. 패턴 분석 (source_id x agent → decision)
     3. 신뢰도 계산 (consistency)
     4. 규칙 생성 (>= 80% 일관성)
-    5. projection_rules.yaml 업데이트
+    5. config/projection_rules.yaml 업데이트
     """
     
     def __init__(
         self,
-        log_path: str = "llm_projection_log.jsonl",
+        log_path: str = "data/llm_projection_log.jsonl",
         consistency_threshold: float = 0.80,
         min_samples: int = 3
     ):
@@ -252,7 +252,7 @@ class RuleLearner:
     
     def learn_and_save(
         self,
-        output_path: str = "learned_projection_rules.yaml"
+        output_path: str = "learned_config/projection_rules.yaml"
     ) -> Dict[str, Any]:
         """
         전체 학습 프로세스 실행 및 저장
@@ -325,8 +325,8 @@ class RuleLearner:
 
 # 편의 함수
 def learn_from_logs(
-    log_path: str = "llm_projection_log.jsonl",
-    output_path: str = "learned_projection_rules.yaml"
+    log_path: str = "data/llm_projection_log.jsonl",
+    output_path: str = "learned_config/projection_rules.yaml"
 ) -> Dict[str, Any]:
     """
     편의 함수: 로그에서 규칙 학습
@@ -370,7 +370,7 @@ if __name__ == "__main__":
     ]
     
     # 샘플 로그 저장
-    log_file = Path("test_llm_projection_log.jsonl")
+    log_file = Path("test_data/llm_projection_log.jsonl")
     with open(log_file, 'w', encoding='utf-8') as f:
         for log in sample_logs:
             f.write(json.dumps(log, ensure_ascii=False) + '\n')

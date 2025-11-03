@@ -3,7 +3,7 @@ GoalMemory: 목표 정렬 시스템
 
 Guardian (Stewart)의 목표 vs 작업 정렬도 평가 기능
 
-schema_registry.yaml 준수:
+config/schema_registry.yaml 준수:
 - memory_id: MEM-xxxxxxxx
 - goal_embedding: 3072 dim
 - alignment_score: 정렬도 (0-1)

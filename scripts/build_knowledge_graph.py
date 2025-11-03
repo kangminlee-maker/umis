@@ -2,9 +2,9 @@
 """
 Knowledge Graph Builder
 
-pattern_relationships.yaml을 읽어서 Neo4j Graph 구축
+config/pattern_relationships.yaml을 읽어서 Neo4j Graph 구축
 
-schema_registry.yaml 준수:
+config/schema_registry.yaml 준수:
 - GND-xxxxxxxx (Graph Node ID)
 - GED-xxxxxxxx (Graph Edge ID)
 - Evidence & Provenance
@@ -44,7 +44,7 @@ class KnowledgeGraphBuilder:
     
     def load_relationships(self, yaml_path: str) -> Dict[str, Any]:
         """
-        pattern_relationships.yaml 로드
+        config/pattern_relationships.yaml 로드
         
         Args:
             yaml_path: YAML 파일 경로
@@ -259,10 +259,10 @@ class KnowledgeGraphBuilder:
         전체 그래프 구축
         
         Args:
-            yaml_path: relationships YAML 경로 (기본: data/pattern_relationships.yaml)
+            yaml_path: relationships YAML 경로 (기본: config/pattern_relationships.yaml)
         """
         if yaml_path is None:
-            yaml_path = project_root / "data" / "pattern_relationships.yaml"
+            yaml_path = project_root / "config" / "pattern_relationships.yaml"
         
         logger.info("=" * 60)
         logger.info("Knowledge Graph Builder Started")
@@ -314,7 +314,7 @@ def main():
         '--yaml',
         type=str,
         default=None,
-        help="Path to pattern_relationships.yaml"
+        help="Path to config/pattern_relationships.yaml"
     )
     parser.add_argument(
         '--rebuild',

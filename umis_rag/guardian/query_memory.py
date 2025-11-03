@@ -3,7 +3,7 @@ QueryMemory: 순환 감지 시스템
 
 Guardian (Stewart)의 순환 질문/작업 감지 기능
 
-schema_registry.yaml 준수:
+config/schema_registry.yaml 준수:
 - memory_id: MEM-xxxxxxxx
 - query_embedding: 3072 dim
 - repetition_count: 반복 횟수

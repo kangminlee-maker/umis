@@ -6,7 +6,7 @@ Canonical → Hybrid Projection → Projected Index
 - ID: PRJ-xxxxxxxx
 - TTL + 온디맨드
 - Agent별 투영
-- schema_registry.yaml 준수
+- config/schema_registry.yaml 준수
 """
 
 import sys

@@ -1,7 +1,7 @@
 """
 Workflow Executor
 
-routing_policy.yaml 기반 워크플로우 실행
+config/routing_policy.yaml 기반 워크플로우 실행
 
 FINAL_DECISION 03_routing_yaml 스펙:
 - YAML에서 워크플로우 로드
@@ -30,17 +30,17 @@ class WorkflowExecutor:
     
     사용:
     -----
-    executor = WorkflowExecutor('routing_policy.yaml')
+    executor = WorkflowExecutor('config/routing_policy.yaml')
     
     result = executor.execute('explorer_workflow', {
         'triggers': "음악 스트리밍 구독"
     })
     """
     
-    def __init__(self, policy_path: str = "routing_policy.yaml"):
+    def __init__(self, policy_path: str = "config/routing_policy.yaml"):
         """
         Args:
-            policy_path: routing_policy.yaml 경로
+            policy_path: config/routing_policy.yaml 경로
         """
         self.policy_path = Path(policy_path)
         self.policy = self._load_policy()
@@ -51,7 +51,7 @@ class WorkflowExecutor:
         logger.info(f"  ✅ Phase 2: 고급 조건 파서 활성화")
     
     def _load_policy(self) -> Dict[str, Any]:
-        """routing_policy.yaml 로드"""
+        """config/routing_policy.yaml 로드"""
         if not self.policy_path.exists():
             logger.warning(f"  ⚠️  Policy 파일 없음: {self.policy_path}")
             return {}
@@ -127,7 +127,7 @@ class WorkflowExecutor:
             실행 여부
         """
         try:
-            # Named condition (routing_policy.yaml의 conditions 섹션)
+            # Named condition (config/routing_policy.yaml의 conditions 섹션)
             if condition in self.policy.get('conditions', {}):
                 cond_def = self.policy['conditions'][condition]
                 # check 필드가 있으면 재귀 평가
@@ -245,7 +245,7 @@ if __name__ == "__main__":
     print("WorkflowExecutor 테스트")
     print("=" * 60)
     
-    executor = WorkflowExecutor('routing_policy.yaml')
+    executor = WorkflowExecutor('config/routing_policy.yaml')
     
     # Layer 설정 확인
     print("\n[1] Layer 설정")
