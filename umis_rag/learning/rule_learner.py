@@ -352,21 +352,21 @@ if __name__ == "__main__":
     # 1. 샘플 로그 생성 (테스트용)
     sample_logs = [
         # churn_rate는 항상 explorer, quantifier
-        {"source_id": "churn_rate_analysis", "agent": "explorer", "decision": True, "timestamp": "2024-11-03T01:00:00Z"},
-        {"source_id": "churn_rate_analysis", "agent": "explorer", "decision": True, "timestamp": "2024-11-03T02:00:00Z"},
-        {"source_id": "churn_rate_analysis", "agent": "explorer", "decision": True, "timestamp": "2024-11-03T03:00:00Z"},
-        {"source_id": "churn_rate_analysis", "agent": "quantifier", "decision": True, "timestamp": "2024-11-03T01:00:00Z"},
-        {"source_id": "churn_rate_analysis", "agent": "quantifier", "decision": True, "timestamp": "2024-11-03T02:00:00Z"},
-        {"source_id": "churn_rate_analysis", "agent": "quantifier", "decision": True, "timestamp": "2024-11-03T03:00:00Z"},
-        {"source_id": "churn_rate_analysis", "agent": "observer", "decision": False, "timestamp": "2024-11-03T01:00:00Z"},
+        {"source_id": "churn_rate_analysis", "agent": "explorer", "decision": True, "timestamp": "2025-11-03T01:00:00Z"},
+        {"source_id": "churn_rate_analysis", "agent": "explorer", "decision": True, "timestamp": "2025-11-03T02:00:00Z"},
+        {"source_id": "churn_rate_analysis", "agent": "explorer", "decision": True, "timestamp": "2025-11-03T03:00:00Z"},
+        {"source_id": "churn_rate_analysis", "agent": "quantifier", "decision": True, "timestamp": "2025-11-03T01:00:00Z"},
+        {"source_id": "churn_rate_analysis", "agent": "quantifier", "decision": True, "timestamp": "2025-11-03T02:00:00Z"},
+        {"source_id": "churn_rate_analysis", "agent": "quantifier", "decision": True, "timestamp": "2025-11-03T03:00:00Z"},
+        {"source_id": "churn_rate_analysis", "agent": "observer", "decision": False, "timestamp": "2025-11-03T01:00:00Z"},
         
         # platform_case는 항상 explorer, observer
-        {"source_id": "platform_business_model_case", "agent": "explorer", "decision": True, "timestamp": "2024-11-03T01:00:00Z"},
-        {"source_id": "platform_business_model_case", "agent": "explorer", "decision": True, "timestamp": "2024-11-03T02:00:00Z"},
-        {"source_id": "platform_business_model_case", "agent": "explorer", "decision": True, "timestamp": "2024-11-03T03:00:00Z"},
-        {"source_id": "platform_business_model_case", "agent": "observer", "decision": True, "timestamp": "2024-11-03T01:00:00Z"},
-        {"source_id": "platform_business_model_case", "agent": "observer", "decision": True, "timestamp": "2024-11-03T02:00:00Z"},
-        {"source_id": "platform_business_model_case", "agent": "observer", "decision": True, "timestamp": "2024-11-03T03:00:00Z"},
+        {"source_id": "platform_business_model_case", "agent": "explorer", "decision": True, "timestamp": "2025-11-03T01:00:00Z"},
+        {"source_id": "platform_business_model_case", "agent": "explorer", "decision": True, "timestamp": "2025-11-03T02:00:00Z"},
+        {"source_id": "platform_business_model_case", "agent": "explorer", "decision": True, "timestamp": "2025-11-03T03:00:00Z"},
+        {"source_id": "platform_business_model_case", "agent": "observer", "decision": True, "timestamp": "2025-11-03T01:00:00Z"},
+        {"source_id": "platform_business_model_case", "agent": "observer", "decision": True, "timestamp": "2025-11-03T02:00:00Z"},
+        {"source_id": "platform_business_model_case", "agent": "observer", "decision": True, "timestamp": "2025-11-03T03:00:00Z"},
     ]
     
     # 샘플 로그 저장

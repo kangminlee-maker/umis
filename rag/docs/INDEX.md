@@ -42,8 +42,8 @@ Cursor Composer (Cmd+I)
 
 ### Dev History (개발 히스토리) ⭐ 신규!
 - **dev_history/** - 주요 개발 단계별 산출물
-  - Week 2: Dual-Index (2024-11-02, 13시간)
-  - Week 3: Knowledge Graph (2024-11-03, 4시간)
+  - Week 2: Dual-Index (2025-11-02, 13시간)
+  - Week 3: Knowledge Graph (2025-11-03, 4시간)
   - DEVELOPMENT_TIMELINE.md - 전체 타임라인
 
 ### Architecture (설계)

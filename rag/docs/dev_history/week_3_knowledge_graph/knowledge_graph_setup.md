@@ -1,7 +1,7 @@
 # UMIS Knowledge Graph 설정 가이드
 
 **버전:** v6.3.0-alpha  
-**날짜:** 2024-11-03  
+**날짜:** 2025-11-03  
 **Week 3 Day 1-2 완료**
 
 ---
@@ -231,7 +231,7 @@ CREATE (a)-[r:COMBINES_WITH {
   provenance: {                   -- v3.0: 출처
     source: 'humn_review',
     reviewer_id: 'stewart',
-    timestamp: '2024-11-03T...'
+    timestamp: '2025-11-03T...'
   },
   confidence: {                   -- Multi-Dimensional
     similarity: {...},
