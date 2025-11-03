@@ -60,6 +60,14 @@ class Settings(BaseSettings):
     pinecone_index_name: str = "umis-rag"
     
     # ========================================
+    # Graph Database (Knowledge Graph)
+    # ========================================
+    neo4j_uri: str = "bolt://localhost:7687"
+    neo4j_user: str = "neo4j"
+    neo4j_password: str = "umis_password"
+    neo4j_database: str = "neo4j"
+    
+    # ========================================
     # RAG Configuration
     # ========================================
     chunk_size: int = 800
