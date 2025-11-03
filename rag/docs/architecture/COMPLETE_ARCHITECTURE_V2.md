@@ -1,8 +1,8 @@
-# UMIS RAG 완전한 아키텍처 v2.0
+# UMIS RAG 완전한 아키텍처 v3.0
 
-**버전:** 2.0 (8가지 개선안 반영)  
+**버전:** 3.0 (전문가 피드백 반영, 16개 개선안)  
 **날짜:** 2025-11-02  
-**상태:** 설계 완료
+**상태:** 설계 완료 (감사성·재현성 강화)
 
 ---
 
@@ -30,6 +30,11 @@
    • Fail-Safe 다층 방어
    • Layer 독립성
    • 항상 작동 보장
+
+5. 감사성(A):
+   • 재현 가능성 (추적 100%)
+   • 설명 가능성 (근거 명시)
+   • 장기 운영 안전
 ```
 
 ---
@@ -50,9 +55,13 @@
 │  │  Canonical Index (업데이트용):                         │ │
 │  │    • 정규화 청크 (5,000개)                             │ │
 │  │    • Write: 1곳만 (일관성 보장!)                       │ │
+│  │    • ID: CAN-xxxxxxxx (네임스페이스)                  │ │
+│  │    • anchor_path + content_hash (안정 참조!)          │ │
 │  │                                                         │ │
-│  │  Projected Index (검색용):                             │ │
-│  │    • Agent별 청크 (30,000개)                           │ │
+│  │  Projected Index (검색용, Materialized View):          │ │
+│  │    • TTL + 온디맨드 (기본 지연 투영!)                 │ │
+│  │    • ID: PRJ-xxxxxxxx (네임스페이스)                  │ │
+│  │    • Lineage 추적 (CAN → PRJ)                         │ │
 │  │    • Read: 품질 우수!                                  │ │
 │  │                                                         │ │
 │  │  Hybrid Projection (자동 변환):                        │ │
@@ -69,11 +78,12 @@
 │  │  3-Stage Evaluation:                                    │ │
 │  │    Stage 1: Weighted Scoring (빠름, 80%)              │ │
 │  │    Stage 2: Cross-Encoder (정밀, 15%)                 │ │
-│  │    Stage 3: LLM + RAE (최종, 5%)                      │ │
+│  │    Stage 3: LLM + RAE Index (최종, 5%)                │ │
 │  │                                                         │ │
-│  │  Simple Cache (5줄):                                   │ │
-│  │    • 정확히 동일한 것만 재사용                         │ │
-│  │    • RAE Index 대신 (오버엔지니어링 방지)             │ │
+│  │  RAE Index (평가 메모리) ⭐ 복원!                     │ │
+│  │    • grade + rationale + evidence_ids                 │ │
+│  │    • 유사 케이스 재사용 (일관성!)                     │ │
+│  │    • 평가 학습 효과                                    │ │
 │  │                                                         │ │
 │  └────────────────────────────────────────────────────────┘ │
 │                          ↓                                   │
@@ -86,7 +96,12 @@
 │  │    • Coverage: 분포 분석 (양적)                       │ │
 │  │    • Validation: Yes/No (검증)                        │ │
 │  │                                                         │ │
-│  │  종합 판단: high / medium / low                        │ │
+│  │  종합 판단: 0-1 숫자 (설명가능성!)                    │ │
+│  │                                                         │ │
+│  │  Evidence & Provenance ⭐ 신규!                        │ │
+│  │    • evidence_ids (근거 추적)                         │ │
+│  │    • provenance (reviewer, timestamp)                  │ │
+│  │    • ID: GND/GED-xxxxxxxx                             │ │
 │  │                                                         │ │
 │  └────────────────────────────────────────────────────────┘ │
 │                          ↓                                   │
@@ -220,38 +235,59 @@
 
 ## 💡 왜 이런 구조인가?
 
-### 1. Dual-Index (Layer 1)
+### 1. Dual-Index + TTL (Layer 1) ⭐ 수정!
 
 ```yaml
 문제:
   Pre-Projection: 일관성 위험 (6곳 동기화)
   Lazy Projection: 품질 저하 (노이즈 40%)
 
-해결:
-  Dual-Index = 품질 + 일관성
+해결 (v3.0 수정):
+  Dual-Index + TTL/온디맨드
   
   • Canonical: 1곳 수정 (일관성)
-  • Projected: 검색 품질 (노이즈 0%)
+  • Projected: TTL + 온디맨드 (비용 ↓)
+    - 기본: 지연 투영 (규칙+캐시)
+    - 고빈도만: 영속화
+    - TTL: 24시간
 
 가치:
-  업데이트 안전, 검색 정확
+  품질 유지 + 비용 급감!
+  
+전문가 피드백:
+  "Projected는 Materialized View로"
+  → 당신의 원래 Lazy 제안 복원!
 ```
 
-### 2. Schema Registry (횡단)
+### 2. Schema Registry + 감사성 (횡단) ⭐ 강화!
 
 ```yaml
 문제:
   4-Layer 공통 필드 → 불일치 위험
+  추적성 부족 → 감사 어려움
 
-해결:
-  중앙 집중 스키마 관리
+해결 (v3.0 강화):
+  중앙 집중 스키마 + ID/Lineage
   
   • 모든 필드 정의
   • Layer 간 매핑
   • Contract Tests
+  
+  + ID 네임스페이스:
+    • CAN-xxx (Canonical)
+    • PRJ-xxx (Projected)
+    • GND/GED-xxx (Graph)
+    • MEM-xxx (Memory)
+  
+  + Lineage 블록:
+    • from, via, evidence_ids
+    • 교차 추적 100%
 
 가치:
-  필드 일관성, 버전 안전
+  필드 일관성 + 감사성(A)!
+  
+전문가 피드백:
+  "교차 레이어 추적성 강화"
 ```
 
 ### 3. Routing YAML (횡단)
@@ -271,21 +307,31 @@
   가독성, 유연성
 ```
 
-### 4. Multi-Dimensional Confidence (Layer 3)
+### 4. Multi-Dimensional Confidence + 근거 (Layer 3) ⭐ 강화!
 
 ```yaml
 문제:
   단일 차원 → 예외 케이스
+  근거 없음 → 설명 불가
 
-해결:
-  질적 + 양적 + 검증
+해결 (v3.0 강화):
+  질적 + 양적 + 검증 + 근거
   
-  • Similarity (Vector)
-  • Coverage (분포)
-  • Validation (Yes/No)
+  • Similarity (Vector): 0.92
+  • Coverage (분포): 0.10
+  • Validation (Yes/No): yes
+  • Overall: 0.83 (0-1 숫자!)
+  
+  + Evidence & Provenance:
+    • evidence_ids: ["CAN-...", "PRJ-..."]
+    • provenance: {reviewer, timestamp}
+    • 근거 역추적 100%
 
 가치:
-  예외 없는 평가
+  예외 없음 + 설명가능성!
+  
+전문가 피드백:
+  "그래프 써도 A(재현성) 유지"
 ```
 
 ### 5. Fail-Safe (횡단)
@@ -440,26 +486,129 @@ Phase 4 (향후):
 
 ---
 
-## 🎯 8개 개선안 요약
+---
 
-### 채택 (6개)
+## 🎯 v3.0 신규 개선안 (전문가 피드백)
+
+### 9. ID & Lineage 표준화 ⭐ P0
 
 ```yaml
-1. Dual-Index + Hybrid + Learning
-   우선순위: P0
-   가치: 품질 + 일관성
+문제:
+  source_id만 → 레이어 구분 없음
 
-2. Schema-Registry + Contract Tests
-   우선순위: P0
-   가치: 필드 일관성
+해결:
+  ID 네임스페이스:
+    • CAN-xxx, PRJ-xxx, GND-xxx, ...
+  
+  Lineage 블록:
+    • from, via, evidence_ids
+    • 교차 추적
 
-3. Routing YAML
-   우선순위: P0
-   가치: 가독성 (30줄, 2시간)
+가치:
+  감사성(A) 핵심!
+```
 
-4. Multi-Dimensional Confidence
+### 10. anchor_path + hash ⭐ P0
+
+```yaml
+문제:
+  sections: {start, end} → 오프셋 깨짐
+
+해결:
+  anchor_path + content_hash:
+    • 경로 기반 안정 참조
+    • 토크나이저 변경 안전
+
+가치:
+  재현성(A) 핵심!
+```
+
+### 11. TTL + 온디맨드 (1번 통합)
+
+```
+Dual-Index에 통합
+```
+
+### 12. Graph 근거 (4번 통합)
+
+```
+Multi-Dimensional에 통합
+```
+
+### 13. RAE Index (5번 복원)
+
+```
+복원됨 (위 참조)
+```
+
+### 14. Overlay 메타 (6번 강화)
+
+```yaml
+변경:
+  설계만 → 메타 선반영
+
+추가:
+  overlay_layer, tenant_id, merge_strategy
+  → 지금 schema에!
+
+가치:
+  미래 마이그레이션 방지
+```
+
+### 15. Retrieval Policy (3번 확장)
+
+```yaml
+확장:
+  routing_policy.yaml
+  + retrieval 섹션
+  
+  intent 기반 라우팅
+  layer 동적 선택
+
+가치:
+  더 세밀한 제어
+```
+
+### 16. Embedding 버전 (P1)
+
+```yaml
+추가:
+  embedding.model, dimension
+
+가치:
+  모델 변경 추적
+```
+
+---
+
+## 🎯 v3.0 개선안 요약
+
+### 채택 (7개 → 8개!)
+
+```yaml
+1. Dual-Index + TTL ⭐ (v3.0 강화)
    우선순위: P0
-   가치: 질적 + 양적 + 검증
+   가치: 품질 + 일관성 + 비용↓
+
+2. Schema-Registry + ID/Lineage ⭐ (v3.0 강화)
+   우선순위: P0
+   가치: 필드 일관성 + 감사성(A)
+
+3. Routing + Retrieval Policy ⭐ (v3.0 확장)
+   우선순위: P0
+   가치: workflow + intent 라우팅
+
+4. Multi-Dimensional + 근거 ⭐ (v3.0 강화)
+   우선순위: P0
+   가치: 평가 + 설명가능성
+
+5. RAE Index (초소형) ⭐ (v3.0 복원!)
+   우선순위: P0
+   가치: 평가 일관성 (비용 X, 일관성 O)
+
+6. Overlay (메타 선반영) ⭐ (v3.0 강화)
+   우선순위: 메타 P0, 구현 P2
+   가치: 미래 안전
 
 7. Fail-Safe (3-Tier)
    우선순위: P0
@@ -467,23 +616,47 @@ Phase 4 (향후):
 
 8. System RAG + Tool Registry
    우선순위: P1 (향후)
-   가치: 컨텍스트 95% 절감, 동적 Workflow
+   가치: 컨텍스트 95% 절감
 ```
 
-### 설계만 (1개)
+### 신규 (P0 보완, v3.0)
 
 ```yaml
-6. Overlay Layer
-   우선순위: 설계 P0, 구현 P2
-   트리거: 팀 확장 (3명+)
+9. ID & Lineage 표준화
+   우선순위: P0
+   가치: 감사성(A) 핵심
+
+10. anchor_path + hash
+    우선순위: P0
+    가치: 재현성(A) 핵심
 ```
 
-### 제외 (1개)
+### 선택 (P1)
 
 ```yaml
-5. RAE Index
-   이유: 오버엔지니어링
-   대안: 간단한 캐싱
+11. Embedding 버전
+    우선순위: P1
+    가치: 모델 변경 추적
+```
+
+### 복원 (1개) ⭐ v3.0 변경!
+
+```yaml
+5. RAE Index (초소형)
+   결정 변경: 제외 → 채택!
+   
+   이유:
+     비용 X, 일관성 O
+     유사 케이스 재사용
+     평가 학습 효과
+   
+   초소형:
+     • grade + rationale + evidence_ids만
+     • 복잡도 낮음
+     • 가치 충분
+   
+   전문가 피드백:
+     "평가 일관성↑, 쓸수록 똑똑해지는 Guardian"
 ```
 
 ---
