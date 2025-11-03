@@ -62,7 +62,14 @@ class ExplorerRAG:
     - Guardian: 최종 검증
     """
     
-    def __init__(self):
+    def __init__(self, use_projected=False):
+        """
+        Explorer RAG 에이전트 초기화
+        
+        Args:
+            use_projected: True = projected_index (v3.0 Dual-Index)
+                          False = explorer_knowledge_base (기존, 기본)
+        """
         logger.info("Explorer RAG 에이전트 초기화")
         
         # Embeddings 초기화
@@ -71,12 +78,16 @@ class ExplorerRAG:
             openai_api_key=settings.openai_api_key
         )
         
-        # 벡터 스토어 로드
+        # 벡터 스토어 로드 (v3.0 Dual-Index 지원!)
+        collection_name = "projected_index" if use_projected else "explorer_knowledge_base"
+        
         self.vectorstore = Chroma(
-            collection_name="explorer_knowledge_base",
+            collection_name=collection_name,
             embedding_function=self.embeddings,
             persist_directory=str(settings.chroma_persist_dir)
         )
+        
+        self.use_projected = use_projected
         
         # LLM 초기화 (가설 생성용)
         self.llm = ChatOpenAI(
@@ -85,7 +96,8 @@ class ExplorerRAG:
             openai_api_key=settings.openai_api_key
         )
         
-        logger.info(f"  ✅ 벡터 스토어 로드: {self.vectorstore._collection.count()}개 청크")
+        logger.info(f"  ✅ 벡터 스토어: {collection_name}")
+        logger.info(f"  ✅ 청크 수: {self.vectorstore._collection.count()}개")
         logger.info(f"  ✅ LLM 모델: {settings.llm_model}")
     
     def search_patterns(
@@ -93,6 +105,10 @@ class ExplorerRAG:
         trigger_signals: str | List[str],
         top_k: int = 3
     ) -> List[tuple[Document, float]]:
+        """
+        v3.0: Projected Index 지원
+        - use_projected=True → agent_view 필터 자동
+        """
         """
         트리거 시그널 → 사업모델 패턴 매칭
         
