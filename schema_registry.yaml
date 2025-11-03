@@ -1,0 +1,847 @@
+# ========================================
+# UMIS RAG Schema Registry v1.0
+# ========================================
+#
+# 날짜: 2025-11-02
+# 버전: 1.0
+# UMIS: 6.3.0-alpha
+# Architecture: v3.0
+# 목적: 모든 RAG Layer 통합 스키마 정의
+#
+# 강화: ID/Lineage, anchor, 근거, 감사성(A)
+#
+# ========================================
+
+_meta:
+  version: "1.0"
+  architecture_version: "3.0"
+  umis_version: "6.3.0-alpha"
+  purpose: "모든 RAG Layer 통합 스키마"
+  expert_feedback: "반영 완료 (P0 7개)"
+  last_updated: "2025-11-02"
+
+# ========================================
+# PART 1: ID 네임스페이스 (v3.0 P0-1)
+# ========================================
+
+id_namespaces:
+  description: "레이어별 고유 ID 네임스페이스"
+  purpose: "감사성·추적성 강화"
+  
+  canonical:
+    prefix: "CAN-"
+    pattern: "CAN-[a-z0-9]{8}"
+    description: "Canonical Index 청크"
+    example: "CAN-baemin-001"
+  
+  projected:
+    prefix: "PRJ-"
+    pattern: "PRJ-[a-z0-9]{8}"
+    description: "Projected Index 청크"
+    example: "PRJ-baemin-exp-001"
+  
+  graph_node:
+    prefix: "GND-"
+    pattern: "GND-[a-z0-9]{8}"
+    description: "Knowledge Graph 노드"
+    example: "GND-platform-001"
+  
+  graph_edge:
+    prefix: "GED-"
+    pattern: "GED-[a-z0-9]{8}"
+    description: "Knowledge Graph 간선"
+    example: "GED-plat-sub-001"
+  
+  memory:
+    prefix: "MEM-"
+    pattern: "MEM-[a-z0-9]{8}"
+    description: "Query/Goal Memory"
+    example: "MEM-query-001"
+  
+  rae:
+    prefix: "RAE-"
+    pattern: "RAE-[a-z0-9]{8}"
+    description: "RAE Index (평가 메모리)"
+    example: "RAE-eval-001"
+
+# ========================================
+# PART 2: Core Fields (모든 Collection)
+# ========================================
+
+core_fields:
+  
+  # === Identity ===
+  source_id:
+    type: string
+    required: true
+    description: "사례/패턴 원천 ID"
+    examples:
+      - "baemin_case"
+      - "platform_pattern"
+      - "subscription_model"
+    used_by: [canonical, projected, graph]
+    
+    validation:
+      - "비어있으면 안 됨"
+      - "중복 불가 (Collection 내)"
+  
+  # === Lineage (v3.0 신규 P0-1) ===
+  lineage:
+    type: object
+    required: true
+    description: "계보 추적"
+    
+    properties:
+      from:
+        type: string
+        description: "원본 Canonical ID"
+        example: "CAN-baemin-001"
+      
+      via:
+        type: array
+        description: "변환 경로 (순서대로)"
+        items:
+          type: object
+          properties:
+            step: int
+            action: string
+            rule_id: string
+            chunk_id: string
+        
+        example:
+          - step: 1
+            action: "projection"
+            rule_id: "RULE-5678"
+            chunk_id: "PRJ-9012"
+          - step: 2
+            action: "graph_creation"
+            chunk_id: "GND-3456"
+      
+      evidence_ids:
+        type: array
+        description: "근거 청크 ID (역추적)"
+        example: ["CAN-1234", "PRJ-5678", "GND-9012"]
+      
+      created_by:
+        type: object
+        properties:
+          agent:
+            type: string
+            example: "Stewart"
+          
+          overlay_layer:
+            type: enum
+            values: [core, team, personal]
+            default: "core"
+          
+          tenant_id:
+            type: string
+            example: "team_alpha"
+            required: false
+    
+    used_by: [canonical, projected, graph]
+  
+  # === Domain ===
+  domain:
+    type: enum
+    values:
+      - case_study
+      - pattern
+      - framework
+      - tool
+    required: true
+    used_by: [canonical, projected, graph, system, rae]
+  
+  # === Version ===
+  version:
+    type: string
+    required: true
+    pattern: "\\d+\\.\\d+\\.\\d+(-alpha|-beta|-rc\\d+)?"
+    examples:
+      - "6.3.0-alpha"
+      - "7.0.0"
+    used_by: [all]
+  
+  # === Quality ===
+  quality_grade:
+    type: enum
+    values: [A, B, C, D]
+    required: false
+    description: "Guardian 평가 등급"
+    used_by: [canonical, projected, rae]
+  
+  validation_status:
+    type: enum
+    values: [verified, pending, failed]
+    required: false
+    used_by: [canonical, projected]
+  
+  # === Timestamps ===
+  created_at:
+    type: datetime
+    format: "ISO 8601"
+    required: true
+    used_by: [all]
+    example: "2025-11-02T10:30:00Z"
+  
+  updated_at:
+    type: datetime
+    format: "ISO 8601"
+    required: true
+    used_by: [all]
+    example: "2025-11-02T15:45:00Z"
+  
+  # === Embedding 버전 (v3.0 P1-1) ===
+  embedding:
+    type: object
+    required: false
+    description: "임베딩 모델 정보"
+    
+    properties:
+      model:
+        type: string
+        example: "text-embedding-3-large"
+      
+      dimension:
+        type: int
+        example: 3072
+      
+      space:
+        type: string
+        example: "cosine"
+        default: "cosine"
+    
+    used_by: [canonical, projected, graph, memory]
+
+# ========================================
+# PART 3: Layer 1 - Canonical Index
+# ========================================
+
+layer_1_canonical:
+  description: "정규화 청크 (업데이트용)"
+  collection_name: "canonical_index"
+  
+  fields:
+    # Core
+    - source_id
+    - lineage
+    - domain
+    - version
+    - quality_grade
+    - validation_status
+    - created_at
+    - updated_at
+    - embedding
+    
+    # Canonical 전용
+    canonical_chunk_id:
+      type: string
+      pattern: "CAN-[a-z0-9]{8}"
+      required: true
+      description: "Canonical 고유 ID"
+    
+    content_type:
+      type: enum
+      values: [normalized_full]
+      required: true
+      description: "정규화된 완전 청크"
+    
+    # v3.0 변경: anchor_path + hash (P0-2)
+    sections:
+      type: array
+      required: true
+      description: "Agent별 섹션 (경로+해시 방식)"
+      
+      items:
+        type: object
+        required: [anchor_path, content_hash]
+        
+        properties:
+          agent_view:
+            type: enum
+            values: [observer, explorer, quantifier, validator, guardian]
+          
+          anchor_path:
+            type: string
+            description: "YAML 경로 (안정 참조!)"
+            example: "subscription_model.trigger_observations"
+          
+          content_hash:
+            type: string
+            pattern: "sha256:[a-f0-9]{64}"
+            description: "내용 SHA-256 해시"
+            example: "sha256:ab123456..."
+          
+          span_hint:
+            type: object
+            required: false
+            description: "성능 힌트 (선택)"
+            properties:
+              paragraphs:
+                type: string
+                example: "12-18"
+              tokens:
+                type: int
+                example: 250
+    
+    total_tokens:
+      type: int
+      required: true
+      description: "총 토큰 수"
+    
+    projection_history:
+      type: array
+      description: "투영 이력"
+      
+      items:
+        type: object
+        properties:
+          timestamp: datetime
+          projected_count: int
+          method: enum [rule, llm]
+          rule_ids: array[string]
+
+# ========================================
+# PART 4: Layer 1 - Projected Index
+# ========================================
+
+layer_1_projected:
+  description: "Agent별 투영 청크 (검색용, Materialized View)"
+  collection_name: "projected_index"
+  
+  fields:
+    # Core
+    - source_id
+    - lineage
+    - domain
+    - version
+    - quality_grade
+    - validation_status
+    - created_at
+    - updated_at
+    - embedding
+    
+    # Projected 전용
+    projected_chunk_id:
+      type: string
+      pattern: "PRJ-[a-z0-9]{8}"
+      required: true
+      description: "Projected 고유 ID"
+    
+    agent_view:
+      type: enum
+      values: [observer, explorer, quantifier, validator, guardian]
+      required: true
+      description: "어느 Agent용인가"
+    
+    canonical_chunk_id:
+      type: string
+      pattern: "CAN-[a-z0-9]{8}"
+      required: true
+      description: "원본 Canonical 참조"
+    
+    projection_method:
+      type: enum
+      values: [rule, llm]
+      required: true
+      description: "투영 방법"
+    
+    projection_rule_id:
+      type: string
+      required: false
+      description: "사용된 규칙 ID"
+      example: "RULE-5678"
+    
+    # v3.0 추가: TTL/온디맨드 (P0-3)
+    materialization:
+      type: object
+      required: true
+      description: "물리화 전략"
+      
+      properties:
+        strategy:
+          type: enum
+          values: [on_demand, persistent]
+          default: "on_demand"
+          description: "기본: 지연 투영"
+        
+        cache_ttl_hours:
+          type: int
+          default: 24
+          description: "캐시 유지 시간"
+        
+        persist_profile:
+          type: string
+          required: false
+          description: "영속화 프로필 (고빈도만)"
+          example: "explorer_high_traffic"
+        
+        last_materialized_at:
+          type: datetime
+          required: false
+        
+        access_count:
+          type: int
+          default: 0
+          description: "접근 횟수 (프로파일링용)"
+    
+    # v3.0 추가: Overlay (P0-6)
+    overlay:
+      type: object
+      required: false
+      description: "계층 메타데이터"
+      
+      properties:
+        layer:
+          type: enum
+          values: [core, team, personal]
+          default: "core"
+        
+        tenant_id:
+          type: string
+          example: "team_alpha|user_x"
+        
+        precedence:
+          type: array
+          default: [personal, team, core]
+        
+        merge_strategy:
+          type: enum
+          values: [append, replace, patch]
+          default: "replace"
+        
+        acl:
+          type: object
+          properties:
+            visibility:
+              type: enum
+              values: [private, org, public]
+    
+    # Agent별 동적 필드
+    agent_specific:
+      pattern: "{agent}_*"
+      description: "각 Agent 전용 메타데이터"
+      
+      explorer:
+        - explorer_pattern_id: string
+        - explorer_csf: array[string]
+        - explorer_difficulty: enum[easy, medium, hard]
+        - explorer_confidence: float
+      
+      quantifier:
+        - quantifier_metrics: array[string]
+        - quantifier_formula: string
+        - quantifier_sam: float
+      
+      observer:
+        - observer_patterns: array[string]
+        - observer_dynamics: string
+      
+      validator:
+        - validator_sources: array[string]
+        - validator_reliability: float
+      
+      guardian:
+        - guardian_checks: array[string]
+        - guardian_approval: bool
+
+# ========================================
+# PART 5: Layer 3 - Knowledge Graph
+# ========================================
+
+layer_3_knowledge_graph:
+  description: "패턴 관계 및 조합"
+  database: "Neo4j"
+  
+  node_fields:
+    # Core
+    - source_id
+    - lineage
+    - domain
+    - version
+    - created_at
+    - updated_at
+    
+    # Graph 전용
+    graph_node_id:
+      type: string
+      pattern: "GND-[a-z0-9]{8}"
+      required: true
+      description: "Graph 노드 고유 ID"
+    
+    node_type:
+      type: enum
+      values: [pattern, case, agent_output]
+      required: true
+    
+    pattern_id:
+      type: string
+      description: "패턴 ID (explorer_pattern_id 매핑)"
+      mapping_from: "projected.explorer_pattern_id"
+    
+    vector_chunk_id:
+      type: string
+      description: "Layer 1 청크 참조"
+      mapping_from: "projected.projected_chunk_id"
+  
+  edge_fields:
+    graph_edge_id:
+      type: string
+      pattern: "GED-[a-z0-9]{8}"
+      required: true
+      description: "Graph 간선 고유 ID"
+    
+    relationship_type:
+      type: enum
+      values: [COMBINES_WITH, COUNTERS, PREREQUISITE, ENABLES]
+      required: true
+    
+    # v3.0 추가: Evidence & Provenance (P0-4)
+    evidence_ids:
+      type: array
+      required: true
+      description: "근거 청크 ID (역추적)"
+      items:
+        type: string
+        pattern: "CAN-.*|PRJ-.*"
+      example: ["CAN-amazon-001", "PRJ-spotify-exp-002"]
+    
+    provenance:
+      type: object
+      required: true
+      description: "출처 및 검토자"
+      
+      properties:
+        source:
+          type: enum
+          values: [humn_review, auto_rule, llm_infer]
+          required: true
+        
+        reviewer_id:
+          type: string
+          example: "stewart|rachel"
+        
+        timestamp:
+          type: datetime
+          format: "ISO 8601"
+          required: true
+    
+    # v3.0 강화: Multi-Dimensional Confidence
+    confidence:
+      type: object
+      required: true
+      description: "다차원 신뢰도"
+      
+      properties:
+        similarity:
+          type: object
+          properties:
+            method: string  # "vector_embedding"
+            value: float  # 0-1
+          example: {method: "embedding", value: 0.92}
+        
+        coverage:
+          type: object
+          properties:
+            method: string  # "distribution"
+            value: float  # 0-1
+          example: {method: "distribution", value: 0.10}
+        
+        validation:
+          type: object
+          properties:
+            method: string  # "checklist"
+            value: bool
+          example: {method: "checklist", value: true}
+        
+        overall:
+          type: float  # v3.0: 숫자 (0-1)!
+          required: true
+          range: [0, 1]
+          description: "종합 신뢰도 (0: 낮음, 1: 최고)"
+        
+        reasoning:
+          type: array
+          items: string
+          example:
+            - "Best case similarity 0.92 (Amazon Prime)"
+            - "10% of cases show pattern"
+            - "Validator verified"
+
+# ========================================
+# PART 6: Layer 4 - Memory
+# ========================================
+
+layer_4_memory:
+  query_memory:
+    collection_name: "query_memory"
+    description: "순환 감지"
+    
+    fields:
+      memory_id:
+        type: string
+        pattern: "MEM-[a-z0-9]{8}"
+        required: true
+      
+      query_text:
+        type: string
+        required: true
+      
+      query_embedding:
+        type: vector
+        dimension: 3072
+        required: true
+      
+      query_topic:
+        type: string
+        description: "주제 추출"
+      
+      repetition_count:
+        type: int
+        default: 1
+      
+      version: string
+      created_at: datetime
+  
+  goal_memory:
+    collection_name: "goal_memory"
+    description: "목표 정렬"
+    
+    fields:
+      memory_id:
+        type: string
+        pattern: "MEM-[a-z0-9]{8}"
+        required: true
+      
+      goal_text:
+        type: string
+        required: true
+      
+      goal_embedding:
+        type: vector
+        dimension: 3072
+        required: true
+      
+      alignment_score:
+        type: float
+        range: [0, 1]
+        description: "목표 정렬도"
+      
+      version: string
+      created_at: datetime
+
+# ========================================
+# PART 7: RAE Index (v3.0 복원 P0-5)
+# ========================================
+
+rae_index:
+  description: "Guardian 평가 메모리 (일관성)"
+  collection_name: "rae_index"
+  purpose: "과거 평가 재사용 (유사 케이스)"
+  
+  fields:
+    rae_id:
+      type: string
+      pattern: "RAE-[a-z0-9]{8}"
+      required: true
+      description: "RAE 고유 ID"
+    
+    deliverable_id:
+      type: string
+      required: true
+      description: "평가 대상 ID"
+      example: "OPP-001"
+    
+    grade:
+      type: enum
+      values: [A, B, C, D]
+      required: true
+      description: "Guardian 평가 등급"
+    
+    rationale:
+      type: string
+      required: true
+      description: "평가 사유"
+    
+    evidence_ids:
+      type: array
+      required: true
+      description: "평가 근거 청크"
+      items: string
+      example: ["CAN-1234", "PRJ-5678"]
+    
+    scorer_profile:
+      type: enum
+      values: [weighted, cross_encoder, llm]
+      required: true
+      description: "평가 방법"
+    
+    score_breakdown:
+      type: object
+      required: false
+      description: "상세 점수"
+      properties:
+        evidence_completeness: float
+        data_reliability: float
+        logical_soundness: float
+        feasibility: float
+    
+    domain: string
+    version: string
+    created_at: datetime
+
+# ========================================
+# PART 8: Field Mappings (Layer 간)
+# ========================================
+
+field_mappings:
+  description: "Layer 간 필드 매핑 규칙"
+  
+  explorer_pattern_id_to_pattern_id:
+    source_layer: "projected"
+    source_field: "explorer_pattern_id"
+    target_layer: "graph"
+    target_field: "pattern_id"
+    
+    mapping_function: "direct_copy"
+    
+    example:
+      input: {explorer_pattern_id: "platform_business_model"}
+      output: {pattern_id: "platform_business_model"}
+  
+  projected_to_graph_vector:
+    source_layer: "projected"
+    source_field: "projected_chunk_id"
+    target_layer: "graph"
+    target_field: "vector_chunk_id"
+    
+    mapping_function: "direct_copy"
+  
+  canonical_to_projected:
+    source_layer: "canonical"
+    source_field: "canonical_chunk_id"
+    target_layer: "projected"
+    target_field: "canonical_chunk_id (in lineage.from)"
+    
+    mapping_function: "reference"
+
+# ========================================
+# PART 9: Validation Rules
+# ========================================
+
+validation_rules:
+  
+  required_core_fields:
+    - rule: "모든 청크는 source_id 필수"
+      layers: [canonical, projected, graph]
+      check: "field_exists('source_id')"
+    
+    - rule: "모든 청크는 lineage 필수"
+      layers: [canonical, projected, graph]
+      check: "field_exists('lineage')"
+    
+    - rule: "모든 청크는 version 필수"
+      layers: [all]
+      check: "field_exists('version')"
+    
+    - rule: "모든 청크는 created_at 필수"
+      layers: [all]
+      check: "field_exists('created_at')"
+  
+  id_namespace:
+    - rule: "Canonical ID는 CAN- 시작"
+      field: "canonical_chunk_id"
+      check: "starts_with('CAN-')"
+    
+    - rule: "Projected ID는 PRJ- 시작"
+      field: "projected_chunk_id"
+      check: "starts_with('PRJ-')"
+    
+    - rule: "ID는 고유해야 함"
+      check: "unique_within_collection()"
+  
+  type_validation:
+    - rule: "quality_grade는 A/B/C/D만"
+      field: "quality_grade"
+      check: "value in ['A', 'B', 'C', 'D']"
+    
+    - rule: "datetime은 ISO 8601 형식"
+      field: "created_at|updated_at"
+      check: "iso8601_format()"
+    
+    - rule: "float는 0-1 범위"
+      field: "confidence.overall|alignment_score"
+      check: "0 <= value <= 1"
+  
+  cross_layer_integrity:
+    - rule: "Projected.canonical_chunk_id는 Canonical에 존재"
+      check: "exists_in_collection('canonical', lineage.from)"
+    
+    - rule: "Graph.vector_chunk_id는 Projected에 존재"
+      check: "exists_in_collection('projected', vector_chunk_id)"
+    
+    - rule: "Graph.pattern_id는 Projected.explorer_pattern_id와 일치"
+      check: "map_field_matches('explorer_pattern_id', 'pattern_id')"
+    
+    - rule: "evidence_ids는 실제 청크 존재"
+      check: "all(exists_in_any_collection(id) for id in evidence_ids)"
+  
+  anchor_hash:
+    - rule: "anchor_path는 YAML 경로 유효"
+      check: "yaml_path_valid(anchor_path)"
+    
+    - rule: "content_hash는 실제 내용과 일치"
+      check: "sha256(content) == content_hash"
+
+# ========================================
+# PART 10: Version Compatibility
+# ========================================
+
+version_compatibility:
+  "1.0":
+    description: "초기 버전 (v3.0 Architecture 기반)"
+    
+    supported_layers:
+      - canonical
+      - projected
+      - graph
+      - memory
+      - rae
+    
+    core_fields:
+      - source_id
+      - lineage
+      - domain
+      - version
+      - created_at
+      - updated_at
+    
+    breaking_changes: []
+  
+  "1.1":
+    description: "System RAG 추가 (향후)"
+    
+    supported_layers:
+      - canonical
+      - projected
+      - graph
+      - memory
+      - rae
+      - system
+    
+    added_fields:
+      - tool_type
+      - when_to_use
+      - deliverables
+    
+    breaking_changes:
+      - "system_knowledge Collection 신규"
+    
+    migration:
+      - "기존 Collection 영향 없음"
+      - "system_knowledge만 신규 추가"
+
+# ========================================
+# END OF SCHEMA REGISTRY v1.0
+# ========================================
+
