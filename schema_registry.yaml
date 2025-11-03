@@ -221,8 +221,7 @@ layer_1_canonical:
   description: "정규화 청크 (업데이트용)"
   collection_name: "canonical_index"
   
-  fields:
-    # Core
+  core_fields_used:
     - source_id
     - lineage
     - domain
@@ -232,8 +231,8 @@ layer_1_canonical:
     - created_at
     - updated_at
     - embedding
-    
-    # Canonical 전용
+  
+  canonical_fields:
     canonical_chunk_id:
       type: string
       pattern: "CAN-[a-z0-9]{8}"
@@ -309,8 +308,7 @@ layer_1_projected:
   description: "Agent별 투영 청크 (검색용, Materialized View)"
   collection_name: "projected_index"
   
-  fields:
-    # Core
+  core_fields_used:
     - source_id
     - lineage
     - domain
@@ -320,8 +318,8 @@ layer_1_projected:
     - created_at
     - updated_at
     - embedding
-    
-    # Projected 전용
+  
+  projected_fields:
     projected_chunk_id:
       type: string
       pattern: "PRJ-[a-z0-9]{8}"
@@ -453,16 +451,15 @@ layer_3_knowledge_graph:
   description: "패턴 관계 및 조합"
   database: "Neo4j"
   
-  node_fields:
-    # Core
+  core_fields_used:
     - source_id
     - lineage
     - domain
     - version
     - created_at
     - updated_at
-    
-    # Graph 전용
+  
+  node_fields:
     graph_node_id:
       type: string
       pattern: "GND-[a-z0-9]{8}"
