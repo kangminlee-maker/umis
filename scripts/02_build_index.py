@@ -161,7 +161,8 @@ class UMISIndexBuilder:
         console.print("[yellow]Step 1/4: 청크 파일 로딩...[/yellow]")
         bm_chunks = self.load_chunks("explorer_business_models.jsonl")
         dp_chunks = self.load_chunks("explorer_disruption_patterns.jsonl")
-        all_chunks = bm_chunks + dp_chunks
+        ec_chunks = self.load_chunks("explorer_extended_cases.jsonl")
+        all_chunks = bm_chunks + dp_chunks + ec_chunks
         
         if not all_chunks:
             logger.error("청크가 없습니다. 먼저 01_convert_yaml.py를 실행하세요.")
@@ -242,8 +243,8 @@ class UMISIndexBuilder:
         # 청크 타입별 집계
         from collections import Counter
         
-        chunk_types = Counter(c["metadata"]["chunk_type"] for c in chunks)
-        pattern_types = Counter(c["metadata"]["pattern_type"] for c in chunks)
+        chunk_types = Counter(c["metadata"].get("chunk_type", "unknown") for c in chunks)
+        pattern_types = Counter(c["metadata"].get("pattern_type", "unknown") for c in chunks)
         
         # 테이블 생성
         table = Table(title="📊 Explorer 인덱스 통계")
@@ -251,8 +252,9 @@ class UMISIndexBuilder:
         table.add_column("개수", style="magenta")
         
         table.add_row("총 청크 수", str(len(chunks)))
-        table.add_row("Business Model", str(sum(1 for c in chunks if c["metadata"]["pattern_type"] == "business_model")))
-        table.add_row("Disruption", str(sum(1 for c in chunks if c["metadata"]["pattern_type"] == "disruption")))
+        table.add_row("Business Model", str(sum(1 for c in chunks if c.get("metadata", {}).get("pattern_type") == "business_model")))
+        table.add_row("Disruption", str(sum(1 for c in chunks if c.get("metadata", {}).get("pattern_type") == "disruption")))
+        table.add_row("Extended Cases", str(sum(1 for c in chunks if c.get("metadata", {}).get("source_file") == "umis_extended_business_cases.yaml")))
         
         console.print(table)
 
