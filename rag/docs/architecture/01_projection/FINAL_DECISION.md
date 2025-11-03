@@ -1,7 +1,8 @@
 # Projection 전략 최종 결정
 
 **날짜:** 2025-11-02  
-**결론:** Dual-Index + Hybrid Projection + Learning Loop
+**결론:** Dual-Index + Hybrid + Learning + TTL (v3.0 강화!)  
+**출처:** 원래 제안 + 전문가 피드백
 
 ---
 

@@ -1,7 +1,8 @@
 # Graph Confidence 최종 결정
 
 **날짜:** 2025-11-02  
-**결론:** Multi-Dimensional Confidence + Vector Similarity
+**결론:** Multi-Dimensional + Evidence/Provenance (v3.0 강화!)  
+**출처:** 원래 제안 + 전문가 피드백
 
 ---
 
