@@ -43,3 +43,18 @@ def setup_logger() -> None:
 # Initialize on import
 setup_logger()
 
+
+def get_logger(name: str = None):
+    """
+    Get logger instance.
+    
+    Args:
+        name: Logger name (optional, for context)
+    
+    Returns:
+        Configured logger instance
+    """
+    if name:
+        return logger.bind(name=name)
+    return logger
+
