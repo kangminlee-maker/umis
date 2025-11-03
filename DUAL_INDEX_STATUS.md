@@ -1,12 +1,12 @@
 # Dual-Index 구현 현황
 
 **날짜:** 2025-11-02  
-**진행:** 6/7 단계 (86%)  
-**상태:** 핵심 완성
+**진행:** 7/7 단계 (100%)  
+**상태:** ✅ 완성!
 
 ---
 
-## ✅ 완료 (6/7)
+## ✅ 완료 (7/7)
 
 ```yaml
 Step 1: SchemaRegistry 로더 ✅
@@ -34,37 +34,33 @@ Step 5: build_projected_index.py ✅
 Step 6: Contract Tests ✅
   • schema 준수 검증
   • Canonical ↔ Projected 무손실
+
+Step 7: Explorer 통합 ✅
+  • projected_index 지원
+  • agent_view 필터
+  • 하위 호환 유지
 ```
 
 ---
 
-## 🔄 남은 작업 (1/7)
-
-```yaml
-Step 7: Explorer 통합
-  • 현재: explorer_knowledge_base 사용
-  • 목표: projected_index 사용
-  • 상태: 선택사항 (하위 호환)
-
-실제 사용 시:
-  새 스크립트 작성 또는
-  Explorer 인스턴스 생성 시 collection 지정
-```
-
----
-
-## 🎯 핵심 완성!
+## 🎯 Week 2 완성!
 
 **Dual-Index 동작:**
 ```
 Canonical (업데이트용) ✅
+  → ID: CAN-xxx
+  → anchor_path + hash
   ↓
 Hybrid Projection ✅
+  → 규칙 90% + LLM 10%
   ↓
 Projected (검색용, TTL) ✅
+  → ID: PRJ-xxx
+  → 온디맨드 기본
+  → 24시간 캐시
 ```
 
-**Week 2: 86% 완료!** 🎉
+**Week 2: 100% 완료!** 🎉
 
 ---
 
