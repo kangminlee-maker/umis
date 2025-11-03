@@ -125,7 +125,7 @@ Guardian 평가 시:
   // 간단한 Provenance
   evidence_count: 2,
   primary_example: "Amazon Prime",
-  verified_date: "2024-11-02"
+  verified_date: "2025-11-02"
 }]->(subscription)
 ```
 

@@ -370,11 +370,11 @@ example_output: |
       deliverables: 2
     quantifier:
       active: false
-      start_date: "2024-11-03"
+      start_date: "2025-11-03"
       deliverables: 2
     observer:
       active: false
-      start_date: "2024-11-03"
+      start_date: "2025-11-03"
       deliverables: 1
     explorer:
       active: false

@@ -229,7 +229,7 @@ example_entry: |
     file_path: "02_analysis/quantifier/market_sizing/market_sizing_piano.xlsx"
     file_type: "xlsx"
     file_size: "2.3 MB"
-    created_date: "2024-11-03"
+    created_date: "2025-11-03"
     status: "validated"
     validation_status:
       required_validators: ["validator", "observer"]

@@ -1,6 +1,6 @@
 # Week 3 Knowledge Graph - GitHub 배포 준비
 
-**날짜:** 2024-11-03  
+**날짜:** 2025-11-03  
 **버전:** v6.3.0-alpha + Week 3  
 **상태:** 배포 준비 완료 ✅
 
@@ -405,7 +405,7 @@ python scripts/test_hybrid_explorer.py
 ---
 
 **준비:** UMIS Team  
-**날짜:** 2024-11-03  
+**날짜:** 2025-11-03  
 **상태:** GitHub 배포 준비 완료 ✅
 
 

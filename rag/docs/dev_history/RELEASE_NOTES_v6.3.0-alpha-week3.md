@@ -1,6 +1,6 @@
 # Release Notes: v6.3.0-alpha-week3
 
-**Release Date:** 2024-11-03  
+**Release Date:** 2025-11-03  
 **Version:** v6.3.0-alpha-week3  
 **Branch:** alpha
 
@@ -344,7 +344,7 @@ For complete details, see [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
-**Released:** 2024-11-03  
+**Released:** 2025-11-03  
 **Version:** v6.3.0-alpha-week3  
 **Status:** Production Ready ✅
 

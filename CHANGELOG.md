@@ -5,7 +5,7 @@
 
 ---
 
-## v6.3.0-alpha-week3 (2024-11-03) - Knowledge Graph & Hybrid Search
+## v6.3.0-alpha-week3 (2025-11-03) - Knowledge Graph & Hybrid Search
 
 ### 🚀 주요 기능 추가
 
