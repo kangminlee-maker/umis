@@ -26,18 +26,38 @@ dev_history/
 │   ├── DUAL_INDEX_STATUS.md
 │   └── IMPLEMENTATION_SUMMARY.md
 │
-└── week_3_knowledge_graph/              # Week 3 (9개)
+├── week_3_knowledge_graph/              # Week 3 (9개)
+│   ├── README.md
+│   ├── WEEK3_QUICKSTART.md
+│   ├── WEEK3_DAY1_2_COMPLETE.md
+│   ├── WEEK3_DAY3_4_COMPLETE.md
+│   ├── WEEK3_COMPLETE.md
+│   ├── WEEK3_FINAL_COMPLETE.md          ⭐ 핵심
+│   ├── WEEK3_GITHUB_READY.md
+│   ├── WEEK3_SESSION_COMPLETE.md
+│   └── knowledge_graph_setup.md
+│
+├── week_4_guardian/                     # Week 4 (3개)
+│   ├── README.md
+│   ├── WEEK4_PLAN.md
+│   └── WEEK4_COMPLETE.md
+│
+├── dual_index_complete/                 # Dual-Index 100% (4개)
+│   ├── README.md
+│   ├── DUAL_INDEX_100_COMPLETE.md       ⭐ 핵심
+│   ├── DUAL_INDEX_IMPLEMENTATION_CHECK.md
+│   └── DUAL_INDEX_MISSING_ITEMS.md
+│
+└── phase_2_advanced/                    # Phase 2 고급 기능 (7개)
     ├── README.md
-    ├── WEEK3_QUICKSTART.md
-    ├── WEEK3_DAY1_2_COMPLETE.md
-    ├── WEEK3_DAY3_4_COMPLETE.md
-    ├── WEEK3_COMPLETE.md
-    ├── WEEK3_FINAL_COMPLETE.md          ⭐ 핵심
-    ├── WEEK3_GITHUB_READY.md
-    ├── WEEK3_SESSION_COMPLETE.md
-    └── knowledge_graph_setup.md
+    ├── PHASE2_COMPLETE.md               ⭐ 핵심
+    ├── ARCHITECTURE_FINAL_CHECK.md
+    ├── ARCHITECTURE_V3_COMPLETE.md
+    ├── ARCHITECTURE_V3_IMPLEMENTATION_STATUS.md
+    ├── IMPROVEMENTS_COMPLETE.md
+    └── IMPLEMENTATION_STATUS_CHECK.md
 
-총 21개 문서
+총 54개 문서
 ```
 
 ---
