@@ -1,5 +1,5 @@
 """
-UMIS Guardian Memory Module
+UMIS Guardian Module
 
 Guardian (Stewart)의 프로세스 감시 및 메모리 시스템
 
@@ -8,18 +8,24 @@ Guardian (Stewart)의 프로세스 감시 및 메모리 시스템
 - GoalMemory: 목표 정렬
 - RAEMemory: 평가 이력 (일관성 보장)
 - GuardianMemory: 통합 메모리 (QueryMemory + GoalMemory)
+- ThreeStageEvaluator: 3단계 품질 평가
+- GuardianMetaRAG: Meta-RAG Orchestrator
 """
 
 from .query_memory import QueryMemory, check_circular_query
 from .goal_memory import GoalMemory, check_goal_alignment
 from .rae_memory import RAEMemory
 from .memory import GuardianMemory, check_with_guardian
+from .three_stage_evaluator import ThreeStageEvaluator
+from .meta_rag import GuardianMetaRAG
 
 __all__ = [
     'QueryMemory',
     'GoalMemory',
     'RAEMemory',
     'GuardianMemory',
+    'ThreeStageEvaluator',
+    'GuardianMetaRAG',
     'check_circular_query',
     'check_goal_alignment',
     'check_with_guardian',
