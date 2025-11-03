@@ -6,7 +6,7 @@
 
 ## 🔍 현재 문제
 
-### v6.3.0-alpha인데 파일명은 v6.2
+### v7.0.0인데 파일명은 v6.2
 
 ```yaml
 현재:
@@ -16,7 +16,7 @@
   ...
 
 버전:
-  VERSION.txt: 6.3.0-alpha
+  VERSION.txt: 7.0.0
   
   → 불일치! ⚠️
 ```
@@ -28,12 +28,12 @@
 ### Option 1: 매번 파일명 변경
 
 ```yaml
-v6.2 → v6.3.0-alpha로 변경:
+v6.2 → v7.0.0로 변경:
   umis_guidelines.yaml
-  → umis_guidelines_v6.3.0-alpha.yaml
+  → umis_guidelines_v7.0.0.yaml
 
-v6.3.0-alpha → v6.3.0로 변경:
-  umis_guidelines_v6.3.0-alpha.yaml
+v7.0.0 → v6.3.0로 변경:
+  umis_guidelines_v7.0.0.yaml
   → umis_guidelines_v6.3.0.yaml
 
 v6.3.0 → v6.3.1로 변경:
@@ -65,11 +65,11 @@ v6.3.0 → v6.3.1로 변경:
   ...
 
 버전 표시:
-  VERSION.txt: 6.3.0-alpha
+  VERSION.txt: 7.0.0
   
   파일 내부:
     _meta:
-      version: "6.3.0-alpha"
+      version: "7.0.0"
 ```
 
 **장점:**
@@ -96,11 +96,11 @@ v6.3.0 → v6.3.1로 변경:
   ...
 
 버전 표시:
-  VERSION.txt: 6.3.0-alpha
+  VERSION.txt: 7.0.0
   
   파일 내부:
     _meta:
-      version: "6.3.0-alpha"
+      version: "7.0.0"
 
 변경 시점:
   v6.x → v7.0: 파일명 변경 (Breaking Change)
@@ -137,13 +137,13 @@ v6.3.0 → v6.3.1로 변경:
 
 버전 관리:
   1. VERSION.txt (루트)
-     6.3.0-alpha
+     7.0.0
   
   2. 파일 내부 _meta
-     version: "6.3.0-alpha"
+     version: "7.0.0"
   
   3. CHANGELOG.md
-     ## v6.3.0-alpha ...
+     ## v7.0.0 ...
 
 파일명 변경:
   Breaking Change 시에만 (v6 → v7)
@@ -153,7 +153,7 @@ v6.3.0 → v6.3.1로 변경:
 
 ## 🔄 현재 적용
 
-### v6.3.0-alpha 적용 방안
+### v7.0.0 적용 방안
 
 ```yaml
 Option A: v6.2 유지 (추천!)
@@ -164,13 +164,13 @@ Option A: v6.2 유지 (추천!)
     • 참조 유지
   
   버전 표시:
-    VERSION.txt: 6.3.0-alpha
-    _meta: 6.3.0-alpha
+    VERSION.txt: 7.0.0
+    _meta: 7.0.0
     
   → 안정적! ✅
 
-Option B: v6.3.0-alpha로 변경
-  파일명: 모두 v6.3.0-alpha로
+Option B: v7.0.0로 변경
+  파일명: 모두 v7.0.0로
   이유:
     • 명확성
   
@@ -206,7 +206,7 @@ Option B: v6.3.0-alpha로 변경
    • 대규모 수정 불필요
 
 4. 버전 추적:
-   • VERSION.txt: 6.3.0-alpha
+   • VERSION.txt: 7.0.0
    • CHANGELOG.md: 모든 변경
    • _meta: 파일 내부 버전
    
@@ -231,7 +231,7 @@ Option B: v6.3.0-alpha로 변경
 ```yaml
 현재:
   umis_guidelines.yaml ✅
-  VERSION.txt: 6.3.0-alpha ✅
+  VERSION.txt: 7.0.0 ✅
   
   → 이대로 유지!
 
@@ -247,6 +247,6 @@ Option B: v6.3.0-alpha로 변경
 **어떻게 하시겠어요?**
 
 A. v6.2 유지 (추천!) ✅  
-B. v6.3.0-alpha로 변경  
+B. v7.0.0로 변경  
 C. 다른 방식?
 

@@ -1,7 +1,7 @@
 # Week 3 Knowledge Graph - GitHub 배포 준비
 
 **날짜:** 2025-11-03  
-**버전:** v6.3.0-alpha + Week 3  
+**버전:** v7.0.0 + Week 3  
 **상태:** 배포 준비 완료 ✅
 
 ---
@@ -168,8 +168,8 @@ Hybrid Search Tests (4):
   • alpha (현재)
 
 태그:
-  • v6.3.0-alpha (기존)
-  • v6.3.0-alpha-week3 (신규 제안)
+  • v7.0.0 (기존)
+  • v7.0.0-week3 (신규 제안)
 
 배포:
   • GitHub: https://github.com/kangminlee-maker/umis
@@ -355,7 +355,7 @@ python scripts/test_hybrid_explorer.py
 ## 🎯 Release Notes 초안
 
 ```markdown
-# v6.3.0-alpha-week3
+# v7.0.0-week3
 
 ## 🚀 New Features
 

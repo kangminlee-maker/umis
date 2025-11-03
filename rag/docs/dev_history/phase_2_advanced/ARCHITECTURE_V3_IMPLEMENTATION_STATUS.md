@@ -2,7 +2,7 @@
 
 **최종 업데이트:** 2025-11-03  
 **기준:** FINAL_DECISION.md 문서들  
-**버전:** v6.3.0-alpha + Week 3 + Week 4
+**버전:** v7.0.0 + Week 3 + Week 4
 
 ---
 

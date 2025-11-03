@@ -437,7 +437,7 @@ Projected:
 
 _meta:
   version: "1.0"
-  umis_version: "6.3.0-alpha"
+  umis_version: "7.0.0"
   purpose: "모든 RAG Layer 통합 스키마"
   last_updated: "2025-11-02"
 

@@ -25,7 +25,7 @@ rag/docs/architecture/umis_guidelines_v6.2_rag_enabled.yaml (138줄)
   • 사용 가이드
   • 실제 guidelines는 참조만
 
-v6.3.0-alpha:
+v7.0.0:
   .cursorrules로 대체됨!
   
   .cursorrules:

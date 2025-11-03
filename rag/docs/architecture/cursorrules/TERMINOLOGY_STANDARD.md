@@ -42,7 +42,7 @@ umis.yaml에 정의 없음!
 # umis.yaml 최상단
 
 _terminology:
-  version: "6.3.0-alpha"
+  version: "7.0.0"
   purpose: "UMIS 표준 용어 정의"
   
   agent_actions:

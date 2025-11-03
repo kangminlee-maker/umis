@@ -4,7 +4,7 @@
 #
 # 날짜: 2025-11-02
 # 버전: 1.0
-# UMIS: 6.3.0-alpha
+# UMIS: 7.0.0
 # Architecture: v3.0
 # 목적: 모든 RAG Layer 통합 스키마 정의
 #
@@ -15,7 +15,7 @@
 _meta:
   version: "1.0"
   architecture_version: "3.0"
-  umis_version: "6.3.0-alpha"
+  umis_version: "7.0.0"
   purpose: "모든 RAG Layer 통합 스키마"
   expert_feedback: "반영 완료 (P0 7개)"
   last_updated: "2025-11-02"
@@ -158,7 +158,7 @@ core_fields:
     required: true
     pattern: "\\d+\\.\\d+\\.\\d+(-alpha|-beta|-rc\\d+)?"
     examples:
-      - "6.3.0-alpha"
+      - "7.0.0"
       - "7.0.0"
     used_by: [all]
   

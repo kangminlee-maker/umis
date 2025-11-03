@@ -43,7 +43,7 @@ Status: All pushed successfully
 ### Week 3 + α (3개)
 
 ```
-9. 885208b docs: Add Release Notes for v6.3.0-alpha-week3
+9. 885208b docs: Add Release Notes for v7.0.0-week3
 10. 0e58130 feat(learning): Implement Learning Loop
 11. d28a072 feat(failsafe): Implement Fail-Safe Tier 2 & 3
 ```

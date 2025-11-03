@@ -164,7 +164,7 @@ core_metadata:
     type: string
     required: true
     description: "데이터 버전"
-    example: "6.3.0-alpha"
+    example: "7.0.0"
     used_by: [all]
   
   # === Quality ===
@@ -239,7 +239,7 @@ canonical_metadata:
 예시:
   source_id: "baemin_case"
   domain: "case_study"
-  version: "6.3.0-alpha"
+  version: "7.0.0"
   content_type: "normalized_full"
   sections:
     observer: {start: 0, end: 150}
@@ -425,7 +425,7 @@ goal_memory_metadata:
 
 _meta:
   version: "1.0"
-  umis_version: "6.3.0-alpha"
+  umis_version: "7.0.0"
   purpose: "모든 RAG Layer 통합 스키마"
 
 # === Core Fields (모든 Layer) ===
@@ -858,7 +858,7 @@ Week 4:
 올바른 순서:
 
 Week 0 (준비):
-  ✅ v6.3.0-alpha (현재)
+  ✅ v7.0.0 (현재)
 
 Week 1 (기반):
   🔴 Schema Registry ⭐ 최우선!

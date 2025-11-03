@@ -138,7 +138,7 @@ umis/
 
 umis.yaml:
   # 메인 파일 (100줄)
-  version: "6.3.0-alpha"
+  version: "7.0.0"
   
   includes:
     - shared/system.yaml
@@ -297,7 +297,7 @@ umis_ai_guide.yaml:
      Claude Desktop, ChatGPT 등?
      
      하지만:
-       v6.3.0-alpha = Cursor 전용!
+       v7.0.0 = Cursor 전용!
        → 일반 AI 사용 안 함
        → 문제 없음! ✅
 ```
@@ -361,7 +361,7 @@ Option D: umis.yaml (모듈화 시)
   umis/umis.yaml (메인)
   
   간결:
-    # UMIS v6.3.0-alpha
+    # UMIS v7.0.0
     
     includes:
       - core/system.yaml

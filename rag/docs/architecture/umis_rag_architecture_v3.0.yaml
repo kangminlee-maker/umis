@@ -14,7 +14,7 @@ _meta:
   base_version: "2.0"
   improvements: 16  # 11개 P0 + 1개 P1
   status: "design_complete"
-  umis_version: "6.3.0-alpha"
+  umis_version: "7.0.0"
   expert_feedback: "반영 완료"
 
 # ========================================

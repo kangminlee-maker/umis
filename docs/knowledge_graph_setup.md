@@ -1,6 +1,6 @@
 # UMIS Knowledge Graph 설정 가이드
 
-**버전:** v6.3.0-alpha  
+**버전:** v7.0.0  
 **날짜:** 2025-11-03  
 **Week 3 Day 1-2 완료**
 

@@ -47,7 +47,7 @@ After (Tool Registry + Meta-RAG):
 # ========================================
 
 _meta:
-  version: "6.3.0-alpha"
+  version: "7.0.0"
   total_tools: 30
   indexed_by: "Guardian Meta-RAG"
 
