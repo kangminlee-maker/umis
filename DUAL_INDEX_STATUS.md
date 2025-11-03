@@ -1,80 +1,71 @@
 # Dual-Index 구현 현황
 
 **날짜:** 2025-11-02  
-**진행:** 2/7 단계
+**진행:** 6/7 단계 (86%)  
+**상태:** 핵심 완성
 
 ---
 
-## ✅ 완료 (2/7)
+## ✅ 완료 (6/7)
 
 ```yaml
 Step 1: SchemaRegistry 로더 ✅
-  • umis_rag/core/schema.py
-  • schema_registry.yaml 로드
-  • 필드 검증
-  • ID 생성
+  • umis_rag/core/schema.py (119줄)
+  • schema 로드, 검증, ID 생성
 
 Step 2: projection_rules.yaml ✅
-  • 필드 → Agent 매핑 (15개)
-  • 학습 설정
-  • 90% 커버리지 목표
+  • 15개 필드 → Agent 매핑
+  • 학습 설정 (3회 → 규칙화)
+
+Step 3: build_canonical_index.py ✅
+  • Canonical Index 구축
+  • ID: CAN-xxx
+  • anchor_path + content_hash
+
+Step 4: HybridProjector ✅
+  • 규칙 90% + LLM 10%
+  • LLM 로그 저장
+
+Step 5: build_projected_index.py ✅
+  • Projected Index 구축
+  • TTL + 온디맨드
+  • ID: PRJ-xxx
+
+Step 6: Contract Tests ✅
+  • schema 준수 검증
+  • Canonical ↔ Projected 무손실
 ```
 
 ---
 
-## 🔄 다음 단계 (5/7)
+## 🔄 남은 작업 (1/7)
 
 ```yaml
-Step 3: Canonical Index 빌더
-  → scripts/build_canonical_index.py
-  
-Step 4: Hybrid Projector
-  → umis_rag/projection/hybrid_projector.py
-  
-Step 5: Projected Index 빌더
-  → scripts/build_projected_index.py
-  
-Step 6: Contract Tests
-  → tests/test_schema_contract.py
-  
 Step 7: Explorer 통합
-  → umis_rag/agents/explorer.py 업데이트
+  • 현재: explorer_knowledge_base 사용
+  • 목표: projected_index 사용
+  • 상태: 선택사항 (하위 호환)
+
+실제 사용 시:
+  새 스크립트 작성 또는
+  Explorer 인스턴스 생성 시 collection 지정
 ```
 
 ---
 
-## 🚀 Cursor로 완성
+## 🎯 핵심 완성!
 
-**Cursor (Cmd+I)에게:**
-
+**Dual-Index 동작:**
 ```
-"Dual-Index 구현을 계속해줘.
-
-완료:
-  ✅ SchemaRegistry 로더
-  ✅ projection_rules.yaml
-
-다음:
-  Step 3: Canonical Index 빌더
-    - data/raw/*.yaml 읽기
-    - Canonical 청크 생성
-    - ID: CAN-xxx
-    - anchor_path + content_hash
-    - Lineage
-    - Chroma에 저장
-
-schema_registry.yaml 100% 준수!"
+Canonical (업데이트용) ✅
+  ↓
+Hybrid Projection ✅
+  ↓
+Projected (검색용, TTL) ✅
 ```
 
-→ Cursor가 자동으로:
-- scripts/build_canonical_index.py 생성
-- 로직 구현
-- 테스트
-- 실행
-
-**대화만으로 구현!** ✨
+**Week 2: 86% 완료!** 🎉
 
 ---
 
-**현재 상태:** 기반 완성 (2/7)  
-**다음:** Cursor로 나머지 구현
+**다음:** Week 3 (Knowledge Graph)
