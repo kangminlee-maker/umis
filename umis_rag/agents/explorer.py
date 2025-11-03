@@ -118,8 +118,9 @@ class ExplorerRAG:
     def search_patterns(
         self, 
         trigger_signals: str | List[str],
-        top_k: int = 3
-    ) -> List[tuple[Document, float]]:
+        top_k: int = 3,
+        use_graph: bool = True  # v7.1.0: 기본값 True (Hybrid Search)
+    ) -> List[tuple[Document, float]] | HybridResult:
         """
         v3.0: Projected Index 지원
         - use_projected=True → agent_view 필터 자동
@@ -154,6 +155,14 @@ class ExplorerRAG:
             query = trigger_signals
         
         logger.info(f"  트리거: {query[:100]}...")
+        
+        # v7.1.0: Hybrid Search 우선 (Knowledge Graph)
+        if use_graph and self.hybrid_search:
+            logger.info("  🔍 Hybrid Search (Vector + Graph)")
+            return self.search_patterns_with_graph(query, top_k=top_k)
+        
+        # Fallback: Vector만
+        logger.info("  🔍 Vector Search")
         
         # 패턴 개요만 검색 (트리거 시그널 포함된 청크)
         results = self.vectorstore.similarity_search_with_score(

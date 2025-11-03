@@ -1,0 +1,2191 @@
+# ========================================
+# UMIS v7.1.0 구현 설계도
+# ========================================
+#
+# 작성일: 2025-11-03
+# 대상 버전: v7.1.0 ~ v7.3.0
+# 3대 핵심 프로젝트 상세 구현 설계
+#
+# ========================================
+
+_meta:
+  version: "7.1.0"
+  created: "2025-11-03"
+  projects: 3
+  total_duration: "4개월"
+
+# ========================================
+# 프로젝트 1: Excel 자동 생성 시스템
+# ========================================
+
+project_1_excel_generation:
+  
+  name: "Deliverable Excel 자동 생성"
+  priority: "P1 (높음)"
+  duration: "6주"
+  target_version: "v7.1.0 ~ v7.2.0"
+  
+  goal:
+    primary: "Bill의 market_sizing.xlsx를 완벽한 함수로 자동 생성"
+    success_criteria:
+      - "9개 시트 모두 생성"
+      - "모든 계산이 Excel 함수로 구현"
+      - "Named Range로 참조 안정성 보장"
+      - "실제 Excel에서 작동 검증"
+      - "±30% 수렴 자동 확인"
+  
+  # ========================================
+  # Phase 1: 함수 엔진 (2주)
+  # ========================================
+  
+  phase_1_formula_engine:
+    duration: "2주"
+    files:
+      - "umis_rag/deliverables/excel/formula_engine.py (500줄)"
+      - "umis_rag/deliverables/excel/named_range_manager.py (200줄)"
+      - "umis_rag/deliverables/excel/formula_validator.py (300줄)"
+    
+    # --- Week 1: 핵심 엔진 ---
+    week_1_core_engine:
+      
+      file: "umis_rag/deliverables/excel/formula_engine.py"
+      
+      classes:
+        
+        FormulaEngine:
+          purpose: "Excel 함수 생성 및 관리"
+          
+          methods:
+            
+            __init__:
+              params:
+                - "workbook: Workbook"
+              init:
+                - "self.wb = workbook"
+                - "self.named_ranges = {}"
+                - "self.formula_cache = {}"
+            
+            define_named_range:
+              purpose: "Named Range 정의 (참조 안정성)"
+              params:
+                - "name: str  # 'ASM_001'"
+                - "sheet: str  # 'Assumptions'"
+                - "cell: str  # 'D5'"
+              
+              implementation: |
+                # openpyxl Named Range
+                from openpyxl.workbook.defined_name import DefinedName
+                
+                defn = DefinedName(
+                    name=name,
+                    attr_text=f"'{sheet}'!${cell}"
+                )
+                self.wb.defined_names.append(defn)
+                self.named_ranges[name] = (sheet, cell)
+              
+              validation:
+                - "이름 중복 체크"
+                - "셀 범위 유효성"
+              
+              return: "None"
+            
+            create_assumption_ref:
+              purpose: "가정 참조 함수 생성"
+              params:
+                - "asm_id: str  # 'ASM_001'"
+              
+              implementation: |
+                if asm_id not in self.named_ranges:
+                    raise ValueError(f"{asm_id} not defined")
+                
+                return f"={asm_id}"
+              
+              example:
+                input: "ASM_001"
+                output: "=ASM_001"
+                excel_result: "Assumptions!D5 값 참조"
+            
+            create_multiplication_chain:
+              purpose: "연쇄 곱셈 함수"
+              params:
+                - "cells: list[str]  # ['B2', 'C2', 'D2']"
+              
+              implementation: |
+                if not cells:
+                    return "=0"
+                
+                return "=" + "*".join(cells)
+              
+              example:
+                input: "['A2', 'B2', 'C2']"
+                output: "=A2*B2*C2"
+            
+            create_sum:
+              purpose: "합계 함수"
+              params:
+                - "range_ref: str  # 'B5:B10'"
+              
+              implementation: |
+                return f"=SUM({range_ref})"
+              
+              example:
+                input: "B5:B10"
+                output: "=SUM(B5:B10)"
+            
+            create_average:
+              purpose: "평균 함수"
+              implementation: |
+                return f"=AVERAGE({range_ref})"
+            
+            create_stdev:
+              purpose: "표준편차 함수"
+              implementation: |
+                return f"=STDEV({range_ref})"
+            
+            create_convergence_formulas:
+              purpose: "수렴 분석 함수들"
+              params:
+                - "method_cells: list[str]  # ['B5', 'B6', 'B7', 'B8']"
+              
+              implementation: |
+                cells_ref = ",".join(method_cells)
+                
+                return {
+                    'average': f"=AVERAGE({cells_ref})",
+                    'stdev': f"=STDEV({cells_ref})",
+                    'cv': f"=STDEV({cells_ref})/AVERAGE({cells_ref})*100",
+                    'max_min_ratio': f"=MAX({cells_ref})/MIN({cells_ref})",
+                    'convergence_check': f'=IF(MAX({cells_ref})/MIN({cells_ref})<=1.3, "✅ 통과", "❌ 재검토")'
+                }
+              
+              return: "dict[str, str]"
+            
+            create_cross_sheet_ref:
+              purpose: "시트 간 참조"
+              params:
+                - "sheet: str"
+                - "cell: str"
+              
+              implementation: |
+                # 시트명에 공백 있으면 작은따옴표
+                if ' ' in sheet:
+                    return f"='{sheet}'!{cell}"
+                return f"={sheet}!{cell}"
+              
+              example:
+                input: "('Method_1_TopDown', 'F10')"
+                output: "=Method_1_TopDown!F10"
+            
+            validate_formula:
+              purpose: "함수 유효성 검증"
+              params:
+                - "formula: str"
+              
+              checks:
+                - "문법 체크 (= 시작, 괄호 매칭)"
+                - "순환 참조 체크"
+                - "참조 범위 유효성"
+                - "Named Range 존재 확인"
+              
+              implementation: |
+                # 1. 기본 문법
+                if not formula.startswith('='):
+                    raise ValueError("함수는 =로 시작")
+                
+                # 2. 괄호 매칭
+                if formula.count('(') != formula.count(')'):
+                    raise ValueError("괄호 불일치")
+                
+                # 3. Named Range 확인
+                for name in self.named_ranges:
+                    if name in formula and name not in self.named_ranges:
+                        raise ValueError(f"{name} not defined")
+                
+                return True
+    
+    # --- Week 2: 검증 시스템 ---
+    week_2_validation:
+      
+      file: "umis_rag/deliverables/excel/formula_validator.py"
+      
+      classes:
+        
+        FormulaValidator:
+          purpose: "함수 정확성 검증 (실제 Excel 필요)"
+          
+          methods:
+            
+            validate_workbook:
+              purpose: "전체 워크북 검증"
+              
+              checks:
+                
+                named_ranges_check:
+                  what: "모든 Named Range 정의됨"
+                  how: |
+                    for name in required_ranges:
+                        if name not in wb.defined_names:
+                            errors.append(f"{name} missing")
+                
+                formula_syntax_check:
+                  what: "모든 함수 문법 정확"
+                  how: |
+                    for sheet in wb.worksheets:
+                        for row in sheet.iter_rows():
+                            for cell in row:
+                                if isinstance(cell.value, str) and cell.value.startswith('='):
+                                    validate_formula_syntax(cell.value)
+                
+                circular_reference_check:
+                  what: "순환 참조 없음"
+                  how: |
+                    dependency_graph = build_dependency_graph(wb)
+                    if has_cycle(dependency_graph):
+                        errors.append("순환 참조 발견")
+                
+                cross_sheet_check:
+                  what: "시트 간 참조 유효"
+                  how: |
+                    for ref in cross_sheet_refs:
+                        if ref.sheet not in wb.sheetnames:
+                            errors.append(f"시트 {ref.sheet} 없음")
+              
+              return: "list[ValidationError]"
+            
+            test_in_excel:
+              purpose: "실제 Excel에서 작동 테스트"
+              note: "가장 중요! openpyxl은 계산 안함"
+              
+              process:
+                step_1: "Excel 파일 저장"
+                step_2: "Excel에서 열기 (수동 또는 win32com)"
+                step_3: "계산 결과 확인"
+                step_4: "예상 값과 비교"
+              
+              example: |
+                # 저장
+                wb.save('test.xlsx')
+                
+                # Excel에서 열기 (Windows)
+                import win32com.client
+                excel = win32com.client.Dispatch("Excel.Application")
+                wb_excel = excel.Workbooks.Open(os.path.abspath('test.xlsx'))
+                
+                # 값 확인
+                actual = wb_excel.Sheets('Convergence').Range('B9').Value
+                expected = 270  # 예상 평균
+                
+                assert abs(actual - expected) < 1, "계산 오류"
+              
+              platforms:
+                windows: "win32com (완전 지원)"
+                mac: "수동 확인 (자동화 어려움)"
+                linux: "LibreOffice --headless"
+  
+  # ========================================
+  # Phase 2: 시트 생성기 (2주)
+  # ========================================
+  
+  phase_2_sheet_builders:
+    duration: "2주"
+    files:
+      - "umis_rag/deliverables/excel/assumptions_builder.py"
+      - "umis_rag/deliverables/excel/method_builders.py"
+      - "umis_rag/deliverables/excel/convergence_builder.py"
+    
+    # --- Week 3: 기본 시트 ---
+    week_3_basic_sheets:
+      
+      assumptions_builder:
+        file: "assumptions_builder.py"
+        
+        class AssumptionsSheetBuilder:
+          
+          create_sheet:
+            input:
+              assumptions:
+                - id: "ASM_001"
+                  category: "인구"
+                  description: "타겟 고객 수"
+                  value: 10000
+                  unit: "명"
+                  data_type: "직접데이터"  # or "추정치"
+                  source: "SRC_20241031_001"  # or "EST_001"
+                  confidence: "High"
+                  notes: "통계청 공식"
+            
+            process:
+              step_1_create_sheet:
+                code: |
+                  ws = wb.create_sheet("Assumptions", 0)
+              
+              step_2_headers:
+                code: |
+                  headers = ["ID", "Category", "Description", "Value", 
+                            "Unit", "Data_Type", "Source", "Confidence", "Notes"]
+                  ws.append(headers)
+                  
+                  # 헤더 서식
+                  for cell in ws[1]:
+                      cell.font = Font(bold=True)
+                      cell.fill = PatternFill(start_color="4472C4", fill_type="solid")
+              
+              step_3_data_rows:
+                code: |
+                  for i, asm in enumerate(assumptions, start=2):
+                      ws.append([
+                          asm['id'],
+                          asm['category'],
+                          asm['description'],
+                          asm['value'],
+                          asm['unit'],
+                          asm['data_type'],
+                          asm['source'],
+                          asm['confidence'],
+                          asm['notes']
+                      ])
+                      
+                      # Named Range 정의 (중요!)
+                      formula_engine.define_named_range(
+                          asm['id'],  # "ASM_001"
+                          "Assumptions",
+                          f"D{i}"  # Value 컬럼
+                      )
+                      
+                      # 서식
+                      ws[f'D{i}'].fill = INPUT_FILL  # 입력 셀
+                      ws[f'D{i}'].number_format = '#,##0'
+                      
+                      # 코멘트
+                      if asm['data_type'] == '추정치':
+                          comment = Comment(
+                              f"추정 논리: {asm['source']} 참조\n"
+                              f"Estimation_Details 시트 확인",
+                              "Bill"
+                          )
+                          ws[f'A{i}'].comment = comment
+              
+              step_4_protection:
+                code: |
+                  # 시트 보호
+                  ws.protection.sheet = True
+                  ws.protection.password = None
+                  
+                  # 입력 셀만 편집 가능
+                  for row in ws.iter_rows(min_row=2):
+                      row[3].protection = Protection(locked=False)  # Value 컬럼
+      
+      method_1_topdown_builder:
+        file: "method_builders.py"
+        
+        class Method1TopDownBuilder:
+          
+          create_sheet:
+            input:
+              tam:
+                value: 1000000000000  # 1조
+                definition: "전체 악기 시장"
+                source: "ASM_001"
+              
+              narrowing_steps:
+                - dimension: "지역"
+                  ratio_source: "ASM_002"
+                  description: "한국 비중 15%"
+                
+                - dimension: "제품"
+                  ratio_source: "ASM_003"
+                  description: "피아노만"
+            
+            process:
+              step_1_layout:
+                design: |
+                  Row 1: 차원 이름 (TAM, 지역, 제품, ...)
+                  Row 2: 비율/계수
+                  Row 3: 계산 결과
+                  Row 4: 출처 (코멘트)
+              
+              step_2_tam_column:
+                code: |
+                  ws['A1'] = "TAM"
+                  ws['A2'] = formula_engine.create_assumption_ref(tam['source'])
+                  ws['A3'] = f"={tam['value']}"  # 또는 참조
+                  
+                  # 코멘트
+                  ws['A3'].comment = Comment(f"출처: {tam['source']}", "Bill")
+              
+              step_3_narrowing_columns:
+                code: |
+                  col = ord('B')
+                  prev_result = "A3"
+                  
+                  for step in narrowing_steps:
+                      col_letter = chr(col)
+                      
+                      # 차원 이름
+                      ws[f'{col_letter}1'] = step['dimension']
+                      
+                      # 비율 (Named Range)
+                      ws[f'{col_letter}2'] = formula_engine.create_assumption_ref(
+                          step['ratio_source']
+                      )
+                      
+                      # 계산: 이전 × 비율
+                      ws[f'{col_letter}3'] = f"={prev_result}*{col_letter}2"
+                      
+                      # 코멘트
+                      ws[f'{col_letter}3'].comment = Comment(
+                          f"{step['description']}\n출처: {step['ratio_source']}",
+                          "Bill"
+                      )
+                      
+                      # 서식
+                      ws[f'{col_letter}3'].fill = CALC_FILL
+                      ws[f'{col_letter}3'].number_format = '#,##0'
+                      
+                      prev_result = f"{col_letter}3"
+                      col += 1
+                  
+                  # 최종 SAM
+                  final_col = chr(col - 1)
+                  ws['SAM'] = f"={final_col}3"
+                  ws['SAM'].fill = RESULT_FILL
+              
+              step_4_validation:
+                code: |
+                  # 논리적 상한/하한 테스트
+                  ws['A10'] = "검증"
+                  ws['A11'] = "TAM > SAM?"
+                  ws['B11'] = f'=IF(A3>SAM, "✅", "❌")'
+                  
+                  ws['A12'] = "SAM > 0?"
+                  ws['B12'] = f'=IF(SAM>0, "✅", "❌")'
+      
+      convergence_builder:
+        
+        class ConvergenceSheetBuilder:
+          
+          create_sheet:
+            input:
+              method_sheets:
+                - "Method_1_TopDown"
+                - "Method_2_BottomUp"
+                - "Method_3_Proxy"
+                - "Method_4_CompetitorRevenue"
+              
+              sam_cell: "SAM"  # 각 시트의 최종 SAM 셀
+            
+            process:
+              step_1_method_results:
+                code: |
+                  ws = wb.create_sheet("Convergence_Analysis")
+                  
+                  # 헤더
+                  ws['A1'] = "Method"
+                  ws['B1'] = "SAM (억원)"
+                  ws['C1'] = "차이 (%)"
+                  
+                  # 각 Method 결과
+                  for i, method in enumerate(method_sheets, start=2):
+                      ws[f'A{i}'] = method
+                      
+                      # SAM 참조
+                      ws[f'B{i}'] = formula_engine.create_cross_sheet_ref(
+                          method,
+                          sam_cell
+                      )
+                      
+                      # 평균 대비 차이 (나중에 계산)
+                      ws[f'C{i}'] = f"=(B{i}-B$6)/B$6*100"
+              
+              step_2_statistics:
+                code: |
+                  # 평균
+                  ws['A6'] = "평균"
+                  ws['B6'] = formula_engine.create_average("B2:B5")
+                  ws['B6'].fill = RESULT_FILL
+                  
+                  # 표준편차
+                  ws['A7'] = "표준편차"
+                  ws['B7'] = formula_engine.create_stdev("B2:B5")
+                  
+                  # 변동계수
+                  ws['A8'] = "변동계수 (CV%)"
+                  ws['B8'] = "=B7/B6*100"
+                  
+                  # Max/Min 비율
+                  ws['A9'] = "Max/Min 비율"
+                  ws['B9'] = "=MAX(B2:B5)/MIN(B2:B5)"
+              
+              step_3_convergence_check:
+                code: |
+                  # ±30% 수렴 확인
+                  ws['A10'] = "±30% 수렴?"
+                  ws['B10'] = '=IF(B9<=1.3, "✅ 통과", "❌ 재검토 필요")'
+                  
+                  # 조건부 서식
+                  from openpyxl.formatting.rule import CellIsRule
+                  
+                  green_fill = PatternFill(start_color="C6EFCE", fill_type="solid")
+                  red_fill = PatternFill(start_color="FFC7CE", fill_type="solid")
+                  
+                  ws.conditional_formatting.add(
+                      'B10',
+                      CellIsRule(
+                          operator='containsText',
+                          formula=['✅'],
+                          fill=green_fill
+                      )
+                  )
+  
+  # ========================================
+  # Phase 3: 통합 생성기 (2주)
+  # ========================================
+  
+  phase_3_integrated_generator:
+    duration: "2주"
+    file: "umis_rag/deliverables/excel/market_sizing_generator.py"
+    
+    # --- Week 5: 통합 ---
+    week_5_integration:
+      
+      class MarketSizingWorkbookGenerator:
+        
+        purpose: "전체 워크북 생성 오케스트레이션"
+        
+        generate:
+          signature: |
+            def generate(
+                market_name: str,
+                assumptions: list[dict],
+                tam: dict,
+                segments: list[dict],
+                proxy_data: dict,
+                competitors: list[dict],
+                output_dir: Path
+            ) -> Path
+          
+          process:
+            step_1_init:
+              code: |
+                wb = Workbook()
+                formula_engine = FormulaEngine(wb)
+                
+                # 기본 시트 제거
+                wb.remove(wb.active)
+            
+            step_2_assumptions:
+              code: |
+                builder = AssumptionsSheetBuilder(wb, formula_engine)
+                builder.create_sheet(assumptions)
+                
+                # Named Range 정의됨
+                # ASM_001, ASM_002, ... 모두 사용 가능
+            
+            step_3_estimation_details:
+              code: |
+                # 추정치가 있으면 Estimation_Details 시트 생성
+                estimations = [a for a in assumptions if a['data_type'] == '추정치']
+                
+                if estimations:
+                    est_builder = EstimationDetailsBuilder(wb)
+                    est_builder.create_sheet(estimations)
+            
+            step_4_methods:
+              code: |
+                # Method 1: Top-Down
+                method1 = Method1TopDownBuilder(wb, formula_engine)
+                method1.create_sheet(tam, narrowing_steps)
+                
+                # Method 2: Bottom-Up
+                method2 = Method2BottomUpBuilder(wb, formula_engine)
+                method2.create_sheet(segments)
+                
+                # Method 3: Proxy
+                method3 = Method3ProxyBuilder(wb, formula_engine)
+                method3.create_sheet(proxy_data)
+                
+                # Method 4: Competitor
+                method4 = Method4CompetitorBuilder(wb, formula_engine)
+                method4.create_sheet(competitors)
+            
+            step_5_convergence:
+              code: |
+                conv_builder = ConvergenceSheetBuilder(wb, formula_engine)
+                conv_builder.create_sheet(
+                    method_sheets=[
+                        'Method_1_TopDown',
+                        'Method_2_BottomUp',
+                        'Method_3_Proxy',
+                        'Method_4_CompetitorRevenue'
+                    ],
+                    sam_cell='SAM'
+                )
+            
+            step_6_scenarios:
+              code: |
+                scenario_builder = ScenariosBuilder(wb, formula_engine)
+                scenario_builder.create_sheet(['Best', 'Base', 'Worst'])
+            
+            step_7_validation:
+              code: |
+                validation_builder = ValidationLogBuilder(wb)
+                validation_builder.create_sheet()
+            
+            step_8_save:
+              code: |
+                # Excel 저장
+                filename = f"market_sizing_{market_name}.xlsx"
+                filepath = output_dir / filename
+                wb.save(filepath)
+                
+                print(f"✅ Excel 생성: {filepath}")
+                print("📋 다음: Excel에서 열어서 함수 작동 확인")
+                print("📋 다음: PDF로 저장 (백업)")
+                
+                return filepath
+        
+        usage_example: |
+          from umis_rag.deliverables.excel import MarketSizingWorkbookGenerator
+          
+          generator = MarketSizingWorkbookGenerator()
+          
+          excel_path = generator.generate(
+              market_name="piano_subscription",
+              assumptions=[...],
+              tam={...},
+              segments=[...],
+              proxy_data={...},
+              competitors=[...],
+              output_dir=Path("projects/20251103_piano/02_analysis/quantifier")
+          )
+          
+          # Excel 생성됨!
+          # → Excel에서 열어서 검증
+          # → 모든 함수 작동 확인
+    
+    # --- Week 6: 테스트 ---
+    week_6_testing:
+      
+      test_strategy:
+        
+        unit_tests:
+          file: "tests/test_excel_formulas.py"
+          
+          tests:
+            - test_named_range_creation
+            - test_formula_generation
+            - test_cross_sheet_references
+            - test_convergence_formulas
+        
+        integration_tests:
+          file: "tests/test_excel_generation.py"
+          
+          tests:
+            - test_full_workbook_generation
+            - test_9_sheets_created
+            - test_all_formulas_present
+        
+        excel_validation_tests:
+          manual: true
+          process:
+            1: "테스트 데이터로 Excel 생성"
+            2: "Excel에서 열기"
+            3: "각 시트 함수 작동 확인"
+            4: "Convergence ±30% 확인"
+            5: "수동/자동 계산 일치 확인"
+          
+          checklist:
+            - "[ ] Assumptions: Named Range 모두 정의됨"
+            - "[ ] Method 1-4: 계산 정확"
+            - "[ ] Convergence: 통계 함수 작동"
+            - "[ ] 색상 코딩 정확"
+            - "[ ] 셀 코멘트 존재"
+            - "[ ] 시트 보호 작동"
+  
+  # ========================================
+  # 핵심 고려사항
+  # ========================================
+  
+  critical_considerations:
+    
+    named_range_strategy:
+      why: "행 추가/삭제 시 참조 안깨짐"
+      
+      implementation:
+        all_assumptions: "Named Range로"
+        all_intermediate_results: "셀 참조로 (변동 가능)"
+        final_results: "Named Range로"
+      
+      example: |
+        # Good
+        ws['B5'] = "=ASM_001*ASM_002"  # Named Range
+        
+        # Bad
+        ws['B5'] = "=D5*D6"  # 행 추가 시 깨짐
+    
+    formula_validation:
+      why: "openpyxl은 계산 안함, Excel에서 검증 필수"
+      
+      process:
+        1: "openpyxl로 생성"
+        2: "문법 검증 (validator)"
+        3: "Excel에서 열기"
+        4: "계산 결과 확인"
+        5: "예상 값과 비교"
+      
+      platforms:
+        windows: "win32com 사용 (자동)"
+        mac: "수동 확인 (안내 메시지)"
+        linux: "LibreOffice --headless"
+    
+    error_handling:
+      div_by_zero:
+        formula: '=IFERROR(A1/B1, "N/A")'
+        why: "0으로 나누기 방지"
+      
+      missing_data:
+        formula: '=IF(ISBLANK(A1), "데이터 없음", A1*B1)'
+        why: "빈 셀 처리"
+    
+    performance:
+      calculation_mode:
+        set: "wb.calculation.calcMode = 'auto'"
+        why: "파일 열 때 자동 계산"
+      
+      formula_caching:
+        avoid: "과도한 중복 계산"
+        use: "중간 결과 셀로 저장"
+
+# ========================================
+# 프로젝트 2: System RAG (Key-based)
+# ========================================
+
+project_2_system_rag:
+  
+  name: "System RAG (Key-based 정확 검색)"
+  priority: "P0 (최우선)"
+  duration: "4주"
+  target_version: "v7.1.0"
+  
+  goal:
+    primary: "AI가 5분 내 UMIS 전체 파악 + 최적 방법 판단"
+    context_saving: "평균 77% (4,200줄) 절약"
+    
+    success_criteria:
+      - "umis_core.yaml (INDEX) < 1,000줄"
+      - "Key로 유사도 1.0 정확 검색"
+      - "컨텍스트 70% 이상 절약"
+      - "AI가 모든 기능 누락 없이 활용"
+  
+  # ========================================
+  # Phase 1: Tool Registry (1주)
+  # ========================================
+  
+  phase_1_tool_registry:
+    duration: "1주"
+    file: "config/tool_registry.yaml"
+    
+    # --- Day 1-2: 도구 식별 ---
+    day_1_2_tool_identification:
+      
+      process:
+        step_1_analyze_umis:
+          action: "umis.yaml (5,509줄) 전체 분석"
+          
+          identify:
+            - "Agent별 주요 기능"
+            - "Framework별 프로세스"
+            - "Workflow별 단계"
+          
+          output: "25-30개 도구 목록"
+        
+        step_2_categorize:
+          categories:
+            
+            agent_tools:
+              - "explorer:pattern_search (RAG 패턴 검색)"
+              - "explorer:7_step_process (기회 발굴)"
+              - "explorer:validation_protocol (검증)"
+              - "quantifier:sam_4methods (SAM 계산)"
+              - "quantifier:growth_analysis (성장 분석)"
+              - "observer:market_structure (구조 분석)"
+              - "observer:value_chain (가치사슬)"
+              - "validator:data_definition (정의 검증)"
+              - "validator:creative_sourcing (창의적 소싱)"
+              - "guardian:progress_monitoring (진행 모니터링)"
+            
+            framework_tools:
+              - "framework:13_dimensions (시장 정의)"
+              - "framework:7_powers (경쟁 우위)"
+              - "framework:discovery_sprint (Discovery)"
+              - "framework:counter_positioning (1등 추월)"
+            
+            workflow_tools:
+              - "workflow:comprehensive_study (2-4주)"
+              - "workflow:rapid_assessment (1-3일)"
+              - "workflow:quick_insights (1-2시간)"
+              - "workflow:discovery_sprint (1-3일)"
+          
+          total: "~25개 도구"
+    
+    # --- Day 3-5: Tool Registry 작성 ---
+    day_3_5_registry_creation:
+      
+      structure:
+        
+        tool_template: |
+          - tool_id: "explorer:pattern_search"
+            tool_key: "tool:explorer:pattern_search"  # RAG 정확 매칭 키
+            
+            metadata:
+              agent: "explorer"
+              category: "rag_search"
+              complexity: "low"
+              context_size: 200  # 줄 수
+              priority: "high"
+            
+            when_to_use:
+              keywords:
+                - "패턴"
+                - "모델"
+                - "사례"
+                - "벤치마크"
+              
+              conditions:
+                - "agent == 'explorer'"
+                - "task_type in ['pattern_discovery', 'model_matching']"
+              
+              scenarios:
+                - "@Explorer, 구독 모델 패턴 찾아줘"
+                - "@Explorer, 플랫폼 비즈니스 사례"
+            
+            what_it_does:
+              description: "RAG로 31개 비즈니스 모델 + 23개 Disruption 패턴 자동 검색"
+              
+              capabilities:
+                - "Vector Search (유사 패턴)"
+                - "Graph Search (조합 패턴)"
+                - "Case Search (성공 사례)"
+              
+              output:
+                - "matched_patterns (5개, 유사도 순)"
+                - "similar_cases (3개, 벤치마크)"
+                - "combinations (조합 패턴)"
+            
+            how_to_use: |
+              from umis_rag.agents.explorer import ExplorerRAG
+              
+              explorer = ExplorerRAG()
+              
+              # 패턴 검색
+              patterns = explorer.search_patterns("구독 모델")
+              # → subscription_model (0.95)
+              
+              # 사례 검색
+              cases = explorer.search_cases("음악 산업", pattern_id="subscription_model")
+              # → Spotify, Netflix, Apple Music
+              
+              # 조합 검색 (Graph)
+              combinations = explorer.search_combinations("subscription")
+              # → subscription + platform (0.87)
+            
+            prerequisites:
+              optional:
+                - tool: "observer:market_structure"
+                  why: "시장 맥락 있으면 더 정확"
+            
+            output_to:
+              - "explorer:7_step_process (다음 단계)"
+              - "deliverable:opportunity_hypothesis"
+            
+            content: |
+              # Explorer: RAG 패턴 검색
+              
+              ## 목적
+              31개 비즈니스 모델 + 23개 Disruption 패턴에서 관련 패턴 자동 검색
+              
+              ## RAG 아키텍처
+              - Vector: projected_index (agent_view=explorer)
+              - Graph: Neo4j (13 노드, 45 관계)
+              - Embedding: text-embedding-3-large (3072 dim)
+              
+              ## 검색 프로세스
+              1. Vector Search
+                 Query: "구독 모델"
+                 → subscription_model (0.95)
+                 → platform + subscription (0.87)
+              
+              2. Graph Search
+                 (subscription)-[COMBINES_WITH]->()
+                 → subscription + platform (confidence 0.87)
+                 → subscription + advertising (0.78)
+              
+              3. Case Search
+                 Filter: pattern_id = "subscription_model"
+                 → Spotify (2.2억 구독자)
+                 → Netflix (해지율 2.4%)
+                 → Adobe (구독 전환 후 매출 3배)
+              
+              ## 사용 예시
+              
+              ### 기본 검색
+              ```python
+              patterns = explorer.search_patterns("구독 모델")
+              
+              for p in patterns:
+                  print(f"{p.pattern_id}: {p.similarity}")
+                  print(f"  CSF: {p.critical_success_factors}")
+              ```
+              
+              ### Hybrid Search (Vector + Graph)
+              ```python
+              result = explorer.search_patterns_with_graph("구독 모델")
+              
+              print("Direct matches:", result['patterns'])
+              print("Combinations:", result['combinations'])
+              print("Insights:", result['insights'])
+              ```
+              
+              ## 출력 형식
+              ```yaml
+              matched_patterns:
+                - pattern_id: "subscription_model"
+                  similarity: 0.95
+                  critical_success_factors:
+                    - "해지율 < 5%"
+                    - "LTV/CAC > 3.0"
+                  
+                  success_cases:
+                    - "Spotify: 5.2% churn"
+                    - "Netflix: 2.4% churn"
+              
+              combinations:
+                - pattern: "subscription + platform"
+                  confidence: 0.87
+                  evidence: ["Spotify", "LinkedIn Premium"]
+                  
+                  insight: "플랫폼 네트워크 효과 + 구독 안정성"
+              ```
+              
+              ## 다음 단계
+              - 발견한 패턴으로 7단계 프로세스 시작
+              - 또는 사례 심층 분석
+              
+              (총 ~200줄 상세 내용)
+      
+      total_tools: "25개"
+      total_lines: "5,000줄 (도구별 200줄 평균)"
+  
+  # ========================================
+  # Phase 2: umis_core.yaml (INDEX) (1주)
+  # ========================================
+  
+  phase_2_core_index:
+    duration: "1주"
+    file: "umis_core.yaml"
+    target_size: "< 1,000줄"
+    
+    structure:
+      
+      section_1_system_overview:
+        size: "200줄"
+        
+        content:
+          system_identity:
+            name: "UMIS v7.1.0"
+            tagline: "RAG 기반 5-Agent 협업 시장 분석"
+            
+            what_it_can_do:
+              rag:
+                - "54개 검증된 패턴/사례 자동 검색"
+                - "패턴 조합 발견 (Knowledge Graph)"
+              
+              agents:
+                - "5명 전문 Agent 협업"
+                - "완전한 추적성 (ID Namespace)"
+                - "재검증 가능 (Excel 함수)"
+              
+              automation:
+                - "AI 자동 설치"
+                - "산출물 자동 생성"
+                - "검증 자동화"
+          
+          rag_architecture:
+            version: "v3.0"
+            active_agent: "Explorer"
+            
+            layers:
+              layer_1: "Canonical + Projected (ChromaDB)"
+              layer_3: "Knowledge Graph (Neo4j)"
+              layer_4: "Memory (Query/Goal/RAE)"
+            
+            how_it_works: |
+              "@Explorer, 구독 모델"
+              → Vector RAG 검색
+              → 패턴 발견 (subscription_model)
+              → Graph 조합 (subscription + platform)
+              → 사례 매칭 (Spotify, Netflix)
+      
+      section_2_agent_summary:
+        size: "500줄"
+        note: "각 Agent 100줄 요약"
+        
+        agent_template: |
+          observer:
+            name: "Albert (기본)"
+            role: "시장 구조 분석"
+            rag: false
+            
+            what_it_does:
+              - "가치사슬 맵핑"
+              - "거래 패턴 관찰"
+              - "비효율성 발견"
+            
+            when_to_use:
+              - "시장 구조 이해 필요"
+              - "가치 흐름 분석"
+              - "경쟁 구도 파악"
+            
+            deliverables:
+              - "market_reality_report.md"
+            
+            detail_module: "modules/agents/observer.yaml"
+          
+          explorer:
+            name: "Steve (기본)"
+            role: "기회 발굴 (RAG 활용!)"
+            rag: true
+            
+            what_it_does:
+              - "RAG 패턴 자동 검색 (31+23개)"
+              - "7단계 기회 발굴"
+              - "검증 프로토콜"
+            
+            key_tools:
+              - "tool:explorer:pattern_search (RAG)"
+              - "tool:explorer:7_step_process"
+              - "tool:explorer:validation"
+            
+            when_to_use:
+              - "기회 발굴"
+              - "가설 생성"
+              - "패턴 매칭"
+            
+            deliverables:
+              - "OPP_*.md (기회 가설)"
+              - "opportunity_portfolio.md"
+            
+            detail_module: "modules/agents/explorer.yaml"
+          
+          # (나머지 3개 Agent도 동일)
+      
+      section_3_decision_guide:
+        size: "200줄"
+        note: "핵심! AI가 최적 방법 판단"
+        
+        structure:
+          
+          question_type_mapping:
+            
+            market_analysis:
+              keywords: ["시장 분석", "산업 분석", "경쟁 구조"]
+              
+              decision_logic:
+                step_1_check_clarity:
+                  if_low_clarity:
+                    action: "Discovery Sprint"
+                    load_tools:
+                      - "tool:discovery:sprint"
+                      - "tool:observer:market_structure"
+                      - "tool:explorer:pattern_search"
+                    agents: "모든 Agent 병렬"
+                  
+                  if_high_clarity:
+                    action: "Structured Analysis"
+                    load_tools:
+                      - "tool:observer:market_structure"
+                      - "tool:explorer:7_step_process"
+                    agents: "Albert → Steve 순차"
+                
+                step_2_determine_depth:
+                  quick: "modules/workflows/quick.yaml"
+                  standard: "modules/workflows/standard.yaml"
+                  comprehensive: "modules/workflows/comprehensive.yaml"
+            
+            opportunity_discovery:
+              keywords: ["기회", "아이디어", "혁신", "새로운"]
+              
+              primary_agent: "explorer"
+              
+              required_tools:
+                - "tool:explorer:pattern_search (RAG 우선!)"
+                - "tool:explorer:7_step_process"
+              
+              optional_tools:
+                - "tool:observer:market_structure (맥락)"
+                - "tool:quantifier:sam_4methods (규모)"
+              
+              load_order:
+                1: "tool:explorer:pattern_search"
+                2: "tool:explorer:7_step_process"
+                3: "필요 시 observer, quantifier"
+            
+            market_sizing:
+              keywords: ["시장 규모", "SAM", "TAM", "크기"]
+              
+              primary_agent: "quantifier"
+              
+              required_tools:
+                - "tool:validator:data_definition (먼저!)"
+                - "tool:quantifier:sam_4methods"
+              
+              workflow:
+                1: "Validator가 데이터 정의 검증"
+                2: "Quantifier가 4가지 방법 계산"
+                3: "Convergence ±30% 확인"
+              
+              deliverable:
+                - "market_sizing.xlsx (Excel 자동 생성)"
+          
+          ai_loading_strategy: |
+            사용자 쿼리 분석
+              ↓
+            question_type_mapping에서 매칭
+              ↓
+            필요한 tool_key들 식별
+              ↓
+            System RAG로 정확 검색 (key 기반)
+              ↓
+            컨텍스트 구성 (필요한 것만)
+              ↓
+            실행
+      
+      section_4_module_index:
+        size: "100줄"
+        
+        content: |
+          modules:
+            
+            agents:
+              observer: 
+                file: "modules/agents/observer.yaml"
+                size: "800줄"
+                tools: 5개
+              
+              explorer:
+                file: "modules/agents/explorer.yaml"
+                size: "900줄"
+                tools: 6개
+                rag: true
+              
+              quantifier:
+                file: "modules/agents/quantifier.yaml"
+                size: "700줄"
+                tools: 4개
+              
+              validator:
+                file: "modules/agents/validator.yaml"
+                size: "600줄"
+                tools: 3개
+              
+              guardian:
+                file: "modules/agents/guardian.yaml"
+                size: "800줄"
+                tools: 4개
+            
+            frameworks:
+              market_definition:
+                file: "modules/frameworks/market_definition.yaml"
+                size: "1,000줄"
+              
+              seven_powers:
+                file: "modules/frameworks/seven_powers.yaml"
+                size: "500줄"
+              
+              discovery_sprint:
+                file: "modules/frameworks/discovery_sprint.yaml"
+                size: "400줄"
+            
+            workflows:
+              comprehensive:
+                file: "modules/workflows/comprehensive.yaml"
+                size: "600줄"
+              
+              rapid:
+                file: "modules/workflows/rapid.yaml"
+                size: "400줄"
+              
+              quick:
+                file: "modules/workflows/quick.yaml"
+                size: "200줄"
+  
+  # ========================================
+  # Phase 2: System RAG Index 구축 (1주)
+  # ========================================
+  
+  phase_2_system_rag_index:
+    duration: "1주"
+    
+    # --- Day 1-3: 청킹 및 인덱싱 ---
+    chunking_strategy:
+      
+      source: "config/tool_registry.yaml"
+      
+      chunk_creation:
+        each_tool_is_chunk:
+          chunk_id: "tool_id (explorer:pattern_search)"
+          chunk_key: "tool_key (tool:explorer:pattern_search)"
+          content: "tool.content (200-800줄)"
+          
+          metadata:
+            agent: "explorer"
+            category: "rag_search"
+            context_size: 200
+            priority: "high"
+      
+      indexing:
+        script: "scripts/build_system_knowledge.py"
+        
+        code: |
+          def build_system_knowledge_index():
+              """Tool Registry → System RAG"""
+              
+              # 1. Tool Registry 로드
+              with open('config/tool_registry.yaml') as f:
+                  registry = yaml.safe_load(f)
+              
+              # 2. 청크 생성
+              chunks = []
+              for tool in registry['tools']:
+                  chunk = {
+                      'id': tool['tool_id'],
+                      'key': tool['tool_key'],  # 정확 매칭 키
+                      'content': tool['content'],
+                      'metadata': tool['metadata']
+                  }
+                  chunks.append(chunk)
+              
+              # 3. ChromaDB 저장
+              client = chromadb.PersistentClient(path="data/chroma")
+              collection = client.get_or_create_collection(
+                  "system_knowledge",
+                  metadata={"description": "UMIS 도구 검색"}
+              )
+              
+              collection.add(
+                  ids=[c['id'] for c in chunks],
+                  documents=[c['content'] for c in chunks],
+                  metadatas=[c['metadata'] for c in chunks]
+              )
+              
+              print(f"✅ {len(chunks)}개 도구 인덱싱 완료")
+        
+        execution: |
+          python scripts/build_system_knowledge.py
+          
+          → system_knowledge Collection 생성
+          → 25개 도구 인덱싱
+    
+    # --- Day 4-5: 검색 스크립트 ---
+    search_script:
+      
+      file: "scripts/query_system_rag.py"
+      
+      code: |
+        def search_tool_by_key(tool_key: str) -> dict:
+            """Key로 정확 도구 검색"""
+            
+            client = chromadb.PersistentClient(path="data/chroma")
+            collection = client.get_collection("system_knowledge")
+            
+            # Key 기반 검색
+            results = collection.query(
+                query_texts=[tool_key],  # "tool:explorer:pattern_search"
+                n_results=1,
+                where={"tool_key": tool_key}  # 정확 매칭
+            )
+            
+            if not results['documents']:
+                raise ValueError(f"도구 없음: {tool_key}")
+            
+            return {
+                'tool_id': results['ids'][0][0],
+                'content': results['documents'][0][0],
+                'metadata': results['metadatas'][0][0],
+                'similarity': 1.0  # Key 매칭은 항상 1.0!
+            }
+        
+        # 사용
+        # python scripts/query_system_rag.py "tool:explorer:pattern_search"
+      
+      usage_in_cursorrules: |
+        # .cursorrules에서
+        
+        @Explorer 감지
+          ↓
+        keywords 분석
+          ↓
+        tool_key 결정: "tool:explorer:pattern_search"
+          ↓
+        검색: python scripts/query_system_rag.py "tool:explorer:pattern_search"
+          ↓
+        결과 로드: 200줄
+          ↓
+        컨텍스트 추가
+  
+  # ========================================
+  # Phase 3: .cursorrules 통합 (1주)
+  # ========================================
+  
+  phase_3_cursorrules_integration:
+    duration: "1주"
+    
+    cursorrules_update:
+      
+      new_section:
+        name: "PART 6: System RAG"
+        size: "~100줄"
+        
+        content: |
+          # === PART 6: System RAG (Key-based) ===
+          
+          system_rag:
+            enabled: true
+            collection: "system_knowledge"
+            tools: 25개
+            
+            # AI 사용 전략
+            ai_strategy:
+              step_1_parse:
+                action: "사용자 쿼리에서 agent + keywords 추출"
+                
+                examples:
+                  - query: "@Explorer, 구독 모델 패턴"
+                    parse:
+                      agent: "explorer"
+                      keywords: ["구독", "모델", "패턴"]
+              
+              step_2_key_selection:
+                rules:
+                  - if: "agent=explorer AND '패턴' in keywords"
+                    key: "tool:explorer:pattern_search"
+                  
+                  - if: "agent=explorer AND '기회' in keywords"
+                    key: "tool:explorer:7_step_process"
+                  
+                  - if: "agent=quantifier AND 'SAM' in keywords"
+                    key: "tool:quantifier:sam_4methods"
+                  
+                  - if: "task='Discovery Sprint'"
+                    keys:
+                      - "tool:discovery:sprint"
+                      - "tool:observer:market_structure"
+                      - "tool:explorer:pattern_search"
+              
+              step_3_search:
+                for_each_key:
+                  command: "python scripts/query_system_rag.py {key}"
+                  result: "도구 content (200-800줄)"
+                  similarity: "1.0 (정확 매칭)"
+              
+              step_4_context:
+                load:
+                  always: "umis_core.yaml (50줄, 핵심만)"
+                  searched: "System RAG 결과 (200-1,500줄)"
+                
+                total: "250-1,550줄"
+                
+                vs_original: "5,509줄"
+                saving: "72-95%"
+            
+            # 단축 명령
+            shortcuts:
+              - "도구 검색 {key}": python scripts/query_system_rag.py {key}
+              - "시스템 rag 빌드": python scripts/build_system_knowledge.py
+  
+  # ========================================
+  # Phase 4: 테스트 & 최적화 (1주)
+  # ========================================
+  
+  phase_4_testing:
+    duration: "1주"
+    
+    test_scenarios:
+      
+      scenario_1_simple:
+        query: "@Explorer, 구독 모델 패턴 찾아줘"
+        
+        expected_flow:
+          step_1: "umis_core.yaml (50줄) 읽기"
+          step_2: "parse: agent=explorer, keywords=['패턴']"
+          step_3: "key: 'tool:explorer:pattern_search'"
+          step_4: "System RAG 검색 → 200줄"
+          step_5: "총 컨텍스트: 250줄"
+        
+        validation:
+          context_size: "< 300줄"
+          all_features_available: true
+          tool_loaded: "pattern_search"
+          similarity: 1.0
+      
+      scenario_2_medium:
+        query: "@Explorer, 음악 스트리밍 시장 기회 분석"
+        
+        expected_flow:
+          step_1: "umis_core.yaml (50줄)"
+          step_2: "parse: agent=explorer, keywords=['기회', '분석']"
+          step_3: "keys: ['tool:explorer:pattern_search', 'tool:explorer:7_step_process']"
+          step_4: "System RAG 2회 검색 → 1,000줄"
+          step_5: "총 컨텍스트: 1,050줄"
+        
+        validation:
+          context_size: "< 1,200줄"
+          saving: "> 80%"
+      
+      scenario_3_complex:
+        query: "Discovery Sprint 시작"
+        
+        expected_flow:
+          step_1: "umis_core.yaml (50줄)"
+          step_2: "parse: task=discovery_sprint"
+          step_3: "keys: 5개 도구"
+          step_4: "System RAG 5회 검색 → 1,800줄"
+          step_5: "총 컨텍스트: 1,850줄"
+        
+        validation:
+          context_size: "< 2,000줄"
+          saving: "> 65%"
+    
+    performance_metrics:
+      target:
+        avg_context: "< 1,200줄"
+        avg_saving: "> 75%"
+        search_accuracy: "100% (key 기반)"
+        query_cost: "< $0.001"
+
+# ========================================
+# 프로젝트 3: RAG 데이터 품질 관리
+# ========================================
+
+project_3_data_quality:
+  
+  name: "RAG 데이터 품질 관리 시스템"
+  priority: "P1 (높음)"
+  duration: "3주"
+  target_version: "v7.1.0"
+  
+  philosophy: "질 → 양 → 밸런스"
+  
+  goal:
+    primary: "A 등급 패턴 80% 달성"
+    
+    quality_definition:
+      criteria:
+        1_context_completeness:
+          weight: 3
+          requirement: "청크 하나로 완전 이해 가능"
+          
+          must_include:
+            - "패턴 이름/ID"
+            - "개념 설명"
+            - "왜 중요한지"
+            - "어떤 상황에서"
+            - "적용 가능 산업"
+          
+          example_good: |
+            pattern_id: "subscription_model"
+            pattern_name: "구독 모델"
+            
+            concept: |
+              고객이 제품/서비스를 구매하지 않고
+              정기적으로 사용료를 지불하는 모델
+            
+            why_important: |
+              - 반복 수익 (Recurring Revenue)
+              - 예측 가능한 현금흐름
+              - 고객 LTV 극대화
+            
+            when_applicable: |
+              - 제품/서비스 반복 사용
+              - 지속적 가치 제공
+              - 고객 획득 비용 높음
+            
+            industries:
+              - "SaaS (소프트웨어)"
+              - "스트리밍 (음악, 영상)"
+              - "렌탈 (정수기, 공기청정기)"
+          
+          measurement: |
+            질문: "이 청크만 보고 패턴을 이해하고 적용할 수 있는가?"
+            Pass: 바로 가능
+            Fail: 추가 정보 필요
+        
+        2_actionability:
+          weight: 3
+          requirement: "구체적 수치 + How-to + 측정 방법"
+          
+          must_include:
+            - "구체적 목표치 (< 5%, > 3.0x)"
+            - "달성 방법 (How-to)"
+            - "측정 방법"
+            - "벤치마크 (실제 사례)"
+          
+          example_good: |
+            critical_success_factors:
+              
+              low_churn_rate:
+                target: "< 5% monthly"
+                
+                how_to_achieve:
+                  - action: "개인화 추천 알고리즘"
+                    example: "Spotify Discover Weekly"
+                    impact: "이탈률 15% 감소"
+                  
+                  - action: "사용 습관 형성"
+                    example: "매일 알림, 스트릭 보상"
+                    impact: "재방문율 2배"
+                  
+                  - action: "Family Plan"
+                    example: "가족 6명 공유"
+                    impact: "이탈률 70% 감소"
+                
+                measurement:
+                  formula: "해지 고객 / 전체 구독자"
+                  period: "월별"
+                  cohort: "가입 시기별 추적"
+                
+                benchmarks:
+                  - company: "Spotify"
+                    value: "5.2%"
+                    year: "2023"
+                  
+                  - company: "Netflix"
+                    value: "2.4%"
+                    year: "2023"
+                    note: "업계 최저"
+                  
+                  - company: "코웨이"
+                    value: "4.2%"
+                    year: "2023"
+                    note: "한국 렌탈 1위"
+          
+          measurement: |
+            질문: "이대로 실행 가능한가?"
+            Pass: 구체적 액션 + 수치
+            Fail: 추상적, 모호
+        
+        3_evidence_based:
+          weight: 3
+          requirement: "실제 사례 + 정량 데이터 + 출처"
+          
+          must_include:
+            - "회사명 + 년도"
+            - "구체적 수치"
+            - "출처 (공시, 연구, 보고서)"
+          
+          example_good: |
+            success_cases:
+              
+              spotify:
+                company: "Spotify"
+                year: "2023"
+                
+                metrics:
+                  subscribers_total: "5.7억명"
+                  subscribers_premium: "2.2억명"
+                  conversion_rate: "38.6%"
+                  monthly_churn: "5.2%"
+                  revenue: "$13.2B"
+                  revenue_per_user: "$5/월"
+                
+                evidence:
+                  - source: "Spotify 2023 연간 보고서"
+                    url: "https://investors.spotify.com/..."
+                  
+                  - source: "Midia Research 2023"
+                    finding: "음악 스트리밍 시장 점유율 31%"
+                
+                success_factors:
+                  - "Discover Weekly 개인화 (이탈률 15% 감소)"
+                  - "Podcast 번들 (체류시간 2배)"
+                  - "Family Plan (ARPU 35% 증가)"
+                
+                lessons:
+                  - "프리미엄 차별화 명확해야 (광고 제거 + 음질)"
+                  - "무료 → 유료 전환 퍼널 중요"
+                  - "네트워크 효과 (플레이리스트 공유)"
+          
+          measurement: |
+            질문: "이 데이터를 신뢰할 수 있는가?"
+            Pass: 출처 명확 + 수치 검증 가능
+            Fail: 주장만, 근거 없음
+        
+        4_applicability:
+          weight: 2
+          requirement: "5+ 산업 적용 예시 + 템플릿"
+          
+          must_include:
+            - "최소 5개 산업 예시"
+            - "산업별 적응 방법"
+            - "적용 템플릿"
+          
+          example_good: |
+            industry_applications:
+              
+              music_streaming:
+                companies: ["Spotify", "Apple Music", "YouTube Music"]
+                
+                adaptation:
+                  product: "음악 스트리밍"
+                  pricing: "월 9,900원 (개인), 14,900원 (가족)"
+                  differentiation: "큐레이션 알고리즘"
+                  lock_in: "플레이리스트 축적"
+              
+              video_streaming:
+                companies: ["Netflix", "Disney+", "Apple TV+"]
+                
+                adaptation:
+                  product: "영상 콘텐츠"
+                  pricing: "월 9,500 ~ 17,000원 (플랜별)"
+                  differentiation: "오리지널 콘텐츠"
+                  lock_in: "시청 이력 기반 추천"
+              
+              saas_software:
+                companies: ["Adobe Creative Cloud", "Microsoft 365"]
+              
+              fitness:
+                companies: ["Peloton", "ClassPass"]
+              
+              rental:
+                companies: ["코웨이", "청호나이스"]
+              
+              food:
+                companies: ["밀키트 정기 배송", "와인 구독"]
+              
+              # ... (총 5+ 산업)
+            
+            adaptation_template:
+              step_1: "반복 사용/소비되는가?"
+              step_2: "지속적 가치 제공 가능한가?"
+              step_3: "초기 구매 장벽 높은가? (구독으로 낮춤)"
+              step_4: "고객 데이터 축적 가능한가?"
+              step_5: "Lock-in 메커니즘 설계"
+          
+          measurement: |
+            질문: "5개 이상 산업에 적용 예시 있는가?"
+            Pass: 범용 패턴 증명
+            Fail: 특정 산업만
+        
+        5_recency:
+          weight: 2
+          requirement: "2023-2024 최신 데이터"
+          
+          must_include:
+            - "최근 2년 데이터"
+            - "최신 트렌드"
+            - "업데이트 날짜"
+          
+          example_good: |
+            latest_data:
+              
+              spotify_2023:
+                subscribers: "2.2억명 (2023 Q4)"
+                growth: "YoY +14%"
+                churn: "5.2% (개선, 2022년 5.8%)"
+              
+              trends_2024:
+                - trend: "AI 개인화"
+                  example: "Spotify AI DJ (2023년 출시)"
+                  adoption: "3개월 내 1,000만 사용"
+                  impact: "이탈률 15% 감소"
+                
+                - trend: "Podcast 번들링"
+                  growth: "2020-2023년 연평균 40% 성장"
+                  revenue_share: "전체 매출의 20%"
+                
+                - trend: "가족 요금제 성장"
+                  spotify_family: "35% ARPU 증가"
+                  adoption_rate: "구독자의 40%"
+            
+            last_updated: "2025-11-03"
+          
+          measurement: |
+            질문: "2023-2025년 데이터 포함하는가?"
+            Pass: 최신 데이터 + 트렌드
+            Fail: 3년 이상 된 데이터
+  
+  # ========================================
+  # 품질 관리 프로세스
+  # ========================================
+  
+  quality_management:
+    
+    # --- Week 1: 자동 검증 도구 ---
+    automated_validation:
+      
+      script: "scripts/validate_pattern_quality.py"
+      
+      code: |
+        def validate_pattern(pattern: dict) -> dict:
+            """5가지 품질 요건 검증"""
+            
+            score = {
+                'context': 0,  # max 3
+                'actionability': 0,  # max 3
+                'evidence': 0,  # max 3
+                'applicability': 0,  # max 2
+                'recency': 0  # max 2
+            }
+            
+            # 1. Context (3점)
+            required_fields = ['pattern_name', 'concept', 'why_important', 
+                              'when_applicable', 'industries']
+            if all(f in pattern for f in required_fields):
+                score['context'] = 3
+            elif sum(f in pattern for f in required_fields) >= 3:
+                score['context'] = 2
+            else:
+                score['context'] = 1
+            
+            # 2. Actionability (3점)
+            if 'critical_success_factors' in pattern:
+                csf = pattern['critical_success_factors']
+                
+                # 구체적 목표치 있나?
+                has_targets = any('target' in str(f) for f in csf)
+                # How-to 있나?
+                has_howto = any('how_to_achieve' in str(f) for f in csf)
+                # 측정 방법 있나?
+                has_measurement = any('measurement' in str(f) for f in csf)
+                # 벤치마크 있나?
+                has_benchmarks = any('benchmarks' in str(f) for f in csf)
+                
+                score['actionability'] = sum([has_targets, has_howto, 
+                                             has_measurement, has_benchmarks])
+                score['actionability'] = min(score['actionability'], 3)
+            
+            # 3. Evidence (3점)
+            if 'success_cases' in pattern:
+                cases = pattern['success_cases']
+                
+                # 최신 사례 (2023+)
+                recent_cases = [c for c in cases 
+                               if 'year' in str(c) and '2023' in str(c) or '2024' in str(c)]
+                
+                # 정량 데이터
+                has_metrics = any('metrics' in str(c) for c in cases)
+                
+                # 출처
+                has_source = any('source' in str(c) or 'evidence' in str(c) for c in cases)
+                
+                if len(recent_cases) >= 2 and has_metrics and has_source:
+                    score['evidence'] = 3
+                elif len(recent_cases) >= 1 and has_metrics:
+                    score['evidence'] = 2
+                else:
+                    score['evidence'] = 1
+            
+            # 4. Applicability (2점)
+            if 'industry_applications' in pattern:
+                industries = pattern['industry_applications']
+                
+                if len(industries) >= 5:
+                    score['applicability'] = 2
+                elif len(industries) >= 3:
+                    score['applicability'] = 1
+            
+            # 5. Recency (2점)
+            if 'last_updated' in pattern:
+                year = int(pattern['last_updated'][:4])
+                if year >= 2024:
+                    score['recency'] = 2
+                elif year >= 2023:
+                    score['recency'] = 1
+            
+            # Overall Grade
+            total = sum(score.values())
+            
+            if total >= 12:
+                grade = 'A+'
+            elif total >= 10:
+                grade = 'A'
+            elif total >= 8:
+                grade = 'B+'
+            elif total >= 6:
+                grade = 'B'
+            else:
+                grade = 'C'
+            
+            return {
+                'scores': score,
+                'total': total,
+                'grade': grade,
+                'improvements': generate_improvement_suggestions(score)
+            }
+      
+      usage: |
+        python scripts/validate_pattern_quality.py
+        
+        → 각 패턴 점수
+        → 등급 분포
+        → 개선 필요 항목
+    
+    # --- Week 2: 품질 향상 (상위 10개) ---
+    week_2_quality_improvement:
+      
+      target_patterns:
+        - "subscription_model"
+        - "platform_business_model"
+        - "d2c_model"
+        - "saas_model"
+        - "marketplace_model"
+        - "franchise_model"
+        - "licensing_model"
+        - "advertising_model"
+        - "freemium_model"
+        - "aggregator_model"
+      
+      improvement_template:
+        
+        file: "scripts/improve_pattern_template.yaml"
+        
+        template: |
+          # {pattern_id} 품질 향상 템플릿
+          
+          # 현재 점수: {current_grade}
+          # 목표 점수: A+
+          
+          improvements:
+            
+            context_completeness:
+              current_missing:
+                - {field_1}
+                - {field_2}
+              
+              add:
+                {field_1}: |
+                  (내용 작성)
+            
+            actionability:
+              current_abstract:
+                - "낮은 해지율" (얼마나?)
+              
+              make_concrete:
+                - target: "< 5% monthly"
+                  how: "개인화 추천"
+                  measure: "월별 해지 고객 / 구독자"
+                  benchmarks: ["Spotify: 5.2%"]
+            
+            evidence:
+              current_missing:
+                - "출처 없음"
+                - "오래된 데이터 (2020)"
+              
+              add:
+                - company: "Spotify"
+                  year: "2023"
+                  metrics: {...}
+                  source: "연간 보고서"
+            
+            applicability:
+              current: "3개 산업"
+              target: "5+ 산업"
+              
+              add_industries:
+                - "fitness (Peloton)"
+                - "food (밀키트)"
+            
+            recency:
+              current: "2022"
+              target: "2024"
+              
+              update:
+                - "2023-2024 최신 데이터"
+                - "AI 개인화 트렌드"
+      
+      process:
+        for_each_pattern:
+          step_1: "현재 품질 검증"
+          step_2: "개선 템플릿 생성"
+          step_3: "각 섹션 보강"
+          step_4: "재검증"
+          step_5: "A 등급 확인"
+        
+        result: "10개 패턴 A+ 등급"
+    
+    # --- Week 3: 데이터 추가 자동화 ---
+    week_3_data_addition:
+      
+      cursorrules_update:
+        
+        section: "data_add"
+        
+        content: |
+          # .cursorrules
+          
+          data_add:
+            detect: ["데이터 추가", "패턴 추가", "사례 추가", "넣어줘"]
+            
+            smart_flow:
+              
+              step_1_understand:
+                user_input: "코웨이 해지율 4.2% 추가해줘"
+                
+                ai_parse:
+                  entity: "코웨이"
+                  metric: "해지율 4.2%"
+                  context: "구독/렌탈 비즈니스"
+                
+                ai_infer:
+                  pattern: "subscription_model"
+                  section: "success_cases 또는 critical_success_factors"
+                  reason: "해지율 = 구독 모델의 핵심 지표"
+              
+              step_2_find_location:
+                action: "data/raw/umis_business_model_patterns.yaml 열기"
+                
+                search_pattern: "subscription_model"
+                
+                search_section:
+                  options:
+                    - "critical_success_factors.low_churn_rate.benchmarks"
+                    - "success_cases"
+                  
+                  choose: "low_churn_rate.benchmarks (더 적절)"
+              
+              step_3_suggest_addition:
+                show_current: |
+                  low_churn_rate:
+                    benchmarks:
+                      - company: "Spotify"
+                        value: "5.2%"
+                        year: "2023"
+                      
+                      - company: "Netflix"
+                        value: "2.4%"
+                        year: "2023"
+                
+                suggest_add: |
+                  low_churn_rate:
+                    benchmarks:
+                      - company: "Spotify"
+                        value: "5.2%"
+                        year: "2023"
+                      
+                      - company: "Netflix"
+                        value: "2.4%"
+                        year: "2023"
+                      
+                      - company: "코웨이"  ← 추가
+                        value: "4.2%"
+                        year: "2023"
+                        industry: "렌탈 (한국)"
+                        source: "공시자료"
+                
+                ask: "이렇게 추가할까요? (Y/n)"
+              
+              step_4_quality_check:
+                before_add:
+                  - "출처 있나? → 'source' 필드"
+                  - "년도 있나? → 'year' 필드"
+                  - "맥락 있나? → 'industry' 필드"
+                
+                if_missing:
+                  prompt: "출처를 추가해주세요 (예: 공시자료, 언론 보도)"
+              
+              step_5_add:
+                if_approved:
+                  - "파일 수정"
+                  - "git diff 확인 (사용자에게 보여주기)"
+                  - "저장"
+              
+              step_6_rebuild:
+                ask: "RAG 재구축? (2초 소요) (Y/n)"
+                
+                if_yes:
+                  - "python scripts/01_convert_yaml.py"
+                  - "python scripts/02_build_index.py --agent explorer"
+                  - "✅ RAG 업데이트 완료!"
+            
+            shortcuts:
+              - "rag에 {data} 추가": 위 플로우 자동 실행
+              - "rag 재구축": scripts/01+02
+              - "패턴 품질 검증": scripts/validate_pattern_quality.py
+      
+      interactive_script:
+        
+        file: "scripts/add_data_interactive.py"
+        
+        flow: |
+          def interactive_add():
+              print("🎯 RAG 데이터 추가 (품질 보장)")
+              
+              # 1. 타입
+              type_choice = select_type()  # business_model or disruption
+              
+              # 2. 패턴 선택
+              patterns = list_patterns(type_choice)
+              pattern = select_pattern(patterns)
+              
+              # 3. 섹션 선택
+              sections = list_sections(pattern)
+              section = select_section(sections)
+              
+              # 4. 데이터 입력
+              data = input_data_with_template(section)
+              
+              # 5. 품질 검증
+              quality = validate_input_quality(data)
+              
+              if quality['grade'] < 'B':
+                  print(f"⚠️ 품질: {quality['grade']}")
+                  print("개선 필요:")
+                  for improvement in quality['improvements']:
+                      print(f"  - {improvement}")
+                  
+                  if not confirm("계속?"):
+                      return
+              
+              # 6. 미리보기
+              show_diff(pattern, section, data)
+              
+              # 7. 승인
+              if confirm("추가?"):
+                  add_to_yaml(pattern, section, data)
+                  
+                  if confirm("RAG 재구축?"):
+                      rebuild_rag()
+                  
+                  print("✅ 완료!")
+  
+  # ========================================
+  # 밸런스 관리
+  # ========================================
+  
+  balance_management:
+    
+    current_distribution:
+      industry:
+        tech: "40%"
+        retail: "20%"
+        service: "15%"
+        manufacturing: "10%"
+        finance: "8%"
+        others: "7%"
+      
+      model_type:
+        platform: "25%"
+        subscription: "20%"
+        transaction: "15%"
+        licensing: "10%"
+        advertising: "10%"
+        others: "20%"
+      
+      market_type:
+        b2c: "60%"
+        b2b: "30%"
+        b2g: "5%"
+        c2c: "5%"
+    
+    target_distribution:
+      industry:
+        each: "15-20% (균형)"
+      
+      model_type:
+        major: "> 15% (주요 모델)"
+        others: "> 5% (커버리지)"
+      
+      market_type:
+        b2c: "40%"
+        b2b: "40%"
+        b2g: "10%"
+        c2c: "10%"
+    
+    rebalancing_strategy:
+      
+      identify_gaps:
+        code: |
+          current = analyze_current_distribution()
+          target = get_target_distribution()
+          
+          gaps = {
+              industry: target - current
+              for industry, target in target.items()
+          }
+          
+          # 가장 부족한 것 우선
+          priority_gaps = sorted(gaps.items(), key=lambda x: -x[1])
+      
+      targeted_addition:
+        process: |
+          for industry, gap in priority_gaps:
+              if gap > 0:
+                  print(f"📋 {industry} 패턴 {gap}% 부족")
+                  print(f"   추가 필요: ~{gap/15}개 패턴")
+                  
+                  # 해당 산업 패턴 조사
+                  # 품질 기준 충족하는 패턴 추가
+
+# ========================================
+# 구현 순서 (최종)
+# ========================================
+
+implementation_order:
+  
+  v7_1_0:
+    duration: "2개월"
+    
+    month_1:
+      week_1: "Tool Registry 구축 (25개 도구)"
+      week_2: "umis_core.yaml (INDEX) 작성"
+      week_3: "System RAG Index 구축"
+      week_4: ".cursorrules 통합 + 테스트"
+      
+      deliverable: "System RAG 완성"
+      context_saving: "77% (4,200줄)"
+    
+    month_2:
+      week_1_2: "Excel FormulaEngine"
+      week_3: "9개 시트 생성기"
+      week_4: "Excel 검증 + 데이터 품질 향상"
+      
+      deliverable:
+        - "Excel 자동 생성"
+        - "A 등급 패턴 65%"
+  
+  v7_2_0:
+    duration: "1개월"
+    
+    focus:
+      - "데이터 밸런스 (산업별 균형)"
+      - "Markdown 산출물 생성"
+      - "System RAG 최적화"
+
+# ========================================
+# 성공 지표
+# ========================================
+
+success_metrics:
+  
+  project_1_excel:
+    - "9개 시트 자동 생성: 100%"
+    - "함수 정확도: 100% (Excel 검증)"
+    - "Named Range 사용률: 100%"
+    - "±30% 수렴: 자동 확인"
+  
+  project_2_system_rag:
+    - "컨텍스트 절약: > 75%"
+    - "검색 정확도: 100% (key 기반)"
+    - "AI 파악 시간: < 5분"
+    - "기능 누락: 0%"
+  
+  project_3_data_quality:
+    - "A 등급 패턴: > 80%"
+    - "산업별 균형: 15-20%"
+    - "B2B/B2C 균형: 40:40"
+    - "최신 데이터: 2023+ > 80%"
+
+# ========================================
+# END
+# ========================================
+
