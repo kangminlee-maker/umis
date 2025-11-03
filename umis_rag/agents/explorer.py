@@ -36,6 +36,7 @@ sys.path.insert(0, str(project_root))
 
 from umis_rag.core.config import settings
 from umis_rag.utils.logger import logger
+from umis_rag.graph.hybrid_search import HybridSearch, HybridResult
 
 
 class ExplorerRAG:
@@ -98,6 +99,20 @@ class ExplorerRAG:
         
         logger.info(f"  ✅ 벡터 스토어: {collection_name}")
         logger.info(f"  ✅ 청크 수: {self.vectorstore._collection.count()}개")
+        
+        # Hybrid Search 초기화 (선택적)
+        self.hybrid_search = None
+        try:
+            from umis_rag.graph.connection import Neo4jConnection
+            # Neo4j 연결 테스트
+            test_conn = Neo4jConnection()
+            if test_conn.verify_connection():
+                self.hybrid_search = HybridSearch(graph_connection=test_conn)
+                logger.info(f"  ✅ Hybrid Search 활성화 (Vector + Graph)")
+            else:
+                logger.warning(f"  ⚠️  Neo4j 연결 실패 - Vector만 사용")
+        except Exception as e:
+            logger.warning(f"  ⚠️  Hybrid Search 비활성 - Vector만 사용: {e}")
         logger.info(f"  ✅ LLM 모델: {settings.llm_model}")
     
     def search_patterns(
@@ -153,6 +168,66 @@ class ExplorerRAG:
             logger.info(f"    #{i} {pattern_id} (유사도: {score:.4f})")
         
         return results
+    
+    def search_patterns_with_graph(
+        self,
+        trigger_observation: str,
+        top_k: int = 5,
+        max_combinations: int = 10
+    ) -> Optional[HybridResult]:
+        """
+        Hybrid Search: Vector + Graph 통합 검색
+        
+        사용 시점:
+        ----------
+        패턴 매칭과 함께 관련 조합까지 발견하고 싶을 때
+        
+        예시:
+        -----
+        Input: "음악 스트리밍 구독 서비스"
+        Output:
+          Direct: [subscription_model, platform_model, ...]
+          Combinations: [
+            subscription + platform (Amazon Prime),
+            subscription + licensing (Spotify),
+            subscription + freemium (YouTube Premium)
+          ]
+        
+        Parameters:
+        -----------
+        trigger_observation: Observer 관찰 또는 시장 설명
+        top_k: Vector 검색 결과 수
+        max_combinations: 최대 조합 수
+        
+        Returns:
+        --------
+        HybridResult 또는 None (Hybrid Search 비활성 시)
+        """
+        if not self.hybrid_search:
+            logger.warning("  ⚠️  Hybrid Search 비활성 - Vector 검색만 사용하세요")
+            return None
+        
+        logger.info(f"[Explorer] Hybrid Search 시작")
+        logger.info(f"  관찰: {trigger_observation[:100]}")
+        
+        # 1. Vector 검색
+        vector_results = self.search_patterns(trigger_observation, top_k)
+        
+        # 2. Hybrid 검색
+        hybrid_result = self.hybrid_search.search(
+            vector_results,
+            max_combinations=max_combinations
+        )
+        
+        # 3. 결과 로깅
+        logger.info(f"  ✅ Direct matches: {len(hybrid_result.direct_matches)}")
+        logger.info(f"  ✅ Combinations: {len(hybrid_result.combinations)}")
+        logger.info(f"  ✅ Insights: {len(hybrid_result.insights)}")
+        
+        for insight in hybrid_result.insights:
+            logger.info(f"    {insight}")
+        
+        return hybrid_result
     
     def search_cases(
         self,
