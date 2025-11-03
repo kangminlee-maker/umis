@@ -21,6 +21,8 @@ AI 에이전트 5명이 협업하여 시장을 분석하는 프레임워크입�
 - ✅ 54개 검증된 패턴/사례 자동 검색
 - ✅ Cursor Composer 완전 통합
 - ✅ Agent 이름 커스터마이징
+- ✅ Architecture v3.0 설계 (16개 개선안)
+- ✅ schema_registry.yaml (감사성·재현성)
 
 ---
 

@@ -1,6 +1,6 @@
 # UMIS v6.3.0-alpha 시작하기
 
-**버전:** 6.3.0-alpha  
+**버전:** 6.3.0-alpha (Architecture v3.0 설계 완료)  
 **날짜:** 2025-11-02  
 **대상:** Cursor 사용자
 
