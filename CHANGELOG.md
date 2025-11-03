@@ -21,7 +21,7 @@
   - reasoning (자동 생성)
 - Evidence & Provenance 추적 (근거, 검토자, 시간)
 - GND-xxx, GED-xxx ID 네임스페이스
-- schema_registry.yaml 100% 준수
+- config/schema_registry.yaml 100% 준수
 
 **Hybrid Search (Vector + Graph)**
 - Vector RAG (유사성) + Knowledge Graph (관계성) 통합
@@ -55,7 +55,7 @@
 - `scripts/test_hybrid_explorer.py`: Hybrid Search 테스트 (180줄)
 
 **데이터**
-- `data/pattern_relationships.yaml`: 45개 관계 정의 (1,200줄)
+- `config/pattern_relationships.yaml`: 45개 관계 정의 (1,200줄)
 - 실제 사례 기반 (Amazon, Spotify, Netflix, Tesla 등 50+ 사례)
 
 ### 📚 문서화
@@ -103,7 +103,7 @@
 
 **코드 품질**
 - Linter 에러: 0개
-- schema_registry.yaml 100% 준수
+- config/schema_registry.yaml 100% 준수
 - Type hints 완비
 - 상세한 docstrings
 
@@ -197,7 +197,7 @@
 - 30초 피드백 루프: 발견 → 추가 → 반영
 
 **Agent 커스터마이징**
-- `agent_names.yaml` 추가: 양방향 이름 매핑
+- `config/agent_names.yaml` 추가: 양방향 이름 매핑
 - 기본값: Albert, Steve, Bill, Rachel, Stewart
 - 커스텀: Jane, Alex, 관찰자, 탐색자 등 자유 변경
 - 입력: @Steve → Explorer / 출력: Explorer → Steve
@@ -262,7 +262,7 @@ Cursor Composer (Cmd+I):
 
 Agent 커스터마이징:
 ```yaml
-agent_names.yaml:
+config/agent_names.yaml:
   explorer: Alex
 ```
 
@@ -288,7 +288,7 @@ agent_names.yaml:
 - 총 124개 항목 변경
 
 **Agent 이름 커스터마이징 강화**
-- agent_names.yaml 최소화 (1줄로 설정!)
+- config/agent_names.yaml 최소화 (1줄로 설정!)
 - 양방향 매핑: @Steve → Explorer, Explorer → Steve
 - 기본값: Albert, Steve, Bill, Rachel, Stewart
 - 커스텀: Jane, Alex, 관찰자, 탐색자 등
@@ -325,7 +325,7 @@ agent_names.yaml:
 
 **Clean Design**
 - umis_guidelines.yaml → umis.yaml
-- name 필드 제거 (단일 진실: agent_names.yaml)
+- name 필드 제거 (단일 진실: config/agent_names.yaml)
 - patterns → data/raw/ 이동
 - ai_guide → data/raw/ 백업
 - .cursorrules 최적화 (243줄 → 148줄, 40% 압축)
@@ -353,14 +353,14 @@ agent_names.yaml:
   6. Overlay 메타 선반영 (미래 안전)
   7. Retrieval Policy (세밀한 제어)
 
-**schema_registry.yaml v1.0 완성**
+**config/schema_registry.yaml v1.0 완성**
 - 845줄 완전 스펙
 - 모든 Layer 통합 정의
 - ID 네임스페이스, Lineage, Validation Rules
 
 **Dual-Index 구현 시작 (4/7)**
 - SchemaRegistry 로더
-- projection_rules.yaml (15개 규칙)
+- config/projection_rules.yaml (15개 규칙)
 - build_canonical_index.py
 - HybridProjector (규칙 90% + LLM 10%)
 

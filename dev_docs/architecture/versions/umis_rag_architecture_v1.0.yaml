@@ -1,0 +1,1544 @@
+# ========================================
+# UMIS Advanced RAG Architecture v1.0
+# ========================================
+# 
+# 목적: UMIS 5개 에이전트를 위한 Multi-Layer RAG 시스템
+# 철학: Single Source of Truth + Multi-Perspective Views
+# 완성도: Path C (완전 구현 - 3주 개발)
+#
+# ========================================
+
+_meta:
+  version: "1.0"
+  created: "2025-11-01"
+  umis_version: "6.2"
+  architecture_type: "Multi-Layer Graph-Vector Hybrid RAG"
+  philosophy: "Single Source with Multi-Perspective Intelligence"
+
+# ========================================
+# Layer 1: Vector RAG (Content Search)
+# @layer: content_search
+# ========================================
+
+layer_1_vector_rag:
+  _id: "content_search_layer"
+  _description: "의미적 유사도 기반 콘텐츠 검색"
+  _status: "implemented"  # ✅ 완료
+  
+  technology:
+    vector_db: "Chroma DB"
+    embeddings: 
+      model: "text-embedding-3-large"
+      dimension: 3072
+      provider: "OpenAI"
+      cost: "$0.13 / 1M tokens"
+    
+    rationale_for_large:
+      - "향후 대용량 비정형 데이터 대비"
+      - "미묘한 문맥 차이 인식 (긍정/부정)"
+      - "비용 차이 미미 (~$10/년)"
+      - "UMIS = 전문가 시스템, 품질 우선"
+  
+  storage_model:
+    collection: "umis_knowledge_base"  # 단일 컬렉션
+    strategy: "multi_view_chunks"
+    
+    chunk_structure:
+      - agent_view: "albert"
+        chunking_level: ["macro", "meso", "micro"]
+        avg_size: "500-800 tokens"
+        
+      - agent_view: "steve"
+        chunking_level: ["pattern", "section", "case"]
+        avg_size: "400-800 tokens"
+        
+      - agent_view: "bill"
+        chunking_level: ["report", "calculation", "metric"]
+        avg_size: "200-500 tokens"
+        
+      - agent_view: "rachel"
+        chunking_level: ["full_report", "verification", "source"]
+        avg_size: "200-400 tokens"
+        
+      - agent_view: "stewart"
+        chunking_level: ["summary", "detail"]
+        avg_size: "200-500 tokens"
+  
+  metadata_schema:
+    core_metadata:
+      _description: "모든 agent가 공유"
+      fields:
+        - source_id: "데이터 원본 식별자 (cross-reference 키)"
+        - source_file: "원본 파일명"
+        - domain: "['business_model', 'disruption', 'case_study', ...]"
+        - category: "세부 분류"
+        - validation_status: "['verified', 'estimated', 'unverified']"
+        - quality_grade: "['A', 'B', 'C', 'D']"
+        - version: "6.2"
+        - language: "ko"
+        - created_at: "timestamp"
+    
+    agent_specific_metadata:
+      steve:
+        - steve_view_type: "['opportunity', 'strategy', 'validation', ...]"
+        - steve_pattern_id: "패턴 식별자"
+        - steve_pattern_type: "['business_model', 'disruption']"
+        - steve_triggers: "JSON string of triggers"
+        - steve_csf: "JSON string of critical success factors"
+        - steve_difficulty: "['low', 'medium', 'high']"
+        - steve_chunking_level: "['pattern', 'section', 'case']"
+      
+      bill:
+        - bill_view_type: "['quantitative', 'calculation', 'benchmark']"
+        - bill_metrics: "JSON string of metrics"
+        - bill_formulas: "JSON string of formulas"
+        - bill_data_quality: "['verified', 'estimated', 'calculated']"
+        - bill_has_numbers: "boolean (fast filtering)"
+        - bill_chunking_level: "['report', 'calculation', 'metric']"
+      
+      rachel:
+        - rachel_view_type: "['source', 'verification', 'reliability']"
+        - rachel_sources: "JSON string of sources"
+        - rachel_reliability: "['high', 'medium', 'low']"
+        - rachel_data_gaps: "JSON string of gaps"
+        - rachel_chunking_level: "['full_report', 'verification', 'source']"
+      
+      albert:
+        - albert_view_type: "['structural', 'competitive', 'trend']"
+        - albert_patterns: "JSON string of structural patterns"
+        - albert_dynamics: "JSON string of market dynamics"
+        - albert_chunking_level: "['macro', 'meso', 'micro']"
+      
+      stewart:
+        - stewart_view_type: "['governance', 'quality', 'process']"
+        - stewart_quality: "['A', 'B', 'C', 'D']"
+        - stewart_validated: "boolean"
+        - stewart_checked_by: "JSON string of validators"
+        - stewart_chunking_level: "['summary', 'detail']"
+    
+    cross_reference:
+      related_chunks: "JSON string of related chunk_ids (agent간 협업)"
+  
+  retrieval_layers:
+    _description: "Agent별 필터링 검색 레이어"
+    
+    steve_retriever:
+      base_filter: 
+        agent_view: "steve"
+      
+      methods:
+        - name: "search_by_trigger"
+          filter:
+            - steve_view_type: "opportunity"
+            - steve_chunking_level: ["pattern", "section"]
+          use_case: "Albert 트리거 → 패턴 매칭"
+        
+        - name: "search_cases_by_industry"
+          filter:
+            - steve_view_type: "case_learning"
+            - steve_chunking_level: "case"
+          use_case: "유사 산업 성공 사례 검색"
+        
+        - name: "get_validation_framework"
+          filter:
+            - steve_view_type: "validation"
+          use_case: "검증 방법 확인"
+    
+    bill_retriever:
+      base_filter:
+        agent_view: "bill"
+      
+      methods:
+        - name: "search_exact_metric"
+          filter:
+            - bill_chunking_level: "metric"
+            - bill_has_numbers: true
+          use_case: "특정 숫자만 빠르게"
+        
+        - name: "search_calculation"
+          filter:
+            - bill_chunking_level: "calculation"
+          use_case: "계산 과정 전체"
+    
+    rachel_retriever:
+      base_filter:
+        agent_view: "rachel"
+      
+      methods:
+        - name: "search_by_source"
+          filter:
+            - rachel_chunking_level: "source"
+          use_case: "특정 출처 정보 확인"
+    
+    albert_retriever:
+      base_filter:
+        agent_view: "albert"
+      
+      methods:
+        - name: "search_structure"
+          filter:
+            - albert_view_type: "structural"
+            - albert_chunking_level: ["macro", "meso"]
+          use_case: "시장 구조 분석"
+    
+    stewart_retriever:
+      base_filter:
+        agent_view: "stewart"
+      
+      methods:
+        - name: "check_validation_status"
+          filter:
+            - stewart_chunking_level: "summary"
+          use_case: "빠른 품질 확인"
+
+# ========================================
+# Layer 2: Knowledge Graph (Relationships)
+# @layer: knowledge_graph
+# ========================================
+
+layer_2_knowledge_graph:
+  _id: "knowledge_graph_layer"
+  _description: "지식 간 관계 및 논리 체인 표현"
+  _status: "planned"  # 🔄 구현 예정
+  _priority: "critical"  # ⭐⭐⭐⭐⭐
+  
+  technology:
+    graph_db: "Neo4j"
+    version: "5.x Community Edition"
+    interface: "Python neo4j driver"
+    query_language: "Cypher"
+  
+  node_types:
+    
+    pattern_nodes:
+      label: "Pattern"
+      properties:
+        - id: "pattern_id (예: 'platform_business_model')"
+        - name: "패턴명"
+        - type: "['business_model', 'disruption']"
+        - complexity: "['low', 'medium', 'high']"
+        - success_rate: "float (historical)"
+      
+      examples:
+        - id: "platform_business_model"
+          name: "플랫폼 사업모델"
+          type: "business_model"
+    
+    case_nodes:
+      label: "Case"
+      properties:
+        - id: "case_id (예: 'baemin_case')"
+        - company: "기업명"
+        - industry: "산업"
+        - outcome: "성공/실패"
+        - year: "시기"
+      
+      examples:
+        - id: "baemin_case"
+          company: "배달의민족"
+          outcome: "success"
+    
+    agent_output_nodes:
+      label: "AgentOutput"
+      properties:
+        - id: "output_id"
+        - agent: "['albert', 'steve', 'bill', 'rachel']"
+        - type: "['observation', 'hypothesis', 'calculation', 'verification']"
+        - quality_grade: "['A', 'B', 'C', 'D']"
+        - validated: "boolean"
+    
+    data_nodes:
+      label: "Data"
+      properties:
+        - id: "data_id"
+        - value: "실제 데이터"
+        - type: "['statistic', 'metric', 'quote']"
+        - reliability: "['high', 'medium', 'low']"
+    
+    source_nodes:
+      label: "Source"
+      properties:
+        - id: "src_id (예: 'SRC_001')"
+        - type: "['government', 'company_official', 'news', 'research']"
+        - url: "URL"
+        - reliability: "['high', 'medium', 'low']"
+  
+  relationship_types:
+    
+    pattern_relationships:
+      _description: "패턴 간 관계 (UMIS 핵심!)"
+      
+      - type: "COMBINES_WITH"
+        direction: "Pattern -> Pattern"
+        properties:
+          synergy: "조합 시 시너지 (예: '충성도↑ + 안정수익')"
+          example: "성공 사례"
+          success_rate: "float (0-1)"
+          mechanism: "작동 원리"
+        
+        examples:
+          - from: "platform_business_model"
+            to: "subscription_model"
+            synergy: "플랫폼 충성도 향상 + 예측 가능 수익"
+            example: "Amazon Prime"
+            success_rate: 0.8
+          
+          - from: "subscription_model"
+            to: "direct_to_consumer_model"
+            synergy: "직접 관계 + 반복 수익"
+            example: "Dollar Shave Club"
+            success_rate: 0.75
+      
+      - type: "COUNTERS"
+        direction: "Pattern -> Pattern"
+        properties:
+          target_weakness: "공략하는 약점"
+          mechanism: "Counter-Positioning 메커니즘"
+        
+        examples:
+          - from: "low_end_disruption"
+            to: "premium_trap"
+            target_weakness: "과잉 기능, 고가 전략"
+            mechanism: "Good Enough 제품으로 저가 공략"
+      
+      - type: "PREREQUISITE"
+        direction: "Pattern -> Pattern"
+        properties:
+          reason: "선행 조건 이유"
+        
+        examples:
+          - from: "platform_business_model"
+            to: "network_effect"
+            reason: "플랫폼은 네트워크 효과 확보 필수"
+      
+      - type: "ALTERNATIVE"
+        direction: "Pattern <-> Pattern"
+        properties:
+          trade_off: "트레이드오프"
+        
+        examples:
+          - pattern1: "franchise_model"
+            pattern2: "direct_to_consumer_model"
+            trade_off: "빠른 확장 vs 높은 마진"
+    
+    validation_relationships:
+      _description: "검증 체인 (Stewart 핵심!)"
+      
+      - type: "OBSERVED_BY"
+        direction: "Data -> AlbertOutput"
+        properties:
+          observation_type: "['structure', 'trend', 'competition']"
+      
+      - type: "TRIGGERS"
+        direction: "AlbertOutput -> SteveHypothesis"
+        properties:
+          trigger_signals: "JSON array"
+      
+      - type: "BASED_ON"
+        direction: "SteveHypothesis -> Pattern"
+        properties:
+          pattern_id: "적용 패턴"
+          adaptation: "어떻게 조정했나"
+      
+      - type: "REFERENCES"
+        direction: "SteveHypothesis -> Case"
+        properties:
+          similarity: "유사도 점수"
+          learning_point: "배운 점"
+      
+      - type: "REQUIRES_VALIDATION"
+        direction: "SteveHypothesis -> BillCalculation"
+        properties:
+          validation_type: "['market_size', 'roi', 'growth_rate']"
+      
+      - type: "CALCULATED_FROM"
+        direction: "BillCalculation -> Data"
+        properties:
+          formula: "계산식"
+          assumptions: "가정 사항"
+      
+      - type: "SOURCED_FROM"
+        direction: "Data -> Source"
+        properties:
+          src_id: "SRC_XXX"
+          extraction_method: "추출 방법"
+      
+      - type: "VERIFIED_BY"
+        direction: "Source -> RachelVerification"
+        properties:
+          verification_date: "검증 날짜"
+          reliability: "['high', 'medium', 'low']"
+          notes: "검증 노트"
+      
+      - type: "APPROVED_BY"
+        direction: "SteveHypothesis -> StewartApproval"
+        properties:
+          grade: "['A', 'B', 'C', 'D']"
+          approval_date: "승인 날짜"
+          conditions: "조건부 승인 사항"
+      
+      - type: "REQUIRES_IMPROVEMENT"
+        direction: "StewartApproval -> SteveHypothesis"
+        properties:
+          feedback: "개선 필요 사항"
+          iteration: "반복 횟수"
+    
+    learning_relationships:
+      _description: "학습 및 피드백 관계"
+      
+      - type: "LEARNED_FROM"
+        direction: "SuccessfulQuery -> Pattern"
+        properties:
+          query_text: "성공한 쿼리"
+          success_count: "성공 횟수"
+          avg_quality_grade: "평균 품질"
+      
+      - type: "FAILED_WITH"
+        direction: "FailedQuery -> Pattern"
+        properties:
+          query_text: "실패한 쿼리"
+          failure_reason: "실패 이유"
+          correction: "수정 방법"
+  
+  cross_agent_collaboration:
+    _description: "source_id 기반 협업"
+    
+    workflow:
+      - step: 1
+        agent: "steve"
+        action: "사례 검색"
+        output: "steve_baemin_opportunity (source_id: 'baemin_case')"
+      
+      - step: 2
+        agent: "steve"
+        trigger: "정량 데이터 필요"
+        action: "source_id로 Bill 검색"
+        query: "filter: {source_id: 'baemin_case', agent_view: 'bill'}"
+      
+      - step: 3
+        agent: "bill"
+        return: "bill_baemin_metrics (같은 source_id!)"
+      
+      - step: 4
+        agent: "steve"
+        action: "가설 생성 (Bill 데이터 포함)"
+
+# ========================================
+# Layer 3: Meta-Learning (Validation & Feedback)
+# @layer: meta_learning
+# ========================================
+
+layer_3_meta_learning:
+  _id: "meta_learning_layer"
+  _description: "검증 자동화 + 피드백 학습"
+  _status: "planned"  # 🔄 구획 예정
+  _priority: "critical"  # ⭐⭐⭐⭐⭐
+  
+  stewart_meta_rag:
+    _description: "Stewart 전용 Meta-RAG 시스템"
+    _purpose: "다른 agent 결과물 검증"
+    
+    specialized_indices:
+      
+      validation_rules_index:
+        collection_name: "validation_rules"
+        content_type: "검증 규칙 및 체크리스트"
+        
+        chunk_examples:
+          - rule_id: "steve_hypothesis_rules"
+            content: |
+              Steve 가설 필수 요건:
+              1. Albert 관찰 명시적 인용
+              2. 패턴 라이브러리 참조 (pattern_id)
+              3. 유사 사례 최소 2개 인용
+              4. Bill 정량 근거 포함
+              5. Rachel 출처 검증 완료
+            mandatory: true
+            checkpoint: "phase_6"
+          
+          - rule_id: "bill_calculation_rules"
+            content: |
+              Bill 계산 필수 요건:
+              1. 계산식 명시 (Excel 함수 수준)
+              2. 가정 사항 투명 공개
+              3. 추정치 EST_ID 부여
+              4. Rachel 데이터 검증 필수
+            mandatory: true
+            checkpoint: "phase_4"
+      
+      quality_patterns_index:
+        collection_name: "quality_patterns"
+        content_type: "좋은/나쁜 예시 (학습용)"
+        
+        chunk_examples:
+          - example_id: "good_steve_hypothesis_001"
+            quality_grade: "A"
+            agent: "steve"
+            content: |
+              가설: "피아노 구독 서비스"
+              
+              ✅ Albert 인용: "높은 초기 비용 (Albert 관찰)"
+              ✅ 패턴 명시: "subscription_model 적용"
+              ✅ 사례 참조: "코웨이 정수기 렌탈 (유사 구조)"
+              ✅ Bill 계산: "TAM 50만 × 전환율 20% = SAM 10만"
+              ✅ Rachel 검증: "학습자 수는 추정치 (SRC_003)"
+              
+              → Grade A 이유: 모든 근거 명확
+            
+            metadata:
+              pattern_applied: "subscription_model"
+              validation_complete: true
+              stewart_approved: true
+          
+          - example_id: "bad_steve_hypothesis_001"
+            quality_grade: "D"
+            agent: "steve"
+            content: |
+              가설: "AI 교육 시장은 성장할 것이다"
+              
+              ❌ Albert 인용 없음
+              ❌ 패턴 불명확
+              ❌ 사례 없음
+              ❌ 정량 근거 없음
+              ❌ 출처 불명
+              
+              → Grade D 이유: 근거 전무
+            
+            metadata:
+              common_mistakes:
+                - "근거 없는 주장"
+                - "패턴 미적용"
+                - "검증 불가능"
+      
+      agent_outputs_index:
+        collection_name: "agent_outputs_history"
+        content_type: "과거 agent 결과물 (학습용)"
+        
+        purpose:
+          - "좋은 결과물 패턴 학습"
+          - "실패 사례에서 배움"
+          - "시간에 따른 품질 추적"
+    
+    validation_engine:
+      _description: "Stewart의 3단계 검증"
+      
+      stage_1_rule_based:
+        name: "필수 조건 검증"
+        method: "Rule-based matching"
+        
+        process:
+          - load: "validation_rules_index"
+          - query: "agent별 필수 규칙"
+          - check: "모든 필수 조건 만족?"
+          - result: "PASS/FAIL + 누락 항목"
+        
+        fail_action: "즉시 거부, Grade D"
+      
+      stage_2_pattern_based:
+        name: "품질 패턴 비교"
+        method: "Vector similarity with quality_patterns"
+        
+        process:
+          - load: "quality_patterns_index"
+          - query: "유사 Grade A 예시 검색"
+          - compare: "현재 결과물 vs Grade A 유사도"
+          - threshold: "similarity > 0.7"
+        
+        fail_action: "수정 권고, Grade C"
+      
+      stage_3_graph_based:
+        name: "논리 체인 검증"
+        method: "Graph traversal"
+        
+        process:
+          - load: "Knowledge Graph"
+          - trace: "Steve 가설 → Albert → Bill → Rachel → Source"
+          - check: "모든 링크 검증됨?"
+          - find_gaps: "끊긴 체인 발견"
+        
+        fail_action: "Gap 지적, Grade B"
+      
+      final_decision:
+        all_pass: "Grade A, APPROVE"
+        stage_1_fail: "Grade D, REJECT"
+        stage_2_fail: "Grade C, REVISE"
+        stage_3_fail: "Grade B, FILL_GAPS"
+  
+  adaptive_learning:
+    _description: "피드백 기반 학습 시스템"
+    
+    query_refinement:
+      technology: "LLM (GPT-4)"
+      
+      process:
+        - initial_query: "Steve의 첫 검색"
+        - validation: "Stewart 검증"
+        - feedback: "부족한 점 지적"
+        - refinement: "LLM으로 쿼리 재작성"
+        - retry: "개선된 쿼리로 재검색"
+        - max_iterations: 3
+      
+      example:
+        iteration_1:
+          query: "플랫폼 기회"
+          result: "platform_business_model"
+          stewart_feedback: "Bill 데이터 근거 부족"
+          action: "REVISE"
+        
+        iteration_2:
+          query: "플랫폼 기회 + 시장 규모 계산 근거"
+          result: "platform + validation_framework"
+          stewart_feedback: "Rachel 출처 검증 필요"
+          action: "REVISE"
+        
+        iteration_3:
+          query: "플랫폼 기회 + 정량 근거 + 출처 검증"
+          result: "완전한 컨텍스트"
+          stewart_feedback: "승인"
+          action: "APPROVE"
+        
+        learning:
+          successful_query: "플랫폼 + 정량 + 출처"
+          store: "successful_queries DB"
+          reuse: "다음 플랫폼 분석 시 자동 적용"
+    
+    weighted_retrieval:
+      _description: "청크별 가중치 학습"
+      
+      mechanism:
+        initial_weight: 1.0
+        
+        update_rule:
+          on_approval: "weight × 1.1"
+          on_rejection: "weight × 0.9"
+          on_revision: "weight × 0.95"
+        
+        decay:
+          time_based: "1년 지나면 weight × 0.95"
+          reason: "최신 정보 우선"
+      
+      storage:
+        database: "SQLite"
+        table: "chunk_weights"
+        schema:
+          - chunk_id: "TEXT PRIMARY KEY"
+          - weight: "REAL"
+          - success_count: "INTEGER"
+          - total_used: "INTEGER"
+          - last_updated: "TIMESTAMP"
+      
+      retrieval_integration:
+        step_1: "Vector search로 Top-20 검색"
+        step_2: "각 청크의 가중치 적용"
+        step_3: "Final score = vector_score × weight"
+        step_4: "Re-ranking 후 Top-K 반환"
+    
+    reinforcement_learning:
+      _description: "Multi-Armed Bandits for Pattern Selection"
+      _type: "optional"  # 선택적 고급 기능
+      
+      concept:
+        arms: "각 패턴 = Arm"
+        reward: "Stewart 승인 = +1, 거부 = 0"
+        strategy: "Epsilon-Greedy"
+      
+      parameters:
+        epsilon: 0.1  # 10% 탐색, 90% 활용
+        learning_rate: 0.05
+      
+      application:
+        - pattern_selection: "여러 매칭 패턴 중 선택"
+        - case_selection: "여러 사례 중 우선순위"
+        - query_strategy: "검색 전략 최적화"
+
+# ========================================
+# Agent-Specific RAG Configurations
+# @section: agent_configs
+# ========================================
+
+agent_rag_configurations:
+  
+  albert:
+    _role: "Observer (시장 구조 분석)"
+    
+    rag_characteristics:
+      focus: "구조, 역학, 트렌드"
+      chunking_preference: "meso (구조 요소별)"
+      search_mode: "broad_then_deep"
+      
+      typical_queries:
+        - "시장 구조 변화 패턴"
+        - "경쟁 구도 재편"
+        - "가치사슬 변화"
+      
+      output_to_graph:
+        - type: "AlbertObservation"
+          links_to: ["Data", "Source", "SteveHypothesis"]
+    
+    dependencies:
+      requires:
+        - rachel: "데이터 검증"
+        - bill: "정량 데이터"
+      
+      provides_to:
+        - steve: "트리거 시그널"
+        - owner: "시장 구조 분석"
+  
+  steve:
+    _role: "Explorer (기회 발굴)"
+    
+    rag_characteristics:
+      focus: "기회, 전략, 실행"
+      chunking_preference: "case (사례 완결성)"
+      search_mode: "pattern_matching_then_case_learning"
+      
+      typical_queries:
+        - "트리거 시그널 → 패턴 매칭"
+        - "유사 산업 성공 사례"
+        - "검증 프레임워크"
+      
+      multi_stage_search:
+        stage_1:
+          query: "Albert 트리거 시그널"
+          target: "pattern_overview 청크"
+          filter: "steve_view_type='opportunity'"
+        
+        stage_2:
+          query: "산업/구조 유사성"
+          target: "success_case 청크"
+          filter: "steve_pattern_id=매칭된패턴"
+        
+        stage_3:
+          query: "검증 방법"
+          target: "validation_framework 청크"
+          filter: "steve_pattern_id=매칭된패턴"
+      
+      output_to_graph:
+        - type: "SteveHypothesis"
+          links_to: ["AlbertObservation", "Pattern", "Case", "BillCalculation"]
+    
+    dependencies:
+      requires:
+        - albert: "시장 관찰 (트리거)"
+        - bill: "정량 검증"
+        - rachel: "데이터 신뢰도"
+      
+      provides_to:
+        - stewart: "가설 (검증 대상)"
+        - owner: "기회 포트폴리오"
+  
+  bill:
+    _role: "Quantifier (정량 분석)"
+    
+    rag_characteristics:
+      focus: "숫자, 계산, 메트릭"
+      chunking_preference: "calculation (계산 단위)"
+      search_mode: "metric_first"
+      
+      typical_queries:
+        - "특정 메트릭만 (MAU, GMV, ...)"
+        - "계산 과정 전체"
+        - "벤치마크 데이터"
+      
+      specialized_search:
+        exact_metric_search:
+          chunking_level: "metric"
+          filter: "bill_has_numbers=true"
+          speed: "fastest (<50ms)"
+        
+        calculation_search:
+          chunking_level: "calculation"
+          includes: "formula + assumptions"
+          speed: "fast (<100ms)"
+      
+      output_to_graph:
+        - type: "BillCalculation"
+          links_to: ["Data", "Formula", "Assumptions"]
+    
+    dependencies:
+      requires:
+        - rachel: "데이터 검증 필수"
+      
+      provides_to:
+        - steve: "정량 근거"
+        - albert: "정량 데이터"
+        - owner: "수익성 분석"
+  
+  rachel:
+    _role: "Validator (데이터 검증)"
+    
+    rag_characteristics:
+      focus: "출처, 신뢰도, 검증"
+      chunking_preference: "source (출처별)"
+      search_mode: "source_tracing"
+      
+      typical_queries:
+        - "특정 데이터의 출처"
+        - "신뢰도 평가"
+        - "데이터 Gap 분석"
+      
+      source_registry_integration:
+        _umis_standard: "source_registry.yaml 연동"
+        
+        workflow:
+          - input: "Bill의 데이터 포인트"
+          - search: "해당 데이터의 출처 청크"
+          - verify: "신뢰도 확인"
+          - output: "SRC_ID + 신뢰도 + Gap 분석"
+      
+      output_to_graph:
+        - type: "RachelVerification"
+          links_to: ["Data", "Source", "Reliability"]
+    
+    dependencies:
+      requires: []  # 독립적
+      
+      provides_to:
+        - albert: "데이터 검증"
+        - steve: "신뢰도 확인"
+        - bill: "데이터 검증"
+        - stewart: "검증 완료 확인"
+  
+  stewart:
+    _role: "Guardian (프로세스 감시 + 품질 관리)"
+    
+    rag_characteristics:
+      focus: "검증 상태, 품질, 논리 체인"
+      chunking_preference: "summary (빠른 확인)"
+      search_mode: "validation_chain_tracing"
+      
+      specialized_capabilities:
+        
+        meta_search:
+          _description: "다른 agent 결과물 검색"
+          
+          search_albert_output:
+            collection: "umis_knowledge_base"
+            filter: "agent_view='albert'"
+            purpose: "Albert 결론 검증"
+          
+          search_steve_output:
+            collection: "umis_knowledge_base"
+            filter: "agent_view='steve'"
+            purpose: "Steve 가설 검증"
+        
+        graph_traversal:
+          _description: "논리 체인 추적"
+          
+          trace_hypothesis_chain:
+            start: "SteveHypothesis"
+            traverse: "BASED_ON, REQUIRES_VALIDATION, SOURCED_FROM, VERIFIED_BY"
+            check: "모든 링크 검증됨?"
+            output: "완결성 점수 + Gap 리스트"
+          
+          find_validation_gaps:
+            query: |
+              MATCH path = (s:SteveHypothesis {id: $hypothesis_id})
+                           -[:BASED_ON|REQUIRES_VALIDATION*1..10]->(data)
+              WHERE NOT (data)-[:VERIFIED_BY]->()
+              RETURN data as unverified_data
+            
+            output: "미검증 데이터 포인트 리스트"
+        
+        quality_comparison:
+          _description: "품질 패턴과 비교"
+          
+          compare_with_grade_a:
+            index: "quality_patterns_index"
+            filter: "quality_grade='A'"
+            similarity_threshold: 0.7
+            
+            result:
+              high_similarity: "Grade A 가능"
+              medium_similarity: "Grade B-C"
+              low_similarity: "Grade D, 재작성 필요"
+      
+      output_to_graph:
+        - type: "StewartApproval"
+          links_to: ["SteveHypothesis", "ValidationResult", "QualityGrade"]
+        
+        - type: "StewartFeedback"
+          links_to: ["Gap", "ImprovementSuggestion"]
+    
+    dependencies:
+      requires:
+        - "모든 agent의 결과물 접근"
+      
+      provides_to:
+        - owner: "최종 품질 보증"
+        - "모든 agent": "피드백"
+
+# ========================================
+# Feedback Loop System
+# @section: feedback_system
+# ========================================
+
+feedback_loop_system:
+  _id: "umis_feedback_loop"
+  _description: "UMIS 핵심 - 점진적 품질 향상"
+  _umis_principle: "가설과 판단에는 근거와 검증이 필요하다"
+  
+  loop_structure:
+    
+    iteration_1:
+      steve_action: "초기 가설 생성"
+      steve_query: "기본 패턴 검색"
+      steve_output: "가설 v1 (기본)"
+      
+      stewart_validation: "3단계 검증"
+      stewart_result: 
+        stage_1: "PASS (필수 조건 만족)"
+        stage_2: "FAIL (품질 패턴과 차이)"
+        stage_3: "PASS (논리 체인 완결)"
+      
+      stewart_feedback:
+        grade: "C"
+        action: "REVISE"
+        specific: "Bill 정량 근거 약함, 구체적 계산 필요"
+      
+      learning:
+        query_weight: "초기 쿼리 가중치 감소 (× 0.95)"
+        pattern: "이 쿼리 패턴은 Grade C 수준"
+    
+    iteration_2:
+      steve_action: "쿼리 개선 (LLM)"
+      steve_query: "패턴 + 검증 프레임워크 함께 검색"
+      steve_output: "가설 v2 (Bill 계산 포함)"
+      
+      stewart_validation: "3단계 재검증"
+      stewart_result:
+        stage_1: "PASS"
+        stage_2: "PASS (품질 향상)"
+        stage_3: "FAIL (Rachel 검증 미완료)"
+      
+      stewart_feedback:
+        grade: "B"
+        action: "FILL_GAPS"
+        specific: "Rachel에게 SRC_003 검증 요청"
+      
+      learning:
+        improvement: "iteration_1 → iteration_2 품질 향상"
+        pattern: "검증 프레임워크 포함 = 효과적"
+    
+    iteration_3:
+      steve_action: "Rachel 검증 추가"
+      steve_query: "완전한 검색 (학습된 패턴)"
+      steve_output: "가설 v3 (완전)"
+      
+      stewart_validation: "3단계 재검증"
+      stewart_result:
+        stage_1: "PASS"
+        stage_2: "PASS"
+        stage_3: "PASS"
+      
+      stewart_feedback:
+        grade: "A"
+        action: "APPROVE"
+      
+      learning:
+        successful_pattern: "패턴 + 계산 + 출처 = Grade A"
+        store: "성공 패턴 DB에 저장"
+        weight_update: "사용된 청크 가중치 × 1.1"
+        next_time: "이 조합을 자동으로 우선 검색"
+  
+  feedback_storage:
+    database: "SQLite"
+    
+    tables:
+      successful_queries:
+        schema:
+          - query_id: "TEXT PRIMARY KEY"
+          - query_text: "TEXT"
+          - agent: "TEXT"
+          - pattern_used: "TEXT"
+          - quality_grade: "TEXT"
+          - iteration_count: "INTEGER"
+          - chunks_used: "JSON"
+          - created_at: "TIMESTAMP"
+        
+        purpose: "성공 패턴 재사용"
+      
+      failed_queries:
+        schema:
+          - query_id: "TEXT PRIMARY KEY"
+          - query_text: "TEXT"
+          - failure_reason: "TEXT"
+          - stewart_feedback: "TEXT"
+          - correction: "TEXT"
+        
+        purpose: "실패에서 학습"
+      
+      chunk_performance:
+        schema:
+          - chunk_id: "TEXT PRIMARY KEY"
+          - usage_count: "INTEGER"
+          - approval_count: "INTEGER"
+          - rejection_count: "INTEGER"
+          - avg_quality_grade: "REAL"
+          - current_weight: "REAL"
+        
+        purpose: "청크별 성능 추적"
+
+# ========================================
+# Integration with UMIS Guidelines
+# @section: umis_integration
+# ========================================
+
+umis_guidelines_integration:
+  _description: "UMIS v6.2 Guidelines와의 통합"
+  
+  mandatory_validation_checkpoints:
+    _umis_reference: "SECTION 4: Support & Validation System"
+    
+    checkpoint_1:
+      phase: "Albert 구조 분석 완료"
+      validators: ["bill", "rachel", "stewart"]
+      
+      rag_implementation:
+        stewart_check:
+          - graph_query: "Albert 결론 → Data → Rachel 검증 체인 확인"
+          - rule_check: "구조 분석 필수 규칙 만족?"
+          - quality_check: "Grade A 구조 분석과 유사도?"
+    
+    checkpoint_2:
+      phase: "Steve 기회 가설 생성"
+      validators: ["albert", "bill", "rachel"]
+      
+      rag_implementation:
+        multi_agent_validation:
+          albert_check:
+            query: "Steve 가설이 Albert 관찰에 근거하는가?"
+            graph: "SteveHypothesis -[TRIGGERS]-> AlbertObservation"
+          
+          bill_check:
+            query: "정량 근거 충분한가?"
+            graph: "SteveHypothesis -[REQUIRES_VALIDATION]-> BillCalculation"
+          
+          rachel_check:
+            query: "데이터 출처 검증되었나?"
+            graph: "BillCalculation -> Data -> Source -> RachelVerification"
+    
+    checkpoint_3:
+      phase: "Bill SAM 계산 완료"
+      validators: ["rachel", "stewart"]
+      
+      rag_implementation:
+        rachel_check:
+          query: "모든 데이터에 SRC_ID?"
+          graph: "Data -[SOURCED_FROM]-> Source"
+        
+        stewart_check:
+          query: "계산 로직 투명한가?"
+          rule: "Estimation_Details 7개 섹션"
+    
+    checkpoint_4:
+      phase: "Owner 최종 의사결정"
+      validators: ["stewart"]
+      
+      rag_implementation:
+        stewart_final_check:
+          query: "전체 논리 체인 완결?"
+          graph: "Owner 결정 ← Steve ← Albert ← Bill ← Rachel ← Source"
+          completeness: "모든 링크 검증됨?"
+  
+  umis_workflows_mapping:
+    
+    discovery_sprint:
+      _umis_reference: "adaptive_entry_gate"
+      
+      rag_support:
+        parallel_exploration:
+          - agent: "albert"
+            rag_query: "시장 구조 패턴 검색"
+            chunking: "macro (시장 전체)"
+          
+          - agent: "steve"
+            rag_query: "초기 기회 스캔"
+            chunking: "pattern (빠른 매칭)"
+          
+          - agent: "bill"
+            rag_query: "규모 추정 방법"
+            chunking: "calculation"
+        
+        convergence:
+          stewart_role: "5개 agent 결과 통합 검증"
+          graph_query: "5개 관찰이 일관되는가?"
+    
+    comprehensive_study:
+      _umis_reference: "13개 차원 분석"
+      
+      rag_support:
+        albert_13_dimensions:
+          - dimension: "시장 정의"
+            rag_query: "시장 경계 및 정의 패턴"
+            chunking: "meso"
+          
+          - dimension: "경쟁 구조"
+            rag_query: "경쟁 역학 패턴"
+            chunking: "meso"
+          
+          # ... 11개 더
+        
+        steve_pattern_recognition:
+          - phase: "Phase 2 다차원 분석"
+            rag_query: "Albert 13개 차원 → 패턴 매칭"
+            graph_query: "어떤 패턴들이 조합 가능?"
+        
+        bill_quantification:
+          - phase: "Phase 4 정량 분석"
+            rag_query: "TAM/SAM/SOM 계산 프레임워크"
+            chunking: "calculation"
+
+# ========================================
+# Technical Implementation Stack
+# @section: tech_stack
+# ========================================
+
+technology_stack:
+  
+  layer_1_vector:
+    _status: "implemented"
+    
+    components:
+      - name: "Chroma DB"
+        version: "1.3.0"
+        role: "벡터 저장 및 검색"
+        cost: "무료 (로컬)"
+      
+      - name: "OpenAI Embeddings"
+        model: "text-embedding-3-large"
+        dimension: 3072
+        cost: "$0.13 / 1M tokens"
+      
+      - name: "LangChain"
+        version: "1.0.3"
+        role: "RAG 프레임워크"
+  
+  layer_2_graph:
+    _status: "planned"
+    
+    components:
+      - name: "Neo4j"
+        version: "5.x Community"
+        role: "지식 그래프"
+        cost: "무료"
+      
+      - name: "py2neo"
+        role: "Python driver"
+      
+      - name: "Cypher"
+        role: "그래프 쿼리 언어"
+    
+    graph_schema:
+      nodes: ["Pattern", "Case", "AgentOutput", "Data", "Source"]
+      relationships: ["COMBINES_WITH", "COUNTERS", "VERIFIED_BY", "APPROVED_BY", ...]
+      indexes:
+        - node: "Pattern"
+          property: "id"
+        - node: "AgentOutput"
+          property: "agent"
+  
+  layer_3_learning:
+    _status: "planned"
+    
+    components:
+      - name: "SQLite"
+        role: "피드백 및 가중치 저장"
+        cost: "무료"
+      
+      - name: "GPT-4"
+        role: "쿼리 개선 (Query refinement)"
+        cost: "$10 / 1M tokens"
+      
+      - name: "NumPy"
+        role: "가중치 계산"
+  
+  monitoring:
+    - name: "LangSmith"
+      role: "LLM 호출 추적 (선택)"
+      cost: "무료 tier 있음"
+    
+    - name: "Loguru"
+      role: "로깅"
+
+# ========================================
+# Development Roadmap
+# @section: roadmap
+# ========================================
+
+development_roadmap:
+  
+  week_1_knowledge_graph:
+    goal: "패턴 간 관계 및 검증 체인 구현"
+    
+    day_1:
+      - "Neo4j Docker 설정"
+      - "기본 스키마 설계"
+      - "Python driver 연동 테스트"
+    
+    day_2_3:
+      - "패턴 관계 30개 정의 (YAML)"
+      - "Graph에 import"
+      - "관계 쿼리 테스트"
+    
+    day_4_5:
+      - "Hybrid 검색 엔진 구현"
+      - "Vector → Graph 확장 검색"
+      - "결과 통합 알고리즘"
+    
+    day_6_7:
+      - "Steve에 통합"
+      - "search_hybrid_patterns() 구현"
+      - "전체 테스트"
+    
+    deliverables:
+      - "umis_rag/graph/knowledge_graph.py"
+      - "umis_rag/graph/config/pattern_relationships.yaml"
+      - "umis_rag/graph/hybrid_retriever.py"
+  
+  week_2_stewart_meta_rag:
+    goal: "검증 자동화 및 Meta-RAG"
+    
+    day_1_2:
+      - "검증 규칙 청킹 (agent별)"
+      - "validation_rules_index 구축"
+      - "필수 조건 체크 엔진"
+    
+    day_3_4:
+      - "품질 패턴 수집 (좋은/나쁜 예시)"
+      - "quality_patterns_index 구축"
+      - "유사도 비교 엔진"
+    
+    day_5_6:
+      - "Graph 기반 논리 체인 추적"
+      - "Gap 자동 발견"
+      - "Stewart 3단계 검증 통합"
+    
+    day_7:
+      - "전체 테스트"
+      - "피드백 메시지 생성"
+    
+    deliverables:
+      - "umis_rag/agents/stewart.py"
+      - "umis_rag/validation/rules_index.py"
+      - "umis_rag/validation/quality_checker.py"
+  
+  week_3_adaptive_learning:
+    goal: "피드백 학습 및 자동 개선"
+    
+    day_1_2:
+      - "Query refinement (LLM)"
+      - "피드백 → 쿼리 재작성"
+      - "반복 검색 로직"
+    
+    day_3_4:
+      - "Weighted retrieval 구현"
+      - "가중치 업데이트 로직"
+      - "SQLite 저장"
+    
+    day_5:
+      - "강화학습 (선택)"
+      - "Multi-Armed Bandits"
+      - "패턴 선택 최적화"
+    
+    day_6_7:
+      - "전체 통합 테스트"
+      - "성능 벤치마크"
+      - "문서화"
+    
+    deliverables:
+      - "umis_rag/adaptive/query_refiner.py"
+      - "umis_rag/adaptive/weighted_retriever.py"
+      - "umis_rag/adaptive/feedback_db.py"
+
+# ========================================
+# Performance & Quality Metrics
+# @section: metrics
+# ========================================
+
+success_metrics:
+  
+  retrieval_quality:
+    metric_1:
+      name: "패턴 매칭 정확도"
+      target: "> 90%"
+      measurement: "Albert 트리거 → 올바른 패턴 Top-3에 포함"
+    
+    metric_2:
+      name: "사례 관련성"
+      target: "> 85%"
+      measurement: "산업 유사 사례 Top-5 평균 유사도"
+    
+    metric_3:
+      name: "검증 체인 완결성"
+      target: "100%"
+      measurement: "Graph에서 Source까지 추적 가능"
+  
+  validation_automation:
+    metric_1:
+      name: "Stewart 자동 검증 정확도"
+      target: "> 95%"
+      measurement: "Stewart 판단 vs 사람 판단 일치율"
+    
+    metric_2:
+      name: "Gap 발견율"
+      target: "100%"
+      measurement: "누락된 검증 자동 발견"
+  
+  learning_effectiveness:
+    metric_1:
+      name: "반복 시 품질 향상"
+      target: "iteration별 +1 grade"
+      measurement: "D → C → B → A 진행률"
+    
+    metric_2:
+      name: "쿼리 효율 개선"
+      target: "50% 감소"
+      measurement: "승인까지 평균 쿼리 수"
+  
+  system_performance:
+    latency:
+      vector_search: "< 100ms"
+      graph_query: "< 200ms"
+      hybrid_search: "< 300ms"
+      llm_refinement: "< 2s"
+    
+    cost:
+      daily_usage:
+        embeddings: "< $0.01"
+        llm_calls: "< $0.50"
+        total: "< $0.51 / day"
+      
+      monthly: "< $15"
+
+# ========================================
+# Critical Design Decisions
+# @section: design_decisions
+# ========================================
+
+critical_design_decisions:
+  
+  decision_1_storage_model:
+    question: "Single collection vs Multi-collection?"
+    
+    chosen: "Single collection (umis_knowledge_base)"
+    
+    rationale:
+      - "Single Source of Truth"
+      - "Cross-agent 협업 용이"
+      - "메타데이터 일관성"
+      - "source_id로 연결"
+    
+    alternative_rejected: "Agent별 별도 collection"
+    rejection_reason: "중복, 일관성 문제, 협업 복잡"
+  
+  decision_2_chunking_strategy:
+    question: "Agent별 청킹 vs 단일 청킹?"
+    
+    chosen: "Agent별 적응형 청킹"
+    
+    rationale:
+      - "같은 데이터, 다른 관점"
+      - "Steve: case (완결성), Bill: calculation (재사용)"
+      - "각 agent의 정보 요구 특성 반영"
+    
+    alternative_rejected: "고정 크기 청킹 (500 토큰)"
+    rejection_reason: "agent 특성 무시, 비효율"
+  
+  decision_3_embeddings_model:
+    question: "small (저렴) vs large (고품질)?"
+    
+    chosen: "text-embedding-3-large"
+    
+    rationale:
+      - "향후 대용량 비정형 데이터"
+      - "미묘한 문맥 차이 critical"
+      - "비용 차이 미미 ($10/년)"
+      - "UMIS = 전문가 시스템, 품질 우선"
+    
+    alternative_rejected: "text-embedding-3-small"
+    rejection_reason: "단기 비용 절감 < 장기 품질"
+  
+  decision_4_graph_necessity:
+    question: "Vector만 vs Vector + Graph?"
+    
+    chosen: "Vector + Graph Hybrid"
+    
+    rationale:
+      - "패턴 조합 관계 표현 필수"
+      - "검증 체인 추적 필수 (Stewart)"
+      - "UMIS 피드백 루프 구현 필수"
+      - "Vector 단독으로는 불가능"
+    
+    alternative_rejected: "Vector RAG only"
+    rejection_reason: "UMIS 본질 구현 불가"
+  
+  decision_5_stewart_architecture:
+    question: "일반 RAG vs Meta-RAG?"
+    
+    chosen: "Meta-RAG (3개 전용 인덱스 + Graph)"
+    
+    rationale:
+      - "Stewart = 다른 agent 평가 역할"
+      - "일반 RAG로는 검증 불가능"
+      - "Graph로 논리 체인 추적 필수"
+    
+    alternative_rejected: "단일 RAG"
+    rejection_reason: "역할 구현 불가능"
+  
+  decision_6_learning_approach:
+    question: "정적 vs 학습형?"
+    
+    chosen: "Adaptive Learning (피드백 반영)"
+    
+    rationale:
+      - "UMIS는 피드백 루프 핵심"
+      - "점진적 지능 시스템"
+      - "사용할수록 향상"
+    
+    alternative_rejected: "정적 RAG"
+    rejection_reason: "UMIS 철학과 상충"
+
+# ========================================
+# UMIS-Specific Enhancements
+# @section: umis_enhancements
+# ========================================
+
+umis_specific_features:
+  _description: "UMIS의 고유 특성을 반영한 RAG 기능"
+  
+  feature_1_deliverable_standards:
+    _umis_reference: "umis_deliverable_standards_v6.2.yaml"
+    
+    implementation:
+      rachel_source_registry:
+        rag_integration: |
+          Rachel이 source_registry.yaml 생성 시
+          RAG에서 모든 SRC_ID 자동 추적
+          
+          Graph 쿼리:
+            MATCH (data:Data)-[:SOURCED_FROM]->(src:Source)
+            RETURN DISTINCT src.id, src.type, src.url
+          
+          → source_registry.yaml 자동 생성!
+      
+      bill_estimation_details:
+        rag_integration: |
+          Bill의 추정치마다 EST_ID 부여
+          RAG/Graph에서 추정 논리 저장
+          
+          검색 가능:
+            "EST_001의 추정 논리는?"
+            → 7개 섹션 반환
+      
+      steve_opportunity_traceability:
+        rag_integration: |
+          Steve 가설의 근거 체인 완전 추적
+          
+          Graph:
+            OPP_001 (가설)
+              → Albert 관찰
+              → Bill SAM 계산
+              → Rachel SRC_005
+              → 정부 통계
+          
+          → 완전한 Traceability!
+  
+  feature_2_call_sign_system:
+    _umis_reference: "Call Sign System (v6.2)"
+    
+    implementation:
+      project_lifecycle:
+        start_signal: "[PROJECT_START]"
+        
+        rag_action:
+          - create: "프로젝트 컨텍스트 노드 (Graph)"
+          - initialize: "프로젝트별 컬렉션 (optional)"
+          - track: "프로젝트 진행 상태"
+        
+        end_signal: "[PROJECT_END]"
+        
+        rag_action:
+          - archive: "프로젝트 컬렉션 snapshot"
+          - index: "완료 프로젝트 검색 가능하게"
+          - learn: "성공/실패 패턴 학습"
+  
+  feature_3_guesstimation_transparency:
+    _umis_reference: "Bill Estimation_Details 7개 섹션"
+    
+    implementation:
+      estimation_tracking:
+        when_bill_estimates:
+          - action: "EST_ID 자동 생성"
+          - create_chunk: 
+              content: |
+                [EST_001] 피아노 학원 비중 30% 추정
+                
+                [1] 추정 필요 이유: 공식 통계 없음
+                [2] 사용 데이터: 악기 학원 전체 (SRC_010)
+                [3] 추정 논리: 
+                    - 전체 악기 학원: 5,000개
+                    - 피아노 관련 검색량 30%
+                    - 학원 간 규모 유사 가정
+                [4] 신뢰도: Medium (간접 추정)
+                [5] 검증 방법: 업계 인터뷰
+                [6] 대체 접근: 시도했으나 데이터 부족
+                [7] 사용 위치: TAM 계산에 사용
+              
+              metadata:
+                est_id: "EST_001"
+                reliability: "medium"
+                bill_chunking_level: "calculation"
+          
+          - graph_link:
+              create: "(BillCalculation)-[:USES_ESTIMATION]->(EST_001)"
+              track: "어떤 계산에 어떤 추정 사용했나"
+  
+  feature_4_checkpoint_integration:
+    _umis_reference: "4개 필수 검증 체크포인트"
+    
+    implementation:
+      checkpoint_as_graph_milestone:
+        - checkpoint: "CP1_Albert_구조분석"
+          graph_check: |
+            MATCH (a:AlbertObservation)
+                  -[:VERIFIED_BY]->(r:RachelVerification)
+            WHERE a.project_id = $project_id
+            RETURN count(r) as verification_count
+          
+          pass_criteria: "verification_count > 0"
+        
+        - checkpoint: "CP2_Steve_가설생성"
+          graph_check: |
+            MATCH (s:SteveHypothesis)
+                  -[:BASED_ON]->(a:AlbertObservation),
+                  (s)-[:REQUIRES_VALIDATION]->(b:BillCalculation)
+                  -[:SOURCED_FROM]->(src:Source)
+                  -[:VERIFIED_BY]->(r:RachelVerification)
+            RETURN count(*) as complete_chain
+          
+          pass_criteria: "complete_chain > 0"
+        
+        - checkpoint: "CP3_Bill_SAM계산"
+          graph_check: |
+            MATCH (b:BillCalculation)
+                  -[:SOURCED_FROM*1..3]->(src:Source)
+                  -[:VERIFIED_BY]->(r:RachelVerification)
+            WHERE b.calc_type = 'SAM'
+            RETURN count(DISTINCT src) as verified_sources
+          
+          pass_criteria: "verified_sources >= 2"
+        
+        - checkpoint: "CP4_Owner_최종결정"
+          graph_check: |
+            MATCH path = (o:OwnerDecision)
+                         -[:BASED_ON*1..20]->(src:Source)
+            WHERE ALL(n in nodes(path) WHERE n.validated = true)
+            RETURN length(path) as chain_depth
+          
+          pass_criteria: "chain_depth > 0 AND all_validated"
+
+# ========================================
+# END OF ARCHITECTURE SPEC
+# ========================================
+

@@ -3,7 +3,7 @@ RAE (Rational Agent Evaluation) Memory
 
 Guardian의 과거 평가 이력 저장 및 재사용
 
-schema_registry.yaml 준수:
+config/schema_registry.yaml 준수:
 - rae_id: RAE-xxxxxxxx
 - deliverable_id: 평가 대상 ID
 - grade: A/B/C/D

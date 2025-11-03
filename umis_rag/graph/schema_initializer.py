@@ -1,7 +1,7 @@
 """
 Neo4j Schema Initializer
 
-schema_registry.yaml의 Knowledge Graph 스키마 생성:
+config/schema_registry.yaml의 Knowledge Graph 스키마 생성:
 - Pattern 노드 제약
 - Case 노드 제약
 - 인덱스 생성

@@ -1,212 +1,102 @@
 # UMIS - Universal Market Intelligence System
 
 [![GitHub](https://img.shields.io/badge/GitHub-umis-blue?logo=github)](https://github.com/kangminlee-maker/umis)
-[![Version](https://img.shields.io/badge/version-6.3.0--alpha-orange)](https://github.com/kangminlee-maker/umis/releases)
+[![Version](https://img.shields.io/badge/version-7.0.0-green)](https://github.com/kangminlee-maker/umis/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-
-**버전:** 7.0.0  
-**날짜:** 2025-11-03  
-**대상:** 코딩 못 하는 사용자 (Cursor만!)
 
 > **"불확실성을 기회로 전환하는 시장 분석 시스템"**
 
 ---
 
-## 🎯 UMIS v7.0.0란?
+## 🎯 UMIS란?
 
-AI 에이전트 5명이 협업하여 시장을 분석하는 프레임워크입니다.
+AI 에이전트 5명이 협업하여 시장을 분석하는 **RAG 기반 프레임워크**
 
-**v7.0.0 신규:**
-- ✅ Explorer에게 RAG 추가!
-- ✅ 54개 검증된 패턴/사례 자동 검색
-- ✅ Cursor Composer 완전 통합
-- ✅ Agent 이름 커스터마이징
-- ✅ Architecture v3.0 설계 (16개 개선안)
-- ✅ schema_registry.yaml (감사성·재현성)
+### 핵심 특징
+- ✅ **5-Agent 협업**: Observer, Explorer, Quantifier, Validator, Guardian
+- ✅ **RAG 지식 활용**: 54개 검증된 패턴/사례 자동 검색
+- ✅ **완전한 추적성**: 모든 결론 → 원본 데이터 역추적
+- ✅ **재검증 가능**: Excel 함수, YAML 스키마
+- ✅ **코딩 불필요**: Cursor Composer만으로 사용
+
+### v7.0.0 주요 기능
+- ⭐ Explorer RAG (31개 비즈니스 모델 + 23개 Disruption 패턴)
+- ⭐ Knowledge Graph (패턴 조합 자동 발견)
+- ⭐ AI 자동 설치 (`"UMIS 설치해줘"`)
+- ⭐ Agent 이름 커스터마이징 (Albert, Steve → Jane, Alex)
 
 ---
 
-## 📦 설치
+## 📦 빠른 시작
 
+### 1. 설치
+
+```
+Cursor에서:
+"UMIS 설치해줘" 또는 "@setup"
+```
+
+또는:
 ```bash
-# 1. 레포 클론
 git clone https://github.com/kangminlee-maker/umis.git
 cd umis
-
-# 2. 초기 설정 (5분)
-# SETUP.md 참고
+python setup/setup.py
 ```
 
----
+**상세**: [INSTALL.md](docs/INSTALL.md) 참조
 
-## ⚡ 30초 빠른 시작
-
-**Cursor Composer (Cmd+I):**
+### 2. 사용
 
 ```
+Cursor Composer (Cmd+I):
 umis.yaml 첨부
 
-"@Steve, 음악 스트리밍 구독 서비스 시장 기회 분석해줘"
+"@Steve, 음악 스트리밍 구독 서비스 시장 분석해줘"
 ```
 
-**끝!** 🎉
-
-→ Steve (Explorer)가 RAG를 자동으로 활용합니다!
+**완료!** Steve (Explorer)가 RAG로 패턴을 자동 검색합니다.
 
 ---
 
-## 🤖 UMIS Agent (v7.0.0)
+## 🤖 Agent 커스터마이징
 
-```
-Observer (Albert) → 시장 관찰 (YAML)
-Explorer (Steve) → 기회 발굴 (RAG!) ⭐
-Quantifier (Bill) → 정량 분석 (YAML)
-Validator (Rachel) → 데이터 검증 (YAML)
-Guardian (Stewart) → 품질 관리 (YAML)
-Owner → 의사결정
-
-현재: Explorer만 RAG 사용!
-향후: 전체 Agent RAG 확장 계획
-```
-
----
-
-## 🎨 Agent 커스터마이징
-
-**agent_names.yaml 수정:**
+`config/agent_names.yaml` 파일 수정:
 
 ```yaml
-# 기본 (UMIS v6.2 전통)
-observer: Albert
+# 기본
 explorer: Steve
-quantifier: Bill
-validator: Rachel
-guardian: Stewart
 
-# 커스텀 (1줄 수정!)
+# 커스텀 (1줄만 수정!)
 explorer: Alex
-
-# 한국어도 가능
+# 또는
 explorer: 탐색자
 ```
 
-**사용:**
+사용:
 ```
-Cursor:
-  "@Alex, 기회 찾아봐"
-  
-  → Alex가 패턴을 검색합니다...
+"@Alex, 기회 찾아봐"  → Alex가 검색합니다
 ```
 
-**양방향:**
-- 입력: @Alex → Explorer
-- 출력: Explorer → Alex
+**양방향 매핑**: @Alex → Explorer / Explorer → Alex
 
 ---
 
-## 💡 v7.0.0 주요 기능
-
-```yaml
-Explorer RAG:
-  ✅ 54개 검증된 패턴/사례
-  ✅ text-embedding-3-large (고품질)
-  ✅ 자동 검색 (Cursor Agent 모드)
-
-Cursor 통합:
-  ✅ .cursorrules 자동화
-  ✅ 대화만! 코딩 불필요!
-  ✅ 30초 피드백 루프
-
-Agent 커스터마이징:
-  ✅ agent_names.yaml
-  ✅ Albert/Steve/... (기본)
-  ✅ Jane/Alex/탐색자/... (커스텀)
-```
-
----
-
-## 📚 주요 파일
-
-**핵심 YAML:**
-- **umis.yaml** - 메인 가이드라인 (Cursor에 첨부)
-- **umis_deliverable_standards.yaml** - 산출물 표준
-- **agent_names.yaml** - Agent 이름 커스터마이징
-
-**RAG 데이터:**
-- **data/raw/umis_business_model_patterns.yaml** - 31개 사업모델 패턴
-- **data/raw/umis_disruption_patterns.yaml** - 23개 Disruption 패턴
-
----
-
-## 📁 프로젝트 구조
-
-```
-umis/
-├── 핵심 YAML
-│   ├── umis.yaml (메인 가이드라인)
-│   ├── umis_deliverable_standards.yaml (산출물 표준)
-│   ├── umis_examples.yaml (예제)
-│   └── agent_names.yaml (Agent 커스터마이징)
-│
-├── RAG 데이터
-│   └── data/
-│       ├── raw/ (원본 YAML)
-│       │   ├── umis_business_model_patterns.yaml (31 패턴)
-│       │   └── umis_disruption_patterns.yaml (23 패턴)
-│       ├── chunks/ (청크 JSONL)
-│       └── chroma/ (벡터 DB, 54개 문서)
-│
-├── RAG 시스템 (v7.0.0)
-│   ├── umis_rag/ (Python 패키지)
-│   ├── scripts/ (RAG 빌드/검색)
-│   └── notebooks/ (프로토타입)
-│
-├── 문서
-│   ├── docs/ (UMIS v6.2 가이드)
-│   └── rag/docs/ (RAG 아키텍처 65개)
-│
-└── 설정
-    ├── .cursorrules (UMIS 자동화 규칙)
-    ├── SETUP.md (초기 설정)
-    ├── START_HERE.md (빠른 시작)
-    └── env.template (API 키)
-```
-
----
-
-## 🚀 사용 흐름
-
-```
-1. Cursor Composer (Cmd+I)
-2. umis.yaml 첨부
-3. "@Steve, 시장 분석해줘"
-
-→ Observer 관찰
-→ Explorer RAG 검색 (자동!)
-→ subscription_model 발견
-→ 코웨이 사례 학습
-→ 가설 생성
-
-→ 대화만! ✨
-```
-
----
-
-## 📖 문서 & 가이드
+## 📚 문서
 
 ### 시작하기
-- **[START_HERE.md](START_HERE.md)** - 30초 빠른 시작
-- **[SETUP.md](SETUP.md)** - 초기 설정 가이드 (5분)
-- **[rag/docs/guides/01_CURSOR_QUICK_START.md](rag/docs/guides/01_CURSOR_QUICK_START.md)** - Cursor 사용법
+- **[INSTALL.md](docs/INSTALL.md)** - 설치 가이드
+- **[setup/START_HERE.md](setup/START_HERE.md)** - 30초 빠른 시작
+- **[umis.yaml](umis.yaml)** - 메인 가이드라인 (Cursor 첨부용)
 
-### 참고 문서
-- **[UMIS v6.2 Complete Guide](docs/UMIS_v6.2_Complete_Guide.md)** - 전체 프레임워크
-- **[RAG Architecture](rag/docs/architecture/)** - RAG 시스템 설계 (65개 문서)
-- **[CHANGELOG.md](CHANGELOG.md)** - 버전 히스토리
+### 이해하기
+- **[UMIS_ARCHITECTURE_BLUEPRINT.md](UMIS_ARCHITECTURE_BLUEPRINT.md)** - 전체 아키텍처 ⭐
+- **[FOLDER_STRUCTURE.md](docs/FOLDER_STRUCTURE.md)** - 폴더 구조
+- **[CURRENT_STATUS.md](CURRENT_STATUS.md)** - 현재 상태
+- **[CHANGELOG.md](CHANGELOG.md)** - 버전 변경 이력
 
 ### 커스터마이징
-- **[agent_names.yaml](agent_names.yaml)** - Agent 이름 변경
-- **[.cursorrules](.cursorrules)** - UMIS Cursor 자동화 규칙
+- **[config/agent_names.yaml](config/agent_names.yaml)** - Agent 이름 변경
+- **[.cursorrules](.cursorrules)** - Cursor 자동화 규칙
 
 ---
 
@@ -215,10 +105,12 @@ umis/
 이슈와 PR을 환영합니다!
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
+
+**기여 가이드**: [VERSION_UPDATE_CHECKLIST.md](docs/VERSION_UPDATE_CHECKLIST.md)
 
 ---
 
@@ -230,8 +122,8 @@ MIT License - 자유롭게 사용, 수정, 배포 가능합니다.
 
 ## 📞 문의
 
-- **GitHub Issues:** [umis/issues](https://github.com/kangminlee-maker/umis/issues)
-- **Discussions:** [umis/discussions](https://github.com/kangminlee-maker/umis/discussions)
+- **GitHub Issues**: [umis/issues](https://github.com/kangminlee-maker/umis/issues)
+- **Discussions**: [umis/discussions](https://github.com/kangminlee-maker/umis/discussions)
 
 ---
 
