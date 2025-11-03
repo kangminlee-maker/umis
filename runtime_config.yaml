@@ -1,0 +1,98 @@
+# UMIS Runtime Configuration
+# Fail-Safe Tier 2: Mode Toggle
+
+# ========================================
+# 실행 모드
+# ========================================
+
+mode: hybrid  # yaml_only / hybrid / rag_full
+
+# yaml_only: YAML 기반만 (RAG 비활성)
+# hybrid: YAML + Vector RAG (기본, 안정적)
+# rag_full: YAML + Vector + Graph + Memory (모든 기능)
+
+# ========================================
+# Layer별 활성화
+# ========================================
+
+layers:
+  vector: true      # Vector RAG (Explorer)
+  graph: true       # Knowledge Graph (Hybrid Search)
+  memory: true      # Guardian Memory (QueryMemory, GoalMemory)
+  meta: false       # Meta-RAG (미구현, 향후)
+
+# ========================================
+# Fail-Safe 설정
+# ========================================
+
+fallback:
+  # Vector RAG 실패 시
+  vector_fail: yaml_only
+  
+  # Graph 실패 시
+  graph_fail: skip  # Vector만 사용
+  
+  # Memory 실패 시
+  memory_fail: skip  # Memory 없이 진행
+  
+  # Meta-RAG 실패 시
+  meta_fail: skip
+
+# ========================================
+# Circuit Breaker (Tier 3)
+# ========================================
+
+circuit_breaker:
+  enabled: true
+  
+  # 실패 카운트
+  failure_threshold: 3
+  
+  # 타임아웃
+  timeout_seconds: 30
+  
+  # 복구 시간 (초)
+  recovery_timeout: 60
+  
+  # 자동 재시도
+  auto_retry: true
+  max_retries: 2
+
+# ========================================
+# 성능 설정
+# ========================================
+
+performance:
+  # 캐시
+  cache_enabled: true
+  cache_ttl_hours: 24
+  
+  # 동시성
+  max_concurrent_requests: 5
+  
+  # 로깅
+  detailed_logging: true
+
+# ========================================
+# 개발/프로덕션 모드
+# ========================================
+
+environment: development  # development / production
+
+development:
+  verbose_errors: true
+  enable_profiling: true
+  mock_llm: false
+
+production:
+  verbose_errors: false
+  enable_profiling: false
+  strict_validation: true
+
+# ========================================
+# 버전
+# ========================================
+
+version: "1.0.0"
+updated_at: "2024-11-03"
+
