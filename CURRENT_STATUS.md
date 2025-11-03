@@ -1,14 +1,67 @@
-# UMIS v7.0.0 현재 상태
+# UMIS v7.1.0-dev1 현재 상태
 
-**버전**: v7.0.0  
+**버전**: v7.1.0-dev1  
 **마지막 업데이트**: 2025-11-03  
-**상태**: Production Ready ✅
+**상태**: Development (Agent RAG 확장)
 
 ---
 
 ## 🏆 완성된 기능
 
-### 1. Vector RAG (Explorer)
+### 1. 모든 Agent RAG 클래스 ⭐ 신규!
+
+```yaml
+상태: ✅ 구현 완료 (v7.1.0-dev1)
+
+Agent:
+  Explorer: ✅ 기회 발굴 (패턴/사례)
+  Observer: ✅ 구조 분석 (구조/가치사슬) - 신규!
+  Quantifier: ✅ 정량 분석 (방법론/벤치마크) - 신규!
+  Validator: ✅ 데이터 검증 (소스/정의) - 신규!
+
+총 Collections: 8개
+  - explorer_knowledge_base ✅ (기존)
+  - projected_index ✅ (기존)
+  - calculation_methodologies ⏳ (구축 필요)
+  - market_benchmarks ⏳ (구축 필요)
+  - data_sources_registry ⏳ (구축 필요)
+  - definition_validation_cases ⏳ (구축 필요)
+  - market_structure_patterns ⏳ (구축 필요)
+  - value_chain_benchmarks ⏳ (구축 필요)
+```
+
+### 2. Guardian Meta-RAG 활성화 ⭐ 신규!
+
+```yaml
+상태: ✅ 활성화됨 (v7.1.0-dev1)
+
+기능:
+  • QueryMemory - 순환 감지
+  • GoalMemory - 목표 정렬
+  • RAEMemory - 평가 일관성
+  • ThreeStageEvaluator - 품질 평가
+
+.cursorrules 통합:
+  • 프로젝트 시작 시 목표 설정
+  • 매 쿼리마다 순환 감지
+  • 산출물 완성 시 품질 평가
+```
+
+### 3. Knowledge Graph (기본 활성화) ⭐ 개선!
+
+```yaml
+상태: ✅ 기본값으로 활성화 (v7.1.0-dev1)
+
+Explorer.search_patterns(use_graph=True):
+  기본값으로 Hybrid Search 사용
+  
+효과:
+  • 패턴 조합 자동 발견
+  • Confidence 기반 추천
+  • Vector + Graph 통합
+```
+
+### 4. Vector RAG (Explorer)
 
 ```yaml
 상태: ✅ 완전 작동
@@ -223,23 +276,26 @@ Neo4j: 5.13 (Docker Compose)
 
 ## 🎯 다음 단계
 
-### v7.1.0 계획
+### v7.1.0-dev2 (다음 세션)
 
 ```yaml
-Meta-RAG:
-  • System Knowledge RAG
-  • Tool Registry
-  • 자동 워크플로우 최적화
+RAG Collection 구축:
+  • 6개 신규 Collection 데이터 작성
+  • 계산 방법론 (30개)
+  • 시장 벤치마크 (100개)
+  • 데이터 소스 (50개)
+  • 정의 검증 사례 (100개)
+  • 구조 패턴 (30개)
+  • 가치사슬 벤치마크 (50개)
 
-Overlay Layer:
-  • core / team / personal
-  • 팀 협업 지원
-  • 커스텀 패턴 관리
+System RAG:
+  • Tool Registry 작성 (25개 도구)
+  • umis_core.yaml (INDEX) 생성
+  • Key-based 정확 검색
 
-성능 최적화:
-  • 캐싱 전략 개선
-  • 검색 속도 향상
-  • 모니터링 강화
+Excel 자동 생성:
+  • FormulaEngine 구현
+  • 9개 시트 생성기
 ```
 
 ---
