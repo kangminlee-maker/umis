@@ -51,6 +51,7 @@ data/neo4j/  # Neo4j 데이터 (Docker 볼륨)
 # Logs
 logs/
 *.log
+*_log.jsonl  # Learning Loop logs
 
 # Testing
 .pytest_cache/
