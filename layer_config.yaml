@@ -1,0 +1,156 @@
+# UMIS Overlay Layer Configuration
+# 3-Layer 데이터 관리: Core / Team / Personal
+
+# ========================================
+# Overlay Layer 활성화
+# ========================================
+
+enabled: false  # 현재 1인 개발 (비활성)
+# 팀 3명+ 확장 시 true로 변경
+
+# ========================================
+# Layer 정의
+# ========================================
+
+layers:
+  core:
+    path: "data/core/"
+    priority: 3  # 가장 낮음 (Fallback)
+    write_access: "admin_only"
+    validation: "guardian_required"
+    description: "공식 검증된 데이터만"
+    
+    content:
+      - umis_business_model_patterns.yaml
+      - umis_disruption_patterns.yaml
+      - verified_cases.yaml
+    
+    promotion_required: true
+  
+  team:
+    path: "data/team/"
+    priority: 2  # 중간
+    write_access: "team_members"
+    validation: "team_lead_approval"
+    description: "팀 공유 표준 데이터"
+    
+    content:
+      - team_patterns.yaml
+      - team_cases.yaml
+      - team_best_practices.yaml
+    
+    promotion_from: personal
+  
+  personal:
+    path: "data/personal/{user_name}/"
+    priority: 1  # 가장 높음 (우선)
+    write_access: "owner_only"
+    validation: "none"
+    description: "개인 실험 데이터"
+    
+    content:
+      - experiments.yaml
+      - draft_ideas.yaml
+      - scratch.yaml
+    
+    isolated: true
+
+# ========================================
+# 검색 순서 (우선순위)
+# ========================================
+
+search_order: [personal, team, core]
+
+# 이유:
+# - Personal: 개인 실험이 최우선 (덮어쓰기 효과)
+# - Team: 팀 표준이 그 다음
+# - Core: 공식 검증된 것은 Fallback
+
+# ========================================
+# Merge 전략
+# ========================================
+
+merge_strategy:
+  default: replace  # append / replace / patch
+  
+  by_type:
+    patterns: append    # 패턴은 누적
+    cases: append       # 사례도 누적
+    config: replace     # 설정은 덮어쓰기
+
+# ========================================
+# Promotion Workflow
+# ========================================
+
+promotion:
+  personal_to_team:
+    validation:
+      - "team_review"
+      - "2명 이상 승인"
+    
+    approval:
+      - "team_lead"
+    
+    process:
+      - "Pull Request 생성"
+      - "Team Review"
+      - "Approval"
+      - "Merge to team/"
+  
+  team_to_core:
+    validation:
+      - "guardian_evaluation"
+      - "schema_compliance"
+      - "evidence_based"
+    
+    approval:
+      - "core_maintainer"
+    
+    process:
+      - "Guardian 검증 요청"
+      - "Core Maintainer Review"
+      - "Final Approval"
+      - "Merge to core/"
+
+# ========================================
+# ACL (Access Control List)
+# ========================================
+
+acl:
+  core:
+    read: public
+    write: admin_only
+    delete: admin_only
+  
+  team:
+    read: team_members
+    write: team_members
+    delete: team_lead
+  
+  personal:
+    read: owner_only
+    write: owner_only
+    delete: owner_only
+
+# ========================================
+# 현재 사용자 (1인 개발)
+# ========================================
+
+current_user:
+  name: "kangmin"
+  role: "admin"
+  tenant_id: "user_kangmin"
+  
+  # 현재는 모든 Layer 접근 가능
+  access: [core, team, personal]
+
+# ========================================
+# Version
+# ========================================
+
+_meta:
+  version: "1.0.0"
+  created_at: "2024-11-03"
+  schema: "layer_config_v1"
+  status: "designed"  # designed / active
+
