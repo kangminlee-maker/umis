@@ -1,747 +1,679 @@
 # UMIS examples - Compatible with v7.0.0
-# UMIS Examples v6.2
-# UMIS v6.2 Autonomous Intelligence Edition의 구체적 실행 예시
-# 
-# 참조: Section 9 (Implementation Guide) - external_resources
-# 관련: Section 1 (System Definition) - 3-step market analysis framework
-# 
-# v6.2 핵심 개념 반영:
-# - UMIS 실행 프로토콜 (작업리스트 기반 필수)
-# - 병렬 탐색 프로토콜 (AI 자율성 극대화)
-# - 3가지 실행 모드 (Exploration/Collaboration/Precision)
-# - Stewart (Guardian) 자동 문서화 (100% 자동화)
-# - 에이전트 역할 기반 이름 (Observer, Explorer, Quantifier, Validator, Guardian)
+# ========================================
+# UMIS v7.0.0 사용 예시
+# ========================================
+#
+# v7.0.0 주요 특징:
+# - Explorer RAG (54개 패턴/사례 자동 검색)
+# - Knowledge Graph (패턴 조합 자동 발견)
+# - AI 자동 설치 (setup/setup.py)
+# - config/ 폴더 중앙 관리
+# - Cursor Composer 완전 통합
+#
+# 최종 업데이트: 2025-11-03
+# ========================================
 
-adaptive_workflow_examples:
-  version: "6.2"
-  description: "UMIS v6.2의 Adaptive Workflow 실행 예시"
-  last_updated: "2025-10-25"
+_meta:
+  version: "7.0.0"
+  umis_version: "7.0.0"
+  purpose: "UMIS v7.0.0 실제 사용 예시"
+  last_updated: "2025-11-03"
+
+# ========================================
+# PART 1: 빠른 시작 예시
+# ========================================
+
+quick_start_examples:
+  description: "UMIS v7.0.0 빠른 시작"
   
-  # ===== 0. UMIS 실행 프로토콜 Examples (v6.2 필수) =====
-  umis_execution_protocol_examples:
-    description: "작업리스트 기반 실행 - 모든 UMIS 프로젝트의 시작"
+  # 예시 1: AI 자동 설치
+  example_1_auto_install:
+    user: "UMIS 설치해줘"
     
-    task_list_creation:
-      initial_task_list:
-        project_name: "스마트 홈 IoT 시장 분석"
-        total_duration: "2-4주"
-        total_tasks: 8
-        
-        task_1:
-          name: "Discovery Sprint"
-          token_usage: "35%"
-          subtasks:
-            - "목표 명확화 대화"
-            - "초기 시장 경계 설정"
-            - "5개 에이전트 병렬 탐색"
-          checkpoint: "방향성 재확인 → 계속/수정?"
+    ai_action:
+      1: "setup/AI_SETUP_GUIDE.md 참조"
+      2: "python setup/setup.py 실행"
+      3: "패키지 설치 (requirements.txt)"
+      4: ".env 파일 생성"
+      5: "OpenAI API 키 입력 안내"
+      6: "RAG 인덱스 빌드 (python scripts/02_build_index.py)"
+      7: "완료 메시지"
+    
+    duration: "2-3분"
+    cost: "$0.006 (OpenAI API)"
+  
+  # 예시 2: 첫 분석 요청
+  example_2_first_analysis:
+    user: |
+      Cursor Composer (Cmd+I):
+      umis.yaml 첨부
+      
+      "@Explorer, 음악 스트리밍 구독 서비스 시장 분석해줘"
+    
+    explorer_rag_workflow:
+      step_1_pattern_search:
+        action: "Vector RAG 검색 (자동)"
+        query: "음악 스트리밍 구독"
+        found_patterns:
+          - "subscription_model (0.95 similarity)"
+          - "platform_business_model (0.87)"
+          - "advertising_model (0.72)"
+      
+      step_2_case_search:
+        action: "성공 사례 검색 (자동)"
+        pattern: "subscription_model"
+        found_cases:
+          - "Spotify: 2억 유료 구독자"
+          - "Netflix: 구독 모델 선도"
+          - "Apple Music: 번들링 전략"
+      
+      step_3_graph_search:
+        action: "패턴 조합 발견 (Knowledge Graph)"
+        combinations:
+          - "subscription + platform (confidence: 0.87)"
+          - "subscription + advertising (confidence: 0.78)"
+        insight: "하이브리드 모델 (유료 + 광고) 최적"
+      
+      step_4_hypothesis:
+        action: "기회 가설 생성"
+        hypothesis: |
+          한국 음악 스트리밍 시장:
+          - Spotify 모델 (유료 구독)
+          - YouTube Music 모델 (프리미엄 + 광고)
+          - 로컬 아티스트 중심 차별화 기회
           
-        task_2:
-          name: "시장 구조 분석"
-          token_usage: "45%"
-          subtasks:
-            - "Albert (Observer): 가치 교환 맵핑"
-            - "Bill (Quantifier): 초기 규모 추정"
-          checkpoint: "시장 정의 재평가 → 계속/수정?"
+          추천: 하이브리드 모델 (프리미엄 유료 + 광고 무료)
     
-    adaptive_execution:
-      after_task_1:
-        findings:
-          - "B2B 시장이 B2C보다 성숙"
-          - "보안 우려가 주요 장벽"
-          - "플랫폼 통합이 핵심"
-        decision: "B2B 중심으로 피벗"
-        task_list_update: "Task 3을 B2B 심층 분석으로 변경"
-    
-    emergency_protocol:
-      trigger: "토큰 사용량 87% 도달"
-      action:
-        - "즉시 작업 중단"
-        - "현재까지 결과 저장"
-        - "나머지 작업 재분할"
-      output: |
-        ⚠️ 토큰 한계 도달 - 작업 중단
-        완료: Task 1-3 (시장 구조까지)
-        미완료: Task 4-8 (기회 분석부터)
-        다음 쿼리에서 계속하시겠습니까?
+    result: "RAG 기반 검증된 패턴 + 실제 사례로 가설 생성"
   
-  # ===== 1. Discovery Sprint Examples =====
-  discovery_sprint_examples:
-    description: "20-30% 명확도에서 시작하는 탐색적 접근"
+  # 예시 3: Agent 이름 커스터마이징
+  example_3_customization:
+    user: |
+      config/agent_names.yaml 수정:
+      
+      explorer: Alex
     
-    initial_clarity_assessment:
-      low_clarity_start:
-        user_input: "뭔가 헬스케어 쪽에 기회가 있을 것 같은데..."
-        clarity_score: "2/10 (20%)"
-        stewart_guidance:
-          - "헬스케어의 어떤 측면에 관심이 있으신가요?"
-          - "해결하고 싶은 문제가 있으신가요?"
-          - "특정 사용자군을 염두에 두고 계신가요?"
-        evolution_path:
-          step_1: "헬스케어 일반 (20%)"
-          step_2: "디지털 헬스케어 (40%)"
-          step_3: "원격진료 플랫폼 (60%)"
-          step_4: "만성질환자 원격관리 (80%)"
+    usage: |
+      Cursor:
+      "@Alex, 기회 찾아봐"
+      
+      → Alex (Explorer)가 RAG 검색 시작
     
-    discovery_questions_examples:
-      purpose_discovery:
-        - question: "대략적으로 어떤 기회를 찾고 있나?"
-          example_answers:
-            - "고령화 관련 뭔가..."
-            - "기존 비효율성 해결"
-            - "새로운 기술 활용 가능성"
+    bidirectional:
+      input: "@Alex"
+      mapping: "Alex → Explorer"
+      output: "Explorer → Alex"
+
+# ========================================
+# PART 2: RAG 활용 예시
+# ========================================
+
+rag_usage_examples:
+  description: "Explorer RAG 활용 실제 사례"
+  
+  # 예시 1: 패턴 매칭
+  pattern_matching:
+    scenario: "구독 모델 시장 진입 검토"
+    
+    user_query: "@Explorer, 구독 모델 패턴 찾아줘"
+    
+    rag_search:
+      vector_search:
+        query: "구독 모델"
+        collection: "projected_index"
+        filter: "agent_view=explorer"
+        top_k: 5
         
-        - question: "어떤 문제를 해결하고 싶은가?"
-          example_answers:
-            - "비싼 의료비"
-            - "접근성 문제"
-            - "정보 비대칭"
+        results:
+          - pattern_id: "subscription_model"
+            similarity: 0.95
+            content: "recurring_revenue, retention, churn_rate..."
+          
+          - pattern_id: "platform_business_model"
+            similarity: 0.82
+            content: "network_effects와 subscription 조합..."
+      
+      graph_search:
+        query: "(subscription)-[COMBINES_WITH]->()"
         
-        - question: "성공의 방향성은?"
-          example_answers:
-            - "사회적 가치 창출"
-            - "수익성 있는 사업"
-            - "기존 사업과 시너지"
+        combinations:
+          - subscription + platform (confidence: 0.87)
+            evidence: "Spotify, Netflix"
+          
+          - subscription + licensing (confidence: 0.75)
+            evidence: "Adobe Creative Cloud"
+        
+        insight: "플랫폼과 구독 조합이 가장 강력"
+    
+    explorer_output: |
+      🔍 구독 모델 패턴 발견!
+      
+      **핵심 패턴**: subscription_model
+      - Recurring Revenue (반복 수익)
+      - Retention이 핵심 (해지율 관리)
+      - Churn Rate 5-7% 목표
+      
+      **성공 사례**:
+      - Spotify: 유료 전환율 46%
+      - Netflix: 해지율 2.4%
+      - Adobe: 구독 전환 후 매출 3배
+      
+      **조합 패턴**:
+      - 구독 + 플랫폼 (Spotify 모델)
+      - 구독 + 라이선싱 (Adobe 모델)
+      
+      **권장 전략**: 플랫폼 효과와 구독 모델 결합
   
-  # ===== 2. Purpose Alignment Framework (Step 1) =====
-  purpose_alignment_framework:
-    description: "12 Universal Purposes 기반 의도 명확화"
+  # 예시 2: 사례 검색
+  case_search:
+    scenario: "음악 산업 구독 서비스 벤치마킹"
     
-    entrepreneur_perspective:
-      entry_feasibility:
-        discovery_questions:
-          - "어떤 자원으로 시작하려고 하나요?"
-          - "초기 목표 고객은 누구인가요?"
-          - "차별화 포인트는 무엇인가요?"
-        clarity_evolution:
-          initial: "온라인 교육 시장 진입하고 싶음 (30%)"
-          refined: "직장인 대상 실무 스킬 교육 플랫폼 (70%)"
-          final: "IT 직군 전환 희망자를 위한 멘토링 결합 부트캠프 (90%)"
-      
-      product_market_fit:
-        validation_approach:
-          - "MVP로 빠른 시장 테스트"
-          - "초기 사용자 피드백 수집"
-          - "반복적 개선"
+    user_query: "@Explorer, 음악 산업 구독 서비스 성공 사례 찾아줘"
     
-    corporate_perspective:
-      competitive_strategy:
-        analysis_focus:
-          - "경쟁사 포지셔닝 맵"
-          - "차별화 기회 영역"
-          - "진입 장벽 분석"
+    rag_search:
+      filter:
+        industry: "음악"
+        pattern: "subscription_model"
+        chunk_type: "success_case"
       
-      market_expansion:
-        decision_criteria:
-          - "시장 성장 잠재력"
-          - "자사 역량과의 적합성"
-          - "투자 대비 수익 전망"
+      results:
+        - case: "Spotify"
+          key_metrics:
+            subscribers: "2억명 (유료)"
+            churn_rate: "5.2%"
+            conversion_rate: "46% (무료→유료)"
+          
+          critical_success_factors:
+            - "개인화 추천 알고리즘"
+            - "플랫폼 효과 (아티스트 + 청취자)"
+            - "프리미엄 차별화 (광고 제거, 오프라인)"
+        
+        - case: "Apple Music"
+          key_metrics:
+            subscribers: "8,800만명"
+            bundling: "Apple One 번들"
+          
+          critical_success_factors:
+            - "기기 생태계 통합"
+            - "독점 콘텐츠"
+            - "Family Plan"
     
-    investor_perspective:
-      investment_decision:
-        evaluation_framework:
-          - "시장 규모와 성장성"
-          - "경쟁 구조와 진입장벽"
-          - "팀과 실행 능력"
+    explorer_output: |
+      🎵 음악 구독 서비스 사례 분석
       
-      risk_return_assessment:
-        key_metrics:
-          - "TAM/SAM/SOM 분석"
-          - "Unit Economics"
-          - "확장 가능성"
+      **Spotify 모델**:
+      - 프리미엄 전환 46% (업계 최고)
+      - 핵심: 개인화 + 플랫폼 효과
+      - 해지율 5.2% (우수)
+      
+      **Apple Music 모델**:
+      - 생태계 통합 (iPhone, iPad, Mac)
+      - 번들링으로 이탈 방지
+      
+      **한국 시장 적용**:
+      - 로컬 아티스트 중심 차별화
+      - K-POP 글로벌 팬 공략
+      - 하이브리드 모델 (유료 + 광고)
   
-  # ===== 3. Information Flow Examples =====
-  information_flow_examples:
-    description: "v6.0.1 핵심: 체계적 정보 처리 흐름"
+  # 예시 3: 패턴 조합 발견
+  pattern_combination:
+    scenario: "플랫폼 비즈니스 혁신 기회"
     
-    layer_by_layer_processing:
-      # Layer 1: Raw Data (Rachel (Validator))
-      raw_data_example:
-        market: "한국 커피 프랜차이즈"
-        rachel_output:
-          verified_data:
-            - "점포 수: 스타벅스 1,700개, 이디야 3,000개"
-            - "평균 객단가: 스타벅스 7,000원, 이디야 3,500원"
-            - "연간 성장률: 시장 전체 5%"
-          reliability_score: "85%"
-          sources: ["공정거래위원회", "업계 보고서", "카드사 데이터"]
+    user_query: "@Explorer, 플랫폼 모델과 조합 가능한 패턴 찾아줘"
+    
+    graph_search:
+      query: "(platform)-[COMBINES_WITH]->()"
       
-      # Layer 2: Processed Data (Bill (Quantifier))
-      processed_data_example:
-        bill_calculations:
-          market_size: "2.5조원 (2025년 추정)"
-          growth_rate: "CAGR 5.2%"
-          market_concentration: "HHI 1,250 (경쟁적 시장)"
-          profitability_analysis:
-            average_margin: "영업이익률 8-12%"
-            roi_period: "투자회수 3-5년"
-      
-      # Layer 3a: Structural Insights (Albert (Observer)/Observer)
-      structural_insights_example:
-        observer_analysis:
-          value_chain_interpretation:
-            - "원두 수입업체 → 프랜차이즈 본사 → 가맹점 → 최종소비자"
-            - "본사-가맹점 간 수익 배분 구조가 핵심"
-          inefficiency_patterns:
-            - "3rd Wave 커피 트렌드와 대형 프랜차이즈 gap"
-            - "프리미엄 수요 vs 표준화된 공급"
-          competitive_dynamics:
-            - "입지 경쟁 심화로 임대료 부담 증가"
-            - "배달 플랫폼 수수료로 마진 압박"
-      
-      # Layer 3b: Hypothetical Insights (Steve (Explorer)/Explorer)
-      hypothetical_insights_example:
-        explorer_opportunities:
-          opportunity_1:
-            hypothesis: "스페셜티 커피 구독 서비스"
-            rationale: "품질 중시 소비자 + 정기구매 니즈"
-            validation_needed: "타겟 고객 규모, 지불의향"
-          opportunity_2:
-            hypothesis: "무인 프리미엄 커피바"
-            rationale: "인건비 절감 + 24시간 운영"
-            validation_needed: "기술 신뢰도, 초기 투자비"
-      
-      # Final: Strategic Decision (Owner)
-      strategic_decision_example:
-        owner_synthesis:
-          selected_opportunity: "스페셜티 커피 구독 서비스"
+      top_combinations:
+        - combination: "platform + subscription"
+          confidence: 0.87
+          evidence: ["Spotify", "Netflix", "LinkedIn Premium"]
           reasoning:
-            - "낮은 초기 투자 (무인매장 대비)"
-            - "차별화 가능성 높음"
-            - "확장성 우수"
-          next_steps:
-            - "MVP 개발 (3개월)"
-            - "베타 테스트 (100명)"
-            - "본격 출시 결정"
-  
-  # ===== 4. Market Boundary Examples (Step 2) =====
-  market_boundary_examples:
-    description: "13 dimensions를 활용한 시장 경계 정의"
-    
-    adaptive_boundary_setting:
-      example_market: "온라인 교육"
-      
-      initial_boundary:
-        what: "온라인 강의"
-        where: "한국"
-        who: "성인"
-        clarity: "40%"
-      
-      refined_boundary:
-        what: "실시간 인터랙티브 직무 교육"
-        where: "한국 + 동남아 한국어 학습자"
-        who: "25-35세 사무직 직장인"
-        clarity: "75%"
-      
-      dimension_analysis:
-        geographic:
-          current: "한국 수도권 중심"
-          expansion: "지방 → 동남아 진출"
+            - "네트워크 효과 + 반복 수익"
+            - "플랫폼 성장 = 구독 가치 증가"
+            - "양면 시장에서 lock-in 강화"
         
-        demographic:
-          primary: "밀레니얼 직장인"
-          secondary: "Z세대 취준생"
+        - combination: "platform + advertising"
+          confidence: 0.85
+          evidence: ["Google", "Facebook", "YouTube"]
+          reasoning:
+            - "무료 접근 + 광고 수익"
+            - "네트워크 효과 극대화"
+            - "데이터 기반 타겟팅"
         
-        technological:
-          enablers: "화상회의 기술, AI 개인화"
-          barriers: "기술 리터러시 격차"
-  
-  # ===== 5. Market Dynamics Examples (Step 3) =====
-  market_dynamics_examples:
-    description: "시장 작동 원리와 변화 패턴"
+        - combination: "platform + licensing"
+          confidence: 0.72
+          evidence: ["Uber (차량)", "Airbnb (숙소)"]
+          reasoning:
+            - "자산 소유 없이 중개"
+            - "공급자 라이선싱"
+            - "경량화된 구조"
     
-    force_dynamics_example:
-      market: "전기차 충전 인프라"
+    explorer_output: |
+      🔗 플랫폼 조합 패턴 발견!
       
-      immediate_value_drivers:
-        problem_solution_fit:
-          problem: "충전 불안(Range Anxiety)"
-          solution: "도심 초급속 충전소"
-        
-        time_to_value:
-          current: "충전 30분"
-          target: "충전 10분 이내"
+      **최고 조합**: platform + subscription (0.87)
+      - Spotify, Netflix, LinkedIn 검증
+      - 네트워크 효과 + 반복 수익
+      - 추천: 음악, 영상, B2B SaaS
       
-      sustainable_value_dynamics:
-        network_effects:
-          mechanism: "충전소↑ → EV구매↑ → 충전소↑"
-          tipping_point: "반경 5km 내 2개 이상"
-        
-        scale_economics:
-          fixed_costs: "부지, 설비 투자"
-          variable_costs: "전력, 유지보수"
-          breakeven: "일일 이용률 30%"
-  
-  # ===== 5.5. Parallel Exploration Protocol Examples (v6.2 신규) =====
-  parallel_exploration_protocol_examples:
-    description: "AI 자율성 극대화를 위한 병렬 탐색"
-    
-    phase_1_autonomous_exploration:
-      duration: "2-4시간"
-      ai_autonomy: "100%"
+      **2위**: platform + advertising (0.85)
+      - Google, Facebook, YouTube
+      - 무료 + 광고 수익
+      - 추천: 소셜 미디어, 검색
       
-      example_output:
-        hour_1:
-          albert: "의료 데이터 플랫폼 시장 구조 매핑 중..."
-          steve: "데이터 소유권 기반 혁신 기회 탐색 중..."
-          bill: "글로벌 디지털 헬스 시장 규모 계산 중..."
-          rachel: "FDA 규제 데이터 수집 및 검증 중..."
-          stewart: "탐색 패턴 모니터링, 개입 없음"
-        
-        hour_3_discovery:
-          unexpected_insight: "환자 소유 의료 데이터 시장 급성장"
-          ai_indicator: "creative_discovery"
-          action: "개입 연기, AI 자율 탐색 지속"
-    
-    smart_checkpoint:
-      timing: "Phase 1 완료 후"
-      duration: "30분"
-      
-      key_findings_summary:
-        1: "기존 EMR 시스템의 상호운용성 문제가 핵심 기회"
-        2: "블록체인 기반 의료 데이터 소유권 모델 부상"
-        3: "B2B2C 하이브리드 모델이 가장 유망"
-      
-      exploration_options:
-        option_a: "블록체인 의료 데이터 플랫폼 심화"
-        option_b: "상호운용성 솔루션 시장 분석"
-        option_c: "환자 중심 데이터 시장 전체 조망"
-      
-      user_decision: "option_a 선택"
-    
-    phase_2_directed_exploration:
-      focus: "블록체인 의료 데이터 플랫폼"
-      ai_autonomy: "70% (방향성 있는 자율성)"
-      
-      depth_vs_breadth:
-        depth_areas:
-          - "기술 스택 상세 분석"
-          - "규제 준수 메커니즘"
-          - "수익 모델 검증"
-        breadth_areas:
-          - "경쟁사 포지셔닝"
-          - "파트너십 기회"
-  
-  # ===== 5.6. Execution Modes Examples (v6.2 신규) =====
-  execution_modes_examples:
-    description: "프로젝트 특성에 따른 3가지 실행 모드"
-    
-    exploration_mode:
-      project: "메타버스 교육 플랫폼 시장"
-      characteristics:
-        uncertainty: "높음"
-        user_knowledge: "낮음"
-        time_sensitivity: "낮음"
-      
-      execution:
-        checkpoint_interval: "3시간"
-        documentation: "Stewart (Guardian) 100% 자동"
-        user_interaction: "최소"
-        
-      example_flow:
-        - "3시간 자율 탐색"
-        - "핵심 발견 5개 요약"
-        - "방향 선택"
-        - "다시 3시간 자율 탐색"
-    
-    collaboration_mode:
-      project: "전기차 충전 인프라 시장"
-      characteristics:
-        uncertainty: "중간"
-        user_knowledge: "중간"
-        time_sensitivity: "중간"
-      
-      execution:
-        checkpoint_interval: "1시간"
-        documentation: "80% 자동 + 20% 사용자 검토"
-        user_interaction: "정기적"
-        
-      example_flow:
-        - "1시간 분석"
-        - "결과 공유 및 피드백"
-        - "방향 조정"
-        - "다음 1시간 진행"
-    
-    precision_mode:
-      project: "의료 AI 규제 컴플라이언스"
-      characteristics:
-        uncertainty: "낮음"
-        user_knowledge: "높음"
-        time_sensitivity: "높음"
-      
-      execution:
-        checkpoint_interval: "30분"
-        documentation: "60% 자동 + 40% 사용자 작성"
-        user_interaction: "집중적"
-        
-      example_flow:
-        - "30분 특정 영역 분석"
-        - "즉시 검토 및 결정"
-        - "다음 단계 명확히 정의"
-        - "정밀 실행"
-  
-  # ===== 5.7. Stewart (Guardian) Auto-Documentation Examples (v6.2 신규) =====
-  stewart_auto_documentation:
-    description: "Guardian의 자동 문서화 시스템"
-    
-    real_time_capture:
-      project_structure:
-        00_overview:
-          - "project_summary.md" # 자동 생성
-          - "key_decisions.log" # 실시간 업데이트
-        01_discovery:
-          - "initial_findings.md"
-          - "clarity_evolution.yaml"
-        02_analysis:
-          - "market_structure/"
-          - "opportunities/"
-          - "quantification/"
-        03_insights:
-          - "validated_insights.md"
-          - "pivot_history.yaml"
-    
-    intelligent_structuring:
-      auto_tagging:
-        - "#critical-finding"
-        - "#pivot-point"
-        - "#decision-required"
-      
-      auto_summarization:
-        level_1: "한 줄 요약"
-        level_2: "핵심 포인트 3-5개"
-        level_3: "상세 분석"
-    
-    version_control:
-      auto_commit_triggers:
-        - "작업 완료"
-        - "중요 발견"
-        - "방향 전환"
-        - "30분마다"
-  
-# ===== 5.8. Support & Validation System Examples (v6.2.2 신규) =====
-  support_validation_examples:
-    description: "v6.2.2 핵심: 자연스러운 지원과 엄격한 검증의 실제 사용 예시"
-    
-    core_principle: "가설과 판단에는 근거와 검증이 필요하다"
-    
-    system_architecture:
-      natural_support:
-        description: "일상 작업 중 자유로운 협업"
-        characteristics:
-          - "복잡한 트리거 불필요"
-          - "자연스러운 질문 형태"
-          - "상시 대기 체계"
-          - "빠른 응답 (Bill: 2-4시간, Rachel: 30분-2시간)"
-        when: "분석 작업 중 언제든"
-        
-      mandatory_validation:
-        description: "중요 결론의 품질 보장"
-        characteristics:
-          - "명확한 트리거 (최종 제시시)"
-          - "정해진 검증자"
-          - "품질 게이트"
-          - "자동 실행"
-        checkpoints:
-          1: "Albert 시장 구조 최종 결론 → Bill + Rachel + Stewart"
-          2: "Steve 기회 가설 최종 제시 → Albert + Bill + Rachel"
-          3: "Bill SAM 계산 최종 완료 → Rachel + Albert"
-          4: "Owner 최종 의사결정 제시 → Stewart"
-    
-    # Part A: 일상 지원 시스템 예시
-    natural_support_examples:
-      albert_working_scenario:
-        context: "Albert가 펫케어 시장 구조 분석 중"
-        albert_question: "Bill, 펫케어 시장 가치사슬에서 각 단계별 마진율 계산해줘"
-        bill_response: "반려용품 제조 25%, 유통 15%, 소매 35%, 서비스 25% (2-3시간 분석)"
-        albert_integration: "가치사슬 구조에 정량 데이터 통합하여 구조 해석 완성"
-        
-      steve_working_scenario:
-        context: "Steve가 펫 웨어러블 구독 서비스 가설 개발 중"
-        steve_question1: "Rachel, 펫 구독 서비스 시장 데이터 찾아줘"
-        rachel_response: "펫박스 월 3만원, 구독자 10만명 (신뢰도 85%, 출처: 공시자료)"
-        steve_question2: "Bill, 월 5만원 구독료 모델 ROI 어때?"
-        bill_response: "LTV/CAC 비율 6:1, 손익분기 5,000명 (현실적 수준)"
-        steve_result: "데이터 기반 현실적 가설 완성"
-    
-    # Part B: 의무 검증 시스템 예시
-    mandatory_validation_examples:
-      principle: "중요 결론은 반드시 검증 받기"
-      trigger: "최종 결론 제시시 자동 실행"
-      
-      albert_structure_validation:
-        trigger: "Albert가 시장 구조 최종 결론 제시"
-        albert_conclusion: "펫케어 시장 = B2C 직판 70% + B2B2C(수의사) 30%"
-        
-        automatic_triggered_validation:
-          bill_validation: 
-            question: "이 70:30 비율에서 각 채널 시장 규모는 얼마인가?"
-            role: "구조 분석의 정량적 타당성 검증"
-          rachel_validation: 
-            question: "이 비율 데이터의 출처와 신뢰도는?"
-            role: "근거 데이터 신뢰성 검증"
-          stewart_validation: 
-            question: "이 구조 해석이 논리적으로 건전한가?"
-            role: "논리적 건전성 검증"
-          
-        validation_results:
-          bill: "✅ 통과 - B2C 2.1조, B2B2C 900억 (합리적)"
-          rachel: "⚠️ 조건부 - 70:30 비율은 2022년 데이터, 트렌드 변화 있음"
-          stewart: "✅ 통과 - 논리적 근거 충분"
-          
-        final_decision: "조건부 승인 (Rachel 최신 데이터로 비율 재확인 필요)"
-      
-      steve_hypothesis_validation:
-        trigger: "Steve가 기회 가설 최종 제시"
-        steve_hypothesis: "펫 웨어러블 구독 서비스 (월 5만원) 기회"
-        
-        automatic_triggered_validation:
-          albert_validation: 
-            question: "현재 펫케어 구조에서 구독 모델이 구조적으로 가능한가?"
-            role: "기회의 구조적 실현 가능성 검증"
-          bill_validation: 
-            question: "월 5만원 모델이 경제적으로 성립하는가?"
-            role: "기회의 경제적 타당성 검증"
-          rachel_validation: 
-            question: "구독 서비스 근거 데이터가 신뢰할 만한가?"
-            role: "가설 근거 데이터 신뢰성 검증"
-          
-        validation_results:
-          albert: "✅ 통과 - B2C 직판 70% 구조에서 구독 모델 충분히 가능"
-          bill: "✅ 통과 - LTV 30만원, CAC 5만원, 건전한 수익 구조"
-          rachel: "✅ 통과 - 펫박스 성공 사례, 시장 성장 데이터 신뢰함"
-          
-        final_decision: "완전 검증 통과 - 실행 계획 수립 단계로"
+      **인사이트**:
+      하이브리드 모델 (구독 + 광고) 고려
+      → YouTube Premium, Spotify 성공 사례
 
-  # ===== 6. Support & Validation Patterns (v6.2.2 업데이트) =====
-  collaboration_patterns:
-    description: "v6.2.2 핵심: 자연스러운 지원과 엄격한 검증의 이중 구조"
-    
-    core_philosophy:
-      principle: "가설과 판단에는 근거와 검증이 필요하다"
-      dual_structure:
-        daily_work: "자연스러운 지원 (자유로운 질문)"
-        critical_decisions: "의무 검증 (4개 체크포인트)"
-    
-    # Part A: 자연스러운 일상 지원 패턴
-    natural_support_pattern:
-      principle: "필요시 자연스럽게 전문가에게 질문"
-      when: "분석 작업 중 언제든"
-      trigger: "없음 (자유로운 요청)"
-      characteristics:
-        - "복잡한 프로토콜 불필요"
-        - "자연스러운 질문 형태"
-        - "빠른 응답"
-        - "유연한 협업"
-      
-      albert_analysis_with_support:
-        context: "Albert가 전자상거래 시장 구조 분석 중"
-        albert_working: "가치사슬 분석: 판매자 → 플랫폼 → 구매자"
-        albert_question: "Bill, 이 플랫폼 수수료 구조에서 각 단계별 수익성 계산해줘"
-        bill_response: "판매자 마진 65%, 플랫폼 수수료 3.5%, 배송비 부담 8% (3시간 분석)"
-        albert_integration: "수수료 구조를 가치사슬에 통합, 플랫폼 파워 평가"
-        
-      steve_hypothesis_with_support:
-        context: "Steve가 D2C 브랜드 플랫폼 기회 가설 개발 중"
-        steve_working: "플랫폼 수수료 부담 → 직접 판매 기회 가설"
-        steve_question1: "Rachel, D2C 성공 사례 데이터 있어?"
-        rachel_response: "와비파커, 글래시어 등 월 평균 성장률 25% (신뢰도 90%)"
-        steve_question2: "Bill, 플랫폼 vs D2C 수익성 비교해줘"
-        bill_response: "D2C 순이익률 15% vs 플랫폼 판매 8% (마케팅비 고려)"
-        steve_result: "데이터 기반 현실적 가설: 'D2C 전환으로 수익성 2배 향상'"
-    
-    # Part B: 의무 검증 패턴
-    mandatory_validation_pattern:
-      principle: "중요 결론은 반드시 검증 받기"
-      when: "최종 결론 제시시"
-      trigger: "자동 (4개 체크포인트)"
-      characteristics:
-        - "명확한 트리거"
-        - "정해진 검증자"
-        - "품질 게이트"
-        - "자동 실행"
-      
-      checkpoints:
-        checkpoint_1: "Albert 시장 구조 최종 결론 → Bill + Rachel + Stewart"
-        checkpoint_2: "Steve 기회 가설 최종 제시 → Albert + Bill + Rachel"
-        checkpoint_3: "Bill SAM 계산 최종 완료 → Rachel + Albert"
-        checkpoint_4: "Owner 최종 의사결정 제시 → Stewart"
-      
-      albert_structure_conclusion_example:
-        albert_final_conclusion: "전자상거래 시장 구조: 플랫폼 중심(70%) + D2C 급성장(30%)"
-        
-        automatic_validation_triggered:
-          bill_question: "이 70:30 비율에서 각각의 시장 규모와 성장률은?"
-          bill_analysis: "플랫폼 50조원(5%), D2C 20조원(25%) - 데이터 기반 계산"
-          
-          rachel_question: "이 구조 분석의 근거 데이터들이 신뢰할 만한가?"
-          rachel_analysis: "주요 데이터 85% 신뢰도, 단 D2C 성장률은 추정치 많음"
-          
-          stewart_question: "이 구조 해석이 논리적으로 건전한가?"
-          stewart_analysis: "논리적 근거 충분, 구조 변화 패턴 일관성 있음"
-        
-        validation_outcome: "✅ 3명 모두 통과 → Steve 기회 발굴 단계 진행"
-      
-      steve_opportunity_validation_example:
-        steve_final_hypothesis: "중소 브랜드 D2C 플랫폼 (월 수수료 1%) 기회"
-        
-        automatic_validation_triggered:
-          albert_question: "현재 시장 구조에서 1% 수수료 모델이 가능한가?"
-          albert_analysis: "가능하지만 기존 플랫폼과 직접 경쟁, 차별화 필수"
-          
-          bill_question: "1% 수수료로 경제적으로 성립하는가?"
-          bill_analysis: "손익분기 50만 판매자, 현재 시장에서 달성 어려움"
-          
-          rachel_question: "이 가설의 근거 데이터가 신뢰할 만한가?"
-          rachel_analysis: "1% 수수료 성공사례 없음, 가정에 의존적"
-        
-        validation_outcome: "❌ 부분 실패 → Steve 재작업: '차별화된 가치 추가 모델'로 수정"
-    
-    sequential_collaboration:
-      pattern_name: "Albert (Observer) → Steve (Explorer) → Owner"
-      
-      stage_1_albert_observation:
-        input: "Rachel (Validator)의 검증된 데이터"
-        process: "구조적 패턴 분석"
-        output:
-          - "시장 구조 맵"
-          - "비효율성 목록"
-          - "Force dynamics"
-      
-      stage_2_steve_interpretation:
-        input: "Albert (Observer)의 구조 분석"
-        process: "기회 가설 생성"
-        output:
-          - "기회 포트폴리오"
-          - "혁신 시나리오"
-          - "가치 제안"
-      
-      stage_3_owner_decision:
-        input: "Steve (Explorer)의 기회 분석"
-        process: "전략적 평가"
-        output:
-          - "Go/No-go 결정"
-          - "자원 배분"
-          - "실행 계획"
-    
-    parallel_collaboration:
-      pattern_name: "동시 다발적 분석"
-      when_used: "시간이 중요한 의사결정"
-      
-      example:
-        situation: "경쟁사 M&A 발표 대응"
-        parallel_tasks:
-          rachel: "관련 데이터 긴급 수집"
-          bill: "시장 영향 정량 분석"
-          albert: "구조 변화 시나리오"
-          steve: "대응 전략 옵션"
-        coordination: "Stewart (Guardian)가 실시간 조율"
+# ========================================
+# PART 3: 5-Agent 협업 예시
+# ========================================
+
+agent_collaboration_examples:
+  description: "v7.0.0 Agent 협업 실제 시나리오"
   
-  # ===== 7. Stage-Specific Deliverables =====
-  stage_deliverables:
-    description: "단계별 구체적 산출물"
+  # 시나리오: 피아노 구독 서비스 시장 분석
+  scenario_piano_subscription:
+    project: "피아노 구독 서비스 시장 분석"
+    duration: "3일"
     
-    discovery_sprint_outputs:
-      day_1:
-        - "초기 명확도 평가서 (2-3/10)"
-        - "탐색 질문 목록"
-        - "잠재 방향성 3-5개"
-      
-      day_3:
-        - "refined purpose statement"
-        - "초기 시장 경계 스케치"
-        - "명확도 상승 (5-6/10)"
-      
-      day_5:
-        - "확정 프로젝트 스코프"
-        - "agent 역할 분담표"
-        - "마일스톤 계획"
-    
-    full_analysis_outputs:
-      week_1:
-        title: "Market Structure Report"
-        contents:
-          - "13 dimension 분석"
-          - "가치사슬 맵"
-          - "경쟁 구조도"
-      
-      week_2:
-        title: "Opportunity Portfolio"
-        contents:
-          - "검증된 기회 5-10개"
-          - "우선순위 매트릭스"
-          - "실행 로드맵"
-      
-      final:
-        title: "Strategic Decision Package"
-        contents:
-          - "Executive Summary"
-          - "투자 권고안"
-          - "리스크 분석"
-          - "실행 계획"
-  
-  # ===== 8. Common Patterns & Anti-patterns =====
-  patterns_and_antipatterns:
-    description: "자주 발생하는 패턴과 피해야 할 함정"
-    
-    successful_patterns:
-      embracing_ambiguity:
-        example: "처음엔 그냥 '푸드테크'였는데..."
-        evolution: "푸드테크 → 밀키트 → 1인가구 프리미엄 밀키트 → 구독형 맞춤 밀키트"
-        key_success: "각 단계에서 발견을 수용하고 방향 조정"
-      
-      parallel_exploration:
-        example: "multiple hypotheses 동시 검증"
-        approach:
-          - "가설 A: B2C 직접 판매"
-          - "가설 B: B2B2C 제휴"
-          - "가설 C: 플랫폼 모델"
-        benefit: "빠른 학습과 피벗"
-    
-    common_antipatterns:
-      premature_convergence:
-        symptom: "너무 일찍 한 방향에 고착"
-        consequence: "더 나은 기회 놓침"
-        prevention: "최소 3개 옵션 유지"
-      
-      analysis_paralysis:
-        symptom: "완벽한 데이터 기다림"
-        consequence: "시장 기회 상실"
-        prevention: "80% 규칙 적용"
-      
-      role_confusion:
-        symptom: "모든 agent가 모든 일"
-        consequence: "비효율과 중복"
-        prevention: "명확한 역할 경계"
-  
-  # ===== 9. Quick Reference Templates =====
-  quick_reference_templates:
-    description: "즉시 사용 가능한 템플릿"
-    
-    discovery_sprint_kickoff:
-      template: |
-        프로젝트명: [    ]
-        초기 관심사: [    ]
-        현재 명확도: [ ]/10
+    # Day 1: Discovery Sprint
+    day_1_discovery:
+      rachel_validator:
+        task: "피아노 시장 데이터 수집"
+        output:
+          - source_id: "SRC_20241031_001"
+            data: "한국 피아노 시장 1,500억원"
+            source: "한국문화예술위원회 2023"
+            reliability: 85
+          
+          - source_id: "SRC_20241031_002"
+            data: "피아노 학원 수 3,000개"
+            reliability: 75
+            note: "추정치 (전체 음악학원 × 30%)"
         
-        Day 1 목표:
-        □ 초기 purpose 탐색
-        □ 잠재 시장 범위 스케치
-        □ 주요 불확실성 식별
+        deliverable: "source_registry.yaml"
+      
+      bill_quantifier:
+        task: "초기 시장 규모 추정"
+        input: "Rachel의 SRC_ID 참조"
         
-        Day 3 체크포인트:
-        □ Purpose 구체화 (30% → 60%)
-        □ 핵심 가설 3개 도출
-        □ 검증 계획 수립
+        calculation:
+          method_1_topdown: "1,500억 × 피아노 비중 15% = 225억"
+          method_2_bottomup: "3,000 학원 × 평균 매출 9,000만 = 270억"
+          convergence: "225억 ~ 270억"
+        
+        deliverable: "초기 SAM 추정"
+      
+      albert_observer:
+        task: "피아노 시장 구조 관찰"
+        
+        value_chain:
+          - "제조사 (야마하, 삼익, 영창)"
+          - "유통 (대리점, 악기점)"
+          - "최종 (가정용 70%, 학원용 30%)"
+        
+        inefficiency: "높은 초기 비용 → 진입장벽 → 구독 기회?"
+        
+        deliverable: "market_reality_report.md"
+      
+      steve_explorer:
+        task: "기회 발굴 (RAG 활용!)"
+        
+        rag_search:
+          step_1: "구독 모델 패턴 검색"
+          found: "subscription_model (31개 패턴 중 발견)"
+          
+          step_2: "유사 사례 검색"
+          found:
+            - "Peloton: 운동기구 구독"
+            - "코웨이: 정수기 구독 (해지율 4.2%)"
+            - "Rent the Runway: 의류 구독"
+          
+          step_3: "패턴 조합 (Graph)"
+          found: "subscription + platform (레슨 매칭)"
+        
+        hypothesis:
+          title: "피아노 구독 + 레슨 매칭 플랫폼"
+          model: "월 5만원 (피아노 대여 + 온라인 레슨)"
+          evidence:
+            - "코웨이 해지율 4.2% (낮음)"
+            - "Peloton 모델 (기구 + 컨텐츠)"
+            - "구독 + 플랫폼 조합 검증 (confidence 0.87)"
+        
+        deliverable: "OPP_20241031_001_piano_subscription.md"
     
-    information_flow_checklist:
-      rachel_to_albert: "□ 데이터 신뢰도 > 80%"
-      albert_to_steve: "□ 구조 분석 완료"
-      steve_to_owner: "□ 기회 포트폴리오 준비"
-      owner_decision: "□ 전략적 우선순위 결정"
+    # Day 2-3: 검증 및 정교화
+    validation:
+      albert_review:
+        question: "피아노 시장 구조에서 구독 모델 가능한가?"
+        analysis: "가정용 70% 시장에서 초기 비용 부담 해소 → 구독 적합"
+        result: "✅ 구조적 실현 가능성 통과"
+      
+      bill_review:
+        question: "월 5만원 모델 경제적으로 성립하는가?"
+        calculation:
+          revenue: "5만원 × 5,000명 = 2.5억/월"
+          cost: "피아노 감가 + 배송 + 관리"
+          margin: "20% 예상"
+        result: "✅ 경제적 타당성 통과"
+      
+      rachel_review:
+        question: "코웨이 해지율 4.2% 데이터 신뢰할 만한가?"
+        verification: "공시자료 확인, 신뢰도 95%"
+        result: "✅ 근거 신뢰성 통과"
     
-    collaboration_trigger_matrix:
-      low_clarity: "Stewart (Guardian) 주도"
-      data_conflict: "Rachel (Validator) 검증"
-      structure_unclear: "Albert (Observer) 심화"
-      no_opportunities: "Steve (Explorer) 창의성"
-      decision_paralysis: "Owner 결단"
+    final_output:
+      status: "3명 검증 통과 ✅"
+      grade: "A"
+      recommendation: "실행 계획 수립 단계로 진행"
+
+# ========================================
+# PART 4: RAG 검색 예시
+# ========================================
+
+rag_search_examples:
+  description: "다양한 RAG 검색 시나리오"
+  
+  # Python API 사용
+  python_api_example:
+    code: |
+      from umis_rag.agents.explorer import ExplorerRAG
+      
+      explorer = ExplorerRAG()
+      
+      # 패턴 검색
+      patterns = explorer.search_patterns("구독 모델")
+      
+      # 결과: [subscription_model, platform, ...]
+      
+      # 사례 검색
+      cases = explorer.search_cases(
+          "음악 산업",
+          pattern_id="subscription_model"
+      )
+      
+      # Hybrid Search (Vector + Graph)
+      result = explorer.search_patterns_with_graph("구독 모델")
+      
+      # 결과: 패턴 + 조합 + 인사이트
+  
+  # CLI 사용
+  cli_example:
+    commands:
+      search_pattern: |
+        python scripts/query_rag.py "구독 모델"
+      
+      search_case: |
+        python scripts/query_rag.py case "음악" --pattern subscription_model
+      
+      rebuild: |
+        python scripts/02_build_index.py --agent explorer
+  
+  # Cursor 사용 (권장)
+  cursor_example:
+    natural_language: |
+      "@Explorer, 플랫폼 비즈니스 모델 패턴 찾아줘"
+      
+      → Explorer가 자동으로:
+        1. RAG 검색
+        2. 패턴 발견
+        3. 사례 검색
+        4. 조합 발견 (Graph)
+        5. 결과 리포트
+
+# ========================================
+# PART 5: 프로젝트 구조 예시
+# ========================================
+
+project_structure_example:
+  description: "v7.0.0 표준 프로젝트 구조"
+  
+  project_folder:
+    path: "projects/20251103_piano_subscription/"
+    
+    structure:
+      00_overview:
+        - ".project_meta.yaml (Stewart 자동 생성)"
+        - "deliverables_registry.yaml (Stewart 자동 관리)"
+        - "project_charter.md"
+        - "progress_tracker.md"
+      
+      02_analysis:
+        validator:
+          - "source_registry.yaml (Rachel)"
+        
+        quantifier:
+          - "market_sizing_piano.xlsx (Bill)"
+          - "Sheet 1: Assumptions"
+          - "Sheet 2: Estimation_Details (EST_001: 30% 비중 추정 논리)"
+          - "Sheet 3-6: 4가지 Method"
+          - "Sheet 7: Convergence (±30% 수렴)"
+        
+        observer:
+          - "market_reality_report.md (Albert)"
+          - "모든 주장에 SRC_ID 또는 Bill 계산 참조"
+        
+        explorer:
+          - "OPP_20241031_001_piano_subscription.md (Steve)"
+          - "Frontmatter: 검증 상태 (Albert, Bill, Rachel)"
+          - "Markdown: 7개 섹션"
+      
+      03_insights:
+        - "key_findings.md"
+        - "strategic_recommendations.md"
+
+# ========================================
+# PART 6: 설정 커스터마이징 예시
+# ========================================
+
+configuration_examples:
+  description: "config/ 폴더 활용"
+  
+  # Agent 이름 변경
+  agent_customization:
+    file: "config/agent_names.yaml"
+    
+    example_1_english:
+      before: "explorer: Steve"
+      after: "explorer: Alex"
+      usage: "@Alex, 기회 찾아봐"
+    
+    example_2_korean:
+      before: "observer: Albert"
+      after: "observer: 관찰자"
+      usage: "@관찰자, 시장 구조 분석해줘"
+  
+  # 실행 모드 변경
+  runtime_mode:
+    file: "config/runtime.yaml"
+    
+    modes:
+      yaml_only: "RAG 없이 YAML만 (안전)"
+      hybrid: "Vector RAG만 (권장, 기본값)"
+      rag_full: "Vector + Graph + Memory (모든 기능)"
+    
+    change_example:
+      current: "mode: hybrid"
+      change_to: "mode: rag_full"
+      effect: "Knowledge Graph 활성화"
+  
+  # Projection 규칙 추가
+  projection_rules_add:
+    file: "config/projection_rules.yaml"
+    
+    add_new_rule:
+      field: "customer_lifetime_value"
+      agents: "[explorer, quantifier]"
+      reason: "LTV는 기회 평가 + 계산 모두 필요"
+      
+      before: |
+        # LLM 판단 (10%, 느림, 비용)
+      
+      after: |
+        customer_lifetime_value:
+          agents: [explorer, quantifier]
+          reason: "LTV 평가 + 계산"
+          learned: false  # 수동 추가
+        
+        # 규칙 적용 (90%, 빠름, 무료)
+
+# ========================================
+# PART 7: 학습 시스템 예시
+# ========================================
+
+learning_system_example:
+  description: "Projection 자동 학습"
+  
+  llm_projection_log:
+    file: "data/llm_projection_log.jsonl"
+    
+    learning_process:
+      1st_build:
+        field: "churn_rate" (규칙 없음)
+        llm_decision:
+          - "explorer: true (구독 평가에 필요)"
+          - "quantifier: true (해지율 계산)"
+        
+        log: |
+          {"source_id": "...", "agent": "explorer", "decision": true}
+          {"source_id": "...", "agent": "quantifier", "decision": true}
+      
+      2nd_build:
+        field: "churn_rate"
+        llm_decision: "[explorer, quantifier]" (동일)
+        log: "추가 로깅"
+      
+      3rd_build:
+        field: "churn_rate"
+        llm_decision: "[explorer, quantifier]" (동일)
+        
+        consistency_check: "3/3 일관성 100% (≥90%)"
+        
+        auto_rule_generation: |
+          config/projection_rules.yaml에 자동 추가:
+          
+          churn_rate:
+            agents: [explorer, quantifier, guardian]
+            reason: "구독 평가 + 계산 + 검증"
+            learned: true  # ← 학습으로 생성!
+      
+      4th_build:
+        field: "churn_rate"
+        decision: "규칙 적용 (LLM 불필요)"
+        
+        benefit:
+          - "빠름 (LLM 호출 없음)"
+          - "비용 절감 (API 비용 0)"
+          - "일관성 (항상 동일)"
+
+# ========================================
+# PART 8: 버전 업데이트 예시
+# ========================================
+
+version_update_example:
+  description: "v7.0.0 → v7.1.0 업데이트 프로세스"
+  
+  auto_script:
+    command: "./update_version.sh 7.1.0"
+    
+    auto_updates:
+      - "VERSION.txt → 7.1.0"
+      - "umis.yaml 첫 줄 → Compatible with v7.1.0"
+      - "모든 YAML 첫 줄 업데이트"
+      - ".cursorrules 버전 업데이트"
+      - "README.md 배지 업데이트"
+      - "BLUEPRINT Version Info 업데이트"
+      - "CURRENT_STATUS 버전/날짜 업데이트"
+    
+    duration: "3초"
+  
+  manual_updates:
+    1: "CHANGELOG.md 새 섹션 작성 (10분)"
+    2: "BLUEPRINT 마일스톤 업데이트 (2분)"
+    3: "CURRENT_STATUS 완성 기능 업데이트 (3분)"
+    
+    duration: "15분"
+  
+  total: "3초 (자동) + 15분 (수동) = 75% 시간 절감"
+
+# ========================================
+# PART 9: 문제 해결 예시
+# ========================================
+
+troubleshooting_examples:
+  description: "자주 발생하는 문제 및 해결"
+  
+  # RAG 인덱스 없음
+  rag_not_built:
+    symptom: "Explorer가 패턴을 못 찾음"
+    
+    solution: |
+      python scripts/02_build_index.py --agent explorer
+      
+      # 소요: 1-2분, 비용: $0.006
+  
+  # OpenAI API 키 오류
+  api_key_error:
+    symptom: "OpenAI Authentication Error"
+    
+    solution: |
+      1. .env 파일 확인
+      2. OPENAI_API_KEY=your-key 수정
+      3. 재시도
+  
+  # Neo4j 연결 실패
+  neo4j_connection_error:
+    symptom: "Neo4j connection failed"
+    
+    solution: |
+      # Docker 확인
+      docker ps | grep neo4j
+      
+      # 없으면 실행
+      docker-compose up -d
+      
+      # 연결 테스트
+      python scripts/test_neo4j_connection.py
+  
+  # Config 파일 찾을 수 없음
+  config_not_found:
+    symptom: "FileNotFoundError: config/..."
+    
+    solution: |
+      # v7.0.0에서 config/ 폴더로 이동됨
+      # 오래된 참조 확인
+      grep -r "agent_names.yaml" . --include="*.py"
+      
+      # config/agent_names.yaml로 수정
+
+# ========================================
+# PART 10: 참조 문서
+# ========================================
+
+reference_documents:
+  description: "추가 학습 자료"
+  
+  getting_started:
+    - "INSTALL.md: 설치 가이드"
+    - "setup/START_HERE.md: 30초 빠른 시작"
+    - "UMIS_ARCHITECTURE_BLUEPRINT.md: 전체 아키텍처"
+  
+  understanding:
+    - "FOLDER_STRUCTURE.md: 폴더 구조"
+    - "CURRENT_STATUS.md: 현재 상태"
+    - "CHANGELOG.md: 버전 이력"
+  
+  configuration:
+    - "config/README.md: Config 폴더 설명"
+    - "config/agent_names.yaml: Agent 커스터마이징"
+    - "config/runtime.yaml: 실행 모드"
+  
+  advanced:
+    - "dev_docs/architecture/: RAG v3.0 아키텍처"
+    - "dev_docs/guides/: 개발 가이드"
+
+# ========================================
+# END OF EXAMPLES
+# ========================================

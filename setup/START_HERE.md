@@ -54,7 +54,7 @@ umis/
 │   ├── umis.yaml ⭐ (메인 가이드라인)
 │   ├── umis_deliverable_standards.yaml (산출물 표준)
 │   ├── umis_examples.yaml (예제)
-│   └── agent_names.yaml (커스터마이징)
+│   └── config/agent_names.yaml (커스터마이징)
 │
 ├── RAG 데이터
 │   └── data/

@@ -6,7 +6,7 @@ data/raw/*.yaml → canonical_index Collection
 - ID: CAN-xxxxxxxx
 - sections: anchor_path + content_hash
 - Lineage 추적
-- schema_registry.yaml 100% 준수
+- config/schema_registry.yaml 100% 준수
 """
 
 import sys
