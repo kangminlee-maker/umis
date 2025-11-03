@@ -197,6 +197,36 @@ agent_names.yaml:
 **날짜 정정**
 - 2024-11-01/02 → 2025-11-01/02 (33개 항목)
 
+### 🔄 Architecture v3.0 설계 (2025-11-02 추가)
+
+**전문가 피드백 반영**
+- 16개 개선안 (8개 → 16개 확장)
+- P0 보완 7개 채택
+  1. ID & Lineage 표준화 (CAN/PRJ/GND/GED/MEM/RAE)
+  2. anchor_path + content_hash (재현성)
+  3. TTL + 온디맨드 (비용 통제)
+  4. Graph Evidence & Provenance (설명가능성)
+  5. RAE Index 복원 (평가 일관성)
+  6. Overlay 메타 선반영 (미래 안전)
+  7. Retrieval Policy (세밀한 제어)
+
+**schema_registry.yaml v1.0 완성**
+- 845줄 완전 스펙
+- 모든 Layer 통합 정의
+- ID 네임스페이스, Lineage, Validation Rules
+
+**Dual-Index 구현 시작 (4/7)**
+- SchemaRegistry 로더
+- projection_rules.yaml (15개 규칙)
+- build_canonical_index.py
+- HybridProjector (규칙 90% + LLM 10%)
+
+강화된 가치:
+- 감사성(A): Lineage, Evidence, Provenance
+- 재현성(A): anchor, hash, ID
+- 비용 통제: TTL (Lazy 제안 복원)
+- 평가 일관성: RAE Index
+
 ---
 
 ## v6.2.2 (2024-10-30) - Support & Validation System Redesign [MAJOR UPDATE]
