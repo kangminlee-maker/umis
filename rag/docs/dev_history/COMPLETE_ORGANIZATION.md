@@ -24,7 +24,7 @@ rag/docs/dev_history/
 ├── FINAL_DEPLOYMENT_SUMMARY.md        # 배포 요약
 ├── FINAL_SESSION_SUMMARY.md           # 세션 요약
 ├── NEXT_STEPS.md                      # 다음 단계
-├── RELEASE_NOTES_v6.3.0-alpha-week3.md # 릴리즈 노트
+├── RELEASE_NOTES_v7.0.0-week3.md # 릴리즈 노트
 ├── DEPLOYMENT_COMPLETE.md             # 배포 완료
 ├── FINAL_DEPLOYMENT_REPORT.md         # 배포 보고서
 │

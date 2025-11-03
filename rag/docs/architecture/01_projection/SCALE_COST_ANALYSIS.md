@@ -234,7 +234,7 @@ Lazy Projection:
 ### UMIS 예상
 
 ```yaml
-현재 (v6.3.0-alpha):
+현재 (v7.0.0):
   • 54개 패턴/사례
   • 6-view: 324개 청크
   

@@ -1,6 +1,6 @@
-# UMIS v6.3.0-alpha 현재 상태
+# UMIS v7.0.0 현재 상태
 
-**버전:** v6.3.0-alpha  
+**버전:** v7.0.0  
 **최종 업데이트:** 2025-11-03  
 **상태:** Production Ready ✅
 
@@ -312,7 +312,7 @@ v6.1-6.2:
   • Vector RAG 추가
   • 54 chunks
 
-v6.3.0-alpha (2025-11-02): ⭐
+v7.0.0 (2025-11-02): ⭐
   • Clean Design
   • 354 chunks
   • Cursor 통합

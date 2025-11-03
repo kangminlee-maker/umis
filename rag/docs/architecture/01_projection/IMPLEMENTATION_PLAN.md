@@ -11,7 +11,7 @@
 ### Dual-Index + TTL 구현
 
 ```yaml
-현재 (v6.3.0-alpha):
+현재 (v7.0.0):
   • explorer_knowledge_base (54 chunks)
   • Pre-Projection (Agent별 분리)
 
@@ -104,7 +104,7 @@ class CanonicalBuilder:
             'canonical_chunk_id': canonical_id,
             'source_id': source_data['id'],
             'domain': source_data['domain'],
-            'version': '6.3.0-alpha',
+            'version': '7.0.0',
             'content_type': 'normalized_full',
             'sections': sections,
             'total_tokens': calculate_tokens(source_data['content']),

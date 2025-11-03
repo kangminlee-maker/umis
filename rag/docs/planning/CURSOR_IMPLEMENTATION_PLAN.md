@@ -3,7 +3,7 @@
 **⚠️ 노트:** 초기 12일 계획 (참조용)  
 **최신:** architecture/planning/IMPLEMENTATION_ROADMAP_V2.md 참조!
 
-**현재 (v6.3.0-alpha):**
+**현재 (v7.0.0):**
 - ✅ Vector RAG (Explorer용)
 
 **v2.0 계획 (ROADMAP_V2 참조):**

@@ -10,7 +10,7 @@
 
 ```
 [ ] VERSION.txt
-    현재: 6.3.0-alpha
+    현재: 7.0.0
     변경: 새 버전으로
 ```
 
@@ -18,32 +18,32 @@
 
 ```
 [ ] umis_guidelines.yaml
-    첫 줄: # UMIS guidelines - Compatible with v6.3.0-alpha
+    첫 줄: # UMIS guidelines - Compatible with v7.0.0
     
 [ ] umis_business_model_patterns.yaml
-    첫 줄: # UMIS business_model_patterns - Compatible with v6.3.0-alpha
+    첫 줄: # UMIS business_model_patterns - Compatible with v7.0.0
     
 [ ] umis_disruption_patterns.yaml
-    첫 줄: # UMIS disruption_patterns - Compatible with v6.3.0-alpha
+    첫 줄: # UMIS disruption_patterns - Compatible with v7.0.0
     
 [ ] umis_ai_guide.yaml
-    첫 줄: # UMIS ai_guide - Compatible with v6.3.0-alpha
+    첫 줄: # UMIS ai_guide - Compatible with v7.0.0
     
 [ ] umis_deliverable_standards.yaml
-    첫 줄: # UMIS deliverable_standards - Compatible with v6.3.0-alpha
+    첫 줄: # UMIS deliverable_standards - Compatible with v7.0.0
     
 [ ] umis_examples.yaml
-    첫 줄: # UMIS examples - Compatible with v6.3.0-alpha
+    첫 줄: # UMIS examples - Compatible with v7.0.0
 ```
 
 ### 3. 문서 파일
 
 ```
 [ ] README.md
-    **버전:** 6.3.0-alpha
+    **버전:** 7.0.0
     
 [ ] rag/README.md
-    **버전:** 6.3.0-alpha
+    **버전:** 7.0.0
     
 [ ] CHANGELOG.md
     새 섹션 추가: ## vX.X.X (YYYY-MM-DD)

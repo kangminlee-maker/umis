@@ -73,7 +73,7 @@ Status: All pushed successfully
    • 루트 68% 감소
 
 8. CHANGELOG (f98244b):
-   • v6.3.0-alpha-week3 추가
+   • v7.0.0-week3 추가
    • 143줄
 ```
 
@@ -302,7 +302,7 @@ Knowledge Graph Setup:
 ### Option 1: 릴리즈 노트 작성
 
 ```bash
-# GitHub Releases에 v6.3.0-alpha-week3 생성
+# GitHub Releases에 v7.0.0-week3 생성
 # dev_history/week_3_knowledge_graph/WEEK3_GITHUB_READY.md의
 # Release Notes 섹션 사용
 ```
@@ -343,7 +343,7 @@ Knowledge Graph Setup:
 
 ```yaml
 2025-11-02 (13시간):
-  ✅ v6.3.0-alpha
+  ✅ v7.0.0
   ✅ Architecture v3.0
   ✅ schema_registry.yaml
   ✅ Dual-Index 구현

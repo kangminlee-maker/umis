@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-6.3.0--alpha-orange)](https://github.com/kangminlee-maker/umis/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-**버전:** 6.3.0-alpha  
+**버전:** 7.0.0  
 **날짜:** 2025-11-03  
 **대상:** 코딩 못 하는 사용자 (Cursor만!)
 
@@ -12,11 +12,11 @@
 
 ---
 
-## 🎯 UMIS v6.3.0-alpha란?
+## 🎯 UMIS v7.0.0란?
 
 AI 에이전트 5명이 협업하여 시장을 분석하는 프레임워크입니다.
 
-**v6.3.0-alpha 신규:**
+**v7.0.0 신규:**
 - ✅ Explorer에게 RAG 추가!
 - ✅ 54개 검증된 패턴/사례 자동 검색
 - ✅ Cursor Composer 완전 통합
@@ -55,7 +55,7 @@ umis.yaml 첨부
 
 ---
 
-## 🤖 UMIS Agent (v6.3.0-alpha)
+## 🤖 UMIS Agent (v7.0.0)
 
 ```
 Observer (Albert) → 시장 관찰 (YAML)
@@ -104,7 +104,7 @@ Cursor:
 
 ---
 
-## 💡 v6.3.0-alpha 주요 기능
+## 💡 v7.0.0 주요 기능
 
 ```yaml
 Explorer RAG:
@@ -156,7 +156,7 @@ umis/
 │       ├── chunks/ (청크 JSONL)
 │       └── chroma/ (벡터 DB, 54개 문서)
 │
-├── RAG 시스템 (v6.3.0-alpha)
+├── RAG 시스템 (v7.0.0)
 │   ├── umis_rag/ (Python 패키지)
 │   ├── scripts/ (RAG 빌드/검색)
 │   └── notebooks/ (프로토타입)

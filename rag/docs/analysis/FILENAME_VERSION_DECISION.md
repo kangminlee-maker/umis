@@ -15,8 +15,8 @@
   umis_disruption_patterns.yaml
 
 버전 관리:
-  VERSION.txt: 6.3.0-alpha
-  파일 내부 _meta.version: "6.3.0-alpha"
+  VERSION.txt: 7.0.0
+  파일 내부 _meta.version: "7.0.0"
   CHANGELOG.md: 모든 변경사항
 ```
 
@@ -52,8 +52,8 @@
   umis_disruption_patterns_v6.yaml
 
 버전 관리:
-  VERSION.txt: 6.3.0-alpha
-  파일 내부 _meta.version: "6.3.0-alpha"
+  VERSION.txt: 7.0.0
+  파일 내부 _meta.version: "7.0.0"
 ```
 
 **장점:**

@@ -5,7 +5,7 @@
 
 ---
 
-## v6.3.0-alpha-week3 (2025-11-03) - Knowledge Graph & Hybrid Search
+## v7.0.0-week3 (2025-11-03) - Knowledge Graph & Hybrid Search
 
 ### 🚀 주요 기능 추가
 
@@ -148,7 +148,7 @@
 
 ---
 
-## v6.3.0-alpha (2025-11-03) - Repository Rename & Documentation Update
+## v7.0.0 (2025-11-03) - Repository Rename & Documentation Update
 
 ### 📝 문서 업데이트
 
@@ -182,7 +182,7 @@
 
 ---
 
-## v6.3.0-alpha (2025-11-02) - Multi-Agent RAG System [ALPHA RELEASE]
+## v7.0.0 (2025-11-02) - Multi-Agent RAG System [ALPHA RELEASE]
 
 ### 🎉 주요 추가사항
 
@@ -233,7 +233,7 @@
 
 ### ⚠️ 주의사항
 
-**v6.3.0-alpha 제한사항**
+**v7.0.0 제한사항**
 - Explorer만 RAG 사용 (Observer, Quantifier, Validator, Guardian은 YAML 기반)
 - Layer 1 (Vector RAG)만 구현
 - Layer 2-4 (Meta-RAG, Graph, Memory)는 설계만 완료
@@ -247,7 +247,7 @@
 ### 📦 릴리스 정보
 
 - GitHub Branch: alpha
-- Tag: v6.3.0-alpha
+- Tag: v7.0.0
 - 날짜: 2025-11-02
 - 개발 시간: 4시간
 - Commits: 17개
@@ -272,13 +272,13 @@ agent_names.yaml:
 - rag/docs/guides/01_CURSOR_QUICK_START.md: 상세 가이드
 - rag/docs/architecture/: 4-Layer 설계 (향후 계획)
 
-### 🔄 추가 변경사항 (v6.3.0-alpha 개선)
+### 🔄 추가 변경사항 (v7.0.0 개선)
 
 **파일명 버전 제거**
 - 모든 UMIS YAML 파일명에서 v6.2 제거
 - umis_guidelines.yaml (v6.2 제거, 영구 고정!)
 - Cursor 참조 안정성 향상: @umis_guidelines.yaml (항상 동일)
-- 각 YAML 첫 줄에 버전 표기: "Compatible with v6.3.0-alpha"
+- 각 YAML 첫 줄에 버전 표기: "Compatible with v7.0.0"
 
 **Agent ID 완전 통일**
 - 문서 + 코드 완전 일치

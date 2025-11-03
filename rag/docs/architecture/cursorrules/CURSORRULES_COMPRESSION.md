@@ -84,7 +84,7 @@ After (30줄):
 ```json
 {
   "umis": {
-    "v": "6.3.0-alpha",
+    "v": "7.0.0",
     "agents": {
       "obs": {"name": "Albert", "role": "structure"},
       "exp": {"name": "Steve", "role": "opportunity", "rag": true},
@@ -177,7 +177,7 @@ flow:
 ```yaml
 # ========================================
 # UMIS RAG Cursor Rules - AI Optimized
-# v6.3.0-alpha | Non-coder | Cursor-only
+# v7.0.0 | Non-coder | Cursor-only
 # ========================================
 
 # === UMIS 개념 ===

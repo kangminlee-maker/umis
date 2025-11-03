@@ -316,7 +316,7 @@ Hybrid (추천!):
 
 ### 🎯 Phase별 적용
 
-**Phase 1 (현재 v6.3.0-alpha):**
+**Phase 1 (현재 v7.0.0):**
 ```yaml
 방식: Pre-Projection만
 이유:
