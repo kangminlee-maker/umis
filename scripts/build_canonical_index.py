@@ -19,8 +19,10 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from umis_rag.core.schema import SchemaRegistry, generate_id, calculate_content_hash
+from umis_rag.core.config import settings
 from umis_rag.utils.logger import logger
 import yaml
+import json
 import chromadb
 from langchain_openai import OpenAIEmbeddings
 
@@ -44,7 +46,8 @@ class CanonicalIndexBuilder:
         
         # Embeddings
         self.embeddings = OpenAIEmbeddings(
-            model="text-embedding-3-large"
+            model=settings.embedding_model,
+            openai_api_key=settings.openai_api_key
         )
         
         logger.info("CanonicalIndexBuilder 초기화")
@@ -106,21 +109,19 @@ class CanonicalIndexBuilder:
             }
         }
         
-        # Chunk
+        # Chunk (Chroma는 복잡한 객체를 JSON 문자열로 저장)
         chunk = {
             'canonical_chunk_id': canonical_id,
             'source_id': pattern_id,
             'domain': domain,
             'version': '6.3.0-alpha',
             'content_type': 'normalized_full',
-            'sections': sections,
+            'sections': json.dumps(sections),  # list → JSON string
             'total_tokens': len(content.split()),
-            'lineage': lineage,
-            'embedding': {
-                'model': 'text-embedding-3-large',
-                'dimension': 3072,
-                'space': 'cosine'
-            },
+            'lineage': json.dumps(lineage),  # dict → JSON string
+            'embedding_model': 'text-embedding-3-large',
+            'embedding_dimension': 3072,
+            'embedding_space': 'cosine',
             'created_at': datetime.now().isoformat(),
             'updated_at': datetime.now().isoformat()
         }

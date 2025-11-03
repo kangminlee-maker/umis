@@ -17,7 +17,9 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from umis_rag.projection.hybrid_projector import HybridProjector
+from umis_rag.core.config import settings
 from umis_rag.utils.logger import logger
+import json
 import chromadb
 from langchain_openai import OpenAIEmbeddings
 
@@ -39,7 +41,8 @@ class ProjectedIndexBuilder:
         
         # Embeddings
         self.embeddings = OpenAIEmbeddings(
-            model="text-embedding-3-large"
+            model=settings.embedding_model,
+            openai_api_key=settings.openai_api_key
         )
         
         logger.info("ProjectedIndexBuilder 초기화")
@@ -95,10 +98,28 @@ class ProjectedIndexBuilder:
         texts = [p['content'] for p in all_projected]
         embeddings = self.embeddings.embed_documents(texts)
         
+        # 메타데이터를 Chroma 호환 형식으로 변환
+        metadatas = []
+        for p in all_projected:
+            metadata = {
+                'projected_chunk_id': p['projected_chunk_id'],
+                'source_id': p['source_id'],
+                'agent_view': p['agent_view'],
+                'canonical_chunk_id': p['canonical_chunk_id'],
+                'projection_method': p['projection_method'],
+                'domain': p['domain'],
+                'version': p['version'],
+                'materialization': json.dumps(p.get('materialization', {})),
+                'lineage': json.dumps(p.get('lineage', {})),
+                'created_at': p['created_at'],
+                'updated_at': p['updated_at']
+            }
+            metadatas.append(metadata)
+        
         projected_collection.add(
             ids=[p['projected_chunk_id'] for p in all_projected],
             documents=texts,
-            metadatas=all_projected,
+            metadatas=metadatas,
             embeddings=embeddings
         )
         

@@ -15,6 +15,7 @@ from typing import Dict, List, Any
 from langchain_openai import ChatOpenAI
 
 from umis_rag.core.schema import generate_id
+from umis_rag.core.config import settings
 from umis_rag.utils.logger import logger
 
 
@@ -25,7 +26,11 @@ class HybridProjector:
     
     def __init__(self, rules_path: str = "projection_rules.yaml"):
         self.rules = self._load_rules(rules_path)
-        self.llm = ChatOpenAI(model="gpt-4-turbo-preview", temperature=0.7)
+        self.llm = ChatOpenAI(
+            model=settings.llm_model,
+            temperature=settings.llm_temperature,
+            openai_api_key=settings.openai_api_key
+        )
         self.log_path = Path(self.rules.get('llm_log_path', 'llm_projection_log.jsonl'))
         
         logger.info("HybridProjector 초기화")
@@ -198,8 +203,15 @@ Agent 역할:
         """
         sections = canonical.get('sections', [])
         
+        # sections가 JSON 문자열이면 파싱
+        if isinstance(sections, str):
+            try:
+                sections = json.loads(sections)
+            except:
+                sections = []
+        
         for section in sections:
-            if section.get('agent_view') == agent:
+            if isinstance(section, dict) and section.get('agent_view') == agent:
                 anchor = section.get('anchor_path')
                 # 실제로는 anchor로 YAML 경로 파싱
                 # 여기서는 간단히 전체 내용 반환
