@@ -90,7 +90,9 @@ class ConvergenceBuilder:
             )
             cell.alignment = Alignment(horizontal="center")
         
-        # 각 Method 결과
+        # 각 Method 결과 + Named Range 정의
+        method_named_ranges = []
+        
         for i, (method_name, sam_ref) in enumerate(zip(method_sheets, sam_cells), start=4):
             ws[f'A{i}'] = method_name
             
@@ -104,18 +106,25 @@ class ConvergenceBuilder:
             
             ws[f'B{i}'].number_format = '#,##0'
             
-            # 평균 대비 차이 (나중에 평균 계산 후 사용)
-            ws[f'C{i}'] = f"=(B{i}-$B$8)/$B$8*100"
+            # 각 Method SAM에 Named Range 정의 (중요!)
+            method_range_name = f'Conv_SAM_Method{i-3}'  # Method1, Method2, Method3, Method4
+            self.fe.define_named_range(method_range_name, 'Convergence_Analysis', f'B{i}')
+            method_named_ranges.append(method_range_name)
+            
+            # 평균 대비 차이 (Conv_AvgSAM 사용)
+            ws[f'C{i}'] = f"=(B{i}-Conv_AvgSAM)/Conv_AvgSAM*100"  # Named Range 사용
             ws[f'C{i}'].number_format = '0.0"%"'
         
         # 통계
         stats_start_row = 8
         
-        # 평균
+        # 평균 (Named Range 기반 수식)
         ws[f'A{stats_start_row}'] = "평균"
         ws[f'A{stats_start_row}'].font = Font(bold=True)
         
-        ws[f'B{stats_start_row}'] = "=AVERAGE(B4:B7)"
+        # Named Range 사용 (범위 대신 개별)
+        avg_formula = f"=AVERAGE({','.join(method_named_ranges)})"
+        ws[f'B{stats_start_row}'] = avg_formula
         ws[f'B{stats_start_row}'].number_format = '#,##0'
         ws[f'B{stats_start_row}'].fill = PatternFill(
             start_color=ExcelStyles.RESULT_FILL,
@@ -124,28 +133,30 @@ class ConvergenceBuilder:
         )
         ws[f'B{stats_start_row}'].font = Font(bold=True)
         
-        # Named Range 정의 (중요!)
+        # Named Range 정의
         self.fe.define_named_range('Conv_AvgSAM', 'Convergence_Analysis', f'B{stats_start_row}')
         
-        # 표준편차
+        # 표준편차 (Named Range 기반)
         ws[f'A{stats_start_row+1}'] = "표준편차"
-        ws[f'B{stats_start_row+1}'] = "=STDEV(B4:B7)"
+        stdev_formula = f"=STDEV({','.join(method_named_ranges)})"
+        ws[f'B{stats_start_row+1}'] = stdev_formula
         ws[f'B{stats_start_row+1}'].number_format = '#,##0'
         
         # Named Range 정의
         self.fe.define_named_range('Conv_StdDev', 'Convergence_Analysis', f'B{stats_start_row+1}')
         
-        # 변동계수 (CV%)
+        # 변동계수 (Named Range 사용)
         ws[f'A{stats_start_row+2}'] = "변동계수 (CV%)"
-        ws[f'B{stats_start_row+2}'] = "=Conv_StdDev/Conv_AvgSAM*100"  # Named Range 사용
+        ws[f'B{stats_start_row+2}'] = "=Conv_StdDev/Conv_AvgSAM*100"
         ws[f'B{stats_start_row+2}'].number_format = '0.0"%"'
         
         # Named Range 정의
         self.fe.define_named_range('Conv_CV', 'Convergence_Analysis', f'B{stats_start_row+2}')
         
-        # Max/Min 비율
+        # Max/Min 비율 (Named Range 기반)
         ws[f'A{stats_start_row+3}'] = "Max/Min 비율"
-        ws[f'B{stats_start_row+3}'] = "=MAX(B4:B7)/MIN(B4:B7)"
+        maxmin_formula = f"=MAX({','.join(method_named_ranges)})/MIN({','.join(method_named_ranges)})"
+        ws[f'B{stats_start_row+3}'] = maxmin_formula
         ws[f'B{stats_start_row+3}'].number_format = '0.00'
         
         # Named Range 정의
