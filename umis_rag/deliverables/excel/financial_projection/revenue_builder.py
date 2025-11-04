@@ -115,17 +115,18 @@ class RevenueBuilder:
             # C-G: Year 1-5 (성장률 적용)
             for year in range(1, years + 1):
                 col = 2 + year  # C=3, D=4, ...
-                prev_col_letter = chr(65 + col - 2)  # B, C, D, ... (수정: col-2)
+                prev_col_letter = chr(64 + col - 1)  # B, C, D, ...
                 
                 # 세그먼트별 성장률 사용
-                growth_cell = f'${chr(65 + years + 2)}${row}'  # Last column (Growth %)
+                # H 컬럼 (col 8) = years(5) + 3
+                growth_cell = f'${chr(64 + years + 3)}${row}'  # 수정: 64 + years + 3 = H
                 ws.cell(row=row, column=col).value = f'={prev_col_letter}{row}*(1+{growth_cell})'
                 ws.cell(row=row, column=col).number_format = '#,##0'
             
-            # H: Growth % (입력)
-            ws.cell(row=row, column=years + 2).value = seg['growth']
-            ws.cell(row=row, column=years + 2).fill = input_fill
-            ws.cell(row=row, column=years + 2).number_format = '0.0%'
+            # H: Growth % (입력) - col 8
+            ws.cell(row=row, column=years + 3).value = seg['growth']  # 수정: years + 3
+            ws.cell(row=row, column=years + 3).fill = input_fill
+            ws.cell(row=row, column=years + 3).number_format = '0.0%'
         
         # === 4. 총 매출 (Total Revenue) ===
         row += 1
