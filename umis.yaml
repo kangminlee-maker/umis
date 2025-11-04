@@ -2495,6 +2495,14 @@ agents:
       - "돈이 움직이는 경로를 추적한다"
       - "패턴이 다르면 다르다고만 말한다"
       - "왜 그런지는 묻지 않는다"
+      - "비율/분배 추정 시: Guestimation으로 구조적 합리성 확보"
+    
+    universal_tools:
+      guestimation:
+        when: "공개되지 않은 시장 구조 비율 추정"
+        refer_to: "Section 9: tools_and_templates.methodologies.guestimation"
+        frequency: "★★★ 종종 사용"
+        common_cases: "가치사슬 마진, 플랫폼 수수료, 시장 집중도"
     
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
@@ -2773,6 +2781,14 @@ agents:
       - "남들이 못 보는 기회를 찾는다"
       - "발견한 기회의 현실성을 냉정하게 검증한다"
       - "모든 분석은 다차원적 프레임워크를 통해 수행한다"
+      - "기회 크기 추정 시: Guestimation으로 빠르게 Order of Magnitude 파악"
+    
+    universal_tools:
+      guestimation:
+        when: "기회 크기 빠른 가늠, 우선순위 판단"
+        refer_to: "Section 9: tools_and_templates.methodologies.guestimation"
+        frequency: "★★★★ 자주 사용"
+        common_cases: "잠재 시장 규모, 기회 우선순위, 투자 수익"
     
     # ===== 3. INTEGRATED OPPORTUNITY DISCOVERY PROCESS =====
     integrated_opportunity_discovery_process:
@@ -3272,6 +3288,14 @@ agents:
       - "4가지 방법 모두 사용하여 교차 검증"
       - "±30% 이내 수렴을 목표로 반복 검증"
       - "모든 숫자는 정의, 출처, 가정을 명시"
+      - "직접 데이터 없을 때: Guestimation Framework 활용 (tool:universal:guestimation)"
+    
+    universal_tools:
+      guestimation:
+        when: "전환율, 필터 비율, 성장률 등 직접 데이터 없을 때"
+        refer_to: "Section 9: tools_and_templates.methodologies.guestimation"
+        frequency: "★★★★★ 가장 많이 사용"
+        common_cases: "전환율, AOV, Frequency, 시장 필터 비율"
     
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
@@ -3656,6 +3680,14 @@ agents:
       - "불명확한 정의는 사용 금지"
       - "조정은 투명하고 추적 가능하게"
       - "사용자 관점에서 검색어를 확장하여 정보의 사각지대 제거"
+      - "신뢰도 범위 추정 시: Guestimation으로 Error Range 계산"
+    
+    universal_tools:
+      guestimation:
+        when: "데이터 신뢰도 범위, Error Range 평가"
+        refer_to: "Section 9: tools_and_templates.methodologies.guestimation"
+        frequency: "★★ 필요 시 사용"
+        common_cases: "Error Range, 신뢰구간, 데이터 품질 점수"
     
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
@@ -4016,6 +4048,14 @@ agents:
       - "제안은 구체적이고 실행 가능하게"
       - "모든 데이터는 자동으로 보호되어야 한다"
       - "적응과 진화를 장려한다"
+      - "리소스 추정 시: Guestimation으로 프로젝트 계획 수립"
+    
+    universal_tools:
+      guestimation:
+        when: "프로젝트 소요 시간, 리소스 추정"
+        refer_to: "Section 9: tools_and_templates.methodologies.guestimation"
+        frequency: "★ 기획 시 사용"
+        common_cases: "프로젝트 기간, 필요 인력, 토큰 예측"
     
     # ===== 3. WORK DOMAIN =====
     guardian_mode:
@@ -5451,6 +5491,202 @@ implementation_guide:
       - "Data validation tools"
       - "Report generators"
   
+    methodologies:
+      guestimation:
+        name: "Guestimation (Fermi Estimation)"
+        version: '2.0'
+        category: "범용 추정 방법론"
+        agents: "all"
+        
+        definition:
+          core: "기초적 지식 + 논리적 추론으로 대략적 근사치 추정"
+          philosophy: "보이지 않는 것을 보이게. 정답보다 과정이 중요"
+          goal: "Order of Magnitude (자릿수, ±50%)"
+        
+        fermi_4_principles:
+          model: "추상 → 계산 가능 모형 (시장 규모 = 고객 수 × 구매액)"
+          decompose: "큰 문제 → 작은 요소 (1인당 지출 = 교통 + 식비 + 숙박)"
+          constraint: "물리적/시간적 한계 활용 (하루 24시간, 1인 1끼 30분)"
+          magnitude: "자릿수만 맞으면 성공 (500억? 5000억?)"
+        
+        data_sources_8:
+          source_1_project_data:
+            name: "프로젝트 데이터"
+            description: "주어진 확정 숫자"
+            ai_method: "직접 사용"
+            trust: "High"
+          
+          source_2_llm_knowledge:
+            name: "LLM 직접 답변"
+            description: "검색 없이 즉시 답변 가능한 것"
+            ai_method: "LLM에게 질문 ('한국 인구는?', '일반적인 식사 시간은?')"
+            trust: "Medium (검증 권장)"
+            caution: "최신 정보 부족, Hallucination 가능"
+            use_when: "Order of Magnitude만 필요할 때"
+          
+          source_3_search_consensus:
+            name: "검색 엔진 공통 맥락"
+            description: "상위 검색 결과의 공통 패턴/범위"
+            ai_method: "웹 서치 → 상위 5-10개 결과 분석 → 공통 값/범위 추출"
+            trust: "High (복수 출처)"
+            example: "'평균 식사 가격' → 상위 결과 공통: 8천~1.5만원"
+            use_when: "최신 정보, 합의된 값 필요"
+          
+          source_4_laws:
+            name: "법칙 (물리/법률/도덕)"
+            description: "보편적 법칙, 절대적 제약"
+            ai_method: "직접 적용 (검증 불필요)"
+            trust: "Absolute"
+            examples:
+              physical: "하루 24시간, 1년 365일, 속도×시간=거리"
+              legal: "근로시간 주 52시간, 최저임금"
+              moral: "공정 거래, 합리적 가격"
+            use_when: "Boundary 설정, 제약조건"
+          
+          source_5_behavioral_economics:
+            name: "인간 행동 패턴 (행동경제학)"
+            description: "예측 가능한 비합리성, 인지 편향"
+            ai_method: "RAG 검색 또는 행동경제학 DB"
+            trust: "High (연구 검증)"
+            patterns:
+              loss_aversion: "손실 회피 > 이득 추구 (2배)"
+              temporal_discounting: "현재 > 미래 (할인)"
+              anchoring: "첫 정보 고정"
+              framing: "표현 방식 영향"
+              social_proof: "다수 선택 따름"
+            use_when: "전환율 조정, 가격 민감도, 채택 속도"
+          
+          source_6_statistical_patterns:
+            name: "통계적 패턴"
+            description: "검증된 수학적 패턴"
+            ai_method: "수학 공식 적용"
+            trust: "High (수학적)"
+            patterns:
+              normal_distribution: "68-95-99.7 법칙"
+              power_law: "80-20 법칙 (Pareto)"
+              regression_to_mean: "극단 → 평균 회귀"
+            use_when: "분포 추정, 시장 집중도, 이상치 감지"
+          
+          source_7_rule_of_thumb:
+            name: "산업별 Rule of Thumb"
+            description: "업계 경험 공식"
+            ai_method: "RAG 검색 (market_benchmarks)"
+            trust: "Medium-High (업계 검증)"
+            examples:
+              saas: "LTV/CAC > 3, Payback < 12m, Rule of 40"
+              ecommerce: "전환율 2-3%, Cart Abandon 70%"
+              subscription: "첫 달 Churn 10-15%, 안정 3-5%"
+            use_when: "초기 추정, 벤치마크, Sanity Check"
+          
+          source_8_time_space_constraints:
+            name: "시간/공간의 절대 제약"
+            description: "물리적으로 넘을 수 없는 한계"
+            ai_method: "직접 적용"
+            trust: "Absolute"
+            constraints:
+              time: "하루 24h, 1년 365일, 수명 70-80년"
+              space: "국토 면적, 물리적 거리, 좌석 크기"
+              human: "수면 6-8h, 식사 2-3끼, 주의 시간"
+            use_when: "최대 용량, 상한 설정, 현실성 체크"
+          
+          importance:
+            human: "출처 1~8 모두 활용 가능"
+            ai: "출처 1 직접, 2~8로 상식/경험 gap 메우기"
+            rag_position: "출처 7 (Rule of Thumb)의 일부일 뿐!"
+        
+        comparability_4_criteria:
+          criterion_1: "제품 속성 (물리적/디지털)"
+          criterion_2: "소비 주체 (B2C/B2B) → 다르면 기각"
+          criterion_3: "가격대 (±3배 이내)"
+          criterion_4: "구매 맥락 (필수재/선택재)"
+          rule: "4개 중 3개 이상 유사 → 채택"
+        
+        process_8_steps:
+          - "문제 명확화"
+          - "모형 만들기 (Fermi 핵심!)"
+          - "분해"
+          - "계산 (출처 1~4 활용)"
+          - "Benchmark 검증 (사용 시)"
+          - "비율 조정"
+          - "Boundary 검증"
+          - "검증 + 신뢰도"
+        
+        core_principles:
+          - "비교 가능성 = 전제조건"
+          - "논리 > 데이터"
+          - "명시적 기각"
+          - "보수적 추정"
+        
+        examples:
+          benchmark: "피아노 전환율: RAG 4개 → 공기청정기 18% 채택 → 15%"
+          decomposition: "휴일 여행: 250만 × 10만 = 2,500억"
+          constraint: "자장면: 중국집 8천 × 66 × 80% = 42만"
+          fermi_classic: "전봇대: 716만 (실제 858만, 오차 16%)"
+        
+        implementation:
+          python: "umis_rag/utils/guestimation.py"
+          document: "GUESTIMATION_FRAMEWORK.md"
+          tool_key: "tool:universal:guestimation"
+        
+        agent_usage_guide:
+          description: "각 Agent별 Guestimation 활용 시나리오"
+          
+          quantifier:
+            when: "직접 데이터 없는 SAM 계산 요소"
+            frequency: "★★★★★ 가장 많이 사용"
+            examples:
+              - "전환율 추정 (유사 제품 Benchmark)"
+              - "시장 필터 비율 (검색 공통 맥락)"
+              - "성장률 예측 (통계 패턴)"
+              - "AOV, Frequency 추정"
+            priority_sources: "출처 3 (검색), 출처 7 (Rule of Thumb)"
+            typical_model: "시장 = 고객 × 전환율 × 가격 × 빈도"
+          
+          explorer:
+            when: "기회 크기 빠른 가늠, 우선순위 판단"
+            frequency: "★★★★ 자주 사용"
+            examples:
+              - "잠재 시장 Order of Magnitude (천억? 조?)"
+              - "기회 우선순위 판단 (크기 비교)"
+              - "투자 대비 수익 대략 계산"
+            priority_sources: "출처 2 (LLM), 출처 5 (행동경제학)"
+            typical_model: "기회 크기 = 타겟 × 침투율 × 가격"
+          
+          observer:
+            when: "시장 구조 비율 추정"
+            frequency: "★★★ 종종 사용"
+            examples:
+              - "가치사슬 분배 비율 (공개 안 된 마진)"
+              - "플랫폼 수수료율 추정"
+              - "시장 집중도 (CR3, HHI)"
+            priority_sources: "출처 6 (통계 패턴), 출처 7 (Rule of Thumb)"
+            typical_model: "비율 = 부분 / 전체 (역산 포함)"
+          
+          validator:
+            when: "데이터 신뢰도 범위 평가"
+            frequency: "★★ 필요 시 사용"
+            examples:
+              - "Error Range 계산 (표본 오차 + Gap + 시간)"
+              - "신뢰구간 추정"
+              - "데이터 품질 점수"
+            priority_sources: "출처 4 (법칙), 출처 6 (통계 패턴)"
+            typical_model: "총 오차 = √(오차1² + 오차2² + ...)"
+          
+          guardian:
+            when: "프로젝트 리소스 추정"
+            frequency: "★ 기획 시 사용"
+            examples:
+              - "프로젝트 소요 시간 예측"
+              - "필요 인력 추정"
+              - "토큰 사용량 예측"
+            priority_sources: "출처 7 (Rule of Thumb), 출처 8 (시공간 제약)"
+            typical_model: "총 시간 = Discovery + Analysis + Validation"
+          
+          usage_pattern:
+            high_frequency: "Quantifier (SAM 계산 필수)"
+            medium_frequency: "Explorer, Observer (구조/기회 분석)"
+            low_frequency: "Validator, Guardian (지원 역할)"
+  
   # 7. 측정과 개선 (MEASURE)
   measurement_and_improvement:
     key_metrics:
@@ -5497,12 +5733,14 @@ implementation_guide:
 # - 5-Agent 협업으로 완전한 추적성 보장
 # - 20-30% 명확도로도 시작 가능
 # - Cursor Composer로 코딩 불필요
+# ========================================
 # 
 # 📖 더 알아보기:
 # - UMIS_ARCHITECTURE_BLUEPRINT.md: 전체 시스템 구조
 # - umis_examples.yaml: v7.0.0 실제 사용 예시
 # - config/: 설정 커스터마이징
 # - CHANGELOG.md: 버전 변경 이력
+# - GUESTIMATION_FRAMEWORK.md: 추정 방법론 완전한 가이드
 # 
 # "시장 분석은 검증된 지식(RAG)과 지속적인 발견의 결합입니다."
 

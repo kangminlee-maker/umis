@@ -176,6 +176,142 @@ folders:
   projects: 분석 프로젝트 (Git 제외)
   archive: Deprecated (main 브랜치에서 제외)
 
+# === PART 6: Guardian Meta-RAG (v7.1.0) ===
+
+guardian_meta_rag:
+  enabled: true
+  
+  # 프로젝트 시작 시
+  project_start:
+    detect: ["프로젝트 시작", "[PROJECT_START]", "새 프로젝트"]
+    
+    action: |
+      from umis_rag.guardian import GuardianMetaRAG
+      
+      guardian = GuardianMetaRAG()
+      goal_id = guardian.set_goal("{project_goal}")
+      
+      print("✅ Guardian 활성화: 목표 설정 완료")
+      print("  - 순환 패턴 감지")
+      print("  - 목표 정렬 모니터링")
+      print("  - 품질 자동 평가")
+  
+  # 쿼리 모니터링
+  circular_detection:
+    check: "매 쿼리마다"
+    
+    action: |
+      result = guardian.memory.check_circular(query_text)
+      
+      if result['is_circular']:
+          print("⚠️ 순환 감지: 같은 주제 3회 반복")
+          print(f"💡 제안: {result['suggestion']}")
+  
+  # 산출물 평가
+  deliverable_evaluation:
+    detect: ["[DELIVERABLE_COMPLETE]", "산출물 완성"]
+    
+    action: |
+      result = guardian.evaluate_deliverable({
+          'id': deliverable_id,
+          'content': content,
+          'task_description': task
+      })
+      
+      if result.passed:
+          print(f"✅ 품질 검증 통과: {result.grade}")
+      else:
+          for warning in result.warnings:
+              print(f"⚠️ {warning}")
+          for rec in result.recommendations:
+              print(f"💡 {rec}")
+
+# ========================================
+# PART 7: System RAG (Key-based)
+# ========================================
+
+system_rag:
+  enabled: true
+  index_file: "umis_core.yaml"
+  tool_registry: "config/tool_registry.yaml"
+  total_tools: 25
+  
+  purpose: |
+    AI가 5분 내 UMIS 전체 파악
+    컨텍스트 77% 절약 (5,508줄 → 450-2,850줄)
+  
+  # AI 사용 전략
+  ai_strategy:
+    step_1_always_load:
+      file: "umis_core.yaml"
+      size: "580줄"
+      content: "전체 시스템 개요"
+    
+    step_2_parse_query:
+      action: "사용자 쿼리에서 agent + keywords 추출"
+      
+      examples:
+        - query: "@Explorer, 구독 모델 패턴"
+          parse:
+            agent: "explorer"
+            keywords: ["구독", "모델", "패턴"]
+        
+        - query: "음악 스트리밍 시장 규모"
+          parse:
+            agent: "quantifier"
+            keywords: ["시장 규모", "SAM"]
+    
+    step_3_key_selection:
+      rules:
+        - if: "agent=explorer AND '패턴' in keywords"
+          key: "tool:explorer:pattern_search"
+        
+        - if: "agent=explorer AND '기회' in keywords"
+          key: "tool:explorer:7_step_process"
+        
+        - if: "agent=quantifier AND 'SAM' in keywords"
+          key: "tool:quantifier:sam_4methods"
+        
+        - if: "agent=validator AND '정의' in keywords"
+          key: "tool:validator:data_definition"
+        
+        - if: "agent=observer AND '구조' in keywords"
+          key: "tool:observer:market_structure"
+        
+        - if: "task='시장 분석'"
+          keys:
+            - "tool:observer:market_structure"
+            - "tool:explorer:pattern_search"
+            - "tool:quantifier:sam_4methods"
+        
+        - if: "task='Discovery Sprint'"
+          keys:
+            - "tool:framework:discovery_sprint"
+            - "모든 Agent 도구"
+    
+    step_4_search:
+      for_each_key:
+        command: "python scripts/query_system_rag.py {key}"
+        result: "도구 content (200-800줄)"
+        latency: "0.1ms (KeyDirectory)"
+    
+    step_5_context:
+      load:
+        always: "umis_core.yaml (50줄, 핵심만)"
+        searched: "System RAG 결과 (200-2,800줄)"
+      
+      total_examples:
+        simple: "450줄 (vs 5,508줄, 92% 절약)"
+        medium: "1,250줄 (vs 5,508줄, 77% 절약)"
+        complex: "2,850줄 (vs 5,508줄, 48% 절약)"
+      
+      average_saving: "77%"
+  
+  shortcuts:
+    - "도구 목록": "python scripts/query_system_rag.py --list"
+    - "도구 검색": "python scripts/query_system_rag.py tool:explorer:pattern_search"
+    - "시스템 재구축": "python scripts/build_system_knowledge.py"
+
 # ========================================
 # END
 # ========================================

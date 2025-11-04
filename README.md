@@ -29,18 +29,38 @@ AI 에이전트 5명이 협업하여 시장을 분석하는 **RAG 기반 프레�
 
 ## 📦 빠른 시작
 
-### 1. 설치
+### 1. Clone
 
-```
-Cursor에서:
-"UMIS 설치해줘" 또는 "@setup"
-```
-
-또는:
 ```bash
 git clone https://github.com/kangminlee-maker/umis.git
 cd umis
+```
+
+### 2. ChromaDB 설정 (두 가지 방법)
+
+#### Option A: 자동 생성 (권장)
+
+```bash
 python setup/setup.py
+
+# 자동으로:
+# - 패키지 설치
+# - .env 생성
+# - RAG Collections 구축 (5분, API Key 필요)
+```
+
+**필요**:
+- OpenAI API Key
+- 소요 시간: ~5분
+- 비용: ~$1-2 (최초 1회)
+
+---
+
+### 3. 사용
+
+Cursor Composer에서:
+```
+"@Explorer, 구독 모델 패턴 찾아줘"
 ```
 
 **상세**: [INSTALL.md](docs/INSTALL.md) 참조
