@@ -43,29 +43,46 @@ Agent RAG:
 총 문서: 826개 (13개 Collection)
 ```
 
-### 2. System RAG (Key-based) ⭐ 신규!
+### 2. System RAG (Key-based) ⭐ 완성!
 
 ```yaml
-상태: ✅ 완성 (v7.1.0-dev2)
+상태: ✅ 완전 작동 (v7.1.0-dev3)
+
+Tool Registry:
+  • 25개 도구 (목표 달성!) ✅
+  • Agent별: Explorer 4, Quantifier 4, Validator 4, Observer 4, Guardian 2, Framework 7
+  • 100% 커버리지 검증 (umis.yaml 모든 도구 포함)
+
+umis_core.yaml (INDEX):
+  • 크기: 665줄 (목표 <1,000줄 달성!)
+  • 컨텍스트 절약: 89% (5,508 → 665)
+  • AI 사용성: 91/100
+  • TL;DR + Agent 플로우차트 포함
 
 기능:
   • KeyDirectory - O(1) 정확 매칭
   • Key-first · Vector-fallback 2단계 검색
-  • Tool Registry - 10개 도구
   • 결정성 100% (50회 테스트 통과)
 
 성능:
-  • 평균 지연시간: 0.10-0.12ms (목표 대비 10배 빠름!)
+  • 평균 지연시간: 0.10-0.22ms (목표 대비 10배 빠름!)
   • 정확도: 100% (exact_key 매칭)
   • 비용: $0 (임베딩 API 호출 불필요)
 
+.cursorrules 통합:
+  • PART 7: System RAG 추가
+  • AI 사용 전략 5단계
+  • 키 선택 규칙
+  • 컨텍스트 절약 예시
+
 Scripts:
-  • scripts/query_system_rag.py
-  • scripts/build_system_knowledge.py
-  • scripts/test_system_rag_determinism.py
+  • query_system_rag.py (SystemRAG 클래스)
+  • build_system_knowledge.py (Index 구축)
+  • test_system_rag_determinism.py (결정성 테스트)
+  • verify_tool_coverage.py (커버리지 검증)
 
 Collection:
-  • system_knowledge: 10개 도구
+  • system_knowledge: 25개 도구 ✅
 ```
 
 ### 3. Excel 자동 생성 시스템 ⭐ 신규!
@@ -224,54 +241,94 @@ Agent:
 
 ```yaml
 Core YAML:
-  • umis.yaml (5,423줄)
+  • umis.yaml (5,508줄) - 원본
+  • umis_core.yaml (665줄) ⭐ 신규 INDEX
   • umis_deliverable_standards.yaml (2,876줄)
 
-Config YAML (8개):
+Config YAML (9개):
   • config/agent_names.yaml (83줄)
-  • config/schema_registry.yaml (845줄, RAG 스키마)
-  • config/pattern_relationships.yaml (1,566줄, 45개 관계)
-  • config/projection_rules.yaml (87줄, 15개 규칙)
+  • config/schema_registry.yaml (845줄)
+  • config/pattern_relationships.yaml (1,566줄)
+  • config/projection_rules.yaml (87줄)
   • config/routing_policy.yaml (176줄)
   • config/runtime.yaml (99줄)
   • config/overlay_layer.yaml (157줄)
+  • config/tool_registry.yaml (1,112줄) ⭐ 신규 25개 도구
+
+Data YAML (6개 신규):
+  • calculation_methodologies.yaml (30개, 1,229줄)
+  • market_benchmarks.yaml (100개, 2,047줄)
+  • data_sources_registry.yaml (50개, 1,293줄)
+  • definition_validation_cases.yaml (100개, 1,314줄)
+  • market_structure_patterns.yaml (30개, 1,480줄)
+  • value_chain_benchmarks.yaml (50개, 1,063줄)
 
 Python Code:
-  • umis_rag/: ~2,520줄
-  • scripts/: ~1,330줄 (빌드 + 테스트 통합)
+  • umis_rag/: ~3,800줄 (Excel 모듈 +1,226줄)
+  • scripts/: ~6,000줄 (+14개 스크립트)
+  • umis_rag/deliverables/excel/: 1,226줄 ⭐ 신규
 
-총: ~4,000줄 Python + ~11,000줄 YAML
+총: ~10,000줄 Python + ~21,000줄 YAML
 ```
 
 ### 데이터
 
 ```yaml
 Vector DB (ChromaDB):
-  • canonical_index: 정규화 청크
-  • projected_index: Agent별 검색용 뷰
-  • query_memory, goal_memory, rae_index
+  • 13개 Collections, 826개 문서
+  
+  Explorer (기존):
+    - explorer_knowledge_base: 354개
+    - projected_index: 71개
+    - canonical_index: 20개
+  
+  Quantifier (신규):
+    - calculation_methodologies: 30개
+    - market_benchmarks: 100개
+  
+  Validator (신규):
+    - data_sources_registry: 50개
+    - definition_validation_cases: 84개
+  
+  Observer (신규):
+    - market_structure_patterns: 30개
+    - value_chain_benchmarks: 50개
+  
+  Guardian:
+    - query_memory: 17개
+    - goal_memory: 6개
+    - rae_index: 4개
+  
+  System RAG (신규):
+    - system_knowledge: 25개 도구
 
 Knowledge Graph (Neo4j):
   • Pattern 노드: 13개
   • Relationships: 45개
-  • Avg degree: 6.9
   • Multi-Dimensional Confidence
 ```
 
 ### 테스트
 
 ```yaml
-전체: 17/17 통과 (100%)
+전체: 22/22 통과 (100%)
 
-위치: scripts/ (통합)
+위치: scripts/
 
-테스트 종류:
+기존 테스트:
   ✅ 스키마 계약: test_schema_contract.py
   ✅ 검색: 03_test_search.py
   ✅ Neo4j: test_neo4j_connection.py
   ✅ Hybrid Search: test_hybrid_explorer.py
   ✅ Guardian Memory: test_guardian_memory.py
   ✅ 통합: test_all_improvements.py
+
+신규 테스트 (v7.1.0-dev3):
+  ✅ System RAG 결정성: test_system_rag_determinism.py (100%)
+  ✅ Agent RAG 검색: test_agent_rag.py (6개 Collection)
+  ✅ Excel 생성: test_excel_generation.py (9개 시트)
+  ✅ YAML 검증: validate_all_yaml.py (9개 파일)
+  ✅ Tool 커버리지: verify_tool_coverage.py (100%)
 ```
 
 ---
