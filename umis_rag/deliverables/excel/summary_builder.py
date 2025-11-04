@@ -128,7 +128,8 @@ class SummaryBuilder:
             ('Method 4: Competitor Revenue', 'SAM_Method4')
         ]
         
-        avg_sam_cell = f'B{row-2}'  # Section 1의 Average SAM 셀
+        # Section 1의 SAM 셀 (B6) 저장
+        sam_cell = f'B6'  # 수정: B6 고정 (TAM이 B5이므로)
         
         for method_name, sam_range in sam_methods:
             row += 1
@@ -138,7 +139,7 @@ class SummaryBuilder:
             ws.cell(row=row, column=2).value = f"={sam_range}"
             ws.cell(row=row, column=2).number_format = '#,##0'
             
-            ws.cell(row=row, column=3).value = f"=B{row}/{avg_sam_cell}*100"
+            ws.cell(row=row, column=3).value = f"=B{row}/${sam_cell}*100"  # 수정: B6 참조
             ws.cell(row=row, column=3).number_format = '0.0"%"'
         
         # === 4. Section 3: Convergence 상태 ===
@@ -187,14 +188,14 @@ class SummaryBuilder:
         # Standard Deviation
         ws.cell(row=row, column=1).value = "Standard Deviation:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Convergence_Analysis!C17"
+        ws.cell(row=row, column=2).value = "=Convergence_Analysis!B9"  # 수정: B9 (표준편차)
         ws.cell(row=row, column=2).number_format = '#,##0'
         
         row += 1
         # Coefficient of Variation
         ws.cell(row=row, column=1).value = "Coefficient of Variation (CV%):"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Convergence_Analysis!C18"
+        ws.cell(row=row, column=2).value = "=Convergence_Analysis!B10"  # 수정: B10 (CV)
         ws.cell(row=row, column=2).number_format = '0.0"%"'
         
         # === 5. Section 4: 시나리오 분석 ===
@@ -255,14 +256,14 @@ class SummaryBuilder:
         # Total Items (Validation_Log에서 참조)
         ws.cell(row=row, column=1).value = "Total Validation Items:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Validation_Log!B19"
+        ws.cell(row=row, column=2).value = "=Validation_Log!B15"  # 수정: B15 (B19 아님)
         ws.cell(row=row, column=2).font = Font(size=10, bold=True)
         
         row += 1
         # Validated
         ws.cell(row=row, column=1).value = "Validated:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Validation_Log!B20"
+        ws.cell(row=row, column=2).value = "=Validation_Log!B16"  # 수정: B16 (B20 아님)
         ws.cell(row=row, column=2).font = Font(size=10, bold=True, color="006100")
         ws.cell(row=row, column=2).fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
         
@@ -270,7 +271,7 @@ class SummaryBuilder:
         # Pending
         ws.cell(row=row, column=1).value = "Pending:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Validation_Log!B21"
+        ws.cell(row=row, column=2).value = "=Validation_Log!B17"  # 수정: B17 (B21 아님)
         ws.cell(row=row, column=2).font = Font(size=10, bold=True, color="9C6500")
         ws.cell(row=row, column=2).fill = PatternFill(start_color="FFEB9C", end_color="FFEB9C", fill_type="solid")
         
@@ -278,7 +279,7 @@ class SummaryBuilder:
         # Completion Rate
         ws.cell(row=row, column=1).value = "Completion Rate:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Validation_Log!B22"
+        ws.cell(row=row, column=2).value = "=Validation_Log!B18"  # 수정: B18 (B22 아님)
         ws.cell(row=row, column=2).font = Font(size=10, bold=True)
         
         # === 7. 푸터 ===
