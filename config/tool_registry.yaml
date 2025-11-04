@@ -5,7 +5,8 @@
 
 version: '7.1.0'
 created: '2025-11-03'
-total_tools: 10  # 일단 10개로 시작
+updated: '2025-11-04'
+total_tools: 25  # 10개 → 25개 확장
 
 # ========================================
 # 도구 목록
@@ -530,6 +531,579 @@ tools:
       - Discovery Report
       - 구체화된 목표
       - 실행 계획
+  
+  # ========================================
+  # Explorer 추가 Tools
+  # ========================================
+  
+  - tool_id: explorer:validation_protocol
+    tool_key: tool:explorer:validation_protocol
+    
+    metadata:
+      agent: explorer
+      category: validation
+      complexity: medium
+      context_size: 400
+      priority: high
+    
+    when_to_use:
+      keywords:
+        - 검증
+        - 확인
+        - 타당성
+      
+      scenarios:
+        - "기회 가설 검증"
+        - "아이디어 타당성 확인"
+    
+    content: |
+      # Explorer: 검증 프로토콜
+      
+      ## 7단계 검증
+      
+      1. **논리적 타당성**
+         - 가설이 논리적인가?
+         - 인과관계 명확한가?
+      
+      2. **시장 존재성**
+         - 고객이 실제 존재하는가?
+         - 시장 규모가 충분한가?
+      
+      3. **차별화**
+         - 기존 대비 10배 나은가?
+         - 전환 비용을 상쇄하는가?
+      
+      4. **실행 가능성**
+         - 우리가 할 수 있는가?
+         - 필요한 역량이 있는가?
+      
+      5. **경제성**
+         - Unit Economics 성립하는가?
+         - LTV/CAC > 3.0?
+      
+      6. **타이밍**
+         - 지금이 적기인가?
+         - 시장 준비되었는가?
+      
+      7. **위험 관리**
+         - 주요 위험은?
+         - 완화 방안은?
+  
+  - tool_id: explorer:hypothesis_generation
+    tool_key: tool:explorer:hypothesis_generation
+    
+    metadata:
+      agent: explorer
+      category: generation
+      complexity: high
+      context_size: 500
+      priority: high
+    
+    content: |
+      # Explorer: LLM 기회 가설 생성
+      
+      ## 프롬프트 템플릿
+      
+      ```
+      시장 관찰 결과:
+      {observer_output}
+      
+      발견된 패턴:
+      {matched_patterns}
+      
+      성공 사례:
+      {benchmark_cases}
+      
+      질문: 이 시장에서 가능한 3가지 기회는?
+      ```
+      
+      ## 출력 형식
+      
+      - 기회 가설 3개
+      - 각각 근거 명시
+      - 실행 가능성 평가
+  
+  # ========================================
+  # Quantifier 추가 Tools
+  # ========================================
+  
+  - tool_id: quantifier:scenario_planning
+    tool_key: tool:quantifier:scenario_planning
+    
+    metadata:
+      agent: quantifier
+      category: planning
+      complexity: medium
+      context_size: 350
+      priority: normal
+    
+    content: |
+      # Quantifier: 시나리오 계획
+      
+      ## Best/Base/Worst 3가지 시나리오
+      
+      ### Best Case (낙관적)
+      - 확률: 20%
+      - 모든 가정 호조
+      - SAM × 1.5
+      
+      ### Base Case (기본)
+      - 확률: 60%
+      - 현재 추세 유지
+      - SAM × 1.0
+      
+      ### Worst Case (비관적)
+      - 확률: 20%
+      - 불리한 요인 발생
+      - SAM × 0.7
+      
+      ## 기대값 계산
+      
+      Expected = Best×0.2 + Base×0.6 + Worst×0.2
+  
+  - tool_id: quantifier:benchmark_analysis
+    tool_key: tool:quantifier:benchmark_analysis
+    
+    metadata:
+      agent: quantifier
+      category: analysis
+      complexity: medium
+      context_size: 350
+      priority: normal
+    
+    content: |
+      # Quantifier: 벤치마크 분석
+      
+      ## RAG 벤치마크 활용
+      
+      ```python
+      from umis_rag.agents.quantifier import QuantifierRAG
+      
+      quantifier = QuantifierRAG()
+      
+      # 유사 시장 벤치마크
+      benchmarks = quantifier.search_benchmark("SaaS churn")
+      ```
+      
+      ## 적용
+      
+      - 유사 산업 벤치마크 찾기
+      - 목표 시장에 조정
+      - 달성 가능 범위 설정
+  
+  # ========================================
+  # Validator 추가 Tools
+  # ========================================
+  
+  - tool_id: validator:gap_analysis
+    tool_key: tool:validator:gap_analysis
+    
+    metadata:
+      agent: validator
+      category: analysis
+      complexity: high
+      context_size: 450
+      priority: high
+    
+    content: |
+      # Validator: Gap 분석
+      
+      ## 정의 Gap 분석
+      
+      ### 산업별 정의 차이
+      
+      MAU 예시:
+      - SaaS: 로그인 + 유료 기능 사용
+      - 소셜: 피드 조회 또는 포스팅
+      - 게임: 게임 플레이
+      
+      → Gap: 최소 행동 기준이 다름
+      
+      ## 분석 프로토콜
+      
+      1. 표준 정의 확인
+      2. 산업별 변형 파악
+      3. Gap 정량화
+      4. 조정 또는 명시
+  
+  - tool_id: validator:source_verification
+    tool_key: tool:validator:source_verification
+    
+    metadata:
+      agent: validator
+      category: verification
+      complexity: medium
+      context_size: 400
+      priority: high
+    
+    content: |
+      # Validator: 출처 검증
+      
+      ## RAG 데이터 소스 활용
+      
+      ```python
+      from umis_rag.agents.validator import ValidatorRAG
+      
+      validator = ValidatorRAG()
+      sources = validator.search_data_source("한국 통계")
+      ```
+      
+      ## 신뢰도 평가
+      
+      - S급: 정부 공식 통계
+      - A급: 업계 표준 (Gartner, IDC)
+      - B급: 전문 조사 기관
+      - C급: 일반 블로그, 언론
+      
+      ## 검증 체크리스트
+      
+      - [ ] 출처 명확?
+      - [ ] 최신 데이터 (2023+)?
+      - [ ] 샘플 크기 충분?
+      - [ ] 방법론 명시?
+  
+  # ========================================
+  # Observer 추가 Tools
+  # ========================================
+  
+  - tool_id: observer:inefficiency_detection
+    tool_key: tool:observer:inefficiency_detection
+    
+    metadata:
+      agent: observer
+      category: detection
+      complexity: medium
+      context_size: 400
+      priority: high
+    
+    content: |
+      # Observer: 비효율성 감지
+      
+      ## RAG 비효율성 패턴
+      
+      ```python
+      from umis_rag.agents.observer import ObserverRAG
+      
+      observer = ObserverRAG()
+      patterns = observer.search_inefficiency("중간 마진")
+      ```
+      
+      ## 3가지 주요 비효율성
+      
+      1. **정보 비대칭**
+         - 중고차: 품질 정보 부족
+         - 부동산: 가격 정보 부족
+      
+      2. **거래 비용**
+         - 탐색, 협상, 이행 비용
+      
+      3. **중간 마진 과다**
+         - 농산물: 4배 마크업
+         - 안경: 10배 마크업
+      
+      ## 기회 발견
+      
+      비효율성 → 혁신 기회
+  
+  - tool_id: observer:disruption_opportunity
+    tool_key: tool:observer:disruption_opportunity
+    
+    metadata:
+      agent: observer
+      category: opportunity
+      complexity: high
+      context_size: 450
+      priority: high
+    
+    content: |
+      # Observer: 파괴적 혁신 기회
+      
+      ## 탐지 신호
+      
+      1. **과도한 마진**
+         - 중간 단계가 50%+ 마진
+      
+      2. **과잉 서비스**
+         - 대부분 고객은 기본만 필요
+         - 프리미엄 기능 미사용
+      
+      3. **접근성 장벽**
+         - 가격, 지역, 전문성
+      
+      4. **기술 전환점**
+         - 새 기술로 10배 저렴
+      
+      ## Clayton Christensen 프레임워크
+      
+      - 저가 시장 파괴
+      - 신시장 파괴
+  
+  # ========================================
+  # Guardian Tools (신규!)
+  # ========================================
+  
+  - tool_id: guardian:progress_monitoring
+    tool_key: tool:guardian:progress_monitoring
+    
+    metadata:
+      agent: guardian
+      category: monitoring
+      complexity: medium
+      context_size: 350
+      priority: high
+    
+    content: |
+      # Guardian: 진행 모니터링
+      
+      ## QueryMemory 활용
+      
+      - 순환 패턴 감지 (같은 주제 3회 반복)
+      - 목표 이탈 감지
+      - 시간 소요 추적
+      
+      ## 개입 시점
+      
+      - 순환 감지 시: 제안 제시
+      - 목표 이탈 시: 재정렬 제안
+      - 과도한 시간: 범위 축소 제안
+  
+  - tool_id: guardian:quality_evaluation
+    tool_key: tool:guardian:quality_evaluation
+    
+    metadata:
+      agent: guardian
+      category: evaluation
+      complexity: high
+      context_size: 500
+      priority: high
+    
+    content: |
+      # Guardian: 품질 평가
+      
+      ## ThreeStageEvaluator
+      
+      ### Stage 1: 규칙 기반 (빠름)
+      - 필수 섹션 존재?
+      - ID 규칙 준수?
+      - 출처 명시?
+      
+      점수: 0-10
+      
+      ### Stage 2: 임계값 (중간)
+      - Stage 1 < 7 → LLM 호출
+      - Stage 1 ≥ 7 → 통과
+      
+      ### Stage 3: LLM 평가 (정밀)
+      - 내용 품질
+      - 논리 일관성
+      - 실행 가능성
+      
+      ## 등급
+      
+      - A: Stage 1 ≥ 8
+      - B: Stage 1 6-8
+      - C: Stage 1 < 6 (재작업)
+  
+  # ========================================
+  # Framework 추가 Tools
+  # ========================================
+  
+  - tool_id: framework:7_powers
+    tool_key: tool:framework:7_powers
+    
+    metadata:
+      agent: framework
+      category: strategy
+      complexity: high
+      context_size: 550
+      priority: high
+    
+    content: |
+      # Framework: 7 Powers (Hamilton Helmer)
+      
+      ## 7가지 경쟁 우위
+      
+      1. **Scale Economies (규모의 경제)**
+         - 생산량 ↑ → 단위 비용 ↓
+         - 예: 반도체, 자동차
+      
+      2. **Network Effects (네트워크 효과)**
+         - 사용자 ↑ → 가치 ↑
+         - 예: Facebook, KakaoTalk
+      
+      3. **Counter-Positioning (역포지셔닝)**
+         - 1등이 따라할 수 없는 포지션
+         - 예: Netflix vs Blockbuster
+      
+      4. **Switching Costs (전환 비용)**
+         - 고객이 바꾸기 어려움
+         - 예: Salesforce, Adobe
+      
+      5. **Branding (브랜드)**
+         - 객관적으로 동일해도 선호
+         - 예: Apple, Nike
+      
+      6. **Cornered Resource (독점 자원)**
+         - 경쟁사가 구할 수 없는 자원
+         - 예: 특허, 라이선스, 인재
+      
+      7. **Process Power (프로세스 우위)**
+         - 오랜 시간 축적된 프로세스
+         - 예: Toyota 생산 방식
+      
+      ## 분석 방법
+      
+      각 Power별로:
+      - 존재 여부 확인
+      - 강도 평가 (약/중/강)
+      - 지속 가능성
+  
+  - tool_id: framework:counter_positioning
+    tool_key: tool:framework:counter_positioning
+    
+    metadata:
+      agent: framework
+      category: strategy
+      complexity: high
+      context_size: 450
+      priority: high
+    
+    content: |
+      # Framework: Counter-Positioning (1등 추월 전략)
+      
+      ## 개념
+      
+      1등 기업이 따라하면 기존 사업을 훼손하는 포지션
+      
+      ## 구조
+      
+      ```
+      1등: 기존 모델에 Lock-in
+         ↓ 딜레마
+      신규: 새 모델 (1등이 못 따라함)
+         ↓
+      결과: 시장 역전
+      ```
+      
+      ## 성공 사례
+      
+      - Netflix vs Blockbuster
+        - Blockbuster: 매장 렌탈 (늦은 반납료 수익)
+        - Netflix: 구독 (늦은 반납료 없음)
+        - Blockbuster가 따라하면 주 수익원 포기
+      
+      - 전기차 vs 전통 자동차
+        - 전통: 엔진, 변속기 (핵심 역량)
+        - Tesla: 배터리, 소프트웨어
+        - 전통이 따라하면 기존 공장/인력 무용
+      
+      ## 발견 방법
+      
+      1. 1등의 수익 구조 분석
+      2. 그것을 없애는 모델 고안
+      3. 1등이 따라할 수 없는지 확인
+  
+  - tool_id: framework:value_chain_analysis
+    tool_key: tool:framework:value_chain_analysis
+    
+    metadata:
+      agent: framework
+      category: analysis
+      complexity: medium
+      context_size: 400
+      priority: normal
+    
+    content: |
+      # Framework: 가치사슬 분석
+      
+      ## Michael Porter Value Chain
+      
+      ### 주활동
+      - 원재료 → 생산 → 물류 → 마케팅/판매 → 서비스
+      
+      ### 지원활동
+      - 인프라, HR, 기술 개발, 구매
+      
+      ## 분석 포인트
+      
+      각 단계별:
+      - 마진율
+      - 부가가치
+      - 차별화 가능성
+      - 아웃소싱 가능성
+      
+      ## 전략 도출
+      
+      - 수직 통합 (높은 마진 단계 확보)
+      - 아웃소싱 (낮은 부가가치)
+      - 차별화 집중
+  
+  - tool_id: framework:market_definition
+    tool_key: tool:framework:market_definition
+    
+    metadata:
+      agent: framework
+      category: definition
+      complexity: medium
+      context_size: 400
+      priority: high
+    
+    content: |
+      # Framework: 시장 정의 (TAM/SAM/SOM)
+      
+      ## 13차원 정의
+      
+      이미 tool:framework:13_dimensions에 있음
+      
+      ## TAM/SAM/SOM 구분
+      
+      - TAM: 전체 시장
+      - SAM: 공략 가능 시장
+      - SOM: 실제 달성 가능
+      
+      ## 정의 중요성
+      
+      시장 정의 = 사업 방향
+      - 너무 넓음: 집중력 분산
+      - 너무 좁음: 성장 제한
+  
+  - tool_id: framework:competitive_analysis
+    tool_key: tool:framework:competitive_analysis
+    
+    metadata:
+      agent: framework
+      category: analysis
+      complexity: medium
+      context_size: 400
+      priority: normal
+    
+    content: |
+      # Framework: 경쟁 분석
+      
+      ## Porter's Five Forces
+      
+      1. **기존 경쟁자**
+         - 경쟁 강도
+         - HHI 지수
+      
+      2. **신규 진입 위협**
+         - 진입 장벽
+         - 자본 필요
+      
+      3. **대체재 위협**
+         - 다른 해결책
+      
+      4. **공급자 협상력**
+         - 공급자 집중도
+      
+      5. **구매자 협상력**
+         - 고객 집중도
+      
+      ## 경쟁 구도 맵핑
+      
+      - 시장 점유율
+      - 포지셔닝 맵
+      - 차별화 요소
 
 # ========================================
 # END
