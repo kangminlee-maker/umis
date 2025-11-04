@@ -167,8 +167,14 @@ class BenchmarkBuilder:
         churn_row = row - 2
         margin_row = row - 1
         
+        # Named Ranges for Assessment cells (E 컬럼)
+        self.fe.define_named_range('Bench_Assess_LTV', 'Benchmark_Comparison', f'E{ltv_row}')
+        self.fe.define_named_range('Bench_Assess_Payback', 'Benchmark_Comparison', f'E{payback_row}')
+        self.fe.define_named_range('Bench_Assess_Churn', 'Benchmark_Comparison', f'E{churn_row}')
+        self.fe.define_named_range('Bench_Assess_Margin', 'Benchmark_Comparison', f'E{margin_row}')
+        
         ws.cell(row=row, column=2).value = (
-            f'=COUNTIF(E{ltv_row}:E{margin_row}, "*✅*")&"/"&4&" 지표 우수"'
+            f'=COUNTIF(Bench_Assess_LTV:Bench_Assess_Margin, "*✅*")&"/"&4&" 지표 우수"'
         )
         ws.cell(row=row, column=2).font = Font(size=10, bold=True)
         ws.merge_cells(f'B{row}:D{row}')
@@ -178,9 +184,9 @@ class BenchmarkBuilder:
         ws.cell(row=row, column=1).font = Font(size=10)
         
         ws.cell(row=row, column=2).value = (
-            f'=IF(COUNTIF(E{ltv_row}:E{margin_row}, "*✅*")>=3, '
+            f'=IF(COUNTIF(Bench_Assess_LTV:Bench_Assess_Margin, "*✅*")>=3, '
             f'"업계 평균 이상 (경쟁력 우수)", '
-            f'IF(COUNTIF(E{ltv_row}:E{margin_row}, "*✅*")>=2, '
+            f'IF(COUNTIF(Bench_Assess_LTV:Bench_Assess_Margin, "*✅*")>=2, '
             f'"업계 평균 수준", "개선 필요"))'
         )
         ws.cell(row=row, column=2).font = Font(size=10, bold=True)

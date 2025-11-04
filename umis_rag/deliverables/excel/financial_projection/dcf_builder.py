@@ -90,7 +90,8 @@ class DCFBuilder:
         ws.cell(row=row, column=1).font = Font(size=11, bold=True)
         
         # 간단화: FCF ≈ EBITDA (Working Capital, CAPEX 무시)
-        pv_sum_row = row + years + 2
+        fcf_pv_ranges = []  # Named Ranges for PV of each year
+        fcf_rows_start = row + 1
         
         for year in range(1, years + 1):
             row += 1
@@ -103,16 +104,21 @@ class DCFBuilder:
             # Present Value = FCF / (1 + Discount)^Year
             ws.cell(row=row, column=3).value = f"=B{row}/((1+B${discount_row})^{year})"
             ws.cell(row=row, column=3).number_format = '#,##0'
+            
+            # Named Range for each year's PV
+            nr_name = f'DCF_PV_Y{year}'
+            self.fe.define_named_range(nr_name, 'DCF_Valuation', f'C{row}')
+            fcf_pv_ranges.append(nr_name)
         
         # === 4. PV 합계 ===
         row += 1
-        fcf_pv_start = row - years
-        fcf_pv_end = row - 1
+        pv_sum_row = row
         
         ws.cell(row=row, column=1).value = "PV of FCF (Year 1-5)"
         ws.cell(row=row, column=1).font = Font(size=10, bold=True)
         
-        ws.cell(row=row, column=3).value = f"=SUM(C{fcf_pv_start}:C{fcf_pv_end})"
+        # SUM using Named Ranges
+        ws.cell(row=row, column=3).value = f"=SUM({','.join(fcf_pv_ranges)})"
         ws.cell(row=row, column=3).number_format = '#,##0'
         ws.cell(row=row, column=3).font = Font(bold=True)
         ws.cell(row=row, column=3).fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")

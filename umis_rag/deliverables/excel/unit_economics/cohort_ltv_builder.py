@@ -138,10 +138,18 @@ class CohortLTVBuilder:
         last_cohort_row = row - 1
         first_cohort_row = baseline_row + 1
         
+        # Named Range for Cohort Improvements (D 컬럼, 각 코호트 개선률)
+        cohort_improvement_names = []
+        for idx, cohort_row in enumerate(range(first_cohort_row, last_cohort_row + 1), start=1):
+            nr_name = f'Cohort_Improvement_{idx}'
+            self.fe.define_named_range(nr_name, 'Cohort_LTV', f'D{cohort_row}')
+            cohort_improvement_names.append(nr_name)
+        
         ws.cell(row=row, column=1).value = "평균 Improvement"
         ws.cell(row=row, column=1).font = Font(size=10, bold=True)
         
-        ws.cell(row=row, column=4).value = f"=AVERAGE(D{first_cohort_row}:D{last_cohort_row})"
+        # AVERAGE using Named Ranges
+        ws.cell(row=row, column=4).value = f"=AVERAGE({','.join(cohort_improvement_names)})"
         ws.cell(row=row, column=4).number_format = '0.0"%"'
         ws.cell(row=row, column=4).font = Font(bold=True)
         ws.cell(row=row, column=4).fill = PatternFill(start_color=ExcelStyles.RESULT_FILL, end_color=ExcelStyles.RESULT_FILL, fill_type="solid")

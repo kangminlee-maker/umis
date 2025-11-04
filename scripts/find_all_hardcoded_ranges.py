@@ -67,18 +67,18 @@ if __name__ == "__main__":
     print("\n목적: B4:B7, C17:C20 같은 범위를 모두 찾아서 보고")
     print("이유: Named Range로 바꿔야 함\n")
     
-    examples_dir = project_root / 'examples' / 'excel'
+    test_output_dir = project_root / 'test_output'
     
     files = [
-        'market_sizing_piano_subscription_example_20251104.xlsx',
-        'unit_economics_music_streaming_example_20251104.xlsx',
-        'financial_projection_korean_adult_education_example_20251104.xlsx',
+        'market_sizing_piano_subscription_20251104.xlsx',
+        'unit_economics_music_streaming_20251104.xlsx',
+        'financial_projection_korean_adult_education_20251104.xlsx',
     ]
     
     results = {}
     
     for filename in files:
-        filepath = examples_dir / filename
+        filepath = test_output_dir / filename
         if filepath.exists():
             results[filename] = find_hardcoded_ranges(filepath)
         else:

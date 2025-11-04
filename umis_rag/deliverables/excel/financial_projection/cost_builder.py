@@ -169,16 +169,31 @@ class CostBuilder:
         
         # === 7. Total OPEX ===
         row += 1
+        
+        # Named Ranges for each OPEX item by Year
+        opex_year_ranges = {}  # {year: [SM, RD, GA]}
+        for year in range(years + 1):
+            col = 2 + year
+            col_letter = chr(64 + col)
+            opex_year_ranges[year] = []
+            
+            # S&M, R&D, G&A 각각 Named Range
+            for opex_idx, opex_row in enumerate(range(opex_start_row, opex_end_row + 1), start=1):
+                opex_type = ['SM', 'RD', 'GA'][opex_idx - 1]
+                nr_name = f'OPEX_{opex_type}_Y{year}'
+                self.fe.define_named_range(nr_name, 'Cost_Structure', f'{col_letter}{opex_row}')
+                opex_year_ranges[year].append(nr_name)
+        
         ws.cell(row=row, column=1).value = "Total OPEX"
         ws.cell(row=row, column=1).font = Font(size=10, bold=True)
         ws.cell(row=row, column=1).fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(64 + col)  # 수정: 64 + col
+            col_letter = chr(64 + col)
             
-            # Total OPEX = SUM(S&M, R&D, G&A)
-            ws.cell(row=row, column=col).value = f'=SUM({col_letter}{opex_start_row}:{col_letter}{opex_end_row})'
+            # Total OPEX = SUM(Named Ranges)
+            ws.cell(row=row, column=col).value = f'=SUM({",".join(opex_year_ranges[year])})'
             ws.cell(row=row, column=col).number_format = '#,##0'
             ws.cell(row=row, column=col).fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
             
