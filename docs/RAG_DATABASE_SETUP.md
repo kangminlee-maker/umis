@@ -99,9 +99,7 @@ python scripts/test_agent_rag.py
 ```
 
 **제공 방식**:
-- GitHub Releases (무료, 제한적)
-- Google Drive 공유 링크
-- Dropbox 공유
+- setup.py 자동 빌드 (권장)
 
 ---
 

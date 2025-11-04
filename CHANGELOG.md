@@ -134,7 +134,7 @@
 
 **Hybrid 전략 수립**:
 - Option 1: 자동 재생성 (setup.py 통합)
-- Option 2: 사전 빌드 다운로드 (Google Drive)
+- RAG 빌드 스크립트 자동화
 - 압축 파일 준비 (16MB)
 
 **문서 & 스크립트**:

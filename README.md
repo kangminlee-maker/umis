@@ -54,30 +54,6 @@ python setup/setup.py
 - 소요 시간: ~5분
 - 비용: ~$1-2 (최초 1회)
 
-#### Option B: 사전 빌드 다운로드 (빠름, API Key 불필요)
-
-```bash
-# 자동 다운로드 (Google Drive)
-python scripts/download_prebuilt_db.py
-
-# 또는 수동
-wget "https://drive.google.com/uc?export=download&id=1EKHFfT5XnI_0St38-kq_4GnorZssd9q_" -O chroma-db.tar.gz
-tar -xzf chroma-db.tar.gz
-```
-
-**다운로드 링크**: [Google Drive](https://drive.google.com/file/d/1EKHFfT5XnI_0St38-kq_4GnorZssd9q_/view?usp=drive_link)
-
-**장점**:
-- ✅ 즉시 사용 (30초)
-- ✅ API Key 불필요
-- ✅ 비용 없음
-
-**사전 빌드 DB 정보**:
-- 버전: v7.1.0-dev2
-- 크기: 16MB (압축), 51MB (원본)
-- Collections: 13개
-- 문서: 826개
-
 ---
 
 ### 3. 사용
