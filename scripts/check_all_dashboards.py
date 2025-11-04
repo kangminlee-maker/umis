@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-모든 Excel 파일의 Dashboard/Summary 시트 검증
-모든 주요 숫자가 제대로 출력되는지 확인
+모든 Excel의 Summary/Dashboard 시트 값 확인
+주요 셀에 숫자가 제대로 출력되는지 검증
 """
 
 import sys
@@ -11,243 +11,192 @@ from openpyxl import load_workbook
 project_root = Path(__file__).parent.parent
 examples_dir = project_root / 'examples' / 'excel'
 
-def check_market_sizing_summary():
-    """Market Sizing Summary 시트 확인"""
-    
-    filepath = examples_dir / 'market_sizing_piano_subscription_CALCULATED_20251104.xlsx'
-    
-    print("\n" + "="*70)
-    print("1️⃣ Market Sizing - Summary 시트")
-    print("="*70)
-    
-    if not filepath.exists():
-        print("❌ 파일 없음")
-        return False
-    
+print("\n" + "="*70)
+print("🔍 모든 Dashboard/Summary 시트 값 확인")
+print("="*70)
+
+issues = []
+
+# 1. Market Sizing (Summary 시트)
+print("\n1️⃣ Market Sizing - Summary 시트")
+print("-"*70)
+
+filepath = examples_dir / 'market_sizing_piano_subscription_CALCULATED_20251104.xlsx'
+if filepath.exists():
     wb = load_workbook(filepath, data_only=True)
     
-    if 'Summary' not in wb.sheetnames:
+    if 'Summary' in wb.sheetnames:
+        ws = wb['Summary']
+        
+        # 주요 셀 확인
+        checks = [
+            ('B5', 'TAM', 100_000_000_000),
+            ('B6', 'SAM (평균)', 12_062_500_000),
+            ('B10', 'Method 1 SAM', 3_750_000_000),
+            ('B11', 'Method 2 SAM', 12_000_000_000),
+            ('B12', 'Method 3 SAM', 7_500_000_000),
+            ('B13', 'Method 4 SAM', 25_000_000_000),
+            ('B16', 'Max/Min Ratio', 6.67),
+            ('B23', 'Best Case Avg SAM', 12_062_500_000 * 1.15),
+            ('B24', 'Base Case Avg SAM', 12_062_500_000),
+            ('B25', 'Worst Case Avg SAM', 12_062_500_000 * 0.85),
+        ]
+        
+        for cell, label, expected in checks:
+            value = ws[cell].value
+            
+            if value is None:
+                issues.append(f"❌ Market Sizing Summary!{cell} ({label}): 값 없음")
+                print(f"❌ {cell} ({label}): None")
+            elif isinstance(value, str):
+                # 수식이 그대로 있음
+                issues.append(f"❌ Market Sizing Summary!{cell} ({label}): 수식만 있음 ({value})")
+                print(f"❌ {cell} ({label}): 수식 ({value[:30]}...)")
+            else:
+                # 숫자 확인
+                if expected > 1000:
+                    formatted = f"₩{value/1_0000_0000:.1f}억"
+                    expected_fmt = f"₩{expected/1_0000_0000:.1f}억"
+                else:
+                    formatted = f"{value:.2f}"
+                    expected_fmt = f"{expected:.2f}"
+                
+                # 오차 확인
+                error = abs(value - expected) / abs(expected) if expected != 0 else abs(value - expected)
+                
+                if error < 0.02:  # 2% 허용
+                    print(f"✅ {cell} ({label}): {formatted}")
+                else:
+                    issues.append(f"⚠️ Market Sizing Summary!{cell} ({label}): {formatted} ≠ {expected_fmt} (오차 {error*100:.1f}%)")
+                    print(f"⚠️ {cell} ({label}): {formatted} ≠ {expected_fmt}")
+    else:
+        issues.append("❌ Market Sizing: Summary 시트 없음")
         print("❌ Summary 시트 없음")
-        return False
-    
-    ws = wb['Summary']
-    
-    # 주요 값 확인
-    checks = [
-        ('B5', 'TAM', 100_000_000_000, '₩1,000억'),
-        ('B6', 'SAM (평균)', 12_062_500_000, '₩120.6억'),
-        ('B10', 'Method 1 SAM', 3_750_000_000, '₩37.5억'),
-        ('B11', 'Method 2 SAM', 12_000_000_000, '₩120억'),
-        ('B12', 'Method 3 SAM', 7_500_000_000, '₩75억'),
-        ('B13', 'Method 4 SAM', 25_000_000_000, '₩250억'),
-        ('B16', 'Max/Min Ratio', 6.67, '6.67'),
-        ('B23', 'Best Case SAM', 12_062_500_000, '₩120.6억'),
-        ('B24', 'Base Case SAM', 12_062_500_000, '₩120.6억'),
-        ('B25', 'Worst Case SAM', 12_062_500_000, '₩120.6억'),
-    ]
-    
-    errors = []
-    
-    for cell, name, expected, display in checks:
-        actual = ws[cell].value
-        
-        print(f"\n{cell} ({name}):")
-        print(f"  기대값: {display}")
-        
-        if actual is None:
-            print(f"  ❌ 값 없음!")
-            errors.append(f"{cell} ({name}): 값 없음")
-        else:
-            print(f"  실제값: {actual}")
-            
-            # 숫자 비교 (문자열일 수 있음)
-            try:
-                actual_num = float(actual) if not isinstance(actual, (int, float)) else actual
-                
-                if abs(actual_num - expected) / expected < 0.01:
-                    print(f"  ✅ 정상 (오차 < 1%)")
-                else:
-                    print(f"  ⚠️ 오차: {abs(actual_num - expected) / expected * 100:.1f}%")
-            except:
-                # 문자열 (예: "재검토 필요")
-                print(f"  ℹ️ 문자값: {actual}")
-    
-    if errors:
-        print(f"\n❌ {len(errors)}개 오류:")
-        for err in errors:
-            print(f"  - {err}")
-        return False
-    else:
-        print(f"\n✅ Summary 시트 모든 값 정상")
-        return True
+else:
+    issues.append("❌ Market Sizing: 파일 없음")
+    print("❌ 파일 없음")
 
+# 2. Unit Economics (Dashboard 시트)
+print("\n2️⃣ Unit Economics - Dashboard 시트")
+print("-"*70)
 
-def check_unit_economics_dashboard():
-    """Unit Economics Dashboard 시트 확인"""
-    
-    filepath = examples_dir / 'unit_economics_CALCULATED_20251104.xlsx'
-    
-    print("\n" + "="*70)
-    print("2️⃣ Unit Economics - Dashboard 시트")
-    print("="*70)
-    
-    if not filepath.exists():
-        print("❌ 파일 없음")
-        return False
-    
+filepath = examples_dir / 'unit_economics_CALCULATED_20251104.xlsx'
+if filepath.exists():
     wb = load_workbook(filepath, data_only=True)
     
-    if 'Dashboard' not in wb.sheetnames:
-        print("❌ Dashboard 시트 없음")
-        return False
-    
-    ws = wb['Dashboard']
-    
-    # 주요 값 확인
-    checks = [
-        ('B5', 'LTV', 78750, '₩78,750'),
-        ('B6', 'CAC', 25000, '₩25,000'),
-        ('B7', 'LTV/CAC Ratio', 3.15, '3.15'),
-        ('B8', 'Payback Period', 7.94, '7.9개월'),
-    ]
-    
-    errors = []
-    
-    for cell, name, expected, display in checks:
-        actual = ws[cell].value
+    if 'Dashboard' in wb.sheetnames:
+        ws = wb['Dashboard']
         
-        print(f"\n{cell} ({name}):")
-        print(f"  기대값: {display}")
+        checks = [
+            ('B5', 'LTV', 78750),
+            ('B6', 'CAC', 25000),
+            ('B7', 'LTV/CAC Ratio', 3.15),
+            ('B8', 'Payback Period', 7.94),
+        ]
         
-        if actual is None:
-            print(f"  ❌ 값 없음!")
-            errors.append(f"{cell} ({name}): 값 없음")
-        else:
-            print(f"  실제값: {actual}")
+        for cell, label, expected in checks:
+            value = ws[cell].value
             
-            try:
-                actual_num = float(actual)
-                
-                if abs(actual_num - expected) / expected < 0.02:
-                    print(f"  ✅ 정상")
+            if value is None:
+                issues.append(f"❌ Unit Economics Dashboard!{cell} ({label}): 값 없음")
+                print(f"❌ {cell} ({label}): None")
+            elif isinstance(value, str):
+                issues.append(f"❌ Unit Economics Dashboard!{cell} ({label}): 수식만 있음")
+                print(f"❌ {cell} ({label}): 수식 ({value[:30]}...)")
+            else:
+                if expected > 1000:
+                    formatted = f"₩{value:,.0f}"
+                    expected_fmt = f"₩{expected:,.0f}"
                 else:
-                    print(f"  ⚠️ 오차: {abs(actual_num - expected) / expected * 100:.1f}%")
-            except:
-                print(f"  ℹ️ 문자값: {actual}")
-    
-    if errors:
-        print(f"\n❌ {len(errors)}개 오류:")
-        for err in errors:
-            print(f"  - {err}")
-        return False
+                    formatted = f"{value:.2f}"
+                    expected_fmt = f"{expected:.2f}"
+                
+                error = abs(value - expected) / abs(expected) if expected != 0 else abs(value - expected)
+                
+                if error < 0.02:
+                    print(f"✅ {cell} ({label}): {formatted}")
+                else:
+                    issues.append(f"⚠️ Unit Economics Dashboard!{cell}: {formatted} ≠ {expected_fmt}")
+                    print(f"⚠️ {cell} ({label}): {formatted} ≠ {expected_fmt}")
     else:
-        print(f"\n✅ Dashboard 시트 모든 값 정상")
-        return True
+        issues.append("❌ Unit Economics: Dashboard 시트 없음")
+        print("❌ Dashboard 시트 없음")
+else:
+    issues.append("❌ Unit Economics: 파일 없음")
+    print("❌ 파일 없음")
 
+# 3. Financial Projection (Dashboard 시트)
+print("\n3️⃣ Financial Projection - Dashboard 시트")
+print("-"*70)
 
-def check_financial_projection_dashboard():
-    """Financial Projection Dashboard 시트 확인"""
-    
-    filepath = examples_dir / 'financial_projection_CALCULATED_20251104.xlsx'
-    
-    print("\n" + "="*70)
-    print("3️⃣ Financial Projection - Dashboard 시트")
-    print("="*70)
-    
-    if not filepath.exists():
-        print("❌ 파일 없음")
-        return False
-    
+filepath = examples_dir / 'financial_projection_CALCULATED_20251104.xlsx'
+if filepath.exists():
     wb = load_workbook(filepath, data_only=True)
     
-    if 'Dashboard' not in wb.sheetnames:
-        print("❌ Dashboard 시트 없음")
-        return False
-    
-    ws = wb['Dashboard']
-    
-    # 주요 값 확인
-    checks = [
-        ('B5', 'Revenue Year 5', 4295_0000_0000, '₩4,295억'),
-        ('B6', 'Net Income Year 5', 429_0000_0000, '₩429억'),
-        ('B7', 'CAGR', 0.28, '28%'),
-    ]
-    
-    errors = []
-    
-    for cell, name, expected, display in checks:
-        actual = ws[cell].value
+    if 'Dashboard' in wb.sheetnames:
+        ws = wb['Dashboard']
         
-        print(f"\n{cell} ({name}):")
-        print(f"  기대값: {display}")
+        checks = [
+            ('B5', 'Revenue Year 5', 4295_0000_0000),
+            ('B6', 'Net Income Year 5', 429_0000_0000),
+            ('B7', 'CAGR', 0.28),
+        ]
         
-        if actual is None:
-            print(f"  ❌ 값 없음!")
-            errors.append(f"{cell} ({name}): 값 없음")
-        else:
-            print(f"  실제값: {actual}")
+        for cell, label, expected in checks:
+            value = ws[cell].value
             
-            try:
-                actual_num = float(actual)
-                
-                if abs(actual_num - expected) / expected < 0.02:
-                    print(f"  ✅ 정상")
+            if value is None:
+                issues.append(f"❌ Financial Projection Dashboard!{cell} ({label}): 값 없음")
+                print(f"❌ {cell} ({label}): None")
+            elif isinstance(value, str):
+                issues.append(f"❌ Financial Projection Dashboard!{cell} ({label}): 수식만 있음")
+                print(f"❌ {cell} ({label}): 수식 ({value[:30]}...)")
+            else:
+                if expected > 1000:
+                    formatted = f"₩{value/1_0000_0000:.0f}억"
+                    expected_fmt = f"₩{expected/1_0000_0000:.0f}억"
                 else:
-                    print(f"  ⚠️ 오차: {abs(actual_num - expected) / expected * 100:.1f}%")
-            except:
-                print(f"  ℹ️ 문자값: {actual}")
-    
-    if errors:
-        print(f"\n❌ {len(errors)}개 오류:")
-        for err in errors:
-            print(f"  - {err}")
-        return False
+                    formatted = f"{value*100:.0f}%" if value < 1 else f"{value:.2f}"
+                    expected_fmt = f"{expected*100:.0f}%" if expected < 1 else f"{expected:.2f}"
+                
+                error = abs(value - expected) / abs(expected) if expected != 0 else abs(value - expected)
+                
+                if error < 0.02:
+                    print(f"✅ {cell} ({label}): {formatted}")
+                else:
+                    issues.append(f"⚠️ Financial Projection Dashboard!{cell}: {formatted} ≠ {expected_fmt}")
+                    print(f"⚠️ {cell} ({label}): {formatted} ≠ {expected_fmt}")
     else:
-        print(f"\n✅ Dashboard 시트 모든 값 정상")
-        return True
+        issues.append("❌ Financial Projection: Dashboard 시트 없음")
+        print("❌ Dashboard 시트 없음")
+else:
+    issues.append("❌ Financial Projection: 파일 없음")
+    print("❌ 파일 없음")
 
+# 최종 결과
+print("\n" + "="*70)
+print("📊 최종 확인 결과")
+print("="*70)
 
-if __name__ == "__main__":
-    print("\n" + "="*70)
-    print("🔍 모든 Dashboard/Summary 시트 검증")
-    print("="*70)
-    print("\n목적: 주요 숫자가 모두 출력되는지 확인\n")
+if not issues:
+    print("\n✅ 모든 Dashboard/Summary 값 정상!")
+    print("\n검증 완료:")
+    print("  - Market Sizing: 10개 값 ✅")
+    print("  - Unit Economics: 4개 값 ✅")
+    print("  - Financial Projection: 3개 값 ✅")
+    print("\n💡 즉시 확인 가능:")
+    print("  - 모든 값이 계산되어 표시됨")
+    print("  - Excel에서 열면 바로 확인")
+    sys.exit(0)
+else:
+    print(f"\n❌ {len(issues)}개 문제 발견:\n")
+    for issue in issues:
+        print(f"  {issue}")
     
-    results = []
+    print("\n📋 수정 필요:")
+    print("  1. 값 없음 → populate 스크립트 재실행")
+    print("  2. 수식만 있음 → data_only=False로 로드된 것 (정상일 수 있음)")
+    print("  3. 값 불일치 → 계산 로직 확인")
     
-    # 1. Market Sizing
-    results.append(('Market Sizing', check_market_sizing_summary()))
-    
-    # 2. Unit Economics
-    results.append(('Unit Economics', check_unit_economics_dashboard()))
-    
-    # 3. Financial Projection
-    results.append(('Financial Projection', check_financial_projection_dashboard()))
-    
-    # 최종 결과
-    print("\n" + "="*70)
-    print("🏁 최종 검증 결과")
-    print("="*70 + "\n")
-    
-    for name, passed in results:
-        status = "✅" if passed else "❌"
-        print(f"{status} {name}: {'통과' if passed else '실패'}")
-    
-    passed_count = sum(1 for _, p in results if p)
-    total = len(results)
-    
-    print(f"\n총 {total}개")
-    print(f"통과: {passed_count}개")
-    print(f"실패: {total - passed_count}개")
-    
-    if passed_count == total:
-        print("\n✅ 모든 Dashboard/Summary 시트 정상!")
-        print("\n💡 확인 완료:")
-        print("   - 모든 주요 숫자 출력됨")
-        print("   - 빈 셀 없음")
-        print("   - 계산 결과 정확")
-        sys.exit(0)
-    else:
-        print("\n❌ 일부 시트에 문제 있음")
-        sys.exit(1)
+    sys.exit(1)
 

@@ -214,11 +214,44 @@ def populate_values():
         
         print()
     
-    # === 6. Summary 값 입력 ===
+    # === 6. Scenarios Average SAM 값 입력 (중요!) ===
+    if 'Scenarios' in wb.sheetnames:
+        ws = wb['Scenarios']
+        
+        print("6️⃣ Scenarios Average SAM 계산")
+        
+        # Average SAM 행 찾기 (보통 Row 22)
+        for row_idx in range(15, 30):
+            cell = ws[f'A{row_idx}']
+            if cell and cell.value and 'Average SAM' in str(cell.value):
+                # Best, Base, Worst
+                ws[f'B{row_idx}'] = avg_sam * 1.15  # Best Case
+                ws[f'B{row_idx}'].number_format = '#,##0'
+                ws[f'B{row_idx}'].font = Font(bold=True)
+                ws[f'B{row_idx}'].fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
+                
+                ws[f'C{row_idx}'] = avg_sam  # Base Case
+                ws[f'C{row_idx}'].number_format = '#,##0'
+                ws[f'C{row_idx}'].font = Font(bold=True)
+                ws[f'C{row_idx}'].fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
+                
+                ws[f'D{row_idx}'] = avg_sam * 0.85  # Worst Case
+                ws[f'D{row_idx}'].number_format = '#,##0'
+                ws[f'D{row_idx}'].font = Font(bold=True)
+                ws[f'D{row_idx}'].fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
+                
+                print(f"  Best Case (B{row_idx}): ₩{avg_sam * 1.15/1_0000_0000:.1f}억")
+                print(f"  Base Case (C{row_idx}): ₩{avg_sam/1_0000_0000:.1f}억")
+                print(f"  Worst Case (D{row_idx}): ₩{avg_sam * 0.85/1_0000_0000:.1f}억")
+                break
+        
+        print()
+    
+    # === 7. Summary 값 입력 ===
     if 'Summary' in wb.sheetnames:
         ws = wb['Summary']
         
-        print("6️⃣ Summary 계산")
+        print("7️⃣ Summary 계산")
         
         # TAM
         ws['B5'] = tam
@@ -245,29 +278,29 @@ def populate_values():
         ws['B13'] = sam4
         ws['B13'].number_format = '#,##0'
         
-        # Max/Min Ratio (B16)
+        # Max/Min Ratio, Convergence Status (B16, B17)
+        max_min = max([sam1, sam2, sam3, sam4]) / min([sam1, sam2, sam3, sam4])
         ws['B16'] = max_min
         ws['B16'].number_format = '0.00'
-        print(f"  Max/Min (B16): {max_min:.2f}")
         
-        # Convergence Status (B17)
         ws['B17'] = "❌ 재검토 필요" if max_min > 1.3 else "✅ 통과"
-        print(f"  상태 (B17): {ws['B17'].value}")
         
-        # Scenarios (B23-B25) - Base Case로 동일
-        ws['B23'] = avg_sam  # Best
+        # Scenario Average SAM (B23-25도 직접 입력)
+        ws['B23'] = avg_sam * 1.15  # Best Case
         ws['B23'].number_format = '#,##0'
         ws['B23'].fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
         
-        ws['B24'] = avg_sam  # Base
+        ws['B24'] = avg_sam  # Base Case
         ws['B24'].number_format = '#,##0'
         ws['B24'].font = Font(bold=True)
         
-        ws['B25'] = avg_sam  # Worst
+        ws['B25'] = avg_sam * 0.85  # Worst Case
         ws['B25'].number_format = '#,##0'
         ws['B25'].fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
         
-        print(f"  Scenarios (B23-B25): ₩{avg_sam/1_0000_0000:.1f}억")
+        print(f"  Scenarios - Best (B23): ₩{avg_sam * 1.15/1_0000_0000:.1f}억")
+        print(f"  Scenarios - Base (B24): ₩{avg_sam/1_0000_0000:.1f}억")
+        print(f"  Scenarios - Worst (B25): ₩{avg_sam * 0.85/1_0000_0000:.1f}억")
         
         print()
     
