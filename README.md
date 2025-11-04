@@ -101,6 +101,69 @@ explorer: 탐색자
 
 ---
 
+## 🧮 Guestimation 방법론
+
+UMIS는 **2가지 추정 방법론**을 제공합니다:
+
+### 1️⃣ UMIS Guestimation (빠른 추정)
+
+- **속도**: ⚡ 5-30분
+- **정확도**: ±50% (자릿수)
+- **적합**: 초기 탐색, 기회 우선순위
+
+```bash
+@Explorer guestimate 구독 모델 시장 규모
+```
+
+**특징**:
+- Fermi 4원칙 (모형, 분해, 제약, 자릿수)
+- 8가지 데이터 출처 활용
+- 빠른 Order of Magnitude 파악
+
+### 2️⃣ Domain-Centric Reasoner (정밀 분석)
+
+- **속도**: 🔬 1-4시간
+- **정확도**: ±30% (수렴)
+- **적합**: 정밀 분석, 투자 심사, 규제 산업
+
+```bash
+@Quantifier reasoner 시니어 케어 로봇 시장 규모
+```
+
+**특징**:
+- 10가지 신호 우선순위 (s3→s8→s6→s10→s2→...)
+- RAG 중심 (s2 Consensus, s9 Case Analogies, s10 KPI)
+- Should vs Will 분리 (행동경제학)
+- 증거표 + 검증 로그
+
+### 🔄 Hybrid Strategy (권장!)
+
+Guardian이 자동으로 최적 방법론을 선택:
+
+```bash
+@auto 국내 OTT 시장 규모
+```
+
+**전환 트리거**:
+1. **신뢰도 < 50%** → Domain Reasoner
+2. **범위 폭 > ±75%** → Domain Reasoner
+3. **기회 > 1,000억** → Domain Reasoner
+4. **규제 산업** → Domain Reasoner (필수)
+5. **신규 시장** → Domain Reasoner
+
+**플로우**:
+```
+Phase 1: Guestimation (5-30분)
+  ↓
+Guardian 평가
+  ↓
+조건 충족 시 → Phase 2: Domain Reasoner (1-4시간)
+```
+
+**자세한 비교**: [GUESTIMATION_COMPARISON.md](docs/GUESTIMATION_COMPARISON.md)
+
+---
+
 ## 📚 문서
 
 ### 시작하기
