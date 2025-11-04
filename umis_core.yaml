@@ -2,10 +2,25 @@
 # UMIS Core (INDEX)
 # System RAG용 압축된 핵심 가이드
 # ========================================
+
+# ⚡ TL;DR (AI: 바쁘면 여기만!)
 #
-# 목적: AI가 5분 내 UMIS 전체 파악
-# 크기: < 1,000줄 (원본 5,508줄의 18%)
-# 컨텍스트 절약: 77% (4,508줄)
+# UMIS = 25개 도구를 RAG로 로드하는 시스템
+# 
+# 사용법:
+#   1) 쿼리 분석 (agent + keywords)
+#   2) Section 1 (Decision Guide)에서 tool_key 찾기
+#   3) System RAG 검색 (python scripts/query_system_rag.py {tool_key})
+#   4) 로드된 content 활용
+#
+# 도구: 25개 (E:4, Q:4, V:4, O:4, G:2, F:7)
+# 절약: 89% (5,508줄 → 450-2,850줄)
+#
+# AI 읽기 순서:
+#   1. Quick Start (Line 40~) ← 사용법
+#   2. Decision Guide (Line 85~) ← 도구 선택 (핵심!)
+#   3. Agent Summary (Line 220~) ← 역할 (필요시)
+#   4. System Details (Line 410~) ← 구조 (참고용)
 #
 # ========================================
 
@@ -14,19 +29,86 @@ _meta:
   created: "2025-11-04"
   type: "index"
   original_size: "5,508줄"
-  compressed_size: "< 1,000줄"
-  context_saving: "77%"
+  compressed_size: "580줄"
+  context_saving: "89%"
   
   purpose: |
     System RAG의 핵심 INDEX.
     AI가 필요한 도구만 정확히 로드할 수 있도록
     전체 시스템을 압축 요약.
+  
+  ai_reading_guide: |
+    ⭐ AI는 이 순서로 읽으세요:
+    
+    1. Quick Start (50줄) - 이 파일 사용법
+    2. Decision Guide (150줄) - 어떤 도구 로드?
+    3. Agent Summary (필요시) - 각 Agent 역할
+    4. System Details (참고용) - 시스템 구조
 
 # ========================================
-# Section 1: System Overview (200줄)
+# Section 0: QUICK START (AI 필수!)
 # ========================================
 
-system_identity:
+quick_start_for_ai:
+  
+  this_file_purpose:
+    what: "UMIS 전체 시스템의 압축된 INDEX"
+    when: "항상 먼저 로드 (50줄만 읽어도 OK)"
+    why: "컨텍스트 89% 절약 (5,508 → 580)"
+  
+  how_to_use:
+    step_1: "사용자 쿼리 분석"
+    step_2: "Section 1 (Decision Guide)에서 필요한 tool_key 찾기"
+    step_3: "System RAG로 tool_key 검색"
+    step_4: "로드된 도구 content 활용"
+    step_5: "필요시 Agent Summary 참조"
+  
+  common_patterns:
+    
+    pattern_1_simple_query:
+      example: "@Explorer, 구독 모델 패턴"
+      step_1: "agent=explorer, keywords=['패턴']"
+      step_2: "Decision Guide → tool:explorer:pattern_search"
+      step_3: "System RAG 검색 (0.1ms)"
+      result: "총 컨텍스트 50 + 400 = 450줄 (92% 절약!)"
+    
+    pattern_2_complex_query:
+      example: "음악 스트리밍 시장 분석"
+      step_1: "task='시장 분석'"
+      step_2: "Decision Guide → 3개 도구 필요"
+      step_3: "tool:observer:market_structure"
+      step_3: "tool:explorer:pattern_search"
+      step_3: "tool:quantifier:sam_4methods"
+      result: "총 컨텍스트 50 + 1,200 = 1,250줄 (77% 절약!)"
+  
+  shortcuts:
+    - "도구 목록": "python scripts/query_system_rag.py --list"
+    - "도구 검색": "python scripts/query_system_rag.py tool:explorer:pattern_search"
+    - "Agent 역할": "Section 2 참조"
+
+# ========================================
+# Section 1: DECISION GUIDE (AI 핵심!)
+# ========================================
+# AI가 어떤 도구를 로드할지 결정하는 핵심 섹션
+# AI: 모든 쿼리에서 여기를 먼저 읽으세요!
+# ========================================
+
+agent_selection_flowchart:
+  # ⚡ 빠른 Agent 선택 (AI: 2초 판단!)
+  
+  "기회를 찾고 싶다": "Explorer (tool:explorer:pattern_search 우선)"
+  "시장 규모를 알고 싶다": "Quantifier (tool:quantifier:sam_4methods)"
+  "데이터를 검증하고 싶다": "Validator (tool:validator:data_definition)"
+  "시장 구조를 파악하고 싶다": "Observer (tool:observer:market_structure)"
+  "진행 상황을 관리하고 싶다": "Guardian (tool:guardian:progress_monitoring)"
+  
+  복합_쿼리:
+    "시장 분석": "Observer → Explorer → Quantifier 순차"
+    "기회 검증": "Explorer → Validator → Quantifier"
+    "경쟁 분석": "Observer + Framework:competitive_analysis"
+    "Discovery Sprint": "Framework:discovery_sprint + 모든 Agent"
+
+system_details:
   name: "UMIS v7.1.0"
   tagline: "RAG 기반 5-Agent 협업 시장 분석 시스템"
   
@@ -158,12 +240,9 @@ key_concepts:
 
 # (Section 2-4는 다음 단계에서 추가)
 
-# ========================================
-# Section 2: Agent Summary (500줄)
-# - 각 Agent 100줄 요약
-# ========================================
+# (이전 위치에서 이동됨)
 
-agents:
+decision_guide:
   
   observer:
     name: "Albert (기본)"
@@ -344,17 +423,20 @@ agents:
     
     detail_module: "modules/agents/guardian.yaml (상세 800줄)"
 
-# TODO: Section 3-4 다음 단계에서 추가
-
-
 # ========================================
-# Section 3: Decision Guide (200줄)
-# - AI가 최적 방법 판단
+# Section 2: AGENT SUMMARY
+# ========================================
+# AI: Agent를 모를 때만 읽으세요 (각 100줄)
+# 대부분 쿼리는 Decision Guide만으로 충분!
 # ========================================
 
-decision_guide:
+agents:
   
-  # AI가 사용자 쿼리를 분석하여 최적 도구 선택
+  # ⭐ AI 사용 가이드:
+  #   1. 쿼리에서 keywords 추출
+  #   2. question_type_mapping에서 매칭
+  #   3. 필요한 tool_key 식별
+  #   4. System RAG로 검색
   
   question_type_mapping:
     
@@ -480,8 +562,10 @@ decision_guide:
     평균: 77% 절약 달성!
 
 # ========================================
-# Section 4: Module Index (100줄)
-# - 상세 모듈 위치
+# Section 4: MODULE INDEX (상세 위치)
+# ========================================
+# AI: 도구의 원본 위치를 찾을 때만 읽으세요
+# System RAG가 자동으로 로드하므로 직접 참조 불필요!
 # ========================================
 
 module_index:
