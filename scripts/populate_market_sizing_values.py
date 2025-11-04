@@ -245,6 +245,30 @@ def populate_values():
         ws['B13'] = sam4
         ws['B13'].number_format = '#,##0'
         
+        # Max/Min Ratio (B16)
+        ws['B16'] = max_min
+        ws['B16'].number_format = '0.00'
+        print(f"  Max/Min (B16): {max_min:.2f}")
+        
+        # Convergence Status (B17)
+        ws['B17'] = "❌ 재검토 필요" if max_min > 1.3 else "✅ 통과"
+        print(f"  상태 (B17): {ws['B17'].value}")
+        
+        # Scenarios (B23-B25) - Base Case로 동일
+        ws['B23'] = avg_sam  # Best
+        ws['B23'].number_format = '#,##0'
+        ws['B23'].fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
+        
+        ws['B24'] = avg_sam  # Base
+        ws['B24'].number_format = '#,##0'
+        ws['B24'].font = Font(bold=True)
+        
+        ws['B25'] = avg_sam  # Worst
+        ws['B25'].number_format = '#,##0'
+        ws['B25'].fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+        
+        print(f"  Scenarios (B23-B25): ₩{avg_sam/1_0000_0000:.1f}억")
+        
         print()
     
     # 저장
