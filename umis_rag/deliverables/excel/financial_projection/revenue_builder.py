@@ -98,8 +98,9 @@ class RevenueBuilder:
         input_fill = PatternFill(start_color=ExcelStyles.INPUT_FILL, end_color=ExcelStyles.INPUT_FILL, fill_type="solid")
         
         segment_rows = []
+        segment_year0_ranges = []  # 각 세그먼트 Year 0 Named Range
         
-        for seg in segments:
+        for idx, seg in enumerate(segments, start=1):
             row += 1
             segment_rows.append(row)
             
@@ -127,6 +128,11 @@ class RevenueBuilder:
             ws.cell(row=row, column=years + 3).value = seg['growth']  # 수정: years + 3
             ws.cell(row=row, column=years + 3).fill = input_fill
             ws.cell(row=row, column=years + 3).number_format = '0.0%'
+            
+            # 각 세그먼트 Year 0에 Named Range 정의
+            seg_range_name = f'Rev_Segment{idx}_Y0'
+            self.fe.define_named_range(seg_range_name, 'Revenue_Buildup', f'B{row}')
+            segment_year0_ranges.append(seg_range_name)
         
         # === 4. 총 매출 (Total Revenue) ===
         row += 1
@@ -134,16 +140,22 @@ class RevenueBuilder:
         ws.cell(row=row, column=1).font = Font(size=11, bold=True, color="FFFFFF")
         ws.cell(row=row, column=1).fill = PatternFill(start_color="2E75B6", end_color="2E75B6", fill_type="solid")
         
-        # Year 0 ~ Year 5 합계
+        # Year 0 ~ Year 5 합계 (Named Range 기반)
         for year in range(years + 1):
             col = 2 + year
             col_letter = chr(64 + col)  # 수정: 64 + col (B, C, D, ...)
             
-            # 세그먼트 합계
-            first_seg_row = segment_rows[0]
-            last_seg_row = segment_rows[-1]
+            # Year 0은 세그먼트 Named Range 합산
+            if year == 0:
+                # Named Range 기반 SUM
+                sum_formula = f"=SUM({','.join(segment_year0_ranges)})"
+                ws.cell(row=row, column=col).value = sum_formula
+            else:
+                # Year 1-5는 각 세그먼트 셀 합산 (동적이므로 범위 사용)
+                first_seg_row = segment_rows[0]
+                last_seg_row = segment_rows[-1]
+                ws.cell(row=row, column=col).value = f'=SUM({col_letter}{first_seg_row}:{col_letter}{last_seg_row})'
             
-            ws.cell(row=row, column=col).value = f'=SUM({col_letter}{first_seg_row}:{col_letter}{last_seg_row})'
             ws.cell(row=row, column=col).number_format = '#,##0'
             ws.cell(row=row, column=col).font = Font(size=11, bold=True, color="FFFFFF")
             ws.cell(row=row, column=col).fill = PatternFill(start_color="2E75B6", end_color="2E75B6", fill_type="solid")
