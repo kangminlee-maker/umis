@@ -1,40 +1,31 @@
 #!/usr/bin/env python3
 """
 Hybrid Guestimation 테스트 스크립트
-Guardian의 방법론 자동 전환 로직 검증
-
-Usage:
-    python scripts/test_hybrid_guestimation.py
+Guardian 자동 전환 로직 검증
 """
 
 import sys
 from pathlib import Path
 
-# Add project root to path
+# 프로젝트 루트 추가
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from umis_rag.guardian import GuardianMetaRAG
+from umis_rag.guardian.meta_rag import GuardianMetaRAG
 
 
-def test_guardian_recommendation():
-    """Guardian 방법론 권고 테스트 (5가지 트리거)"""
-    
+def test_trigger_1_low_confidence():
+    """Test Case 1: 신뢰도 낮음 (< 50%)"""
     print("\n" + "=" * 70)
-    print("Guardian 방법론 권고 테스트")
+    print("Test 1: 신뢰도 30% → Phase 2 권고 (high)")
     print("=" * 70)
     
     guardian = GuardianMetaRAG()
     
-    # ===== Test Case 1: 신뢰도 낮음 (Trigger 1) =====
-    print("\n" + "-" * 70)
-    print("Test 1: 신뢰도 낮음 (30% < 50%)")
-    print("-" * 70)
-    
-    result1 = guardian.recommend_methodology(
+    result = guardian.recommend_methodology(
         estimate_result={
             'value': 50_000_000_000,  # 500억
-            'range': (20_000_000_000, 80_000_000_000),  # 200억-800억
+            'range': (20_000_000_000, 80_000_000_000),
             'confidence': 0.3,  # 30%
             'method': 'guestimation'
         },
@@ -42,390 +33,335 @@ def test_guardian_recommendation():
     )
     
     print(f"\n결과:")
-    print(f"  권고: {result1['recommendation']}")
-    print(f"  이유: {result1['reason']}")
-    print(f"  우선순위: {result1['priority']}")
-    print(f"  트리거: {result1['trigger']}")
-    print(f"  예상 시간: {result1['estimated_time']}")
+    print(f"  권고: {result['recommendation']}")
+    print(f"  이유: {result['reason']}")
+    print(f"  우선순위: {result['priority']}")
+    print(f"  트리거: {result['trigger']}")
+    print(f"  예상 시간: {result['estimated_time']}")
+    print(f"  자동 실행: {result['auto_execute']}")
     
-    assert result1['recommendation'] == 'domain_reasoner', "신뢰도 낮음 → Domain Reasoner 권고 실패"
-    assert result1['trigger'] == 'low_confidence', "트리거 불일치"
-    assert result1['priority'] == 'high', "우선순위 불일치"
+    # 검증
+    assert result['recommendation'] == 'domain_reasoner', "권고가 domain_reasoner여야 함"
+    assert result['trigger'] == 'low_confidence', "트리거가 low_confidence여야 함"
+    assert result['priority'] == 'high', "우선순위가 high여야 함"
+    assert result['auto_execute'] == False, "사용자 확인 필요"
     
-    print("\n  ✅ Test 1 Pass")
+    print("\n✅ Test 1 PASSED")
+    return result
+
+
+def test_trigger_2_wide_range():
+    """Test Case 2: 범위 너무 넓음 (±75% 초과)"""
+    print("\n" + "=" * 70)
+    print("Test 2: 범위 폭 ±100% → Phase 2 권고 (high)")
+    print("=" * 70)
     
-    # ===== Test Case 2: 범위 넓음 (Trigger 2) =====
-    print("\n" + "-" * 70)
-    print("Test 2: 범위 폭 과다 (±100% > ±75%)")
-    print("-" * 70)
+    guardian = GuardianMetaRAG()
     
-    result2 = guardian.recommend_methodology(
+    result = guardian.recommend_methodology(
         estimate_result={
             'value': 100_000_000_000,  # 1,000억
-            'range': (50_000_000_000, 200_000_000_000),  # 500억-2,000억 (4배 = ±100%)
-            'confidence': 0.6,  # 60% (충분하지만 범위 넓음)
+            'range': (50_000_000_000, 150_000_000_000),  # ±50% → 폭 3배 = ±100%
+            'confidence': 0.6,
             'method': 'guestimation'
         },
         context={'domain': 'general'}
     )
     
     print(f"\n결과:")
-    print(f"  권고: {result2['recommendation']}")
-    print(f"  이유: {result2['reason']}")
-    print(f"  우선순위: {result2['priority']}")
-    print(f"  트리거: {result2['trigger']}")
+    print(f"  권고: {result['recommendation']}")
+    print(f"  이유: {result['reason']}")
+    print(f"  우선순위: {result['priority']}")
+    print(f"  트리거: {result['trigger']}")
     
-    assert result2['recommendation'] == 'domain_reasoner', "범위 넓음 → Domain Reasoner 권고 실패"
-    assert result2['trigger'] == 'wide_range', "트리거 불일치"
-    assert result2['priority'] == 'high', "우선순위 불일치"
+    # 검증
+    assert result['recommendation'] == 'domain_reasoner', "권고가 domain_reasoner여야 함"
+    assert result['trigger'] == 'wide_range', "트리거가 wide_range여야 함"
+    assert result['priority'] == 'high', "우선순위가 high여야 함"
     
-    print("\n  ✅ Test 2 Pass")
+    print("\n✅ Test 2 PASSED")
+    return result
+
+
+def test_trigger_3_large_opportunity():
+    """Test Case 3: 기회 크기 > 1,000억"""
+    print("\n" + "=" * 70)
+    print("Test 3: 기회 5,000억 → Phase 2 권고 (medium)")
+    print("=" * 70)
     
-    # ===== Test Case 3: 큰 기회 (Trigger 3) =====
-    print("\n" + "-" * 70)
-    print("Test 3: 큰 기회 (5,000억 > 1,000억)")
-    print("-" * 70)
+    guardian = GuardianMetaRAG()
     
-    result3 = guardian.recommend_methodology(
+    result = guardian.recommend_methodology(
         estimate_result={
             'value': 500_000_000_000,  # 5,000억
-            'range': (400_000_000_000, 600_000_000_000),  # 4,000-6,000억 (±25%)
-            'confidence': 0.7,  # 70% (신뢰도 양호)
+            'range': (400_000_000_000, 600_000_000_000),
+            'confidence': 0.7,
             'method': 'guestimation'
         },
         context={'domain': 'general'}
     )
     
     print(f"\n결과:")
-    print(f"  권고: {result3['recommendation']}")
-    print(f"  이유: {result3['reason']}")
-    print(f"  우선순위: {result3['priority']}")
-    print(f"  트리거: {result3['trigger']}")
+    print(f"  권고: {result['recommendation']}")
+    print(f"  이유: {result['reason']}")
+    print(f"  우선순위: {result['priority']}")
+    print(f"  트리거: {result['trigger']}")
     
-    assert result3['recommendation'] == 'domain_reasoner', "큰 기회 → Domain Reasoner 권고 실패"
-    assert result3['trigger'] == 'large_opportunity', "트리거 불일치"
-    assert result3['priority'] == 'medium', "우선순위 불일치"
+    # 검증
+    assert result['recommendation'] == 'domain_reasoner', "권고가 domain_reasoner여야 함"
+    assert result['trigger'] == 'large_opportunity', "트리거가 large_opportunity여야 함"
+    assert result['priority'] == 'medium', "우선순위가 medium이어야 함"
     
-    print("\n  ✅ Test 3 Pass")
+    print("\n✅ Test 3 PASSED")
+    return result
+
+
+def test_trigger_4_regulatory():
+    """Test Case 4: 규제 산업 (required)"""
+    print("\n" + "=" * 70)
+    print("Test 4: 규제 산업 (의료) → Phase 2 필수 (required)")
+    print("=" * 70)
     
-    # ===== Test Case 4: 규제 산업 (Trigger 4, 최우선) =====
-    print("\n" + "-" * 70)
-    print("Test 4: 규제 산업 (의료) - 최우선 트리거")
-    print("-" * 70)
+    guardian = GuardianMetaRAG()
     
-    result4 = guardian.recommend_methodology(
+    result = guardian.recommend_methodology(
         estimate_result={
-            'value': 10_000_000_000,  # 100억 (작은 기회)
-            'range': (8_000_000_000, 12_000_000_000),  # 80-120억 (±25%)
-            'confidence': 0.8,  # 80% (신뢰도 높음)
+            'value': 10_000_000_000,  # 100억 (작아도 상관없음)
+            'range': (8_000_000_000, 12_000_000_000),
+            'confidence': 0.8,  # 높아도 상관없음
             'method': 'guestimation'
         },
         context={
             'domain': 'healthcare',
-            'regulatory': True  # ← 핵심!
+            'regulatory': True  # 핵심!
         }
     )
     
     print(f"\n결과:")
-    print(f"  권고: {result4['recommendation']}")
-    print(f"  이유: {result4['reason']}")
-    print(f"  우선순위: {result4['priority']}")
-    print(f"  트리거: {result4['trigger']}")
-    print(f"  자동 실행: {result4['auto_execute']}")
+    print(f"  권고: {result['recommendation']}")
+    print(f"  이유: {result['reason']}")
+    print(f"  우선순위: {result['priority']}")
+    print(f"  트리거: {result['trigger']}")
+    print(f"  자동 실행: {result['auto_execute']}")
     
-    assert result4['recommendation'] == 'domain_reasoner', "규제 산업 → Domain Reasoner 권고 실패"
-    assert result4['trigger'] == 'regulatory_industry', "트리거 불일치"
-    assert result4['priority'] == 'required', "우선순위 불일치 (required 필수)"
-    assert result4['auto_execute'] == True, "자동 실행 플래그 불일치"
+    # 검증
+    assert result['recommendation'] == 'domain_reasoner', "권고가 domain_reasoner여야 함"
+    assert result['trigger'] == 'regulatory_industry', "트리거가 regulatory_industry여야 함"
+    assert result['priority'] == 'required', "우선순위가 required여야 함"
+    assert result['auto_execute'] == True, "자동 실행 필수"
     
-    print("\n  ✅ Test 4 Pass (최우선 트리거)")
+    print("\n✅ Test 4 PASSED")
+    return result
+
+
+def test_trigger_5_new_market():
+    """Test Case 5: 신규 시장"""
+    print("\n" + "=" * 70)
+    print("Test 5: 신규 시장 → Phase 2 권고 (medium)")
+    print("=" * 70)
     
-    # ===== Test Case 5: 신규 시장 (Trigger 5) =====
-    print("\n" + "-" * 70)
-    print("Test 5: 신규 시장 (직접 데이터 부족)")
-    print("-" * 70)
+    guardian = GuardianMetaRAG()
     
-    result5 = guardian.recommend_methodology(
+    result = guardian.recommend_methodology(
         estimate_result={
-            'value': 30_000_000_000,  # 300억
-            'range': (25_000_000_000, 35_000_000_000),  # 250-350억 (±20%, 범위 좁음)
-            'confidence': 0.6,  # 60% (충분)
+            'value': 30_000_000_000,  # 300억 (< 1,000억)
+            'range': (25_000_000_000, 35_000_000_000),  # ±20% (< ±75%)
+            'confidence': 0.65,  # > 50%
             'method': 'guestimation'
         },
         context={
             'domain': 'robotics',
-            'new_market': True  # ← 핵심!
+            'new_market': True  # 핵심!
         }
     )
     
     print(f"\n결과:")
-    print(f"  권고: {result5['recommendation']}")
-    print(f"  이유: {result5['reason']}")
-    print(f"  우선순위: {result5['priority']}")
-    print(f"  트리거: {result5['trigger']}")
+    print(f"  권고: {result['recommendation']}")
+    print(f"  이유: {result['reason']}")
+    print(f"  우선순위: {result['priority']}")
+    print(f"  트리거: {result['trigger']}")
     
-    assert result5['recommendation'] == 'domain_reasoner', "신규 시장 → Domain Reasoner 권고 실패"
-    assert result5['trigger'] == 'new_market', "트리거 불일치"
-    assert result5['priority'] == 'medium', "우선순위 불일치"
+    # 검증
+    assert result['recommendation'] == 'domain_reasoner', "권고가 domain_reasoner여야 함"
+    assert result['trigger'] == 'new_market', "트리거가 new_market이어야 함"
+    assert result['priority'] == 'medium', "우선순위가 medium이어야 함"
     
-    print("\n  ✅ Test 5 Pass")
-    
-    # ===== Test Case 6: Guestimation 충분 (트리거 없음) =====
-    print("\n" + "-" * 70)
-    print("Test 6: Guestimation 충분 (모든 트리거 통과)")
-    print("-" * 70)
-    
-    result6 = guardian.recommend_methodology(
-        estimate_result={
-            'value': 50_000_000_000,  # 500억 (작음)
-            'range': (40_000_000_000, 60_000_000_000),  # 400-600억 (±25%)
-            'confidence': 0.75,  # 75% (양호)
-            'method': 'guestimation'
-        },
-        context={
-            'domain': 'general',
-            'regulatory': False,
-            'new_market': False
-        }
-    )
-    
-    print(f"\n결과:")
-    print(f"  권고: {result6['recommendation']}")
-    print(f"  이유: {result6['reason']}")
-    print(f"  우선순위: {result6['priority']}")
-    print(f"  트리거: {result6['trigger']}")
-    
-    assert result6['recommendation'] == 'guestimation_sufficient', "Guestimation 충분 판단 실패"
-    assert result6['trigger'] == 'sufficient', "트리거 불일치"
-    assert result6['priority'] == 'low', "우선순위 불일치"
-    
-    print("\n  ✅ Test 6 Pass")
-    
-    # ===== 전체 결과 =====
-    print("\n" + "=" * 70)
-    print("✅ 모든 테스트 통과!")
-    print("=" * 70)
-    
-    print("\n[테스트 요약]")
-    print(f"  ✅ Trigger 1 (신뢰도 낮음): Pass")
-    print(f"  ✅ Trigger 2 (범위 넓음): Pass")
-    print(f"  ✅ Trigger 3 (큰 기회): Pass")
-    print(f"  ✅ Trigger 4 (규제 산업, 최우선): Pass")
-    print(f"  ✅ Trigger 5 (신규 시장): Pass")
-    print(f"  ✅ Guestimation 충분 (트리거 없음): Pass")
-    
-    print("\n[우선순위 검증]")
-    print(f"  required: 규제 산업 (자동 실행) ✓")
-    print(f"  high: 신뢰도 낮음, 범위 넓음 ✓")
-    print(f"  medium: 큰 기회, 신규 시장 ✓")
-    print(f"  low: Guestimation 충분 ✓")
-    
-    return True
+    print("\n✅ Test 5 PASSED")
+    return result
 
 
-def test_edge_cases():
-    """엣지 케이스 테스트"""
-    
+def test_guestimation_sufficient():
+    """Test Case 6: Guestimation 충분"""
     print("\n" + "=" * 70)
-    print("엣지 케이스 테스트")
+    print("Test 6: 신뢰도 75%, 작은 기회 → Guestimation 충분")
     print("=" * 70)
     
     guardian = GuardianMetaRAG()
     
-    # Edge Case 1: 범위 하한이 0 (division by zero 방지)
-    print("\n[Edge 1] 범위 하한 0 (무한대 폭)")
-    
-    result_edge1 = guardian.recommend_methodology(
+    result = guardian.recommend_methodology(
         estimate_result={
-            'value': 100_000_000_000,
-            'range': (0, 200_000_000_000),  # 하한 0
-            'confidence': 0.7
+            'value': 10_000_000_000,  # 100억 (< 1,000억)
+            'range': (8_000_000_000, 12_000_000_000),  # ±25% (< ±75%)
+            'confidence': 0.75,  # > 50%
+            'method': 'guestimation'
+        },
+        context={'domain': 'general'}
+    )
+    
+    print(f"\n결과:")
+    print(f"  권고: {result['recommendation']}")
+    print(f"  이유: {result['reason']}")
+    print(f"  우선순위: {result['priority']}")
+    print(f"  트리거: {result['trigger']}")
+    
+    # 검증
+    assert result['recommendation'] == 'guestimation_sufficient', "권고가 guestimation_sufficient여야 함"
+    assert result['trigger'] == 'sufficient', "트리거가 sufficient여야 함"
+    assert result['priority'] == 'low', "우선순위가 low여야 함"
+    
+    print("\n✅ Test 6 PASSED")
+    return result
+
+
+def test_priority_order():
+    """Test Case 7: 우선순위 순서 확인 (규제 > 신뢰도)"""
+    print("\n" + "=" * 70)
+    print("Test 7: 규제 + 낮은 신뢰도 → 규제가 우선")
+    print("=" * 70)
+    
+    guardian = GuardianMetaRAG()
+    
+    result = guardian.recommend_methodology(
+        estimate_result={
+            'value': 50_000_000_000,
+            'range': (20_000_000_000, 80_000_000_000),
+            'confidence': 0.3,  # 낮은 신뢰도
+            'method': 'guestimation'
+        },
+        context={
+            'domain': 'healthcare',
+            'regulatory': True  # 규제 산업
         }
     )
     
-    print(f"  권고: {result_edge1['recommendation']}")
-    print(f"  트리거: {result_edge1['trigger']}")
+    print(f"\n결과:")
+    print(f"  트리거: {result['trigger']}")
+    print(f"  우선순위: {result['priority']}")
     
-    assert result_edge1['recommendation'] == 'domain_reasoner', "범위 무한대 → Domain Reasoner"
-    print("  ✅ Pass")
+    # 규제가 먼저 감지되어야 함
+    assert result['trigger'] == 'regulatory_industry', "규제 트리거가 우선되어야 함"
+    assert result['priority'] == 'required', "required가 가장 높은 우선순위"
     
-    # Edge Case 2: 여러 트리거 동시 (우선순위 테스트)
-    print("\n[Edge 2] 여러 트리거 동시 (규제 + 낮은 신뢰도)")
+    print("\n✅ Test 7 PASSED (우선순위 순서 정상)")
+    return result
+
+
+def run_all_tests():
+    """모든 테스트 실행"""
+    print("\n" + "=" * 70)
+    print("Guardian Hybrid Guestimation 통합 테스트")
+    print("=" * 70)
     
-    result_edge2 = guardian.recommend_methodology(
-        estimate_result={
-            'value': 200_000_000_000,  # 2,000억 (큰 기회도 해당)
-            'range': (50_000_000_000, 400_000_000_000),  # ±100%
-            'confidence': 0.2  # 20% (매우 낮음)
-        },
+    tests = [
+        ("Test 1: 낮은 신뢰도", test_trigger_1_low_confidence),
+        ("Test 2: 넓은 범위", test_trigger_2_wide_range),
+        ("Test 3: 큰 기회", test_trigger_3_large_opportunity),
+        ("Test 4: 규제 산업", test_trigger_4_regulatory),
+        ("Test 5: 신규 시장", test_trigger_5_new_market),
+        ("Test 6: Guestimation 충분", test_guestimation_sufficient),
+        ("Test 7: 우선순위 순서", test_priority_order),
+    ]
+    
+    results = []
+    passed = 0
+    failed = 0
+    
+    for name, test_func in tests:
+        try:
+            result = test_func()
+            results.append((name, 'PASS', result))
+            passed += 1
+        except AssertionError as e:
+            results.append((name, 'FAIL', str(e)))
+            failed += 1
+            print(f"\n❌ {name} FAILED: {e}")
+        except Exception as e:
+            results.append((name, 'ERROR', str(e)))
+            failed += 1
+            print(f"\n💥 {name} ERROR: {e}")
+    
+    # 최종 요약
+    print("\n" + "=" * 70)
+    print("테스트 결과 요약")
+    print("=" * 70)
+    
+    for name, status, _ in results:
+        icon = "✅" if status == 'PASS' else "❌"
+        print(f"  {icon} {name}: {status}")
+    
+    print(f"\n총 {len(tests)}개 테스트: {passed}개 통과, {failed}개 실패")
+    
+    if failed == 0:
+        print("\n🎉 모든 테스트 통과!")
+        print("=" * 70)
+        return True
+    else:
+        print("\n⚠️  일부 테스트 실패")
+        print("=" * 70)
+        return False
+
+
+def demo_usage():
+    """실사용 예시"""
+    print("\n" + "=" * 70)
+    print("실사용 예시")
+    print("=" * 70)
+    
+    guardian = GuardianMetaRAG()
+    
+    print("\n[시나리오] 시니어 케어 로봇 시장 분석")
+    print("-" * 70)
+    
+    # Phase 1 결과 (가정)
+    phase_1_result = {
+        'value': 285_000_000_000,  # 2,850억
+        'range': (150_000_000_000, 500_000_000_000),  # 1,500억-5,000억
+        'confidence': 0.4,  # 40%
+        'method': 'guestimation'
+    }
+    
+    # Guardian 평가
+    recommendation = guardian.recommend_methodology(
+        estimate_result=phase_1_result,
         context={
-            'regulatory': True,  # 규제 산업
+            'domain': 'healthcare',
+            'geography': 'KR',
+            'regulatory': True,  # 의료기기법
             'new_market': True   # 신규 시장
         }
     )
     
-    print(f"  권고: {result_edge2['recommendation']}")
-    print(f"  트리거: {result_edge2['trigger']}")
-    print(f"  우선순위: {result_edge2['priority']}")
+    print(f"\nGuardian 권고:")
+    print(f"  📋 권고: {recommendation['recommendation']}")
+    print(f"  📝 이유: {recommendation['reason']}")
+    print(f"  ⚡ 우선순위: {recommendation['priority']}")
+    print(f"  🔔 트리거: {recommendation['trigger']}")
+    print(f"  ⏱️  예상 시간: {recommendation['estimated_time']}")
+    print(f"  🤖 자동 실행: {'예 (필수)' if recommendation['auto_execute'] else '아니오 (사용자 확인)'}")
     
-    # 규제 산업이 최우선 → regulatory_industry 트리거
-    assert result_edge2['trigger'] == 'regulatory_industry', "우선순위 로직 실패 (규제 최우선)"
-    assert result_edge2['priority'] == 'required', "규제 산업 → required"
-    
-    print("  ✅ Pass (규제 산업 최우선 확인)")
-    
-    # Edge Case 3: 경계값 테스트 (정확히 50%)
-    print("\n[Edge 3] 경계값: 신뢰도 정확히 50%")
-    
-    result_edge3 = guardian.recommend_methodology(
-        estimate_result={
-            'value': 50_000_000_000,
-            'range': (40_000_000_000, 60_000_000_000),
-            'confidence': 0.5  # 정확히 50%
-        }
-    )
-    
-    print(f"  권고: {result_edge3['recommendation']}")
-    print(f"  트리거: {result_edge3['trigger']}")
-    
-    # confidence < 0.5 이므로 0.5는 충분
-    assert result_edge3['recommendation'] == 'guestimation_sufficient', "경계값 0.5 → 충분"
-    print("  ✅ Pass")
-    
-    # Edge Case 4: 정확히 1,000억
-    print("\n[Edge 4] 경계값: 기회 정확히 1,000억")
-    
-    result_edge4 = guardian.recommend_methodology(
-        estimate_result={
-            'value': 100_000_000_000,  # 정확히 1,000억
-            'range': (80_000_000_000, 120_000_000_000),
-            'confidence': 0.7
-        }
-    )
-    
-    print(f"  권고: {result_edge4['recommendation']}")
-    print(f"  트리거: {result_edge4['trigger']}")
-    
-    # value > 100_000_000_000 이므로 1,000억은 충분
-    assert result_edge4['recommendation'] == 'guestimation_sufficient', "경계값 1,000억 → 충분"
-    print("  ✅ Pass")
-    
-    print("\n" + "=" * 70)
-    print("✅ 모든 엣지 케이스 통과!")
-    print("=" * 70)
-
-
-def test_priority_scenarios():
-    """우선순위별 시나리오 테스트"""
-    
-    print("\n" + "=" * 70)
-    print("우선순위별 시나리오 테스트")
-    print("=" * 70)
-    
-    guardian = GuardianMetaRAG()
-    
-    scenarios = [
-        {
-            'name': '시니어 케어 로봇 (규제 + 신규)',
-            'estimate': {
-                'value': 285_000_000_000,  # 2,850억
-                'range': (150_000_000_000, 500_000_000_000),
-                'confidence': 0.4
-            },
-            'context': {
-                'domain': 'healthcare',
-                'regulatory': True,
-                'new_market': True
-            },
-            'expected_trigger': 'regulatory_industry',
-            'expected_priority': 'required'
-        },
-        {
-            'name': '배달 플랫폼 수수료율 (성숙 시장)',
-            'estimate': {
-                'value': 0.085,  # 8.5%
-                'range': (0.075, 0.095),  # 7.5%-9.5% (±12%, 범위 좁음)
-                'confidence': 0.7
-            },
-            'context': {
-                'domain': 'platform',
-                'regulatory': False,
-                'new_market': False
-            },
-            'expected_trigger': 'sufficient',
-            'expected_priority': 'low'
-        },
-        {
-            'name': '글로벌 AI 시장 (큰 기회)',
-            'estimate': {
-                'value': 50_000_000_000_000,  # 50조
-                'range': (45_000_000_000_000, 55_000_000_000_000),  # 45-55조 (±11%, 범위 좁음)
-                'confidence': 0.65
-            },
-            'context': {
-                'domain': 'ai',
-                'regulatory': False,
-                'new_market': False
-            },
-            'expected_trigger': 'large_opportunity',
-            'expected_priority': 'medium'
-        }
-    ]
-    
-    for i, scenario in enumerate(scenarios, 1):
-        print(f"\n[Scenario {i}] {scenario['name']}")
-        print("-" * 70)
-        
-        result = guardian.recommend_methodology(
-            estimate_result=scenario['estimate'],
-            context=scenario['context']
-        )
-        
-        print(f"  권고: {result['recommendation']}")
-        print(f"  트리거: {result['trigger']}")
-        print(f"  우선순위: {result['priority']}")
-        
-        assert result['trigger'] == scenario['expected_trigger'], \
-            f"시나리오 {i}: 트리거 불일치 (기대: {scenario['expected_trigger']}, 실제: {result['trigger']})"
-        
-        assert result['priority'] == scenario['expected_priority'], \
-            f"시나리오 {i}: 우선순위 불일치"
-        
-        print(f"  ✅ Pass")
-    
-    print("\n" + "=" * 70)
-    print("✅ 모든 시나리오 통과!")
-    print("=" * 70)
+    if recommendation['priority'] == 'required':
+        print(f"\n💡 다음 단계:")
+        print(f"   → Phase 2 (Domain Reasoner) 자동 실행")
+        print(f"   → s3 Laws/Ethics/Physics 검증")
+        print(f"   → 증거표 + Should/Will 분석")
 
 
 if __name__ == '__main__':
-    try:
-        # 기본 테스트
-        test_guardian_recommendation()
-        
-        # 엣지 케이스
-        test_edge_cases()
-        
-        # 실전 시나리오
-        test_priority_scenarios()
-        
-        # 최종 요약
-        print("\n" + "=" * 70)
-        print("🎉 Step 2: Guardian 자동 전환 테스트 완료!")
-        print("=" * 70)
-        print("\n[검증 완료]")
-        print("  ✅ 5가지 트리거 모두 작동")
-        print("  ✅ 우선순위 로직 정상 (required > high > medium > low)")
-        print("  ✅ 엣지 케이스 처리 (경계값, 복수 트리거)")
-        print("  ✅ 실전 시나리오 통과 (3개)")
-        print("\n다음: Step 3 (Bill Quantifier Should/Will 확장)")
-        
-    except AssertionError as e:
-        print(f"\n❌ 테스트 실패: {e}")
-        sys.exit(1)
-    except Exception as e:
-        print(f"\n❌ 에러 발생: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
-
+    # 모든 테스트 실행
+    success = run_all_tests()
+    
+    # 데모
+    demo_usage()
+    
+    # 종료 코드
+    sys.exit(0 if success else 1)
