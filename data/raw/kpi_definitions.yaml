@@ -1,0 +1,220 @@
+_meta:
+  version: 1.0.0
+  created: '2025-11-05'
+  agent: validator
+  purpose: 산업 KPI 정의 표준화 (s10 Industry KPI Library)
+  total_kpis: 10
+  categories: 8
+platform_kpis:
+- kpi_id: KPI_PLT_001
+  metric_name: 플랫폼 수수료율
+  category: platform
+  subcategory: commission
+  definition:
+    korean: 플랫폼이 거래 중개에 대해 공급자로부터 받는 수수료 비율
+    english: Platform commission rate
+  formula:
+    numerator: 플랫폼 중개 수수료 (KRW)
+    denominator: 거래 금액 (KRW)
+    calculation: 수수료 / 거래액 × 100
+  unit: '%'
+  typical_range: 3-20%
+  scope:
+    includes:
+    - 중개 수수료
+    - 거래 촉진 수수료
+    excludes:
+    - 광고비
+    - 배달비
+    - 결제 수수료
+  industry_examples:
+  - industry: 음식 배달
+    value: 6-12%
+    geography: KR
+    source: UMIS RAG
+  - industry: 차량 공유
+    value: 20-25%
+    geography: Global
+    source: Uber 공시
+  - industry: 숙박 공유
+    value: 14-16%
+    geography: Global
+    source: Airbnb
+  validation_rules:
+  - 분자/분모 단위 일치 (KRW/KRW)
+  - 제외 항목 일치 확인
+  - 지리/시기 명시
+  - 정의 불일치 시 비교 금지
+- kpi_id: KPI_PLT_002
+  metric_name: Take Rate
+  category: platform
+  subcategory: revenue
+  definition:
+    korean: 플랫폼 총 매출 / GMV
+    english: Platform revenue as % of GMV
+  formula:
+    numerator: 플랫폼 총 매출 (수수료 + 광고 + 구독)
+    denominator: GMV (총 거래액)
+    calculation: 총 매출 / GMV × 100
+  unit: '%'
+  typical_range: 10-30%
+  scope:
+    includes:
+    - 모든 플랫폼 수익원
+    excludes:
+    - 환불
+  industry_examples:
+  - industry: 이커머스
+    value: 3-5%
+    note: Marketplace 모델
+  - industry: 음식 배달
+    value: 15-20%
+    note: 수수료 + 광고
+subscription_kpis:
+- kpi_id: KPI_SUB_001
+  metric_name: 월간 해지율 (Churn Rate)
+  category: subscription
+  subcategory: retention
+  definition:
+    korean: 해당 월에 해지한 고객 수 / 월초 총 고객 수
+    english: Monthly customer churn rate
+  formula:
+    numerator: 월간 해지 고객 수
+    denominator: 월초 총 고객 수
+    calculation: 해지 수 / 월초 고객 수 × 100
+  unit: '%'
+  typical_range: 2-10%
+  scope:
+    includes:
+    - 자발적 해지
+    - 비자발적 해지 (결제 실패)
+    excludes:
+    - 무료 체험 해지
+  industry_benchmarks:
+  - industry: B2C SaaS
+    value: 5-7%
+    geography: Global
+  - industry: B2B SaaS
+    value: 2-3%
+    geography: Global
+  - industry: Consumer Subscription
+    value: 3-5%
+    geography: KR
+- kpi_id: KPI_SUB_002
+  metric_name: LTV (Lifetime Value)
+  category: subscription
+  subcategory: economics
+  definition:
+    korean: 고객 생애 가치
+    english: Customer Lifetime Value
+  formula:
+    numerator: ARPU × Gross Margin
+    denominator: Churn Rate
+    calculation: ARPU × GM × (1 / Churn)
+  unit: KRW
+  typical_range: 20만-100만원
+  scope:
+    includes:
+    - 구독 수익만
+    excludes:
+    - 일회성 수익
+ecommerce_kpis:
+- kpi_id: KPI_EC_001
+  metric_name: 전환율 (Conversion Rate)
+  category: ecommerce
+  subcategory: sales
+  definition:
+    korean: 구매 완료 수 / 방문자 수
+    english: Purchase conversion rate
+  formula:
+    numerator: 주문 완료 수
+    denominator: 방문자 수 (UV)
+    calculation: 주문 수 / 방문자 × 100
+  unit: '%'
+  typical_range: 1-5%
+  industry_benchmarks:
+  - industry: 이커머스 (PC)
+    value: 2-3%
+    geography: Global
+  - industry: 이커머스 (모바일)
+    value: 1-2%
+    geography: Global
+  - industry: 이커머스 (한국)
+    value: 3-4%
+    geography: KR
+    note: 모바일 높음
+saas_kpis:
+- kpi_id: KPI_SAS_001
+  metric_name: MRR (Monthly Recurring Revenue)
+  category: saas
+  subcategory: revenue
+  definition:
+    korean: 월간 반복 매출
+    english: Monthly Recurring Revenue
+  formula:
+    numerator: 월간 구독 매출
+    denominator: N/A
+    calculation: SUM(구독자별 월 요금)
+  unit: KRW
+  typical_range: N/A
+marketplace_kpis:
+- kpi_id: KPI_MKT_001
+  metric_name: GMV (Gross Merchandise Value)
+  category: marketplace
+  subcategory: volume
+  definition:
+    korean: 총 거래액 (환불 전)
+    english: Gross Merchandise Value
+  formula:
+    numerator: 총 주문 금액
+    denominator: N/A
+    calculation: SUM(주문 금액)
+  unit: KRW
+  scope:
+    includes:
+    - 모든 완료된 거래
+    excludes:
+    - 취소
+    - 환불
+finance_kpis:
+- kpi_id: KPI_FIN_001
+  metric_name: Gross Margin
+  category: finance
+  subcategory: profitability
+  definition:
+    korean: (매출 - 매출원가) / 매출
+    english: Gross profit margin
+  formula:
+    numerator: 매출 - COGS
+    denominator: 매출
+    calculation: (Revenue - COGS) / Revenue × 100
+  unit: '%'
+  typical_range: 20-80%
+marketing_kpis:
+- kpi_id: KPI_MKT_001
+  metric_name: CAC (Customer Acquisition Cost)
+  category: marketing
+  subcategory: efficiency
+  definition:
+    korean: 총 마케팅 비용 / 신규 고객 수
+    english: Customer Acquisition Cost
+  formula:
+    numerator: 마케팅 비용 (KRW)
+    denominator: 신규 고객 수
+    calculation: 마케팅 비용 / 신규 고객
+  unit: KRW
+  typical_range: 1만-50만원
+general_kpis:
+- kpi_id: KPI_GEN_001
+  metric_name: 시장 규모 (Market Size)
+  category: general
+  subcategory: market
+  definition:
+    korean: 특정 시장의 연간 총 매출
+    english: Total addressable market
+  formula:
+    numerator: 총 시장 매출
+    denominator: N/A
+    calculation: SUM(모든 플레이어 매출)
+  unit: KRW
+  typical_range: N/A
