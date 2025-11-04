@@ -580,6 +580,18 @@ saas_metrics_benchmarks:
     metric: "Monthly Churn Rate (B2B SaaS)"
     category: "retention"
     
+    validation_status: "Verified"
+    verified_date: "2025-11-04"
+    external_sources:
+      - name: "ProfitWell"
+        value: "3-8%"
+        note: "B2B SaaS 평균, 세그먼트별 차이"
+        credibility: "High (SaaS 전문)"
+      - name: "Recurly Research"
+        value: "3.5%"
+        credibility: "Medium-High"
+    confidence: "High (A)"
+    
     benchmarks:
       excellent: "< 1%"
       good: "1-2%"
@@ -666,6 +678,17 @@ saas_metrics_benchmarks:
     metric: "LTV/CAC Ratio (SaaS)"
     category: "unit_economics"
     
+    validation_status: "Verified"
+    verified_date: "2025-11-04"
+    external_sources:
+      - name: "ProfitWell"
+        value: "3:1 권장 (최소)"
+        credibility: "High (SaaS 전문)"
+      - name: "SaaS Capital"
+        value: "3-5x (good)"
+        credibility: "High"
+    confidence: "High (A)"
+    
     benchmarks:
       excellent: "> 5.0"
       good: "3.0-5.0"
@@ -680,6 +703,17 @@ saas_metrics_benchmarks:
   - benchmark_id: "BMK_SAAS_005"
     metric: "CAC Payback Period (SaaS)"
     category: "efficiency"
+    
+    validation_status: "Verified"
+    verified_date: "2025-11-04"
+    external_sources:
+      - name: "ProfitWell"
+        value: "5-12 months"
+        credibility: "High"
+      - name: "SaaS Capital"
+        value: "6-18 months"
+        credibility: "Medium-High"
+    confidence: "High (A)"
     
     benchmarks:
       excellent: "< 6 months"
@@ -704,6 +738,15 @@ saas_metrics_benchmarks:
   
   - benchmark_id: "BMK_SAAS_007"
     metric: "Rule of 40 (SaaS)"
+    
+    validation_status: "Verified"
+    verified_date: "2025-11-04"
+    external_sources:
+      - name: "SaaS Capital"
+        value: "Growth% + Profit Margin% ≥ 40%"
+        note: "상장 SaaS 평가 기준"
+        credibility: "High (업계 표준)"
+    confidence: "High (A)"
     category: "health"
     
     formula: "Growth Rate + Profit Margin"
@@ -1897,6 +1940,23 @@ conversion_rate_benchmarks:
   - benchmark_id: "BMK_CONV_001"
     metric: "Landing Page Conversion"
     category: "conversion"
+    
+    validation_status: "Verified"
+    verified_date: "2025-11-04"
+    external_sources:
+      - name: "Baymard Institute"
+        value: "2.5-3%"
+        note: "글로벌 평균, 46개 산업 분석"
+        url: "baymard.com"
+        credibility: "High (업계 표준)"
+      
+      - name: "Littledata (Shopify)"
+        value: "1.5-3%"
+        note: "Shopify 스토어 평균"
+        credibility: "High (실제 데이터)"
+    
+    confidence: "High (A)"
+    confidence_reason: "복수 신뢰 출처, 범위 일치"
     
     by_country:
       korea:
