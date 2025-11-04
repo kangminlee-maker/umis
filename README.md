@@ -61,10 +61,11 @@ python setup/setup.py
 python scripts/download_prebuilt_db.py
 
 # 또는 수동
-# TODO: Google Drive 링크 추가 예정
-# wget [다운로드 링크]
-# tar -xzf chroma-db-v7.1.0-dev2.tar.gz
+wget "https://drive.google.com/uc?export=download&id=1EKHFfT5XnI_0St38-kq_4GnorZssd9q_" -O chroma-db.tar.gz
+tar -xzf chroma-db.tar.gz
 ```
+
+**다운로드 링크**: [Google Drive](https://drive.google.com/file/d/1EKHFfT5XnI_0St38-kq_4GnorZssd9q_/view?usp=drive_link)
 
 **장점**:
 - ✅ 즉시 사용 (30초)
@@ -76,8 +77,6 @@ python scripts/download_prebuilt_db.py
 - 크기: 16MB (압축), 51MB (원본)
 - Collections: 13개
 - 문서: 826개
-
-<!-- TODO: Google Drive 업로드 후 다운로드 링크 추가 -->
 
 ---
 
