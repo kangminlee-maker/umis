@@ -130,7 +130,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # Gross Profit = Revenue - COGS
             ws.cell(row=row, column=col).value = f'={col_letter}{revenue_row}-{col_letter}{cogs_row}'
@@ -144,7 +144,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # Margin % = Gross Profit / Revenue
             ws.cell(row=row, column=col).value = f'={col_letter}{gross_profit_row}/{col_letter}{revenue_row}'
@@ -164,7 +164,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             ws.cell(row=row, column=col).value = f'={col_letter}{revenue_row}*SMPercent'
             ws.cell(row=row, column=col).number_format = '#,##0'
         
@@ -176,7 +176,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             ws.cell(row=row, column=col).value = f'={col_letter}{revenue_row}*RDPercent'
             ws.cell(row=row, column=col).number_format = '#,##0'
         
@@ -188,7 +188,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             ws.cell(row=row, column=col).value = f'={col_letter}{revenue_row}*GAPercent'
             ws.cell(row=row, column=col).number_format = '#,##0'
         
@@ -202,7 +202,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # Total OPEX = S&M + R&D + G&A
             ws.cell(row=row, column=col).value = f'={col_letter}{sm_row}+{col_letter}{rd_row}+{col_letter}{ga_row}'
@@ -219,7 +219,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # EBITDA = Gross Profit - OPEX
             ws.cell(row=row, column=col).value = f'={col_letter}{gross_profit_row}-{col_letter}{opex_row}'
@@ -239,7 +239,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             ws.cell(row=row, column=col).value = f'={col_letter}{ebitda_row}/{col_letter}{revenue_row}'
             ws.cell(row=row, column=col).number_format = '0.0%'
             ws.cell(row=row, column=col).font = Font(italic=True)
@@ -254,7 +254,7 @@ class PLBuilder:
         # 간단화: D&A = Revenue × 2% (가정)
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             ws.cell(row=row, column=col).value = f'={col_letter}{revenue_row}*0.02'
             ws.cell(row=row, column=col).number_format = '#,##0'
         
@@ -268,7 +268,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # EBIT = EBITDA - D&A
             ws.cell(row=row, column=col).value = f'={col_letter}{ebitda_row}-{col_letter}{da_row}'
@@ -297,7 +297,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # EBT = EBIT - Interest
             ws.cell(row=row, column=col).value = f'={col_letter}{ebit_row}-{col_letter}{interest_row}'
@@ -312,7 +312,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # Tax = EBT × Tax Rate (EBT > 0일 때만)
             ws.cell(row=row, column=col).value = f'=IF({col_letter}{ebt_row}>0, {col_letter}{ebt_row}*TaxRate, 0)'
@@ -328,7 +328,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # Net Income = EBT - Tax
             ws.cell(row=row, column=col).value = f'={col_letter}{ebt_row}-{col_letter}{tax_row}'
@@ -348,7 +348,7 @@ class PLBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             ws.cell(row=row, column=col).value = f'={col_letter}{net_income_row}/{col_letter}{revenue_row}'
             ws.cell(row=row, column=col).number_format = '0.0%'
             ws.cell(row=row, column=col).font = Font(italic=True)
