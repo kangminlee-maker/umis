@@ -423,7 +423,7 @@ Neo4j: 5.13 (Docker Compose)
   • Golden-Workbook 테스트
 
 우선순위 3: 배포 준비
-  • Google Drive ChromaDB 업로드
+  • ChromaDB 자동 빌드 완료
   • 다운로드 링크 추가
   • 문서 최종 검토
 ```
