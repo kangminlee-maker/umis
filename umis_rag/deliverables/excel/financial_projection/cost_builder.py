@@ -80,6 +80,8 @@ class CostBuilder:
         ws.cell(row=row, column=1).value = "Revenue"
         ws.cell(row=row, column=1).font = Font(size=10, italic=True, color="666666")
         
+        revenue_row = row  # Revenue 행 번호 저장
+        
         for year in range(years + 1):
             col = 2 + year
             ws.cell(row=row, column=col).value = f'=Revenue_Y{year}'
@@ -95,10 +97,10 @@ class CostBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col (B=66, C=67, ...)
             
-            # COGS = Revenue × (1 - Gross Margin)
-            ws.cell(row=row, column=col).value = f'={col_letter}{row-1}*(1-GrossMarginTarget)'
+            # COGS = Revenue × (1 - Gross Margin) - 수정: revenue_row 사용
+            ws.cell(row=row, column=col).value = f'={col_letter}{revenue_row}*(1-GrossMarginTarget)'
             ws.cell(row=row, column=col).number_format = '#,##0'
         
         # % of Revenue
@@ -120,7 +122,7 @@ class CostBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # Gross Profit = Revenue - COGS
             ws.cell(row=row, column=col).value = f'={col_letter}{row-2}-{col_letter}{row-1}'
@@ -153,10 +155,10 @@ class CostBuilder:
             # Year 0-5
             for year in range(years + 1):
                 col = 2 + year
-                col_letter = chr(65 + col)
+                col_letter = chr(64 + col)  # 수정: 64 + col
                 
-                # OPEX = Revenue × OPEX %
-                ws.cell(row=row, column=col).value = f'={col_letter}{row - (row - 5)}*{opex["percent_name"]}'
+                # OPEX = Revenue × OPEX % - 수정: revenue_row 사용
+                ws.cell(row=row, column=col).value = f'={col_letter}{revenue_row}*{opex["percent_name"]}'
                 ws.cell(row=row, column=col).number_format = '#,##0'
             
             # % of Revenue
@@ -173,7 +175,7 @@ class CostBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # Total OPEX = SUM(S&M, R&D, G&A)
             ws.cell(row=row, column=col).value = f'=SUM({col_letter}{opex_start_row}:{col_letter}{opex_end_row})'
@@ -195,7 +197,7 @@ class CostBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # Total = COGS + OPEX
             ws.cell(row=row, column=col).value = f'={col_letter}{cogs_row}+{col_letter}{row-1}'

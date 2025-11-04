@@ -108,7 +108,7 @@ class CashFlowBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             ws.cell(row=row, column=col).value = f'={col_letter}{ebitda_row}'
             ws.cell(row=row, column=col).number_format = '#,##0'
             ws.cell(row=row, column=col).fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
@@ -142,7 +142,7 @@ class CashFlowBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             ws.cell(row=row, column=col).value = f'={col_letter}{capex_row}'
             ws.cell(row=row, column=col).number_format = '#,##0'
             ws.cell(row=row, column=col).fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
@@ -175,7 +175,7 @@ class CashFlowBuilder:
         
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # Net CF = Operating CF + Investment CF + Financing CF
             ws.cell(row=row, column=col).value = (
@@ -199,8 +199,8 @@ class CashFlowBuilder:
         # Year 1-5
         for year in range(1, years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
-            prev_col_letter = chr(65 + col - 1)
+            col_letter = chr(64 + col)  # 수정: 64 + col
+            prev_col_letter = chr(64 + col - 1)  # 수정: 64 + col - 1
             
             # Ending Cash = Previous Cash + Net CF
             ws.cell(row=row, column=col).value = f'={prev_col_letter}{row}+{col_letter}{net_cf_row}'

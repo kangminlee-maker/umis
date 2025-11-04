@@ -115,7 +115,7 @@ class RevenueBuilder:
             # C-G: Year 1-5 (성장률 적용)
             for year in range(1, years + 1):
                 col = 2 + year  # C=3, D=4, ...
-                prev_col_letter = chr(65 + col - 1)  # B, C, D, ...
+                prev_col_letter = chr(65 + col - 2)  # B, C, D, ... (수정: col-2)
                 
                 # 세그먼트별 성장률 사용
                 growth_cell = f'${chr(65 + years + 2)}${row}'  # Last column (Growth %)
@@ -136,7 +136,7 @@ class RevenueBuilder:
         # Year 0 ~ Year 5 합계
         for year in range(years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)  # B, C, D, ...
+            col_letter = chr(64 + col)  # 수정: 64 + col (B, C, D, ...)
             
             # 세그먼트 합계
             first_seg_row = segment_rows[0]
@@ -161,8 +161,8 @@ class RevenueBuilder:
         # Year 1-5 성장률
         for year in range(1, years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
-            prev_col_letter = chr(65 + col - 1)
+            col_letter = chr(64 + col)  # 수정: 64 + col
+            prev_col_letter = chr(64 + col - 1)  # 수정: 64 + col - 1
             
             ws.cell(row=row, column=col).value = f'=({col_letter}{row-1}-{prev_col_letter}{row-1})/{prev_col_letter}{row-1}'
             ws.cell(row=row, column=col).number_format = '0.0%'

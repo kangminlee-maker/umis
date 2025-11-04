@@ -102,8 +102,8 @@ class MetricsBuilder:
         
         for year in range(1, years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
-            prev_col_letter = chr(65 + col - 1)
+            col_letter = chr(64 + col)  # 수정: 64 + col
+            prev_col_letter = chr(64 + col - 1)  # 수정: 64 + col - 1
             
             # YoY = (This Year - Last Year) / Last Year
             ws.cell(row=row, column=col).value = (
@@ -119,7 +119,7 @@ class MetricsBuilder:
         
         for year in range(1, years + 1):
             col = 2 + year
-            col_letter = chr(65 + col)
+            col_letter = chr(64 + col)  # 수정: 64 + col
             
             # CAGR = (End / Start)^(1/Years) - 1
             ws.cell(row=row, column=col).value = (
