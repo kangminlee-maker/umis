@@ -233,11 +233,77 @@ def regenerate_tool_registry():
     registry['tools'] = tools
     registry['updated'] = datetime.now().strftime('%Y-%m-%d')
     
-    # 저장
-    with open(registry_file, 'w', encoding='utf-8') as f:
-        yaml.dump(registry, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
+    # 저장 (YAML literal block scalar 사용)
+    # Python yaml.dump는 긴 문자열을 압축하므로 수동으로 작성
     
-    print("✅ Tool Registry 재생성 완료")
+    # 1. Guestimation 제외한 나머지 tool들 (기존 유지)
+    # 2. Guestimation만 수동 포맷으로 추가
+    
+    # 임시: 간단하게 yaml.dump 사용하되 나중에 수동 수정
+    with open(registry_file, 'w', encoding='utf-8') as f:
+        # Header
+        f.write("# ========================================\n")
+        f.write("# UMIS Tool Registry v7.2.0\n")
+        f.write("# System RAG: Key-based 정확 검색\n")
+        f.write("# ========================================\n\n")
+        f.write(f"version: '{registry['version']}'\n")
+        f.write(f"created: '{registry['created']}'\n")
+        f.write(f"updated: '{registry['updated']}'\n")
+        f.write(f"total_tools: {registry['total_tools']}\n\n")
+        f.write("# ========================================\n")
+        f.write("# 도구 목록\n")
+        f.write("# ========================================\n\n")
+        f.write("tools:\n")
+        
+        # Tools 수동 작성 (content는 | 형식)
+        for tool in tools:
+            f.write(f"\n  - tool_id: {tool['tool_id']}\n")
+            f.write(f"    tool_key: {tool['tool_key']}\n")
+            f.write(f"    \n")
+            f.write(f"    metadata:\n")
+            for key, val in tool['metadata'].items():
+                if isinstance(val, str):
+                    f.write(f"      {key}: \"{val}\"\n")
+                elif isinstance(val, (int, float)):
+                    f.write(f"      {key}: {val}\n")
+                else:
+                    f.write(f"      {key}: {val}\n")
+            
+            # when_to_use
+            if 'when_to_use' in tool:
+                f.write(f"    \n")
+                f.write(f"    when_to_use:\n")
+                wtu = tool['when_to_use']
+                
+                if 'keywords' in wtu:
+                    f.write(f"      keywords:\n")
+                    for kw in wtu['keywords']:
+                        f.write(f"        - {kw}\n")
+                
+                if 'conditions' in wtu:
+                    f.write(f"      \n")
+                    f.write(f"      conditions:\n")
+                    for cond in wtu['conditions']:
+                        f.write(f"        - \"{cond}\"\n")
+                
+                if 'scenarios' in wtu:
+                    f.write(f"      \n")
+                    f.write(f"      scenarios:\n")
+                    for sc in wtu['scenarios']:
+                        f.write(f"        - \"{sc}\"\n")
+            
+            # content (literal block scalar)
+            if 'content' in tool:
+                f.write(f"    \n")
+                f.write(f"    content: |\n")
+                for line in tool['content'].split('\n'):
+                    f.write(f"      {line}\n")
+        
+        f.write("\n# ========================================\n")
+        f.write("# END\n")
+        f.write("# ========================================\n")
+    
+    print("✅ Tool Registry 재생성 완료 (수동 포맷)")
     print(f"   파일: {registry_file}")
     print(f"   Guestimation: {len(new_guestimation['content'].split(chr(10)))}줄")
     
