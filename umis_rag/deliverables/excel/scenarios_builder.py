@@ -147,41 +147,78 @@ class ScenariosBuilder:
             ('Method 4 (Competitor)', 'SAM_Method4')
         ]
         
+        method_sam_rows = []  # 각 Method의 행 번호 저장
+        
         for method_name, sam_range in sam_methods:
             # A열: 방법 이름
             ws.cell(row=row, column=1).value = method_name
             ws.cell(row=row, column=1).font = Font(size=10)
             
-            # B-D열: 각 시나리오에서 SAM은 동일 (가정이 Named Range로 연결되어 있음)
-            # 실제로는 각 시나리오별로 재계산해야 하지만, 단순화를 위해 참조만 표시
-            for col in [2, 3, 4]:
-                ws.cell(row=row, column=col).value = f"={sam_range}"
-                ws.cell(row=row, column=col).number_format = '#,##0'
+            # B열: Best Case (SAM × 1.15)
+            ws.cell(row=row, column=2).value = f"={sam_range}*1.15"
+            ws.cell(row=row, column=2).number_format = '#,##0'
+            
+            # C열: Base Case (SAM 그대로)
+            ws.cell(row=row, column=3).value = f"={sam_range}"
+            ws.cell(row=row, column=3).number_format = '#,##0'
+            
+            # D열: Worst Case (SAM × 0.85)
+            ws.cell(row=row, column=4).value = f"={sam_range}*0.85"
+            ws.cell(row=row, column=4).number_format = '#,##0'
             
             # E열: Range
             ws.cell(row=row, column=5).value = f"=B{row}-D{row}"
             ws.cell(row=row, column=5).number_format = '#,##0'
             
+            method_sam_rows.append(row)
             row += 1
         
-        # === 5. 평균 SAM ===
+        # === 5. 평균 SAM (Named Range 기반) ===
         row += 1
         ws.cell(row=row, column=1).value = "Average SAM"
         ws.cell(row=row, column=1).font = Font(size=11, bold=True)
         
-        # SAM 평균 계산 (위 4개 방법의 평균)
-        sam_start_row = row - 4
-        sam_end_row = row - 1
-        avg_sam_row = row  # 저장
+        # 각 시나리오별 Named Range 정의 먼저
+        scenario_method_ranges = {
+            'Best': [],
+            'Base': [],
+            'Worst': []
+        }
         
-        for col in [2, 3, 4]:
-            col_letter = chr(64 + col)  # A=65, B=66, ...
-            ws.cell(row=row, column=col).value = f"=AVERAGE({col_letter}{sam_start_row}:{col_letter}{sam_end_row})"
-            ws.cell(row=row, column=col).number_format = '#,##0'
-            ws.cell(row=row, column=col).font = Font(bold=True)
-            ws.cell(row=row, column=col).fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
+        for idx, method_row in enumerate(method_sam_rows, start=1):
+            # 각 Method의 Best/Base/Worst에 Named Range
+            self.fe.define_named_range(f'Scen_Method{idx}_Best', 'Scenarios', f'B{method_row}')
+            self.fe.define_named_range(f'Scen_Method{idx}_Base', 'Scenarios', f'C{method_row}')
+            self.fe.define_named_range(f'Scen_Method{idx}_Worst', 'Scenarios', f'D{method_row}')
+            
+            scenario_method_ranges['Best'].append(f'Scen_Method{idx}_Best')
+            scenario_method_ranges['Base'].append(f'Scen_Method{idx}_Base')
+            scenario_method_ranges['Worst'].append(f'Scen_Method{idx}_Worst')
         
-        # Named Range 정의 (중요!)
+        avg_sam_row = row
+        
+        # Best Case Average (Named Range 기반)
+        best_avg_formula = f"=AVERAGE({','.join(scenario_method_ranges['Best'])})"
+        ws.cell(row=row, column=2).value = best_avg_formula
+        ws.cell(row=row, column=2).number_format = '#,##0'
+        ws.cell(row=row, column=2).font = Font(bold=True)
+        ws.cell(row=row, column=2).fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
+        
+        # Base Case Average (Named Range 기반)
+        base_avg_formula = f"=AVERAGE({','.join(scenario_method_ranges['Base'])})"
+        ws.cell(row=row, column=3).value = base_avg_formula
+        ws.cell(row=row, column=3).number_format = '#,##0'
+        ws.cell(row=row, column=3).font = Font(bold=True)
+        ws.cell(row=row, column=3).fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
+        
+        # Worst Case Average (Named Range 기반)
+        worst_avg_formula = f"=AVERAGE({','.join(scenario_method_ranges['Worst'])})"
+        ws.cell(row=row, column=4).value = worst_avg_formula
+        ws.cell(row=row, column=4).number_format = '#,##0'
+        ws.cell(row=row, column=4).font = Font(bold=True)
+        ws.cell(row=row, column=4).fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
+        
+        # Named Range 정의
         self.fe.define_named_range('AvgSAM_Best', 'Scenarios', f'B{avg_sam_row}')
         self.fe.define_named_range('AvgSAM_Base', 'Scenarios', f'C{avg_sam_row}')
         self.fe.define_named_range('AvgSAM_Worst', 'Scenarios', f'D{avg_sam_row}')
