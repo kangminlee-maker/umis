@@ -238,6 +238,44 @@ key_concepts:
       추정치: "EST_xxx (추정 논리)"
       계산: "Excel 함수 (검증 가능)"
 
+# ========================================
+# Section 1.5: Universal Tools
+# ========================================
+
+universal_tools:
+  
+  guestimation:
+    tool_key: "tool:universal:guestimation"
+    agent: "all"
+    category: "추정 방법론"
+    
+    when_to_use:
+      - "직접 데이터 없음"
+      - "추정 필요"
+      - "짧은 시간 판단"
+    
+    fermi_4_principles:
+      - "모형 만들기 (추상 → 계산 가능)"
+      - "분해 (큰 → 작은)"
+      - "제약조건 (물리적 한계)"
+      - "Order of Magnitude (자릿수)"
+    
+    data_sources:
+      - "1. 프로젝트 데이터"
+      - "2. 상식 (인구, 가격)"
+      - "3. 경험 (시간, 속도)"
+      - "4. Benchmark (RAG) → 검증 필수!"
+    
+    benchmark_check: "4대 기준 (제품, 소비자, 가격, 맥락) → 3개 이상 유사"
+    
+    examples:
+      - "피아노 15% (RAG 검증 후)"
+      - "여행 2,500억 (상식+경험)"
+      - "자장면 42만 (제약조건)"
+      - "전봇대 716만 (Fermi)"
+    
+    detail: "System RAG → tool:universal:guestimation"
+
 # (Section 2-4는 다음 단계에서 추가)
 
 # (이전 위치에서 이동됨)
