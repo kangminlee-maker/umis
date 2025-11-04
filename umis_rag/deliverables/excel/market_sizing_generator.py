@@ -3,10 +3,12 @@ Market Sizing Workbook Generator
 Bill의 market_sizing.xlsx 자동 생성 (피드백 반영)
 
 9개 시트:
-  1. Assumptions
-  2-5. Method_1_TopDown ~ Method_4_CompetitorRevenue
-  6. Convergence_Analysis
-  7-9. Scenarios, Validation_Log, Summary
+  1. Summary (대시보드)
+  2. Assumptions
+  3-6. Method_1_TopDown ~ Method_4_CompetitorRevenue
+  7. Convergence_Analysis
+  8. Scenarios
+  9. Validation_Log
 
 피드백 반영:
   - fullCalcOnLoad=True 설정
@@ -15,7 +17,7 @@ Bill의 market_sizing.xlsx 자동 생성 (피드백 반영)
 """
 
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from datetime import datetime
 
 from openpyxl import Workbook
@@ -31,6 +33,9 @@ from .method_builders import (
     Method4CompetitorBuilder
 )
 from .convergence_builder import ConvergenceBuilder
+from .scenarios_builder import ScenariosBuilder
+from .validation_log_builder import ValidationLogBuilder
+from .summary_builder import SummaryBuilder
 
 
 class MarketSizingWorkbookGenerator:
@@ -124,11 +129,18 @@ class MarketSizingWorkbookGenerator:
         
         # 9. Scenarios
         print(f"   8/9 Scenarios...")
-        self._create_scenarios(wb)
+        scenarios = ScenariosBuilder(wb, self.formula_engine)
+        scenarios.create_sheet()
         
         # 10. Validation Log
         print(f"   9/9 Validation Log...")
-        self._create_validation_log(wb)
+        validation_log = ValidationLogBuilder(wb)
+        validation_log.create_sheet()
+        
+        # 11. Summary (첫 번째 시트로 이동)
+        print(f"   10/9 Summary Dashboard...")
+        summary = SummaryBuilder(wb, self.formula_engine)
+        summary.create_sheet(market_name=market_name)
         
         # 11. 강제 재계산 설정 (피드백 반영!)
         wb.calculation.calcMode = 'auto'
@@ -142,21 +154,11 @@ class MarketSizingWorkbookGenerator:
         wb.save(filepath)
         
         print(f"\n✅ Excel 생성 완료: {filepath}")
+        print(f"📊 시트: {len(wb.sheetnames)}개 (Summary, Assumptions, Methods 1-4, Convergence, Scenarios, Validation)")
         print(f"📋 다음: Excel에서 열어서 함수 작동 확인")
         print(f"📋 다음: PDF로 저장 (백업)")
         
         return filepath
-    
-    
-    def _create_scenarios(self, wb: Workbook):
-        """Scenarios"""
-        ws = wb.create_sheet("Scenarios")
-        ws['A1'] = "시나리오 (구현 예정)"
-    
-    def _create_validation_log(self, wb: Workbook):
-        """Validation Log"""
-        ws = wb.create_sheet("Validation_Log")
-        ws['A1'] = "검증 로그 (구현 예정)"
 
 
 # 테스트는 별도 스크립트에서
