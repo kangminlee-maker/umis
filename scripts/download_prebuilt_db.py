@@ -26,7 +26,7 @@ import shutil
 # 
 # ========================================
 
-GDRIVE_FILE_ID = "YOUR_FILE_ID_HERE"  # TODO: 업로드 후 파일 ID 입력
+GDRIVE_FILE_ID = "1EKHFfT5XnI_0St38-kq_4GnorZssd9q_"  # TODO: 업로드 후 파일 ID 입력
 
 # 버전별 다운로드 URL
 DOWNLOAD_URLS = {
