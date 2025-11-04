@@ -44,12 +44,14 @@ class ValidationLogBuilder:
       - 검증 완료율 계산
     """
     
-    def __init__(self, workbook: Workbook):
+    def __init__(self, workbook: Workbook, formula_engine=None):
         """
         Args:
             workbook: openpyxl Workbook
+            formula_engine: FormulaEngine (Named Range 정의용)
         """
         self.wb = workbook
+        self.fe = formula_engine
     
     def create_sheet(
         self,
@@ -174,27 +176,43 @@ class ValidationLogBuilder:
         validated_items = sum(1 for item in validation_items if item.get('status') == 'Validated')
         pending_items = total_items - validated_items
         
+        total_items_row = row
         ws.cell(row=row, column=1).value = "Total Items:"
         ws.cell(row=row, column=2).value = total_items
         ws.cell(row=row, column=2).font = Font(bold=True)
+        # Named Range 정의 (FormulaEngine 있을 때만)
+        if self.fe:
+            self.fe.define_named_range('Val_TotalItems', 'Validation_Log', f'B{total_items_row}')
         
         row += 1
+        validated_row = row
         ws.cell(row=row, column=1).value = "Validated:"
         ws.cell(row=row, column=2).value = validated_items
         ws.cell(row=row, column=2).font = Font(bold=True, color="006100")
         ws.cell(row=row, column=2).fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
+        # Named Range 정의
+        if self.fe:
+            self.fe.define_named_range('Val_Validated', 'Validation_Log', f'B{validated_row}')
         
         row += 1
+        pending_row = row
         ws.cell(row=row, column=1).value = "Pending:"
         ws.cell(row=row, column=2).value = pending_items
         ws.cell(row=row, column=2).font = Font(bold=True, color="9C0006")
         ws.cell(row=row, column=2).fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+        # Named Range 정의
+        if self.fe:
+            self.fe.define_named_range('Val_Pending', 'Validation_Log', f'B{pending_row}')
         
         row += 1
+        completion_row = row
         ws.cell(row=row, column=1).value = "Completion Rate:"
         completion_rate = (validated_items / total_items * 100) if total_items > 0 else 0
         ws.cell(row=row, column=2).value = f"{completion_rate:.1f}%"
         ws.cell(row=row, column=2).font = Font(bold=True)
+        # Named Range 정의
+        if self.fe:
+            self.fe.define_named_range('Val_CompletionRate', 'Validation_Log', f'B{completion_row}')
         
         # === 5. 조건부 서식 (Status 컬럼) ===
         # Validated = 녹색

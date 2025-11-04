@@ -134,7 +134,7 @@ class MarketSizingWorkbookGenerator:
         
         # 10. Validation Log
         print(f"   9/9 Validation Log...")
-        validation_log = ValidationLogBuilder(wb)
+        validation_log = ValidationLogBuilder(wb, self.formula_engine)  # FormulaEngine 전달
         validation_log.create_sheet()
         
         # 11. Summary (첫 번째 시트로 이동)
