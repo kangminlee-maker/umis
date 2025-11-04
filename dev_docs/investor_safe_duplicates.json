@@ -1,0 +1,1462 @@
+{
+  "safe_to_merge": {
+    "exact_case": [
+      {
+        "names": [
+          "BOLDstart Ventures",
+          "Boldstart Ventures"
+        ],
+        "counts": [
+          2,
+          2
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "BOLDstart Ventures": [
+            "Snyk",
+            "BigID"
+          ],
+          "Boldstart Ventures": [
+            "Snyk",
+            "BigID"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Bank Of China Group Investment",
+          "Bank of China Group Investment"
+        ],
+        "counts": [
+          1,
+          2
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "Bank Of China Group Investment": [
+            "SVOLT Energy"
+          ],
+          "Bank of China Group Investment": [
+            "MEGVII",
+            "SVOLT Energy"
+          ]
+        }
+      },
+      {
+        "names": [
+          "BlackRock",
+          "Blackrock"
+        ],
+        "counts": [
+          19,
+          3
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "BlackRock": [
+            "Klarna",
+            "Klarna",
+            "SambaNova Systems"
+          ],
+          "Blackrock": [
+            "Unqork",
+            "Farmers Business Network",
+            "Snapdeal"
+          ]
+        }
+      },
+      {
+        "names": [
+          "CapitalG",
+          "capitalG"
+        ],
+        "counts": [
+          11,
+          6
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "CapitalG": [
+            "Stripe",
+            "Gusto",
+            "Gusto"
+          ],
+          "capitalG": [
+            "Stripe",
+            "Dataiku",
+            "Freshworks"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Goldman Sachs (Debt)",
+          "Goldman Sachs (debt)"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "Goldman Sachs (Debt)": [
+            "Nubank"
+          ],
+          "Goldman Sachs (debt)": [
+            "Ramp Financial"
+          ]
+        }
+      },
+      {
+        "names": [
+          "ICONIQ Capital",
+          "Iconiq Capital"
+        ],
+        "counts": [
+          34,
+          1
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "ICONIQ Capital": [
+            "ServiceTitan",
+            "ServiceTitan",
+            "Netskope"
+          ],
+          "Iconiq Capital": [
+            "Age of Learning"
+          ]
+        }
+      },
+      {
+        "names": [
+          "IDInvest Partners",
+          "Idinvest Partners"
+        ],
+        "counts": [
+          4,
+          1
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "IDInvest Partners": [
+            "WeRide",
+            "Ynsect",
+            "Glovo"
+          ],
+          "Idinvest Partners": [
+            "Meero"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Index Ventures",
+          "index Ventures"
+        ],
+        "counts": [
+          65,
+          1
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "Index Ventures": [
+            "Plaid Technologies",
+            "Plaid Technologies",
+            "Aurora"
+          ],
+          "index Ventures": [
+            "Revolut"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Inovia Capital",
+          "iNovia Capital"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "Inovia Capital": [
+            "Sonder"
+          ],
+          "iNovia Capital": [
+            "AppDirect"
+          ]
+        }
+      },
+      {
+        "names": [
+          "JOY Capital",
+          "Joy Capital"
+        ],
+        "counts": [
+          2,
+          1
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "JOY Capital": [
+            "XiaoZhu",
+            "Chezhubang"
+          ],
+          "Joy Capital": [
+            "XiaoZhu"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Next47",
+          "next47"
+        ],
+        "counts": [
+          5,
+          3
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "Next47": [
+            "VAST Data",
+            "Pipe",
+            "Fair"
+          ],
+          "next47": [
+            "Pipe",
+            "Verkada",
+            "Bringg"
+          ]
+        }
+      },
+      {
+        "names": [
+          "QiMing Venture Partners",
+          "Qiming Venture Partners"
+        ],
+        "counts": [
+          3,
+          17
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "QiMing Venture Partners": [
+            "VANCL",
+            "Apus Group",
+            "iTutorGroup"
+          ],
+          "Qiming Venture Partners": [
+            "UBTECH Robotics",
+            "UBTECH Robotics",
+            "WeRide"
+          ]
+        }
+      },
+      {
+        "names": [
+          "RUSNANO",
+          "Rusnano"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "RUSNANO": [
+            "OCSiAl"
+          ],
+          "Rusnano": [
+            "OCSiAl"
+          ]
+        }
+      },
+      {
+        "names": [
+          "SEED Capital",
+          "Seed Capital"
+        ],
+        "counts": [
+          1,
+          5
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "SEED Capital": [
+            "Lunar"
+          ],
+          "Seed Capital": [
+            "Lunar",
+            "Lunar",
+            "Lunar"
+          ]
+        }
+      },
+      {
+        "names": [
+          "SoftBank",
+          "Softbank"
+        ],
+        "counts": [
+          15,
+          4
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "SoftBank": [
+            "One97 Communications",
+            "Rappi",
+            "QuintoAndar"
+          ],
+          "Softbank": [
+            "FTX",
+            "OYO Rooms",
+            "Eruditus Executive Education"
+          ]
+        }
+      },
+      {
+        "names": [
+          "SoftBank Capital",
+          "Softbank Capital"
+        ],
+        "counts": [
+          4,
+          1
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "SoftBank Capital": [
+            "Grab",
+            "Grab",
+            "OYO Rooms"
+          ],
+          "Softbank Capital": [
+            "PolicyBazaar"
+          ]
+        }
+      },
+      {
+        "names": [
+          "SoftBank Group",
+          "Softbank Group"
+        ],
+        "counts": [
+          24,
+          5
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "SoftBank Group": [
+            "Fanatics",
+            "OYO Rooms",
+            "National Stock Exchange of India"
+          ],
+          "Softbank Group": [
+            "Bytedance",
+            "goPuff",
+            "Grab"
+          ]
+        }
+      },
+      {
+        "names": [
+          "SoftBank Vision Fund",
+          "Softbank Vision fund"
+        ],
+        "counts": [
+          76,
+          1
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "SoftBank Vision Fund": [
+            "Revolut",
+            "Fanatics",
+            "goPuff"
+          ],
+          "Softbank Vision fund": [
+            "Bytedance"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Tiger Global Management",
+          "Tiger Global management"
+        ],
+        "counts": [
+          144,
+          2
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "Tiger Global Management": [
+            "Revolut",
+            "BYJU's",
+            "SHEIN"
+          ],
+          "Tiger Global management": [
+            "Koudai",
+            "GupShup"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Unknown",
+          "unknown"
+        ],
+        "counts": [
+          3,
+          4
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "Unknown": [
+            "SpaceX",
+            "SpaceX",
+            "SpaceX"
+          ],
+          "unknown": [
+            "Epic Games",
+            "Epic Games",
+            "Epic Games"
+          ]
+        }
+      },
+      {
+        "names": [
+          "VY Capital",
+          "Vy Capital"
+        ],
+        "counts": [
+          2,
+          6
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "VY Capital": [
+            "Upgrade",
+            "Urban Company"
+          ],
+          "Vy Capital": [
+            "reddit",
+            "Blockchain.com",
+            "6Sense"
+          ]
+        }
+      },
+      {
+        "names": [
+          "WestBridge Capital",
+          "Westbridge Capital"
+        ],
+        "counts": [
+          2,
+          1
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "WestBridge Capital": [
+            "Innovaccer",
+            "Innovaccer"
+          ],
+          "Westbridge Capital": [
+            "Phenom People"
+          ]
+        }
+      },
+      {
+        "names": [
+          "WestCap",
+          "Westcap"
+        ],
+        "counts": [
+          5,
+          1
+        ],
+        "similarity": 1.0,
+        "examples": {
+          "WestCap": [
+            "Bolt",
+            "Hopper",
+            "Addepar"
+          ],
+          "Westcap": [
+            "Bolt"
+          ]
+        }
+      }
+    ],
+    "spacing": [
+      {
+        "names": [
+          "BPI France",
+          "Bpifrance"
+        ],
+        "counts": [
+          1,
+          3
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "BPI France": [
+            "Doctolib"
+          ],
+          "Bpifrance": [
+            "Doctolib",
+            "Ynsect",
+            "Vestiaire Collective"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Barter Ventures",
+          "BarterVentures"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "Barter Ventures": [
+            "Black Unicorn Factory"
+          ],
+          "BarterVentures": [
+            "Black Unicorn Factory"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Group 11",
+          "Group11"
+        ],
+        "counts": [
+          7,
+          1
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "Group 11": [
+            "TripActions",
+            "Tipalti",
+            "Tipalti"
+          ],
+          "Group11": [
+            "Sunbit"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Index Ventures",
+          "IndexVentures"
+        ],
+        "counts": [
+          65,
+          1
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "Index Ventures": [
+            "Plaid Technologies",
+            "Plaid Technologies",
+            "Aurora"
+          ],
+          "IndexVentures": [
+            "SafetyCulture"
+          ]
+        }
+      },
+      {
+        "names": [
+          "IndexVentures",
+          "index Ventures"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "IndexVentures": [
+            "SafetyCulture"
+          ],
+          "index Ventures": [
+            "Revolut"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Lowercase Capital",
+          "LowercaseCapital"
+        ],
+        "counts": [
+          2,
+          1
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "Lowercase Capital": [
+            "Automattic",
+            "Lookout"
+          ],
+          "LowercaseCapital": [
+            "Stripe"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Menlo Ventures",
+          "MenloVentures"
+        ],
+        "counts": [
+          12,
+          1
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "Menlo Ventures": [
+            "Chime",
+            "Carta",
+            "Benchling"
+          ],
+          "MenloVentures": [
+            "Benchling"
+          ]
+        }
+      },
+      {
+        "names": [
+          "N5 Capital",
+          "N5Capital"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "N5 Capital": [
+            "TalkingData"
+          ],
+          "N5Capital": [
+            "FlashEx"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Next World Capital",
+          "NextWorld Capital"
+        ],
+        "counts": [
+          2,
+          1
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "Next World Capital": [
+            "Gong",
+            "Aircall"
+          ],
+          "NextWorld Capital": [
+            "Aircall"
+          ]
+        }
+      },
+      {
+        "names": [
+          "SoftBank Group",
+          "SoftBankGroup"
+        ],
+        "counts": [
+          24,
+          2
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "SoftBank Group": [
+            "Fanatics",
+            "OYO Rooms",
+            "National Stock Exchange of India"
+          ],
+          "SoftBankGroup": [
+            "Roivant Sciences",
+            "Snapdeal"
+          ]
+        }
+      },
+      {
+        "names": [
+          "SoftBankGroup",
+          "Softbank Group"
+        ],
+        "counts": [
+          2,
+          5
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "SoftBankGroup": [
+            "Roivant Sciences",
+            "Snapdeal"
+          ],
+          "Softbank Group": [
+            "Bytedance",
+            "goPuff",
+            "Grab"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Star VC",
+          "StarVC"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "Star VC": [
+            "SenseTime"
+          ],
+          "StarVC": [
+            "SenseTime"
+          ]
+        }
+      },
+      {
+        "names": [
+          "V Star Capital",
+          "VStar Capital"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "V Star Capital": [
+            "China Cloud"
+          ],
+          "VStar Capital": [
+            "FlashEx"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Xiang He Capital",
+          "Xianghe Capital"
+        ],
+        "counts": [
+          2,
+          2
+        ],
+        "similarity": 0.99,
+        "examples": {
+          "Xiang He Capital": [
+            "Lalamove",
+            "Zuoyebang"
+          ],
+          "Xianghe Capital": [
+            "Lalamove",
+            "Zuoyebang"
+          ]
+        }
+      }
+    ],
+    "punctuation": [
+      {
+        "names": [
+          "JD.com",
+          "JDcom"
+        ],
+        "counts": [
+          3,
+          1
+        ],
+        "similarity": 0.98,
+        "examples": {
+          "JD.com": [
+            "Xingsheng Selected",
+            "KK Group",
+            "Xinchao Media"
+          ],
+          "JDcom": [
+            "Xinchao Media"
+          ]
+        }
+      },
+      {
+        "names": [
+          "LP",
+          "LP."
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.98,
+        "examples": {
+          "LP": [
+            "VillageMD"
+          ],
+          "LP.": [
+            "Caris Life Sciences"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Monashees+",
+          "monashees"
+        ],
+        "counts": [
+          3,
+          1
+        ],
+        "similarity": 0.98,
+        "examples": {
+          "Monashees+": [
+            "Loft",
+            "Uala",
+            "MadeiraMadeira"
+          ],
+          "monashees": [
+            "Loft"
+          ]
+        }
+      },
+      {
+        "names": [
+          "U.S. Venture Partners",
+          "US Venture Partners"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.98,
+        "examples": {
+          "U.S. Venture Partners": [
+            "Human Interest"
+          ],
+          "US Venture Partners": [
+            "HeartFlow"
+          ]
+        }
+      }
+    ]
+  },
+  "needs_review": {
+    "high_similarity": [
+      {
+        "names": [
+          "CE Innovation Capital",
+          "Core Innovation Capital"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.9545454545454546,
+        "examples": {
+          "CE Innovation Capital": [
+            "Upgrade"
+          ],
+          "Core Innovation Capital": [
+            "Ripple"
+          ]
+        }
+      },
+      {
+        "names": [
+          "CMC Capital Partners",
+          "CVC Capital Partners"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.95,
+        "examples": {
+          "CMC Capital Partners": [
+            "Kuaikan Manhua"
+          ],
+          "CVC Capital Partners": [
+            "Acronis"
+          ]
+        }
+      },
+      {
+        "names": [
+          "CVC Capital Partners",
+          "CVF Capital Partners"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.95,
+        "examples": {
+          "CVC Capital Partners": [
+            "Acronis"
+          ],
+          "CVF Capital Partners": [
+            "Aledade"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Draper Fisher Jurtson",
+          "Draper Fisher Jurvetson"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.9545454545454546,
+        "examples": {
+          "Draper Fisher Jurtson": [
+            "TangoMe"
+          ],
+          "Draper Fisher Jurvetson": [
+            "SpaceX"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Fidelity Investment",
+          "Fidelity Investments"
+        ],
+        "counts": [
+          2,
+          3
+        ],
+        "similarity": 0.9743589743589743,
+        "examples": {
+          "Fidelity Investment": [
+            "Starling Bank",
+            "ABL Space Systems"
+          ],
+          "Fidelity Investments": [
+            "Diamond Foundry",
+            "sweetgreen",
+            "TensTorrent"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Fuse Venture Partners",
+          "US Venture Partners"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.95,
+        "examples": {
+          "Fuse Venture Partners": [
+            "Kurly"
+          ],
+          "US Venture Partners": [
+            "HeartFlow"
+          ]
+        }
+      },
+      {
+        "names": [
+          "GP Capital",
+          "GPI Capital"
+        ],
+        "counts": [
+          2,
+          2
+        ],
+        "similarity": 0.9523809523809523,
+        "examples": {
+          "GP Capital": [
+            "HuiMin",
+            "HuiMin"
+          ],
+          "GPI Capital": [
+            "Hopper",
+            "Pharmapacks"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Helion Venture Partners",
+          "Pelion Venture Partners"
+        ],
+        "counts": [
+          2,
+          3
+        ],
+        "similarity": 0.9565217391304348,
+        "examples": {
+          "Helion Venture Partners": [
+            "GupShup",
+            "Axtria"
+          ],
+          "Pelion Venture Partners": [
+            "MX Technologies",
+            "Venafi",
+            "Guideline"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Insight Venture Partners",
+          "Insights Venture Partners"
+        ],
+        "counts": [
+          5,
+          1
+        ],
+        "similarity": 0.9795918367346939,
+        "examples": {
+          "Insight Venture Partners": [
+            "Nextdoor",
+            "BlaBlaCar",
+            "Calm"
+          ],
+          "Insights Venture Partners": [
+            "SMS Assist"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Ivy Capital",
+          "VY Capital"
+        ],
+        "counts": [
+          1,
+          2
+        ],
+        "similarity": 0.9523809523809523,
+        "examples": {
+          "Ivy Capital": [
+            "Yaoshibang"
+          ],
+          "VY Capital": [
+            "Upgrade",
+            "Urban Company"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Ivy Capital",
+          "Vy Capital"
+        ],
+        "counts": [
+          1,
+          6
+        ],
+        "similarity": 0.9523809523809523,
+        "examples": {
+          "Ivy Capital": [
+            "Yaoshibang"
+          ],
+          "Vy Capital": [
+            "reddit",
+            "Blockchain.com",
+            "6Sense"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Kleiner Perkins Caufield & Byers",
+          "Kleiner Perkins Caulfield & Byers"
+        ],
+        "counts": [
+          19,
+          1
+        ],
+        "similarity": 0.9846153846153847,
+        "examples": {
+          "Kleiner Perkins Caufield & Byers": [
+            "Instacart",
+            "Gusto",
+            "Figma"
+          ],
+          "Kleiner Perkins Caulfield & Byers": [
+            "Farmers Business Network"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Northzone Ventures",
+          "Nortzone Ventures"
+        ],
+        "counts": [
+          3,
+          1
+        ],
+        "similarity": 0.9714285714285714,
+        "examples": {
+          "Northzone Ventures": [
+            "Hopin",
+            "Forto",
+            "Thirty Madison"
+          ],
+          "Nortzone Ventures": [
+            "Personio"
+          ]
+        }
+      },
+      {
+        "names": [
+          "PremjiInves",
+          "PremjiInvest"
+        ],
+        "counts": [
+          1,
+          6
+        ],
+        "similarity": 0.9565217391304348,
+        "examples": {
+          "PremjiInves": [
+            "Icertis"
+          ],
+          "PremjiInvest": [
+            "Outreach",
+            "Lenskart",
+            "PolicyBazaar"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Sequoia Capital Israe",
+          "Sequoia Capital Israel"
+        ],
+        "counts": [
+          1,
+          2
+        ],
+        "similarity": 0.9767441860465116,
+        "examples": {
+          "Sequoia Capital Israe": [
+            "Forter"
+          ],
+          "Sequoia Capital Israel": [
+            "Forter",
+            "Forter"
+          ]
+        }
+      },
+      {
+        "names": [
+          "SoftBank Vision Fund",
+          "SoftBank Vision Fund 2"
+        ],
+        "counts": [
+          76,
+          1
+        ],
+        "similarity": 0.9523809523809523,
+        "examples": {
+          "SoftBank Vision Fund": [
+            "Revolut",
+            "Fanatics",
+            "goPuff"
+          ],
+          "SoftBank Vision Fund 2": [
+            "Klarna"
+          ]
+        }
+      },
+      {
+        "names": [
+          "SoftBank Vision Fund 2",
+          "Softbank Vision fund"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.9523809523809523,
+        "examples": {
+          "SoftBank Vision Fund 2": [
+            "Klarna"
+          ],
+          "Softbank Vision fund": [
+            "Bytedance"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Spar Capital",
+          "Spark Capital"
+        ],
+        "counts": [
+          1,
+          22
+        ],
+        "similarity": 0.96,
+        "examples": {
+          "Spar Capital": [
+            "Plaid Technologies"
+          ],
+          "Spark Capital": [
+            "Plaid Technologies",
+            "Carta",
+            "Discord"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Tenaya Capital",
+          "enaya Capital"
+        ],
+        "counts": [
+          4,
+          1
+        ],
+        "similarity": 0.9629629629629629,
+        "examples": {
+          "Tenaya Capital": [
+            "Druva",
+            "Fireblocks",
+            "Fireblocks"
+          ],
+          "enaya Capital": [
+            "Clari"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Thirty Five Ventures",
+          "Thrity Five Ventures"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.95,
+        "examples": {
+          "Thirty Five Ventures": [
+            "OpenSea"
+          ],
+          "Thrity Five Ventures": [
+            "Dutchie"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Uniion Square Ventures",
+          "Union Square Ventures"
+        ],
+        "counts": [
+          1,
+          12
+        ],
+        "similarity": 0.9767441860465116,
+        "examples": {
+          "Uniion Square Ventures": [
+            "Outschool"
+          ],
+          "Union Square Ventures": [
+            "Carta",
+            "Upgrade",
+            "Dapper Labs"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Warbug Pincus",
+          "Warburg Pincus"
+        ],
+        "counts": [
+          1,
+          21
+        ],
+        "similarity": 0.9629629629629629,
+        "examples": {
+          "Warbug Pincus": [
+            "Yuanfudao"
+          ],
+          "Warburg Pincus": [
+            "Yuanfudao",
+            "Ziroom",
+            "Ziroom"
+          ]
+        }
+      }
+    ],
+    "maybe_different": [
+      {
+        "names": [
+          "D1 Capita Partners",
+          "D1 Capital Partners"
+        ],
+        "counts": [
+          1,
+          27
+        ],
+        "similarity": 0.972972972972973,
+        "examples": {
+          "D1 Capita Partners": [
+            "Misfits Market"
+          ],
+          "D1 Capital Partners": [
+            "Instacart",
+            "Instacart",
+            "Instacart"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Echo Health Ventures",
+          "Echo Health Venturesl"
+        ],
+        "counts": [
+          2,
+          1
+        ],
+        "similarity": 0.975609756097561,
+        "examples": {
+          "Echo Health Ventures": [
+            "Aledade",
+            "DispatchHealth"
+          ],
+          "Echo Health Venturesl": [
+            "DispatchHealth"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Liberty Global Ventures",
+          "Liberty Gloval Ventures"
+        ],
+        "counts": [
+          3,
+          1
+        ],
+        "similarity": 0.9565217391304348,
+        "examples": {
+          "Liberty Global Ventures": [
+            "Plume",
+            "Lacework",
+            "Lacework"
+          ],
+          "Liberty Gloval Ventures": [
+            "Plume"
+          ]
+        }
+      },
+      {
+        "names": [
+          "QiMing Venture Partners",
+          "QiMing Venture Partnersl"
+        ],
+        "counts": [
+          3,
+          1
+        ],
+        "similarity": 0.9787234042553191,
+        "examples": {
+          "QiMing Venture Partners": [
+            "VANCL",
+            "Apus Group",
+            "iTutorGroup"
+          ],
+          "QiMing Venture Partnersl": [
+            "TuJia"
+          ]
+        }
+      },
+      {
+        "names": [
+          "QiMing Venture Partnersl",
+          "Qiming Venture Partners"
+        ],
+        "counts": [
+          1,
+          17
+        ],
+        "similarity": 0.9787234042553191,
+        "examples": {
+          "QiMing Venture Partnersl": [
+            "TuJia"
+          ],
+          "Qiming Venture Partners": [
+            "UBTECH Robotics",
+            "UBTECH Robotics",
+            "WeRide"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Snowflake Venture",
+          "Snowflake Ventures"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "similarity": 0.9714285714285714,
+        "examples": {
+          "Snowflake Venture": [
+            "DataRobot"
+          ],
+          "Snowflake Ventures": [
+            "ThoughtSpot"
+          ]
+        }
+      },
+      {
+        "names": [
+          "Tiger Globa",
+          "Tiger Global"
+        ],
+        "counts": [
+          1,
+          4
+        ],
+        "similarity": 0.9565217391304348,
+        "examples": {
+          "Tiger Globa": [
+            "Instacart"
+          ],
+          "Tiger Global": [
+            "Stripe",
+            "Stripe",
+            "Thumbtack"
+          ]
+        }
+      }
+    ]
+  }
+}
