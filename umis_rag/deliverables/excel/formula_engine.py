@@ -8,9 +8,12 @@ Excel 함수 생성 및 관리 (피드백 반영)
   - 함수 검증
 """
 
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, TYPE_CHECKING
 from openpyxl import Workbook
 from openpyxl.workbook.defined_name import DefinedName
+
+if TYPE_CHECKING:
+    from .builder_contract import BuilderContract
 
 
 class FormulaEngine:
@@ -21,16 +24,28 @@ class FormulaEngine:
       - Named Range 절대참조 필수
       - 순환 참조 감지
       - 함수 유효성 검증
+      - BuilderContract 자동 연동 (v7.2.0)
     """
     
-    def __init__(self, workbook: Workbook):
+    def __init__(self, workbook: Workbook, contract: Optional['BuilderContract'] = None):
         """
         Args:
             workbook: openpyxl Workbook 객체
+            contract: BuilderContract (옵션, Named Range 자동 등록)
         """
         self.wb = workbook
+        self.contract = contract
         self.named_ranges: Dict[str, Tuple[str, str]] = {}  # {name: (sheet, cell)}
         self.formula_cache: Dict[str, str] = {}
+    
+    def set_contract(self, contract: 'BuilderContract') -> None:
+        """
+        Contract 연결 (Builder에서 나중에 설정 가능)
+        
+        Args:
+            contract: BuilderContract
+        """
+        self.contract = contract
     
     def define_named_range(
         self,
@@ -81,6 +96,10 @@ class FormulaEngine:
         
         self.wb.defined_names.add(defn)
         self.named_ranges[name] = (sheet, cell)
+        
+        # Contract에 자동 등록 (v7.2.0)
+        if self.contract:
+            self.contract.add_named_range(name, f"{sheet}!{abs_cell}")
     
     def create_assumption_ref(self, asm_id: str) -> str:
         """

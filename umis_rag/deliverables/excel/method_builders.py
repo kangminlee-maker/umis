@@ -174,17 +174,21 @@ class Method2BottomUpBuilder:
     
     def create_sheet(self, segments: List[Dict]) -> None:
         """
-        Method 2 시트 생성
+        Method 2 시트 생성 (v7.2.0 - Narrowing 추가)
         
         Args:
             segments: 세그먼트 목록
                 [
                     {
-                        'name': '중소기업',
-                        'target_customers': 'ASM_010',
-                        'purchase_rate': 'ASM_011',
-                        'aov': 'ASM_012',
-                        'frequency': 'ASM_013'
+                        'name': '개인 구독',
+                        'total_population': 'ASM_010',  # 전체 모집단
+                        'narrowing_filters': [           # Narrowing 단계
+                            {'name': '지역 (한국)', 'filter_id': 'FILTER_KOREA'},
+                            {'name': '피아노 관심', 'filter_id': 'FILTER_PIANO'}
+                        ],
+                        'purchase_rate': 'PURCHASE_RATE_EST',  # Estimation_Details에서
+                        'aov': 'AOV_EST',
+                        'frequency': 'FREQUENCY_EST'
                     },
                     ...
                 ]
@@ -193,55 +197,115 @@ class Method2BottomUpBuilder:
         ws = self.wb.create_sheet("Method_2_BottomUp")
         
         # 제목
-        ws['A1'] = "Method 2: Bottom-Up Approach"
+        ws['A1'] = "Method 2: Bottom-Up Approach (with Narrowing)"
         ws['A1'].font = Font(size=14, bold=True)
-        ws.merge_cells('A1:F1')
+        ws.merge_cells('A1:I1')
+        
+        ws['A2'] = "총 모집단 → Narrowing Filters → 타겟 고객 → 구매 행동"
+        ws['A2'].font = Font(size=10, italic=True, color="666666")
+        ws.merge_cells('A2:I2')
         
         # 헤더
-        ws['A3'] = "Segment"
-        ws['B3'] = "Target Customers"
-        ws['C3'] = "Purchase Rate"
-        ws['D3'] = "AOV"
-        ws['E3'] = "Frequency"
-        ws['F3'] = "SAM"
+        ws['A4'] = "Segment"
+        ws['B4'] = "Total Population"
+        ws['C4'] = "Narrowing Filters"
+        ws['D4'] = "Narrowed Customers"
+        ws['E4'] = "Purchase Rate"
+        ws['F4'] = "AOV"
+        ws['G4'] = "Frequency"
+        ws['H4'] = "SAM"
+        ws['I4'] = "Notes"
         
-        for cell in ws[3]:
-            cell.font = Font(bold=True)
+        for cell in ws[4]:
+            cell.font = Font(bold=True, color="FFFFFF")
+            cell.fill = PatternFill(
+                start_color=ExcelStyles.HEADER_FILL,
+                end_color=ExcelStyles.HEADER_FILL,
+                fill_type="solid"
+            )
             cell.alignment = Alignment(horizontal="center")
+        
+        # 열 너비
+        ws.column_dimensions['A'].width = 18
+        ws.column_dimensions['B'].width = 18
+        ws.column_dimensions['C'].width = 30
+        ws.column_dimensions['D'].width = 18
+        ws.column_dimensions['E'].width = 15
+        ws.column_dimensions['F'].width = 15
+        ws.column_dimensions['G'].width = 12
+        ws.column_dimensions['H'].width = 18
+        ws.column_dimensions['I'].width = 25
         
         # 각 세그먼트
         segment_sam_ranges = []
         
         for idx, seg in enumerate(segments, start=1):
-            i = 3 + idx  # Row 4, 5, 6...
+            i = 4 + idx  # Row 5, 6, 7...
             ws[f'A{i}'] = seg.get('name')
+            ws[f'A{i}'].font = Font(bold=True)
             
-            # Named Range 참조
-            ws[f'B{i}'] = self.fe.create_assumption_ref(seg.get('target_customers'))
-            ws[f'C{i}'] = self.fe.create_assumption_ref(seg.get('purchase_rate'))
-            ws[f'D{i}'] = self.fe.create_assumption_ref(seg.get('aov'))
-            ws[f'E{i}'] = self.fe.create_assumption_ref(seg.get('frequency'))
+            # B: Total Population
+            ws[f'B{i}'] = self.fe.create_assumption_ref(seg.get('total_population'))
+            ws[f'B{i}'].number_format = '#,##0'
             
-            # SAM 계산
-            ws[f'F{i}'] = f"=B{i}*C{i}*D{i}*E{i}"
+            # C: Narrowing Filters (설명만)
+            narrowing_filters = seg.get('narrowing_filters', [])
+            filter_names = [f['name'] for f in narrowing_filters]
+            ws[f'C{i}'] = ' × '.join(filter_names) if filter_names else '없음'
+            ws[f'C{i}'].font = Font(size=9)
+            
+            # D: Narrowed Customers = Total Population × Filter1 × Filter2 × ...
+            if narrowing_filters:
+                filter_refs = [self.fe.create_assumption_ref(f['filter_id']) for f in narrowing_filters]
+                narrowed_formula = f"=B{i}" + "".join([f"*{ref}" for ref in filter_refs])
+            else:
+                narrowed_formula = f"=B{i}"
+            
+            ws[f'D{i}'] = narrowed_formula
+            ws[f'D{i}'].number_format = '#,##0'
+            ws[f'D{i}'].fill = PatternFill(
+                start_color="E3F2FD", end_color="E3F2FD", fill_type="solid"
+            )
+            
+            # E: Purchase Rate (Estimation_Details에서 참조)
+            ws[f'E{i}'] = self.fe.create_assumption_ref(seg.get('purchase_rate'))
+            ws[f'E{i}'].number_format = '0.0%'
+            
+            # F: AOV
+            ws[f'F{i}'] = self.fe.create_assumption_ref(seg.get('aov'))
             ws[f'F{i}'].number_format = '#,##0'
-            ws[f'F{i}'].fill = PatternFill(
+            
+            # G: Frequency
+            ws[f'G{i}'] = self.fe.create_assumption_ref(seg.get('frequency'))
+            ws[f'G{i}'].number_format = '0.0'
+            
+            # H: SAM = Narrowed Customers × Purchase Rate × AOV × Frequency
+            ws[f'H{i}'] = f"=D{i}*E{i}*F{i}*G{i}"
+            ws[f'H{i}'].number_format = '#,##0'
+            ws[f'H{i}'].fill = PatternFill(
                 start_color=ExcelStyles.CALC_FILL,
                 end_color=ExcelStyles.CALC_FILL,
                 fill_type="solid"
             )
             
+            # I: Notes
+            ws[f'I{i}'] = seg.get('notes', '')
+            ws[f'I{i}'].font = Font(size=9, italic=True)
+            
             # Named Range 정의
             seg_sam_name = f'M2_Seg{idx}_SAM'
-            self.fe.define_named_range(seg_sam_name, 'Method_2_BottomUp', f'F{i}')
+            self.fe.define_named_range(seg_sam_name, 'Method_2_BottomUp', f'H{i}')
             segment_sam_ranges.append(seg_sam_name)
         
         # 총 SAM (Named Range 기반)
-        last_row = 4 + len(segments) - 1
+        last_row = 4 + len(segments)
         total_row = last_row + 2
         
         ws[f'A{total_row}'] = "Total SAM"
-        ws[f'A{total_row}'].font = Font(bold=True)
+        ws[f'A{total_row}'].font = Font(bold=True, size=11, color="FFFFFF")
+        ws[f'A{total_row}'].fill = PatternFill(
+            start_color="2E75B6", end_color="2E75B6", fill_type="solid"
+        )
         
         # Named Range 기반 SUM
         if len(segment_sam_ranges) == 1:
@@ -249,13 +313,12 @@ class Method2BottomUpBuilder:
         else:
             sum_formula = f"=SUM({','.join(segment_sam_ranges)})"
         
-        ws[f'F{total_row}'] = sum_formula
-        ws[f'F{total_row}'].font = Font(bold=True, size=12)
-        ws[f'F{total_row}'].fill = PatternFill(
-            start_color=ExcelStyles.RESULT_FILL,
-            end_color=ExcelStyles.RESULT_FILL,
-            fill_type="solid"
+        ws[f'H{total_row}'] = sum_formula
+        ws[f'H{total_row}'].font = Font(bold=True, size=12, color="FFFFFF")
+        ws[f'H{total_row}'].fill = PatternFill(
+            start_color="2E75B6", end_color="2E75B6", fill_type="solid"
         )
+        ws[f'H{total_row}'].number_format = '#,##0'
         ws[f'F{total_row}'].number_format = '#,##0'
         
         # SAM Named Range
@@ -278,57 +341,139 @@ class Method3ProxyBuilder:
     
     def create_sheet(self, proxy_data: Dict) -> None:
         """
-        Method 3 시트 생성
+        Method 3 시트 생성 (v7.2.0 - 메타데이터 추가)
         
         Args:
             proxy_data: Proxy 데이터
                 {
+                    'proxy_market_name': '바이올린 구독 시장',  # 추가
                     'proxy_market': 'ASM_020',
-                    'correlation': 'ASM_021',
-                    'application_rate': 'ASM_022'
+                    'similarity_reason': '유사한 악기 구독 모델',  # 추가
+                    'correlation': 'PROXY_CORR',
+                    'correlation_basis': 'SNS 관심도 상관계수 0.3',  # 추가
+                    'application_rate': 'PROXY_APP',
+                    'application_basis': '시장 성숙도 차이 50% 보정'  # 추가
                 }
         """
         
         ws = self.wb.create_sheet("Method_3_Proxy")
         
-        # 제목
-        ws['A1'] = "Method 3: Proxy Method"
-        ws['A1'].font = Font(size=14, bold=True)
+        # === 제목 ===
+        ws['A1'] = "Method 3: Proxy Method (유사 시장 활용)"
+        ws['A1'].font = Font(size=14, bold=True, color="FFFFFF")
+        ws['A1'].fill = PatternFill(start_color="2E75B6", end_color="2E75B6", fill_type="solid")
+        ws.merge_cells('A1:D1')
+        ws.row_dimensions[1].height = 25
         
-        # 계산
-        ws['A3'] = "Proxy Market Size"
-        ws['B3'] = self.fe.create_assumption_ref(proxy_data.get('proxy_market', 'PROXY_SIZE'))
-        ws['B3'].number_format = '#,##0'
+        ws['A2'] = "유사 시장 규모를 기반으로 추정"
+        ws['A2'].font = Font(size=10, italic=True, color="666666")
+        ws.merge_cells('A2:D2')
         
-        ws['A4'] = "Correlation Coefficient"
-        ws['B4'] = self.fe.create_assumption_ref(proxy_data.get('correlation', 'PROXY_CORR'))
-        ws['B4'].number_format = '0.0%'
+        # 열 너비
+        ws.column_dimensions['A'].width = 25
+        ws.column_dimensions['B'].width = 18
+        ws.column_dimensions['C'].width = 15
+        ws.column_dimensions['D'].width = 40
         
-        ws['A5'] = "Application Rate"
-        ws['B5'] = self.fe.create_assumption_ref(proxy_data.get('application_rate', 'PROXY_APP'))
-        ws['B5'].number_format = '0.0%'
+        # === Proxy 시장 정보 ===
+        row = 4
+        ws.cell(row=row, column=1).value = "📊 Proxy 시장"
+        ws.cell(row=row, column=1).font = Font(size=11, bold=True, color="0066CC")
         
-        ws['A7'] = "SAM (Proxy)"
-        ws['A7'].font = Font(bold=True)
+        row += 1
+        ws.cell(row=row, column=1).value = "Proxy 시장 이름:"
+        ws.cell(row=row, column=1).font = Font(bold=True)
+        ws.cell(row=row, column=2).value = proxy_data.get('proxy_market_name', '유사 시장')
+        ws.cell(row=row, column=2).font = Font(bold=True, color="0066CC")
+        ws.merge_cells(f'B{row}:D{row}')
         
-        ws['B7'] = "=B3*B4*B5"
-        ws['B7'].number_format = '#,##0'
-        ws['B7'].font = Font(bold=True, size=12)
-        ws['B7'].fill = PatternFill(
-            start_color=ExcelStyles.RESULT_FILL,
-            end_color=ExcelStyles.RESULT_FILL,
-            fill_type="solid"
+        row += 1
+        ws.cell(row=row, column=1).value = "유사성 근거:"
+        ws.cell(row=row, column=2).value = proxy_data.get('similarity_reason', '유사한 제품/서비스')
+        ws.cell(row=row, column=2).font = Font(size=9)
+        ws.merge_cells(f'B{row}:D{row}')
+        
+        # === 계산 섹션 ===
+        row += 2
+        ws.cell(row=row, column=1).value = "📐 계산"
+        ws.cell(row=row, column=1).font = Font(size=11, bold=True, color="0066CC")
+        
+        # Proxy Market Size
+        row += 1
+        proxy_size_row = row
+        ws.cell(row=row, column=1).value = "Proxy Market Size"
+        ws.cell(row=row, column=1).font = Font(bold=True)
+        ws.cell(row=row, column=2).value = self.fe.create_assumption_ref(
+            proxy_data.get('proxy_market', 'PROXY_SIZE')
         )
+        ws.cell(row=row, column=2).number_format = '#,##0'
+        ws.cell(row=row, column=4).value = "유사 시장의 규모"
+        ws.cell(row=row, column=4).font = Font(size=9, italic=True)
+        
+        # Correlation Coefficient
+        row += 1
+        ws.cell(row=row, column=1).value = "Correlation Coefficient"
+        ws.cell(row=row, column=1).font = Font(bold=True)
+        ws.cell(row=row, column=2).value = self.fe.create_assumption_ref(
+            proxy_data.get('correlation', 'PROXY_CORR')
+        )
+        ws.cell(row=row, column=2).number_format = '0.0%'
+        ws.cell(row=row, column=4).value = proxy_data.get('correlation_basis', '상관관계 추정 근거')
+        ws.cell(row=row, column=4).font = Font(size=9, italic=True)
+        
+        # Application Rate
+        row += 1
+        ws.cell(row=row, column=1).value = "Application Rate"
+        ws.cell(row=row, column=1).font = Font(bold=True)
+        ws.cell(row=row, column=2).value = self.fe.create_assumption_ref(
+            proxy_data.get('application_rate', 'PROXY_APP')
+        )
+        ws.cell(row=row, column=2).number_format = '0.0%'
+        ws.cell(row=row, column=4).value = proxy_data.get('application_basis', '적용 비율 근거')
+        ws.cell(row=row, column=4).font = Font(size=9, italic=True)
+        
+        # === SAM ===
+        row += 2
+        ws.cell(row=row, column=1).value = "SAM (Proxy)"
+        ws.cell(row=row, column=1).font = Font(bold=True, size=12, color="FFFFFF")
+        ws.cell(row=row, column=1).fill = PatternFill(
+            start_color="2E75B6", end_color="2E75B6", fill_type="solid"
+        )
+        
+        ws.cell(row=row, column=2).value = f"=B{proxy_size_row}*B{proxy_size_row+1}*B{proxy_size_row+2}"
+        ws.cell(row=row, column=2).number_format = '#,##0'
+        ws.cell(row=row, column=2).font = Font(bold=True, size=12, color="FFFFFF")
+        ws.cell(row=row, column=2).fill = PatternFill(
+            start_color="2E75B6", end_color="2E75B6", fill_type="solid"
+        )
+        
+        ws.cell(row=row, column=4).value = "= Proxy Size × Correlation × Application"
+        ws.cell(row=row, column=4).font = Font(size=9, italic=True)
         
         # SAM Named Range
         self.fe.define_named_range(
             name='SAM_Method3',
             sheet='Method_3_Proxy',
-            cell='B7',
+            cell=f'B{row}',
             scope='workbook'
         )
         
-        print(f"   ✅ Method 3: Proxy")
+        # === 설명 ===
+        row += 2
+        ws.cell(row=row, column=1).value = "💡 해석"
+        ws.cell(row=row, column=1).font = Font(size=10, bold=True)
+        
+        row += 1
+        ws.cell(row=row, column=1).value = "• Correlation: 우리 시장과 Proxy 시장의 상관관계"
+        ws.cell(row=row, column=1).font = Font(size=9)
+        ws.merge_cells(f'A{row}:D{row}')
+        
+        row += 1
+        ws.cell(row=row, column=1).value = "• Application: Proxy 대비 우리 시장의 적용 비율 (성숙도, 규모 등 보정)"
+        ws.cell(row=row, column=1).font = Font(size=9)
+        ws.merge_cells(f'A{row}:D{row}')
+        
+        print(f"   ✅ Method 3: Proxy (메타데이터 포함)")
 
 
 class Method4CompetitorBuilder:
