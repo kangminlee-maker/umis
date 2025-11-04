@@ -5,6 +5,73 @@
 
 ---
 
+## v7.2.0 (2025-11-04) - "Fermi" ⭐ Major Release
+
+### 🎊 릴리즈 하이라이트
+
+**코드명**: "Fermi" (Guestimation Framework)  
+**작업 시간**: 15.5시간  
+**커밋**: 42개  
+**주요 기능**: 5개  
+**완성도**: 95%
+
+### 🚀 주요 기능
+
+#### 1. Bill Excel 도구 3개 완성 (Phase 1)
+- Market Sizing (10시트, 41 Named Ranges)
+- Unit Economics (10시트, 28 Named Ranges)
+- Financial Projection (11시트, 93 Named Ranges)
+- **작업 커버리지**: 20% → 80%+
+
+#### 2. Named Range 100% 전환
+- 범위 하드코딩: 0개 (완전 제거)
+- 구조 유연성: 매우 높음
+- 총 162개 Named Range
+
+#### 3. Builder Contract + Inline Validation
+- BuilderContract 시스템 (구조 독립성)
+- Inline Validation (생성 = 검증)
+- 즉시 오류 감지
+
+#### 4. Market Sizing 논리 정합성
+- Estimation Details 7개 섹션
+- Bottom-Up Narrowing 로직
+- Proxy 메타데이터
+
+#### 5. Guestimation Framework ⭐⭐⭐⭐⭐
+- Fermi Estimation 기반
+- 8개 데이터 출처 (AI 전략)
+- 비교 가능성 4대 기준
+- RAG 의존도: 25% → 12.5%
+- 모든 Agent 사용 가능
+
+### 🔧 기술 개선
+
+#### 양방향 ID 시스템
+- umis.yaml ↔ tool_registry.yaml
+- 자동 추출 스크립트
+- 역추적 가능
+
+#### 데이터 품질
+- 5개 주요 벤치마크 검증
+- 출처: Baymard, ProfitWell, SaaS Capital
+- Confidence: Medium → High (A)
+
+### 📂 신규 파일
+- builder_contract.py
+- guestimation.py
+- extract_tools_from_umis.py
+- verify_benchmarks.py
+- GUESTIMATION_FRAMEWORK.md
+- RELEASE_NOTES_v7.2.0.md
+
+### 📝 업데이트
+- umis.yaml (+200줄)
+- config/tool_registry.yaml (재생성)
+- umis_core.yaml (+50줄)
+
+---
+
 ## v7.1.0-dev3 (2025-11-04) - Excel 엔진 완성
 
 ### 🚀 Sprint 2: Excel 자동 생성 시스템
