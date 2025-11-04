@@ -23,6 +23,14 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.worksheet.worksheet import Worksheet
 
 from .formula_engine import FormulaEngine, ExcelStyles
+from .assumptions_builder import AssumptionsSheetBuilder, EstimationDetailsBuilder
+from .method_builders import (
+    Method1TopDownBuilder,
+    Method2BottomUpBuilder,
+    Method3ProxyBuilder,
+    Method4CompetitorBuilder
+)
+from .convergence_builder import ConvergenceBuilder
 
 
 class MarketSizingWorkbookGenerator:
@@ -82,30 +90,37 @@ class MarketSizingWorkbookGenerator:
         
         # 2. Assumptions 시트
         print(f"   1/9 Assumptions...")
-        self._create_assumptions_sheet(wb, assumptions)
+        assumptions_builder = AssumptionsSheetBuilder(wb, self.formula_engine)
+        assumptions_builder.create_sheet(assumptions)
         
         # 3. Estimation Details (추정치가 있는 경우)
         estimations = [a for a in assumptions if a.get('data_type') == '추정치']
         if estimations:
             print(f"   2/9 Estimation Details...")
-            self._create_estimation_details(wb, estimations)
+            estimation_builder = EstimationDetailsBuilder(wb)
+            estimation_builder.create_sheet(estimations)
         
         # 4-7. Method 시트들 (4가지)
         print(f"   3/9 Method 1: Top-Down...")
-        self._create_method1_topdown(wb, tam)
+        method1 = Method1TopDownBuilder(wb, self.formula_engine)
+        method1.create_sheet(tam, tam.get('narrowing_steps', []))
         
         print(f"   4/9 Method 2: Bottom-Up...")
-        self._create_method2_bottomup(wb, segments)
+        method2 = Method2BottomUpBuilder(wb, self.formula_engine)
+        method2.create_sheet(segments)
         
         print(f"   5/9 Method 3: Proxy...")
-        self._create_method3_proxy(wb, proxy_data)
+        method3 = Method3ProxyBuilder(wb, self.formula_engine)
+        method3.create_sheet(proxy_data)
         
         print(f"   6/9 Method 4: Competitor Revenue...")
-        self._create_method4_competitor(wb, competitors)
+        method4 = Method4CompetitorBuilder(wb, self.formula_engine)
+        method4.create_sheet(competitors)
         
         # 8. Convergence Analysis
         print(f"   7/9 Convergence Analysis...")
-        self._create_convergence_analysis(wb)
+        convergence = ConvergenceBuilder(wb, self.formula_engine)
+        convergence.create_sheet()
         
         # 9. Scenarios
         print(f"   8/9 Scenarios...")
@@ -132,40 +147,6 @@ class MarketSizingWorkbookGenerator:
         
         return filepath
     
-    def _create_assumptions_sheet(self, wb: Workbook, assumptions: List[Dict]):
-        """Assumptions 시트 생성 (구현 예정)"""
-        ws = wb.create_sheet("Assumptions", 0)
-        ws['A1'] = "가정 시트 (구현 예정)"
-    
-    def _create_estimation_details(self, wb: Workbook, estimations: List[Dict]):
-        """Estimation Details 시트"""
-        ws = wb.create_sheet("Estimation_Details")
-        ws['A1'] = "추정 상세 (구현 예정)"
-    
-    def _create_method1_topdown(self, wb: Workbook, tam: Dict):
-        """Method 1: Top-Down"""
-        ws = wb.create_sheet("Method_1_TopDown")
-        ws['A1'] = "Top-Down 방법 (구현 예정)"
-    
-    def _create_method2_bottomup(self, wb: Workbook, segments: List[Dict]):
-        """Method 2: Bottom-Up"""
-        ws = wb.create_sheet("Method_2_BottomUp")
-        ws['A1'] = "Bottom-Up 방법 (구현 예정)"
-    
-    def _create_method3_proxy(self, wb: Workbook, proxy_data: Dict):
-        """Method 3: Proxy"""
-        ws = wb.create_sheet("Method_3_Proxy")
-        ws['A1'] = "Proxy 방법 (구현 예정)"
-    
-    def _create_method4_competitor(self, wb: Workbook, competitors: List[Dict]):
-        """Method 4: Competitor Revenue"""
-        ws = wb.create_sheet("Method_4_CompetitorRevenue")
-        ws['A1'] = "경쟁사 역산 (구현 예정)"
-    
-    def _create_convergence_analysis(self, wb: Workbook):
-        """Convergence Analysis"""
-        ws = wb.create_sheet("Convergence_Analysis")
-        ws['A1'] = "수렴 분석 (구현 예정)"
     
     def _create_scenarios(self, wb: Workbook):
         """Scenarios"""
