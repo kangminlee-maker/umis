@@ -172,6 +172,7 @@ class ScenariosBuilder:
         # SAM 평균 계산 (위 4개 방법의 평균)
         sam_start_row = row - 4
         sam_end_row = row - 1
+        avg_sam_row = row  # 저장
         
         for col in [2, 3, 4]:
             col_letter = chr(64 + col)  # A=65, B=66, ...
@@ -179,6 +180,11 @@ class ScenariosBuilder:
             ws.cell(row=row, column=col).number_format = '#,##0'
             ws.cell(row=row, column=col).font = Font(bold=True)
             ws.cell(row=row, column=col).fill = PatternFill(start_color="E7E6E6", end_color="E7E6E6", fill_type="solid")
+        
+        # Named Range 정의 (중요!)
+        self.fe.define_named_range('AvgSAM_Best', 'Scenarios', f'B{avg_sam_row}')
+        self.fe.define_named_range('AvgSAM_Base', 'Scenarios', f'C{avg_sam_row}')
+        self.fe.define_named_range('AvgSAM_Worst', 'Scenarios', f'D{avg_sam_row}')
         
         # Range
         ws.cell(row=row, column=5).value = f"=B{row}-D{row}"
