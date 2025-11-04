@@ -5464,17 +5464,25 @@ implementation_guide:
           goal: "Order of Magnitude (자릿수, ±50%)"
         
         fermi_4_principles:
-          model: "추상 → 계산 가능 모형 (전봇대 = 면적 × 밀도)"
-          decompose: "큰 문제 → 작은 요소 (여행 = 인원 × 1인당)"
-          constraint: "물리적/시간적 한계 활용 (수요 = 공급)"
-          magnitude: "자릿수만 맞으면 성공 (±50%)"
+          model: "추상 → 계산 가능 모형 (시장 규모 = 고객 수 × 구매액)"
+          decompose: "큰 문제 → 작은 요소 (1인당 지출 = 교통 + 식비 + 숙박)"
+          constraint: "물리적/시간적 한계 활용 (하루 24시간, 1인 1끼 30분)"
+          magnitude: "자릿수만 맞으면 성공 (500억? 5000억?)"
         
         data_sources_4:
-          source_1: "프로젝트 데이터 (확정)"
-          source_2: "보편적 상식 (인구, 가격)"
-          source_3: "경험적 지식 (식사 30분, 테이블 3명)"
-          source_4: "Benchmark (RAG) → ⚠️ 비교 검증 필수!"
-          importance: "RAG는 4개 중 하나일 뿐 (25%)"
+          source_1: "프로젝트 데이터 (주어진 확정 숫자)"
+          source_2: "보편적 지식 (인구 통계, 공개 통계) → AI: 웹 서치 또는 일반 지식"
+          source_3: "경험 패턴 (물리적 제약, 시간) → AI: RAG 검색 또는 물리 법칙"
+          source_4: "Benchmark (유사 사례) → AI: RAG 검색 → 비교 검증 필수!"
+          
+          ai_strategy:
+            source_2_for_ai: "웹 서치 ('한국 인구', '버스 요금'), 일반 지식 활용"
+            source_3_for_ai: "RAG 검색 ('식사 시간 평균', '테이블 규모'), 물리적 제약 DB"
+            source_4_for_ai: "RAG 검색 후 4대 기준 검증"
+          
+          human_vs_ai:
+            human: "상식/경험 직접 활용"
+            ai: "웹 서치, RAG, 일반 지식으로 보완"
         
         comparability_4_criteria:
           criterion_1: "제품 속성 (물리적/디지털)"
