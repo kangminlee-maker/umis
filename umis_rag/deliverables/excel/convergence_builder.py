@@ -124,20 +124,32 @@ class ConvergenceBuilder:
         )
         ws[f'B{stats_start_row}'].font = Font(bold=True)
         
+        # Named Range 정의 (중요!)
+        self.fe.define_named_range('Conv_AvgSAM', 'Convergence_Analysis', f'B{stats_start_row}')
+        
         # 표준편차
         ws[f'A{stats_start_row+1}'] = "표준편차"
         ws[f'B{stats_start_row+1}'] = "=STDEV(B4:B7)"
         ws[f'B{stats_start_row+1}'].number_format = '#,##0'
         
+        # Named Range 정의
+        self.fe.define_named_range('Conv_StdDev', 'Convergence_Analysis', f'B{stats_start_row+1}')
+        
         # 변동계수 (CV%)
         ws[f'A{stats_start_row+2}'] = "변동계수 (CV%)"
-        ws[f'B{stats_start_row+2}'] = f"=B{stats_start_row+1}/B{stats_start_row}*100"
+        ws[f'B{stats_start_row+2}'] = "=Conv_StdDev/Conv_AvgSAM*100"  # Named Range 사용
         ws[f'B{stats_start_row+2}'].number_format = '0.0"%"'
+        
+        # Named Range 정의
+        self.fe.define_named_range('Conv_CV', 'Convergence_Analysis', f'B{stats_start_row+2}')
         
         # Max/Min 비율
         ws[f'A{stats_start_row+3}'] = "Max/Min 비율"
         ws[f'B{stats_start_row+3}'] = "=MAX(B4:B7)/MIN(B4:B7)"
         ws[f'B{stats_start_row+3}'].number_format = '0.00'
+        
+        # Named Range 정의
+        self.fe.define_named_range('Conv_MaxMin', 'Convergence_Analysis', f'B{stats_start_row+3}')
         
         # ±30% 수렴 확인
         conv_row = stats_start_row + 4
@@ -145,8 +157,11 @@ class ConvergenceBuilder:
         ws[f'A{conv_row}'] = "±30% 수렴?"
         ws[f'A{conv_row}'].font = Font(bold=True)
         
-        ws[f'B{conv_row}'] = f'=IF(B{stats_start_row+3}<=1.3, "✅ 통과", "❌ 재검토 필요")'
+        ws[f'B{conv_row}'] = '=IF(Conv_MaxMin<=1.3, "✅ 통과", "❌ 재검토 필요")'  # Named Range 사용
         ws[f'B{conv_row}'].font = Font(bold=True)
+        
+        # Named Range 정의
+        self.fe.define_named_range('Conv_Status', 'Convergence_Analysis', f'B{conv_row}')
         
         # 조건부 서식 (피드백 반영: FormulaRule 사용!)
         # Note: openpyxl 버전에 따라 조건부 서식 API가 다를 수 있음

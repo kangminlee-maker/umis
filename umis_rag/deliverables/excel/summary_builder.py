@@ -91,8 +91,8 @@ class SummaryBuilder:
         # SAM (Average) - Convergence에서 가져옴
         ws.cell(row=row, column=1).value = "Serviceable Addressable Market (SAM):"
         ws.cell(row=row, column=1).font = Font(size=10)
-        # Convergence의 평균은 B8 (C16이 아님)
-        ws.cell(row=row, column=2).value = "=Convergence_Analysis!B8"  # 수정: B8 (평균 SAM)
+        # Named Range 사용 (행 번호 독립)
+        ws.cell(row=row, column=2).value = "=Conv_AvgSAM"  # 수정: Named Range
         ws.cell(row=row, column=2).number_format = '#,##0'
         ws.cell(row=row, column=2).font = Font(size=10, bold=True, color="0070C0")
         ws.cell(row=row, column=2).fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
@@ -152,7 +152,7 @@ class SummaryBuilder:
         # Max/Min Ratio
         ws.cell(row=row, column=1).value = "Max/Min Ratio:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Convergence_Analysis!B11"  # 수정: B11 (Max/Min)
+        ws.cell(row=row, column=2).value = "=Conv_MaxMin"  # Named Range 사용
         ws.cell(row=row, column=2).number_format = '0.00'
         ws.cell(row=row, column=2).font = Font(size=10, bold=True)
         
@@ -160,7 +160,7 @@ class SummaryBuilder:
         # Convergence Status
         ws.cell(row=row, column=1).value = "Convergence Status:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Convergence_Analysis!B12"  # 수정: B12 (상태)
+        ws.cell(row=row, column=2).value = "=Conv_Status"  # Named Range 사용
         ws.cell(row=row, column=2).font = Font(size=10, bold=True)
         
         # 조건부 서식 (통과 = 녹색, 재검토 = 빨간색)
@@ -188,14 +188,14 @@ class SummaryBuilder:
         # Standard Deviation
         ws.cell(row=row, column=1).value = "Standard Deviation:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Convergence_Analysis!B9"  # 수정: B9 (표준편차)
+        ws.cell(row=row, column=2).value = "=Conv_StdDev"  # Named Range 사용
         ws.cell(row=row, column=2).number_format = '#,##0'
         
         row += 1
         # Coefficient of Variation
         ws.cell(row=row, column=1).value = "Coefficient of Variation (CV%):"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Convergence_Analysis!B10"  # 수정: B10 (CV)
+        ws.cell(row=row, column=2).value = "=Conv_CV"  # Named Range 사용
         ws.cell(row=row, column=2).number_format = '0.0"%"'
         
         # === 5. Section 4: 시나리오 분석 ===
@@ -256,14 +256,14 @@ class SummaryBuilder:
         # Total Items (Validation_Log에서 참조)
         ws.cell(row=row, column=1).value = "Total Validation Items:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Validation_Log!B15"  # 수정: B15 (B19 아님)
+        ws.cell(row=row, column=2).value = "=Val_TotalItems"  # Named Range 사용
         ws.cell(row=row, column=2).font = Font(size=10, bold=True)
         
         row += 1
         # Validated
         ws.cell(row=row, column=1).value = "Validated:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Validation_Log!B16"  # 수정: B16 (B20 아님)
+        ws.cell(row=row, column=2).value = "=Val_Validated"  # Named Range 사용
         ws.cell(row=row, column=2).font = Font(size=10, bold=True, color="006100")
         ws.cell(row=row, column=2).fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
         
@@ -271,7 +271,7 @@ class SummaryBuilder:
         # Pending
         ws.cell(row=row, column=1).value = "Pending:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Validation_Log!B17"  # 수정: B17 (B21 아님)
+        ws.cell(row=row, column=2).value = "=Val_Pending"  # Named Range 사용
         ws.cell(row=row, column=2).font = Font(size=10, bold=True, color="9C6500")
         ws.cell(row=row, column=2).fill = PatternFill(start_color="FFEB9C", end_color="FFEB9C", fill_type="solid")
         
@@ -279,7 +279,7 @@ class SummaryBuilder:
         # Completion Rate
         ws.cell(row=row, column=1).value = "Completion Rate:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Validation_Log!B18"  # 수정: B18 (B22 아님)
+        ws.cell(row=row, column=2).value = "=Val_CompletionRate"  # Named Range 사용
         ws.cell(row=row, column=2).font = Font(size=10, bold=True)
         
         # === 7. 푸터 ===
