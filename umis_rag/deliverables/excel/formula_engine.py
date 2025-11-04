@@ -279,6 +279,157 @@ class FormulaEngine:
         """
         
         return f"=({value_cell}-{base_cell})/{base_cell}*100"
+    
+    # ========================================
+    # Unit Economics 함수들
+    # ========================================
+    
+    def create_ltv_formula(
+        self,
+        arpu: str,
+        lifetime: str,
+        margin: str
+    ) -> str:
+        """
+        LTV (Customer Lifetime Value) 계산 함수
+        
+        Formula: LTV = ARPU × Lifetime × Gross Margin
+        
+        Args:
+            arpu: ARPU 셀 또는 Named Range
+            lifetime: Customer Lifetime (months) 셀
+            margin: Gross Margin (%) 셀
+        
+        Returns:
+            LTV 함수
+        
+        Example:
+            create_ltv_formula('ARPU', 'Lifetime', 'GrossMargin')
+            → '=ARPU*Lifetime*GrossMargin'
+        """
+        
+        return f"={arpu}*{lifetime}*{margin}"
+    
+    def create_ltv_from_churn(
+        self,
+        arpu: str,
+        margin: str,
+        churn: str
+    ) -> str:
+        """
+        LTV 계산 (Churn 기반)
+        
+        Formula: LTV = ARPU × Margin / Churn
+        
+        Args:
+            arpu: ARPU 셀
+            margin: Gross Margin (%) 셀
+            churn: Monthly Churn Rate (%) 셀
+        
+        Returns:
+            LTV 함수
+        
+        Example:
+            create_ltv_from_churn('ARPU', 'Margin', 'Churn')
+            → '=ARPU*Margin/Churn'
+        """
+        
+        return f"=IFERROR({arpu}*{margin}/{churn}, 0)"
+    
+    def create_cac_formula(
+        self,
+        total_spend: str,
+        new_customers: str
+    ) -> str:
+        """
+        CAC (Customer Acquisition Cost) 계산 함수
+        
+        Formula: CAC = Total S&M Spend / New Customers
+        
+        Args:
+            total_spend: 총 S&M 지출 셀
+            new_customers: 신규 고객 수 셀
+        
+        Returns:
+            CAC 함수
+        """
+        
+        return f"=IFERROR({total_spend}/{new_customers}, 0)"
+    
+    def create_ratio_formula(
+        self,
+        numerator: str,
+        denominator: str
+    ) -> str:
+        """
+        비율 계산 함수 (LTV/CAC 등)
+        
+        Args:
+            numerator: 분자
+            denominator: 분모
+        
+        Returns:
+            비율 함수
+        """
+        
+        return f"=IFERROR({numerator}/{denominator}, 0)"
+    
+    def create_payback_formula(
+        self,
+        cac: str,
+        arpu: str,
+        margin: str
+    ) -> str:
+        """
+        CAC Payback Period 계산 함수
+        
+        Formula: Payback = CAC / (ARPU × Gross Margin)
+        
+        Args:
+            cac: CAC 셀
+            arpu: ARPU 셀
+            margin: Gross Margin 셀
+        
+        Returns:
+            Payback Period (months)
+        """
+        
+        return f"=IFERROR({cac}/({arpu}*{margin}), 0)"
+    
+    def create_churn_to_lifetime(self, churn: str) -> str:
+        """
+        Monthly Churn → Customer Lifetime 변환
+        
+        Formula: Lifetime = 1 / Churn
+        
+        Args:
+            churn: Monthly Churn Rate (decimal, 예: 0.05 = 5%)
+        
+        Returns:
+            Lifetime (months)
+        """
+        
+        return f"=IFERROR(1/{churn}, 0)"
+    
+    def create_margin_formula(
+        self,
+        revenue: str,
+        cost: str
+    ) -> str:
+        """
+        Margin 계산 함수
+        
+        Formula: Margin = (Revenue - Cost) / Revenue
+        
+        Args:
+            revenue: 매출 셀
+            cost: 비용 셀
+        
+        Returns:
+            Margin (%)
+        """
+        
+        return f"=IFERROR(({revenue}-{cost})/{revenue}, 0)"
 
 
 # 상수: Excel 서식
