@@ -82,3 +82,4 @@ temp/
 data/neo4j/
 data/chroma/*.bin
 data/chroma/*.sqlite3
+*.tar.gz
