@@ -1,9 +1,9 @@
 """
-Financial Projection Model Generator (Batch 4 버전)
+Financial Projection Model Generator (Batch 5 버전)
 재무 예측 모델 Excel 자동 생성
 
-현재 버전: Batch 4 (Assumptions + Revenue + Cost)
-향후 추가: Batch 5-6에서 나머지 9개 시트
+현재 버전: Batch 5 (Assumptions + Revenue + Cost + P&L + CashFlow + Metrics)
+향후 추가: Batch 6에서 나머지 6개 시트
 """
 
 from pathlib import Path
@@ -16,22 +16,25 @@ from ..formula_engine import FormulaEngine
 from .fp_assumptions_builder import FPAssumptionsBuilder
 from .revenue_builder import RevenueBuilder
 from .cost_builder import CostBuilder
+from .pl_builder import PLBuilder
+from .cashflow_builder import CashFlowBuilder
+from .metrics_builder import MetricsBuilder
 
 
 class FinancialProjectionGenerator:
     """
-    Financial Projection Excel 자동 생성기 (Batch 4)
+    Financial Projection Excel 자동 생성기 (Batch 5)
     
-    현재 시트 (3개):
+    현재 시트 (7개):
       1. Assumptions
       2. Revenue_Buildup
       3. Cost_Structure
-    
-    향후 추가 (Batch 5-6):
       4. PL_3Year
       5. PL_5Year
       6. CashFlow
       7. Key_Metrics
+    
+    향후 추가 (Batch 6):
       8. Scenarios
       9. BreakEven
       10. DCF_Valuation
@@ -84,7 +87,7 @@ class FinancialProjectionGenerator:
         
         print(f"🚀 Financial Projection Model 생성 시작")
         print(f"   시장: {market_name}")
-        print(f"   버전: Batch 4 (3개 시트)")
+        print(f"   버전: Batch 5 (7개 시트)")
         print(f"   예측 기간: {years}년")
         
         # 1. 워크북 초기화
@@ -96,25 +99,45 @@ class FinancialProjectionGenerator:
             wb.remove(wb['Sheet'])
         
         # 2. Sheet 1: Assumptions
-        print(f"   1/3 Assumptions...")
+        print(f"   1/7 Assumptions...")
         assumptions_builder = FPAssumptionsBuilder(wb, self.formula_engine)
         assumptions_builder.create_sheet(assumptions_data)
         
         # 3. Sheet 2: Revenue Build-up
-        print(f"   2/3 Revenue Build-up...")
+        print(f"   2/7 Revenue Build-up...")
         revenue_builder = RevenueBuilder(wb, self.formula_engine)
         revenue_builder.create_sheet(segments, years)
         
         # 4. Sheet 3: Cost Structure
-        print(f"   3/3 Cost Structure...")
+        print(f"   3/7 Cost Structure...")
         cost_builder = CostBuilder(wb, self.formula_engine)
         cost_builder.create_sheet(years)
         
-        # 5. 강제 재계산 설정
+        # 5. Sheet 4: P&L 3 Year (Batch 5)
+        print(f"   4/7 P&L 3 Year...")
+        pl_3year_builder = PLBuilder(wb, self.formula_engine)
+        pl_3year_builder.create_sheet('PL_3Year', years=3, start_year=0, define_named_ranges=False)
+        
+        # 6. Sheet 5: P&L 5 Year (Batch 5, Named Range 정의)
+        print(f"   5/7 P&L 5 Year...")
+        pl_5year_builder = PLBuilder(wb, self.formula_engine)
+        pl_5year_builder.create_sheet('PL_5Year', years=5, start_year=0, define_named_ranges=True)
+        
+        # 7. Sheet 6: Cash Flow (Batch 5)
+        print(f"   6/7 Cash Flow...")
+        cashflow_builder = CashFlowBuilder(wb, self.formula_engine)
+        cashflow_builder.create_sheet(years)
+        
+        # 8. Sheet 7: Key Metrics (Batch 5)
+        print(f"   7/7 Key Metrics...")
+        metrics_builder = MetricsBuilder(wb, self.formula_engine)
+        metrics_builder.create_sheet(years, 'PL_5Year')
+        
+        # 9. 강제 재계산 설정
         wb.calculation.calcMode = 'auto'
         wb.calculation.fullCalcOnLoad = True
         
-        # 6. 저장
+        # 10. 저장
         filename = f"financial_projection_{market_name}_{datetime.now().strftime('%Y%m%d')}.xlsx"
         filepath = output_dir / filename
         
@@ -122,9 +145,9 @@ class FinancialProjectionGenerator:
         wb.save(filepath)
         
         print(f"\n✅ Excel 생성 완료: {filepath}")
-        print(f"📊 시트: {len(wb.sheetnames)}개 (Assumptions, Revenue_Buildup, Cost_Structure)")
+        print(f"📊 시트: {len(wb.sheetnames)}개")
         print(f"📋 Named Range: {len(self.formula_engine.named_ranges)}개")
-        print(f"📋 다음: Batch 5에서 P&L, Cash Flow 추가")
+        print(f"📋 다음: Batch 6에서 Scenarios, DCF, Dashboard 추가")
         
         return filepath
 
