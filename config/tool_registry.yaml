@@ -1,1195 +1,936 @@
-# ========================================
-# UMIS Tool Registry v7.1.0
-# System RAG: Key-based 정확 검색
-# ========================================
-
-version: '7.2.0'
+version: 7.2.0
 created: '2025-11-03'
 updated: '2025-11-04'
-total_tools: 26  # Guestimation Framework 추가
-
-# ========================================
-# 도구 목록
-# ========================================
-
+total_tools: 26
 tools:
-  
-  # ========================================
-  # Explorer Tools (RAG 활용)
-  # ========================================
-  
-  - tool_id: explorer:pattern_search
-    tool_key: tool:explorer:pattern_search
-    
-    metadata:
-      agent: explorer
-      category: rag_search
-      complexity: low
-      context_size: 350
-      priority: high
-    
-    when_to_use:
-      keywords:
-        - 패턴
-        - 모델
-        - 사례
-        - 벤치마크
-      
-      conditions:
-        - "agent == 'explorer'"
-        - "task_type in ['pattern_discovery', 'model_matching']"
-      
-      scenarios:
-        - "@Explorer, 구독 모델 패턴 찾아줘"
-        - "@Explorer, 플랫폼 비즈니스 사례"
-        - "음악 스트리밍 비즈니스 모델 분석"
-    
-    content: |
-      # Explorer: RAG 패턴 검색
-      
-      ## 목적
-      31개 비즈니스 모델 + 23개 Disruption 패턴에서 관련 패턴 자동 검색
-      
-      ## RAG 아키텍처
-      - **Vector**: projected_index (agent_view=explorer)
-      - **Graph**: Neo4j (13 노드, 45 관계)
-      - **Embedding**: text-embedding-3-large (3072 dim)
-      
-      ## 검색 프로세스
-      
-      ### 1. Vector Search
-      ```python
-      from umis_rag.agents.explorer import ExplorerRAG
-      
-      explorer = ExplorerRAG()
-      patterns = explorer.search_patterns("구독 모델")
-      
-      # 결과
-      # → subscription_model (유사도 0.95)
-      # → platform + subscription (0.87)
-      ```
-      
-      ### 2. Graph Search (조합 패턴)
-      ```python
-      combinations = explorer.search_patterns_with_graph("구독 모델")
-      
-      # 결과
-      # → subscription + platform (confidence 0.87)
-      # → subscription + advertising (0.78)
-      ```
-      
-      ### 3. Case Search (성공 사례)
-      ```python
-      cases = explorer.search_cases(
-          industry="음악 산업", 
-          pattern_id="subscription_model"
-      )
-      
-      # 결과
-      # → Spotify (2.2억 구독자, 5.2% churn)
-      # → Netflix (해지율 2.4%)
-      # → Adobe (구독 전환 후 매출 3배)
-      ```
-      
-      ## 출력 형식
-      ```yaml
-      matched_patterns:
-        - pattern_id: subscription_model
-          similarity: 0.95
-          critical_success_factors:
-            - "해지율 < 5%"
-            - "LTV/CAC > 3.0"
-          
-          success_cases:
-            - "Spotify: 5.2% churn"
-            - "Netflix: 2.4% churn"
-      
-      combinations:
-        - pattern: subscription + platform
-          confidence: 0.87
-          evidence:
-            - Spotify
-            - LinkedIn Premium
-          
-          insight: "플랫폼 네트워크 효과 + 구독 안정성"
-      ```
-      
-      ## 다음 단계
-      - 발견한 패턴으로 7단계 프로세스 시작
-      - 또는 사례 심층 분석
-  
-  - tool_id: explorer:7_step_process
-    tool_key: tool:explorer:7_step_process
-    
-    metadata:
-      agent: explorer
-      category: process
-      complexity: medium
-      context_size: 500
-      priority: high
-    
-    when_to_use:
-      keywords:
-        - 기회
-        - 발굴
-        - 가설
-        - 검증
-      
-      scenarios:
-        - "@Explorer, 음악 스트리밍 시장 기회 분석"
-        - "새로운 비즈니스 기회 찾아줘"
-    
-    content: |
-      # Explorer: 7단계 기회 발굴 프로세스
-      
-      ## 7단계 프로세스
-      
-      1. **시장 관찰** (Observer 협업)
-         - 현재 시장 구조
-         - 비효율성 지점
-      
-      2. **패턴 매칭** (RAG 검색)
-         - 유사 패턴 탐색
-         - 성공 사례 벤치마크
-      
-      3. **가설 생성**
-         - 기회 가설 수립
-         - 근거 수집
-      
-      4. **정량 검증** (Quantifier 협업)
-         - 시장 규모 추정
-         - 성장률 분석
-      
-      5. **데이터 검증** (Validator 협업)
-         - 출처 확인
-         - 정의 검증
-      
-      6. **종합 평가** (Guardian 평가)
-         - 품질 검증
-         - 위험 분석
-      
-      7. **산출물 작성**
-         - OPP_*.md 생성
-         - 추적성 확보
-      
-      ## 산출물
-      - `OPP_YYYYMMDD_NNN.md`
-      - `opportunity_portfolio.md`
-  
-  # ========================================
-  # Quantifier Tools (정량 분석)
-  # ========================================
-  
-  - tool_id: quantifier:sam_4methods
-    tool_key: tool:quantifier:sam_4methods
-    
-    metadata:
-      agent: quantifier
-      category: calculation
-      complexity: high
-      context_size: 600
-      priority: high
-    
-    when_to_use:
-      keywords:
-        - 시장 규모
-        - SAM
-        - TAM
-        - 크기
-        - 계산
-      
-      scenarios:
-        - "@Quantifier, 음악 스트리밍 SAM 계산"
-        - "시장 규모 얼마나 되나요?"
-    
-    content: |
-      # Quantifier: SAM 4가지 방법
-      
-      ## 4가지 방법
-      
-      ### Method 1: Top-Down
-      ```
-      TAM (전체 시장)
-        → 지역 필터 (한국 15%)
-        → 제품 필터 (피아노만 25%)
-        → 세그먼트 필터 (프리미엄 40%)
-        = SAM
-      ```
-      
-      ### Method 2: Bottom-Up
-      ```
-      타겟 고객 수
-        × 구매율
-        × 평균 객단가
-        × 구매 빈도
-        = SAM
-      ```
-      
-      ### Method 3: Proxy (유사 시장)
-      ```
-      유사 시장 규모
-        × 시장 상관계수
-        × 적용 비율
-        = SAM
-      ```
-      
-      ### Method 4: Competitor Revenue
-      ```
-      경쟁사 매출
-        × 시장 점유율 역산
-        = SAM
-      ```
-      
-      ## 수렴 분석
-      - ±30% 범위 내 수렴 필요
-      - CV(변동계수) < 30%
-      - Max/Min ratio ≤ 1.3
-      
-      ## 산출물
-      - `market_sizing.xlsx` (Excel 자동 생성)
-      - 9개 시트 포함
-  
-  - tool_id: quantifier:growth_analysis
-    tool_key: tool:quantifier:growth_analysis
-    
-    metadata:
-      agent: quantifier
-      category: analysis
-      complexity: medium
-      context_size: 400
-      priority: normal
-    
-    when_to_use:
-      keywords:
-        - 성장률
-        - CAGR
-        - 추세
-        - 전망
-    
-    content: |
-      # Quantifier: 성장 분석
-      
-      ## CAGR 계산
-      ```
-      CAGR = (종료값/시작값)^(1/기간) - 1
-      ```
-      
-      ## S-Curve 분석
-      - 도입기
-      - 성장기
-      - 성숙기
-      - 쇠퇴기
-  
-  # ========================================
-  # Validator Tools (데이터 검증)
-  # ========================================
-  
-  - tool_id: validator:data_definition
-    tool_key: tool:validator:data_definition
-    
-    metadata:
-      agent: validator
-      category: validation
-      complexity: medium
-      context_size: 450
-      priority: high
-    
-    when_to_use:
-      keywords:
-        - 정의
-        - 검증
-        - MAU
-        - ARPU
-        - 용어
-      
-      scenarios:
-        - "@Validator, MAU 정의 확인"
-        - "ARPU 계산 방법 검증"
-    
-    content: |
-      # Validator: 데이터 정의 검증
-      
-      ## 주요 지표 정의
-      
-      ### MAU (Monthly Active Users)
-      - **정의**: 월간 활성 사용자 수
-      - **측정 기준**: 최소 1회 이상 로그인
-      - **산업별 차이**:
-        - SaaS: 유료 기능 사용
-        - 소셜: 피드 조회 또는 포스팅
-        - 게임: 게임 플레이
-      
-      ### ARPU (Average Revenue Per User)
-      - **정의**: 사용자당 평균 매출
-      - **계산**: 총 매출 / MAU
-      - **주의**: 무료 사용자 포함 여부
-      
-      ## 검증 프로토콜
-      1. 정의 출처 확인
-      2. 산업 표준과 비교
-      3. Gap 분석
-      4. 명확화
-  
-  - tool_id: validator:creative_sourcing
-    tool_key: tool:validator:creative_sourcing
-    
-    metadata:
-      agent: validator
-      category: sourcing
-      complexity: high
-      context_size: 500
-      priority: normal
-    
-    when_to_use:
-      keywords:
-        - 데이터
-        - 출처
-        - 소스
-        - 없음
-    
-    content: |
-      # Validator: 창의적 소싱
-      
-      ## 12가지 소싱 방법
-      
-      1. 공식 통계 (통계청, 산업협회)
-      2. 공시 데이터 (DART, SEC)
-      3. 시장 리포트 (Gartner, IDC)
-      4. 학술 연구
-      5. 언론 보도
-      6. 경쟁사 역산
-      7. Proxy 데이터
-      8. 전문가 인터뷰
-      9. 설문 조사
-      10. 웹 크롤링
-      11. API 데이터
-      12. 추정 + 검증
-  
-  # ========================================
-  # Observer Tools (구조 분석)
-  # ========================================
-  
-  - tool_id: observer:market_structure
-    tool_key: tool:observer:market_structure
-    
-    metadata:
-      agent: observer
-      category: analysis
-      complexity: medium
-      context_size: 450
-      priority: high
-    
-    when_to_use:
-      keywords:
-        - 시장 구조
-        - 경쟁 구도
-        - 가치사슬
-      
-      scenarios:
-        - "@Observer, 음악 스트리밍 시장 구조 분석"
-    
-    content: |
-      # Observer: 시장 구조 분석
-      
-      ## 분석 프레임워크
-      
-      ### 1. 13차원 시장 정의
-      - 제품/서비스
-      - 고객 세그먼트
-      - 지역
-      - 가격대
-      - 채널
-      - ...
-      
-      ### 2. 가치사슬 맵핑
-      ```
-      공급자 → 제조 → 유통 → 판매 → 고객
-      ```
-      
-      ### 3. 경쟁 구도
-      - 시장 점유율
-      - 경쟁 강도
-      - 진입 장벽
-      
-      ### 4. 비효율성 발견
-      - 중간 마진 과다
-      - 정보 비대칭
-      - 거래 비용
-  
-  - tool_id: observer:value_chain
-    tool_key: tool:observer:value_chain
-    
-    metadata:
-      agent: observer
-      category: mapping
-      complexity: medium
-      context_size: 350
-      priority: normal
-    
-    content: |
-      # Observer: 가치사슬 분석
-      
-      ## 가치사슬 맵핑
-      - 각 단계별 마진율
-      - 거래 패턴
-      - 병목 지점
-  
-  # ========================================
-  # Framework Tools
-  # ========================================
-  
-  - tool_id: framework:13_dimensions
-    tool_key: tool:framework:13_dimensions
-    
-    metadata:
-      agent: framework
-      category: definition
-      complexity: low
-      context_size: 300
-      priority: normal
-    
-    when_to_use:
-      keywords:
-        - 시장 정의
-        - 13차원
-        - 범위
-    
-    content: |
-      # Framework: 13차원 시장 정의
-      
-      ## 13가지 차원
-      
-      1. **제품/서비스**: 무엇을 파는가?
-      2. **고객**: 누구에게 파는가?
-      3. **지역**: 어디서 파는가?
-      4. **가격대**: 얼마에 파는가?
-      5. **채널**: 어떻게 파는가?
-      6. **용도**: 어떤 목적으로?
-      7. **기술**: 어떤 기술로?
-      8. **규제**: 어떤 규제 하에?
-      9. **시간**: 언제?
-      10. **크기**: 시장 규모
-      11. **성장**: 성장률
-      12. **트렌드**: 주요 트렌드
-      13. **경쟁**: 경쟁 구도
-      
-      ## 활용
-      - TAM/SAM/SOM 정의
-      - 시장 세분화
-      - 기회 탐색
-  
-  - tool_id: framework:discovery_sprint
-    tool_key: tool:framework:discovery_sprint
-    
-    metadata:
-      agent: framework
-      category: process
-      complexity: high
-      context_size: 600
-      priority: high
-    
-    when_to_use:
-      keywords:
-        - Discovery
-        - 명확도
-        - 불확실
-        - 탐색
-      
-      scenarios:
-        - "목표가 불명확해요"
-        - "어디서부터 시작할지 모르겠어요"
-    
-    content: |
-      # Framework: Discovery Sprint
-      
-      ## 언제 사용?
-      - 명확도 < 7
-      - 목표 모호
-      - 범위 불확실
-      
-      ## 프로세스 (1-3일)
-      
-      ### Day 1: 병렬 탐색
-      - 5개 Agent 동시 실행
-      - Observer: 시장 구조
-      - Explorer: 기회 탐색
-      - Quantifier: 규모 추정
-      - Validator: 데이터 검증
-      - Guardian: 진행 모니터링
-      
-      ### Day 2: 수렴
-      - 발견 사항 종합
-      - 목표 구체화
-      - 범위 확정
-      
-      ### Day 3: 계획
-      - 상세 분석 계획
-      - 역할 분담
-      - 타임라인
-      
-      ## 산출물
-      - Discovery Report
-      - 구체화된 목표
-      - 실행 계획
-  
-  # ========================================
-  # Explorer 추가 Tools
-  # ========================================
-  
-  - tool_id: explorer:validation_protocol
-    tool_key: tool:explorer:validation_protocol
-    
-    metadata:
-      agent: explorer
-      category: validation
-      complexity: medium
-      context_size: 400
-      priority: high
-    
-    when_to_use:
-      keywords:
-        - 검증
-        - 확인
-        - 타당성
-      
-      scenarios:
-        - "기회 가설 검증"
-        - "아이디어 타당성 확인"
-    
-    content: |
-      # Explorer: 검증 프로토콜
-      
-      ## 7단계 검증
-      
-      1. **논리적 타당성**
-         - 가설이 논리적인가?
-         - 인과관계 명확한가?
-      
-      2. **시장 존재성**
-         - 고객이 실제 존재하는가?
-         - 시장 규모가 충분한가?
-      
-      3. **차별화**
-         - 기존 대비 10배 나은가?
-         - 전환 비용을 상쇄하는가?
-      
-      4. **실행 가능성**
-         - 우리가 할 수 있는가?
-         - 필요한 역량이 있는가?
-      
-      5. **경제성**
-         - Unit Economics 성립하는가?
-         - LTV/CAC > 3.0?
-      
-      6. **타이밍**
-         - 지금이 적기인가?
-         - 시장 준비되었는가?
-      
-      7. **위험 관리**
-         - 주요 위험은?
-         - 완화 방안은?
-  
-  - tool_id: explorer:hypothesis_generation
-    tool_key: tool:explorer:hypothesis_generation
-    
-    metadata:
-      agent: explorer
-      category: generation
-      complexity: high
-      context_size: 500
-      priority: high
-    
-    content: |
-      # Explorer: LLM 기회 가설 생성
-      
-      ## 프롬프트 템플릿
-      
-      ```
-      시장 관찰 결과:
-      {observer_output}
-      
-      발견된 패턴:
-      {matched_patterns}
-      
-      성공 사례:
-      {benchmark_cases}
-      
-      질문: 이 시장에서 가능한 3가지 기회는?
-      ```
-      
-      ## 출력 형식
-      
-      - 기회 가설 3개
-      - 각각 근거 명시
-      - 실행 가능성 평가
-  
-  # ========================================
-  # Quantifier 추가 Tools
-  # ========================================
-  
-  - tool_id: quantifier:scenario_planning
-    tool_key: tool:quantifier:scenario_planning
-    
-    metadata:
-      agent: quantifier
-      category: planning
-      complexity: medium
-      context_size: 350
-      priority: normal
-    
-    content: |
-      # Quantifier: 시나리오 계획
-      
-      ## Best/Base/Worst 3가지 시나리오
-      
-      ### Best Case (낙관적)
-      - 확률: 20%
-      - 모든 가정 호조
-      - SAM × 1.5
-      
-      ### Base Case (기본)
-      - 확률: 60%
-      - 현재 추세 유지
-      - SAM × 1.0
-      
-      ### Worst Case (비관적)
-      - 확률: 20%
-      - 불리한 요인 발생
-      - SAM × 0.7
-      
-      ## 기대값 계산
-      
-      Expected = Best×0.2 + Base×0.6 + Worst×0.2
-  
-  - tool_id: quantifier:benchmark_analysis
-    tool_key: tool:quantifier:benchmark_analysis
-    
-    metadata:
-      agent: quantifier
-      category: analysis
-      complexity: medium
-      context_size: 350
-      priority: normal
-    
-    content: |
-      # Quantifier: 벤치마크 분석
-      
-      ## RAG 벤치마크 활용
-      
-      ```python
-      from umis_rag.agents.quantifier import QuantifierRAG
-      
-      quantifier = QuantifierRAG()
-      
-      # 유사 시장 벤치마크
-      benchmarks = quantifier.search_benchmark("SaaS churn")
-      ```
-      
-      ## 적용
-      
-      - 유사 산업 벤치마크 찾기
-      - 목표 시장에 조정
-      - 달성 가능 범위 설정
-  
-  # ========================================
-  # Validator 추가 Tools
-  # ========================================
-  
-  - tool_id: validator:gap_analysis
-    tool_key: tool:validator:gap_analysis
-    
-    metadata:
-      agent: validator
-      category: analysis
-      complexity: high
-      context_size: 450
-      priority: high
-    
-    content: |
-      # Validator: Gap 분석
-      
-      ## 정의 Gap 분석
-      
-      ### 산업별 정의 차이
-      
-      MAU 예시:
-      - SaaS: 로그인 + 유료 기능 사용
-      - 소셜: 피드 조회 또는 포스팅
-      - 게임: 게임 플레이
-      
-      → Gap: 최소 행동 기준이 다름
-      
-      ## 분석 프로토콜
-      
-      1. 표준 정의 확인
-      2. 산업별 변형 파악
-      3. Gap 정량화
-      4. 조정 또는 명시
-  
-  - tool_id: validator:source_verification
-    tool_key: tool:validator:source_verification
-    
-    metadata:
-      agent: validator
-      category: verification
-      complexity: medium
-      context_size: 400
-      priority: high
-    
-    content: |
-      # Validator: 출처 검증
-      
-      ## RAG 데이터 소스 활용
-      
-      ```python
-      from umis_rag.agents.validator import ValidatorRAG
-      
-      validator = ValidatorRAG()
-      sources = validator.search_data_source("한국 통계")
-      ```
-      
-      ## 신뢰도 평가
-      
-      - S급: 정부 공식 통계
-      - A급: 업계 표준 (Gartner, IDC)
-      - B급: 전문 조사 기관
-      - C급: 일반 블로그, 언론
-      
-      ## 검증 체크리스트
-      
-      - [ ] 출처 명확?
-      - [ ] 최신 데이터 (2023+)?
-      - [ ] 샘플 크기 충분?
-      - [ ] 방법론 명시?
-  
-  # ========================================
-  # Observer 추가 Tools
-  # ========================================
-  
-  - tool_id: observer:inefficiency_detection
-    tool_key: tool:observer:inefficiency_detection
-    
-    metadata:
-      agent: observer
-      category: detection
-      complexity: medium
-      context_size: 400
-      priority: high
-    
-    content: |
-      # Observer: 비효율성 감지
-      
-      ## RAG 비효율성 패턴
-      
-      ```python
-      from umis_rag.agents.observer import ObserverRAG
-      
-      observer = ObserverRAG()
-      patterns = observer.search_inefficiency("중간 마진")
-      ```
-      
-      ## 3가지 주요 비효율성
-      
-      1. **정보 비대칭**
-         - 중고차: 품질 정보 부족
-         - 부동산: 가격 정보 부족
-      
-      2. **거래 비용**
-         - 탐색, 협상, 이행 비용
-      
-      3. **중간 마진 과다**
-         - 농산물: 4배 마크업
-         - 안경: 10배 마크업
-      
-      ## 기회 발견
-      
-      비효율성 → 혁신 기회
-  
-  - tool_id: observer:disruption_opportunity
-    tool_key: tool:observer:disruption_opportunity
-    
-    metadata:
-      agent: observer
-      category: opportunity
-      complexity: high
-      context_size: 450
-      priority: high
-    
-    content: |
-      # Observer: 파괴적 혁신 기회
-      
-      ## 탐지 신호
-      
-      1. **과도한 마진**
-         - 중간 단계가 50%+ 마진
-      
-      2. **과잉 서비스**
-         - 대부분 고객은 기본만 필요
-         - 프리미엄 기능 미사용
-      
-      3. **접근성 장벽**
-         - 가격, 지역, 전문성
-      
-      4. **기술 전환점**
-         - 새 기술로 10배 저렴
-      
-      ## Clayton Christensen 프레임워크
-      
-      - 저가 시장 파괴
-      - 신시장 파괴
-  
-  # ========================================
-  # Guardian Tools (신규!)
-  # ========================================
-  
-  - tool_id: guardian:progress_monitoring
-    tool_key: tool:guardian:progress_monitoring
-    
-    metadata:
-      agent: guardian
-      category: monitoring
-      complexity: medium
-      context_size: 350
-      priority: high
-    
-    content: |
-      # Guardian: 진행 모니터링
-      
-      ## QueryMemory 활용
-      
-      - 순환 패턴 감지 (같은 주제 3회 반복)
-      - 목표 이탈 감지
-      - 시간 소요 추적
-      
-      ## 개입 시점
-      
-      - 순환 감지 시: 제안 제시
-      - 목표 이탈 시: 재정렬 제안
-      - 과도한 시간: 범위 축소 제안
-  
-  - tool_id: guardian:quality_evaluation
-    tool_key: tool:guardian:quality_evaluation
-    
-    metadata:
-      agent: guardian
-      category: evaluation
-      complexity: high
-      context_size: 500
-      priority: high
-    
-    content: |
-      # Guardian: 품질 평가
-      
-      ## ThreeStageEvaluator
-      
-      ### Stage 1: 규칙 기반 (빠름)
-      - 필수 섹션 존재?
-      - ID 규칙 준수?
-      - 출처 명시?
-      
-      점수: 0-10
-      
-      ### Stage 2: 임계값 (중간)
-      - Stage 1 < 7 → LLM 호출
-      - Stage 1 ≥ 7 → 통과
-      
-      ### Stage 3: LLM 평가 (정밀)
-      - 내용 품질
-      - 논리 일관성
-      - 실행 가능성
-      
-      ## 등급
-      
-      - A: Stage 1 ≥ 8
-      - B: Stage 1 6-8
-      - C: Stage 1 < 6 (재작업)
-  
-  # ========================================
-  # Framework 추가 Tools
-  # ========================================
-  
-  - tool_id: framework:7_powers
-    tool_key: tool:framework:7_powers
-    
-    metadata:
-      agent: framework
-      category: strategy
-      complexity: high
-      context_size: 550
-      priority: high
-    
-    content: |
-      # Framework: 7 Powers (Hamilton Helmer)
-      
-      ## 7가지 경쟁 우위
-      
-      1. **Scale Economies (규모의 경제)**
-         - 생산량 ↑ → 단위 비용 ↓
-         - 예: 반도체, 자동차
-      
-      2. **Network Effects (네트워크 효과)**
-         - 사용자 ↑ → 가치 ↑
-         - 예: Facebook, KakaoTalk
-      
-      3. **Counter-Positioning (역포지셔닝)**
-         - 1등이 따라할 수 없는 포지션
-         - 예: Netflix vs Blockbuster
-      
-      4. **Switching Costs (전환 비용)**
-         - 고객이 바꾸기 어려움
-         - 예: Salesforce, Adobe
-      
-      5. **Branding (브랜드)**
-         - 객관적으로 동일해도 선호
-         - 예: Apple, Nike
-      
-      6. **Cornered Resource (독점 자원)**
-         - 경쟁사가 구할 수 없는 자원
-         - 예: 특허, 라이선스, 인재
-      
-      7. **Process Power (프로세스 우위)**
-         - 오랜 시간 축적된 프로세스
-         - 예: Toyota 생산 방식
-      
-      ## 분석 방법
-      
-      각 Power별로:
-      - 존재 여부 확인
-      - 강도 평가 (약/중/강)
-      - 지속 가능성
-  
-  - tool_id: framework:counter_positioning
-    tool_key: tool:framework:counter_positioning
-    
-    metadata:
-      agent: framework
-      category: strategy
-      complexity: high
-      context_size: 450
-      priority: high
-    
-    content: |
-      # Framework: Counter-Positioning (1등 추월 전략)
-      
-      ## 개념
-      
-      1등 기업이 따라하면 기존 사업을 훼손하는 포지션
-      
-      ## 구조
-      
-      ```
-      1등: 기존 모델에 Lock-in
-         ↓ 딜레마
-      신규: 새 모델 (1등이 못 따라함)
-         ↓
-      결과: 시장 역전
-      ```
-      
-      ## 성공 사례
-      
-      - Netflix vs Blockbuster
-        - Blockbuster: 매장 렌탈 (늦은 반납료 수익)
-        - Netflix: 구독 (늦은 반납료 없음)
-        - Blockbuster가 따라하면 주 수익원 포기
-      
-      - 전기차 vs 전통 자동차
-        - 전통: 엔진, 변속기 (핵심 역량)
-        - Tesla: 배터리, 소프트웨어
-        - 전통이 따라하면 기존 공장/인력 무용
-      
-      ## 발견 방법
-      
-      1. 1등의 수익 구조 분석
-      2. 그것을 없애는 모델 고안
-      3. 1등이 따라할 수 없는지 확인
-  
-  - tool_id: framework:value_chain_analysis
-    tool_key: tool:framework:value_chain_analysis
-    
-    metadata:
-      agent: framework
-      category: analysis
-      complexity: medium
-      context_size: 400
-      priority: normal
-    
-    content: |
-      # Framework: 가치사슬 분석
-      
-      ## Michael Porter Value Chain
-      
-      ### 주활동
-      - 원재료 → 생산 → 물류 → 마케팅/판매 → 서비스
-      
-      ### 지원활동
-      - 인프라, HR, 기술 개발, 구매
-      
-      ## 분석 포인트
-      
-      각 단계별:
-      - 마진율
-      - 부가가치
-      - 차별화 가능성
-      - 아웃소싱 가능성
-      
-      ## 전략 도출
-      
-      - 수직 통합 (높은 마진 단계 확보)
-      - 아웃소싱 (낮은 부가가치)
-      - 차별화 집중
-  
-  - tool_id: framework:market_definition
-    tool_key: tool:framework:market_definition
-    
-    metadata:
-      agent: framework
-      category: definition
-      complexity: medium
-      context_size: 400
-      priority: high
-    
-    content: |
-      # Framework: 시장 정의 (TAM/SAM/SOM)
-      
-      ## 13차원 정의
-      
-      이미 tool:framework:13_dimensions에 있음
-      
-      ## TAM/SAM/SOM 구분
-      
-      - TAM: 전체 시장
-      - SAM: 공략 가능 시장
-      - SOM: 실제 달성 가능
-      
-      ## 정의 중요성
-      
-      시장 정의 = 사업 방향
-      - 너무 넓음: 집중력 분산
-      - 너무 좁음: 성장 제한
-  
-  - tool_id: framework:competitive_analysis
-    tool_key: tool:framework:competitive_analysis
-    
-    metadata:
-      agent: framework
-      category: analysis
-      complexity: medium
-      context_size: 400
-      priority: normal
-    
-    content: |
-      # Framework: 경쟁 분석
-      
-      ## Porter's Five Forces
-      
-      1. **기존 경쟁자**
-         - 경쟁 강도
-         - HHI 지수
-      
-      2. **신규 진입 위협**
-         - 진입 장벽
-         - 자본 필요
-      
-      3. **대체재 위협**
-         - 다른 해결책
-      
-      4. **공급자 협상력**
-         - 공급자 집중도
-      
-      5. **구매자 협상력**
-         - 고객 집중도
-      
-      ## 경쟁 구도 맵핑
-      
-      - 시장 점유율
-      - 포지셔닝 맵
-      - 차별화 요소
+- tool_id: explorer:pattern_search
+  tool_key: tool:explorer:pattern_search
+  metadata:
+    agent: explorer
+    category: rag_search
+    complexity: low
+    context_size: 350
+    priority: high
+  when_to_use:
+    keywords:
+    - 패턴
+    - 모델
+    - 사례
+    - 벤치마크
+    conditions:
+    - agent == 'explorer'
+    - task_type in ['pattern_discovery', 'model_matching']
+    scenarios:
+    - '@Explorer, 구독 모델 패턴 찾아줘'
+    - '@Explorer, 플랫폼 비즈니스 사례'
+    - 음악 스트리밍 비즈니스 모델 분석
+  content: "# Explorer: RAG 패턴 검색\n\n## 목적\n31개 비즈니스 모델 + 23개 Disruption 패턴에서 관련 패턴\
+    \ 자동 검색\n\n## RAG 아키텍처\n- **Vector**: projected_index (agent_view=explorer)\n\
+    - **Graph**: Neo4j (13 노드, 45 관계)\n- **Embedding**: text-embedding-3-large (3072\
+    \ dim)\n\n## 검색 프로세스\n\n### 1. Vector Search\n```python\nfrom umis_rag.agents.explorer\
+    \ import ExplorerRAG\n\nexplorer = ExplorerRAG()\npatterns = explorer.search_patterns(\"\
+    구독 모델\")\n\n# 결과\n# → subscription_model (유사도 0.95)\n# → platform + subscription\
+    \ (0.87)\n```\n\n### 2. Graph Search (조합 패턴)\n```python\ncombinations = explorer.search_patterns_with_graph(\"\
+    구독 모델\")\n\n# 결과\n# → subscription + platform (confidence 0.87)\n# → subscription\
+    \ + advertising (0.78)\n```\n\n### 3. Case Search (성공 사례)\n```python\ncases =\
+    \ explorer.search_cases(\n    industry=\"음악 산업\", \n    pattern_id=\"subscription_model\"\
+    \n)\n\n# 결과\n# → Spotify (2.2억 구독자, 5.2% churn)\n# → Netflix (해지율 2.4%)\n# → Adobe\
+    \ (구독 전환 후 매출 3배)\n```\n\n## 출력 형식\n```yaml\nmatched_patterns:\n  - pattern_id:\
+    \ subscription_model\n    similarity: 0.95\n    critical_success_factors:\n  \
+    \    - \"해지율 < 5%\"\n      - \"LTV/CAC > 3.0\"\n    \n    success_cases:\n   \
+    \   - \"Spotify: 5.2% churn\"\n      - \"Netflix: 2.4% churn\"\n\ncombinations:\n\
+    \  - pattern: subscription + platform\n    confidence: 0.87\n    evidence:\n \
+    \     - Spotify\n      - LinkedIn Premium\n    \n    insight: \"플랫폼 네트워크 효과 +\
+    \ 구독 안정성\"\n```\n\n## 다음 단계\n- 발견한 패턴으로 7단계 프로세스 시작\n- 또는 사례 심층 분석\n"
+- tool_id: explorer:7_step_process
+  tool_key: tool:explorer:7_step_process
+  metadata:
+    agent: explorer
+    category: process
+    complexity: medium
+    context_size: 500
+    priority: high
+  when_to_use:
+    keywords:
+    - 기회
+    - 발굴
+    - 가설
+    - 검증
+    scenarios:
+    - '@Explorer, 음악 스트리밍 시장 기회 분석'
+    - 새로운 비즈니스 기회 찾아줘
+  content: "# Explorer: 7단계 기회 발굴 프로세스\n\n## 7단계 프로세스\n\n1. **시장 관찰** (Observer 협업)\n\
+    \   - 현재 시장 구조\n   - 비효율성 지점\n\n2. **패턴 매칭** (RAG 검색)\n   - 유사 패턴 탐색\n   - 성공\
+    \ 사례 벤치마크\n\n3. **가설 생성**\n   - 기회 가설 수립\n   - 근거 수집\n\n4. **정량 검증** (Quantifier\
+    \ 협업)\n   - 시장 규모 추정\n   - 성장률 분석\n\n5. **데이터 검증** (Validator 협업)\n   - 출처 확인\n\
+    \   - 정의 검증\n\n6. **종합 평가** (Guardian 평가)\n   - 품질 검증\n   - 위험 분석\n\n7. **산출물\
+    \ 작성**\n   - OPP_*.md 생성\n   - 추적성 확보\n\n## 산출물\n- `OPP_YYYYMMDD_NNN.md`\n- `opportunity_portfolio.md`\n"
+- tool_id: quantifier:sam_4methods
+  tool_key: tool:quantifier:sam_4methods
+  metadata:
+    agent: quantifier
+    category: calculation
+    complexity: high
+    context_size: 600
+    priority: high
+  when_to_use:
+    keywords:
+    - 시장 규모
+    - SAM
+    - TAM
+    - 크기
+    - 계산
+    scenarios:
+    - '@Quantifier, 음악 스트리밍 SAM 계산'
+    - 시장 규모 얼마나 되나요?
+  content: "# Quantifier: SAM 4가지 방법\n\n## 4가지 방법\n\n### Method 1: Top-Down\n```\n\
+    TAM (전체 시장)\n  → 지역 필터 (한국 15%)\n  → 제품 필터 (피아노만 25%)\n  → 세그먼트 필터 (프리미엄 40%)\n\
+    \  = SAM\n```\n\n### Method 2: Bottom-Up\n```\n타겟 고객 수\n  × 구매율\n  × 평균 객단가\n\
+    \  × 구매 빈도\n  = SAM\n```\n\n### Method 3: Proxy (유사 시장)\n```\n유사 시장 규모\n  × 시장\
+    \ 상관계수\n  × 적용 비율\n  = SAM\n```\n\n### Method 4: Competitor Revenue\n```\n경쟁사\
+    \ 매출\n  × 시장 점유율 역산\n  = SAM\n```\n\n## 수렴 분석\n- ±30% 범위 내 수렴 필요\n- CV(변동계수) <\
+    \ 30%\n- Max/Min ratio ≤ 1.3\n\n## 산출물\n- `market_sizing.xlsx` (Excel 자동 생성)\n\
+    - 9개 시트 포함\n"
+- tool_id: quantifier:growth_analysis
+  tool_key: tool:quantifier:growth_analysis
+  metadata:
+    agent: quantifier
+    category: analysis
+    complexity: medium
+    context_size: 400
+    priority: normal
+  when_to_use:
+    keywords:
+    - 성장률
+    - CAGR
+    - 추세
+    - 전망
+  content: '# Quantifier: 성장 분석
 
-# ========================================
-  # Universal: Guestimation Framework
-# ========================================
 
-  - tool_id: universal:guestimation
-    tool_key: tool:universal:guestimation
-    
-    metadata:
-      agent: all  # 모든 Agent 사용 가능
-      category: estimation_methodology
-      complexity: medium
-      context_size: 150  # 946줄 → 134줄 압축 (86% 축소)
-      priority: critical
-      version: '2.0'  # Fermi Estimation 기반 재구성
-    
-    when_to_use:
-      keywords:
-        - 추정
-        - 근사
-        - guestimate
-        - estimate
-        - 대략
-        - 추론
-      
-      conditions:
-        - "직접 데이터 없음"
-        - "정확한 값 알 수 없음"
-        - "짧은 시간 내 판단 필요"
-      
-      scenarios:
-        - "전환율을 추정해야 하는데 데이터가 없어"
-        - "시장 규모를 대략적으로 알고 싶어"
-        - "이 가정이 합리적인지 검증하고 싶어"
-    
-    content: |
-      # Guestimation (Fermi Estimation)
-      
-      **정의**: 기초적 지식 + 논리적 추론으로 대략적 근사치 추정
-      
-      > "보이지 않는 것을 보이게. 정답보다 과정이 중요" - Fermi
-      
-      ## Fermi 4원리
-      
-      1. **모형**: 추상 → 계산 가능 (시장 규모 = 고객 수 × 구매액)
-      2. **분해**: 큰 문제 → 작은 요소 (1인당 = 교통 + 식비 + 숙박)
-      3. **제약조건**: 물리적/시간적 한계 (하루 24시간, 1끼 30분)
-      4. **Order of Magnitude**: 자릿수만 성공 (500억? 5000억?)
-      
-      ## 8개 데이터 출처 (AI 전략)
-      
-      1. **프로젝트 데이터**: 확정 (직접 사용)
-      2. **LLM 직접 답변**: 즉시 ('한국 인구?') → 대략적
-      3. **검색 공통 맥락**: 웹 서치 → 상위 결과 공통 값
-      4. **법칙**: 물리/법률/도덕 (절대적)
-      5. **행동경제학**: Loss Aversion, Anchoring 등
-      6. **통계 패턴**: 80-20, 정규분포
-      7. **Rule of Thumb**: 산업별 경험 공식 (RAG)
-      8. **시공간 제약**: 하루 24h, 물리적 한계
-      
-      **RAG 위치**: 출처 7의 일부일 뿐 (12.5%)!
-      
-      **비교 4대 기준**: 제품 속성, 소비 주체, 가격대, 구매 맥락
-      
-      ## 프로세스
-      
-      1. 문제 명확화 → 2. 모형 만들기 → 3. 분해 → 4. 계산 → 
-      5. 비율 조정 → 6. Boundary → 7. 검증 → 8. 신뢰도
-      
-      ## 예시
-      
-      - Benchmark: 피아노 전환율 (공기청정기 18% → 15%)
-      - Decomposition: 휴일 여행 (250만 × 10만 = 2,500억)
-      - Constraint: 자장면 (중국집 × 용량 × 시간 = 42만)
-      - Fermi 종합: 전봇대 (716만, 오차 16%)
-      
-      ## 구현
-      
-      ```python
-      from umis_rag.utils.guestimation import GuestimationEngine
-      engine = GuestimationEngine()
-      result = engine.check_comparability(target, candidate)
-      ```
-      
-      **상세**: System RAG → `tool:universal:guestimation:full`
+    ## CAGR 계산
 
-# ========================================
-# END
-# ========================================
+    ```
+
+    CAGR = (종료값/시작값)^(1/기간) - 1
+
+    ```
+
+
+    ## S-Curve 분석
+
+    - 도입기
+
+    - 성장기
+
+    - 성숙기
+
+    - 쇠퇴기
+
+    '
+- tool_id: validator:data_definition
+  tool_key: tool:validator:data_definition
+  metadata:
+    agent: validator
+    category: validation
+    complexity: medium
+    context_size: 450
+    priority: high
+  when_to_use:
+    keywords:
+    - 정의
+    - 검증
+    - MAU
+    - ARPU
+    - 용어
+    scenarios:
+    - '@Validator, MAU 정의 확인'
+    - ARPU 계산 방법 검증
+  content: "# Validator: 데이터 정의 검증\n\n## 주요 지표 정의\n\n### MAU (Monthly Active Users)\n\
+    - **정의**: 월간 활성 사용자 수\n- **측정 기준**: 최소 1회 이상 로그인\n- **산업별 차이**:\n  - SaaS: 유료\
+    \ 기능 사용\n  - 소셜: 피드 조회 또는 포스팅\n  - 게임: 게임 플레이\n\n### ARPU (Average Revenue Per\
+    \ User)\n- **정의**: 사용자당 평균 매출\n- **계산**: 총 매출 / MAU\n- **주의**: 무료 사용자 포함 여부\n\n\
+    ## 검증 프로토콜\n1. 정의 출처 확인\n2. 산업 표준과 비교\n3. Gap 분석\n4. 명확화\n"
+- tool_id: validator:creative_sourcing
+  tool_key: tool:validator:creative_sourcing
+  metadata:
+    agent: validator
+    category: sourcing
+    complexity: high
+    context_size: 500
+    priority: normal
+  when_to_use:
+    keywords:
+    - 데이터
+    - 출처
+    - 소스
+    - 없음
+  content: '# Validator: 창의적 소싱
+
+
+    ## 12가지 소싱 방법
+
+
+    1. 공식 통계 (통계청, 산업협회)
+
+    2. 공시 데이터 (DART, SEC)
+
+    3. 시장 리포트 (Gartner, IDC)
+
+    4. 학술 연구
+
+    5. 언론 보도
+
+    6. 경쟁사 역산
+
+    7. Proxy 데이터
+
+    8. 전문가 인터뷰
+
+    9. 설문 조사
+
+    10. 웹 크롤링
+
+    11. API 데이터
+
+    12. 추정 + 검증
+
+    '
+- tool_id: observer:market_structure
+  tool_key: tool:observer:market_structure
+  metadata:
+    agent: observer
+    category: analysis
+    complexity: medium
+    context_size: 450
+    priority: high
+  when_to_use:
+    keywords:
+    - 시장 구조
+    - 경쟁 구도
+    - 가치사슬
+    scenarios:
+    - '@Observer, 음악 스트리밍 시장 구조 분석'
+  content: '# Observer: 시장 구조 분석
+
+
+    ## 분석 프레임워크
+
+
+    ### 1. 13차원 시장 정의
+
+    - 제품/서비스
+
+    - 고객 세그먼트
+
+    - 지역
+
+    - 가격대
+
+    - 채널
+
+    - ...
+
+
+    ### 2. 가치사슬 맵핑
+
+    ```
+
+    공급자 → 제조 → 유통 → 판매 → 고객
+
+    ```
+
+
+    ### 3. 경쟁 구도
+
+    - 시장 점유율
+
+    - 경쟁 강도
+
+    - 진입 장벽
+
+
+    ### 4. 비효율성 발견
+
+    - 중간 마진 과다
+
+    - 정보 비대칭
+
+    - 거래 비용
+
+    '
+- tool_id: observer:value_chain
+  tool_key: tool:observer:value_chain
+  metadata:
+    agent: observer
+    category: mapping
+    complexity: medium
+    context_size: 350
+    priority: normal
+  content: '# Observer: 가치사슬 분석
+
+
+    ## 가치사슬 맵핑
+
+    - 각 단계별 마진율
+
+    - 거래 패턴
+
+    - 병목 지점
+
+    '
+- tool_id: framework:13_dimensions
+  tool_key: tool:framework:13_dimensions
+  metadata:
+    agent: framework
+    category: definition
+    complexity: low
+    context_size: 300
+    priority: normal
+  when_to_use:
+    keywords:
+    - 시장 정의
+    - 13차원
+    - 범위
+  content: '# Framework: 13차원 시장 정의
+
+
+    ## 13가지 차원
+
+
+    1. **제품/서비스**: 무엇을 파는가?
+
+    2. **고객**: 누구에게 파는가?
+
+    3. **지역**: 어디서 파는가?
+
+    4. **가격대**: 얼마에 파는가?
+
+    5. **채널**: 어떻게 파는가?
+
+    6. **용도**: 어떤 목적으로?
+
+    7. **기술**: 어떤 기술로?
+
+    8. **규제**: 어떤 규제 하에?
+
+    9. **시간**: 언제?
+
+    10. **크기**: 시장 규모
+
+    11. **성장**: 성장률
+
+    12. **트렌드**: 주요 트렌드
+
+    13. **경쟁**: 경쟁 구도
+
+
+    ## 활용
+
+    - TAM/SAM/SOM 정의
+
+    - 시장 세분화
+
+    - 기회 탐색
+
+    '
+- tool_id: framework:discovery_sprint
+  tool_key: tool:framework:discovery_sprint
+  metadata:
+    agent: framework
+    category: process
+    complexity: high
+    context_size: 600
+    priority: high
+  when_to_use:
+    keywords:
+    - Discovery
+    - 명확도
+    - 불확실
+    - 탐색
+    scenarios:
+    - 목표가 불명확해요
+    - 어디서부터 시작할지 모르겠어요
+  content: '# Framework: Discovery Sprint
+
+
+    ## 언제 사용?
+
+    - 명확도 < 7
+
+    - 목표 모호
+
+    - 범위 불확실
+
+
+    ## 프로세스 (1-3일)
+
+
+    ### Day 1: 병렬 탐색
+
+    - 5개 Agent 동시 실행
+
+    - Observer: 시장 구조
+
+    - Explorer: 기회 탐색
+
+    - Quantifier: 규모 추정
+
+    - Validator: 데이터 검증
+
+    - Guardian: 진행 모니터링
+
+
+    ### Day 2: 수렴
+
+    - 발견 사항 종합
+
+    - 목표 구체화
+
+    - 범위 확정
+
+
+    ### Day 3: 계획
+
+    - 상세 분석 계획
+
+    - 역할 분담
+
+    - 타임라인
+
+
+    ## 산출물
+
+    - Discovery Report
+
+    - 구체화된 목표
+
+    - 실행 계획
+
+    '
+- tool_id: explorer:validation_protocol
+  tool_key: tool:explorer:validation_protocol
+  metadata:
+    agent: explorer
+    category: validation
+    complexity: medium
+    context_size: 400
+    priority: high
+  when_to_use:
+    keywords:
+    - 검증
+    - 확인
+    - 타당성
+    scenarios:
+    - 기회 가설 검증
+    - 아이디어 타당성 확인
+  content: "# Explorer: 검증 프로토콜\n\n## 7단계 검증\n\n1. **논리적 타당성**\n   - 가설이 논리적인가?\n\
+    \   - 인과관계 명확한가?\n\n2. **시장 존재성**\n   - 고객이 실제 존재하는가?\n   - 시장 규모가 충분한가?\n\n3.\
+    \ **차별화**\n   - 기존 대비 10배 나은가?\n   - 전환 비용을 상쇄하는가?\n\n4. **실행 가능성**\n   - 우리가\
+    \ 할 수 있는가?\n   - 필요한 역량이 있는가?\n\n5. **경제성**\n   - Unit Economics 성립하는가?\n   -\
+    \ LTV/CAC > 3.0?\n\n6. **타이밍**\n   - 지금이 적기인가?\n   - 시장 준비되었는가?\n\n7. **위험 관리**\n\
+    \   - 주요 위험은?\n   - 완화 방안은?\n"
+- tool_id: explorer:hypothesis_generation
+  tool_key: tool:explorer:hypothesis_generation
+  metadata:
+    agent: explorer
+    category: generation
+    complexity: high
+    context_size: 500
+    priority: high
+  content: '# Explorer: LLM 기회 가설 생성
+
+
+    ## 프롬프트 템플릿
+
+
+    ```
+
+    시장 관찰 결과:
+
+    {observer_output}
+
+
+    발견된 패턴:
+
+    {matched_patterns}
+
+
+    성공 사례:
+
+    {benchmark_cases}
+
+
+    질문: 이 시장에서 가능한 3가지 기회는?
+
+    ```
+
+
+    ## 출력 형식
+
+
+    - 기회 가설 3개
+
+    - 각각 근거 명시
+
+    - 실행 가능성 평가
+
+    '
+- tool_id: quantifier:scenario_planning
+  tool_key: tool:quantifier:scenario_planning
+  metadata:
+    agent: quantifier
+    category: planning
+    complexity: medium
+    context_size: 350
+    priority: normal
+  content: '# Quantifier: 시나리오 계획
+
+
+    ## Best/Base/Worst 3가지 시나리오
+
+
+    ### Best Case (낙관적)
+
+    - 확률: 20%
+
+    - 모든 가정 호조
+
+    - SAM × 1.5
+
+
+    ### Base Case (기본)
+
+    - 확률: 60%
+
+    - 현재 추세 유지
+
+    - SAM × 1.0
+
+
+    ### Worst Case (비관적)
+
+    - 확률: 20%
+
+    - 불리한 요인 발생
+
+    - SAM × 0.7
+
+
+    ## 기대값 계산
+
+
+    Expected = Best×0.2 + Base×0.6 + Worst×0.2
+
+    '
+- tool_id: quantifier:benchmark_analysis
+  tool_key: tool:quantifier:benchmark_analysis
+  metadata:
+    agent: quantifier
+    category: analysis
+    complexity: medium
+    context_size: 350
+    priority: normal
+  content: '# Quantifier: 벤치마크 분석
+
+
+    ## RAG 벤치마크 활용
+
+
+    ```python
+
+    from umis_rag.agents.quantifier import QuantifierRAG
+
+
+    quantifier = QuantifierRAG()
+
+
+    # 유사 시장 벤치마크
+
+    benchmarks = quantifier.search_benchmark("SaaS churn")
+
+    ```
+
+
+    ## 적용
+
+
+    - 유사 산업 벤치마크 찾기
+
+    - 목표 시장에 조정
+
+    - 달성 가능 범위 설정
+
+    '
+- tool_id: validator:gap_analysis
+  tool_key: tool:validator:gap_analysis
+  metadata:
+    agent: validator
+    category: analysis
+    complexity: high
+    context_size: 450
+    priority: high
+  content: '# Validator: Gap 분석
+
+
+    ## 정의 Gap 분석
+
+
+    ### 산업별 정의 차이
+
+
+    MAU 예시:
+
+    - SaaS: 로그인 + 유료 기능 사용
+
+    - 소셜: 피드 조회 또는 포스팅
+
+    - 게임: 게임 플레이
+
+
+    → Gap: 최소 행동 기준이 다름
+
+
+    ## 분석 프로토콜
+
+
+    1. 표준 정의 확인
+
+    2. 산업별 변형 파악
+
+    3. Gap 정량화
+
+    4. 조정 또는 명시
+
+    '
+- tool_id: validator:source_verification
+  tool_key: tool:validator:source_verification
+  metadata:
+    agent: validator
+    category: verification
+    complexity: medium
+    context_size: 400
+    priority: high
+  content: '# Validator: 출처 검증
+
+
+    ## RAG 데이터 소스 활용
+
+
+    ```python
+
+    from umis_rag.agents.validator import ValidatorRAG
+
+
+    validator = ValidatorRAG()
+
+    sources = validator.search_data_source("한국 통계")
+
+    ```
+
+
+    ## 신뢰도 평가
+
+
+    - S급: 정부 공식 통계
+
+    - A급: 업계 표준 (Gartner, IDC)
+
+    - B급: 전문 조사 기관
+
+    - C급: 일반 블로그, 언론
+
+
+    ## 검증 체크리스트
+
+
+    - [ ] 출처 명확?
+
+    - [ ] 최신 데이터 (2023+)?
+
+    - [ ] 샘플 크기 충분?
+
+    - [ ] 방법론 명시?
+
+    '
+- tool_id: observer:inefficiency_detection
+  tool_key: tool:observer:inefficiency_detection
+  metadata:
+    agent: observer
+    category: detection
+    complexity: medium
+    context_size: 400
+    priority: high
+  content: "# Observer: 비효율성 감지\n\n## RAG 비효율성 패턴\n\n```python\nfrom umis_rag.agents.observer\
+    \ import ObserverRAG\n\nobserver = ObserverRAG()\npatterns = observer.search_inefficiency(\"\
+    중간 마진\")\n```\n\n## 3가지 주요 비효율성\n\n1. **정보 비대칭**\n   - 중고차: 품질 정보 부족\n   - 부동산:\
+    \ 가격 정보 부족\n\n2. **거래 비용**\n   - 탐색, 협상, 이행 비용\n\n3. **중간 마진 과다**\n   - 농산물: 4배\
+    \ 마크업\n   - 안경: 10배 마크업\n\n## 기회 발견\n\n비효율성 → 혁신 기회\n"
+- tool_id: observer:disruption_opportunity
+  tool_key: tool:observer:disruption_opportunity
+  metadata:
+    agent: observer
+    category: opportunity
+    complexity: high
+    context_size: 450
+    priority: high
+  content: "# Observer: 파괴적 혁신 기회\n\n## 탐지 신호\n\n1. **과도한 마진**\n   - 중간 단계가 50%+ 마진\n\
+    \n2. **과잉 서비스**\n   - 대부분 고객은 기본만 필요\n   - 프리미엄 기능 미사용\n\n3. **접근성 장벽**\n   -\
+    \ 가격, 지역, 전문성\n\n4. **기술 전환점**\n   - 새 기술로 10배 저렴\n\n## Clayton Christensen 프레임워크\n\
+    \n- 저가 시장 파괴\n- 신시장 파괴\n"
+- tool_id: guardian:progress_monitoring
+  tool_key: tool:guardian:progress_monitoring
+  metadata:
+    agent: guardian
+    category: monitoring
+    complexity: medium
+    context_size: 350
+    priority: high
+  content: '# Guardian: 진행 모니터링
+
+
+    ## QueryMemory 활용
+
+
+    - 순환 패턴 감지 (같은 주제 3회 반복)
+
+    - 목표 이탈 감지
+
+    - 시간 소요 추적
+
+
+    ## 개입 시점
+
+
+    - 순환 감지 시: 제안 제시
+
+    - 목표 이탈 시: 재정렬 제안
+
+    - 과도한 시간: 범위 축소 제안
+
+    '
+- tool_id: guardian:quality_evaluation
+  tool_key: tool:guardian:quality_evaluation
+  metadata:
+    agent: guardian
+    category: evaluation
+    complexity: high
+    context_size: 500
+    priority: high
+  content: '# Guardian: 품질 평가
+
+
+    ## ThreeStageEvaluator
+
+
+    ### Stage 1: 규칙 기반 (빠름)
+
+    - 필수 섹션 존재?
+
+    - ID 규칙 준수?
+
+    - 출처 명시?
+
+
+    점수: 0-10
+
+
+    ### Stage 2: 임계값 (중간)
+
+    - Stage 1 < 7 → LLM 호출
+
+    - Stage 1 ≥ 7 → 통과
+
+
+    ### Stage 3: LLM 평가 (정밀)
+
+    - 내용 품질
+
+    - 논리 일관성
+
+    - 실행 가능성
+
+
+    ## 등급
+
+
+    - A: Stage 1 ≥ 8
+
+    - B: Stage 1 6-8
+
+    - C: Stage 1 < 6 (재작업)
+
+    '
+- tool_id: framework:7_powers
+  tool_key: tool:framework:7_powers
+  metadata:
+    agent: framework
+    category: strategy
+    complexity: high
+    context_size: 550
+    priority: high
+  content: "# Framework: 7 Powers (Hamilton Helmer)\n\n## 7가지 경쟁 우위\n\n1. **Scale\
+    \ Economies (규모의 경제)**\n   - 생산량 ↑ → 단위 비용 ↓\n   - 예: 반도체, 자동차\n\n2. **Network\
+    \ Effects (네트워크 효과)**\n   - 사용자 ↑ → 가치 ↑\n   - 예: Facebook, KakaoTalk\n\n3. **Counter-Positioning\
+    \ (역포지셔닝)**\n   - 1등이 따라할 수 없는 포지션\n   - 예: Netflix vs Blockbuster\n\n4. **Switching\
+    \ Costs (전환 비용)**\n   - 고객이 바꾸기 어려움\n   - 예: Salesforce, Adobe\n\n5. **Branding\
+    \ (브랜드)**\n   - 객관적으로 동일해도 선호\n   - 예: Apple, Nike\n\n6. **Cornered Resource (독점\
+    \ 자원)**\n   - 경쟁사가 구할 수 없는 자원\n   - 예: 특허, 라이선스, 인재\n\n7. **Process Power (프로세스\
+    \ 우위)**\n   - 오랜 시간 축적된 프로세스\n   - 예: Toyota 생산 방식\n\n## 분석 방법\n\n각 Power별로:\n\
+    - 존재 여부 확인\n- 강도 평가 (약/중/강)\n- 지속 가능성\n"
+- tool_id: framework:counter_positioning
+  tool_key: tool:framework:counter_positioning
+  metadata:
+    agent: framework
+    category: strategy
+    complexity: high
+    context_size: 450
+    priority: high
+  content: "# Framework: Counter-Positioning (1등 추월 전략)\n\n## 개념\n\n1등 기업이 따라하면 기존\
+    \ 사업을 훼손하는 포지션\n\n## 구조\n\n```\n1등: 기존 모델에 Lock-in\n   ↓ 딜레마\n신규: 새 모델 (1등이 못\
+    \ 따라함)\n   ↓\n결과: 시장 역전\n```\n\n## 성공 사례\n\n- Netflix vs Blockbuster\n  - Blockbuster:\
+    \ 매장 렌탈 (늦은 반납료 수익)\n  - Netflix: 구독 (늦은 반납료 없음)\n  - Blockbuster가 따라하면 주 수익원\
+    \ 포기\n\n- 전기차 vs 전통 자동차\n  - 전통: 엔진, 변속기 (핵심 역량)\n  - Tesla: 배터리, 소프트웨어\n  - 전통이\
+    \ 따라하면 기존 공장/인력 무용\n\n## 발견 방법\n\n1. 1등의 수익 구조 분석\n2. 그것을 없애는 모델 고안\n3. 1등이 따라할\
+    \ 수 없는지 확인\n"
+- tool_id: framework:value_chain_analysis
+  tool_key: tool:framework:value_chain_analysis
+  metadata:
+    agent: framework
+    category: analysis
+    complexity: medium
+    context_size: 400
+    priority: normal
+  content: '# Framework: 가치사슬 분석
+
+
+    ## Michael Porter Value Chain
+
+
+    ### 주활동
+
+    - 원재료 → 생산 → 물류 → 마케팅/판매 → 서비스
+
+
+    ### 지원활동
+
+    - 인프라, HR, 기술 개발, 구매
+
+
+    ## 분석 포인트
+
+
+    각 단계별:
+
+    - 마진율
+
+    - 부가가치
+
+    - 차별화 가능성
+
+    - 아웃소싱 가능성
+
+
+    ## 전략 도출
+
+
+    - 수직 통합 (높은 마진 단계 확보)
+
+    - 아웃소싱 (낮은 부가가치)
+
+    - 차별화 집중
+
+    '
+- tool_id: framework:market_definition
+  tool_key: tool:framework:market_definition
+  metadata:
+    agent: framework
+    category: definition
+    complexity: medium
+    context_size: 400
+    priority: high
+  content: '# Framework: 시장 정의 (TAM/SAM/SOM)
+
+
+    ## 13차원 정의
+
+
+    이미 tool:framework:13_dimensions에 있음
+
+
+    ## TAM/SAM/SOM 구분
+
+
+    - TAM: 전체 시장
+
+    - SAM: 공략 가능 시장
+
+    - SOM: 실제 달성 가능
+
+
+    ## 정의 중요성
+
+
+    시장 정의 = 사업 방향
+
+    - 너무 넓음: 집중력 분산
+
+    - 너무 좁음: 성장 제한
+
+    '
+- tool_id: framework:competitive_analysis
+  tool_key: tool:framework:competitive_analysis
+  metadata:
+    agent: framework
+    category: analysis
+    complexity: medium
+    context_size: 400
+    priority: normal
+  content: "# Framework: 경쟁 분석\n\n## Porter's Five Forces\n\n1. **기존 경쟁자**\n   - 경쟁\
+    \ 강도\n   - HHI 지수\n\n2. **신규 진입 위협**\n   - 진입 장벽\n   - 자본 필요\n\n3. **대체재 위협**\n\
+    \   - 다른 해결책\n\n4. **공급자 협상력**\n   - 공급자 집중도\n\n5. **구매자 협상력**\n   - 고객 집중도\n\n\
+    ## 경쟁 구도 맵핑\n\n- 시장 점유율\n- 포지셔닝 맵\n- 차별화 요소\n"
+- tool_id: universal:guestimation
+  tool_key: tool:universal:guestimation
+  metadata:
+    agent: all
+    category: estimation_methodology
+    complexity: medium
+    context_size: 150
+    priority: critical
+    version: '2.0'
+    source_file: umis.yaml
+    source_section: tools_and_templates.methodologies.guestimation
+    source_lines: 5454-5688
+  when_to_use:
+    keywords:
+    - 추정
+    - 근사
+    - guestimate
+    - estimate
+    - 대략
+    - 추론
+    conditions:
+    - 직접 데이터 없음
+    - 정확한 값 알 수 없음
+    - 짧은 시간 내 판단 필요
+    scenarios:
+    - 전환율을 추정해야 하는데 데이터가 없어
+    - 시장 규모를 대략적으로 알고 싶어
+    - 이 가정이 합리적인지 검증하고 싶어
+  content: "# Guestimation (Fermi Estimation)\n\n**정의**: 기초적 지식 + 논리적 추론으로 대략적 근사치\
+    \ 추정\n\n> \"보이지 않는 것을 보이게. 정답보다 과정이 중요\"\n\n## Fermi 4원리\n\n1. **모형**: 추상 → 계산\
+    \ 가능 모형 (시장 규모 = 고객 수 × 구매액)\n2. **분해**: 큰 문제 → 작은 요소 (1인당 지출 = 교통 + 식비 + 숙박)\n\
+    3. **제약조건**: 물리적/시간적 한계 활용 (하루 24시간, 1인 1끼 30분)\n4. **Order of Magnitude**: 자릿수만\
+    \ 맞으면 성공 (500억? 5000억?)\n\n## 8개 데이터 출처 (AI 전략)\n\n1. **프로젝트 데이터**: 확정 (직접 사용)\n\
+    2. **LLM 직접 답변**: 즉시 ('한국 인구?') → 대략적\n3. **검색 공통 맥락**: 웹 서치 → 상위 결과 공통 값\n4.\
+    \ **법칙**: 물리/법률/도덕 (절대적)\n5. **행동경제학**: Loss Aversion, Anchoring 등\n6. **통계 패턴**:\
+    \ 80-20, 정규분포\n7. **Rule of Thumb**: 산업별 경험 공식 (RAG)\n8. **시공간 제약**: 하루 24h, 물리적\
+    \ 한계\n\n**RAG 위치**: 출처 7의 일부일 뿐 (12.5%)!\n\n**비교 4대 기준**: 제품 속성, 소비 주체, 가격대, 구매\
+    \ 맥락\n\n## 프로세스\n\n1. 문제 명확화 → 2. 모형 만들기 → 3. 분해 → 4. 계산 → \n5. 비율 조정 → 6. Boundary\
+    \ → 7. 검증 → 8. 신뢰도\n\n## 예시\n\n- Benchmark: 피아노 전환율: RAG 4개 → 공기청정기 18% 채택 → 15%\n\
+    - Decomposition: 휴일 여행: 250만 × 10만 = 2,500억\n- Constraint: 자장면: 중국집 8천 × 66 ×\
+    \ 80% = 42만\n- Fermi 종합: 전봇대: 716만 (실제 858만, 오차 16%)\n\n## 구현\n\n```python\nfrom\
+    \ umis_rag.utils.guestimation import GuestimationEngine\nengine = GuestimationEngine()\n\
+    result = engine.check_comparability(target, candidate)\n```\n\n**상세**: umis.yaml\
+    \ → tools_and_templates.methodologies.guestimation"
