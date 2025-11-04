@@ -210,7 +210,10 @@ class Method2BottomUpBuilder:
             cell.alignment = Alignment(horizontal="center")
         
         # 각 세그먼트
-        for i, seg in enumerate(segments, start=4):
+        segment_sam_ranges = []
+        
+        for idx, seg in enumerate(segments, start=1):
+            i = 3 + idx  # Row 4, 5, 6...
             ws[f'A{i}'] = seg.get('name')
             
             # Named Range 참조
@@ -227,15 +230,26 @@ class Method2BottomUpBuilder:
                 end_color=ExcelStyles.CALC_FILL,
                 fill_type="solid"
             )
+            
+            # Named Range 정의
+            seg_sam_name = f'M2_Seg{idx}_SAM'
+            self.fe.define_named_range(seg_sam_name, 'Method_2_BottomUp', f'F{i}')
+            segment_sam_ranges.append(seg_sam_name)
         
-        # 총 SAM
+        # 총 SAM (Named Range 기반)
         last_row = 4 + len(segments) - 1
         total_row = last_row + 2
         
         ws[f'A{total_row}'] = "Total SAM"
         ws[f'A{total_row}'].font = Font(bold=True)
         
-        ws[f'F{total_row}'] = f"=SUM(F4:F{last_row})"
+        # Named Range 기반 SUM
+        if len(segment_sam_ranges) == 1:
+            sum_formula = f"={segment_sam_ranges[0]}"
+        else:
+            sum_formula = f"=SUM({','.join(segment_sam_ranges)})"
+        
+        ws[f'F{total_row}'] = sum_formula
         ws[f'F{total_row}'].font = Font(bold=True, size=12)
         ws[f'F{total_row}'].fill = PatternFill(
             start_color=ExcelStyles.RESULT_FILL,
@@ -355,24 +369,41 @@ class Method4CompetitorBuilder:
             cell.font = Font(bold=True)
             cell.alignment = Alignment(horizontal="center")
         
-        # 경쟁사 데이터
-        for i, comp in enumerate(competitors, start=4):
+        # 경쟁사 데이터 + Named Range
+        comp_rev_ranges = []
+        comp_share_ranges = []
+        
+        for idx, comp in enumerate(competitors, start=1):
+            i = 3 + idx  # Row 4, 5, 6, ...
+            
             ws[f'A{i}'] = comp.get('company')
             ws[f'B{i}'] = self.fe.create_assumption_ref(comp.get('revenue'))
             ws[f'C{i}'] = self.fe.create_assumption_ref(comp.get('market_share'))
             
             ws[f'B{i}'].number_format = '#,##0'
             ws[f'C{i}'].number_format = '0.0%'
+            
+            # Named Range 정의
+            rev_name = f'M4_Comp{idx}_Rev'
+            share_name = f'M4_Comp{idx}_Share'
+            self.fe.define_named_range(rev_name, 'Method_4_CompetitorRevenue', f'B{i}')
+            self.fe.define_named_range(share_name, 'Method_4_CompetitorRevenue', f'C{i}')
+            comp_rev_ranges.append(rev_name)
+            comp_share_ranges.append(share_name)
         
-        # 합계
+        # 합계 (Named Range 기반)
         last_row = 4 + len(competitors) - 1
         total_row = last_row + 1
         
         ws[f'A{total_row}'] = "Total"
         ws[f'A{total_row}'].font = Font(bold=True)
         
-        ws[f'B{total_row}'] = f"=SUM(B4:B{last_row})"
-        ws[f'C{total_row}'] = f"=SUM(C4:C{last_row})"
+        if len(comp_rev_ranges) == 1:
+            ws[f'B{total_row}'] = f"={comp_rev_ranges[0]}"
+            ws[f'C{total_row}'] = f"={comp_share_ranges[0]}"
+        else:
+            ws[f'B{total_row}'] = f"=SUM({','.join(comp_rev_ranges)})"
+            ws[f'C{total_row}'] = f"=SUM({','.join(comp_share_ranges)})"
         
         ws[f'B{total_row}'].font = Font(bold=True)
         ws[f'C{total_row}'].font = Font(bold=True)
