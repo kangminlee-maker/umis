@@ -5450,7 +5450,7 @@ implementation_guide:
       - "Agent simulation scripts"
       - "Data validation tools"
       - "Report generators"
-    
+  
     methodologies:
       guestimation:
         name: "Guestimation (Fermi Estimation)"
@@ -5469,20 +5469,90 @@ implementation_guide:
           constraint: "물리적/시간적 한계 활용 (하루 24시간, 1인 1끼 30분)"
           magnitude: "자릿수만 맞으면 성공 (500억? 5000억?)"
         
-        data_sources_4:
-          source_1: "프로젝트 데이터 (주어진 확정 숫자)"
-          source_2: "보편적 지식 (인구 통계, 공개 통계) → AI: 웹 서치 또는 일반 지식"
-          source_3: "경험 패턴 (물리적 제약, 시간) → AI: RAG 검색 또는 물리 법칙"
-          source_4: "Benchmark (유사 사례) → AI: RAG 검색 → 비교 검증 필수!"
+        data_sources_8:
+          source_1_project_data:
+            name: "프로젝트 데이터"
+            description: "주어진 확정 숫자"
+            ai_method: "직접 사용"
+            trust: "High"
           
-          ai_strategy:
-            source_2_for_ai: "웹 서치 ('한국 인구', '버스 요금'), 일반 지식 활용"
-            source_3_for_ai: "RAG 검색 ('식사 시간 평균', '테이블 규모'), 물리적 제약 DB"
-            source_4_for_ai: "RAG 검색 후 4대 기준 검증"
+          source_2_llm_knowledge:
+            name: "LLM 직접 답변"
+            description: "검색 없이 즉시 답변 가능한 것"
+            ai_method: "LLM에게 질문 ('한국 인구는?', '일반적인 식사 시간은?')"
+            trust: "Medium (검증 권장)"
+            caution: "최신 정보 부족, Hallucination 가능"
+            use_when: "Order of Magnitude만 필요할 때"
           
-          human_vs_ai:
-            human: "상식/경험 직접 활용"
-            ai: "웹 서치, RAG, 일반 지식으로 보완"
+          source_3_search_consensus:
+            name: "검색 엔진 공통 맥락"
+            description: "상위 검색 결과의 공통 패턴/범위"
+            ai_method: "웹 서치 → 상위 5-10개 결과 분석 → 공통 값/범위 추출"
+            trust: "High (복수 출처)"
+            example: "'평균 식사 가격' → 상위 결과 공통: 8천~1.5만원"
+            use_when: "최신 정보, 합의된 값 필요"
+          
+          source_4_laws:
+            name: "법칙 (물리/법률/도덕)"
+            description: "보편적 법칙, 절대적 제약"
+            ai_method: "직접 적용 (검증 불필요)"
+            trust: "Absolute"
+            examples:
+              physical: "하루 24시간, 1년 365일, 속도×시간=거리"
+              legal: "근로시간 주 52시간, 최저임금"
+              moral: "공정 거래, 합리적 가격"
+            use_when: "Boundary 설정, 제약조건"
+          
+          source_5_behavioral_economics:
+            name: "인간 행동 패턴 (행동경제학)"
+            description: "예측 가능한 비합리성, 인지 편향"
+            ai_method: "RAG 검색 또는 행동경제학 DB"
+            trust: "High (연구 검증)"
+            patterns:
+              loss_aversion: "손실 회피 > 이득 추구 (2배)"
+              temporal_discounting: "현재 > 미래 (할인)"
+              anchoring: "첫 정보 고정"
+              framing: "표현 방식 영향"
+              social_proof: "다수 선택 따름"
+            use_when: "전환율 조정, 가격 민감도, 채택 속도"
+          
+          source_6_statistical_patterns:
+            name: "통계적 패턴"
+            description: "검증된 수학적 패턴"
+            ai_method: "수학 공식 적용"
+            trust: "High (수학적)"
+            patterns:
+              normal_distribution: "68-95-99.7 법칙"
+              power_law: "80-20 법칙 (Pareto)"
+              regression_to_mean: "극단 → 평균 회귀"
+            use_when: "분포 추정, 시장 집중도, 이상치 감지"
+          
+          source_7_rule_of_thumb:
+            name: "산업별 Rule of Thumb"
+            description: "업계 경험 공식"
+            ai_method: "RAG 검색 (market_benchmarks)"
+            trust: "Medium-High (업계 검증)"
+            examples:
+              saas: "LTV/CAC > 3, Payback < 12m, Rule of 40"
+              ecommerce: "전환율 2-3%, Cart Abandon 70%"
+              subscription: "첫 달 Churn 10-15%, 안정 3-5%"
+            use_when: "초기 추정, 벤치마크, Sanity Check"
+          
+          source_8_time_space_constraints:
+            name: "시간/공간의 절대 제약"
+            description: "물리적으로 넘을 수 없는 한계"
+            ai_method: "직접 적용"
+            trust: "Absolute"
+            constraints:
+              time: "하루 24h, 1년 365일, 수명 70-80년"
+              space: "국토 면적, 물리적 거리, 좌석 크기"
+              human: "수면 6-8h, 식사 2-3끼, 주의 시간"
+            use_when: "최대 용량, 상한 설정, 현실성 체크"
+          
+          importance:
+            human: "출처 1~8 모두 활용 가능"
+            ai: "출처 1 직접, 2~8로 상식/경험 gap 메우기"
+            rag_position: "출처 7 (Rule of Thumb)의 일부일 뿐!"
         
         comparability_4_criteria:
           criterion_1: "제품 속성 (물리적/디지털)"
