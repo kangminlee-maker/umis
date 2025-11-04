@@ -5686,6 +5686,361 @@ implementation_guide:
             high_frequency: "Quantifier (SAM 계산 필수)"
             medium_frequency: "Explorer, Observer (구조/기회 분석)"
             low_frequency: "Validator, Guardian (지원 역할)"
+      
+      domain_reasoner:
+        name: "Domain-Centric Reasoner (10-Signal Stack)"
+        version: '0.9-umis'
+        category: "정밀 추론 방법론"
+        agents: "quantifier, validator"
+        
+        definition:
+          core: "10가지 신호 우선순위 기반 정밀 추론 + RAG 중심 증거 기반 의사결정"
+          philosophy: "RAG는 근거·경계·정의·전이 제공자. 규제/물리가 최우선."
+          goal: "합의 범위 + 전이 보정 + 검증 로그 (±30%)"
+        
+        when_to_use:
+          - "정밀 분석 필요 (목표 명확, ±30% 이내)"
+          - "신규 시장 (직접 데이터 부족, 사례 전이 필요)"
+          - "규제 산업 (의료/금융/교육, s3 Laws 필수)"
+          - "투자 심사 (재현성, 추적성, 증거표 필수)"
+          - "대기업 환경 (정밀도 중시, Should vs Will 분리)"
+        
+        when_not_to_use:
+          - "초기 탐색 (빠른 판단, < 1시간)"
+          - "간단한 질문 (자릿수만 필요)"
+          - "시간 제약 (긴급, < 1시간)"
+        
+        signal_stack_10:
+          precedence_order: "s3 → s8 → s6 → s10 → s2 → s9 → s7 → s5 → s4 → s1"
+          
+          s1_llm_guess:
+            weight: 0.15
+            role: "분해 초안/용어 정리; 최종 가중 낮음"
+            umis_mapping: "Guestimation 출처 2 (LLM 직접)"
+            when: "빠른 초안, 범위 설정"
+          
+          s2_rag_consensus:
+            weight: 0.9
+            role: "핵심 신호 - 여러 독립 문헌의 합의 범위 추출"
+            umis_mapping: "Guestimation 출처 3 (검색), UMIS RAG Collections"
+            independence_rule: "publisher/domain/ownership 다른 출처 ≥2"
+            method: "IQR, trimmed mean"
+            collections:
+              - "explorer_knowledge_base (354개)"
+              - "market_benchmarks (100개)"
+              - "definition_validation_cases (84개)"
+          
+          s3_laws_ethics_physics:
+            weight: 1.0
+            role: "최우선 신호 - 위반 시 즉시 거부 또는 대안 제시"
+            umis_mapping: "Guestimation 출처 4 (법칙)"
+            checks:
+              - "규제 (의료기기법, 개인정보보호법, 공정거래법)"
+              - "물리 제약 (시간, 공간, 용량, 에너지)"
+              - "윤리 (사회적 합의, 공정성, 안전성)"
+          
+          s4_behavioral_econ:
+            weight: 0.6
+            role: "Should vs Will 분리의 핵심"
+            umis_mapping: "Guestimation 출처 5 (행동경제학)"
+            biases:
+              loss_aversion: "손실 = 이득 × 2.5 → 채택률 ×0.4-0.6"
+              status_quo_bias: "현상 유지 선호 → 전환율 ×0.5"
+              anchoring: "첫 가격 기준점 → ±30%"
+              hyperbolic_discounting: "미래 가치 할인 → ×0.3-0.7"
+          
+          s5_stat_patterns:
+            weight: 0.75
+            role: "검증된 통계적 규칙성"
+            umis_mapping: "Guestimation 출처 6 (통계 패턴)"
+            patterns:
+              - "Power Law (80-20)"
+              - "S-Curve (기술 채택)"
+              - "Elasticity (가격/소득)"
+              - "Regression to Mean"
+          
+          s6_math_relations:
+            weight: 1.0
+            role: "논리적 일관성 검증 (최우선급)"
+            umis_mapping: "Guestimation 출처 4 (법칙 - 수학)"
+            checks:
+              - "차원 분석 (단위 일치)"
+              - "보존 법칙 (TAM ≥ SAM ≥ SOM)"
+              - "비례 관계 (A↑ → B↑)"
+              - "Bounds (상한/하한)"
+          
+          s7_rules_of_thumb:
+            weight: 0.7
+            role: "산업별 경험 공식 (빠른 근사)"
+            umis_mapping: "Guestimation 출처 7 (Rule of Thumb) - 동일!"
+            examples:
+              - "플랫폼 수수료 = 대체 비용 × 0.4-0.5"
+              - "LTV/CAC > 3 (구독)"
+              - "Churn 3-5% (B2C SaaS)"
+          
+          s8_time_space_bounds:
+            weight: 1.0
+            role: "현실성 검증 (최우선급)"
+            umis_mapping: "Guestimation 출처 8 (시공간 제약) - 동일!"
+            constraints:
+              - "시간 제약 (개발 기간, 인증 기간)"
+              - "지리 제약 (커버리지, 인프라)"
+              - "자원 용량 (생산, 유통, 서비스)"
+          
+          s9_case_analogies:
+            weight: 0.85
+            role: "RAG 중심 - 유사 사례 전이 보정"
+            umis_mapping: "UMIS Explorer RAG (success_case_library)"
+            features: ["비즈모델", "채널", "규모", "규제", "인구", "연령"]
+            adjustments:
+              - "스케일링 법칙 (인구비)"
+              - "가격/소득 탄력성"
+              - "채널 믹스 보정"
+              - "문화/정책 계수"
+          
+          s10_industry_kpi_library:
+            weight: 0.95
+            role: "RAG 중심 - 정의 표준화 (사과-배 비교 방지)"
+            umis_mapping: "Rachel의 data_definition_validation"
+            source: "data/raw/kpi_definitions.yaml (100개)"
+            conflict_policy: "정의 불일치 → 비교 금지"
+        
+        pipeline_6_steps:
+          step_1_clarify:
+            action: "정의 고정 (s10)"
+            output: "SRC_DEF_xxx (표준 정의)"
+          
+          step_2_constraints:
+            action: "제약 확인 (s3, s8)"
+            output: "상한/하한 (법적, 물리적)"
+          
+          step_3_structure:
+            action: "도메인 구조 분해"
+            output: "시장 모형, 가치사슬"
+          
+          step_4_rag:
+            action: "RAG 검색 (s2, s9, s10)"
+            output: "SRC_xxx, 합의 범위, 유사 사례"
+          
+          step_5_fuse:
+            action: "융합 (우선순위 적용)"
+            output: "점추정, 범위 (가중 평균)"
+          
+          step_6_adjust:
+            action: "행동경제학 보정 (s4)"
+            output: "Should vs Will, Gap 분석"
+        
+        output_7_sections:
+          section_1: "요약 (결론/범위/신뢰도)"
+          section_2: "신호별 근거 (s3→s8→s6→s10→s2→s9→s7→s5→s4→s1)"
+          section_3: "정량 결과 (점/범위/Should/Will)"
+          section_4: "증거표 (ID/출처/정의/값/지리/기간/방법론/가중치/모순)"
+          section_5: "검증 로그 (단위·차원·규제·비교사례)"
+          section_6: "민감도 분석 (Top-N 결정 요인)"
+          section_7: "리스크 & 다음 행동 (잔여 불확실성)"
+        
+        should_vs_will:
+          description: "행동경제학 기반 규범 vs 현실 분리"
+          
+          should:
+            definition: "이상적/규범적 결론 (편향 제거)"
+            assumptions: ["합리적 의사결정", "완전 정보", "시간 일관성"]
+            use_case: "정책 권고, 목표 설정"
+          
+          will:
+            definition: "현실적 예측 (편향 반영)"
+            adjustments: ["손실회피", "현상유지", "시장지배력"]
+            use_case: "실제 채택률, 매출 예측"
+          
+          gap_analysis:
+            absolute: "Should - Will"
+            relative: "(Should - Will) / Should × 100%"
+            drivers: "주요 원인 (편향 종류)"
+        
+        implementation:
+          python: "umis_rag/methodologies/domain_reasoner.py"
+          document: "data/raw/umis_domain_reasoner_methodology.yaml"
+          comparison: "docs/GUESTIMATION_COMPARISON.md"
+          tool_key: "tool:universal:domain_reasoner_10_signals"
+        
+        agent_usage_guide:
+          description: "Agent별 Domain Reasoner 활용"
+          
+          quantifier:
+            when: "정밀 SAM 계산, 수렴 ±30%"
+            frequency: "★★★★ Phase 2에서 자주"
+            priority_signals: "s2 (RAG Consensus), s9 (Case Analogies), s10 (KPI)"
+            output: "증거표 + Should/Will Excel 시트"
+          
+          validator:
+            when: "데이터 정의 검증, KPI 표준화"
+            frequency: "★★★★ Phase 2 필수"
+            priority_signals: "s10 (Industry KPI), s2 (RAG Consensus)"
+            output: "정의 Gap 리포트, 비교 가능성 점수"
+          
+          explorer:
+            when: "신규 시장 기회 크기 (사례 전이)"
+            frequency: "★★★ 정밀 분석 시"
+            priority_signals: "s9 (Case Analogies), s2 (Pattern Search)"
+            output: "유사 사례 전이 보고서"
+          
+          observer:
+            when: "시장 구조 정밀 분석"
+            frequency: "★★ 필요 시"
+            priority_signals: "s2 (RAG), s7 (Rules)"
+            output: "구조 분석 + 벤치마크"
+      
+      hybrid_strategy:
+        name: "Hybrid 2-Phase Approach"
+        version: "1.0"
+        description: "Guestimation → Guardian 평가 → Domain Reasoner (조건부)"
+        
+        philosophy: "빠른 질문에는 Guestimation, 중요한 결정에는 Domain Reasoner"
+        
+        phase_1_rapid_scan:
+          method: "guestimation"
+          time: "5-30분"
+          accuracy: "±50% (자릿수)"
+          purpose: "빠른 가늠, 기회 필터링, 우선순위 판단"
+          output:
+            - "EST_xxx (추정치 ID)"
+            - "범위 (상한/하한)"
+            - "신뢰도 (0-1)"
+            - "7개 섹션 추정 논리"
+        
+        guardian_evaluation:
+          agent: "Guardian (Stewart)"
+          action: "Phase 1 결과 평가 → Phase 2 필요 여부 판단"
+          
+          transition_triggers:
+            trigger_1_low_confidence:
+              condition: "신뢰도 < 50%"
+              action: "Phase 2 권고"
+              priority: "high"
+              reason: "추정 불확실성 높음 → RAG Consensus (s2) 필요"
+            
+            trigger_2_wide_range:
+              condition: "범위 폭 > ±75% (상한/하한 비율 > 1.75)"
+              action: "Phase 2 권고"
+              priority: "high"
+              reason: "범위 너무 넓음 → 정밀 수렴 필요"
+            
+            trigger_3_large_opportunity:
+              condition: "기회 크기 > 1,000억 원"
+              action: "Phase 2 권고"
+              priority: "medium"
+              reason: "중요도 높음 → 정밀 검증 필요"
+            
+            trigger_4_regulatory:
+              condition: "규제 산업 (의료/금융/교육)"
+              action: "Phase 2 필수"
+              priority: "required"
+              reason: "s3 Laws/Ethics/Physics 검증 필수"
+            
+            trigger_5_new_market:
+              condition: "신규 시장 (직접 데이터 부족)"
+              action: "Phase 2 권고"
+              priority: "medium"
+              reason: "s9 Case Analogies (사례 전이) 필요"
+          
+          decision_logic: |
+            if priority == 'required':
+                → Phase 2 자동 실행
+            elif priority == 'high':
+                → Phase 2 권고 (사용자 확인)
+            elif priority == 'medium':
+                → Phase 2 제안 (선택)
+            else:
+                → Phase 1 완료
+        
+        phase_2_deep_dive:
+          method: "domain_reasoner"
+          time: "1-4시간"
+          accuracy: "±30% (수렴)"
+          purpose: "정밀 분석, 증거 기반 추론, Should vs Will"
+          
+          input_from_phase_1:
+            - "초기 추정값 (참고)"
+            - "사용된 출처 (재활용)"
+            - "식별된 Gap (보완 대상)"
+          
+          output:
+            - "점추정 (가중 평균)"
+            - "합의 범위 (독립 출처 ≥2)"
+            - "Should vs Will (행동경제학 보정)"
+            - "증거표 (출처/정의/방법론)"
+            - "검증 로그 (체크리스트)"
+            - "민감도 분석 (Top-N 요인)"
+            - "다음 행동 (필요 데이터)"
+        
+        usage_scenarios:
+          scenario_1_initial_exploration:
+            situation: "목표 불명확, 빠른 파악"
+            method: "Phase 1 only (Guestimation)"
+            example: "음악 스트리밍 시장 대략 규모?"
+          
+          scenario_2_mature_market:
+            situation: "성숙 시장, 데이터 풍부"
+            method: "Phase 1 only (충분)"
+            example: "국내 OTT 시장 규모 (공개 데이터 많음)"
+          
+          scenario_3_new_market:
+            situation: "신규 시장, 직접 데이터 부족"
+            method: "Phase 1 → Phase 2 (사례 전이)"
+            example: "시니어 케어 로봇 시장 (일본 사례 활용)"
+          
+          scenario_4_regulatory:
+            situation: "규제 산업, 정밀도 필수"
+            method: "Phase 1 → Phase 2 (필수)"
+            example: "의료 AI 진단 시장 (의료기기법)"
+          
+          scenario_5_investment:
+            situation: "투자 심사, 재현성 필요"
+            method: "Phase 1 → Phase 2 (증거표)"
+            example: "VC 투자 검토, IR 자료"
+        
+        cursor_commands:
+          auto_mode:
+            command: "@auto [질문]"
+            description: "Guardian 자동 판단 → 최적 방법론 선택"
+            flow: "Phase 1 → 평가 → (조건부) Phase 2"
+          
+          explicit_guestimation:
+            command: "@guestimate [질문]"
+            description: "명시적 Guestimation (빠른 추정)"
+            flow: "Phase 1 only"
+          
+          explicit_reasoner:
+            command: "@reasoner [질문]"
+            description: "명시적 Domain Reasoner (정밀 분석)"
+            flow: "Phase 2 직접 실행"
+          
+          agent_combination:
+            examples:
+              - "@Explorer guestimate 기회 크기"
+              - "@Quantifier reasoner 시장 규모"
+              - "@Validator reasoner KPI 정의"
+        
+        comparison_matrix:
+          dimension_speed:
+            guestimation: "⚡⚡⚡ 5-30분"
+            domain_reasoner: "🐢 1-4시간"
+            hybrid: "15분-4시간 (조건부)"
+          
+          dimension_accuracy:
+            guestimation: "±50% (자릿수)"
+            domain_reasoner: "±30% (수렴)"
+            hybrid: "±30% (Phase 2 시)"
+          
+          dimension_traceability:
+            guestimation: "중간 (EST_ID)"
+            domain_reasoner: "높음 (증거표+검증로그)"
+            hybrid: "높음 (Phase 2 시)"
+          
+          dimension_use_case:
+            guestimation: "초기 탐색, 빠른 판단"
+            domain_reasoner: "정밀 분석, 투자 심사"
+            hybrid: "모든 상황 (자동 적응)"
   
   # 7. 측정과 개선 (MEASURE)
   measurement_and_improvement:

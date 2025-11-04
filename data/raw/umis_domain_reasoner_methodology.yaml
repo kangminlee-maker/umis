@@ -1,0 +1,1027 @@
+# ========================================
+# UMIS Domain-Centric Reasoner Methodology
+# 신호 기반 추론 프레임워크 (v0.9 → UMIS v7.1 통합)
+# ========================================
+
+_meta:
+  version: "0.9-umis"
+  created: "2025-11-04"
+  type: "methodology"
+  category: "reasoning_framework"
+  original_spec: "domain_centric_reasoner_with_RAG v0.9"
+  umis_integration: "v7.1.0"
+  
+  purpose: |
+    데이터 부족 상황에서의 의사결정 지원.
+    RAG를 '정답 제공자'가 아닌 '근거·경계·정의·전이 제공자'로 활용.
+    규제/물리 제약과 단위 일관성을 최우선으로 하는 구조화된 추론.
+  
+  key_differences_from_umis_guestimation:
+    philosophy: "UMIS: 빠른 자릿수 파악 vs Reasoner: 구조화된 근거 체계"
+    rag_role: "UMIS: 출처 7의 12.5% vs Reasoner: 중심 역할 (s2,s9,s10)"
+    priority: "UMIS: Fermi 4원칙 vs Reasoner: 10가지 신호 우선순위"
+    output: "UMIS: ±50% 범위 vs Reasoner: 증거표+검증로그+Should/Will"
+    speed: "UMIS: 빠름 vs Reasoner: 정밀"
+
+# ========================================
+# 1. 핵심 개념
+# ========================================
+
+domain_centric_reasoner:
+  _id: "domain_centric_reasoner"
+  _description: "신호 우선순위 기반 추론 방법론"
+  
+  objective:
+    mode: "decision_support_under_data_gaps"
+    
+    principles:
+      - "RAG는 근거·경계·정의·유사전이 제공자, 정답 제공자가 아님"
+      - "규제/물리 제약과 단위/차원 일관성은 항상 1순위"
+      - "정량 결론은 점추정보다 '합의 범위 + 전이 보정 + 검증 로그'가 중심"
+    
+    umis_alignment:
+      - "Bill의 SAM 4방법 수렴 → Reasoner의 신호 수렴"
+      - "Rachel의 정의 검증 → s10 (industry_kpi_library)"
+      - "Stewart의 품질 평가 → 검증 로그 + 신뢰도"
+  
+  io_contract:
+    input:
+      - "question: string (추정 대상)"
+      - "domain: string (산업/영역)"
+      - "context: string? (선택)"
+      - "required_unit: string? (단위)"
+      - "geography: string? (지리, 예: KR)"
+      - "time_horizon: string? (시간, 예: 2026-2030)"
+      - "constraints: string? (제약조건)"
+    
+    output:
+      must_include:
+        - "point_estimate_or_refusal (점추정 또는 거부)"
+        - "range_estimate (합의범위/상·하한/시나리오)"
+        - "should_vs_will (규범적 권고 vs 현실적 예측)"
+        - "signal_breakdown (신호별 근거)"
+        - "evidence_table (RAG 근거표: 출처, 시점, 지리, 정의, 방법론)"
+        - "verification_log (단위·차원·규제·비교사례 합의)"
+        - "residual_unknowns (남은 불확실성 및 다음 수집거리)"
+      
+      refusal_policy:
+        - condition: "law/physical/ethical_violation"
+          action: "거부 + 합법/물리 대안 제시"
+        - condition: "range_width_too_wide_without_actionable_next_steps"
+          action: "보류 + 필요한 데이터 명시"
+
+# ========================================
+# 2. 10가지 신호 스택 (확장)
+# ========================================
+
+signal_stack:
+  _description: "우선순위 기반 10가지 추론 신호"
+  _umis_note: "UMIS의 8가지 출처를 신호로 재구성 + RAG 중심 신호 추가"
+  
+  s1_llm_guess:
+    weight_default: 0.15
+    role: "분해 초안/용어 정리; 최종 가중 낮음"
+    umis_mapping: "출처 2 (LLM 직접 질문)"
+    when_to_use: "빠른 초안, 범위 설정"
+    limitations: "검증 없으면 신뢰도 낮음"
+    
+    umis_integration:
+      bill_usage: "SAM 초안 작성"
+      steve_usage: "기회 크기 빠른 가늠"
+      output_format: "EST_xxx (추정치 ID)"
+  
+  s2_rag_consensus:
+    weight_default: 0.9
+    description: "상위 문헌(RAG)에서 반복되는 값·방식의 '합의 범위' 추출"
+    role: "핵심 신호 - 여러 독립 출처의 일치점 찾기"
+    
+    evidence_types:
+      - "gov_stats (정부 통계)"
+      - "industry_assoc (산업 협회)"
+      - "10K/사업보고 (공시 자료)"
+      - "sell-side (애널리스트 리포트)"
+      - "news_synthesis (언론 종합)"
+    
+    independence_rule: "publisher/domain/ownership이 다른 출처 ≥2"
+    
+    umis_mapping:
+      - "출처 3 (검색 공통 맥락)"
+      - "UMIS RAG collections (explorer, quantifier, validator)"
+    
+    umis_integration:
+      explorer_rag: "pattern_search → 사례 합의 범위"
+      quantifier_rag: "market_benchmarks → 메트릭 합의"
+      validator_rag: "definition_validation_cases → 정의 합의"
+      
+      process:
+        step_1: "RAG 검색 (k=30, hybrid)"
+        step_2: "독립성 확인 (≥2 출처)"
+        step_3: "합의 범위 추출 (IQR, trimmed mean)"
+        step_4: "SRC_xxx ID 부여"
+      
+      output_example:
+        src_id: "SRC_001"
+        metric: "플랫폼 수수료율"
+        consensus_range: "6-12%"
+        sources: 2
+        independence: true
+  
+  s3_laws_ethics_physics:
+    weight_default: 1.0
+    description: "규제/법/윤리/물리 제약 및 금지"
+    role: "최우선 신호 - 위반 시 즉시 거부 또는 대안 제시"
+    
+    check_types:
+      regulatory:
+        - "의료기기법 (케어 로봇 인증)"
+        - "개인정보보호법 (영상/음성 수집)"
+        - "공정거래법 (수수료 상한)"
+        - "산업별 규제 (금융, 의료, 교육 등)"
+      
+      physical:
+        - "시간 제약 (24시간/일)"
+        - "공간 제약 (배송 거리, 커버리지)"
+        - "용량 한계 (배터리 수명, 서버 처리량)"
+        - "물리 법칙 (에너지 보존, 열역학)"
+      
+      ethical:
+        - "사회적 합의 (돌봄 로봇 vs 인간 노동)"
+        - "공정성 (차별, 프라이버시)"
+        - "안전성 (위험 요소)"
+    
+    umis_mapping: "출처 4 (법칙 - 물리/법률)"
+    
+    umis_integration:
+      rachel_role: "규제 compliance 검증"
+      albert_role: "시장 구조 제약 파악"
+      
+      output:
+        bound_type: "hard_constraint"
+        lower_bound: "법적/물리적 최소값"
+        upper_bound: "법적/물리적 최대값"
+        refusal_condition: "위반 시 분석 거부"
+  
+  s4_behavioral_econ:
+    weight_default: 0.6
+    description: "비합리성 보정 (채택률·전환율·가격수용성)"
+    role: "Should vs Will 분리의 핵심"
+    
+    biases_and_adjustments:
+      loss_aversion:
+        effect: "손실 = 이득 × 2.5 (Kahneman)"
+        application: "가격 인상 저항, 전환 비용"
+        adjustment: "예상 채택률 × 0.4-0.6"
+      
+      status_quo_bias:
+        effect: "현상 유지 선호"
+        application: "구독 해지율, 플랫폼 이탈"
+        adjustment: "이론적 전환율 × 0.5"
+      
+      anchoring:
+        effect: "첫 가격이 기준점"
+        application: "프리미엄 가격 수용성"
+        adjustment: "참조가 기준 ±30%"
+      
+      hyperbolic_discounting:
+        effect: "미래 가치 급격히 할인"
+        application: "구독 vs 일회 구매"
+        adjustment: "장기 편익 × 0.3-0.7"
+    
+    umis_mapping: "출처 5 (행동경제학)"
+    
+    umis_integration:
+      bill_usage: "현실적 전환율 보정"
+      steve_usage: "고객 의사결정 예측"
+      
+      should_vs_will:
+        should: "이상적/규범적 결론 (편향 없음)"
+        will: "현실적 예측 (편향 반영)"
+        gap_analysis: "차이의 원인 명시"
+      
+      output_example:
+        should: "적정 수수료 7-8% (공정성)"
+        will: "실제 수수료 8.5-10% (시장 지배력)"
+        gap_reason: "플랫폼 독과점 → 협상력 불균형"
+  
+  s5_stat_patterns:
+    weight_default: 0.75
+    description: "검증된 탄력성/성장률/분포형"
+    role: "통계적 규칙성 활용"
+    
+    patterns:
+      power_law:
+        examples: "80-20 법칙, 롱테일"
+        application: "매출 집중도, 상위 고객"
+      
+      s_curve:
+        examples: "기술 채택 곡선"
+        stages:
+          innovators: "2.5%"
+          early_adopters: "13.5%"
+          early_majority: "34%"
+          late_majority: "34%"
+          laggards: "16%"
+        application: "신제품 보급률 예측"
+      
+      elasticity:
+        price_elasticity: "수요 변화율 / 가격 변화율"
+        income_elasticity: "수요 변화율 / 소득 변화율"
+        application: "가격 정책, 시장 규모"
+      
+      regression_to_mean:
+        examples: "극단값 → 평균 회귀"
+        application: "성장률 정상화"
+    
+    umis_mapping: "출처 6 (통계 패턴)"
+    
+    umis_integration:
+      bill_usage: "성장률 예측, 필터 비율"
+      albert_usage: "시장 집중도 분석"
+  
+  s6_math_relations:
+    weight_default: 1.0
+    description: "비례/역비례/보존·차원분석; 상·하한 산출"
+    role: "논리적 일관성 검증 (최우선급)"
+    
+    checks:
+      dimensional_analysis:
+        rule: "단위 일치 검증 (KRW × 명 = KRW ✓)"
+        example: "시장 규모(KRW) = 고객(명) × 단가(KRW/명)"
+        violation: "분석 거부"
+      
+      conservation_laws:
+        examples:
+          - "전체 = 부분의 합"
+          - "TAM ≥ SAM ≥ SOM"
+          - "수입 = 지출 + 저축"
+        application: "모순 검출"
+      
+      proportional_relations:
+        direct: "A ↑ → B ↑ (가격 ↑ → 매출 ↓)"
+        inverse: "A ↑ → B ↓ (공급 ↑ → 가격 ↓)"
+        application: "민감도 분석"
+      
+      bounds_calculation:
+        upper: "물리적/논리적 최대값"
+        lower: "물리적/논리적 최소값"
+        example: "채택률 0-100%, 시간 0-24h"
+    
+    umis_mapping: "출처 4 (법칙 - 수학)"
+    
+    umis_integration:
+      bill_role: "Excel 함수 검증"
+      rachel_role: "정의 일관성 검증"
+      
+      excel_integration:
+        formula_check: "=IF(차원_불일치, ERROR, 계산)"
+        bound_check: "=IF(OR(값<하한, 값>상한), WARNING, OK)"
+  
+  s7_rules_of_thumb:
+    weight_default: 0.7
+    description: "산업별 경험 공식 (적용 범위·함정 명시)"
+    role: "빠른 근사, 검증 필요"
+    
+    examples:
+      platform_commission:
+        rule: "플랫폼 수수료 = 대체 중개 비용 × 0.4-0.5"
+        range: "3-20%"
+        caveats: "시장 지배력, 경쟁 강도에 따라 변동"
+      
+      ltv_cac_ratio:
+        rule: "LTV/CAC > 3 (acceptable), > 5 (good)"
+        application: "구독 비즈니스 건전성"
+      
+      churn_rate:
+        b2c_saas: "5-7% (월간)"
+        b2b_saas: "2-3% (월간)"
+        consumer_subscription: "3-5%"
+      
+      market_penetration:
+        innovators: "첫 1-3년, 1-3% 시장"
+        growth_stage: "5-10년, 10-30%"
+        mature: "15년+, 50%+"
+    
+    umis_mapping: "출처 7 (Rule of Thumb) - UMIS RAG 중심"
+    
+    umis_integration:
+      explorer_rag: "business_model_patterns → 산업 공식"
+      quantifier_rag: "market_benchmarks → 메트릭 범위"
+      
+      application_checklist:
+        - "적용 조건 확인 (산업, 규모, 시기)"
+        - "예외 사항 검토 (특수성)"
+        - "다른 신호와 교차 검증"
+  
+  s8_time_space_bounds:
+    weight_default: 1.0
+    description: "리드타임/지리적 커버리지/자원 용량 등 절대 한계"
+    role: "현실성 검증 (최우선급)"
+    
+    constraints:
+      time_bounds:
+        examples:
+          - "제품 개발: 6개월-3년"
+          - "인증/허가: 3개월-2년"
+          - "시장 도달: 1-5년"
+        application: "시장 진입 시점"
+      
+      geographic_bounds:
+        coverage: "서비스 가능 지역"
+        density: "인구 밀도, 인프라"
+        logistics: "배송 가능 범위"
+        application: "TAM/SAM 필터"
+      
+      resource_capacity:
+        production: "생산 용량"
+        distribution: "유통망 한계"
+        service: "서비스 인력"
+        application: "SOM 상한"
+      
+      adoption_speed:
+        network_effect: "임계 질량 도달 시간"
+        learning_curve: "고객 습득 기간"
+        regulation: "규제 승인 지연"
+    
+    umis_mapping: "출처 8 (시공간 제약)"
+    
+    umis_integration:
+      albert_role: "시장 구조 현실성 검증"
+      bill_role: "SOM 상한 설정"
+      
+      output:
+        max_addressable: "2030년까지 도달 가능 최대 시장"
+        realistic_timeline: "단계별 목표 (2026: 500억, 2028: 1,500억)"
+  
+  s9_case_analogies:
+    weight_default: 0.85
+    description: "비즈니스 사례 RAG에서 '유사 맥락' 매칭 후 규모·시차·채널 차이를 전이 보정"
+    role: "신규 시장 추정의 핵심 (직접 데이터 부족 시)"
+    
+    features_for_matching:
+      business_model: "B2B, B2C, Platform, SaaS, 구독"
+      channel: "온라인, 오프라인, 하이브리드"
+      arpu_gmv_scale: "객단가/거래액 규모"
+      regulation_intensity: "규제 강도 (의료>금융>일반)"
+      urbanization: "도시화율, 인프라"
+      demographics: "연령, 소득 구성"
+    
+    transfer_adjustments:
+      scaling_law:
+        population: "한국/일본 = 5,200만/1.25억 = 0.42"
+        gdp_per_capita: "구매력 보정"
+        market_maturity: "성숙도 차이 (±3년)"
+      
+      price_income_elasticity:
+        formula: "수요_한국 = 수요_일본 × (소득_한국/소득_일본)^탄력성"
+        typical_range: "0.5-1.5"
+      
+      channel_mix_adjustment:
+        online_penetration: "한국 70% vs 일본 50% → 1.4배"
+      
+      cultural_policy_factor:
+        examples:
+          - "일본 vs 한국: 고령 케어 정부 보조 차이"
+          - "미국 vs 한국: 팁 문화 차이"
+    
+    umis_mapping:
+      - "출처 7 (Rule of Thumb - 사례 기반)"
+      - "UMIS Explorer RAG (success_case_library)"
+    
+    umis_integration:
+      explorer_rag: "business_model_patterns.success_case_library"
+      
+      process:
+        step_1_search: "RAG 유사 사례 검색 (k=10)"
+        step_2_match: "6가지 특징 유사도 계산 (가중 평균)"
+        step_3_filter: "유사도 > 70% 사례만 선택"
+        step_4_transfer: "4가지 조정 계수 적용"
+        step_5_validate: "신뢰구간 계산, 이상치 제거"
+      
+      output_example:
+        case: "일본 케어 로봇"
+        similarity: 0.80
+        raw_value: "$500M"
+        adjustments:
+          population: "× 0.42"
+          aging_rate: "× 0.59 (17% vs 29%)"
+          growth_rate: "× 1.76 (2025-2030)"
+        final_estimate: "2,834억 원"
+        confidence: "medium (단일 사례, 조정 많음)"
+      
+      guardrails:
+        must_report:
+          - "유사도 점수 (0-1)"
+          - "적용 불가 요인 (문화, 규제 차이)"
+          - "보정 계수 (투명성)"
+        
+        reject_conditions:
+          - "유사도 < 60%"
+          - "독립 사례 < 2개"
+          - "조정 계수 > 3배 또는 < 0.3배"
+  
+  s10_industry_kpi_library:
+    weight_default: 0.95
+    description: "산업 KPI 정의/측정방식/분모·분자 차이 RAG 정규화"
+    role: "사과-배 비교 방지 (Rachel 핵심 역할)"
+    
+    artifacts:
+      kpi_dictionary:
+        structure:
+          kpi_id: "KPI_001"
+          metric_name: "플랫폼 수수료율"
+          definition: "플랫폼 수수료 / 음식 주문 금액"
+          numerator: "플랫폼 중개 수수료 (KRW)"
+          denominator: "음식 주문 금액 (KRW, 배달비 제외)"
+          unit: "%"
+          scope: "국내 음식 배달 플랫폼"
+          excludes: "광고비, 배달비"
+          recognition_timing: "거래 완료 시점"
+          
+        example_gap:
+          company_a: "수수료율 10% (배달비 포함)"
+          company_b: "수수료율 8% (배달비 제외)"
+          true_comparison: "정의 불일치 → 비교 불가"
+      
+      unit_currency_standardization:
+        currency: "USD → KRW (환율 1,300)"
+        time_period: "연간 → 월간 (÷12)"
+        geography: "글로벌 → 한국 (× 인구비)"
+      
+      accounting_recognition_rules:
+        revenue_recognition: "발생주의 vs 현금주의"
+        fiscal_vs_calendar: "회계연도 vs 력연도"
+        consolidation: "연결 vs 별도"
+    
+    umis_mapping: "Rachel의 data_definition_validation"
+    
+    umis_integration:
+      validator_rag: "definition_validation_cases"
+      
+      process:
+        step_1_definition_discovery: "RAG에서 KPI 정의 검색"
+        step_2_gap_analysis: "정의 차이 식별 (4대 기준)"
+        step_3_normalize: "표준 정의로 변환"
+        step_4_flag_incomparable: "조정 불가 시 비교 금지"
+      
+      output:
+        src_def_id: "SRC_DEF_001"
+        status: "normalized / flagged / rejected"
+        adjustment_log: "변환 과정 투명 기록"
+      
+      conflict_policy:
+        rule: "정의 불일치 → s10 우선, 합의 재계산"
+        example: "s2(RAG 합의)와 충돌 시 → 정의 맞춘 뒤 합의 범위 재추출"
+
+# ========================================
+# 3. 우선순위 & 충돌 해결
+# ========================================
+
+precedence_rules:
+  _description: "신호 간 충돌 시 해결 규칙"
+  
+  order:
+    - "s3_laws_ethics_physics"
+    - "s8_time_space_bounds"
+    - "s6_math_relations"
+    - "s10_industry_kpi_library"
+    - "s2_rag_consensus"
+    - "s9_case_analogies"
+    - "s7_rules_of_thumb"
+    - "s5_stat_patterns"
+    - "s4_behavioral_econ"
+    - "s1_llm_guess"
+  
+  conflict_resolution:
+    
+    s3_vs_any:
+      decision: "s3 우선"
+      action: "법/물리/윤리 위반 지점 명시 + 합법 대안 보고"
+      umis_action: "Stewart 개입 → 프로젝트 중단 또는 방향 전환"
+    
+    s6_vs_s7:
+      decision: "s6 (수학 관계) 우선"
+      action: "차원·보존 법칙 위반 시 룰 적용 범위 재평가"
+      example: "LTV 계산 시 차원 불일치 → Rule of Thumb 재검토"
+    
+    s10_vs_s2:
+      decision: "s10 (정의) 우선"
+      action: "KPI 정의 불일치 시 s10으로 정의 통일 → 합의 재계산"
+      umis_action: "Rachel 개입 → 정의 Gap 리포트 생성"
+    
+    s2_vs_s9:
+      decision: "동일 KPI·스코프 → s2, 스코프 불일치 → s9"
+      action: "직접 데이터(s2) 우선, 없으면 사례 전이(s9) 보완"
+      umis_action: "Bill 판단 → 4방법 수렴 확인"
+    
+    s4_vs_others:
+      decision: "규범 결론은 유지, 예측은 s4 보정"
+      action: "Should (편향 없음) vs Will (편향 반영) 분리 보고"
+      umis_action: "Steve 해석 → Should와 Will 차이 설명"
+
+# ========================================
+# 4. RAG 서브시스템 (UMIS 통합)
+# ========================================
+
+rag_subsystem:
+  _description: "UMIS RAG v3.0 (4-Layer) 활용"
+  
+  umis_rag_architecture:
+    layer_1_canonical:
+      - "Canonical Index (정규화)"
+      - "Write 1곳만 (업데이트용)"
+      - "재현성 보장"
+    
+    layer_2_projected:
+      - "Projected Index (Agent별 검색용 뷰)"
+      - "TTL 24h + On-Demand"
+      - "90% 규칙 + 10% LLM 학습"
+    
+    layer_3_graph:
+      - "Knowledge Graph (Neo4j)"
+      - "13 노드, 45 관계"
+      - "패턴 조합 발견"
+    
+    layer_4_memory:
+      - "Query Memory (순환 감지)"
+      - "Goal Memory (목표 정렬)"
+      - "RAE Memory (평가 일관성)"
+  
+  active_collections:
+    explorer:
+      - "explorer_knowledge_base (354개)"
+      - "projected_index (71개)"
+      usage: "s2, s7, s9 (패턴, 사례)"
+    
+    quantifier:
+      - "calculation_methodologies (30개)"
+      - "market_benchmarks (100개)"
+      usage: "s2, s7 (합의, 벤치마크)"
+    
+    validator:
+      - "data_sources_registry (50개)"
+      - "definition_validation_cases (84개)"
+      usage: "s10 (정의, 검증)"
+    
+    observer:
+      - "market_structure_patterns (30개)"
+      - "value_chain_benchmarks (50개)"
+      usage: "s2, s7 (시장 구조)"
+    
+    system:
+      - "system_knowledge (25개 도구)"
+      usage: "메타 지식"
+  
+  retrieval:
+    hybrid: ["bm25", "dense"]
+    
+    query_plan:
+      - "derive_keywords_from: [question, domain, KPI dictionary]"
+      - "add_synonyms: true (업계 용어/약어 확장)"
+      - "filter_by: [geography, time_horizon]"
+      - "must_include: [metric_terms, unit, currency, scope]"
+    
+    k: 30
+    rerank: "cross-encoder"
+  
+  extraction:
+    schema:
+      - "metric_name"
+      - "definition (분자/분모·인식시점)"
+      - "value"
+      - "unit"
+      - "currency"
+      - "geo"
+      - "period"
+      - "source"
+      - "method (조사/표본/모형/회계정책)"
+      - "sample_size?"
+      - "caveats?"
+    
+    umis_id_integration:
+      src_id: "SRC_xxx (출처)"
+      est_id: "EST_xxx (추정치)"
+      kpi_id: "KPI_xxx (정의)"
+  
+  normalization:
+    currency:
+      base: "USD"
+      fx_source: "trusted_fx_table"
+      as_of: "publication_date"
+      umis_standard: "KRW (국내 프로젝트)"
+    
+    time_alignment: "fiscal_to_calendar"
+    
+    kpi_dictionary:
+      enforce_strict_match: true
+      conflict_policy: "reject_or_redefine"
+      umis_validator: "Rachel 검증"
+  
+  synthesis:
+    consensus_operator:
+      type: "interval_intersection_then_trimmed_mean"
+      min_independent_sources: 2
+      outlier_rule: "IQR*1.5 or z>2.5"
+      
+      umis_parallel: "Bill의 4방법 수렴 (±30%)"
+    
+    bounds_operator:
+      type: "from_regulation_or_physical_limits"
+      umis_signals: "s3, s8"
+    
+    contradiction_detector:
+      action: "표준화 정의로 재추출; 불가시 이견으로 표기"
+      umis_action: "Rachel Gap 분석 리포트"
+  
+  case_analogy:
+    matcher:
+      features: ["scale", "demographics", "channel", "regulation", "capex/opex", "workflow"]
+      distance: "learned_similarity + rule_overrides"
+      umis_explorer: "success_case_library"
+    
+    transfer:
+      adjustments: ["elasticity", "penetration_ceiling", "learning_curve", "policy_factor"]
+      umis_bill: "전이 보정 계수 Excel 함수화"
+    
+    guardrails:
+      must_report: ["유사도 점수", "적용 불가 요인", "보정계수"]
+      umis_stewart: "품질 평가 → 신뢰도 점수"
+  
+  evidence_scoring:
+    trust:
+      base_on: ["publisher", "method_quality", "recency", "independence"]
+      decay:
+        recency_half_life_days: 540
+      
+      umis_integration:
+        publisher: "SRC_xxx 메타데이터"
+        method_quality: "Rachel 검증 등급"
+        recency: "자동 계산 (현재 날짜 - 출판일)"
+        independence: "출처 도메인 비교"
+    
+    compute_source_weight: "w = w_publisher * w_method * w_recency * w_independence"
+
+# ========================================
+# 5. 파이프라인 (6단계)
+# ========================================
+
+pipeline:
+  _description: "신호 기반 추론 실행 흐름"
+  
+  step_1_clarify_and_type:
+    action: "추정 대상·단위·지리·기간·KPI 정의 고정; KPI 사전으로 호환성 검사"
+    
+    umis_agents:
+      rachel: "KPI 정의 검증 (s10)"
+      bill: "단위·범위 명확화"
+    
+    output:
+      - "SRC_DEF_xxx (표준 정의)"
+      - "단위, 지리, 시간 확정"
+  
+  step_2_hard_constraints:
+    action: "법/윤리/물리, 시간·공간 한계 설정 (상·하한)"
+    
+    umis_agents:
+      rachel: "규제 확인 (s3)"
+      albert: "시공간 제약 (s8)"
+    
+    output:
+      - "상한: xxx (근거: 규제/물리)"
+      - "하한: xxx (근거: 경제성/물리)"
+  
+  step_3_domain_structure:
+    action: "도메인 플레이북 분해 (수요/공급/단가/채널/규제)"
+    
+    umis_agents:
+      albert: "시장 구조 관찰"
+      steve: "기회 분해"
+    
+    output:
+      - "시장 모형: 고객 × 단가 × 빈도"
+      - "가치사슬 맵"
+  
+  step_4_rag_retrieve_and_parse:
+    action: "RAG로 합의 후보·KPI 정의·유사 사례·규제·요율표를 수집→정규화"
+    
+    umis_rag:
+      - "s2: explorer/quantifier/validator RAG 검색"
+      - "s9: success_case_library 매칭"
+      - "s10: definition_validation_cases 참조"
+    
+    output:
+      - "SRC_xxx (출처 목록)"
+      - "합의 범위 (s2)"
+      - "유사 사례 (s9)"
+      - "정의 (s10)"
+  
+  step_5_arbitrate_and_fuse:
+    action: "우선순위 규칙으로 s2/s9/s10을 결합, s6로 차원·보존 검사"
+    
+    umis_agents:
+      bill: "4방법 수렴 (s2+s9+s7+s1)"
+      rachel: "정의 일관성 (s6, s10)"
+    
+    precedence: "s3 → s8 → s6 → s10 → s2 → s9 → ..."
+    
+    output:
+      - "점추정: xxx"
+      - "범위: xxx-yyy"
+      - "신호별 가중치 적용 결과"
+  
+  step_6_behavioral_adjust:
+    action: "s4로 채택률·전환·가격수용성 보정 (should와 will 분리)"
+    
+    umis_agents:
+      steve: "Should vs Will 해석"
+      bill: "현실 보정 계산"
+    
+    output:
+      - "Should (규범적): xxx"
+      - "Will (현실): yyy"
+      - "Gap 원인: 시장 지배력, 손실회피 등"
+  
+  step_7_verify_and_bound:
+    action: "검증 체크리스트 통과 여부 기록; 이견·모순을 증거표로 남김"
+    
+    umis_agents:
+      stewart: "품질 평가, 순환 감지"
+      rachel: "검증 로그 작성"
+    
+    checklist:
+      - "단위·차원 일관성 (s6)"
+      - "규제 준수 (s3)"
+      - "비교사례 합의 (s2)"
+      - "Should vs Will 분리 (s4)"
+    
+    output:
+      - "verification_log.md"
+      - "신뢰도: Low/Medium/High"
+  
+  step_8_produce_report:
+    action: "점/범위, 근거, 민감도, 리스크, 다음 행동(데이터 수집거리)을 구조화"
+    
+    umis_deliverable:
+      - "domain_reasoner_analysis_[topic].md"
+      - "포함: 증거표, 검증 로그, 민감도, 잔여 불확실성"
+
+# ========================================
+# 6. 리포트 템플릿
+# ========================================
+
+report_template:
+  _description: "표준 출력 형식"
+  
+  sections:
+    
+    section_1_summary:
+      - "결론 (점추정)"
+      - "합의 범위"
+      - "신뢰도 (Low/Medium/High)"
+      - "거부 여부"
+    
+    section_2_signal_breakdown:
+      order: "s3, s8, s6, s10, s2, s9, s7, s5, s1, s4"
+      
+      per_signal:
+        - "신호명 (weight)"
+        - "근거 내용"
+        - "UMIS 매핑"
+        - "출력 (값, ID, 출처)"
+    
+    section_3_quantitative_results:
+      - "점추정: xxx"
+      - "범위: xxx-yyy"
+      - "Should vs Will"
+      - "계산 근거 (UMIS Excel 함수)"
+    
+    section_4_evidence_table:
+      columns:
+        - "ID (SRC_xxx)"
+        - "출처"
+        - "정의"
+        - "값"
+        - "지리"
+        - "기간"
+        - "방법론"
+        - "가중치"
+        - "모순 여부"
+      
+      umis_standard: "Rachel의 source_registry.yaml 형식"
+    
+    section_5_verification_log:
+      checks:
+        - "단위·차원 일관성 (✅/⚠️)"
+        - "규제 준수"
+        - "비교사례 합의"
+        - "Should vs Will 분리"
+      
+      umis_stewart: "Guardian 품질 평가"
+    
+    section_6_sensitivity_analysis:
+      - "Top-N 결정 요인 (영향도 별점)"
+      - "민감도 계산 (±10% 변동 시 영향)"
+      
+      umis_bill: "Excel Sensitivity 시트"
+    
+    section_7_risks_and_next_steps:
+      residual_unknowns:
+        - "정의 불명확 요소"
+        - "채택률 불확실성"
+        - "시장 변동성"
+      
+      next_data_collection:
+        priority_1: "필수 데이터 (신뢰도 핵심)"
+        priority_2: "중요 데이터 (범위 축소)"
+        priority_3: "참고 데이터 (보완)"
+      
+      alternative_approaches:
+        - "Value-Theory (Top-Down)"
+        - "시나리오 기반"
+        - "역산 (Reverse Engineering)"
+      
+      umis_action:
+        discovery_sprint: "신뢰도 < 50% 시 자동 권고"
+        guardian_alert: "필수 데이터 수집 알림"
+
+# ========================================
+# 7. UMIS 통합 권장사항
+# ========================================
+
+umis_integration_recommendations:
+  
+  tool_registry_additions:
+    - tool_key: "tool:universal:domain_reasoner_10_signals"
+      description: "10가지 신호 우선순위 추론"
+      file: "data/raw/umis_domain_reasoner_methodology.yaml"
+    
+    - tool_key: "tool:quantifier:should_vs_will_analysis"
+      description: "규범 vs 현실 분리 분석"
+      agent: "quantifier"
+    
+    - tool_key: "tool:validator:kpi_definition_library"
+      description: "KPI 정의 표준화 라이브러리"
+      agent: "validator"
+  
+  guardian_meta_rag_enhancement:
+    circular_detection:
+      new_trigger: "동일 신호 3회 반복 → 다른 신호 제안"
+    
+    quality_evaluation:
+      new_criteria:
+        - "신호 다양성 (10개 중 몇 개 사용?)"
+        - "증거표 완성도 (독립 출처 ≥2?)"
+        - "Should vs Will 분리 여부"
+  
+  rachel_validator_enhancement:
+    kpi_definitions_yaml:
+      file: "data/raw/kpi_definitions.yaml"
+      structure:
+        kpi_id: "KPI_xxx"
+        metric_name: "xxx"
+        definition: "분자/분모 명시"
+        unit: "xxx"
+        scope: "xxx"
+        excludes: "xxx"
+      
+      auto_check: "정의 Gap 자동 감지 → 경고"
+  
+  bill_quantifier_enhancement:
+    should_vs_will_sheet:
+      excel_tab: "Should_vs_Will"
+      columns:
+        - "항목"
+        - "Should (규범)"
+        - "Will (현실)"
+        - "Gap"
+        - "원인"
+      
+      formula_example:
+        should: "=이상적_채택률"
+        will: "=이상적_채택률 * 행동경제학_보정계수"
+        gap: "=Should - Will"
+    
+    sensitivity_automation:
+      tool: "Excel Data Table"
+      variables: ["채택률", "단가", "성장률"]
+      output: "민감도 매트릭스"
+  
+  stewart_guardian_enhancement:
+    signal_diversity_check:
+      warning: "신호 2개 이하 사용 → 다양성 부족 경고"
+      suggestion: "s2(RAG), s9(사례), s7(룰) 중 미사용 신호 제안"
+    
+    confidence_scoring:
+      formula: |
+        신뢰도 = (
+          독립_출처_수 * 0.3 +
+          신호_다양성 * 0.2 +
+          정의_명확도 * 0.2 +
+          수렴도 * 0.3
+        )
+      
+      threshold:
+        low: "< 0.4 → Discovery Sprint 권고"
+        medium: "0.4-0.7 → 진행, 경고 부착"
+        high: "> 0.7 → 진행"
+
+# ========================================
+# 8. 사용 예시
+# ========================================
+
+examples:
+  
+  example_1_delivery_platform_commission:
+    question: "국내 음식 배달 플랫폼 평균 수수료율?"
+    domain: "플랫폼 비즈니스"
+    geography: "KR"
+    
+    signals_used:
+      s2_rag_consensus:
+        umis_rag: "business_model_patterns"
+        result: "6-12% (배달의민족)"
+        weight: 0.9
+      
+      s9_case_analogies:
+        case: "우버 25%"
+        adjustment: "× 0.4 (서비스 차이)"
+        result: "10%"
+        weight: 0.85
+      
+      s7_rules_of_thumb:
+        rule: "플랫폼 수수료 = 대체 비용 × 0.45"
+        result: "20% × 0.45 = 9%"
+        weight: 0.7
+      
+      s4_behavioral_econ:
+        should: "7-8% (공정성)"
+        will: "8.5-10% (시장 지배력)"
+        weight: 0.6
+    
+    final_result:
+      point: "8.5%"
+      range: "6-12%"
+      confidence: "Medium-High (70%)"
+      src_count: 2
+    
+    umis_agents:
+      - "Albert: 플랫폼 구조 관찰"
+      - "Rachel: 수수료율 정의 검증"
+      - "Bill: 범위 수렴 계산"
+      - "Steve: Should vs Will 해석"
+      - "Stewart: 신뢰도 평가"
+  
+  example_2_senior_care_robot_market:
+    question: "시니어 케어 로봇 시장 잠재 규모 (2030)?"
+    domain: "Healthcare Tech"
+    geography: "KR"
+    time_horizon: "2030"
+    
+    signals_used:
+      s3_laws_ethics_physics:
+        regulation: "의료기기법 인증 필요"
+        ethics: "돌봄 노동 대체 이슈"
+        result: "제약 있으나 위반 아님"
+      
+      s8_time_space_bounds:
+        development: "3-5년"
+        adoption_speed: "2030년 = 초기 단계"
+        result: "연 5,000-10,000대"
+      
+      s9_case_analogies:
+        case: "일본 케어 로봇 $500M (2025)"
+        transfer: "인구 × 0.42, 고령화 × 0.59, 성장 × 1.76"
+        result: "2,834억 원"
+        weight: 0.85
+      
+      s1_llm_guess:
+        result: "1,950억 원"
+        weight: 0.15
+      
+      s4_behavioral_econ:
+        should: "5,000억 (필요성)"
+        will: "2,850억 (채택 장벽)"
+        barriers: "기술 거부감, 가격 부담"
+    
+    final_result:
+      point: "2,850억 원"
+      range: "1,500억-5,000억"
+      confidence: "Low-Medium (40%)"
+      warning: "독립 출처 부족, Discovery Sprint 권고"
+    
+    umis_agents:
+      - "Rachel: 케어 로봇 정의 Gap 경고"
+      - "Bill: Bottom-Up + 사례 전이 수렴"
+      - "Steve: Should vs Will 해석"
+      - "Stewart: 신뢰도 40% → Discovery Sprint 자동 권고"
+    
+    next_steps:
+      priority_1:
+        - "일본 케어 로봇 시장 보고서"
+        - "국내 노인층 기술 수용 조사"
+      
+      umis_action: "Discovery Sprint (5-Agent 병렬 탐색)"
+
+# ========================================
+# END
+# ========================================
+
