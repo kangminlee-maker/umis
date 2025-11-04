@@ -1,0 +1,46 @@
+version: 7.1.0
+created: '2025-11-03'
+tools:
+- tool_id: explorer:pattern_search
+  tool_key: tool:explorer:pattern_search
+  metadata:
+    agent: explorer
+    category: rag_search
+    complexity: low
+    context_size: 200
+    priority: high
+  when_to_use:
+    keywords:
+    - 패턴
+    - 모델
+    - 사례
+    conditions:
+    - agent == 'explorer'
+    - task_type in ['pattern_discovery', 'model_matching']
+  content: '
+
+    # Explorer: RAG 패턴 검색
+
+
+    ## 목적
+
+    31개 비즈니스 모델 + 23개 Disruption 패턴에서 관련 패턴 자동 검색
+
+
+    ## 사용 예시
+
+    ```python
+
+    from umis_rag.agents.explorer import ExplorerRAG
+
+
+    explorer = ExplorerRAG()
+
+    patterns = explorer.search_patterns("구독 모델")
+
+    ```
+
+
+    (샘플 - 실제로는 더 상세한 내용)
+
+    '

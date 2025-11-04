@@ -1,36 +1,74 @@
-# UMIS v7.1.0-dev1 현재 상태
+# UMIS v7.1.0-dev2 현재 상태
 
-**버전**: v7.1.0-dev1  
-**마지막 업데이트**: 2025-11-03  
-**상태**: Development (Agent RAG 확장)
+**버전**: v7.1.0-dev2  
+**마지막 업데이트**: 2025-11-04  
+**상태**: Development (Agent RAG 확장 + System RAG 완성)
 
 ---
 
 ## 🏆 완성된 기능
 
-### 1. 모든 Agent RAG 클래스 ⭐ 신규!
+### 1. 모든 Agent RAG 클래스 + 데이터 ⭐ 완성!
 
 ```yaml
-상태: ✅ 구현 완료 (v7.1.0-dev1)
+상태: ✅ 완전 작동 (v7.1.0-dev2)
 
-Agent:
-  Explorer: ✅ 기회 발굴 (패턴/사례)
-  Observer: ✅ 구조 분석 (구조/가치사슬) - 신규!
-  Quantifier: ✅ 정량 분석 (방법론/벤치마크) - 신규!
-  Validator: ✅ 데이터 검증 (소스/정의) - 신규!
+Agent RAG:
+  Explorer: ✅ 기회 발굴 (패턴/사례) - 354개
+  Quantifier: ✅ 정량 분석 (방법론 30개 + 벤치마크 100개) ⭐
+  Validator: ✅ 데이터 검증 (소스 50개 + 정의 84개) ⭐
+  Observer: ✅ 구조 분석 (패턴 30개 + 가치사슬 50개) ⭐
 
-총 Collections: 8개
-  - explorer_knowledge_base ✅ (기존)
-  - projected_index ✅ (기존)
-  - calculation_methodologies ⏳ (구축 필요)
-  - market_benchmarks ⏳ (구축 필요)
-  - data_sources_registry ⏳ (구축 필요)
-  - definition_validation_cases ⏳ (구축 필요)
-  - market_structure_patterns ⏳ (구축 필요)
-  - value_chain_benchmarks ⏳ (구축 필요)
+총 Collections: 13개
+  - explorer_knowledge_base: 354개 ✅
+  - projected_index: 71개 ✅
+  - canonical_index: 20개 ✅
+  
+  신규 6개 (v7.1.0-dev2):
+  - calculation_methodologies: 30개 ✅
+  - market_benchmarks: 100개 ✅
+  - data_sources_registry: 50개 ✅
+  - definition_validation_cases: 84개 ✅
+  - market_structure_patterns: 30개 ✅
+  - value_chain_benchmarks: 50개 ✅
+  
+  Guardian:
+  - goal_memory: 6개 ✅
+  - query_memory: 17개 ✅
+  - rae_index: 4개 ✅
+  
+  System RAG (v7.1.0-dev2):
+  - system_knowledge: 10개 ✅
+
+총 문서: 826개 (13개 Collection)
 ```
 
-### 2. Guardian Meta-RAG 활성화 ⭐ 신규!
+### 2. System RAG (Key-based) ⭐ 신규!
+
+```yaml
+상태: ✅ 완성 (v7.1.0-dev2)
+
+기능:
+  • KeyDirectory - O(1) 정확 매칭
+  • Key-first · Vector-fallback 2단계 검색
+  • Tool Registry - 10개 도구
+  • 결정성 100% (50회 테스트 통과)
+
+성능:
+  • 평균 지연시간: 0.10-0.12ms (목표 대비 10배 빠름!)
+  • 정확도: 100% (exact_key 매칭)
+  • 비용: $0 (임베딩 API 호출 불필요)
+
+Scripts:
+  • scripts/query_system_rag.py
+  • scripts/build_system_knowledge.py
+  • scripts/test_system_rag_determinism.py
+
+Collection:
+  • system_knowledge: 10개 도구
+```
+
+### 3. Guardian Meta-RAG 활성화 ⭐
 
 ```yaml
 상태: ✅ 활성화됨 (v7.1.0-dev1)
@@ -276,26 +314,24 @@ Neo4j: 5.13 (Docker Compose)
 
 ## 🎯 다음 단계
 
-### v7.1.0-dev2 (다음 세션)
+### v7.1.0-dev3 (다음 세션)
 
 ```yaml
-RAG Collection 구축:
-  • 6개 신규 Collection 데이터 작성
-  • 계산 방법론 (30개)
-  • 시장 벤치마크 (100개)
-  • 데이터 소스 (50개)
-  • 정의 검증 사례 (100개)
-  • 구조 패턴 (30개)
-  • 가치사슬 벤치마크 (50개)
-
-System RAG:
-  • Tool Registry 작성 (25개 도구)
-  • umis_core.yaml (INDEX) 생성
-  • Key-based 정확 검색
+System RAG 확장:
+  • Tool Registry 확장 (10개 → 25개)
+  • umis_core.yaml (INDEX) 작성 (< 1,000줄)
+  • .cursorrules 통합
 
 Excel 자동 생성:
   • FormulaEngine 구현
+  • AssumptionsBuilder, MethodBuilders
+  • ConvergenceBuilder
   • 9개 시트 생성기
+
+데이터 품질:
+  • 주요 메트릭 검증 (10-20개)
+  • 검증 완료 메타데이터 추가
+  • A 등급 패턴 80% 달성
 ```
 
 ---

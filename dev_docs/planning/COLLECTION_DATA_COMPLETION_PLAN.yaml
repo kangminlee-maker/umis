@@ -1,0 +1,560 @@
+# ========================================
+# RAG Collection 데이터 완성 계획
+# ========================================
+#
+# 작성일: 2025-11-03
+# 총 작업량: 299개 항목
+# 예상 소요: 20시간 (배치 작업)
+#
+# ========================================
+
+_meta:
+  version: "7.1.0"
+  created: "2025-11-03"
+  total_items_needed: 299
+  total_batches: 30
+  estimated_hours: 20
+
+# ========================================
+# Phase 1: 빠른 완성 (67개 항목, 5시간)
+# ========================================
+
+phase_1_quick_wins:
+  duration: "5시간"
+  total_items: 67
+  
+  # ========================================
+  # Batch 1.1: calculation_methodologies 완성
+  # ========================================
+  
+  batch_1_1:
+    collection: "calculation_methodologies"
+    target: "4개 (26 → 30)"
+    priority: "P2"
+    duration: "15분"
+    
+    items_to_add:
+      - method_id: "MTH_MARKET_003"
+        name: "TAM/SAM/SOM 구분"
+        category: "market_definition"
+        
+      - method_id: "MTH_PRICING_002"
+        name: "Willingness to Pay Analysis"
+        category: "pricing"
+      
+      - method_id: "MTH_SEGMENT_002"
+        name: "Geographic Segmentation"
+        category: "segmentation"
+      
+      - method_id: "MTH_EFFICIENCY_002"
+        name: "ROI Calculation"
+        category: "efficiency"
+    
+    approach: "간단한 방법론, 웹서치 불필요"
+    
+    status: "pending"
+  
+  # ========================================
+  # Batch 1.2-1.5: market_structure_patterns
+  # ========================================
+  
+  batch_1_2:
+    collection: "market_structure_patterns"
+    target: "8개 (7 → 15, 경쟁 구조 완성)"
+    priority: "P2"
+    duration: "1시간"
+    
+    items_to_add:
+      - pattern_id: "STR_COMP_003"
+        name: "과점 경쟁 (Oligopolistic Competition)"
+      
+      - pattern_id: "STR_COMP_004"
+        name: "독점적 경쟁 (Monopolistic Competition)"
+      
+      - pattern_id: "STR_COMP_005"
+        name: "듀오폴리 (Duopoly)"
+        examples: ["코카콜라 vs 펩시", "보잉 vs 에어버스"]
+      
+      - pattern_id: "STR_COMP_006"
+        name: "플랫폼 경쟁 (Platform Competition)"
+        examples: ["iOS vs Android", "PlayStation vs Xbox"]
+      
+      - pattern_id: "STR_COMP_007"
+        name: "표준 전쟁 (Standards War)"
+      
+      - pattern_id: "STR_COMP_008"
+        name: "가격 선도자 (Price Leadership)"
+      
+      - pattern_id: "STR_COMP_009"
+        name: "카르텔 (Cartel)"
+        note: "불법이지만 존재"
+      
+      - pattern_id: "STR_COMP_010"
+        name: "공동 독점 (Joint Monopoly)"
+    
+    approach: "경제학 교과서 + 실제 사례"
+    web_search: false
+    
+    status: "pending"
+  
+  batch_1_3:
+    collection: "market_structure_patterns"
+    target: "7개 (유통 구조 완성)"
+    duration: "1시간"
+    
+    items_to_add:
+      - "STR_DIST_003: B2B 직거래"
+      - "STR_DIST_004: B2C 직거래 (D2C)"
+      - "STR_DIST_005: O2O (Online to Offline)"
+      - "STR_DIST_006: 프랜차이즈 모델"
+      - "STR_DIST_007: 다단계 (MLM) - 합법"
+      - "STR_DIST_008: 공급망 통합 (Vertical Integration)"
+    
+    status: "pending"
+  
+  batch_1_4:
+    collection: "market_structure_patterns"
+    target: "5개 (가격 구조 완성)"
+    duration: "45분"
+    
+    items_to_add:
+      - "STR_PRICE_002: 가격 차별 (Price Discrimination)"
+      - "STR_PRICE_003: 동적 가격 (Dynamic Pricing)"
+      - "STR_PRICE_004: Freemium"
+      - "STR_PRICE_005: 구독 가격"
+    
+    status: "pending"
+  
+  batch_1_5:
+    collection: "market_structure_patterns"
+    target: "3개 (진입장벽, 비효율성 완성)"
+    duration: "30분"
+    
+    items_to_add:
+      - "STR_BARRIER_002: 규모의 경제"
+      - "STR_BARRIER_003: 브랜드 충성도"
+      - "STR_INEFF_002: 거래 비용"
+    
+    status: "pending"
+  
+  # ========================================
+  # Batch 1.6-1.9: data_sources_registry
+  # ========================================
+  
+  batch_1_6:
+    collection: "data_sources_registry"
+    target: "10개 (공공 통계 완성)"
+    duration: "1시간"
+    
+    approach: "공공 데이터 포털 리스트업"
+    web_search: false
+    
+    items_to_add:
+      - "SRC_PUB_004: 한국은행 ECOS"
+      - "SRC_PUB_005: 국세청 국세통계"
+      - "SRC_PUB_006: 공정거래위원회"
+      - "SRC_PUB_007: 금융감독원"
+      - "SRC_PUB_008: Eurostat"
+      - "SRC_PUB_009: OECD Data"
+      - "SRC_PUB_010: IMF Data"
+    
+    status: "pending"
+  
+  batch_1_7:
+    collection: "data_sources_registry"
+    target: "15개 (산업 리포트 완성)"
+    duration: "1.5시간"
+    
+    items_to_add:
+      - "SRC_IND_004: McKinsey Reports"
+      - "SRC_IND_005: BCG Insights"
+      - "SRC_IND_006: Forrester"
+      - "SRC_IND_007: CB Insights"
+      - "SRC_IND_008: PitchBook"
+      - "SRC_IND_009: Crunchbase"
+      - "SRC_IND_010: eMarketer"
+      - "SRC_IND_011: Nielsen"
+      - "SRC_IND_012: Kantar"
+      - "SRC_IND_013: 한국콘텐츠진흥원"
+      - "SRC_IND_014: KOCCA"
+      - "SRC_IND_015: 산업연구원 (KIET)"
+    
+    status: "pending"
+  
+  batch_1_8:
+    collection: "data_sources_registry"
+    target: "10개 (금융, 기업공시 완성)"
+    duration: "45분"
+    
+    items_to_add:
+      - "SRC_FIN_003: Bloomberg Terminal"
+      - "SRC_FIN_004: Reuters"
+      - "SRC_FIN_005: Yahoo Finance"
+      - "SRC_FIN_006: 한국거래소 (KRX)"
+      - "SRC_CORP_001: 기업 IR 자료"
+      - "SRC_CORP_002: 투자설명서"
+    
+    status: "pending"
+  
+  batch_1_9:
+    collection: "data_sources_registry"
+    target: "5개 (학술, API 완성)"
+    duration: "30분"
+    
+    items_to_add:
+      - "SRC_ACA_002: JSTOR"
+      - "SRC_ACA_003: arXiv"
+      - "SRC_API_002: Twitter API"
+      - "SRC_API_003: LinkedIn API"
+    
+    status: "pending"
+
+# ========================================
+# Phase 2: 대용량 Collection (232개 항목, 15시간)
+# ========================================
+
+phase_2_large_collections:
+  duration: "15시간"
+  total_items: 232
+  
+  # ========================================
+  # Batch 2.1-2.7: definition_validation_cases (95개)
+  # ========================================
+  
+  batch_2_1:
+    collection: "definition_validation_cases"
+    target: "15개 (사용자 지표 완성)"
+    priority: "P1"
+    duration: "2시간"
+    
+    items_to_add:
+      - "DEF_USER_005: WAU (Weekly Active Users)"
+      - "DEF_USER_006: Stickiness (DAU/MAU)"
+      - "DEF_USER_007: Session Length"
+      - "DEF_USER_008: Session Frequency"
+      - "DEF_USER_009: New vs Returning Users"
+      - "DEF_USER_010: User Acquisition"
+      - "DEF_USER_011: Activation Rate"
+      - "DEF_USER_012: Time to Value (TTV)"
+      - "DEF_USER_013: Feature Adoption Rate"
+      - "DEF_USER_014: Power Users"
+      - "DEF_USER_015: Dormant Users"
+      - "DEF_USER_016: Reactivation Rate"
+      - "DEF_USER_017: User Engagement Score"
+      - "DEF_USER_018: Monthly Cohort Retention"
+      - "DEF_USER_019: N-Day Retention Curve"
+    
+    approach: "SaaS 메트릭 표준 정의 + 산업별 차이"
+    web_search: true
+    references:
+      - "Amplitude Product Analytics"
+      - "Mixpanel Metrics"
+      - "Segment Definitions"
+    
+    status: "pending"
+  
+  batch_2_2:
+    collection: "definition_validation_cases"
+    target: "20개 (매출 지표)"
+    duration: "2.5시간"
+    
+    items_to_add:
+      - "DEF_REV_002: MRR (Monthly Recurring Revenue)"
+      - "DEF_REV_003: ARR (Annual Recurring Revenue)"
+      - "DEF_REV_004: Bookings"
+      - "DEF_REV_005: Billings"
+      - "DEF_REV_006: Revenue Recognition"
+      - "DEF_REV_007: Deferred Revenue"
+      - "DEF_REV_008: GMV (Gross Merchandise Value)"
+      - "DEF_REV_009: Take Rate"
+      - "DEF_REV_010: AOV (Average Order Value)"
+      - "DEF_REV_011: ASP (Average Selling Price)"
+      - "DEF_REV_012: Revenue per Session"
+      - "DEF_REV_013: Revenue per Visit"
+      - "DEF_REV_014: Conversion Value"
+      - "DEF_REV_015: Customer Lifetime Revenue"
+      - "DEF_REV_016: Gross Revenue"
+      - "DEF_REV_017: Net Revenue"
+      - "DEF_REV_018: Revenue Churn"
+      - "DEF_REV_019: NRR (Net Revenue Retention)"
+      - "DEF_REV_020: GRR (Gross Revenue Retention)"
+    
+    status: "pending"
+  
+  batch_2_3:
+    collection: "definition_validation_cases"
+    target: "20개 (성장 지표)"
+    duration: "2.5시간"
+    
+    items_to_add:
+      - "DEF_GROWTH_001: YoY Growth"
+      - "DEF_GROWTH_002: QoQ Growth"
+      - "DEF_GROWTH_003: MoM Growth"
+      - "DEF_GROWTH_004: CAGR"
+      - "DEF_GROWTH_005: Growth Rate"
+      - "DEF_GROWTH_006: User Growth Rate"
+      - "DEF_GROWTH_007: Revenue Growth Rate"
+      - "DEF_GROWTH_008: Market Share Growth"
+      - "DEF_GROWTH_009: Organic vs Paid Growth"
+      - "DEF_GROWTH_010: Viral Growth"
+      - "DEF_GROWTH_011: Referral Rate"
+      - "DEF_GROWTH_012: Invite Rate"
+      - "DEF_GROWTH_013: Viral Coefficient (K-factor)"
+      - "DEF_GROWTH_014: Viral Cycle Time"
+      - "DEF_GROWTH_015: Quick Ratio (Growth)"
+      - "DEF_GROWTH_016: Expansion Revenue"
+      - "DEF_GROWTH_017: Upsell Rate"
+      - "DEF_GROWTH_018: Cross-sell Rate"
+      - "DEF_GROWTH_019: Logo Retention"
+      - "DEF_GROWTH_020: Dollar Retention"
+    
+    status: "pending"
+  
+  batch_2_4:
+    collection: "definition_validation_cases"
+    target: "20개 (효율 지표)"
+    duration: "2.5시간"
+    
+    items_to_add:
+      - "DEF_EFF_001: LTV (Customer Lifetime Value)"
+      - "DEF_EFF_002: CAC (Customer Acquisition Cost)"
+      - "DEF_EFF_003: LTV/CAC Ratio"
+      - "DEF_EFF_004: CAC Payback Period"
+      - "DEF_EFF_005: Magic Number"
+      - "DEF_EFF_006: Sales Efficiency"
+      - "DEF_EFF_007: Marketing Efficiency Ratio"
+      - "DEF_EFF_008: ROI (Return on Investment)"
+      - "DEF_EFF_009: ROAS (Return on Ad Spend)"
+      - "DEF_EFF_010: CPA (Cost Per Acquisition)"
+      - "DEF_EFF_011: CPC (Cost Per Click)"
+      - "DEF_EFF_012: CPM (Cost Per Mille)"
+      - "DEF_EFF_013: CTR (Click-Through Rate)"
+      - "DEF_EFF_014: Conversion Rate"
+      - "DEF_EFF_015: Lead Conversion Rate"
+      - "DEF_EFF_016: Trial Conversion Rate"
+      - "DEF_EFF_017: Freemium Conversion Rate"
+      - "DEF_EFF_018: Cart Abandonment Rate"
+      - "DEF_EFF_019: Checkout Conversion"
+      - "DEF_EFF_020: Funnel Conversion Rate"
+    
+    status: "pending"
+  
+  batch_2_5:
+    collection: "definition_validation_cases"
+    target: "20개 (재무 지표)"
+    duration: "2.5시간"
+    
+    items_to_add:
+      - "DEF_FIN_001: Gross Margin"
+      - "DEF_FIN_002: Operating Margin"
+      - "DEF_FIN_003: Net Margin"
+      - "DEF_FIN_004: EBITDA"
+      - "DEF_FIN_005: EBITDA Margin"
+      - "DEF_FIN_006: Gross Profit"
+      - "DEF_FIN_007: Operating Profit"
+      - "DEF_FIN_008: Net Profit"
+      - "DEF_FIN_009: Burn Rate"
+      - "DEF_FIN_010: Runway"
+      - "DEF_FIN_011: Cash Flow"
+      - "DEF_FIN_012: Free Cash Flow"
+      - "DEF_FIN_013: Operating Cash Flow"
+      - "DEF_FIN_014: Working Capital"
+      - "DEF_FIN_015: Current Ratio"
+      - "DEF_FIN_016: Quick Ratio (Liquidity)"
+      - "DEF_FIN_017: Debt-to-Equity"
+      - "DEF_FIN_018: Interest Coverage"
+      - "DEF_FIN_019: ROE (Return on Equity)"
+      - "DEF_FIN_020: ROA (Return on Assets)"
+    
+    status: "pending"
+  
+  # ========================================
+  # Batch 2.6-2.11: market_benchmarks (94개)
+  # ========================================
+  
+  batch_2_6:
+    collection: "market_benchmarks"
+    target: "15개 (산업별 시장 규모 완성)"
+    duration: "2시간"
+    
+    approach: "Statista, Gartner, IDC 데이터 활용"
+    web_search: true
+    
+    items_to_add:
+      - "BMK_SIZE_006: 글로벌 클라우드 컴퓨팅"
+      - "BMK_SIZE_007: 글로벌 AI/ML"
+      - "BMK_SIZE_008: 글로벌 Cybersecurity"
+      - "BMK_SIZE_009: 글로벌 IoT"
+      - "BMK_SIZE_010: 글로벌 5G"
+      - "BMK_SIZE_011: 글로벌 전기차"
+      - "BMK_SIZE_012: 글로벌 배터리"
+      - "BMK_SIZE_013: 글로벌 반도체"
+      - "BMK_SIZE_014: 글로벌 디스플레이"
+      - "BMK_SIZE_015: 한국 K-POP/엔터"
+      - "BMK_SIZE_016: 한국 반도체"
+      - "BMK_SIZE_017: 한국 디스플레이"
+      - "BMK_SIZE_018: 한국 배터리"
+      - "BMK_SIZE_019: 한국 자동차"
+      - "BMK_SIZE_020: 한국 화장품"
+    
+    status: "pending"
+  
+  batch_2_7:
+    collection: "market_benchmarks"
+    target: "19개 (SaaS 메트릭 완성)"
+    duration: "2.5시간"
+    
+    items_to_add:
+      - "BMK_SAAS_002: Logo Retention (B2B SaaS)"
+      - "BMK_SAAS_003: Net Revenue Retention"
+      - "BMK_SAAS_004: Gross Revenue Retention"
+      - "BMK_SAAS_005: LTV/CAC Ratio (SaaS)"
+      - "BMK_SAAS_006: CAC Payback (SaaS)"
+      - "BMK_SAAS_007: Magic Number (SaaS)"
+      - "BMK_SAAS_008: Rule of 40"
+      - "BMK_SAAS_009: ARR per Employee"
+      - "BMK_SAAS_010: Sales Efficiency"
+      - "BMK_SAAS_011: Customer Concentration"
+      - "BMK_SAAS_012: ACV (Annual Contract Value)"
+      - "BMK_SAAS_013: Expansion Revenue Rate"
+      - "BMK_SAAS_014: Contraction Revenue Rate"
+      - "BMK_SAAS_015: Trial-to-Paid Conversion"
+      - "BMK_SAAS_016: Time to Value"
+      - "BMK_SAAS_017: Product-Led Growth Rate"
+      - "BMK_SAAS_018: Freemium Conversion"
+      - "BMK_SAAS_019: Viral Coefficient (B2B)"
+      - "BMK_SAAS_020: NPS (Net Promoter Score)"
+    
+    status: "pending"
+  
+  batch_2_8:
+    collection: "market_benchmarks"
+    target: "15개 (이커머스 메트릭)"
+    duration: "2시간"
+    
+    status: "pending"
+  
+  batch_2_9:
+    collection: "market_benchmarks"
+    target: "15개 (구독 비즈니스)"
+    duration: "2시간"
+    
+    status: "pending"
+  
+  batch_2_10:
+    collection: "market_benchmarks"
+    target: "15개 (성장률)"
+    duration: "2시간"
+    
+    status: "pending"
+  
+  batch_2_11:
+    collection: "market_benchmarks"
+    target: "15개 (전환율)"
+    duration: "2시간"
+    
+    status: "pending"
+  
+  # ========================================
+  # Batch 2.12-2.16: value_chain_benchmarks (43개)
+  # ========================================
+  
+  batch_2_12:
+    collection: "value_chain_benchmarks"
+    target: "10개 (제조업 완성)"
+    duration: "1.5시간"
+    
+    status: "pending"
+  
+  batch_2_13:
+    collection: "value_chain_benchmarks"
+    target: "10개 (유통/소매 완성)"
+    duration: "1.5시간"
+    
+    status: "pending"
+  
+  batch_2_14:
+    collection: "value_chain_benchmarks"
+    target: "10개 (서비스업 완성)"
+    duration: "1.5시간"
+    
+    status: "pending"
+  
+  batch_2_15:
+    collection: "value_chain_benchmarks"
+    target: "8개 (IT/소프트웨어 완성)"
+    duration: "1시간"
+    
+    status: "pending"
+  
+  batch_2_16:
+    collection: "value_chain_benchmarks"
+    target: "5개 (플랫폼 완성)"
+    duration: "45분"
+    
+    status: "pending"
+
+# ========================================
+# 실행 전략
+# ========================================
+
+execution_strategy:
+  
+  approach:
+    - "Phase 1 우선 (빠른 승리)"
+    - "웹서치 최소화 (기존 지식 활용)"
+    - "배치 단위 커밋"
+    - "컨텍스트 80% 시 세션 서머리"
+  
+  quality_standards:
+    minimum: "B 등급"
+    target: "A 등급"
+    
+    required_fields:
+      - "ID"
+      - "이름/설명"
+      - "카테고리"
+      - "최소 1개 예시"
+      - "출처 (가능한 경우)"
+  
+  web_search_policy:
+    when: "최신 데이터, 정량 지표 필요 시"
+    sources:
+      - "Statista"
+      - "Gartner"
+      - "산업 리포트"
+    
+    avoid: "일반 개념 설명 (이미 알고 있음)"
+  
+  session_management:
+    context_check: "매 배치마다"
+    summary_trigger: "80% 도달"
+    resume_strategy: "작업 리스트 기반"
+
+# ========================================
+# 진행 추적
+# ========================================
+
+progress_tracking:
+  
+  phase_1_batches:
+    total: 9
+    completed: 0
+    in_progress: 0
+    remaining: 9
+  
+  phase_2_batches:
+    total: 16
+    completed: 0
+    in_progress: 0
+    remaining: 16
+  
+  total_progress:
+    items_completed: 61
+    items_remaining: 299
+    percent_complete: "17%"
+
+# ========================================
+# END
+# ========================================
+
