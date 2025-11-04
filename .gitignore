@@ -82,3 +82,10 @@ temp/
 data/neo4j/
 data/chroma/*.bin
 data/chroma/*.sqlite3
+
+# Development docs (main 브랜치 제외)
+dev_docs/
+archive/
+
+# Projects (개인 분석, main 브랜치 제외)
+projects/
