@@ -2495,6 +2495,14 @@ agents:
       - "돈이 움직이는 경로를 추적한다"
       - "패턴이 다르면 다르다고만 말한다"
       - "왜 그런지는 묻지 않는다"
+      - "비율/분배 추정 시: Guestimation으로 구조적 합리성 확보"
+    
+    universal_tools:
+      guestimation:
+        when: "공개되지 않은 시장 구조 비율 추정"
+        refer_to: "Section 9: tools_and_templates.methodologies.guestimation"
+        frequency: "★★★ 종종 사용"
+        common_cases: "가치사슬 마진, 플랫폼 수수료, 시장 집중도"
     
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
@@ -2773,6 +2781,14 @@ agents:
       - "남들이 못 보는 기회를 찾는다"
       - "발견한 기회의 현실성을 냉정하게 검증한다"
       - "모든 분석은 다차원적 프레임워크를 통해 수행한다"
+      - "기회 크기 추정 시: Guestimation으로 빠르게 Order of Magnitude 파악"
+    
+    universal_tools:
+      guestimation:
+        when: "기회 크기 빠른 가늠, 우선순위 판단"
+        refer_to: "Section 9: tools_and_templates.methodologies.guestimation"
+        frequency: "★★★★ 자주 사용"
+        common_cases: "잠재 시장 규모, 기회 우선순위, 투자 수익"
     
     # ===== 3. INTEGRATED OPPORTUNITY DISCOVERY PROCESS =====
     integrated_opportunity_discovery_process:
@@ -3272,6 +3288,14 @@ agents:
       - "4가지 방법 모두 사용하여 교차 검증"
       - "±30% 이내 수렴을 목표로 반복 검증"
       - "모든 숫자는 정의, 출처, 가정을 명시"
+      - "직접 데이터 없을 때: Guestimation Framework 활용 (tool:universal:guestimation)"
+    
+    universal_tools:
+      guestimation:
+        when: "전환율, 필터 비율, 성장률 등 직접 데이터 없을 때"
+        refer_to: "Section 9: tools_and_templates.methodologies.guestimation"
+        frequency: "★★★★★ 가장 많이 사용"
+        common_cases: "전환율, AOV, Frequency, 시장 필터 비율"
     
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
@@ -3656,6 +3680,14 @@ agents:
       - "불명확한 정의는 사용 금지"
       - "조정은 투명하고 추적 가능하게"
       - "사용자 관점에서 검색어를 확장하여 정보의 사각지대 제거"
+      - "신뢰도 범위 추정 시: Guestimation으로 Error Range 계산"
+    
+    universal_tools:
+      guestimation:
+        when: "데이터 신뢰도 범위, Error Range 평가"
+        refer_to: "Section 9: tools_and_templates.methodologies.guestimation"
+        frequency: "★★ 필요 시 사용"
+        common_cases: "Error Range, 신뢰구간, 데이터 품질 점수"
     
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
@@ -4016,6 +4048,14 @@ agents:
       - "제안은 구체적이고 실행 가능하게"
       - "모든 데이터는 자동으로 보호되어야 한다"
       - "적응과 진화를 장려한다"
+      - "리소스 추정 시: Guestimation으로 프로젝트 계획 수립"
+    
+    universal_tools:
+      guestimation:
+        when: "프로젝트 소요 시간, 리소스 추정"
+        refer_to: "Section 9: tools_and_templates.methodologies.guestimation"
+        frequency: "★ 기획 시 사용"
+        common_cases: "프로젝트 기간, 필요 인력, 토큰 예측"
     
     # ===== 3. WORK DOMAIN =====
     guardian_mode:
@@ -5587,6 +5627,65 @@ implementation_guide:
           python: "umis_rag/utils/guestimation.py"
           document: "GUESTIMATION_FRAMEWORK.md"
           tool_key: "tool:universal:guestimation"
+        
+        agent_usage_guide:
+          description: "각 Agent별 Guestimation 활용 시나리오"
+          
+          quantifier:
+            when: "직접 데이터 없는 SAM 계산 요소"
+            frequency: "★★★★★ 가장 많이 사용"
+            examples:
+              - "전환율 추정 (유사 제품 Benchmark)"
+              - "시장 필터 비율 (검색 공통 맥락)"
+              - "성장률 예측 (통계 패턴)"
+              - "AOV, Frequency 추정"
+            priority_sources: "출처 3 (검색), 출처 7 (Rule of Thumb)"
+            typical_model: "시장 = 고객 × 전환율 × 가격 × 빈도"
+          
+          explorer:
+            when: "기회 크기 빠른 가늠, 우선순위 판단"
+            frequency: "★★★★ 자주 사용"
+            examples:
+              - "잠재 시장 Order of Magnitude (천억? 조?)"
+              - "기회 우선순위 판단 (크기 비교)"
+              - "투자 대비 수익 대략 계산"
+            priority_sources: "출처 2 (LLM), 출처 5 (행동경제학)"
+            typical_model: "기회 크기 = 타겟 × 침투율 × 가격"
+          
+          observer:
+            when: "시장 구조 비율 추정"
+            frequency: "★★★ 종종 사용"
+            examples:
+              - "가치사슬 분배 비율 (공개 안 된 마진)"
+              - "플랫폼 수수료율 추정"
+              - "시장 집중도 (CR3, HHI)"
+            priority_sources: "출처 6 (통계 패턴), 출처 7 (Rule of Thumb)"
+            typical_model: "비율 = 부분 / 전체 (역산 포함)"
+          
+          validator:
+            when: "데이터 신뢰도 범위 평가"
+            frequency: "★★ 필요 시 사용"
+            examples:
+              - "Error Range 계산 (표본 오차 + Gap + 시간)"
+              - "신뢰구간 추정"
+              - "데이터 품질 점수"
+            priority_sources: "출처 4 (법칙), 출처 6 (통계 패턴)"
+            typical_model: "총 오차 = √(오차1² + 오차2² + ...)"
+          
+          guardian:
+            when: "프로젝트 리소스 추정"
+            frequency: "★ 기획 시 사용"
+            examples:
+              - "프로젝트 소요 시간 예측"
+              - "필요 인력 추정"
+              - "토큰 사용량 예측"
+            priority_sources: "출처 7 (Rule of Thumb), 출처 8 (시공간 제약)"
+            typical_model: "총 시간 = Discovery + Analysis + Validation"
+          
+          usage_pattern:
+            high_frequency: "Quantifier (SAM 계산 필수)"
+            medium_frequency: "Explorer, Observer (구조/기회 분석)"
+            low_frequency: "Validator, Guardian (지원 역할)"
   
   # 7. 측정과 개선 (MEASURE)
   measurement_and_improvement:
