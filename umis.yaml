@@ -5497,12 +5497,78 @@ implementation_guide:
 # - 5-Agent 협업으로 완전한 추적성 보장
 # - 20-30% 명확도로도 시작 가능
 # - Cursor Composer로 코딩 불필요
+# ========================================
+# Universal: Guestimation Framework
+# ========================================
+
+guestimation:
+  version: '2.0'
+  created: '2025-11-04'
+  category: "범용 추정 방법론 (모든 Agent 사용)"
+  
+  definition:
+    name: "Guestimation (Fermi Estimation)"
+    core: "기초적 지식 + 논리적 추론으로 대략적 근사치 추정"
+    philosophy: "보이지 않는 것을 보이게. 정답보다 과정이 중요"
+    goal: "Order of Magnitude (자릿수, ±50%)"
+  
+  fermi_4_principles:
+    model: "추상 → 계산 가능 모형 (전봇대 = 면적 × 밀도)"
+    decompose: "큰 문제 → 작은 요소 (여행 = 인원 × 1인당)"
+    constraint: "물리적/시간적 한계 활용 (수요 = 공급)"
+    magnitude: "자릿수만 맞으면 성공 (±50%)"
+  
+  data_sources_4:
+    source_1: "프로젝트 데이터 (확정)"
+    source_2: "보편적 상식 (인구 5000만, 가격 등)"
+    source_3: "경험적 지식 (식사 30분, 테이블 3명)"
+    source_4: "Benchmark (RAG) → ⚠️ 비교 검증 필수!"
+    
+    importance: "RAG는 4개 중 하나일 뿐 (25%)"
+  
+  comparability_4_criteria:
+    criterion_1: "제품 속성 (물리적/디지털)"
+    criterion_2: "소비 주체 (B2C/B2B) → 다르면 기각"
+    criterion_3: "가격대 (±3배 이내)"
+    criterion_4: "구매 맥락 (필수재/선택재)"
+    
+    rule: "4개 중 3개 이상 유사 → 채택"
+  
+  process_8_steps:
+    - "문제 명확화"
+    - "모형 만들기 (Fermi 핵심!)"
+    - "분해"
+    - "계산 (출처 1~4 활용)"
+    - "Benchmark 검증 (사용 시)"
+    - "비율 조정"
+    - "Boundary 검증"
+    - "검증 + 신뢰도"
+  
+  core_principles:
+    - "비교 가능성 = 전제조건"
+    - "논리 > 데이터"
+    - "명시적 기각"
+    - "보수적 추정"
+  
+  examples:
+    benchmark: "피아노 전환율: RAG 4개 → 공기청정기 18% 채택 → 15%"
+    decomposition: "휴일 여행: 250만 × 10만 = 2,500억"
+    constraint: "자장면: 중국집 8천 × 66 × 80% = 42만"
+    fermi_classic: "전봇대: 716만 (실제 858만, 오차 16%)"
+  
+  implementation:
+    python: "umis_rag/utils/guestimation.py"
+    document: "GUESTIMATION_FRAMEWORK.md"
+    tool_key: "tool:universal:guestimation"
+
+# ========================================
 # 
 # 📖 더 알아보기:
 # - UMIS_ARCHITECTURE_BLUEPRINT.md: 전체 시스템 구조
 # - umis_examples.yaml: v7.0.0 실제 사용 예시
 # - config/: 설정 커스터마이징
 # - CHANGELOG.md: 버전 변경 이력
+# - GUESTIMATION_FRAMEWORK.md: 추정 방법론 완전한 가이드
 # 
 # "시장 분석은 검증된 지식(RAG)과 지속적인 발견의 결합입니다."
 
