@@ -7,10 +7,12 @@
 
 | Item | Value |
 |------|-------|
-| **UMIS Version** | v7.0.0 |
+| **UMIS Version** | v7.2.0 "Fermi" |
 | **RAG Architecture** | v3.0 |
+| **Excel Engine** | v1.0 (Phase 1 완료) |
+| **Guestimation Framework** | v2.0 |
 | **Schema Registry** | v1.0 |
-| **Last Updated** | 2025-11-03 |
+| **Last Updated** | 2025-11-04 |
 | **Status** | Stable Release |
 
 **Purpose**: UMIS 전체 구조와 기능을 한눈에 파악할 수 있는 고수준 설계도
@@ -20,14 +22,17 @@
 ## 🎯 System Overview
 
 ### What is UMIS?
-시장 분석을 위한 **5-Agent 협업 시스템** + **Multi-Layer RAG 아키텍처**
+시장 분석을 위한 **5-Agent 협업 시스템** + **Multi-Layer RAG 아키텍처** + **Excel 자동 생성**
 
 ### Key Characteristics
 - ✅ **5명의 전문 에이전트** 역할 분담 및 상호 검증
 - ✅ **RAG 기반 지식 활용** (54개 패턴/사례 DB)
-- ✅ **완전한 추적성** (모든 결론 → 원본 데이터 역추적)
-- ✅ **재검증 가능** (Excel 함수, YAML 스키마)
+- ✅ **Excel 자동 생성** (Market Sizing, Unit Economics, Financial Projection)
+- ✅ **Guestimation Framework** (Fermi Estimation, 8개 데이터 출처)
+- ✅ **완전한 추적성** (모든 결론 → 원본 데이터 역추적, 양방향 ID)
+- ✅ **재검증 가능** (Excel 함수 100%, Named Range, YAML 스키마)
 - ✅ **학습 가능** (LLM 판단 → 자동 규칙화)
+- ✅ **구조 독립성** (Builder Contract, Inline Validation)
 
 ### Quick Start
 
@@ -154,8 +159,8 @@ Cursor Composer (Cmd+I):
 | Agent ID | Name (기본) | Role | 산출물 | 검증자 |
 |----------|------------|------|--------|--------|
 | **observer** | Albert | 시장 구조 분석 | market_reality_report.md | quantifier, validator, guardian |
-| **explorer** | Steve | 기회 발굴 | OPP_*.md | observer, quantifier, validator |
-| **quantifier** | Bill | 정량 분석 | market_sizing.xlsx (9 sheets) | validator, observer |
+| **explorer** | Steve | 기회 발굴 (RAG) | OPP_*.md | observer, quantifier, validator |
+| **quantifier** | Bill | 정량 분석 + Excel 생성 | market_sizing.xlsx (10 sheets)<br>unit_economics.xlsx (10 sheets)<br>financial_projection.xlsx (11 sheets) | validator, observer |
 | **validator** | Rachel | 데이터 검증 | source_registry.yaml | - (검증자) |
 | **guardian** | Stewart | 프로세스 관리 | .project_meta.yaml, deliverables_registry.yaml | - (메타 관리자) |
 
@@ -277,14 +282,15 @@ RAE Index (RAE-*)
     scorer_profile: "weighted"
 ```
 
-### 3. ID Namespace System
+### 3. ID Namespace System (양방향 추적)
 
-모든 데이터 요소는 고유 ID를 가지며, 추적 가능
+모든 데이터 요소는 고유 ID를 가지며, **양방향 추적 가능**
 
 | Prefix | 의미 | 예시 | Collection/파일 |
 |--------|------|------|----------------|
 | **SRC-** | Rachel 데이터 출처 | SRC_20241031_001 | source_registry.yaml |
 | **EST-** | Bill 추정치 | EST_001 | market_sizing.xlsx (Estimation_Details) |
+| **ASM-** | Bill 가정 | ASM_001 | market_sizing.xlsx (Assumptions) |
 | **OPP-** | Steve 기회 가설 | OPP_20241031_001 | OPP_*.md |
 | **DEL-** | 산출물 | DEL_20241031_001 | deliverables_registry.yaml |
 | **CAN-** | Canonical 청크 | CAN-baemin-001 | canonical_index (ChromaDB) |
@@ -293,6 +299,12 @@ RAE Index (RAE-*)
 | **GED-** | Graph 간선 | GED-plat-sub-001 | Neo4j Edge |
 | **MEM-** | Memory | MEM-query-001 | query_memory, goal_memory |
 | **RAE-** | RAE 평가 | RAE-eval-001 | rae_index (ChromaDB) |
+| **tool:** | System RAG 도구 | tool:universal:guestimation | tool_registry.yaml → System RAG |
+
+**양방향 ID** (v7.2.0 신규):
+- umis.yaml ↔ tool_registry.yaml
+- tool_key → source_section 역추적
+- 정보 손실 없음
 
 **추적 예시**:
 ```
@@ -544,9 +556,13 @@ Step 4: hypothesis_generation
 
 ```
 umis/
-├── umis.yaml                          # 메인 가이드 (Cursor Rules)
-├── config/agent_names.yaml                   # Agent 이름 커스터마이징
-├── VERSION.txt                        # v6.3.0-alpha
+├── umis.yaml                          # 메인 가이드 (Cursor Rules) - 5,747줄
+├── umis_core.yaml                     # 압축 INDEX (AI 빠른 참조) - 709줄
+├── umis_deliverable_standards.yaml   # 산출물 표준
+├── umis_examples.yaml                 # 사용 예시
+├── config/agent_names.yaml            # Agent 이름 커스터마이징
+├── config/tool_registry.yaml          # System RAG 도구 정의 (26개)
+├── VERSION.txt                        # v7.2.0
 │
 ├── deliverable_specs/                 # 산출물 스펙 (AI 최적화 YAML)
 │   ├── observer/
@@ -627,9 +643,23 @@ umis/
 │   ├── learning/
 │   │   └── rule_learner.py            # LLM 로그 → 규칙 학습
 │   ├── agents/
-│   │   └── explorer.py                # Explorer 에이전트 구현
+│   │   ├── explorer.py                # Explorer 에이전트 구현
+│   │   ├── quantifier.py              # Quantifier 에이전트
+│   │   ├── validator.py               # Validator 에이전트
+│   │   ├── observer.py                # Observer 에이전트
+│   │   └── guardian.py                # Guardian 에이전트
+│   ├── deliverables/
+│   │   └── excel/                     # Excel 자동 생성 시스템 (v7.2.0)
+│   │       ├── formula_engine.py      # Excel 함수 엔진
+│   │       ├── builder_contract.py    # Builder Contract 시스템
+│   │       ├── assumptions_builder.py
+│   │       ├── method_builders.py     # 4-Method SAM
+│   │       ├── market_sizing/         # Market Sizing (10 시트)
+│   │       ├── unit_economics/        # Unit Economics (10 시트)
+│   │       └── financial_projection/  # Financial Projection (11 시트)
 │   └── utils/
-│       └── logger.py                  # 로깅
+│       ├── logger.py                  # 로깅
+│       └── guestimation.py            # Guestimation Engine (v7.2.0)
 │
 ├── dev_docs/                          # RAG 개발 문서 (시스템 비의존)
 │   ├── README.md
@@ -661,29 +691,48 @@ umis/
 │
 └── docs/                              # 활성 UMIS 문서
     ├── README.md
-    └── UMIS-DART-재무제표-조사-프로토콜.md
+    ├── GUESTIMATION_FRAMEWORK.md      # Fermi Estimation 가이드 (v7.2.0)
+    ├── INSTALL.md
+    ├── FOLDER_STRUCTURE.md
+    ├── VERSION_UPDATE_CHECKLIST.md
+    ├── MAIN_BRANCH_SETUP.md
+    ├── UMIS-DART-재무제표-조사-프로토콜.md
+    └── excel/                         # Excel 관련 문서 (v7.2.0)
+        ├── EXCEL_QA_SYSTEM.md
+        ├── EXCEL_VALIDATION_GUIDE.md
+        ├── EXCEL_SHEET_SPECS.yaml
+        └── WHY_QA_FAILED_AND_FIX.md
 ```
 
 ### 주요 파일 역할
 
 | 파일 | 역할 | 비고 |
 |------|------|------|
-| **umis.yaml** | Cursor Rules, 메인 가이드 | 80줄, 비코더용 |
-| **config/schema_registry.yaml** | RAG 레이어 통합 스키마 | 843줄, v1.0 |
+| **umis.yaml** | Cursor Rules, 메인 가이드 | 5,747줄, Guestimation 포함 |
+| **umis_core.yaml** | 압축 INDEX (AI 빠른 참조) | 709줄, 컨텍스트 77% 절약 |
+| **config/tool_registry.yaml** | System RAG 도구 정의 (26개) | 양방향 ID, 자동 생성 |
+| **config/schema_registry.yaml** | RAG 레이어 통합 스키마 | 845줄, v1.0 |
 | **config/projection_rules.yaml** | Canonical → Projected 변환 규칙 | 90% 커버리지 |
 | **config/routing_policy.yaml** | Explorer Workflow 정의 | 4단계 워크플로우 |
 | **config/runtime.yaml** | 실행 모드 (hybrid) | Circuit Breaker 설정 |
 | **config/overlay_layer.yaml** | Overlay (core/team/personal) | 현재 비활성 |
+| **docs/GUESTIMATION_FRAMEWORK.md** | Fermi Estimation 가이드 | v7.2.0 핵심 방법론 |
 
 ---
 
 ## 📚 Version History
 
-**현재 버전**: v7.0.0 (2025-11-03) - Stable Release
+**현재 버전**: v7.2.0 "Fermi" (2025-11-04) - Stable Release
 
 **상세 변경 이력**: [CHANGELOG.md](CHANGELOG.md) 참조
 
 **주요 마일스톤**:
+- **v7.2.0 (2025-11-04)**: 
+  - Bill Excel 도구 3개 (작업 커버리지 4배)
+  - Guestimation Framework (Fermi Estimation)
+  - Named Range 100%, Builder Contract, Inline Validation
+  - 양방향 ID 시스템
+  - 데이터 검증 (5개 벤치마크)
 - v7.0.0: RAG v3.0 완전 통합, 5-Agent 안정화
 - v6.3.0-alpha: Projection 메커니즘, Circuit Breaker
 - v6.2.0: Agent 산출물 표준화
@@ -872,8 +921,8 @@ search_order: [personal, team, core]  # 개인 > 팀 > 공식
 ---
 
 **Document Owner**: AI Team  
-**Last Reviewed**: 2025-11-03  
-**Next Review**: 버전 업데이트 시 (v7.1.0 예상)
+**Last Reviewed**: 2025-11-04  
+**Next Review**: 버전 업데이트 시 (v7.3.0 예상)
 
 ---
 
