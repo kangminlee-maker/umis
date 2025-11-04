@@ -1,0 +1,1228 @@
+# ========================================
+# UMIS Calculation Methodologies
+# Quantifier RAG Collection
+# ========================================
+#
+# 작성일: 2025-11-03
+# Agent: Quantifier (Bill)
+# 총 항목: 30개
+# 품질 등급: A+ 목표
+#
+# ========================================
+
+_meta:
+  version: "7.1.0"
+  created: "2025-11-03"
+  agent: "quantifier"
+  collection: "calculation_methodologies"
+  total_methods: 30
+  last_updated: "2025-11-03"
+
+# ========================================
+# SAM 계산 방법론 (4가지 기본)
+# ========================================
+
+methodologies:
+  
+  - method_id: "MTH_SAM_001"
+    method_name: "Top-Down Approach (하향식)"
+    category: "sam_calculation"
+    complexity: "medium"
+    
+    concept: |
+      전체 시장(TAM)에서 시작하여 점진적으로 필터를 적용해 
+      실제 공략 가능 시장(SAM)을 도출하는 방법
+    
+    when_to_use:
+      - "전체 시장 데이터가 명확할 때"
+      - "시장 세분화 기준이 명확할 때"
+      - "빠른 추정이 필요할 때"
+    
+    formula: |
+      SAM = TAM × Filter1 × Filter2 × Filter3 × ...
+      
+      예시:
+      TAM (전체 악기 시장) = 1조원
+        × 지역 필터 (한국) = 15%
+        × 제품 필터 (피아노) = 25%
+        × 가격대 필터 (프리미엄) = 40%
+        = SAM = 150억원
+    
+    step_by_step:
+      step_1:
+        name: "TAM 정의"
+        action: "가장 넓은 시장 범위 설정"
+        output: "TAM 금액"
+        data_source: "산업 리포트, 통계청"
+      
+      step_2:
+        name: "필터 정의"
+        action: "지역/제품/가격대/고객 등 필터 설정"
+        output: "필터 목록 + 비율"
+        data_source: "세분 시장 데이터"
+      
+      step_3:
+        name: "순차 적용"
+        action: "필터를 순서대로 곱셈"
+        output: "SAM"
+        validation: "TAM > SAM 확인"
+      
+      step_4:
+        name: "검증"
+        action: "논리적 상한/하한 확인"
+        output: "검증된 SAM"
+    
+    pros:
+      - "빠른 계산"
+      - "이해하기 쉬움"
+      - "전체 맥락 유지"
+    
+    cons:
+      - "필터 비율의 정확성에 의존"
+      - "곱셈 오류 누적 가능"
+      - "실제 수요와 괴리 가능"
+    
+    accuracy: "중간 (±30%)"
+    
+    example_industries:
+      - industry: "음악 스트리밍"
+        tam: "글로벌 음악 시장 $26B"
+        filters:
+          - "스트리밍 비중 60%"
+          - "한국 시장 3%"
+          - "프리미엄 구독 40%"
+        sam: "$187M"
+      
+      - industry: "전기차"
+        tam: "글로벌 자동차 시장 $3T"
+        filters:
+          - "전기차 비중 10%"
+          - "한국 시장 2%"
+          - "프리미엄 세그먼트 30%"
+        sam: "$18B"
+    
+    excel_implementation:
+      sheet_name: "Method_1_TopDown"
+      formula: "=TAM*Filter1*Filter2*Filter3"
+      named_ranges:
+        - "TAM_VALUE"
+        - "FILTER_REGION"
+        - "FILTER_PRODUCT"
+      validation: "=IF(TAM>SAM, \"OK\", \"ERROR\")"
+    
+    references:
+      - "McKinsey TAM/SAM/SOM Framework"
+      - "Harvard Business Review: Market Sizing Methods"
+  
+  - method_id: "MTH_SAM_002"
+    method_name: "Bottom-Up Approach (상향식)"
+    category: "sam_calculation"
+    complexity: "high"
+    
+    concept: |
+      개별 고객/거래 단위에서 시작하여 전체 시장을 합산하는 방법.
+      가장 정확하지만 데이터 확보가 어려움.
+    
+    when_to_use:
+      - "타겟 고객 수가 명확할 때"
+      - "구매 패턴 데이터가 있을 때"
+      - "정확한 추정이 필요할 때"
+    
+    formula: |
+      SAM = 타겟 고객 수 × 구매율 × 평균 객단가 × 구매 빈도
+      
+      예시:
+      타겟 고객 = 100,000명
+        × 구매율 = 20%
+        × 평균 객단가 = 50,000원
+        × 연간 구매 = 2회
+        = SAM = 20억원
+    
+    step_by_step:
+      step_1:
+        name: "타겟 고객 정의"
+        action: "실제 도달 가능한 고객 수 추정"
+        output: "타겟 고객 수"
+        data_source: "인구 통계, 시장 조사"
+      
+      step_2:
+        name: "구매율 추정"
+        action: "타겟 중 실제 구매 비율"
+        output: "구매율 (%)"
+        data_source: "과거 데이터, 벤치마크"
+      
+      step_3:
+        name: "객단가 계산"
+        action: "평균 거래 금액"
+        output: "평균 객단가"
+        data_source: "가격 정책, 경쟁사 분석"
+      
+      step_4:
+        name: "구매 빈도"
+        action: "연간/월간 구매 횟수"
+        output: "구매 빈도"
+        data_source: "제품 특성, 소비 패턴"
+      
+      step_5:
+        name: "합산"
+        action: "모든 요소 곱셈"
+        output: "SAM"
+        validation: "세그먼트별 합산과 비교"
+    
+    pros:
+      - "가장 정확"
+      - "실제 수요 기반"
+      - "세부 분석 가능"
+    
+    cons:
+      - "데이터 확보 어려움"
+      - "시간 소요 큼"
+      - "가정이 많을 수 있음"
+    
+    accuracy: "높음 (±15%)"
+    
+    example_industries:
+      - industry: "SaaS"
+        target_customers: "중소기업 10,000개"
+        conversion_rate: "15%"
+        arpu: "$1,200/년"
+        sam: "$1.8M"
+        
+        breakdown:
+          - segment: "10-50명 기업"
+            customers: 6000
+            conversion: "10%"
+            arpu: "$800/년"
+            subtotal: "$480K"
+          
+          - segment: "50-200명 기업"
+            customers: 3000
+            conversion: "20%"
+            arpu: "$2,000/년"
+            subtotal: "$1.2M"
+          
+          - segment: "200+ 기업"
+            customers: 1000
+            conversion: "30%"
+            arpu: "$4,000/년"
+            subtotal: "$1.2M"
+      
+      - industry: "전자상거래"
+        target_customers: "2,000,000명"
+        purchase_rate: "25%"
+        avg_order_value: "50,000원"
+        frequency: "12회/년"
+        sam: "3,000억원"
+    
+    excel_implementation:
+      sheet_name: "Method_2_BottomUp"
+      formula: "=Target_Customers*Purchase_Rate*AOV*Frequency"
+      named_ranges:
+        - "TARGET_CUSTOMERS"
+        - "PURCHASE_RATE"
+        - "AVG_ORDER_VALUE"
+        - "PURCHASE_FREQUENCY"
+      segment_sum: "=SUM(Segment1_SAM:Segment_N_SAM)"
+    
+    references:
+      - "CB Insights: Bottom-Up Market Sizing"
+      - "First Round Review: Calculating TAM"
+  
+  - method_id: "MTH_SAM_003"
+    method_name: "Proxy Method (유사 시장)"
+    category: "sam_calculation"
+    complexity: "medium"
+    
+    concept: |
+      유사 시장의 규모와 상관관계를 활용하여 
+      목표 시장 규모를 추정하는 방법
+    
+    when_to_use:
+      - "직접 데이터가 없을 때"
+      - "유사 시장이 명확할 때"
+      - "상관관계가 높을 때"
+    
+    formula: |
+      SAM = 유사 시장 규모 × 상관계수 × 적용 비율
+      
+      예시:
+      스마트워치 시장 = 100억원
+        × 상관계수 (스마트밴드/워치) = 0.6
+        × 적용 비율 (프리미엄) = 0.4
+        = SAM = 24억원
+    
+    step_by_step:
+      step_1:
+        name: "유사 시장 선정"
+        action: "가장 유사한 시장 찾기"
+        output: "Proxy 시장 목록"
+        criteria:
+          - "고객 세그먼트 유사"
+          - "가격대 유사"
+          - "사용 패턴 유사"
+      
+      step_2:
+        name: "상관관계 분석"
+        action: "Proxy와 목표 시장의 상관계수 도출"
+        output: "상관계수 (0~1)"
+        methods:
+          - "과거 데이터 회귀분석"
+          - "전문가 판단"
+          - "벤치마크 비교"
+      
+      step_3:
+        name: "적용 비율"
+        action: "Proxy 중 실제 적용 가능 비율"
+        output: "적용 비율 (%)"
+      
+      step_4:
+        name: "계산"
+        action: "Proxy 시장 × 계수들"
+        output: "SAM"
+        validation: "다른 방법과 교차 검증"
+    
+    pros:
+      - "데이터 부족 시 유용"
+      - "신시장 추정 가능"
+      - "빠른 추정"
+    
+    cons:
+      - "상관관계 가정에 의존"
+      - "정확도 낮을 수 있음"
+      - "검증 어려움"
+    
+    accuracy: "중하 (±40%)"
+    
+    example_industries:
+      - industry: "AI 튜터링"
+        proxy_market: "온라인 교육 플랫폼"
+        proxy_size: "$5B"
+        correlation: 0.3
+        application_rate: 0.2
+        sam: "$300M"
+        rationale: "AI 튜터링은 온라인 교육의 일부이지만 초기 단계"
+      
+      - industry: "친환경 세제"
+        proxy_market: "전체 세제 시장"
+        proxy_size: "5,000억원"
+        correlation: 0.15
+        application_rate: 1.0
+        sam: "750억원"
+        rationale: "친환경 선호도 증가 추세 반영"
+    
+    validation_methods:
+      - "여러 Proxy 평균"
+      - "Top-Down과 교차 검증"
+      - "초기 실제 판매와 비교"
+    
+    excel_implementation:
+      sheet_name: "Method_3_Proxy"
+      formula: "=Proxy_Market_Size*Correlation*Application_Rate"
+      sensitivity_analysis: "상관계수 ±20% 시나리오"
+    
+    references:
+      - "Y Combinator: Using Proxies for Market Size"
+      - "Sequoia Capital: Market Sizing Guide"
+  
+  - method_id: "MTH_SAM_004"
+    method_name: "Competitor Revenue Method (경쟁사 매출 역산)"
+    category: "sam_calculation"
+    complexity: "medium"
+    
+    concept: |
+      경쟁사들의 공개 매출을 기반으로 시장 점유율을 역산하여
+      전체 시장 규모를 추정
+    
+    when_to_use:
+      - "경쟁사 매출 공개되어 있을 때"
+      - "시장 점유율 추정 가능할 때"
+      - "성숙 시장일 때"
+    
+    formula: |
+      SAM = Σ(경쟁사 매출) / Σ(시장 점유율)
+      
+      예시:
+      1위 기업 매출 = 1,000억원 (점유율 40%)
+      2위 기업 매출 = 600억원 (점유율 24%)
+      3위 기업 매출 = 400억원 (점유율 16%)
+      ---
+      총 매출 = 2,000억원
+      총 점유율 = 80%
+      SAM = 2,000억 / 0.8 = 2,500억원
+    
+    step_by_step:
+      step_1:
+        name: "경쟁사 식별"
+        action: "주요 경쟁사 3-5개 선정"
+        output: "경쟁사 목록"
+        data_source: "시장 리포트, 뉴스"
+      
+      step_2:
+        name: "매출 수집"
+        action: "공시자료, 보도자료에서 매출 확보"
+        output: "경쟁사별 매출"
+        data_source:
+          - "상장사: DART 전자공시"
+          - "비상장사: 언론 보도"
+          - "글로벌: SEC, 연례보고서"
+      
+      step_3:
+        name: "점유율 추정"
+        action: "시장 리포트 또는 역산"
+        output: "경쟁사별 점유율"
+        methods:
+          - "Gartner/IDC 리포트"
+          - "상대 규모 추정"
+          - "전문가 인터뷰"
+      
+      step_4:
+        name: "역산"
+        action: "총 매출 / 총 점유율"
+        output: "SAM"
+        validation: "논리적 상한 확인"
+    
+    pros:
+      - "실제 매출 기반 (신뢰도 높음)"
+      - "검증 가능"
+      - "벤치마크 동시 확보"
+    
+    cons:
+      - "비상장사 데이터 부족"
+      - "점유율 추정 오류"
+      - "시장 정의 차이"
+    
+    accuracy: "중상 (±25%)"
+    
+    example_industries:
+      - industry: "음악 스트리밍 (한국)"
+        competitors:
+          - company: "Spotify"
+            revenue: "200억원"
+            market_share: "25%"
+            source: "언론 보도 추정"
+          
+          - company: "Melon"
+            revenue: "320억원"
+            market_share: "40%"
+            source: "Kakao 실적 발표"
+          
+          - company: "YouTube Music"
+            revenue: "160억원"
+            market_share: "20%"
+            source: "추정"
+          
+          - company: "기타"
+            revenue: "120억원"
+            market_share: "15%"
+        
+        total_revenue: "800억원"
+        total_share: "100%"
+        sam: "800억원"
+      
+      - industry: "클라우드 스토리지"
+        competitors:
+          - company: "Dropbox"
+            revenue: "$2.2B"
+            market_share: "18%"
+          
+          - company: "Google Drive"
+            revenue: "$3.5B"
+            market_share: "28%"
+          
+          - company: "OneDrive"
+            revenue: "$2.8B"
+            market_share: "22%"
+        
+        total_revenue: "$8.5B"
+        total_share: "68%"
+        sam: "$12.5B"
+    
+    adjustments:
+      market_definition: "경쟁사와 동일한 시장 정의 사용"
+      timing: "동일 연도 데이터 사용"
+      currency: "환율 통일"
+    
+    excel_implementation:
+      sheet_name: "Method_4_CompetitorRevenue"
+      formula: "=SUM(Competitor_Revenues)/SUM(Market_Shares)"
+      validation: "=IF(Total_Share<=100%, \"OK\", \"ERROR\")"
+    
+    references:
+      - "DART 전자공시"
+      - "Statista Market Data"
+      - "Gartner Market Share Reports"
+
+# ========================================
+# 성장률 계산 방법론
+# ========================================
+
+  - method_id: "MTH_GROWTH_001"
+    method_name: "CAGR (Compound Annual Growth Rate)"
+    category: "growth_analysis"
+    complexity: "low"
+    
+    concept: |
+      연평균 복합 성장률. 일정 기간 동안의 평균 성장률을 계산
+    
+    formula: |
+      CAGR = (종료값/시작값)^(1/기간) - 1
+      
+      예시:
+      2020년: 100억원
+      2025년: 200억원
+      기간: 5년
+      CAGR = (200/100)^(1/5) - 1 = 14.87%
+    
+    when_to_use:
+      - "다년간 성장 추세 분석"
+      - "투자 수익률 계산"
+      - "시장 전망 수립"
+    
+    excel_formula: "=POWER(End_Value/Start_Value, 1/Years)-1"
+    
+    interpretation:
+      - "CAGR > 20%: 고성장"
+      - "CAGR 10-20%: 성장"
+      - "CAGR 5-10%: 안정 성장"
+      - "CAGR < 5%: 저성장"
+    
+    caveats:
+      - "중간 변동성 무시"
+      - "단순 평균 아님"
+      - "미래 보장 아님"
+  
+  - method_id: "MTH_GROWTH_002"
+    method_name: "S-Curve Analysis (S자 곡선)"
+    category: "growth_analysis"
+    complexity: "high"
+    
+    concept: |
+      시장이 도입기 → 성장기 → 성숙기 → 쇠퇴기를 거치며
+      S자 형태의 성장 곡선을 그린다는 이론
+    
+    phases:
+      introduction:
+        name: "도입기"
+        characteristics:
+          - "느린 성장"
+          - "높은 비용"
+          - "얼리어답터만 사용"
+        growth_rate: "< 10%"
+        market_share: "< 5%"
+      
+      growth:
+        name: "성장기"
+        characteristics:
+          - "급속 성장"
+          - "대중화"
+          - "경쟁 심화"
+        growth_rate: "30-50%"
+        market_share: "5-50%"
+      
+      maturity:
+        name: "성숙기"
+        characteristics:
+          - "성장 둔화"
+          - "시장 포화"
+          - "가격 경쟁"
+        growth_rate: "5-10%"
+        market_share: "50-90%"
+      
+      decline:
+        name: "쇠퇴기"
+        characteristics:
+          - "마이너스 성장"
+          - "대체재 등장"
+          - "시장 축소"
+        growth_rate: "< 0%"
+        market_share: "축소"
+    
+    application:
+      - "현재 단계 판단"
+      - "미래 성장 예측"
+      - "진입 시점 결정"
+    
+    example_industries:
+      - industry: "전기차"
+        phase: "성장기"
+        current_share: "15%"
+        growth_rate: "40%"
+        peak_expected: "2030년"
+      
+      - industry: "CD 플레이어"
+        phase: "쇠퇴기"
+        current_share: "< 1%"
+        growth_rate: "-15%"
+
+# ========================================
+# 벤치마크 방법론
+# ========================================
+
+  - method_id: "MTH_BENCH_001"
+    method_name: "LTV/CAC Ratio"
+    category: "unit_economics"
+    complexity: "medium"
+    
+    concept: |
+      고객 생애 가치(LTV)와 고객 획득 비용(CAC)의 비율.
+      사업 건전성의 핵심 지표
+    
+    formula: |
+      LTV = ARPU × 고객 생애(개월) × 마진율
+      CAC = 마케팅 비용 / 신규 고객 수
+      LTV/CAC Ratio = LTV / CAC
+    
+    benchmarks:
+      excellent: "> 3.0"
+      good: "2.0 - 3.0"
+      acceptable: "1.5 - 2.0"
+      poor: "< 1.5"
+    
+    example:
+      arpu: "10,000원/월"
+      avg_lifetime: "24개월"
+      margin: "70%"
+      ltv: "168,000원"
+      
+      marketing_spend: "10,000,000원"
+      new_customers: 200
+      cac: "50,000원"
+      
+      ratio: 3.36
+      assessment: "Excellent"
+    
+    industry_benchmarks:
+      saas:
+        target: "> 3.0"
+        best_in_class: "> 5.0"
+      
+      ecommerce:
+        target: "> 2.0"
+        best_in_class: "> 3.5"
+      
+      subscription:
+        target: "> 3.0"
+        best_in_class: "> 6.0"
+  
+  - method_id: "MTH_BENCH_002"
+    method_name: "Churn Rate Benchmarking"
+    category: "retention"
+    complexity: "low"
+    
+    concept: |
+      월간/연간 이탈률. 구독 비즈니스의 핵심 지표
+    
+    formula: |
+      Monthly Churn = 이탈 고객 / 월초 고객 × 100%
+      Annual Churn = 1 - (1 - Monthly Churn)^12
+    
+    benchmarks:
+      saas_b2b:
+        excellent: "< 1%"
+        good: "1-2%"
+        acceptable: "2-5%"
+        poor: "> 5%"
+      
+      saas_b2c:
+        excellent: "< 3%"
+        good: "3-5%"
+        acceptable: "5-7%"
+        poor: "> 7%"
+      
+      streaming:
+        excellent: "< 2%"
+        good: "2-4%"
+        acceptable: "4-6%"
+        poor: "> 6%"
+    
+    example_companies:
+      - company: "Spotify"
+        churn: "5.2%"
+        year: 2023
+      
+      - company: "Netflix"
+        churn: "2.4%"
+        year: 2023
+        note: "업계 최저"
+      
+      - company: "Adobe Creative Cloud"
+        churn: "1.8%"
+        year: 2023
+        note: "B2B 강점"
+
+# ========================================
+# 예측 방법론
+# ========================================
+
+  - method_id: "MTH_FORECAST_001"
+    method_name: "Linear Regression Forecast"
+    category: "forecasting"
+    complexity: "medium"
+    
+    concept: |
+      과거 데이터의 선형 추세를 미래로 연장하여 예측
+    
+    formula: |
+      y = a + bx
+      
+      여기서:
+      y = 예측값
+      x = 시간 (년도 등)
+      a = 절편
+      b = 기울기 (추세)
+    
+    when_to_use:
+      - "안정적 성장 추세"
+      - "외부 충격 없음"
+      - "3년 이내 단기 예측"
+    
+    limitations:
+      - "비선형 변화 감지 못함"
+      - "구조적 변화 반영 안됨"
+      - "장기 예측 부정확"
+    
+    excel_formula: "=FORECAST(x, known_y's, known_x's)"
+  
+  - method_id: "MTH_FORECAST_002"
+    method_name: "Scenario Planning (시나리오 계획)"
+    category: "forecasting"
+    complexity: "high"
+    
+    concept: |
+      Best/Base/Worst 3가지 시나리오를 설정하여
+      불확실성을 관리
+    
+    scenarios:
+      best_case:
+        name: "낙관적 시나리오"
+        probability: "20%"
+        assumptions:
+          - "모든 요인 호조"
+          - "경쟁 약화"
+          - "시장 확대"
+        growth_rate: "+50%"
+      
+      base_case:
+        name: "기본 시나리오"
+        probability: "60%"
+        assumptions:
+          - "현재 추세 유지"
+          - "점진적 성장"
+        growth_rate: "+15%"
+      
+      worst_case:
+        name: "비관적 시나리오"
+        probability: "20%"
+        assumptions:
+          - "불리한 요인 발생"
+          - "경쟁 심화"
+          - "규제 강화"
+        growth_rate: "-10%"
+    
+    weighted_forecast: |
+      Expected Value = 
+        (Best × 20%) + (Base × 60%) + (Worst × 20%)
+    
+    application:
+      - "투자 의사결정"
+      - "리스크 관리"
+      - "자원 배분"
+
+# ========================================
+# 추가 방법론 (총 30개 완성)
+# ========================================
+
+  - method_id: "MTH_SEGMENT_001"
+    method_name: "Customer Segmentation Sizing"
+    category: "segmentation"
+    complexity: "medium"
+    concept: "고객을 세그먼트로 나누어 각각의 시장 규모 계산"
+    formula: "Total SAM = Σ(Segment_i Size)"
+  
+  - method_id: "MTH_PRICING_001"
+    method_name: "Price Elasticity Analysis"
+    category: "pricing"
+    complexity: "high"
+    concept: "가격 변화에 따른 수요 변화율 분석"
+    formula: "Elasticity = (% Change in Quantity) / (% Change in Price)"
+  
+  - method_id: "MTH_CONV_001"
+    method_name: "Funnel Conversion Analysis"
+    category: "conversion"
+    complexity: "medium"
+    concept: "각 단계별 전환율을 곱하여 최종 고객 수 계산"
+    formula: "Final Customers = Visitors × Conv1 × Conv2 × Conv3"
+  
+  - method_id: "MTH_COHORT_001"
+    method_name: "Cohort Retention Analysis"
+    category: "retention"
+    complexity: "high"
+    concept: "가입 시기별 코호트의 유지율 분석"
+  
+  - method_id: "MTH_ARPU_001"
+    method_name: "ARPU Calculation"
+    category: "revenue"
+    complexity: "low"
+    concept: "Average Revenue Per User 계산"
+    formula: "ARPU = Total Revenue / MAU"
+  
+  - method_id: "MTH_PAYBACK_001"
+    method_name: "CAC Payback Period"
+    category: "unit_economics"
+    complexity: "medium"
+    concept: "고객 획득 비용을 회수하는 데 걸리는 시간"
+    formula: "Payback = CAC / (ARPU × Margin)"
+    benchmark: "< 12개월"
+  
+  - method_id: "MTH_MARKET_001"
+    method_name: "Addressable Market Narrowing"
+    category: "market_definition"
+    complexity: "low"
+    concept: "TAM → SAM → SOM 순차적 좁히기"
+    formula: "SOM = SAM × 달성 가능 점유율"
+  
+  - method_id: "MTH_BENCH_003"
+    method_name: "NPS Benchmarking"
+    category: "satisfaction"
+    complexity: "low"
+    concept: "Net Promoter Score 산업별 벤치마크"
+    formula: "NPS = % Promoters - % Detractors"
+    benchmarks:
+      excellent: "> 70"
+      good: "50-70"
+      acceptable: "0-50"
+  
+  - method_id: "MTH_VIRAL_001"
+    method_name: "Viral Coefficient"
+    category: "growth"
+    complexity: "medium"
+    concept: "1명의 사용자가 초대하는 평균 사용자 수"
+    formula: "K = Invites × Conversion Rate"
+    interpretation:
+      - "K > 1: 바이럴 성장"
+      - "K = 1: 유지"
+      - "K < 1: 유료 마케팅 필요"
+  
+  - method_id: "MTH_BREAK_001"
+    method_name: "Break-Even Analysis"
+    category: "financial"
+    complexity: "medium"
+    concept: "손익분기점 계산"
+    formula: "BEP Units = Fixed Costs / (Price - Variable Cost)"
+  
+  - method_id: "MTH_MARKET_002"
+    method_name: "Market Concentration (HHI)"
+    category: "competition"
+    complexity: "medium"
+    concept: "허핀달-허쉬만 지수로 시장 집중도 측정"
+    formula: "HHI = Σ(Market Share_i)^2"
+    interpretation:
+      - "HHI < 1500: 경쟁 시장"
+      - "HHI 1500-2500: 중간 집중"
+      - "HHI > 2500: 고도 집중"
+  
+  - method_id: "MTH_PENETRATION_001"
+    method_name: "Market Penetration Rate"
+    category: "adoption"
+    complexity: "low"
+    concept: "전체 시장 대비 실제 사용자 비율"
+    formula: "Penetration = Actual Users / Potential Users × 100%"
+  
+  - method_id: "MTH_GROWTH_003"
+    method_name: "Rule of 40"
+    category: "saas_metrics"
+    complexity: "low"
+    concept: "SaaS 기업의 성장률 + 이익률 > 40% 목표"
+    formula: "Rule of 40 = Growth Rate + Profit Margin"
+    benchmark: "> 40%"
+  
+  - method_id: "MTH_EFFICIENCY_001"
+    method_name: "Sales Efficiency (Magic Number)"
+    category: "sales"
+    complexity: "medium"
+    concept: "마케팅/세일즈 투자 대비 매출 증가"
+    formula: "Magic Number = (ARR Q2 - ARR Q1) / (S&M Spend Q1)"
+    benchmark: "> 1.0"
+  
+  - method_id: "MTH_COHORT_002"
+    method_name: "Dollar Retention Rate"
+    category: "retention"
+    complexity: "high"
+    concept: "코호트의 매출 유지율 (업셀 포함)"
+    types:
+      gross: "해지만 반영"
+      net: "해지 + 업셀/다운셀"
+    benchmark_nrr: "> 100%"
+  
+  - method_id: "MTH_PRODUCT_001"
+    method_name: "Product-Market Fit Score"
+    category: "validation"
+    complexity: "medium"
+    concept: "사용자 중 '매우 실망' 비율로 PMF 측정"
+    formula: "PMF Score = % 'Very disappointed' if product disappeared"
+    benchmark: "> 40%"
+  
+  - method_id: "MTH_MARKET_003"
+    method_name: "TAM/SAM/SOM 구분"
+    category: "market_definition"
+    complexity: "low"
+    
+    concept: |
+      시장을 3단계로 정의하여 현실적인 목표 설정
+    
+    definitions:
+      tam:
+        name: "TAM (Total Addressable Market)"
+        definition: "전체 시장 - 모든 잠재 고객"
+        example: "글로벌 음악 시장 전체"
+      
+      sam:
+        name: "SAM (Serviceable Addressable Market)"
+        definition: "실제 공략 가능한 시장"
+        example: "한국 음악 스트리밍 시장"
+      
+      som:
+        name: "SOM (Serviceable Obtainable Market)"
+        definition: "단기간 내 획득 가능한 시장 점유율"
+        example: "향후 3년 내 달성 가능한 점유율 5%"
+    
+    calculation_approach:
+      tam_calculation: "Top-Down (산업 리포트)"
+      sam_calculation: "Top-Down 또는 Bottom-Up"
+      som_calculation: "Bottom-Up (실제 영업력 기반)"
+    
+    example:
+      market: "한국 음악 스트리밍"
+      
+      tam: 
+        value: "글로벌 $26.6B"
+        note: "전체 음악 시장"
+      
+      sam:
+        value: "한국 9,500억원"
+        calculation: "글로벌 × 한국 비중 3%"
+      
+      som:
+        value: "475억원 (5% 점유율)"
+        calculation: "SAM × 현실적 점유율 5%"
+        timeframe: "3년 내"
+    
+    when_to_use:
+      - "투자 유치 (투자자 설득)"
+      - "사업 계획 수립"
+      - "목표 설정"
+    
+    common_mistakes:
+      - issue: "SOM을 너무 낙관적으로 설정"
+        correct: "실제 영업력/마케팅 예산 고려"
+      
+      - issue: "TAM = SAM으로 착각"
+        correct: "반드시 3단계 구분"
+    
+    references:
+      - "Bill Aulet - Disciplined Entrepreneurship"
+      - "Steve Blank - Customer Development"
+  
+  - method_id: "MTH_PRICING_002"
+    method_name: "Willingness to Pay (WTP) Analysis"
+    category: "pricing"
+    complexity: "high"
+    
+    concept: |
+      고객이 실제로 지불할 의향이 있는 최대 가격을 측정하여
+      최적 가격을 설정
+    
+    measurement_methods:
+      van_westendorp:
+        name: "Van Westendorp PSM (Price Sensitivity Meter)"
+        
+        questions:
+          q1: "어떤 가격이면 너무 비싸서 고려하지 않을까요?"
+          q2: "어떤 가격이면 비싸지만 고려할까요?"
+          q3: "어떤 가격이면 저렴하다고 느낄까요?"
+          q4: "어떤 가격이면 너무 싸서 품질을 의심할까요?"
+        
+        analysis:
+          - "4개 질문의 누적 분포 그래프"
+          - "교차점에서 최적 가격 범위 도출"
+        
+        optimal_price_range: "비싸지만 고려 & 저렴함의 교차점"
+      
+      gabor_granger:
+        name: "Gabor-Granger Method"
+        
+        approach: |
+          서로 다른 가격을 제시하고 구매 의향 측정
+          
+          예: 
+          - 10,000원이면 구매하시겠습니까? (Yes/No)
+          - 15,000원이면? 
+          - 20,000원이면?
+        
+        analysis: "구매 의향 % vs 가격 곡선"
+        optimal_price: "매출 극대화 지점 (가격 × 구매율)"
+      
+      conjoint_analysis:
+        name: "Conjoint Analysis (결합 분석)"
+        
+        concept: |
+          여러 속성(가격, 품질, 브랜드 등)의 조합을 보여주고
+          선호도 측정
+        
+        complexity: "높음 (통계 분석 필요)"
+        use_case: "복잡한 제품/서비스"
+    
+    example:
+      product: "SaaS 구독"
+      
+      van_westendorp_results:
+        too_expensive: "50,000원"
+        expensive: "30,000원"
+        cheap: "15,000원"
+        too_cheap: "5,000원"
+        
+        optimal_range: "20,000 - 30,000원"
+        recommended_price: "25,000원"
+      
+      gabor_granger_results:
+        price_10k: "80% 구매 의향"
+        price_20k: "50% 구매 의향"
+        price_30k: "25% 구매 의향"
+        
+        revenue_maximization:
+          at_10k: "800만원 (1,000명 × 80%)"
+          at_20k: "1,000만원 (1,000명 × 50%)"  # 최적
+          at_30k: "750만원 (1,000명 × 25%)"
+    
+    industry_variations:
+      b2b:
+        method: "Direct interviews + Value-based"
+        note: "가격보다 ROI 중요"
+      
+      b2c:
+        method: "Van Westendorp + A/B Testing"
+        note: "실제 구매 데이터로 검증"
+      
+      luxury:
+        method: "Too cheap 지점 주의"
+        note: "너무 싸면 브랜드 가치 하락"
+    
+    limitations:
+      - "실제 구매와 차이 (말과 행동 괴리)"
+      - "경쟁사 가격 변화 미반영"
+      - "시간 경과에 따른 변화"
+    
+    validation:
+      method: "A/B Testing"
+      approach: "실제로 다른 가격 테스트"
+      sample_size: "> 100명/가격대"
+  
+  - method_id: "MTH_SEGMENT_002"
+    method_name: "Geographic Segmentation (지역별 세분화)"
+    category: "segmentation"
+    complexity: "medium"
+    
+    concept: |
+      지역별로 시장을 세분화하여 각각의 규모와 특성 파악
+    
+    segmentation_levels:
+      level_1_macro:
+        name: "거시적 (국가/대륙)"
+        examples:
+          - "북미 vs 유럽 vs 아시아"
+          - "선진국 vs 신흥국"
+        
+        use_case: "글로벌 전략 수립"
+      
+      level_2_regional:
+        name: "지역별 (주/도)"
+        examples:
+          - "서울 vs 지방"
+          - "수도권 vs 비수도권"
+          - "미국: CA, NY, TX 등"
+        
+        use_case: "지역별 마케팅"
+      
+      level_3_local:
+        name: "로컬 (시/군/구)"
+        examples:
+          - "강남구 vs 강북구"
+          - "도심 vs 교외"
+        
+        use_case: "매장 입지 선정"
+    
+    key_variables:
+      population:
+        metric: "인구수"
+        source: "통계청"
+        
+      income:
+        metric: "평균 소득, 가처분 소득"
+        impact: "구매력 결정"
+        
+      urbanization:
+        metric: "도시화율"
+        impact: "유통 채널 다름"
+        
+      climate:
+        metric: "기후"
+        impact: "계절 제품에 중요"
+        
+      culture:
+        metric: "문화적 차이"
+        impact: "제품 선호도 차이"
+    
+    sizing_approach:
+      step_1: "각 지역 인구/가구 수 파악"
+      step_2: "지역별 구매력 조정"
+      step_3: "지역별 침투율 추정"
+      step_4: "합산하여 총 시장 규모"
+    
+    example:
+      market: "프리미엄 커피 배달"
+      
+      seoul:
+        population: "10M"
+        avg_income: "높음"
+        coffee_culture: "매우 발달"
+        penetration: "15%"
+        market_size: "1,500억원"
+      
+      gyeonggi:
+        population: "13M"
+        avg_income: "중상"
+        coffee_culture: "발달"
+        penetration: "10%"
+        market_size: "1,300억원"
+      
+      other_regions:
+        population: "27M"
+        avg_income: "중"
+        coffee_culture: "보통"
+        penetration: "3%"
+        market_size: "810억원"
+      
+      total_korea: "3,610억원"
+    
+    strategic_implications:
+      prioritization: "서울/수도권 우선 공략"
+      expansion: "단계적 지역 확대"
+      customization: "지역별 제품/가격 조정"
+    
+    data_sources:
+      - "통계청 인구총조사"
+      - "국세청 소득 통계"
+      - "지역별 소비 패턴 조사"
+  
+  - method_id: "MTH_EFFICIENCY_002"
+    method_name: "ROI (Return on Investment) Calculation"
+    category: "efficiency"
+    complexity: "low"
+    
+    concept: |
+      투자 대비 수익률 계산. 가장 기본적인 효율성 지표
+    
+    formula: |
+      ROI = (수익 - 비용) / 비용 × 100%
+      
+      또는
+      
+      ROI = (최종 가치 - 초기 투자) / 초기 투자 × 100%
+    
+    interpretation:
+      positive: "ROI > 0: 수익 발생"
+      break_even: "ROI = 0: 손익분기"
+      negative: "ROI < 0: 손실"
+      
+      benchmarks:
+        excellent: "> 100% (투자액의 2배 이상 수익)"
+        good: "50-100%"
+        acceptable: "20-50%"
+        poor: "< 20%"
+    
+    time_period:
+      consideration: "ROI는 기간 명시 필수"
+      
+      examples:
+        - "1년 ROI: 50%"
+        - "3년 누적 ROI: 150%"
+        - "Annualized ROI: 30%"
+    
+    applications:
+      marketing_roi:
+        formula: "(마케팅으로 인한 매출 - 마케팅 비용) / 마케팅 비용"
+        
+        example:
+          marketing_spend: "1,000만원"
+          revenue_from_marketing: "5,000만원"
+          roi: "400% (4배)"
+        
+        benchmark: "> 200% (3배)"
+      
+      project_roi:
+        formula: "(프로젝트 수익 - 프로젝트 비용) / 프로젝트 비용"
+        
+        example:
+          project_cost: "5억원"
+          annual_benefit: "2억원"
+          year_1_roi: "-60% (아직 회수 못함)"
+          year_3_roi: "20% (누적 6억 수익)"
+        
+        payback_period: "2.5년"
+      
+      customer_roi:
+        formula: "(고객 생애가치 - 고객 획득 비용) / 고객 획득 비용"
+        
+        same_as: "LTV/CAC - 1"
+        
+        example:
+          ltv: "300,000원"
+          cac: "100,000원"
+          roi: "200% (3배)"
+    
+    vs_other_metrics:
+      vs_irr:
+        roi: "단순 수익률"
+        irr: "시간가치 고려한 수익률"
+        when_to_use_irr: "장기 투자, 복잡한 현금흐름"
+      
+      vs_roas:
+        roi: "순이익 기준"
+        roas: "매출 기준"
+        difference: "ROAS가 더 높게 나옴"
+      
+      vs_payback:
+        roi: "수익률 (%)"
+        payback: "회수 기간 (년)"
+        complementary: "함께 사용"
+    
+    limitations:
+      - "시간가치 미고려"
+      - "위험 미고려"
+      - "기회비용 미반영"
+      - "비재무적 가치 제외"
+    
+    best_practices:
+      - "기간 명시"
+      - "비용 범위 명확히 (직접비만? 간접비 포함?)"
+      - "수익 계산 근거 명시"
+      - "여러 지표와 함께 사용"
+    
+    industry_benchmarks:
+      marketing:
+        digital_ads: "200-400%"
+        content_marketing: "300-500%"
+        seo: "500-1000%"
+      
+      real_estate:
+        residential: "8-15%/year"
+        commercial: "10-20%/year"
+      
+      startup_investment:
+        vc_target: "> 1000% (10배) over 5-7 years"
+        angel_target: "> 500%"
+
+# ========================================
+# END
+# ========================================
+

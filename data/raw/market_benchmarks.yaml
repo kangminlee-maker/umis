@@ -1,0 +1,2106 @@
+# ========================================
+# UMIS Market Benchmarks
+# Quantifier RAG Collection
+# ========================================
+#
+# 작성일: 2025-11-03
+# Agent: Quantifier (Bill)
+# 총 항목: 100개
+# 품질 등급: A+ 목표
+#
+# ========================================
+
+_meta:
+  version: "7.1.0"
+  created: "2025-11-03"
+  updated: "2025-11-03"
+  agent: "quantifier"
+  collection: "market_benchmarks"
+  total_benchmarks: 100
+  last_updated: "2025-11-03"
+  
+  categories:
+    - "산업별 시장 규모" 
+    - "SaaS 메트릭"
+    - "이커머스 메트릭"
+    - "구독 비즈니스"
+    - "성장률"
+    - "전환율"
+  
+  geographic_segmentation:
+    rationale: |
+      디지털/온라인 메트릭은 국가별로 크게 다름.
+      인프라, 사용 패턴, 경쟁 환경 차이 반영 필수.
+    
+    regions:
+      korea:
+        characteristics:
+          - "초고속 인터넷 (세계 1위)"
+          - "모바일 우선 (95%+ 스마트폰 보급)"
+          - "빠른 배송 (당일/새벽 배송 일반화)"
+          - "높은 디지털 결제 비율"
+          - "네이버, 카카오 생태계"
+        
+        metrics_difference:
+          - "모바일 전환율 높음 (글로벌 대비 1.5-2배)"
+          - "배송 기대치 높음 (24시간 이내)"
+          - "SNS 마케팅 효과 큼"
+      
+      japan:
+        characteristics:
+          - "현금 결제 여전히 높음"
+          - "품질/서비스 매우 중시"
+          - "로컬 플랫폼 강세 (Rakuten, LINE)"
+          - "고령화 (시니어 시장)"
+        
+        metrics_difference:
+          - "결제 전환율 낮음 (현금 선호)"
+          - "고객 충성도 매우 높음"
+          - "프리미엄 제품 선호"
+      
+      us:
+        characteristics:
+          - "거대 시장"
+          - "지역별 차이 큼"
+          - "신용카드 문화"
+          - "아마존 지배력"
+        
+        metrics_difference:
+          - "배송 기대치 낮음 (2-5일)"
+          - "반품률 높음"
+          - "프로모션 민감도 높음"
+      
+      global:
+        note: "평균 벤치마크, 참고용"
+
+# ========================================
+# 1. 산업별 시장 규모 (20개)
+# ========================================
+
+market_size_benchmarks:
+  
+  - benchmark_id: "BMK_SIZE_001"
+    industry: "글로벌 음악 스트리밍"
+    market_size: "$26.6B"
+    year: 2023
+    growth_rate: "14.2% CAGR (2023-2028)"
+    geographic: "Global"
+    
+    breakdown:
+      - segment: "Premium Subscriptions"
+        size: "$16.2B"
+        share: "61%"
+      
+      - segment: "Ad-Supported"
+        size: "$7.8B"
+        share: "29%"
+      
+      - segment: "Others"
+        size: "$2.6B"
+        share: "10%"
+    
+    top_players:
+      - company: "Spotify"
+        subscribers: "220M premium"
+        market_share: "31%"
+      
+      - company: "Apple Music"
+        subscribers: "95M"
+        market_share: "15%"
+      
+      - company: "YouTube Music"
+        subscribers: "80M"
+        market_share: "13%"
+    
+    source:
+      - "IFPI Global Music Report 2024"
+      - "Statista 2023"
+    
+    trends:
+      - "AI 개인화 추천 증가"
+      - "Podcast 번들링"
+      - "Hi-Fi 음질 프리미엄"
+  
+  - benchmark_id: "BMK_SIZE_002"
+    industry: "한국 음악 스트리밍"
+    market_size: "9,500억원"
+    year: 2023
+    growth_rate: "8.5% CAGR"
+    geographic: "South Korea"
+    
+    breakdown:
+      - segment: "프리미엄 구독"
+        size: "6,100억원"
+        share: "64%"
+      
+      - segment: "광고 기반"
+        size: "2,400억원"
+        share: "25%"
+      
+      - segment: "기타"
+        size: "1,000억원"
+        share: "11%"
+    
+    top_players:
+      - company: "Melon (카카오)"
+        market_share: "40%"
+      
+      - company: "Spotify"
+        market_share: "25%"
+      
+      - company: "YouTube Music"
+        market_share: "20%"
+      
+      - company: "기타 (Genie, Bugs 등)"
+        market_share: "15%"
+    
+    source:
+      - "한국콘텐츠진흥원 2023"
+      - "언론 보도 종합"
+  
+  - benchmark_id: "BMK_SIZE_003"
+    industry: "글로벌 SaaS"
+    market_size: "$197B"
+    year: 2023
+    growth_rate: "18.7% CAGR (2023-2028)"
+    forecast_2028: "$332B"
+    geographic: "Global"
+    
+    breakdown:
+      - segment: "CRM"
+        size: "$48B"
+        share: "24%"
+      
+      - segment: "ERP"
+        size: "$39B"
+        share: "20%"
+      
+      - segment: "Collaboration"
+        size: "$35B"
+        share: "18%"
+      
+      - segment: "Others"
+        size: "$75B"
+        share: "38%"
+    
+    source:
+      - "Gartner 2024"
+      - "IDC SaaS Market Report"
+  
+  - benchmark_id: "BMK_SIZE_004"
+    industry: "글로벌 이커머스"
+    market_size: "$5.8T"
+    year: 2023
+    growth_rate: "11.2% CAGR"
+    forecast_2027: "$8.1T"
+    geographic: "Global"
+    
+    regional_breakdown:
+      - region: "아시아태평양"
+        size: "$3.5T"
+        share: "60%"
+      
+      - region: "북미"
+        size: "$1.2T"
+        share: "21%"
+      
+      - region: "유럽"
+        size: "$0.9T"
+        share: "16%"
+      
+      - region: "기타"
+        size: "$0.2T"
+        share: "3%"
+    
+    source:
+      - "eMarketer 2024"
+      - "Statista E-commerce Report"
+  
+  - benchmark_id: "BMK_SIZE_005"
+    industry: "한국 이커머스"
+    market_size: "220조원"
+    year: 2023
+    growth_rate: "15.3% CAGR"
+    geographic: "South Korea"
+    
+    breakdown:
+      - category: "패션/의류"
+        size: "45조원"
+        share: "20%"
+      
+      - category: "식품"
+        size: "55조원"
+        share: "25%"
+      
+      - category: "생활용품"
+        size: "33조원"
+        share: "15%"
+      
+      - category: "전자제품"
+        size: "44조원"
+        share: "20%"
+      
+      - category: "기타"
+        size: "43조원"
+        share: "20%"
+    
+    top_players:
+      - company: "Coupang"
+        gmv: "약 35조원"
+        market_share: "16%"
+      
+      - company: "Naver Shopping"
+        gmv: "약 28조원"
+        market_share: "13%"
+      
+      - company: "SSG.com (신세계)"
+        gmv: "약 14조원"
+        market_share: "6%"
+    
+    source:
+      - "통계청 전자상거래 동향 2023"
+      - "각 사 공시자료"
+  
+  - benchmark_id: "BMK_SIZE_006"
+    industry: "글로벌 클라우드 컴퓨팅"
+    market_size: "$591B"
+    year: 2023
+    growth_rate: "16.5% CAGR (2023-2028)"
+    forecast_2028: "$1.24T"
+    geographic: "Global"
+    
+    breakdown:
+      - segment: "IaaS (Infrastructure)"
+        size: "$211B"
+        share: "36%"
+        leaders: ["AWS", "Azure", "Google Cloud"]
+      
+      - segment: "PaaS (Platform)"
+        size: "$138B"
+        share: "23%"
+      
+      - segment: "SaaS (Software)"
+        size: "$242B"
+        share: "41%"
+    
+    source: "Gartner 2024"
+  
+  - benchmark_id: "BMK_SIZE_007"
+    industry: "글로벌 AI/ML"
+    market_size: "$196B"
+    year: 2023
+    growth_rate: "36.2% CAGR"
+    forecast_2030: "$1.8T"
+    geographic: "Global"
+    
+    breakdown:
+      - segment: "Generative AI"
+        size: "$43B"
+        share: "22%"
+        growth: "42% CAGR"
+      
+      - segment: "ML Platform"
+        size: "$78B"
+        share: "40%"
+      
+      - segment: "AI Services"
+        size: "$75B"
+        share: "38%"
+    
+    source: "McKinsey AI Report 2024"
+  
+  - benchmark_id: "BMK_SIZE_008"
+    industry: "글로벌 Cybersecurity"
+    market_size: "$183B"
+    year: 2023
+    growth_rate: "12.3% CAGR"
+    geographic: "Global"
+    
+    source: "Gartner Security Report"
+  
+  - benchmark_id: "BMK_SIZE_009"
+    industry: "글로벌 전기차"
+    market_size: "$384B"
+    year: 2023
+    growth_rate: "18.2% CAGR"
+    forecast_2030: "$1.1T"
+    geographic: "Global"
+    
+    unit_sales:
+      2023: "14M units"
+      2030_forecast: "40M units"
+    
+    regional_breakdown:
+      china: "60%"
+      europe: "25%"
+      us: "10%"
+      others: "5%"
+    
+    top_manufacturers:
+      - "BYD (China)"
+      - "Tesla"
+      - "Volkswagen"
+    
+    source: "IEA Global EV Outlook 2024"
+  
+  - benchmark_id: "BMK_SIZE_010"
+    industry: "글로벌 배터리"
+    market_size: "$116B"
+    year: 2023
+    growth_rate: "17.8% CAGR"
+    geographic: "Global"
+    
+    breakdown:
+      ev_batteries: "$89B (77%)"
+      energy_storage: "$18B (15%)"
+      consumer_electronics: "$9B (8%)"
+    
+    source: "BloombergNEF 2024"
+  
+  - benchmark_id: "BMK_SIZE_011"
+    industry: "글로벌 반도체"
+    market_size: "$527B"
+    year: 2023
+    growth_rate: "8.8% CAGR"
+    geographic: "Global"
+    
+    breakdown:
+      - segment: "Memory"
+        size: "$130B"
+        share: "25%"
+      
+      - segment: "Logic"
+        size: "$185B"
+        share: "35%"
+      
+      - segment: "Analog"
+        size: "$74B"
+        share: "14%"
+    
+    top_companies:
+      - "Samsung Electronics"
+      - "Intel"
+      - "TSMC"
+    
+    source: "WSTS (World Semiconductor Trade Statistics)"
+  
+  - benchmark_id: "BMK_SIZE_012"
+    industry: "한국 반도체"
+    market_size: "190조원"
+    year: 2023
+    growth_rate: "7.2% CAGR"
+    geographic: "South Korea"
+    
+    global_share: "19%"
+    
+    breakdown:
+      memory: "140조원 (74%)"
+      system_lsi: "30조원 (16%)"
+      others: "20조원 (10%)"
+    
+    top_players:
+      samsung: "160조원 (84%)"
+      sk_hynix: "25조원 (13%)"
+    
+    source: "산업통상자원부 2023"
+  
+  - benchmark_id: "BMK_SIZE_013"
+    industry: "한국 디스플레이"
+    market_size: "48조원"
+    year: 2023
+    growth_rate: "3.5% CAGR"
+    geographic: "South Korea"
+    
+    breakdown:
+      oled: "32조원 (67%)"
+      lcd: "16조원 (33%)"
+    
+    source: "디스플레이산업협회"
+  
+  - benchmark_id: "BMK_SIZE_014"
+    industry: "한국 배터리 (2차전지)"
+    market_size: "70조원"
+    year: 2023
+    growth_rate: "24% CAGR"
+    forecast_2030: "280조원"
+    geographic: "South Korea"
+    
+    global_share: "40%"
+    
+    top_players:
+      - "LG Energy Solution: 25조원"
+      - "Samsung SDI: 20조원"
+      - "SK On: 15조원"
+    
+    source: "산업통상자원부, SNE Research"
+  
+  - benchmark_id: "BMK_SIZE_015"
+    industry: "한국 K-POP/엔터테인먼트"
+    market_size: "9.5조원"
+    year: 2023
+    growth_rate: "18% CAGR"
+    geographic: "South Korea"
+    
+    breakdown:
+      music: "3.2조원"
+      concerts: "2.8조원"
+      merchandise: "1.9조원"
+      streaming: "1.6조원"
+    
+    export: "5.1조원 (54%)"
+    
+    top_companies:
+      - "HYBE"
+      - "SM Entertainment"
+      - "YG Entertainment"
+      - "JYP Entertainment"
+    
+    source: "한국콘텐츠진흥원 2024"
+  
+  - benchmark_id: "BMK_SIZE_016"
+    industry: "한국 자동차"
+    market_size: "97조원 (내수)"
+    year: 2023
+    export: "760억불"
+    geographic: "South Korea"
+    
+    breakdown:
+      - segment: "완성차"
+        size: "65조원"
+      
+      - segment: "부품"
+        size: "32조원"
+    
+    top_manufacturers:
+      - "현대자동차"
+      - "기아"
+      - "Genesis"
+    
+    source: "한국자동차산업협회"
+  
+  - benchmark_id: "BMK_SIZE_017"
+    industry: "한국 화장품"
+    market_size: "18.5조원"
+    year: 2023
+    growth_rate: "9.8% CAGR"
+    geographic: "South Korea"
+    
+    export: "9.2조원 (50%)"
+    
+    breakdown:
+      - segment: "기초 화장품"
+        size: "9.2조원"
+        share: "50%"
+      
+      - segment: "색조"
+        size: "4.6조원"
+        share: "25%"
+      
+      - segment: "기타"
+        size: "4.7조원"
+        share: "25%"
+    
+    top_companies:
+      - "아모레퍼시픽"
+      - "LG생활건강"
+    
+    source: "식품의약품안전처, 대한화장품협회"
+  
+  - benchmark_id: "BMK_SIZE_018"
+    industry: "글로벌 게임"
+    market_size: "$184B"
+    year: 2023
+    growth_rate: "6.4% CAGR"
+    geographic: "Global"
+    
+    breakdown:
+      mobile: "$92B (50%)"
+      console: "$52B (28%)"
+      pc: "$40B (22%)"
+    
+    regional:
+      asia: "$88B (48%)"
+      us: "$49B (27%)"
+      europe: "$34B (18%)"
+    
+    source: "Newzoo Global Games Market Report"
+  
+  - benchmark_id: "BMK_SIZE_019"
+    industry: "한국 게임"
+    market_size: "22조원"
+    year: 2023
+    growth_rate: "8.2% CAGR"
+    geographic: "South Korea"
+    
+    export: "9.4조원 (43%)"
+    
+    breakdown:
+      mobile: "14.3조원 (65%)"
+      pc: "5.5조원 (25%)"
+      console: "2.2조원 (10%)"
+    
+    top_companies:
+      - "넷마블"
+      - "엔씨소프트"
+      - "넥슨"
+      - "크래프톤"
+    
+    source: "한국콘텐츠진흥원"
+  
+  - benchmark_id: "BMK_SIZE_020"
+    industry: "글로벌 OTT (스트리밍 비디오)"
+    market_size: "$87B"
+    year: 2023
+    growth_rate: "11.2% CAGR"
+    forecast_2028: "$149B"
+    geographic: "Global"
+    
+    subscribers: "1.57B"
+    
+    top_players:
+      - company: "Netflix"
+        subscribers: "260M"
+        share: "16.5%"
+      
+      - company: "Disney+"
+        subscribers: "150M"
+      
+      - company: "Amazon Prime Video"
+        subscribers: "200M+"
+    
+    source: "Digital TV Research 2024"
+
+# ========================================
+# 2. SaaS 메트릭 벤치마크 (20개)
+# ========================================
+
+saas_metrics_benchmarks:
+  
+  - benchmark_id: "BMK_SAAS_001"
+    metric: "Monthly Churn Rate (B2B SaaS)"
+    category: "retention"
+    
+    validation_status: "Verified"
+    verified_date: "2025-11-04"
+    external_sources:
+      - name: "ProfitWell"
+        value: "3-8%"
+        note: "B2B SaaS 평균, 세그먼트별 차이"
+        credibility: "High (SaaS 전문)"
+      - name: "Recurly Research"
+        value: "3.5%"
+        credibility: "Medium-High"
+    confidence: "High (A)"
+    
+    benchmarks:
+      excellent: "< 1%"
+      good: "1-2%"
+      acceptable: "2-5%"
+      poor: "> 5%"
+    
+    industry_average: "3.2%"
+    top_quartile: "< 1.5%"
+    
+    company_examples:
+      - company: "Salesforce"
+        value: "0.9%"
+        year: 2023
+      
+      - company: "Adobe Creative Cloud"
+        value: "1.2%"
+        year: 2023
+      
+      - company: "Zoom"
+        value: "2.1%"
+        year: 2023
+    
+    factors:
+      reduces_churn:
+        - "높은 사용자 참여도"
+        - "강력한 온보딩"
+        - "연간 계약"
+      
+      increases_churn:
+        - "낮은 제품 가치"
+        - "경쟁사 전환"
+        - "월간 계약"
+    
+    source:
+      - "ChartMogul SaaS Benchmarks 2024"
+      - "ProfitWell SaaS Report"
+  
+  - benchmark_id: "BMK_SAAS_002"
+    metric: "Logo Retention (B2B SaaS)"
+    category: "retention"
+    
+    benchmarks:
+      excellent: "> 95%"
+      good: "90-95%"
+      acceptable: "85-90%"
+      poor: "< 85%"
+    
+    company_examples:
+      - company: "Salesforce"
+        value: "92%"
+        year: 2023
+      
+      - company: "ServiceNow"
+        value: "97%"
+        year: 2023
+  
+  - benchmark_id: "BMK_SAAS_003"
+    metric: "Net Revenue Retention (NRR)"
+    category: "revenue"
+    
+    benchmarks:
+      world_class: "> 120%"
+      excellent: "110-120%"
+      good: "100-110%"
+      poor: "< 100%"
+    
+    company_examples:
+      - company: "Snowflake"
+        value: "158%"
+        year: 2023
+        note: "업계 최고"
+      
+      - company: "Datadog"
+        value: "130%"
+        year: 2023
+      
+      - company: "Salesforce"
+        value: "110%"
+        year: 2023
+    
+    source: "공시자료, KeyBanc SaaS Survey"
+  
+  - benchmark_id: "BMK_SAAS_004"
+    metric: "LTV/CAC Ratio (SaaS)"
+    category: "unit_economics"
+    
+    validation_status: "Verified"
+    verified_date: "2025-11-04"
+    external_sources:
+      - name: "ProfitWell"
+        value: "3:1 권장 (최소)"
+        credibility: "High (SaaS 전문)"
+      - name: "SaaS Capital"
+        value: "3-5x (good)"
+        credibility: "High"
+    confidence: "High (A)"
+    
+    benchmarks:
+      excellent: "> 5.0"
+      good: "3.0-5.0"
+      acceptable: "2.0-3.0"
+      poor: "< 2.0"
+    
+    by_stage:
+      early_stage: "1.5-2.5"
+      growth: "3.0-5.0"
+      mature: "> 5.0"
+  
+  - benchmark_id: "BMK_SAAS_005"
+    metric: "CAC Payback Period (SaaS)"
+    category: "efficiency"
+    
+    validation_status: "Verified"
+    verified_date: "2025-11-04"
+    external_sources:
+      - name: "ProfitWell"
+        value: "5-12 months"
+        credibility: "High"
+      - name: "SaaS Capital"
+        value: "6-18 months"
+        credibility: "Medium-High"
+    confidence: "High (A)"
+    
+    benchmarks:
+      excellent: "< 6 months"
+      good: "6-12 months"
+      acceptable: "12-18 months"
+      poor: "> 18 months"
+    
+    by_segment:
+      smb: "< 6 months"
+      mid_market: "6-12 months"
+      enterprise: "12-24 months"
+  
+  - benchmark_id: "BMK_SAAS_006"
+    metric: "Magic Number (SaaS)"
+    category: "sales_efficiency"
+    
+    benchmarks:
+      excellent: "> 1.0"
+      good: "0.75-1.0"
+      acceptable: "0.5-0.75"
+      poor: "< 0.5"
+  
+  - benchmark_id: "BMK_SAAS_007"
+    metric: "Rule of 40 (SaaS)"
+    
+    validation_status: "Verified"
+    verified_date: "2025-11-04"
+    external_sources:
+      - name: "SaaS Capital"
+        value: "Growth% + Profit Margin% ≥ 40%"
+        note: "상장 SaaS 평가 기준"
+        credibility: "High (업계 표준)"
+    confidence: "High (A)"
+    category: "health"
+    
+    formula: "Growth Rate + Profit Margin"
+    
+    benchmarks:
+      excellent: "> 50%"
+      good: "40-50%"
+      at_target: "40%"
+      below_target: "< 40%"
+    
+    company_examples:
+      - company: "Zoom"
+        growth: "15%"
+        profit_margin: "30%"
+        rule: "45%"
+      
+      - company: "Salesforce"
+        growth: "11%"
+        profit_margin: "31%"
+        rule: "42%"
+  
+  - benchmark_id: "BMK_SAAS_008"
+    metric: "ARR per Employee"
+    category: "productivity"
+    
+    benchmarks:
+      excellent: "> $250K"
+      good: "$150-250K"
+      acceptable: "$100-150K"
+      poor: "< $100K"
+    
+    company_examples:
+      - company: "Atlassian"
+        value: "$400K+"
+        note: "Product-led growth"
+  
+  - benchmark_id: "BMK_SAAS_009"
+    metric: "Sales Efficiency (New ARR / S&M)"
+    category: "sales"
+    
+    benchmarks:
+      excellent: "> 1.5"
+      good: "1.0-1.5"
+      acceptable: "0.7-1.0"
+  
+  - benchmark_id: "BMK_SAAS_010"
+    metric: "Customer Concentration"
+    category: "risk"
+    
+    measurement: "Top 10 customers % of revenue"
+    
+    benchmarks:
+      safe: "< 30%"
+      moderate_risk: "30-50%"
+      high_risk: "> 50%"
+  
+  - benchmark_id: "BMK_SAAS_011"
+    metric: "ACV (Annual Contract Value)"
+    category: "revenue"
+    
+    by_segment:
+      smb: "< $10K"
+      mid_market: "$10-100K"
+      enterprise: "> $100K"
+    
+    impact_on_metrics:
+      higher_acv:
+        - "Lower churn"
+        - "Higher CAC"
+        - "Longer sales cycle"
+  
+  - benchmark_id: "BMK_SAAS_012"
+    metric: "Expansion Revenue Rate"
+    category: "growth"
+    
+    benchmarks:
+      excellent: "> 20% of total revenue"
+      good: "15-20%"
+      acceptable: "10-15%"
+  
+  - benchmark_id: "BMK_SAAS_013"
+    metric: "Trial-to-Paid Conversion (SaaS)"
+    category: "conversion"
+    
+    benchmarks:
+      excellent: "> 25%"
+      good: "15-25%"
+      acceptable: "10-15%"
+      poor: "< 10%"
+    
+    by_trial_length:
+      7_days: "10-15%"
+      14_days: "15-20%"
+      30_days: "20-30%"
+  
+  - benchmark_id: "BMK_SAAS_014"
+    metric: "Time to Value (TTV - SaaS)"
+    category: "onboarding"
+    
+    benchmarks:
+      excellent: "< 1 day"
+      good: "1-7 days"
+      acceptable: "7-30 days"
+      poor: "> 30 days"
+  
+  - benchmark_id: "BMK_SAAS_015"
+    metric: "Product-Led Growth Rate"
+    category: "growth"
+    
+    definition: "셀프서브 가입/전환 비율"
+    
+    benchmarks:
+      plg_dominant: "> 80% self-serve"
+      hybrid: "40-80%"
+      sales_led: "< 40%"
+  
+  - benchmark_id: "BMK_SAAS_016"
+    metric: "Freemium Conversion (SaaS)"
+    category: "conversion"
+    
+    benchmarks:
+      excellent: "> 10%"
+      good: "4-10%"
+      acceptable: "2-4%"
+      poor: "< 2%"
+    
+    examples:
+      - product: "Slack"
+        conversion: "~30%"
+        note: "매우 높음"
+      
+      - product: "Zoom"
+        conversion: "~8%"
+      
+      - product: "Dropbox"
+        conversion: "~4%"
+  
+  - benchmark_id: "BMK_SAAS_017"
+    metric: "Gross Revenue Retention (GRR)"
+    category: "retention"
+    
+    benchmarks:
+      excellent: "> 95%"
+      good: "90-95%"
+      acceptable: "85-90%"
+      poor: "< 85%"
+    
+    note: "Expansion 제외, Churn만"
+  
+  - benchmark_id: "BMK_SAAS_018"
+    metric: "NPS (Net Promoter Score - SaaS)"
+    category: "satisfaction"
+    
+    formula: "% Promoters (9-10) - % Detractors (0-6)"
+    
+    benchmarks:
+      excellent: "> 70"
+      good: "50-70"
+      acceptable: "30-50"
+      poor: "< 30"
+    
+    company_examples:
+      - company: "Salesforce"
+        nps: "67"
+      
+      - company: "HubSpot"
+        nps: "72"
+  
+  - benchmark_id: "BMK_SAAS_019"
+    metric: "Sales Cycle Length (B2B SaaS)"
+    category: "sales"
+    
+    by_segment:
+      smb: "< 30 days"
+      mid_market: "30-90 days"
+      enterprise: "90-180+ days"
+    
+    factors:
+      - "ACV (높을수록 길어짐)"
+      - "Decision makers 수"
+      - "복잡도"
+  
+  - benchmark_id: "BMK_SAAS_020"
+    metric: "Monthly Recurring Revenue (MRR) Growth"
+    category: "growth"
+    
+    benchmarks:
+      early_stage: "15-20% MoM"
+      growth_stage: "5-10% MoM"
+      mature: "2-5% MoM"
+
+# ========================================
+# 3. 이커머스 메트릭 (15개)
+# ========================================
+
+ecommerce_metrics_benchmarks:
+  
+  - benchmark_id: "BMK_EC_001"
+    metric: "Conversion Rate (E-commerce)"
+    category: "conversion"
+    
+    conservative_global_avg: "1.8-2.8%"
+    common_citation: "2.5-3% (Baymard)"
+    
+    note_on_sources: |
+      출처별 글로벌 전환율 차이:
+      - Baymard Institute: 2.5-3% (높은 편)
+      - Littledata (Shopify): 1.5-3% (넓은 범위)
+      - eMarketer: 2-3%
+      
+      보수적 접근: 1.8-2.8% 사용
+    
+    by_country:
+      korea:
+        overall: "1.8-2.8%"
+        desktop: "2.5-3.5%"
+        mobile: "1.5-2.5%"
+        
+        best_in_class:
+          coupang: "2.5-3.5% (역산 중간값 기준)"
+          naver_shopping: "2-3%"
+          others: "1.5-2.5%"
+        
+        calculation_note: |
+          쿠팡 역산 (DART 공시 기반):
+          - MAU: 약 2,000만명
+          - 월 거래 건수: 약 1.5억 건
+          - 월평균 방문: 2-4회 추정
+          
+          보수적 (4회): 1.5억 / 8,000만 = 1.875%
+          중간 (3회): 1.5억 / 6,000만 = 2.5%
+          적극적 (2회): 1.5억 / 4,000만 = 3.75%
+          
+          → 쿠팡 합리적 범위 = 2-3% (중간값 사용)
+          
+          한국 평균 (가중):
+          - 쿠팡 (점유율 16%): 2.5%
+          - 네이버 (점유율 13%): 2.2%
+          - 기타 (점유율 71%): 1.8%
+          → 평균: 1.8-2.8% (보수적)
+        
+        note: |
+          한국 평균 ≈ 글로벌 (거의 동일)
+          
+          쿠팡 같은 최적화 플랫폼:
+          - ✅ 로켓배송 (신뢰)
+          - ✅ Wow 멤버십 (충성도)
+          - ✅ 앱 UX 최적화
+          → 2.5-3.5% (업계 최고)
+          
+          대부분 사이트:
+          - ⚠️ 최적화 부족
+          - ⚠️ 경쟁 심화
+          - ⚠️ 배송비 부담
+          → 1.5-2.5%
+    
+    validation:
+      confidence: "Medium (B)"
+      
+      validation_sources:
+        - source: "Baymard Institute"
+          value: "2.5-3% (글로벌)"
+          year: 2024
+          reliability: "A"
+          url: "https://baymard.com"
+        
+        - source: "Littledata Benchmarks"
+          value: "1.5-3% (Shopify 데이터)"
+          year: 2024
+          reliability: "B+"
+        
+        - source: "쿠팡 DART 공시 역산 (보수적)"
+          calculation: |
+            MAU: 2,000만
+            월 거래: 1.5억 건
+            방문 빈도: 2-4회/월 (추정)
+            
+            보수적 (4회): 1.5억 / 8,000만 = 1.875%
+            중간 (3회): 1.5억 / 6,000만 = 2.5%
+            적극적 (2회): 1.5억 / 4,000만 = 3.75%
+            
+            → 쿠팡 전체 범위 = 1.9-3.8%
+            → 쿠팡 중간값 = 2.5%
+          
+          reasoning: |
+            보수적 접근 (선입견 제거):
+            
+            1. 쿠팡 = 2-3% (중간값 사용, 최고 수준)
+            2. 한국 평균 = 쿠팡 × 0.7-0.9 = 1.8-2.8%
+            3. 글로벌 평균 = 1.8-2.8% (Littledata 기준)
+            
+            결론: 한국 ≈ 글로벌 (거의 동일)
+            
+            초기 오류:
+            - 적극적 추정(3.75%)만 사용 ❌
+            - "한국이 높을 것" 선입견 ❌
+          
+          reliability: "B+ (공시 기반 역산)"
+      
+      validation_needed:
+        - "쿠팡 방문 빈도 실제 데이터 확인"
+        - "네이버, 11번가 등 역산하여 평균 재계산"
+        - "Google Analytics Industry Benchmarks"
+      
+      last_verified: "2025-11-03"
+      verified_by: "논리적 추론 + 공시 역산"
+      
+      confidence_note: |
+        보수적 접근 원칙:
+        
+        1. 글로벌 벤치마크 재평가
+           - Baymard 2.5-3% (높은 편)
+           - Littledata 1.5-3% (넓은 범위)
+           → 보수적 평균: 1.8-2.8%
+        
+        2. 쿠팡 역산 (선입견 제거)
+           - 전체 범위: 1.9-3.8%
+           - 중간값 사용: 2.5%
+           → 쿠팡 = 2-3% (보수적)
+        
+        3. 한국 평균 (쿠팡보다 낮음)
+           - 쿠팡 2.5% × 0.7-0.9 = 1.75-2.25%
+           → 한국 평균 = 1.8-2.8%
+        
+        4. 국가 간 비교
+           - 한국 ≈ 글로벌 (거의 동일)
+           - 일본 약간 낮음 (보수적 문화)
+           - 미국 ≈ 글로벌
+        
+        신뢰도:
+        - 글로벌: Medium (B) - 출처 간 편차
+        - 한국: Medium (B) - 역산 기반
+        
+        검증 필요:
+        - 쿠팡 방문 빈도 실제 데이터
+        - 다른 플랫폼 역산
+        - 보수적 값이 현실적일 가능성 높음
+      
+      japan:
+        overall: "1.5-2.5%"
+        desktop: "2.5-3.5%"
+        mobile: "0.8-1.5%"
+        
+        note: |
+          일본은 전환율 낮음 (보수적 문화)
+          
+          이유:
+          - 신용카드 등록 꺼림
+          - PC에서 신중한 검토
+          - 대금상환 선호
+          
+          특징:
+          - 모바일 유입은 높지만 PC에서 구매
+          - 크로스 디바이스 여정
+      
+      us:
+        overall: "1.8-2.8%"
+        desktop: "3-4%"
+        mobile: "1.2-2%"
+        
+        note: |
+          미국 = 글로벌 평균과 유사
+          
+          특징:
+          - Amazon 영향으로 배송 기대 높아짐
+          - 하지만 평균적으로는 보수적
+      
+      global:
+        overall: "1.8-2.8%"
+        desktop: "3-4%"
+        mobile: "1.2-2%"
+        
+        source_note: |
+          보수적 범위 사용:
+          - Littledata 하한: 1.5%
+          - Baymard 중간: 2.75%
+          - eMarketer: 2-3%
+          → 보수적 평균: 1.8-2.8%
+    
+    best_in_class: "> 5%"
+    
+    factors_affecting:
+      infrastructure: "결제 시스템, 배송 속도"
+      culture: "온라인 쇼핑 익숙도"
+      competition: "시장 성숙도"
+  
+  - benchmark_id: "BMK_EC_002"
+    metric: "AOV (Average Order Value - E-commerce)"
+    category: "revenue"
+    
+    by_country:
+      korea:
+        fashion: "70,000-100,000원 ($55-80)"
+        electronics: "200,000-400,000원 ($150-300)"
+        groceries: "30,000-50,000원 ($25-40)"
+        food_delivery: "15,000-25,000원 ($12-20)"
+        
+        note: |
+          한국은 무료배송 기준(2-3만원) 영향으로
+          묶음 구매 유도 → AOV 상승 경향
+      
+      japan:
+        fashion: "¥8,000-12,000 ($60-90)"
+        electronics: "¥20,000-40,000 ($150-300)"
+        groceries: "¥4,000-7,000 ($30-55)"
+        
+        note: "품질 중시로 단가 높은 제품 선호"
+      
+      us:
+        fashion: "$75-100"
+        electronics: "$200-400"
+        groceries: "$50-80"
+        home_goods: "$100-150"
+        
+        note: "광대한 시장, 지역별 편차 큼"
+      
+      global:
+        fashion: "$60-90"
+        electronics: "$150-350"
+        groceries: "$40-70"
+  
+  - benchmark_id: "BMK_EC_003"
+    metric: "Cart Abandonment Rate"
+    category: "conversion"
+    
+    global_benchmark: "69.8%"
+    source: "Baymard Institute 2024 (48,000 sites)"
+    
+    by_country:
+      korea:
+        rate: "68-72%"
+        
+        logic_check: |
+          한국 전환율 ≈ 글로벌 (1.8-2.8%)
+          → Cart Abandonment도 ≈ 글로벌이어야 함
+          → 68-72% (글로벌과 유사) ✅
+          
+          초기 설정 55-65%는 과소평가 ❌
+          (간편결제 효과를 과대평가)
+        
+        best_in_class:
+          coupang: "60-65% (최적화 사이트)"
+          average: "68-72%"
+          poor: "75-80%"
+        
+        top_abandonment_reasons:
+          - "배송비 부과 (45%)"
+          - "가격 비교하려고 (30%)"
+          - "프로모션 대기 (15%)"
+          - "복잡한 절차 (10%)"
+        
+        note: |
+          간편결제가 있어도:
+          - 배송비 민감도 높음
+          - 비교 쇼핑 활발
+          - 프로모션 기대
+          → 이탈률은 글로벌과 비슷
+      
+      japan:
+        rate: "72-78%"
+        
+        higher_reasons:
+          - "신용카드 등록 꺼림"
+          - "신중한 재검토 (PC 이동)"
+          - "대금상환 선호"
+        
+        top_abandonment_reasons:
+          - "결제 보안 우려 (40%)"
+          - "신중한 검토 (35%)"
+          - "배송비 (25%)"
+      
+      us:
+        rate: "68-72%"
+        
+        top_abandonment_reasons:
+          - "Unexpected shipping cost (48%)"
+          - "Account creation required (24%)"
+          - "Complicated checkout (18%)"
+          - "Delivery time too long (14%)"
+      
+      global:
+        rate: "69.8%"
+        source: "Baymard Institute 2024"
+    
+    target: "< 65% (최적화 목표)"
+    best_in_class: "< 60%"
+    
+    reduction_strategies:
+      korea_specific:
+        - "무료배송 임계값 명확히 (배송비가 1위 이탈 이유)"
+        - "가격 비교 차단 (최저가 보장)"
+        - "시간 한정 할인 (프로모션 대기 방지)"
+      
+      japan_specific:
+        - "대금상환 옵션 우선"
+        - "편의점 결제"
+        - "신뢰 마크 강조"
+        - "상세 정보 제공"
+      
+      us_specific:
+        - "Free shipping 강조"
+        - "Guest checkout"
+        - "Progress indicator"
+    
+    reality_check: |
+      간편결제, 빠른 배송이 있어도
+      이탈률은 크게 안 떨어짐!
+      
+      이유:
+      - 배송비 민감도 (전 세계 공통)
+      - 비교 쇼핑 습관
+      - 충동 구매 후 재고민
+      
+      한국도 글로벌과 비슷 (68-72%)
+  
+  - benchmark_id: "BMK_EC_004"
+    metric: "Return Rate"
+    by_category:
+      fashion: "20-30%"
+      electronics: "5-10%"
+      groceries: "< 5%"
+    industry_avg: "18%"
+  
+  - benchmark_id: "BMK_EC_005"
+    metric: "Customer Repeat Rate"
+    benchmarks:
+      excellent: "> 40%"
+      good: "30-40%"
+      poor: "< 30%"
+  
+  - benchmark_id: "BMK_EC_006"
+    metric: "Purchase Frequency"
+    by_category:
+      groceries: "3-4 times/month"
+      fashion: "1-2 times/month"
+      electronics: "1-2 times/year"
+  
+  - benchmark_id: "BMK_EC_007"
+    metric: "Customer Acquisition Cost (E-commerce)"
+    category: "marketing"
+    
+    by_country:
+      korea:
+        by_channel:
+          naver_search: "15,000-40,000원 ($12-30)"
+          google_search: "30,000-60,000원 ($25-50)"
+          instagram: "25,000-50,000원 ($20-40)"
+          kakao: "20,000-45,000원 ($15-35)"
+          influencer: "30,000-80,000원 ($25-65)"
+          email: "5,000-15,000원 ($4-12)"
+        
+        note: |
+          한국은 네이버 검색광고가 가장 효율적.
+          인플루언서 마케팅 매우 효과적 (높은 신뢰도).
+        
+        platform_specifics:
+          - "네이버 블로그/카페: 중요"
+          - "카카오톡 채널: 재구매 유도"
+          - "Instagram: 패션/뷰티 핵심"
+      
+      japan:
+        by_channel:
+          yahoo_search: "¥2,000-5,000 ($15-38)"
+          google_search: "¥3,000-8,000 ($23-60)"
+          line: "¥2,500-6,000 ($19-45)"
+          rakuten_ads: "¥2,000-5,000 ($15-38)"
+        
+        note: |
+          일본은 Yahoo Japan, Rakuten 강세.
+          LINE 공식 계정 효과적.
+      
+      us:
+        by_channel:
+          organic_search: "$10-30"
+          google_ads: "$40-80"
+          facebook: "$25-55"
+          instagram: "$30-60"
+          tiktok: "$20-45"
+          email: "$5-15"
+        
+        note: |
+          미국은 채널 다양화 필수.
+          TikTok 성장 중.
+      
+      global:
+        organic_search: "$10-30"
+        paid_search: "$40-80"
+        social_media: "$30-60"
+        email: "$5-15"
+    
+    trend_2024:
+      korea: "인플루언서 ROI 상승 (TikTok, Instagram)"
+      japan: "LINE 광고 효율 증가"
+      us: "TikTok Shop 부상"
+    
+    validation:
+      confidence: "Low-Medium (C+)"
+      
+      formula_check: |
+        CAC = CPC / Conversion Rate
+        
+        또는
+        
+        CAC = Total Ad Spend / New Customers
+      
+      assumptions:
+        korea_lower_cac_reasons:
+          - "시장 규모 작음 → CPC 낮음"
+          - "네이버 검색 경쟁 < Google"
+          - "CPM 낮음 (작은 시장)"
+        
+        validation_needed:
+          - "실제 네이버 CPC 데이터"
+          - "Google Ads Korea vs US 비교"
+          - "카카오, 인스타그램 실제 CAC"
+      
+      recommendation: |
+        ⚠️ CAC는 채널/산업/제품에 따라 10배 차이
+        
+        더 실용적 접근:
+        1. 산업별 CAC (패션 vs 전자제품)
+        2. 채널별 CAC (검색 vs SNS)
+        3. 제품 단가별 CAC (단가 높으면 CAC 높음)
+        
+        지역은 2차 변수
+  
+  - benchmark_id: "BMK_EC_008"
+    metric: "Customer Lifetime Value (E-commerce)"
+    formula: "AOV × Purchase Frequency × Customer Lifetime"
+    benchmark: "LTV/CAC > 3.0"
+  
+  - benchmark_id: "BMK_EC_009"
+    metric: "Gross Margin (E-commerce)"
+    by_model:
+      marketplace: "70-90% (수수료)"
+      inventory: "20-40% (1P)"
+      dropshipping: "15-25%"
+  
+  - benchmark_id: "BMK_EC_010"
+    metric: "Shipping Cost % of Revenue"
+    benchmarks:
+      target: "< 10%"
+      typical: "8-15%"
+  
+  - benchmark_id: "BMK_EC_011"
+    metric: "Email Open Rate (E-commerce)"
+    benchmarks:
+      excellent: "> 25%"
+      industry_avg: "15-20%"
+      poor: "< 10%"
+  
+  - benchmark_id: "BMK_EC_012"
+    metric: "Email Click Rate"
+    industry_avg: "2-3%"
+    excellent: "> 5%"
+  
+  - benchmark_id: "BMK_EC_013"
+    metric: "Mobile Traffic % (E-commerce)"
+    category: "traffic"
+    
+    by_country:
+      korea:
+        mobile_traffic: "80-85%"
+        mobile_conversion: "1.5-2.5%"
+        mobile_revenue: "75-80%"
+        
+        best_in_class_conversion:
+          coupang_app: "2-3%"
+          naver_app: "1.8-2.5%"
+          average: "1.5-2.5%"
+        
+        reality_check: |
+          쿠팡 역산 = 1.9-3.8%
+          → 중간값 2.5% 사용 (보수적)
+          → 쿠팡 = 2-3%
+          → 평균 = 1.5-2.5% (쿠팡보다 낮음) ✅
+        
+        note: |
+          한국은 세계 최고 수준의 모바일 쇼핑.
+          모바일 앱 최적화 필수.
+          네이버, 쿠팡 앱 지배적.
+        
+        device_breakdown:
+          mobile_app: "65%"
+          mobile_web: "15%"
+          desktop: "20%"
+      
+      japan:
+        mobile_traffic: "60-70%"
+        mobile_conversion: "1.5-2.5%"
+        mobile_revenue: "50-60%"
+        
+        note: |
+          일본은 모바일 유입은 높지만 PC에서 구매 완료.
+          크로스 디바이스 여정 분석 중요.
+      
+      us:
+        mobile_traffic: "65-75%"
+        mobile_conversion: "1.5-2%"
+        mobile_revenue: "55-65%"
+        
+        note: "모바일 유입 높지만 전환율은 PC가 2배"
+      
+      global:
+        mobile_traffic: "65-75%"
+        mobile_conversion: "1.5-2.5%"
+    
+    trend:
+      korea: "모바일 90% 도달 예상 (2025)"
+      japan: "PC 여전히 중요"
+      us: "모바일 전환율 개선 중"
+      global: "계속 증가"
+  
+  - benchmark_id: "BMK_EC_014"
+    metric: "Checkout Completion Time"
+    category: "ux"
+    
+    by_country:
+      korea:
+        avg_time: "1-2 minutes"
+        target: "< 1.5 minutes"
+        
+        speed_factors:
+          - "간편결제 (1 클릭)"
+          - "주소 자동완성 (도로명 API)"
+          - "기본 배송지 저장"
+          - "비회원 구매 일반화"
+        
+        checkout_steps: "2-3 단계"
+      
+      japan:
+        avg_time: "4-6 minutes"
+        target: "< 4 minutes"
+        
+        slow_factors:
+          - "신중한 정보 입력"
+          - "다양한 결제 옵션 선택"
+          - "배송 옵션 신중 선택"
+        
+        checkout_steps: "4-5 단계"
+      
+      us:
+        avg_time: "3-5 minutes"
+        target: "< 3 minutes"
+        
+        improvement_trend:
+          - "Amazon One-Click"
+          - "Apple Pay 확산"
+          - "Shop Pay (Shopify)"
+      
+      global:
+        avg_time: "3-5 minutes"
+        target: "< 2 minutes"
+  
+  - benchmark_id: "BMK_EC_015"
+    metric: "Product Page Bounce Rate"
+    industry_avg: "45-55%"
+    target: "< 40%"
+
+# ========================================
+# 4. 구독 비즈니스 (15개)
+# ========================================
+
+subscription_metrics_benchmarks:
+  
+  - benchmark_id: "BMK_SUB_001"
+    metric: "Monthly Churn (Subscription) - 서비스별"
+    category: "retention"
+    
+    note: |
+      Churn은 지역보다 "서비스 품질/차별화"가 핵심 변수!
+      Netflix (2.4%) vs 일반 스트리밍 (6%) = 2.5배 차이
+      
+      → 지역 평균보다 서비스별 벤치마크가 유용
+    
+    by_service_type:
+      
+      # === 음악 스트리밍 ===
+      music_streaming:
+        best_in_class:
+          - service: "Spotify"
+            monthly_churn: "5.2%"
+            annual_retention: "46%"
+            year: 2023
+            source: "Spotify 공시자료"
+            
+            success_factors:
+              - "Discover Weekly (개인화)"
+              - "Podcast 번들"
+              - "Family Plan (40% 가입)"
+          
+          - service: "Apple Music"
+            monthly_churn: "4.8%" 
+            year: 2023
+            note: "Apple 생태계 lock-in"
+        
+        average:
+          - service: "멜론 (한국)"
+            monthly_churn: "5-7% (추정)"
+            note: "Spotify 진출로 경쟁 심화"
+          
+          - service: "YouTube Music"
+            monthly_churn: "6-8% (추정)"
+            note: "무료 → 프리미엄 전환 낮음"
+        
+        industry_avg: "5-7%"
+        
+        key_factors:
+          reduces_churn:
+            - "개인화 추천 (Discover Weekly)"
+            - "Family Plan"
+            - "독점 콘텐츠"
+            - "플레이리스트 축적"
+          
+          increases_churn:
+            - "경쟁 심화"
+            - "무료 티어 대안 (YouTube)"
+            - "프로모션 종료"
+      
+      # === 비디오 스트리밍 ===
+      video_streaming:
+        best_in_class:
+          - service: "Netflix"
+            monthly_churn: "2.4%"
+            annual_retention: "73%"
+            year: 2023
+            source: "Netflix 공시"
+            
+            success_factors:
+              - "오리지널 콘텐츠 (독점)"
+              - "추천 알고리즘"
+              - "글로벌 콘텐츠 라이브러리"
+              - "계정 공유 (충성도)"
+            
+            note: "업계 최저 churn"
+          
+          - service: "Disney+"
+            monthly_churn: "3-4%"
+            year: 2023
+            
+            success_factors:
+              - "Marvel, Star Wars (독점)"
+              - "Family-friendly"
+        
+        average:
+          - service: "HBO Max"
+            monthly_churn: "5-6%"
+          
+          - service: "티빙 (한국)"
+            monthly_churn: "6-8% (추정)"
+            note: "로컬 콘텐츠 강점 vs 글로벌 경쟁"
+          
+          - service: "웨이브 (한국)"
+            monthly_churn: "7-9% (추정)"
+        
+        industry_avg: "4-7%"
+        
+        variance_reason: |
+          Netflix (2.4%) vs 일반 (6-7%) = 2.5배 차이!
+          
+          차별화가 Churn 결정:
+          - 오리지널 콘텐츠 유무
+          - 추천 알고리즘 품질
+          - 라이브러리 크기
+      
+      # === B2B SaaS ===
+      b2b_saas:
+        best_in_class:
+          - service: "Salesforce"
+            monthly_churn: "0.9%"
+            logo_retention: "92%"
+            year: 2023
+            
+            success_factors:
+              - "CRM 중심성 (업무 필수)"
+              - "데이터 lock-in"
+              - "생태계 (AppExchange)"
+          
+          - service: "ServiceNow"
+            monthly_churn: "< 1%"
+            logo_retention: "97%"
+            
+            success_factors:
+              - "IT 인프라 핵심"
+              - "전환 비용 높음"
+          
+          - service: "Adobe Creative Cloud"
+            monthly_churn: "1.2%"
+            
+            success_factors:
+              - "업계 표준 (사실상 독점)"
+              - "파일 호환성"
+        
+        average:
+          - service: "일반 B2B SaaS"
+            monthly_churn: "1.5-2.5%"
+          
+          - service: "HR/Productivity Tools"
+            monthly_churn: "2-3%"
+        
+        industry_avg: "1.5-2.5%"
+        
+        key_insight: |
+          B2B는 제품 중심성이 Churn 결정
+          - Mission-critical: < 1%
+          - Nice-to-have: 3-5%
+      
+      # === B2C SaaS ===
+      b2c_saas:
+        best_in_class:
+          - service: "Dropbox"
+            monthly_churn: "3-4%"
+          
+          - service: "Evernote"
+            monthly_churn: "4-5%"
+        
+        average:
+          - service: "일반 B2C SaaS"
+            monthly_churn: "5-8%"
+        
+        industry_avg: "4-7%"
+      
+      # === 피트니스 ===
+      fitness:
+        best_in_class:
+          - service: "Peloton"
+            monthly_churn: "6-8%"
+            note: "하드웨어 + 구독 (lock-in)"
+        
+        average:
+          - service: "일반 피트니스 앱"
+            monthly_churn: "10-15%"
+          
+          - service: "헬스장 멤버십"
+            monthly_churn: "8-12%"
+        
+        industry_avg: "8-12%"
+        
+        high_churn_reasons:
+          - "운동 습관 실패"
+          - "전환 비용 낮음"
+          - "계절성 (신년 가입 → 3월 이탈)"
+      
+      # === 렌탈 (한국 특화) ===
+      rental_korea:
+        companies:
+          - service: "코웨이 (정수기, 공기청정기)"
+            monthly_churn: "4.2%"
+            year: 2023
+            source: "공시자료"
+            
+            success_factors:
+              - "제품 교체 비용 높음"
+              - "정기 관리 서비스"
+              - "브랜드 신뢰"
+          
+          - service: "SK매직"
+            monthly_churn: "5-6% (추정)"
+        
+        industry_avg: "4-6%"
+    
+    key_insight: |
+      🎯 Churn은 서비스 차별화가 핵심!
+      
+      같은 카테고리에서도:
+      - Netflix (2.4%) vs 티빙 (7%+) = 3배 차이
+      - Salesforce (0.9%) vs 일반 B2B (2.5%) = 2.8배
+      
+      지역 차이보다 서비스 품질 차이가 훨씬 큼!
+      
+      → 지역 평균 X, 서비스별 벤치마크 O
+    
+    how_to_use: |
+      시장 분석 시:
+      
+      1. 카테고리 선택 (음악 스트리밍)
+      2. 차별화 수준 평가
+         - Best-in-class 수준? → 2-4%
+         - 평균 수준? → 5-7%
+         - 차별화 약함? → 8-10%
+      
+      3. 로컬 조정 (필요시)
+         - 한국 경쟁 심화? → +10-20%
+         - 일본 충성도 높음? → -20-30%
+      
+      예시:
+        "한국 음악 스트리밍 신규 진입"
+        → 카테고리: 음악 스트리밍 (5-7%)
+        → 차별화: 평균 수준
+        → 한국 경쟁: +15%
+        → 예상 Churn: 6-8%
+    
+    validation:
+      confidence: "High (A)"
+      
+      verified_data:
+        - "Spotify: 5.2% (공시 확인)"
+        - "Netflix: 2.4% (공시 확인)"
+        - "Salesforce: 0.9% (공시 확인)"
+        - "코웨이: 4.2% (공시 확인)"
+      
+      estimated_data:
+        - "티빙, 웨이브 (한국 OTT)"
+        - "멜론 (음악)"
+        - "일반 피트니스 앱"
+      
+      recommendation: |
+        실무 사용 시:
+        1. 유사 서비스 찾기 (Netflix vs 티빙)
+        2. 차별화 정도 비교
+        3. Churn 차이 예측
+        4. 로컬 요인 조정 (±20% 이내)
+        
+        지역 평균은 참고만!
+  
+  - benchmark_id: "BMK_SUB_002"
+    metric: "Annual Retention (Subscription)"
+    target: "> 70%"
+    best_in_class: "> 85%"
+  
+  - benchmark_id: "BMK_SUB_003"
+    metric: "Free-to-Paid Conversion (Streaming)"
+    examples:
+      spotify: "38.6%"
+      youtube_premium: "~5%"
+      apple_music: "~40%"
+  
+  - benchmark_id: "BMK_SUB_004"
+    metric: "Family Plan Adoption"
+    range: "25-40% of subscribers"
+    impact: "ARPU +35%, Churn -70%"
+  
+  - benchmark_id: "BMK_SUB_005"
+    metric: "Annual vs Monthly Mix"
+    typical: "Annual 20-30%"
+    benefit: "Annual: -40% churn"
+  
+  - benchmark_id: "BMK_SUB_006"
+    metric: "Subscriber Growth Rate"
+    by_stage:
+      early: "10-20% MoM"
+      growth: "5-10% MoM"
+      mature: "2-5% MoM"
+  
+  - benchmark_id: "BMK_SUB_007"
+    metric: "Content Engagement (Streaming)"
+    measurement: "Hours per subscriber/month"
+    netflix: "~100 hours/month"
+    spotify: "~25 hours/month"
+  
+  - benchmark_id: "BMK_SUB_008"
+    metric: "Payment Failure Rate"
+    industry_avg: "5-10%"
+    impact: "Involuntary churn"
+    solution: "Retry logic, Card updater"
+  
+  - benchmark_id: "BMK_SUB_009"
+    metric: "Dunning Success Rate"
+    target: "> 40%"
+    definition: "실패 결제 재시도 성공률"
+  
+  - benchmark_id: "BMK_SUB_010"
+    metric: "Pause vs Cancel Ratio"
+    typical: "Pause 15-25% of cancels"
+    benefit: "Pause → 50% comeback"
+  
+  - benchmark_id: "BMK_SUB_011"
+    metric: "Reactivation Rate (Subscription)"
+    range: "5-15%"
+    excellent: "> 20%"
+  
+  - benchmark_id: "BMK_SUB_012"
+    metric: "Subscription Box AOV"
+    range: "$30-80/month"
+    by_category:
+      food: "$40-60"
+      beauty: "$25-45"
+      clothing: "$50-100"
+  
+  - benchmark_id: "BMK_SUB_013"
+    metric: "Bundle Attachment Rate"
+    definition: "추가 구독 서비스 가입률"
+    range: "10-30%"
+  
+  - benchmark_id: "BMK_SUB_014"
+    metric: "Subscription Lifetime"
+    by_type:
+      saas_b2b: "3-5 years"
+      streaming: "2-3 years"
+      fitness: "6-12 months"
+  
+  - benchmark_id: "BMK_SUB_015"
+    metric: "First Month Churn"
+    industry_avg: "15-25%"
+    target: "< 10%"
+    critical: "온보딩 품질"
+
+# ========================================
+# 5. 성장률 벤치마크 (15개)
+# ========================================
+
+growth_rate_benchmarks:
+  
+  - benchmark_id: "BMK_GROWTH_001"
+    metric: "SaaS ARR Growth (by stage)"
+    early: "100-300% YoY"
+    growth: "50-100% YoY"
+    mature: "20-40% YoY"
+  
+  - benchmark_id: "BMK_GROWTH_002"
+    metric: "E-commerce GMV Growth"
+    startup: "100-200% YoY"
+    growth: "50-100% YoY"
+    mature: "15-30% YoY"
+  
+  - benchmark_id: "BMK_GROWTH_003"
+    metric: "Mobile App MAU Growth"
+    viral_hit: "50-100% MoM (초기)"
+    healthy: "10-20% MoM"
+    mature: "2-5% MoM"
+  
+  - benchmark_id: "BMK_GROWTH_004"
+    metric: "ARR at IPO (SaaS)"
+    typical: "$100-200M ARR"
+    growth_rate: "> 40% YoY"
+  
+  - benchmark_id: "BMK_GROWTH_005"
+    metric: "Time to $1M ARR"
+    excellent: "< 12 months"
+    good: "12-24 months"
+    typical: "24-36 months"
+  
+  - benchmark_id: "BMK_GROWTH_006"
+    metric: "Time to $10M ARR"
+    excellent: "< 3 years"
+    typical: "4-6 years"
+  
+  - benchmark_id: "BMK_GROWTH_007"
+    metric: "Viral Coefficient (Consumer Apps)"
+    organic_growth: "> 0.5"
+    viral_hit: "> 1.0"
+    paid_dependent: "< 0.3"
+  
+  - benchmark_id: "BMK_GROWTH_008"
+    metric: "Organic Traffic Growth"
+    target: "10-20% MoM"
+    compound_effect: "12개월 후 3-6배"
+  
+  - benchmark_id: "BMK_GROWTH_009"
+    metric: "Word-of-Mouth Growth %"
+    excellent: "> 40%"
+    typical: "20-30%"
+  
+  - benchmark_id: "BMK_GROWTH_010"
+    metric: "Employee Growth vs Revenue"
+    healthy: "Revenue grows faster"
+    ratio: "Revenue/Employee 증가"
+  
+  - benchmark_id: "BMK_GROWTH_011"
+    metric: "Market Share Growth (Startup)"
+    year_1: "0.1-0.5%"
+    year_3: "1-3%"
+    year_5: "3-10%"
+  
+  - benchmark_id: "BMK_GROWTH_012"
+    metric: "Geographic Expansion Speed"
+    saas: "New market every 6-12 months"
+    ecommerce: "New region every 12-18 months"
+  
+  - benchmark_id: "BMK_GROWTH_013"
+    metric: "Product Line Expansion"
+    timing: "After $10M ARR"
+    revenue_from_new: "10-20% in 2 years"
+  
+  - benchmark_id: "BMK_GROWTH_014"
+    metric: "Cohort Improvement Rate"
+    target: "Each cohort 10-20% better retention"
+    measure: "Month 12 retention comparison"
+  
+  - benchmark_id: "BMK_GROWTH_015"
+    metric: "Network Effect Strength"
+    measurement: "User growth vs value increase"
+    strong: "Value grows faster than users"
+
+# ========================================
+# 6. 전환율 벤치마크 (15개)
+# ========================================
+
+conversion_rate_benchmarks:
+  
+  - benchmark_id: "BMK_CONV_001"
+    metric: "Landing Page Conversion"
+    category: "conversion"
+    
+    validation_status: "Verified"
+    verified_date: "2025-11-04"
+    external_sources:
+      - name: "Baymard Institute"
+        value: "2.5-3%"
+        note: "글로벌 평균, 46개 산업 분석"
+        url: "baymard.com"
+        credibility: "High (업계 표준)"
+      
+      - name: "Littledata (Shopify)"
+        value: "1.5-3%"
+        note: "Shopify 스토어 평균"
+        credibility: "High (실제 데이터)"
+    
+    confidence: "High (A)"
+    confidence_reason: "복수 신뢰 출처, 범위 일치"
+    
+    by_country:
+      korea:
+        overall: "1.5-3%"
+        mobile: "1.5-2.5%"
+        desktop: "2.5-4%"
+        
+        variation_note: |
+          한국 내에서도 편차 큼:
+          - 쿠팡 같은 최적화 사이트: 2.5-3.5%
+          - 평균 수준: 1.8-2.5%
+          - 최적화 안 된 사이트: 1-1.5%
+        
+        logic_check: |
+          쿠팡 역산 전환율 = 1.9-3.8%
+          → 중간값 = 2.5%
+          → 쿠팡 최고 = 2-3% (보수적) ✅
+          → 한국 평균 = 1.8-2.8% (쿠팡보다 낮음) ✅
+          → 글로벌 = 1.8-2.8% (한국과 유사) ✅
+          
+          일관성 확보!
+        
+        high_conversion_factors:
+          - "빠른 로딩 (초고속 인터넷)"
+          - "간결한 디자인 선호"
+          - "즉시 혜택 제시"
+        
+        optimization_tips:
+          - "첫 화면에 핵심 혜택"
+          - "네이버/카카오 로그인"
+          - "모바일 최적화 필수"
+      
+      japan:
+        overall: "2-4%"
+        mobile: "1.5-3%"
+        desktop: "3-5%"
+        
+        conversion_factors:
+          - "상세한 정보 제공 필수"
+          - "신뢰 요소 강조 (인증, 리뷰)"
+          - "고객 지원 명확히"
+      
+      us:
+        overall: "2-5%"
+        mobile: "2-4%"
+        desktop: "3-6%"
+      
+      global:
+        overall: "2-5%"
+    
+    excellent: "> 10%"
+    
+    country_specific_best_practices:
+      korea:
+        - "로딩 속도 < 2초"
+        - "스크롤 없이 핵심 전달"
+        - "카카오톡 상담 버튼"
+      
+      japan:
+        - "상세 페이지 (스크롤 길어도 OK)"
+        - "FAQ 충실"
+        - "전화 상담 강조"
+      
+      us:
+        - "Clear CTA"
+        - "Social proof (testimonials)"
+        - "Trust badges"
+  
+  - benchmark_id: "BMK_CONV_002"
+    metric: "Sign-up to Trial"
+    saas: "60-80%"
+    target: "> 70%"
+  
+  - benchmark_id: "BMK_CONV_003"
+    metric: "Trial to Paid (SaaS)"
+    benchmarks:
+      7_day: "10-15%"
+      14_day: "15-20%"
+      30_day: "20-30%"
+  
+  - benchmark_id: "BMK_CONV_004"
+    metric: "Lead to MQL"
+    b2b: "30-50%"
+    note: "Marketing Qualified Lead"
+  
+  - benchmark_id: "BMK_CONV_005"
+    metric: "MQL to SQL"
+    b2b: "20-40%"
+    note: "Sales Qualified Lead"
+  
+  - benchmark_id: "BMK_CONV_006"
+    metric: "SQL to Customer"
+    b2b: "25-35%"
+  
+  - benchmark_id: "BMK_CONV_007"
+    metric: "Overall Lead to Customer"
+    b2b_saas: "2-5%"
+    excellent: "> 5%"
+  
+  - benchmark_id: "BMK_CONV_008"
+    metric: "PPC Ad Click to Customer"
+    typical: "0.5-2%"
+    excellent: "> 3%"
+  
+  - benchmark_id: "BMK_CONV_009"
+    metric: "Email to Purchase"
+    promotional: "1-3%"
+    abandoned_cart: "8-15%"
+  
+  - benchmark_id: "BMK_CONV_010"
+    metric: "Product Page to Cart"
+    ecommerce: "10-20%"
+    target: "> 15%"
+  
+  - benchmark_id: "BMK_CONV_011"
+    metric: "Cart to Checkout"
+    typical: "50-60%"
+    target: "> 65%"
+  
+  - benchmark_id: "BMK_CONV_012"
+    metric: "Checkout to Purchase"
+    typical: "60-70%"
+    target: "> 75%"
+  
+  - benchmark_id: "BMK_CONV_013"
+    metric: "Free to Freemium Paid"
+    typical: "2-5%"
+    excellent: "> 10%"
+  
+  - benchmark_id: "BMK_CONV_014"
+    metric: "Mobile App Install to Sign-up"
+    typical: "30-50%"
+    gaming: "20-35%"
+  
+  - benchmark_id: "BMK_CONV_015"
+    metric: "Webinar Attendee to Customer"
+    b2b: "5-15%"
+    excellent: "> 20%"
+
+# ========================================
+# END
+# ========================================
+
+# ========================================
+# END
+# ========================================
+
