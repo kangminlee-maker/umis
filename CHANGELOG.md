@@ -5,6 +5,85 @@
 
 ---
 
+## v7.1.0-dev3 (2025-11-04) - Excel 엔진 완성
+
+### 🚀 Sprint 2: Excel 자동 생성 시스템
+
+**Excel 생성 모듈 5개 구현 (1,226줄)**:
+- FormulaEngine: Excel 함수 생성 엔진 (286줄)
+- AssumptionsBuilder: 가정 시트 자동 생성 (197줄)
+- MethodBuilders: 4가지 SAM 계산 방법 (244줄)
+- ConvergenceBuilder: 수렴 분석 (209줄)
+- MarketSizingGenerator: 통합 생성기 (163줄)
+
+**피드백 반영**:
+- ✅ Named Range 절대참조 ($D$5)
+- ✅ SAM Named Range 2단계 정의 (셀 → Named Range)
+- ✅ 조건부 서식 Rule 객체 사용
+- ✅ fullCalcOnLoad=True 설정
+
+**테스트**:
+- Excel 파일 생성 성공 (9개 시트)
+- Named Range 16개 정의
+- 50+ Excel 함수 작동
+
+---
+
+## v7.1.0-dev2 (2025-11-04) - System RAG + 6개 Collection
+
+### 🚀 Sprint 1: System RAG 안정화
+
+**System RAG 구현**:
+- SystemRAG 클래스 (KeyDirectory O(1) 매칭)
+- Key-first · Vector-fallback 2단계 검색
+- 평균 지연시간 0.10ms (목표 대비 10배 빠름!)
+- 결정성 100% (50회 반복 테스트 통과)
+
+**Tool Registry**:
+- 10개 도구 작성 (450줄)
+- Agent별 분류 (Explorer, Quantifier, Validator, Observer, Framework)
+
+### 🗄️ 6개 RAG Collection 완성
+
+**데이터 작성 (360개 항목, ~10,000줄)**:
+- calculation_methodologies: 30개 (SAM 계산, 성장률, 예측)
+- market_benchmarks: 100개 (시장 규모, SaaS, 이커머스 등)
+- data_sources_registry: 50개 (통계청, Gartner, DART 등)
+- definition_validation_cases: 100개 (MAU, ARPU, Churn 등)
+- market_structure_patterns: 30개 (경쟁 구조, 유통, 가격)
+- value_chain_benchmarks: 50개 (제조, 유통, 서비스 등)
+
+**품질 향상**:
+- 국가별 벤치마크 (한국, 일본, 미국, 글로벌)
+- 서비스별 Churn 재구조화 (Netflix 2.4% vs 일반 6%)
+- 논리적 오류 수정 (쿠팡 DART 역산 기반)
+- 검증 메타데이터 추가 (confidence, sources)
+
+**RAG Index 구축**:
+- 6개 Collection ChromaDB 인덱싱 (344개 문서)
+- Agent RAG 검색 테스트 통과
+
+### 📦 ChromaDB 배포 전략
+
+**Hybrid 전략 수립**:
+- Option 1: 자동 재생성 (setup.py 통합)
+- Option 2: 사전 빌드 다운로드 (Google Drive)
+- 압축 파일 준비 (16MB)
+
+**문서 & 스크립트**:
+- RAG_DATABASE_SETUP.md
+- download_prebuilt_db.py
+- README.md 업데이트
+
+### 🔧 검증 & 도구
+
+**검증 시스템**:
+- validate_benchmarks.py (566줄)
+- validate_all_yaml.py (96줄)
+- BENCHMARK_VALIDATION_GUIDE.md
+
+---
+
 ## v7.0.0-week3 (2025-11-03) - Knowledge Graph & Hybrid Search
 
 ### 🚀 주요 기능 추가

@@ -1,8 +1,8 @@
-# UMIS v7.1.0-dev2 현재 상태
+# UMIS v7.1.0-dev3 현재 상태
 
-**버전**: v7.1.0-dev2  
+**버전**: v7.1.0-dev3  
 **마지막 업데이트**: 2025-11-04  
-**상태**: Development (Agent RAG 확장 + System RAG 완성)
+**상태**: Development (System RAG + Excel 엔진 완성)
 
 ---
 
@@ -68,7 +68,43 @@ Collection:
   • system_knowledge: 10개 도구
 ```
 
-### 3. Guardian Meta-RAG 활성화 ⭐
+### 3. Excel 자동 생성 시스템 ⭐ 신규!
+
+```yaml
+상태: ✅ 골격 완성 (v7.1.0-dev3)
+
+기능:
+  • FormulaEngine - Excel 함수 생성
+  • Named Range 절대참조 ($D$5)
+  • 4가지 SAM 계산 방법 (Top-Down, Bottom-Up, Proxy, Competitor)
+  • Convergence 분석 (±30% 수렴)
+  • 조건부 서식 (Rule 객체)
+  • fullCalcOnLoad=True
+
+구현된 모듈:
+  • formula_engine.py (286줄)
+  • assumptions_builder.py (197줄)
+  • method_builders.py (244줄)
+  • convergence_builder.py (209줄)
+  • market_sizing_generator.py (163줄)
+
+생성 가능:
+  • 9개 시트 Excel 워크북
+  • 16개 Named Range
+  • 50+ Excel 함수
+
+테스트:
+  • ✅ 파일 생성 성공
+  • ✅ Named Range 정의
+  • ✅ 함수 작동 (Excel 확인 필요)
+
+다음 단계:
+  • Scenarios, Summary 시트 추가
+  • 실제 데이터로 검증
+  • Golden-Workbook 테스트
+```
+
+### 4. Guardian Meta-RAG 활성화 ⭐
 
 ```yaml
 상태: ✅ 활성화됨 (v7.1.0-dev1)
@@ -314,24 +350,25 @@ Neo4j: 5.13 (Docker Compose)
 
 ## 🎯 다음 단계
 
-### v7.1.0-dev3 (다음 세션)
+### v7.1.0-dev4 (다음 세션)
 
 ```yaml
-System RAG 확장:
+우선순위 1: System RAG 확장
   • Tool Registry 확장 (10개 → 25개)
   • umis_core.yaml (INDEX) 작성 (< 1,000줄)
   • .cursorrules 통합
+  → 컨텍스트 77% 절약 목표
 
-Excel 자동 생성:
-  • FormulaEngine 구현
-  • AssumptionsBuilder, MethodBuilders
-  • ConvergenceBuilder
-  • 9개 시트 생성기
+우선순위 2: Excel 완성
+  • Scenarios 시트 추가
+  • Summary 대시보드
+  • 실제 데이터 테스트
+  • Golden-Workbook 테스트
 
-데이터 품질:
-  • 주요 메트릭 검증 (10-20개)
-  • 검증 완료 메타데이터 추가
-  • A 등급 패턴 80% 달성
+우선순위 3: 배포 준비
+  • Google Drive ChromaDB 업로드
+  • 다운로드 링크 추가
+  • 문서 최종 검토
 ```
 
 ---
