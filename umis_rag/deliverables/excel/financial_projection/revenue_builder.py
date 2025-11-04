@@ -174,14 +174,14 @@ class RevenueBuilder:
             
             # 모든 년도 Named Range 기반 SUM
             sum_formula = f"=SUM({','.join(segment_year_ranges[year])})"
-            ws.cell(row=row, column=col).value = sum_formula
+                ws.cell(row=row, column=col).value = sum_formula
             
             ws.cell(row=row, column=col).number_format = '#,##0'
             ws.cell(row=row, column=col).font = Font(size=11, bold=True, color="FFFFFF")
             ws.cell(row=row, column=col).fill = PatternFill(start_color="2E75B6", end_color="2E75B6", fill_type="solid")
             
             # Named Range (Year별 총 매출)
-            self.fe.define_named_range(f'Revenue_Y{year}', 'Revenue_Buildup', f'{col_letter}{row}')
+                self.fe.define_named_range(f'Revenue_Y{year}', 'Revenue_Buildup', f'{col_letter}{row}')
         
         # === 5. YoY 성장률 (계산) ===
         row += 1
