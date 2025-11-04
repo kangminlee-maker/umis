@@ -88,10 +88,11 @@ class SummaryBuilder:
         ws.cell(row=row, column=2).font = Font(size=10, bold=True)
         
         row += 1
-        # SAM (Average)
+        # SAM (Average) - Convergence에서 가져옴
         ws.cell(row=row, column=1).value = "Serviceable Addressable Market (SAM):"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Convergence_Analysis!C16"  # Average SAM
+        # Convergence의 평균은 B8 (C16이 아님)
+        ws.cell(row=row, column=2).value = "=Convergence_Analysis!B8"  # 수정: B8 (평균 SAM)
         ws.cell(row=row, column=2).number_format = '#,##0'
         ws.cell(row=row, column=2).font = Font(size=10, bold=True, color="0070C0")
         ws.cell(row=row, column=2).fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
@@ -150,7 +151,7 @@ class SummaryBuilder:
         # Max/Min Ratio
         ws.cell(row=row, column=1).value = "Max/Min Ratio:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Convergence_Analysis!C19"
+        ws.cell(row=row, column=2).value = "=Convergence_Analysis!B11"  # 수정: B11 (Max/Min)
         ws.cell(row=row, column=2).number_format = '0.00'
         ws.cell(row=row, column=2).font = Font(size=10, bold=True)
         
@@ -158,7 +159,7 @@ class SummaryBuilder:
         # Convergence Status
         ws.cell(row=row, column=1).value = "Convergence Status:"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Convergence_Analysis!C20"
+        ws.cell(row=row, column=2).value = "=Convergence_Analysis!B12"  # 수정: B12 (상태)
         ws.cell(row=row, column=2).font = Font(size=10, bold=True)
         
         # 조건부 서식 (통과 = 녹색, 재검토 = 빨간색)
@@ -216,7 +217,7 @@ class SummaryBuilder:
         row += 1
         ws.cell(row=row, column=1).value = "Best Case (+15%)"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Scenarios!B13"  # Average SAM from Scenarios
+        ws.cell(row=row, column=2).value = "=AvgSAM_Best"  # 수정: Named Range 사용
         ws.cell(row=row, column=2).number_format = '#,##0'
         ws.cell(row=row, column=2).fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
         
@@ -224,7 +225,7 @@ class SummaryBuilder:
         row += 1
         ws.cell(row=row, column=1).value = "Base Case (Current)"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Scenarios!C13"
+        ws.cell(row=row, column=2).value = "=AvgSAM_Base"  # 수정: Named Range 사용
         ws.cell(row=row, column=2).number_format = '#,##0'
         ws.cell(row=row, column=2).font = Font(bold=True)
         
@@ -232,7 +233,7 @@ class SummaryBuilder:
         row += 1
         ws.cell(row=row, column=1).value = "Worst Case (-15%)"
         ws.cell(row=row, column=1).font = Font(size=10)
-        ws.cell(row=row, column=2).value = "=Scenarios!D13"
+        ws.cell(row=row, column=2).value = "=AvgSAM_Worst"  # 수정: Named Range 사용
         ws.cell(row=row, column=2).number_format = '#,##0'
         ws.cell(row=row, column=2).fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
         
