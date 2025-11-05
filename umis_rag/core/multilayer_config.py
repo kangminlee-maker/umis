@@ -1,9 +1,12 @@
 """
 Multi-Layer Guestimation 설정 로더
-v2.0 - 2025-11-05
+v2.1 - 2025-11-05
 
-config/multilayer_config.yaml에서 글로벌 설정을 로드하여
-전체 시스템에 일관되게 적용
+config/multilayer_config.yaml에서 Guestimation 전용 설정을 로드
+
+참고:
+- UMIS_MODE (LLM 제공자): .env에서 관리 (umis_rag.UMIS_MODE)
+- web_search_mode, interactive_mode: 이 파일에서 관리 (Guestimation 전용)
 """
 
 import yaml
@@ -13,9 +16,8 @@ from dataclasses import dataclass
 
 
 @dataclass
-class GlobalModes:
-    """글로벌 모드 설정"""
-    llm_mode: str = "native"  # native, external, skip
+class GuestimationConfig:
+    """Guestimation 전용 설정"""
     web_search_mode: str = "native"  # native, api, scraping, skip
     interactive_mode: bool = False
 
@@ -31,8 +33,8 @@ class MultiLayerConfigLoader:
     """
     Multi-Layer Guestimation 설정 로더
     
-    config/multilayer_config.yaml을 로드하여
-    전역 싱글톤으로 제공
+    config/multilayer_config.yaml에서 Guestimation 전용 설정 로드
+    (UMIS_MODE는 .env에서 별도 관리)
     """
     
     _instance = None
@@ -67,22 +69,25 @@ class MultiLayerConfigLoader:
             self._config = self._get_default_config()
     
     def _get_default_config(self) -> Dict[str, Any]:
-        """기본 설정"""
+        """기본 설정 (Guestimation 전용)"""
         return {
-            'global_modes': {
-                'llm_mode': 'native',
-                'web_search_mode': 'native',
-                'interactive_mode': False
-            },
+            # Guestimation 전용 설정
+            'web_search_mode': 'native',
+            'interactive_mode': False,
+            
             'layer_2_llm': {
-                'native': {'enabled': True},
+                'native': {'enabled': True, 'confidence': 0.7},
                 'external': {'enabled': False, 'model': 'gpt-4o-mini'},
-                'confidence': 0.7
             },
             'layer_3_web_search': {
-                'native': {'enabled': True},
+                'native': {'enabled': True, 'use_cursor_tool': True},
                 'api': {'enabled': False, 'results_count': 20},
-                'confidence': {'consensus_high': 0.8}
+                'scraping': {'enabled': False},
+                'consensus_extraction': {
+                    'similarity_based': {'threshold': 0.7},
+                    'outlier_removal': {'threshold': 1.5},
+                    'clustering': {'min_cluster_size': 3}
+                }
             },
             'confidence_thresholds': {
                 'layer_2_llm': 0.7,
@@ -95,29 +100,23 @@ class MultiLayerConfigLoader:
         }
     
     # =========================================
-    # Getter 메서드들
+    # Getter 메서드들 (Guestimation 전용)
     # =========================================
     
-    def get_global_modes(self) -> GlobalModes:
-        """글로벌 모드 반환"""
-        modes = self._config.get('global_modes', {})
-        return GlobalModes(
-            llm_mode=modes.get('llm_mode', 'native'),
-            web_search_mode=modes.get('web_search_mode', 'native'),
-            interactive_mode=modes.get('interactive_mode', False)
+    def get_guestimation_config(self) -> GuestimationConfig:
+        """Guestimation 설정 반환"""
+        return GuestimationConfig(
+            web_search_mode=self._config.get('web_search_mode', 'native'),
+            interactive_mode=self._config.get('interactive_mode', False)
         )
-    
-    def get_llm_mode(self) -> str:
-        """LLM 모드 반환 (native, external, skip)"""
-        return self._config.get('global_modes', {}).get('llm_mode', 'native')
     
     def get_web_search_mode(self) -> str:
         """웹 검색 모드 반환 (native, api, scraping, skip)"""
-        return self._config.get('global_modes', {}).get('web_search_mode', 'native')
+        return self._config.get('web_search_mode', 'native')
     
     def is_interactive_mode(self) -> bool:
         """Interactive 모드 여부"""
-        return self._config.get('global_modes', {}).get('interactive_mode', False)
+        return self._config.get('interactive_mode', False)
     
     def get_layer_config(self, layer_name: str) -> Dict[str, Any]:
         """특정 레이어 설정 반환"""
@@ -174,25 +173,20 @@ def get_multilayer_config() -> MultiLayerConfigLoader:
 
 
 # =========================================
-# 편의 함수들
+# 편의 함수들 (Guestimation 전용)
 # =========================================
 
-def get_llm_mode() -> str:
-    """현재 LLM 모드 반환"""
-    return get_multilayer_config().get_llm_mode()
-
-
 def get_web_search_mode() -> str:
-    """현재 웹 검색 모드 반환"""
+    """현재 웹 검색 모드 반환 (Guestimation Layer 3)"""
     return get_multilayer_config().get_web_search_mode()
 
 
 def is_interactive() -> bool:
-    """Interactive 모드 여부"""
+    """Interactive 모드 여부 (Guestimation Layer 2, 3)"""
     return get_multilayer_config().is_interactive_mode()
 
 
-def get_global_modes() -> GlobalModes:
-    """글로벌 모드 전체 반환"""
-    return get_multilayer_config().get_global_modes()
+def get_guestimation_config() -> GuestimationConfig:
+    """Guestimation 전용 설정 전체 반환"""
+    return get_multilayer_config().get_guestimation_config()
 
