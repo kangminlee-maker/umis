@@ -5686,7 +5686,7 @@ implementation_guide:
             high_frequency: "Quantifier (SAM 계산 필수)"
             medium_frequency: "Explorer, Observer (구조/기회 분석)"
             low_frequency: "Validator, Guardian (지원 역할)"
-      
+  
       domain_reasoner:
         name: "Domain-Centric Reasoner (10-Signal Stack)"
         version: '0.9-umis'

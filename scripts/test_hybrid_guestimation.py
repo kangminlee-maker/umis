@@ -294,7 +294,7 @@ def run_all_tests():
     print("\n" + "=" * 70)
     print("테스트 결과 요약")
     print("=" * 70)
-    
+
     for name, status, _ in results:
         icon = "✅" if status == 'PASS' else "❌"
         print(f"  {icon} {name}: {status}")
@@ -324,7 +324,7 @@ def demo_usage():
     
     # Phase 1 결과 (가정)
     phase_1_result = {
-        'value': 285_000_000_000,  # 2,850억
+                'value': 285_000_000_000,  # 2,850억
         'range': (150_000_000_000, 500_000_000_000),  # 1,500억-5,000억
         'confidence': 0.4,  # 40%
         'method': 'guestimation'
@@ -334,7 +334,7 @@ def demo_usage():
     recommendation = guardian.recommend_methodology(
         estimate_result=phase_1_result,
         context={
-            'domain': 'healthcare',
+                'domain': 'healthcare',
             'geography': 'KR',
             'regulatory': True,  # 의료기기법
             'new_market': True   # 신규 시장

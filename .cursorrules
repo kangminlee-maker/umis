@@ -287,7 +287,7 @@ ai_mandatory_process:
   # ===== STEP 1: umis_core.yaml 로드 (필수!) =====
   step_1_load_index:
     action: "read_file tool 사용"
-    file: "umis_core.yaml"
+      file: "umis_core.yaml"
     reason: "UMIS 전체 개요 파악 (709줄, INDEX)"
     
     what_to_read:
@@ -308,7 +308,7 @@ ai_mandatory_process:
     skip_condition: "none (항상 실행)"
   
   # ===== STEP 2: 쿼리 분석 =====
-  step_2_parse_query:
+    step_2_parse_query:
     action: "사용자 요청에서 필요한 Agent + 도구 파악"
     
     parsing_rules:
@@ -395,9 +395,9 @@ ai_mandatory_process:
         query: "피아노 구독 서비스 Discovery Sprint"
         tool_keys:
           - "tool:framework:discovery_sprint"
-          - "tool:observer:market_structure"
-          - "tool:explorer:pattern_search"
-          - "tool:quantifier:sam_4methods"
+            - "tool:observer:market_structure"
+            - "tool:explorer:pattern_search"
+            - "tool:quantifier:sam_4methods"
           - "tool:validator:data_definition"
         commands: "각 도구별 query_system_rag.py 실행"
         expected_output: "5개 도구 content (~2,500줄)"
@@ -416,7 +416,7 @@ ai_mandatory_process:
       discovery_sprint:
         when: "목표 불명확 (명확도 < 7)"
         tools:
-          - "tool:framework:discovery_sprint"
+            - "tool:framework:discovery_sprint"
           - "모든 Agent 도구 (5-Agent 병렬)"
         duration: "1-3일"
       
