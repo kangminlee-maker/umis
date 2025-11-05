@@ -89,14 +89,19 @@ class MultiLayerGuestimation:
         """
         self.project_context = project_context or {}
         
-        # 글로벌 모드: .env 환경변수에서 로드! (v7.2.1+)
+        # YAML 설정 로더 (Guestimation 전용 설정)
+        self.config_loader = get_multilayer_config()
+        
+        # LLM 모드: .env 전역 설정 사용
         import umis_rag
         self.llm_mode = config_override.get('llm_mode', umis_rag.UMIS_MODE) if config_override else umis_rag.UMIS_MODE
-        self.web_search_mode = config_override.get('web_search_mode', umis_rag.UMIS_WEB_SEARCH_MODE) if config_override else umis_rag.UMIS_WEB_SEARCH_MODE
-        self.interactive_mode = config_override.get('interactive_mode', umis_rag.UMIS_INTERACTIVE) if config_override else umis_rag.UMIS_INTERACTIVE
         
-        # YAML 설정 로더 (상세 설정용)
-        self.config_loader = get_multilayer_config()
+        # 웹 검색 & Interactive: YAML 설정 사용 (Guestimation 전용)
+        yaml_web_mode = self.config_loader._config.get('web_search_mode', 'native')
+        yaml_interactive = self.config_loader._config.get('interactive_mode', False)
+        
+        self.web_search_mode = config_override.get('web_search_mode', yaml_web_mode) if config_override else yaml_web_mode
+        self.interactive_mode = config_override.get('interactive_mode', yaml_interactive) if config_override else yaml_interactive
         
         # 기존 GuestimationEngine 활용 (Layer 7용)
         self.benchmark_engine = GuestimationEngine()
