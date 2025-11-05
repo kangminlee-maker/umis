@@ -1,8 +1,45 @@
-# UMIS v7.2.0 현재 상태
+# UMIS v7.2.1 현재 상태
 
-**버전**: v7.2.0  
+**버전**: v7.2.1  
 **마지막 업데이트**: 2025-11-05  
-**상태**: Production Ready (자동 환경변수 로드 + Explorer 헬퍼 추가)
+**상태**: Production Ready (Multi-Layer Guestimation 완성)
+
+---
+
+## 🆕 v7.2.1 신규 기능 (2025-11-05 최신)
+
+### 1. Multi-Layer Guestimation 엔진 🌟
+
+```python
+from umis_rag.utils.multilayer_guestimation import MultiLayerGuestimation
+
+estimator = MultiLayerGuestimation(project_context={...})
+result = estimator.estimate("한국 음식점 재방문 주기는?")
+# → 8개 레이어 자동 시도
+# → 최적 출처에서 값 반환
+```
+
+**8개 Layer**:
+1. 프로젝트 데이터 (100%)
+2. LLM 직접 (70%)
+3. 웹 검색 (80%)
+4. 법칙 (100%)
+5. 행동경제학 (70%)
+6. 통계 패턴 (60%)
+7. RAG 벤치마크 (30-80%)
+8. 제약조건 (50%)
+
+**파일**: `umis_rag/utils/multilayer_guestimation.py` (415줄)
+
+**Quantifier 통합**:
+```python
+quantifier = QuantifierRAG()
+result = quantifier.estimate_with_multilayer("Churn Rate는?", target_profile=...)
+```
+
+**테스트**: ✅ 통과
+- `scripts/test_multilayer_guestimation.py`
+- `scripts/test_quantifier_multilayer.py`
 
 ---
 
