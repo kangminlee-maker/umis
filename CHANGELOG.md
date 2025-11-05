@@ -5,6 +5,77 @@
 
 ---
 
+## v7.2.1 (2025-11-05) - Multi-Layer Guestimation 🌟
+
+### 🎊 릴리즈 하이라이트
+
+**작업 시간**: 40분  
+**주요 기능**: Multi-Layer Guestimation 구현  
+**완성도**: 100%
+
+### 🚀 주요 기능
+
+#### Multi-Layer Guestimation 엔진 ⭐⭐⭐⭐⭐
+
+**파일**: `umis_rag/utils/multilayer_guestimation.py` (415줄)
+
+**기능**:
+- ✅ 8개 데이터 출처 계층화
+- ✅ 순차적 Fallback 구조
+- ✅ 자동 레이어 선택
+- ✅ 완전한 추적성
+
+**8개 Layer**:
+1. 프로젝트 데이터 (100% 신뢰)
+2. LLM 직접 답변 (70% 신뢰)
+3. 웹 검색 공통 맥락 (80% 신뢰)
+4. 법칙 - 물리/법률 (100% 신뢰)
+5. 행동경제학 (70% 신뢰)
+6. 통계 패턴 (60% 신뢰)
+7. RAG 벤치마크 (30-80% 신뢰)
+8. 제약조건 (50% 신뢰)
+
+**사용 예:**
+```python
+from umis_rag.utils.multilayer_guestimation import MultiLayerGuestimation
+
+estimator = MultiLayerGuestimation(project_context={...})
+result = estimator.estimate("한국 음식점 재방문 주기는?")
+# → 자동으로 8개 레이어 순차 시도
+# → 최적 레이어에서 값 반환
+```
+
+### Quantifier 통합
+
+**파일**: `umis_rag/agents/quantifier.py` (+75줄)
+
+**메서드**: `estimate_with_multilayer()`
+
+```python
+quantifier = QuantifierRAG()
+result = quantifier.estimate_with_multilayer(
+    "한국 SaaS Churn Rate는?",
+    target_profile=BenchmarkCandidate(...)
+)
+```
+
+### 신규 파일
+- `umis_rag/utils/multilayer_guestimation.py` (415줄)
+- `scripts/test_multilayer_guestimation.py` (테스트)
+- `scripts/test_quantifier_multilayer.py` (통합 테스트)
+- `docs/MULTILAYER_GUESTIMATION_GUIDE.md` (사용 가이드)
+
+### 업데이트
+- `docs/GUESTIMATION_MULTILAYER_SPEC.md` (구현 완료 표시)
+- `umis_rag/agents/quantifier.py` (통합)
+
+### 검증
+- ✅ 단위 테스트 통과
+- ✅ 통합 테스트 통과 (Quantifier)
+- ✅ 8개 레이어 정상 작동
+
+---
+
 ## v7.2.0 (2025-11-04 ~ 2025-11-05) - "Fermi + Native" ⭐ Major Release
 
 ### 🎊 릴리즈 하이라이트
