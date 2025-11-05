@@ -1,0 +1,355 @@
+# ========================================
+# Multi-Layer Guestimation 글로벌 설정
+# v2.0 - 2025-11-05
+# ========================================
+#
+# 이 파일 하나로 UMIS 전체의 LLM 및 웹 검색 모드 제어
+# 코드 수정 없이 설정만 변경하면 전체 시스템에 반영
+
+version: "2.0"
+updated: "2025-11-05"
+
+# ========================================
+# 글로벌 모드 설정 (여기만 수정!)
+# ========================================
+
+global_modes:
+  
+  # LLM 사용 모드 (Layer 2)
+  llm_mode: "native"
+  # 옵션:
+  #   "native"   - Cursor Agent LLM 사용 (권장, 비용 $0)
+  #   "external" - OpenAI API 호출 (자동화, 비용 발생)
+  #   "skip"     - Layer 2 건너뛰기
+  
+  # 웹 검색 모드 (Layer 3)
+  web_search_mode: "native"
+  # 옵션:
+  #   "native"   - 사용자가 직접 검색 후 입력 (권장, 비용 $0)
+  #   "api"      - SerpAPI 호출 (자동화, 월 100회 무료)
+  #   "scraping" - 직접 스크래핑 (불안정, 사용 비권장)
+  #   "skip"     - Layer 3 건너뛰기
+  
+  # Interactive 모드 (사용자 입력 활성화)
+  interactive_mode: false
+  # true:  사용자 입력 대기 (Native 모드에서)
+  # false: 자동으로 다음 레이어 시도
+
+# ========================================
+# Layer 2: LLM 직접 답변 설정
+# ========================================
+
+layer_2_llm:
+  
+  # Native Mode 설정
+  native:
+    enabled: true
+    guidance_message: "💡 LLM에게 직접 질문하세요"
+    cursor_integration: true
+    
+    # 간단한 사실 질문 패턴
+    simple_fact_patterns:
+      - 인구
+      - 평균.*시간
+      - 일반적
+      - 보통
+      - 통상
+      - 몇
+    
+    # 제외 패턴 (복잡한 질문)
+    complex_patterns:
+      - 왜
+      - 어떻게
+      - 비교
+      - 분석
+  
+  # External API 설정
+  external:
+    enabled: false  # 기본 비활성 (비용 발생)
+    model: "gpt-4o-mini"  # 저렴한 모델
+    temperature: 0.1
+    max_tokens: 50
+    
+    # API 비용 (참고)
+    cost_per_1k_tokens: 0.00015  # $0.00015/1K tokens (GPT-4o-mini)
+    estimated_cost_per_query: 0.001  # ~$0.001/질문
+    
+    # Prompt 템플릿
+    prompt_template: |
+      질문: {question}
+      
+      간단한 숫자로만 답변하세요.
+      예: "한국 인구는?" → "5200만명" 또는 "52,000,000"
+      
+      질문이 추정 불가능하면 "알 수 없음"이라고 답변하세요.
+  
+  # 신뢰도
+  confidence: 0.7  # LLM 답변은 검증 권장
+  
+  # 숫자 추출 패턴 (정규식은 코드에서 처리)
+  number_extraction:
+    enabled: true
+    # 패턴은 코드 내장 (YAML 정규식 이슈 회피)
+
+# ========================================
+# Layer 3: 웹 검색 설정
+# ========================================
+
+layer_3_web_search:
+  
+  # Native Mode 설정
+  native:
+    enabled: true
+    guidance_message: "🔍 웹 검색 후 결과를 입력하세요"
+    
+    # 검색 권장 엔진
+    recommended_engines:
+      - "Google"
+      - "Naver"
+      - "Wikipedia"
+    
+    # 결과 수 권장
+    recommended_count: 5
+  
+  # API Mode 설정 (SerpAPI)
+  api:
+    enabled: false  # 기본 비활성
+    provider: "serpapi"  # 또는 "google_custom_search"
+    
+    # SerpAPI 설정
+    serpapi:
+      api_key_env: "SERPAPI_KEY"  # 환경변수 이름
+      endpoint: "https://serpapi.com/search"
+      results_count: 20  # 상위 20개 (사용자 요청)
+      
+      # 월 무료 한도
+      free_quota: 100  # 100회/월
+      cost_per_query: 0.01  # 초과 시 $0.01/검색
+    
+    # Google Custom Search 설정
+    google_custom:
+      api_key_env: "GOOGLE_SEARCH_API_KEY"
+      search_engine_id_env: "GOOGLE_SEARCH_ENGINE_ID"
+      results_count: 20
+      
+      # 일 무료 한도
+      free_quota: 100  # 100회/일
+  
+  # Scraping Mode 설정 (사용 비권장)
+  scraping:
+    enabled: false
+    warning: "불안정하고 robots.txt 위반 가능성"
+    user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
+    timeout: 5  # 초
+  
+  # 공통값 추출 설정 (사용자 요청 반영)
+  consensus_extraction:
+    
+    # 방법 1: 클러스터링
+    clustering:
+      enabled: true
+      tolerance: 0.2  # ±20% 범위
+      min_cluster_size: 3  # 최소 3개 이상
+    
+    # 방법 2: 이상치 제거
+    outlier_removal:
+      enabled: true
+      method: "iqr"  # 'iqr', 'zscore', 'mad'
+      threshold: 1.5  # IQR * 1.5
+    
+    # 방법 3: 유사도 기반 (사용자 요청)
+    similarity_based:
+      enabled: true
+      threshold: 0.7  # 유사도 0.7 이상만 (사용자 요청)
+      method: "text_similarity"  # 또는 'value_similarity'
+    
+    # 최종 값 선택
+    final_value:
+      method: "median"  # 'median', 'mean', 'mode'
+      fallback: "mean"  # median 계산 불가 시
+  
+  # 신뢰도
+  confidence:
+    api_search: 0.8         # API 검색 결과
+    manual_input: 0.75      # 사용자 입력
+    featured_snippet: 0.85  # Google Featured Snippet
+    consensus_low: 0.6      # 3-5개 결과
+    consensus_high: 0.8     # 6개 이상 결과
+
+# ========================================
+# Layer 활성화 설정
+# ========================================
+
+layer_activation:
+  layer_1_project_data: true      # 항상 활성
+  layer_2_llm: true               # llm_mode에 따라
+  layer_3_web_search: true        # web_search_mode에 따라
+  layer_4_law: true               # 항상 활성
+  layer_5_behavioral: true        # 항상 활성
+  layer_6_statistical: true       # 항상 활성
+  layer_7_rag: true               # 항상 활성
+  layer_8_constraint: true        # 항상 활성
+
+# ========================================
+# 신뢰도 임계값 (Confidence Thresholds)
+# ========================================
+
+confidence_thresholds:
+  # 각 레이어별 최소 신뢰도 (이 이상이어야 채택)
+  layer_2_llm: 0.7
+  layer_3_web: 0.75
+  layer_5_behavioral: 0.6
+  layer_6_statistical: 0.5
+  layer_7_rag: 0.5
+  layer_8_constraint: 0.4
+
+# ========================================
+# 디버깅 및 로깅
+# ========================================
+
+debug:
+  verbose: true              # 상세 로그 출력
+  trace_all_layers: true     # 모든 레이어 시도 기록
+  show_rejected: true        # 기각된 데이터 표시
+  
+  # 레이어별 로그 레벨
+  layer_logging:
+    layer_1: "INFO"
+    layer_2: "INFO"
+    layer_3: "INFO"
+    layer_4: "DEBUG"
+    layer_5: "DEBUG"
+    layer_6: "DEBUG"
+    layer_7: "INFO"
+    layer_8: "DEBUG"
+
+# ========================================
+# 사용 예시 (주석)
+# ========================================
+
+usage_examples:
+  
+  example_1_native_mode:
+    description: "기본 설정 (Native Mode, 비용 $0)"
+    settings:
+      llm_mode: "native"
+      web_search_mode: "native"
+      interactive_mode: false
+    
+    behavior: |
+      Layer 2: 사용자에게 LLM 질문 안내 (자동 실행 안 함)
+      Layer 3: 사용자에게 웹 검색 안내 (자동 실행 안 함)
+      → 다른 레이어로 자동 넘어감
+  
+  example_2_external_automation:
+    description: "완전 자동화 (비용 발생)"
+    settings:
+      llm_mode: "external"
+      web_search_mode: "api"
+      interactive_mode: false
+    
+    behavior: |
+      Layer 2: OpenAI API 자동 호출
+      Layer 3: SerpAPI 자동 호출
+      → 사용자 개입 없이 자동 추정
+  
+  example_3_interactive:
+    description: "사용자 입력 모드"
+    settings:
+      llm_mode: "native"
+      web_search_mode: "native"
+      interactive_mode: true
+    
+    behavior: |
+      Layer 2: "LLM 답변을 입력하세요:" 프롬프트
+      Layer 3: "웹 검색 결과를 입력하세요:" 프롬프트
+      → 사용자가 값 입력 시 즉시 반환
+
+# ========================================
+# 주의사항
+# ========================================
+
+warnings:
+  llm_external:
+    message: "OpenAI API 비용 발생 (~$0.001/질문)"
+    requires: "OPENAI_API_KEY 환경변수"
+  
+  web_api:
+    message: "SerpAPI 비용 (월 100회 무료, 초과 시 $0.01/검색)"
+    requires: "SERPAPI_KEY 환경변수"
+  
+  web_scraping:
+    message: "불안정하며 robots.txt 위반 가능성"
+    recommendation: "사용 비권장"
+
+# ========================================
+# API 키 환경변수
+# ========================================
+
+required_env_vars:
+  layer_2_external:
+    - OPENAI_API_KEY  # LLM API용
+  
+  layer_3_api:
+    - SERPAPI_KEY     # SerpAPI용
+    # 또는
+    - GOOGLE_SEARCH_API_KEY
+    - GOOGLE_SEARCH_ENGINE_ID
+
+# ========================================
+# 고급 설정
+# ========================================
+
+advanced:
+  
+  # Layer 2: LLM 응답 검증
+  llm_validation:
+    enabled: true
+    max_retries: 2  # 숫자 추출 실패 시 재시도
+    sanity_check: true  # 범위 체크 (0 < value < 1e12)
+  
+  # Layer 3: 웹 검색 필터링
+  web_filtering:
+    # 신뢰 가능한 도메인 우선
+    trusted_domains:
+      - "wikipedia.org"
+      - "statista.com"
+      - "kosis.kr"  # 통계청
+      - "kostat.go.kr"  # 통계청
+      - "index.go.kr"  # 정부 지표
+    
+    # 제외 도메인
+    exclude_domains:
+      - "example.com"
+    
+    # 날짜 필터 (최신성)
+    date_filter:
+      enabled: true
+      max_age_days: 365  # 1년 이내 데이터만
+  
+  # 캐싱 (동일 질문 재사용)
+  caching:
+    enabled: true
+    ttl: 86400  # 24시간
+    cache_file: "data/cache/multilayer_cache.json"
+
+# ========================================
+# 모니터링
+# ========================================
+
+monitoring:
+  # API 호출 횟수 추적
+  track_api_calls: true
+  
+  # 비용 추적
+  track_costs: true
+  cost_alert_threshold: 10.0  # $10 초과 시 경고
+  
+  # 로그 저장
+  save_logs: true
+  log_path: "logs/multilayer_guestimation.log"
+
+# ========================================
+# END
+# ========================================
+

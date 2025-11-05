@@ -1,14 +1,17 @@
 """
 Multi-Layer Guestimation Engine
-v2.0 - 2025-11-05
+v2.1 - 2025-11-05
 
 8개 데이터 출처를 계층화하여 순차적으로 시도하는 Fallback 구조
+글로벌 설정 파일 (config/multilayer_config.yaml) 통합
 """
 
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any, Tuple
 from enum import Enum
 import re
+import os
+from pathlib import Path
 
 # 기존 GuestimationEngine 재사용
 from umis_rag.utils.guestimation import (
@@ -16,6 +19,9 @@ from umis_rag.utils.guestimation import (
     BenchmarkCandidate,
     ComparabilityResult
 )
+
+# 글로벌 설정 로더
+from umis_rag.core.multilayer_config import get_multilayer_config
 
 
 class DataSource(Enum):
@@ -72,29 +78,38 @@ class MultiLayerGuestimation:
     def __init__(
         self,
         project_context: Optional[Dict] = None,
-        enable_web_search: bool = False,  # 웹 검색 활성화 (기본 비활성)
-        enable_llm: bool = True,  # LLM 활성화
+        config_override: Optional[Dict] = None,  # 설정 오버라이드
     ):
         """
         초기화
         
         Args:
             project_context: 프로젝트 데이터 (확정된 값들)
-            enable_web_search: 웹 검색 활성화 여부
-            enable_llm: LLM 사용 여부
+            config_override: 설정 오버라이드 (옵션, 기본은 글로벌 설정 사용)
         """
         self.project_context = project_context or {}
-        self.enable_web_search = enable_web_search
-        self.enable_llm = enable_llm
+        
+        # 글로벌 설정 로드
+        self.config_loader = get_multilayer_config()
+        self.global_modes = self.config_loader.get_global_modes()
+        
+        # 설정 오버라이드 적용
+        if config_override:
+            if 'llm_mode' in config_override:
+                self.global_modes.llm_mode = config_override['llm_mode']
+            if 'web_search_mode' in config_override:
+                self.global_modes.web_search_mode = config_override['web_search_mode']
+            if 'interactive_mode' in config_override:
+                self.global_modes.interactive_mode = config_override['interactive_mode']
         
         # 기존 GuestimationEngine 활용 (Layer 7용)
         self.benchmark_engine = GuestimationEngine()
         
-        # 레이어별 활성화 상태
+        # 레이어별 활성화 상태 (글로벌 설정 기반)
         self.layer_enabled = {
             DataSource.PROJECT_DATA: True,  # 항상 활성
-            DataSource.LLM_DIRECT: enable_llm,
-            DataSource.WEB_CONSENSUS: enable_web_search,
+            DataSource.LLM_DIRECT: self.global_modes.llm_mode != 'skip',
+            DataSource.WEB_CONSENSUS: self.global_modes.web_search_mode != 'skip',
             DataSource.LAW: True,
             DataSource.BEHAVIORAL: True,
             DataSource.STATISTICAL: True,
@@ -215,6 +230,7 @@ class MultiLayerGuestimation:
         Layer 2: LLM 직접 답변
         
         간단한 사실 질문 (인구, 상식 등)
+        글로벌 설정(llm_mode)에 따라 Native/External 자동 선택
         """
         result = EstimationResult(
             question=question,
@@ -222,30 +238,101 @@ class MultiLayerGuestimation:
         )
         
         # 간단한 사실 질문인지 판단
-        simple_fact_patterns = [
-            r'인구',
-            r'평균.*시간',
-            r'일반적',
-            r'보통',
-            r'통상',
-        ]
-        
-        is_simple = any(re.search(pattern, question) for pattern in simple_fact_patterns)
-        
-        if not is_simple:
+        if not self._is_simple_fact(question):
             result.logic_steps.append("❌ Layer 2: 복잡한 질문 → LLM 직접 답변 부적합 → Layer 3으로")
             return result
         
-        # LLM 직접 답변은 Native Mode에서 사용자가 직접 실행
-        # 여기서는 가능성만 표시
-        result.logic_steps.append("💡 Layer 2: LLM 직접 답변 가능")
-        result.logic_steps.append("   → Native Mode: Cursor에서 직접 질문")
-        result.logic_steps.append("   → External Mode: API 호출 필요")
-        result.confidence = 0.7
+        # 글로벌 설정에 따라 분기
+        llm_mode = self.global_modes.llm_mode
         
-        # 실제 구현은 Native/External Mode에서
-        result.logic_steps.append("⚠️ Layer 2: 자동 실행 비활성 → Layer 3으로")
-        result.confidence = 0.0  # 자동 실행 불가
+        if llm_mode == 'native':
+            return self._llm_native_mode(question, result)
+        elif llm_mode == 'external':
+            return self._llm_external_mode(question, result)
+        else:  # skip
+            result.logic_steps.append("⚠️ Layer 2: LLM 모드 'skip' → Layer 3으로")
+            return result
+    
+    def _llm_native_mode(self, question: str, result: EstimationResult) -> EstimationResult:
+        """Layer 2 - Native Mode (Cursor LLM 활용)"""
+        
+        # Interactive 모드: 사용자 입력
+        if self.global_modes.interactive_mode:
+            result.logic_steps.append("💡 Layer 2: LLM 직접 답변 (Native Interactive)")
+            print(f"\n❓ LLM에게 질문하세요: {question}")
+            print("   (Cursor Composer/Chat에서 질문 후 답변만 입력)")
+            user_input = input("   답변 (숫자만 입력, 건너뛰려면 Enter): ")
+            
+            if user_input.strip():
+                value = self._extract_number(user_input)
+                if value:
+                    result.value = value
+                    result.confidence = self.config_loader.get_llm_config('native').get('confidence', 0.7)
+                    result.logic_steps.append(f"✅ Layer 2: 사용자 입력 = {value}")
+                    result.used_data.append({
+                        'source': 'Native LLM (사용자 입력)',
+                        'value': value
+                    })
+                    return result
+        
+        # 비-Interactive: 안내만
+        result.logic_steps.append("💡 Layer 2: Native LLM 권장")
+        result.logic_steps.append(f"   질문: \"{question}\"")
+        result.logic_steps.append("   → Cursor Composer에서 직접 질문하세요")
+        result.logic_steps.append("⚠️ Layer 2: Interactive 모드 비활성 → Layer 3으로")
+        return result
+    
+    def _llm_external_mode(self, question: str, result: EstimationResult) -> EstimationResult:
+        """Layer 2 - External Mode (OpenAI API)"""
+        
+        llm_config = self.config_loader.get_llm_config('external')
+        
+        if not llm_config.get('enabled', False):
+            result.logic_steps.append("⚠️ Layer 2: External API 비활성 → Layer 3으로")
+            return result
+        
+        try:
+            from openai import OpenAI
+            
+            api_key = os.getenv('OPENAI_API_KEY')
+            if not api_key:
+                result.logic_steps.append("❌ Layer 2: OPENAI_API_KEY 없음 → Layer 3으로")
+                return result
+            
+            client = OpenAI(api_key=api_key)
+            
+            # Prompt 생성
+            prompt = llm_config.get('prompt_template', '').format(question=question)
+            
+            # API 호출
+            response = client.chat.completions.create(
+                model=llm_config.get('model', 'gpt-4o-mini'),
+                messages=[{"role": "user", "content": prompt}],
+                temperature=llm_config.get('temperature', 0.1),
+                max_tokens=llm_config.get('max_tokens', 50)
+            )
+            
+            answer = response.choices[0].message.content
+            
+            # 숫자 추출
+            value = self._extract_number(answer)
+            
+            if value:
+                result.value = value
+                result.confidence = llm_config.get('confidence', 0.7)
+                result.logic_steps.append(f"✅ Layer 2: LLM API 답변 = {answer}")
+                result.logic_steps.append(f"   추출값: {value}")
+                result.used_data.append({
+                    'source': f"LLM API ({llm_config.get('model')})",
+                    'raw_answer': answer,
+                    'extracted': value
+                })
+                return result
+            else:
+                result.logic_steps.append(f"⚠️ Layer 2: 숫자 추출 실패 '{answer}' → Layer 3으로")
+        
+        except Exception as e:
+            result.logic_steps.append(f"❌ Layer 2: API 에러 ({str(e)[:50]}) → Layer 3으로")
         
         return result
     
@@ -253,22 +340,136 @@ class MultiLayerGuestimation:
         """
         Layer 3: 웹 검색 공통 맥락
         
-        상위 5-10개 결과의 공통값 추출
+        상위 20개 결과의 공통값 추출 (이상치 제외, 유사도 0.7 이상)
+        글로벌 설정(web_search_mode)에 따라 Native/API/Scraping 자동 선택
         """
         result = EstimationResult(
             question=question,
             source_layer=DataSource.WEB_CONSENSUS
         )
         
-        if not self.enable_web_search:
-            result.logic_steps.append("❌ Layer 3: 웹 검색 비활성화 → Layer 4로")
+        # 글로벌 설정에 따라 분기
+        web_mode = self.global_modes.web_search_mode
+        
+        if web_mode == 'native':
+            return self._web_native_mode(question, result)
+        elif web_mode == 'api':
+            return self._web_api_mode(question, result)
+        elif web_mode == 'scraping':
+            return self._web_scraping_mode(question, result)
+        else:  # skip
+            result.logic_steps.append("⚠️ Layer 3: 웹 검색 모드 'skip' → Layer 4로")
+            return result
+    
+    def _web_native_mode(self, question: str, result: EstimationResult) -> EstimationResult:
+        """Layer 3 - Native Mode (사용자가 직접 검색)"""
+        
+        # Interactive 모드: 사용자 입력
+        if self.global_modes.interactive_mode:
+            result.logic_steps.append("💡 Layer 3: 웹 검색 (Native Interactive)")
+            print(f"\n🔍 웹 검색하세요: {question}")
+            print("   권장: Google, Naver에서 검색 후 상위 5-10개 공통값 확인")
+            user_input = input("   공통값 (숫자 입력, 건너뛰려면 Enter): ")
+            
+            if user_input.strip():
+                value = self._extract_number(user_input)
+                if value:
+                    result.value = value
+                    web_config = self.config_loader.get_web_search_config('native')
+                    result.confidence = 0.75
+                    result.logic_steps.append(f"✅ Layer 3: 사용자 입력 (웹 검색 결과) = {value}")
+                    result.used_data.append({
+                        'source': '웹 검색 (사용자 확인)',
+                        'value': value
+                    })
+                    return result
+        
+        # 비-Interactive: 안내만
+        result.logic_steps.append("💡 Layer 3: 웹 검색 권장")
+        result.logic_steps.append(f"   질문: \"{question}\"")
+        result.logic_steps.append("   → Google/Naver에서 검색 후 상위 20개 공통값 확인")
+        result.logic_steps.append("⚠️ Layer 3: Interactive 모드 비활성 → Layer 4로")
+        return result
+    
+    def _web_api_mode(self, question: str, result: EstimationResult) -> EstimationResult:
+        """Layer 3 - API Mode (SerpAPI 또는 Google Custom Search)"""
+        
+        web_config = self.config_loader.get_web_search_config('api')
+        
+        if not web_config.get('enabled', False):
+            result.logic_steps.append("⚠️ Layer 3: API 모드 비활성 → Layer 4로")
             return result
         
-        # 웹 검색은 Native Mode에서 사용자가 직접 또는 web_search tool 사용
-        result.logic_steps.append("💡 Layer 3: 웹 검색 권장")
-        result.logic_steps.append("   → 질문을 웹 검색하여 상위 5-10개 공통값 확인")
-        result.confidence = 0.0  # 수동 실행 필요
+        # SerpAPI 사용
+        serpapi_config = web_config.get('serpapi', {})
+        api_key = os.getenv(serpapi_config.get('api_key_env', 'SERPAPI_KEY'))
         
+        if not api_key:
+            result.logic_steps.append("❌ Layer 3: SERPAPI_KEY 없음 → Layer 4로")
+            return result
+        
+        try:
+            import requests
+            
+            # 검색 실행
+            params = {
+                'q': question,
+                'api_key': api_key,
+                'num': serpapi_config.get('results_count', 20),  # 상위 20개
+                'gl': 'kr',  # 한국
+                'hl': 'ko',  # 한국어
+            }
+            
+            response = requests.get(
+                serpapi_config.get('endpoint', 'https://serpapi.com/search'),
+                params=params,
+                timeout=10
+            )
+            
+            data = response.json()
+            results = data.get('organic_results', [])
+            
+            # 각 결과에서 숫자 추출
+            numbers = []
+            for r in results[:20]:  # 상위 20개
+                snippet = r.get('snippet', '') + ' ' + r.get('title', '')
+                num = self._extract_number(snippet)
+                if num:
+                    numbers.append(num)
+            
+            # 공통값 추출 (이상치 제외, 유사도 0.7 기반)
+            if len(numbers) >= 3:
+                consensus_value = self._find_web_consensus(numbers)
+                
+                if consensus_value:
+                    result.value = consensus_value
+                    result.confidence = self._calculate_web_confidence(len(numbers))
+                    result.logic_steps.append(f"✅ Layer 3: 웹 검색 {len(results)}개 결과")
+                    result.logic_steps.append(f"   추출된 숫자: {len(numbers)}개")
+                    result.logic_steps.append(f"   공통값 (이상치 제외): {consensus_value}")
+                    result.used_data.append({
+                        'source': 'SerpAPI 웹 검색',
+                        'results_count': len(results),
+                        'numbers_found': len(numbers),
+                        'consensus': consensus_value,
+                        'all_numbers': numbers[:10]  # 상위 10개만 저장
+                    })
+                    return result
+                else:
+                    result.logic_steps.append(f"⚠️ Layer 3: 공통값 찾기 실패 ({len(numbers)}개 값) → Layer 4로")
+            else:
+                result.logic_steps.append(f"⚠️ Layer 3: 충분한 결과 없음 ({len(numbers)}개) → Layer 4로")
+        
+        except Exception as e:
+            result.logic_steps.append(f"❌ Layer 3: API 에러 ({str(e)[:50]}) → Layer 4로")
+        
+        return result
+    
+    def _web_scraping_mode(self, question: str, result: EstimationResult) -> EstimationResult:
+        """Layer 3 - Scraping Mode (직접 스크래핑, 사용 비권장)"""
+        
+        result.logic_steps.append("⚠️ Layer 3: Scraping 모드는 불안정 → 건너뜀 → Layer 4로")
+        # 실제 구현은 복잡하고 불안정하므로 생략
         return result
     
     def _try_law_based(self, question: str) -> EstimationResult:
@@ -518,6 +719,208 @@ class MultiLayerGuestimation:
             if cleaned and cleaned not in stopwords and len(cleaned) > 1:
                 keywords.append(cleaned.lower())
         return keywords
+    
+    def _is_simple_fact(self, question: str) -> bool:
+        """
+        간단한 사실 질문인지 판단
+        
+        간단한 사실: "한국 인구는?", "평균 식사 시간은?"
+        복잡한 질문: "왜 ~한가?", "어떻게 비교하면?"
+        """
+        # 설정에서 패턴 로드
+        llm_config = self.config_loader.get_layer_config('layer_2')
+        native_config = llm_config.get('native', {})
+        
+        simple_patterns = native_config.get('simple_fact_patterns', [
+            r'인구',
+            r'평균.*시간',
+            r'일반적',
+            r'보통',
+            r'통상',
+            r'몇\s*(명|개|시간|일)',
+        ])
+        
+        complex_patterns = native_config.get('complex_patterns', [
+            r'왜',
+            r'어떻게',
+            r'~한다면',
+            r'비교',
+            r'분석',
+        ])
+        
+        has_simple = any(re.search(p, question) for p in simple_patterns)
+        has_complex = any(re.search(p, question) for p in complex_patterns)
+        
+        return has_simple and not has_complex
+    
+    def _extract_number(self, text: str) -> Optional[float]:
+        """
+        텍스트에서 숫자 추출 (설정 기반 패턴)
+        
+        지원: "5200만", "27억", "15%", "52,000,000" 등
+        """
+        if not text:
+            return None
+        
+        # 설정에서 패턴 로드
+        patterns = self.config_loader.get_number_extraction_patterns()
+        
+        # 기본 패턴 (설정 없을 경우)
+        if not patterns:
+            patterns = [
+                {'pattern': r'([\d,]+\.?\d*)\s*억', 'multiplier': 100000000},
+                {'pattern': r'([\d,]+\.?\d*)\s*천만', 'multiplier': 10000000},
+                {'pattern': r'([\d,]+\.?\d*)\s*만', 'multiplier': 10000},
+                {'pattern': r'([\d,]+\.?\d*)\s*천', 'multiplier': 1000},
+                {'pattern': r'([\d,]+\.?\d*)\s*%', 'multiplier': 0.01},
+                {'pattern': r'([\d,]+\.?\d*)', 'multiplier': 1},
+            ]
+        
+        for p in patterns:
+            pattern = p.get('pattern', p) if isinstance(p, dict) else p
+            multiplier = p.get('multiplier', 1) if isinstance(p, dict) else 1
+            
+            match = re.search(pattern, text)
+            if match:
+                num_str = match.group(1).replace(',', '')
+                try:
+                    value = float(num_str) * multiplier
+                    return value
+                except:
+                    continue
+        
+        return None
+    
+    def _find_web_consensus(self, numbers: List[float]) -> Optional[float]:
+        """
+        웹 검색 결과에서 공통값 추출
+        
+        방법:
+        1. 이상치 제거 (IQR 방법)
+        2. 클러스터링 (±20% 범위, 유사도 0.7 적용)
+        3. 가장 큰 클러스터의 중앙값
+        """
+        if len(numbers) < 3:
+            return None
+        
+        # 설정 로드
+        consensus_config = self.config_loader.get_consensus_config()
+        outlier_config = consensus_config.get('outlier_removal', {})
+        clustering_config = consensus_config.get('clustering', {})
+        
+        # 1. 이상치 제거 (IQR 방법)
+        if outlier_config.get('enabled', True):
+            numbers = self._remove_outliers_iqr(
+                numbers,
+                threshold=outlier_config.get('threshold', 1.5)
+            )
+            
+            if len(numbers) < 3:
+                return None
+        
+        # 2. 클러스터링 (유사도 0.7 반영)
+        if clustering_config.get('enabled', True):
+            tolerance = clustering_config.get('tolerance', 0.2)  # ±20%
+            clusters = self._cluster_numbers(numbers, tolerance)
+            
+            # 가장 큰 클러스터 선택
+            if clusters:
+                largest_cluster = max(clusters, key=len)
+                
+                # 최소 크기 체크
+                min_size = clustering_config.get('min_cluster_size', 3)
+                if len(largest_cluster) >= min_size:
+                    # 중앙값 반환
+                    largest_cluster.sort()
+                    return largest_cluster[len(largest_cluster) // 2]
+        
+        # 3. Fallback: 전체 중앙값
+        numbers.sort()
+        return numbers[len(numbers) // 2]
+    
+    def _remove_outliers_iqr(self, numbers: List[float], threshold: float = 1.5) -> List[float]:
+        """
+        IQR 방법으로 이상치 제거
+        
+        Args:
+            numbers: 숫자 리스트
+            threshold: IQR 배수 (기본 1.5)
+        """
+        if len(numbers) < 4:
+            return numbers
+        
+        sorted_nums = sorted(numbers)
+        n = len(sorted_nums)
+        
+        q1 = sorted_nums[n // 4]
+        q3 = sorted_nums[3 * n // 4]
+        iqr = q3 - q1
+        
+        lower_bound = q1 - threshold * iqr
+        upper_bound = q3 + threshold * iqr
+        
+        # 범위 내 값만 유지
+        filtered = [num for num in numbers if lower_bound <= num <= upper_bound]
+        
+        return filtered if filtered else numbers  # 모두 제거되면 원본 반환
+    
+    def _cluster_numbers(self, numbers: List[float], tolerance: float = 0.2) -> List[List[float]]:
+        """
+        숫자들을 유사도 기반으로 클러스터링
+        
+        Args:
+            numbers: 숫자 리스트
+            tolerance: 허용 오차 (0.2 = ±20%, 유사도 0.8 = 1-0.2)
+        
+        Returns:
+            클러스터 리스트
+        """
+        if not numbers:
+            return []
+        
+        sorted_nums = sorted(numbers)
+        clusters = []
+        current_cluster = [sorted_nums[0]]
+        
+        for num in sorted_nums[1:]:
+            # 현재 클러스터의 중앙값
+            cluster_median = current_cluster[len(current_cluster) // 2]
+            
+            # 유사도 계산 (0.2 tolerance = 0.8 similarity)
+            similarity = 1 - abs(num - cluster_median) / max(num, cluster_median)
+            
+            # 유사도 임계값 (설정에서 로드)
+            consensus_config = self.config_loader.get_consensus_config()
+            similarity_config = consensus_config.get('similarity_based', {})
+            threshold = similarity_config.get('threshold', 0.7)  # 기본 0.7
+            
+            # 유사도가 임계값 이상이면 같은 클러스터
+            if similarity >= threshold:
+                current_cluster.append(num)
+            else:
+                clusters.append(current_cluster)
+                current_cluster = [num]
+        
+        clusters.append(current_cluster)
+        return clusters
+    
+    def _calculate_web_confidence(self, count: int) -> float:
+        """
+        웹 검색 결과 개수에 따른 신뢰도
+        
+        3-5개: 0.6
+        6-10개: 0.75
+        11개 이상: 0.8
+        """
+        consensus_config = self.config_loader.get_consensus_config()
+        confidence_config = self.config_loader.get_layer_config('layer_3').get('confidence', {})
+        
+        if count >= 11:
+            return confidence_config.get('consensus_high', 0.8)
+        elif count >= 6:
+            return 0.75
+        else:
+            return confidence_config.get('consensus_low', 0.6)
     
     def get_layer_sequence(self) -> List[str]:
         """활성화된 레이어 순서 반환"""
