@@ -3,7 +3,7 @@ Configuration management for UMIS RAG system.
 """
 
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Optional
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -95,6 +95,12 @@ class Settings(BaseSettings):
     langchain_tracing_v2: bool = False
     langchain_api_key: str | None = None
     langchain_project: str = "umis-rag"
+    
+    # UMIS 전역 설정 (v7.2.1+)
+    umis_mode: str = Field(default="native")  # native / external
+    
+    # API Keys (선택)
+    serpapi_key: Optional[str] = Field(default=None)
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
