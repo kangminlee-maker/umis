@@ -74,18 +74,18 @@ def _load_environment():
 _env_loaded = _load_environment()
 
 # ============================================================================
-# 글로벌 모드 로드 (v7.2.1+)
+# UMIS 전역 설정 로드 (v7.2.1+)
 # ============================================================================
 
 def _get_global_mode():
     """
-    UMIS 글로벌 모드 반환
+    UMIS LLM 제공자 설정 반환
     
     .env 파일의 UMIS_MODE 환경변수:
       - 'native'   : Cursor Agent LLM 사용 (기본)
       - 'external' : External API LLM 사용
     
-    영향 범위: UMIS 전체 시스템
+    영향 범위: UMIS 전체 시스템 (모든 Agent, 모든 LLM 호출)
     """
     mode = os.getenv('UMIS_MODE', 'native').lower()
     
@@ -108,10 +108,10 @@ def _is_interactive():
     """Interactive 모드 여부"""
     return os.getenv('UMIS_INTERACTIVE', 'false').lower() == 'true'
 
-# 글로벌 모드 설정 (전역 변수)
-UMIS_MODE = _get_global_mode()
-UMIS_WEB_SEARCH_MODE = _get_web_search_mode()
-UMIS_INTERACTIVE = _is_interactive()
+# UMIS 전역 설정 (시스템 전체 적용)
+UMIS_MODE = _get_global_mode()  # LLM 제공자 (native/external)
+UMIS_WEB_SEARCH_MODE = _get_web_search_mode()  # 웹 검색 제공자
+UMIS_INTERACTIVE = _is_interactive()  # Interactive 설정
 
 # ============================================================================
 # 기존 설정 import
@@ -122,8 +122,8 @@ __all__ = [
     "settings", 
     "__version__", 
     "_env_loaded",
-    "UMIS_MODE",           # 글로벌 모드
-    "UMIS_WEB_SEARCH_MODE",
-    "UMIS_INTERACTIVE"
+    "UMIS_MODE",           # LLM 제공자 설정 (전역)
+    "UMIS_WEB_SEARCH_MODE",  # 웹 검색 제공자 (전역)
+    "UMIS_INTERACTIVE"     # Interactive 설정 (전역)
 ]
 

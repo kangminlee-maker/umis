@@ -232,7 +232,7 @@ result = quantifier.estimate_with_multilayer(
 ### 설정 (1개)
 
 3. **`config/multilayer_config.yaml`** (293줄)
-   - 글로벌 모드 설정
+   - 전역 설정 설정
    - Layer별 상세 설정
    - 사용 예시
 
