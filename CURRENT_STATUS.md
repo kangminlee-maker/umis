@@ -1,8 +1,77 @@
-# UMIS v7.1.0-dev3 현재 상태
+# UMIS v7.2.0 현재 상태
 
-**버전**: v7.1.0-dev3  
-**마지막 업데이트**: 2025-11-04  
-**상태**: Development (System RAG + Excel 엔진 완성)
+**버전**: v7.2.0  
+**마지막 업데이트**: 2025-11-05  
+**상태**: Production Ready (자동 환경변수 로드 + Explorer 헬퍼 추가)
+
+---
+
+## 🆕 v7.2.0 신규 기능 (2025-11-05)
+
+### 1. 자동 환경변수 로드 🎉
+
+```python
+# 이제 이렇게만 하면 됩니다!
+from umis_rag.agents.explorer import ExplorerRAG
+
+explorer = ExplorerRAG()  # ✅ 자동으로 .env 로드!
+```
+
+**구현 위치**: `umis_rag/__init__.py`
+
+**특징**:
+- ✅ 패키지 import 시 자동으로 `.env` 파일 검색 및 로드
+- ✅ 3단계 검색 경로 (현재 디렉토리 → UMIS 루트 → 홈 디렉토리)
+- ✅ 자동 경고 (API 키 미설정 시)
+- ✅ 기존 환경변수 우선 (override=False)
+
+**문서**: `setup/ENV_SETUP_GUIDE.md`
+
+---
+
+### 2. Explorer 헬퍼 메서드 추가 🛠️
+
+```python
+# 패턴 검색 결과를 쉽게 사용
+results = explorer.search_patterns("SaaS 구독 모델", top_k=3)
+pattern_details = explorer.get_pattern_details(results)
+
+for pattern in pattern_details:
+    print(f"{pattern['pattern_id']}: {pattern['pattern_name']}")
+    print(f"유사도: {pattern['score']:.4f}")
+```
+
+**메서드**: `ExplorerRAG.get_pattern_details()`
+
+**반환 형식**:
+```python
+List[Dict] with keys:
+  - pattern_id: str
+  - pattern_name: str
+  - category: str
+  - score: float
+  - description: str
+  - metadata: dict
+```
+
+**구현 위치**: `umis_rag/agents/explorer.py` (line 199-225)
+
+---
+
+### 3. 테스트 스크립트 개선
+
+**신규 스크립트**: `scripts/test_explorer_patterns.py`
+
+**특징**:
+- ✅ 자동 환경변수 로드
+- ✅ get_pattern_details() 활용
+- ✅ 4개 쿼리 자동 테스트
+- ✅ 깔끔한 출력 포맷
+
+**사용법**:
+```bash
+python3 scripts/test_explorer_patterns.py
+```
 
 ---
 

@@ -350,3 +350,4 @@ python3 ../scripts/05_update_from_research.py
 **시작 대기:** 수동 리서치 시작  
 **예상 완료:** 2주 내 (10시간)
 
+

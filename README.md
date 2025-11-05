@@ -1,7 +1,7 @@
 # UMIS - Universal Market Intelligence System
 
 [![GitHub](https://img.shields.io/badge/GitHub-umis-blue?logo=github)](https://github.com/kangminlee-maker/umis)
-[![Version](https://img.shields.io/badge/version-7.0.0-green)](https://github.com/kangminlee-maker/umis/releases)
+[![Version](https://img.shields.io/badge/version-7.2.0-green)](https://github.com/kangminlee-maker/umis/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 > **"불확실성을 기회로 전환하는 시장 분석 시스템"**
@@ -19,11 +19,14 @@ AI 에이전트 5명이 협업하여 시장을 분석하는 **RAG 기반 프레�
 - ✅ **재검증 가능**: Excel 함수, YAML 스키마
 - ✅ **코딩 불필요**: Cursor Composer만으로 사용
 
-### v7.0.0 주요 기능
+### v7.2.0 주요 기능 (최신)
+- 🎉 **Native Mode**: Cursor LLM 직접 활용 (비용 $0, 최고 품질)
+- 🎉 **자동 환경변수**: `.env` 자동 로드 (코드 간소화)
+- ⭐ **Explorer 헬퍼**: RAG 검색 결과 사용 간편화
+- ⭐ **Excel 도구 3개**: Market Sizing, Unit Economics, Financial Projection
+- ⭐ **Guestimation Framework**: Fermi 추정 체계화
 - ⭐ Explorer RAG (31개 비즈니스 모델 + 23개 Disruption 패턴)
 - ⭐ Knowledge Graph (패턴 조합 자동 발견)
-- ⭐ AI 자동 설치 (`"UMIS 설치해줘"`)
-- ⭐ Agent 이름 커스터마이징 (Albert, Steve → Jane, Alex)
 
 ---
 
