@@ -74,9 +74,56 @@ def _load_environment():
 _env_loaded = _load_environment()
 
 # ============================================================================
+# 글로벌 모드 로드 (v7.2.1+)
+# ============================================================================
+
+def _get_global_mode():
+    """
+    UMIS 글로벌 모드 반환
+    
+    .env 파일의 UMIS_MODE 환경변수:
+      - 'native'   : Cursor Agent LLM 사용 (기본)
+      - 'external' : External API LLM 사용
+    
+    영향 범위: UMIS 전체 시스템
+    """
+    mode = os.getenv('UMIS_MODE', 'native').lower()
+    
+    if mode not in ['native', 'external']:
+        import warnings
+        warnings.warn(
+            f"⚠️ UMIS_MODE='{mode}'는 유효하지 않습니다. 'native' 또는 'external'만 가능.\n"
+            f"   기본값 'native' 사용합니다.",
+            UserWarning
+        )
+        mode = 'native'
+    
+    return mode
+
+def _get_web_search_mode():
+    """웹 검색 모드 반환"""
+    return os.getenv('UMIS_WEB_SEARCH_MODE', 'native').lower()
+
+def _is_interactive():
+    """Interactive 모드 여부"""
+    return os.getenv('UMIS_INTERACTIVE', 'false').lower() == 'true'
+
+# 글로벌 모드 설정 (전역 변수)
+UMIS_MODE = _get_global_mode()
+UMIS_WEB_SEARCH_MODE = _get_web_search_mode()
+UMIS_INTERACTIVE = _is_interactive()
+
+# ============================================================================
 # 기존 설정 import
 # ============================================================================
 from umis_rag.core.config import settings
 
-__all__ = ["settings", "__version__", "_env_loaded"]
+__all__ = [
+    "settings", 
+    "__version__", 
+    "_env_loaded",
+    "UMIS_MODE",           # 글로벌 모드
+    "UMIS_WEB_SEARCH_MODE",
+    "UMIS_INTERACTIVE"
+]
 
