@@ -291,7 +291,7 @@ class ValidatorRAG:
             result['validation_status'] = 'no_source_found'
         
         return result
-    
+
     def load_kpi_library(self) -> Dict:
         """
         KPI 정의 라이브러리 로드

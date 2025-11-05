@@ -392,7 +392,7 @@ class Signal3_Laws(BaseSignal):
     
     def __init__(self, weight=1.0):
         super().__init__(weight)
-    
+        
     def check(self, definition: Dict) -> Dict[str, Any]:
         """
         법/윤리/물리 제약 확인
@@ -694,7 +694,7 @@ class Signal4_BehavioralEcon(BaseSignal):
             'signal': 's4_behavioral_econ',
             'weight': self.weight
         }
-    
+
     def _interpret_gap(self, gap_relative: float) -> str:
         """Gap 해석"""
         if gap_relative < 0.1:
@@ -995,8 +995,8 @@ class DomainReasonerEngine:
             logger.warning(f"방법론 파일 없음: {yaml_path}")
             return {}
         
-        with open(yaml_path, 'r', encoding='utf-8') as f:
-            return yaml.safe_load(f)
+            with open(yaml_path, 'r', encoding='utf-8') as f:
+                return yaml.safe_load(f)
     
     def _initialize_signals(self) -> Dict:
         """10가지 신호 초기화"""
@@ -1104,11 +1104,11 @@ class DomainReasonerEngine:
         else:
             # Fallback
             return {
-                'question': question,
-                'domain': domain,
+            'question': question,
+            'domain': domain,
                 'kpi_id': 'KPI_UNKNOWN',
                 'metric_name': question[:50]
-            }
+        }
     
     def _check_constraints(self, definition: Dict) -> Dict:
         """Step 2: 제약 확인"""

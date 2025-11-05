@@ -271,7 +271,7 @@ class QuantifierRAG:
         logger.info(f"    - 벤치마크: {len(result['benchmarks'])}개")
         
         return result
-    
+
     def calculate_sam_with_hybrid(
         self,
         market_definition: Dict,
