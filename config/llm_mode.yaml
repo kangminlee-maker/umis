@@ -1,0 +1,293 @@
+# ========================================
+# UMIS LLM 모드 설정
+# v7.2.0+
+# ========================================
+
+version: "7.2.0"
+updated: "2025-11-05"
+
+# ========================================
+# 용어 정의
+# ========================================
+
+terminology:
+  native_llm:
+    name: "Native LLM"
+    definition: "Cursor Agent가 사용하는 모델"
+    examples:
+      - "Claude Sonnet 4.5"
+      - "Claude Opus 3.5"
+      - "GPT-4o"
+      - "GPT-4 Turbo"
+    note: "사용자가 Cursor 설정에서 선택"
+  
+  external_llm:
+    name: "External LLM"
+    definition: "API를 통해 외부 호출하는 모델"
+    examples:
+      - "OpenAI API (GPT-4, GPT-4o)"
+      - "Anthropic API (Claude Sonnet, Claude Haiku)"
+    note: "추가 API 키 및 비용 필요"
+
+# ========================================
+# 모드 설정
+# ========================================
+
+default_mode: "native"  # 권장 설정
+
+modes:
+  
+  native:
+    name: "Native Mode"
+    description: "Cursor Native LLM 사용 (추가 비용 없음)"
+    
+    llm_source: "Cursor Agent"
+    cost: "Cursor 구독에 포함 ($0 추가)"
+    performance: "최고 (사용자 선택 모델)"
+    context_window: "최대 200K tokens"
+    automation: false
+    
+    use_cases:
+      - "일회성 심층 분석"
+      - "탐색적 분석"
+      - "품질 중시"
+      - "Interactive 작업"
+    
+    workflow: |
+      1. RAG 패턴 검색 (Python)
+      2. 분석은 Cursor Composer/Chat에서 직접
+      3. Native LLM이 RAG 결과 활용하여 분석
+    
+    advantages:
+      - "최고 성능 (Sonnet 4.5 등)"
+      - "추가 비용 없음"
+      - "빠른 응답 (API 왕복 없음)"
+      - "큰 컨텍스트 (200K)"
+      - "모델 선택 유연성"
+    
+    disadvantages:
+      - "자동화 불가 (사용자 참여 필요)"
+      - "배치 처리 불가"
+  
+  external:
+    name: "External Mode"
+    description: "외부 API LLM 호출 (자동화 가능)"
+    
+    llm_source: "OpenAI/Anthropic API"
+    cost: "토큰당 과금 (추가 비용)"
+    performance: "중상"
+    context_window: "128-200K tokens"
+    automation: true
+    
+    use_cases:
+      - "자동화 필요 (cron job)"
+      - "대량 분석 (100개 이상 시장)"
+      - "독립 실행 (Cursor 없이)"
+      - "배치 처리"
+    
+    workflow: |
+      1. Python 스크립트 독립 실행
+      2. RAG 검색 + LLM API 호출
+      3. 결과 자동 저장
+    
+    advantages:
+      - "완전 자동화"
+      - "배치 처리 가능"
+      - "Cursor 독립"
+    
+    disadvantages:
+      - "추가 API 비용"
+      - "Native LLM보다 성능 낮을 수 있음"
+      - "API 제한 (rate limit)"
+
+# ========================================
+# 모드별 비용 비교 (100개 시장 분석 기준)
+# ========================================
+
+cost_comparison:
+  scenario: "100개 시장 분석 (각 600K tokens)"
+  
+  native_mode:
+    tokens: "60M tokens"
+    cursor_cost: "$0 (구독에 포함)"
+    total_cost: "$0"
+    quality: "★★★★★"
+  
+  external_gpt4:
+    tokens: "60M tokens"
+    api_cost: "$600 (GPT-4 $10/1M)"
+    total_cost: "$600"
+    quality: "★★★"
+  
+  external_sonnet:
+    tokens: "60M tokens"
+    api_cost: "$180 (Claude $3/1M)"
+    total_cost: "$180"
+    quality: "★★★★★"
+  
+  external_haiku:
+    tokens: "60M tokens"
+    api_cost: "$15 (Haiku $0.25/1M)"
+    total_cost: "$15"
+    quality: "★★"
+
+# ========================================
+# 권장사항
+# ========================================
+
+recommendations:
+  
+  current_use_case:
+    scenario: "일회성 시장 분석 (현재 상황)"
+    recommendation: "native"
+    reason: |
+      - 추가 비용 없음
+      - 최고 품질
+      - 자동화 불필요
+    action: "External LLM 호출 제거"
+  
+  future_automation:
+    scenario: "자동화 필요 (향후)"
+    recommendation: "external (Claude API)"
+    reason: |
+      - Native보다 저렴 (Haiku)
+      - 또는 동일 품질 (Sonnet API)
+      - 독립 실행 가능
+    action: "하이브리드 모드 구현"
+  
+  hybrid_strategy:
+    scenario: "유연한 사용"
+    recommendation: "모드 선택 가능하게 구현"
+    implementation: |
+      explorer = ExplorerRAG(llm_mode='native')  # Cursor
+      explorer = ExplorerRAG(llm_mode='external')  # API
+
+# ========================================
+# 구현 가이드
+# ========================================
+
+implementation:
+  
+  immediate_action:
+    title: "즉시 적용 (Native Mode)"
+    
+    step_1_remove:
+      what: "External LLM 호출 코드 제거"
+      files:
+        - "scripts/llm_observer_analysis.py"
+        - "scripts/llm_explorer_rag_analysis.py"
+      action: "삭제 또는 주석 처리"
+    
+    step_2_workflow:
+      what: "새로운 워크플로우"
+      process: |
+        1. Python: RAG 패턴 검색만
+        2. Cursor: Native LLM이 분석
+        3. 결과: 직접 문서 작성
+      
+      example: |
+        # Python 스크립트
+        python3 scripts/test_explorer_patterns.py
+        
+        # Cursor Composer/Chat
+        "위 패턴으로 국내 SaaS 기회 5개 제시"
+    
+    step_3_benefit:
+      cost_saving: "$600 (100개 분석 기준)"
+      quality_improvement: "GPT-4 → Sonnet 4.5 (더 우수)"
+      speed_improvement: "60초 → 5초 (API 없음)"
+  
+  future_action:
+    title: "향후 (자동화 필요 시)"
+    
+    when: |
+      - 대량 분석 (100개 이상)
+      - 배치 처리 (cron job)
+      - Cursor 독립 실행
+    
+    implementation: |
+      # umis_rag/llm/provider.py 신규 작성
+      
+      class LLMProvider:
+          @staticmethod
+          def create(mode='native'):
+              if mode == 'native':
+                  return NativeLLM()  # Cursor 연동
+              elif mode == 'external':
+                  return ClaudeAPI()  # API 호출
+      
+      # Agent에서 사용
+      class ExplorerRAG:
+          def __init__(self, llm_mode='native'):
+              self.llm = LLMProvider.create(llm_mode)
+
+# ========================================
+# Best Practices
+# ========================================
+
+best_practices:
+  
+  rule_1:
+    title: "Native 우선 원칙"
+    rule: "가능하면 항상 Native Mode 사용"
+    reason: "비용 $0, 최고 품질, 빠른 속도"
+  
+  rule_2:
+    title: "External은 필요할 때만"
+    rule: "자동화가 명확히 필요한 경우에만"
+    examples:
+      - "매일 자동으로 100개 시장 분석"
+      - "cron job으로 주간 리포트 생성"
+  
+  rule_3:
+    title: "RAG는 유지"
+    rule: "임베딩은 OpenAI API 유지 (저렴)"
+    cost: "$0.00013/1K tokens (무시 가능)"
+  
+  rule_4:
+    title: "모델 중립성"
+    rule: "특정 모델명 하드코딩 금지"
+    code: |
+      # ❌ 나쁜 예
+      if model == "claude-sonnet-4.5":
+      
+      # ✅ 좋은 예
+      if mode == "native":
+
+# ========================================
+# FAQ
+# ========================================
+
+faq:
+  q1:
+    question: "Native Mode의 성능은?"
+    answer: |
+      사용자가 선택한 Cursor Agent 모델 성능.
+      일반적으로 Claude Sonnet 4.5 또는 GPT-4o 사용 시
+      External GPT-4 Turbo보다 우수.
+  
+  q2:
+    question: "완전 오프라인 가능?"
+    answer: |
+      불가능. RAG 임베딩은 OpenAI API 필요.
+      대안: Local Embeddings (Sentence Transformers)
+      하지만 품질 저하 가능성.
+  
+  q3:
+    question: "기존 스크립트는?"
+    answer: |
+      참고용으로 유지 가능.
+      실제 사용은 Native Mode 권장.
+      자동화 필요 시에만 External Mode.
+  
+  q4:
+    question: "OPENAI_API_KEY는 여전히 필요?"
+    answer: |
+      네, RAG 임베딩에 필요 (OpenAI text-embedding-3-large).
+      하지만 LLM 호출은 불필요 (Native LLM 사용).
+
+# ========================================
+# END
+# ========================================
+
+

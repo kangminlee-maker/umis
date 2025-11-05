@@ -1,0 +1,82 @@
+{
+  "company": "Asana",
+  "cik": "0001477720",
+  "data_source": "SEC EDGAR API",
+  "retrieved_at": "2025-11-05",
+  "performance_metrics": {
+    "financial": {
+      "revenue": {
+        "year_1": {
+          "year": 2025,
+          "amount_usd_million": 723.9,
+          "source": "SEC 10-K 2025"
+        },
+        "year_2": {
+          "year": 2024,
+          "amount_usd_million": 652.5,
+          "source": "SEC 10-K 2024"
+        },
+        "year_3": {
+          "year": 2023,
+          "amount_usd_million": 547.2,
+          "source": "SEC 10-K 2023"
+        }
+      },
+      "operating_profit": {
+        "year_1": {
+          "year": 2025,
+          "amount_usd_million": -266.7,
+          "source": "SEC 10-K 2025"
+        },
+        "year_2": {
+          "year": 2024,
+          "amount_usd_million": -270.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_3": {
+          "year": 2023,
+          "amount_usd_million": -407.8,
+          "source": "SEC 10-K 2023"
+        }
+      },
+      "gross_profit": {
+        "year_1": {
+          "year": 2025,
+          "amount_usd_million": 646.7,
+          "source": "SEC 10-K 2025"
+        },
+        "year_2": {
+          "year": 2024,
+          "amount_usd_million": 588.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_3": {
+          "year": 2023,
+          "amount_usd_million": 490.7,
+          "source": "SEC 10-K 2023"
+        }
+      },
+      "net_income": {
+        "year_1": {
+          "year": 2025,
+          "amount_usd_million": -255.5,
+          "source": "SEC 10-K 2025"
+        },
+        "year_2": {
+          "year": 2024,
+          "amount_usd_million": -257.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_3": {
+          "year": 2023,
+          "amount_usd_million": -407.8,
+          "source": "SEC 10-K 2023"
+        }
+      },
+      "gross_margin": 89.33615702136831,
+      "operating_margin": -36.84816183987313,
+      "net_margin": -35.30107366455028,
+      "cash_and_equivalents": 184.728
+    }
+  }
+}

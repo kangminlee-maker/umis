@@ -292,6 +292,231 @@ class ValidatorRAG:
         
         return result
 
+    def load_kpi_library(self) -> Dict:
+        """
+        KPI 정의 라이브러리 로드
+        
+        Returns:
+            KPI 라이브러리 dict
+        """
+        import yaml
+        
+        kpi_path = Path("data/raw/kpi_definitions.yaml")
+        
+        if not kpi_path.exists():
+            logger.warning(f"KPI 라이브러리 파일 없음: {kpi_path}")
+            return {}
+        
+        with open(kpi_path, 'r', encoding='utf-8') as f:
+            library = yaml.safe_load(f)
+        
+        total = library.get('_meta', {}).get('total_kpis', 0)
+        logger.info(f"✅ KPI 라이브러리 로드: {total}개")
+        
+        return library
+    
+    def validate_kpi_definition(
+        self,
+        metric_name: str,
+        provided_definition: Dict
+    ) -> Dict[str, Any]:
+        """
+        KPI 정의 검증 (s10 Industry KPI Library)
+        
+        Args:
+            metric_name: KPI 이름
+            provided_definition: {
+                'numerator': str,
+                'denominator': str,
+                'unit': str,
+                'scope': {
+                    'includes': [...],
+                    'excludes': [...]
+                }
+            }
+        
+        Returns:
+            {
+                'status': 'match' | 'partial_match' | 'mismatch' | 'not_found',
+                'kpi_id': str,
+                'standard_definition': {...},
+                'gaps': [...],
+                'recommendation': str,
+                'comparability_score': float (0-1)
+            }
+        """
+        
+        logger.info(f"[Validator] KPI 정의 검증: {metric_name}")
+        
+        # KPI 라이브러리 로드
+        library = self.load_kpi_library()
+        
+        if not library:
+            return {
+                'status': 'library_not_found',
+                'message': 'KPI 라이브러리 파일 없음',
+                'recommendation': 'scripts/build_kpi_library.py 실행 필요'
+            }
+        
+        # KPI 검색
+        kpi = self._search_kpi(metric_name, library)
+        
+        if not kpi:
+            return {
+                'status': 'not_found',
+                'message': f"KPI '{metric_name}'가 라이브러리에 없습니다",
+                'recommendation': 'manual_review',
+                'create_new': True
+            }
+        
+        logger.info(f"  ✅ KPI 발견: {kpi['kpi_id']}")
+        
+        # 정의 비교
+        gaps = []
+        
+        # 1. 분자 비교
+        provided_numerator = provided_definition.get('numerator', '')
+        standard_numerator = kpi.get('formula', {}).get('numerator', '')
+        
+        if provided_numerator and provided_numerator != standard_numerator:
+            gaps.append({
+                'field': 'numerator',
+                'provided': provided_numerator,
+                'standard': standard_numerator,
+                'severity': 'high'
+            })
+            logger.warning(f"  ⚠️  분자 불일치")
+        
+        # 2. 분모 비교
+        provided_denominator = provided_definition.get('denominator', '')
+        standard_denominator = kpi.get('formula', {}).get('denominator', '')
+        
+        if provided_denominator and standard_denominator != 'N/A' and provided_denominator != standard_denominator:
+            gaps.append({
+                'field': 'denominator',
+                'provided': provided_denominator,
+                'standard': standard_denominator,
+                'severity': 'high'
+            })
+            logger.warning(f"  ⚠️  분모 불일치")
+        
+        # 3. 단위 비교
+        provided_unit = provided_definition.get('unit', '')
+        standard_unit = kpi.get('unit', '')
+        
+        if provided_unit and provided_unit != standard_unit:
+            gaps.append({
+                'field': 'unit',
+                'provided': provided_unit,
+                'standard': standard_unit,
+                'severity': 'medium'
+            })
+            logger.warning(f"  ⚠️  단위 불일치")
+        
+        # 4. Scope 비교
+        scope_gaps = self._compare_scope(
+            provided_definition.get('scope', {}),
+            kpi.get('scope', {})
+        )
+        gaps.extend(scope_gaps)
+        
+        # 상태 결정
+        if len(gaps) == 0:
+            status = 'match'
+            logger.info(f"  ✅ 완전 일치")
+        elif any(g['severity'] == 'high' for g in gaps):
+            status = 'mismatch'
+            logger.warning(f"  ❌ 불일치 (high severity)")
+        else:
+            status = 'partial_match'
+            logger.info(f"  ⚠️  부분 일치")
+        
+        # 비교 가능성 점수
+        comparability_score = 1.0 - (len(gaps) * 0.2)
+        comparability_score = max(0, comparability_score)
+        
+        # 권고사항
+        if status == 'match':
+            recommendation = '✅ 표준 정의와 일치. 비교 가능'
+        elif status == 'mismatch':
+            recommendation = '❌ 정의 불일치. 비교 불가 → 표준화 필요'
+        else:
+            recommendation = '⚠️  부분 일치. 주의하여 비교'
+        
+        logger.info(f"  비교 가능성: {comparability_score*100:.0f}%")
+        
+        return {
+            'status': status,
+            'kpi_id': kpi['kpi_id'],
+            'standard_definition': kpi,
+            'gaps': gaps,
+            'recommendation': recommendation,
+            'comparability_score': comparability_score
+        }
+    
+    def _search_kpi(self, metric_name: str, library: Dict) -> Optional[Dict]:
+        """KPI 검색"""
+        
+        metric_lower = metric_name.lower()
+        
+        # 모든 카테고리 검색
+        for key in library:
+            if key.endswith('_kpis'):
+                for kpi in library[key]:
+                    kpi_name_lower = kpi['metric_name'].lower()
+                    
+                    # 정확한 매칭
+                    if kpi_name_lower == metric_lower:
+                        return kpi
+                    
+                    # 부분 매칭
+                    if metric_lower in kpi_name_lower or kpi_name_lower in metric_lower:
+                        return kpi
+        
+        return None
+    
+    def _compare_scope(
+        self,
+        provided_scope: Dict,
+        standard_scope: Dict
+    ) -> List[Dict]:
+        """Scope 비교"""
+        
+        gaps = []
+        
+        # Includes 비교
+        provided_includes = set(provided_scope.get('includes', []))
+        standard_includes = set(standard_scope.get('includes', []))
+        
+        missing_includes = standard_includes - provided_includes
+        extra_includes = provided_includes - standard_includes
+        
+        if missing_includes:
+            gaps.append({
+                'field': 'scope.includes',
+                'provided': list(provided_includes),
+                'standard': list(standard_includes),
+                'missing': list(missing_includes),
+                'severity': 'medium'
+            })
+        
+        # Excludes 비교
+        provided_excludes = set(provided_scope.get('excludes', []))
+        standard_excludes = set(standard_scope.get('excludes', []))
+        
+        missing_excludes = standard_excludes - provided_excludes
+        
+        if missing_excludes:
+            gaps.append({
+                'field': 'scope.excludes',
+                'provided': list(provided_excludes),
+                'standard': list(standard_excludes),
+                'missing': list(missing_excludes),
+                'severity': 'high'  # 제외 항목 중요
+            })
+        
+        return gaps
+
 
 # Validator RAG 인스턴스 (싱글톤)
 _validator_rag_instance = None

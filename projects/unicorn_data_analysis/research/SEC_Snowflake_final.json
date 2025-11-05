@@ -1,0 +1,82 @@
+{
+  "company": "Snowflake",
+  "cik": "0001640147",
+  "data_source": "SEC EDGAR API",
+  "retrieved_at": "2025-11-05",
+  "performance_metrics": {
+    "financial": {
+      "revenue": {
+        "year_1": {
+          "year": 2025,
+          "amount_usd_million": 3626.4,
+          "source": "SEC 10-K 2025"
+        },
+        "year_2": {
+          "year": 2024,
+          "amount_usd_million": 2806.5,
+          "source": "SEC 10-K 2024"
+        },
+        "year_3": {
+          "year": 2023,
+          "amount_usd_million": 2065.7,
+          "source": "SEC 10-K 2023"
+        }
+      },
+      "operating_profit": {
+        "year_1": {
+          "year": 2025,
+          "amount_usd_million": -1456.0,
+          "source": "SEC 10-K 2025"
+        },
+        "year_2": {
+          "year": 2024,
+          "amount_usd_million": -1094.8,
+          "source": "SEC 10-K 2024"
+        },
+        "year_3": {
+          "year": 2023,
+          "amount_usd_million": -842.3,
+          "source": "SEC 10-K 2023"
+        }
+      },
+      "gross_profit": {
+        "year_1": {
+          "year": 2025,
+          "amount_usd_million": 2411.7,
+          "source": "SEC 10-K 2025"
+        },
+        "year_2": {
+          "year": 2024,
+          "amount_usd_million": 1907.9,
+          "source": "SEC 10-K 2024"
+        },
+        "year_3": {
+          "year": 2023,
+          "amount_usd_million": 1348.1,
+          "source": "SEC 10-K 2023"
+        }
+      },
+      "net_income": {
+        "year_1": {
+          "year": 2025,
+          "amount_usd_million": -1285.6,
+          "source": "SEC 10-K 2025"
+        },
+        "year_2": {
+          "year": 2024,
+          "amount_usd_million": -836.1,
+          "source": "SEC 10-K 2024"
+        },
+        "year_3": {
+          "year": 2023,
+          "amount_usd_million": -796.7,
+          "source": "SEC 10-K 2023"
+        }
+      },
+      "gross_margin": 66.50467847416553,
+      "operating_margin": -40.15033107250284,
+      "net_margin": -35.45227823988334,
+      "cash_and_equivalents": 2628.798
+    }
+  }
+}

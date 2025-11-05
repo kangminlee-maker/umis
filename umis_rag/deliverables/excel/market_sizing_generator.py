@@ -36,6 +36,7 @@ from .convergence_builder import ConvergenceBuilder
 from .scenarios_builder import ScenariosBuilder
 from .validation_log_builder import ValidationLogBuilder
 from .summary_builder import SummaryBuilder
+from .should_vs_will_builder import ShouldVsWillBuilder
 
 
 class MarketSizingWorkbookGenerator:
@@ -102,7 +103,7 @@ class MarketSizingWorkbookGenerator:
         estimations = [a for a in assumptions if a.get('data_type') == '추정치']
         if estimations:
             print(f"   2/9 Estimation Details...")
-            estimation_builder = EstimationDetailsBuilder(wb)
+            estimation_builder = EstimationDetailsBuilder(wb, self.formula_engine)
             estimation_builder.create_sheet(estimations)
         
         # 4-7. Method 시트들 (4가지)
@@ -133,12 +134,18 @@ class MarketSizingWorkbookGenerator:
         scenarios.create_sheet()
         
         # 10. Validation Log
-        print(f"   9/9 Validation Log...")
+        print(f"   9/10 Validation Log...")
         validation_log = ValidationLogBuilder(wb, self.formula_engine)  # FormulaEngine 전달
         validation_log.create_sheet()
         
-        # 11. Summary (첫 번째 시트로 이동)
-        print(f"   10/9 Summary Dashboard...")
+        # 11. Should vs Will (Domain Reasoner 기능)
+        print(f"   10/10 Should vs Will...")
+        should_vs_will = ShouldVsWillBuilder(wb, self.formula_engine)
+        should_vs_will_data = None  # TODO: Domain Reasoner 결과 연동
+        should_vs_will.create_sheet(should_vs_will_data)
+        
+        # 12. Summary (첫 번째 시트로 이동)
+        print(f"   Summary Dashboard...")
         summary = SummaryBuilder(wb, self.formula_engine)
         summary.create_sheet(market_name=market_name)
         

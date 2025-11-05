@@ -167,6 +167,160 @@ class GuardianMetaRAG:
             recommendations=recommendations
         )
     
+    def recommend_methodology(
+        self,
+        estimate_result: Dict[str, Any],
+        context: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        추정 결과 기반 방법론 권고 (Hybrid Guestimation)
+        
+        Args:
+            estimate_result: Phase 1 (Guestimation) 결과
+                - value: 추정값 (float)
+                - range: 범위 (tuple: 하한, 상한)
+                - confidence: 신뢰도 (0-1)
+                - method: 사용한 방법 (기본 'guestimation')
+            
+            context: 추가 맥락 (선택)
+                - domain: 산업/영역
+                - geography: 지리
+                - regulatory: 규제 산업 여부 (bool)
+                - new_market: 신규 시장 여부 (bool)
+        
+        Returns:
+            권고 결과
+                - recommendation: str ('domain_reasoner' | 'guestimation_sufficient')
+                - reason: str (권고 이유)
+                - priority: str ('required' | 'high' | 'medium' | 'low')
+                - trigger: str (트리거 종류)
+                - estimated_time: str (예상 소요 시간)
+        
+        Example:
+            >>> guardian = GuardianMetaRAG()
+            >>> result = guardian.recommend_methodology(
+            ...     estimate_result={
+            ...         'value': 50_000_000_000,  # 500억
+            ...         'range': (20_000_000_000, 80_000_000_000),
+            ...         'confidence': 0.3
+            ...     },
+            ...     context={'domain': 'healthcare', 'regulatory': True}
+            ... )
+            >>> print(result['recommendation'])  # 'domain_reasoner'
+            >>> print(result['priority'])  # 'required'
+        """
+        if context is None:
+            context = {}
+        
+        # 입력 추출
+        value = estimate_result.get('value', 0)
+        range_tuple = estimate_result.get('range', (0, 0))
+        confidence = estimate_result.get('confidence', 0)
+        current_method = estimate_result.get('method', 'guestimation')
+        
+        # 범위 폭 계산
+        if range_tuple[0] > 0:
+            range_width = range_tuple[1] / range_tuple[0]
+        else:
+            range_width = float('inf')
+        
+        # 맥락 추출
+        is_regulatory = context.get('regulatory', False)
+        is_new_market = context.get('new_market', False)
+        
+        logger.info("\n[Guardian] 방법론 권고 평가")
+        logger.info("=" * 60)
+        logger.info(f"  추정값: {value:,.0f}")
+        logger.info(f"  범위: {range_tuple[0]:,.0f} - {range_tuple[1]:,.0f}")
+        logger.info(f"  신뢰도: {confidence*100:.0f}%")
+        logger.info(f"  범위 폭: ±{(range_width-1)*50:.0f}%")
+        
+        # === 우선순위별 트리거 검사 ===
+        
+        # Trigger 1: 규제 산업 (최우선, required)
+        if is_regulatory:
+            logger.info("\n  ✅ Trigger 4: 규제 산업 감지")
+            logger.info(f"     → Phase 2 필수 (s3 Laws/Ethics/Physics 검증)")
+            
+            return {
+                'recommendation': 'domain_reasoner',
+                'reason': '규제 산업 (의료/금융/교육) → s3 Laws/Ethics/Physics 검증 필수',
+                'priority': 'required',
+                'trigger': 'regulatory_industry',
+                'estimated_time': '2-4시간',
+                'auto_execute': True
+            }
+        
+        # Trigger 2: 신뢰도 낮음 (high)
+        if confidence < 0.5:
+            logger.info(f"\n  ✅ Trigger 1: 신뢰도 낮음 ({confidence*100:.0f}% < 50%)")
+            logger.info(f"     → Phase 2 권고 (s2 RAG Consensus 필요)")
+            
+            return {
+                'recommendation': 'domain_reasoner',
+                'reason': f'신뢰도 {confidence*100:.0f}% → 50% 미만 → RAG Consensus (s2) 필요',
+                'priority': 'high',
+                'trigger': 'low_confidence',
+                'estimated_time': '1-4시간',
+                'auto_execute': False
+            }
+        
+        # Trigger 3: 범위 너무 넓음 (high)
+        if range_width > 1.75:  # ±75% 이상
+            logger.info(f"\n  ✅ Trigger 2: 범위 폭 과다 (±{(range_width-1)*50:.0f}% > ±75%)")
+            logger.info(f"     → Phase 2 권고 (정밀 수렴 필요)")
+            
+            return {
+                'recommendation': 'domain_reasoner',
+                'reason': f'범위 폭 ±{(range_width-1)*50:.0f}% → ±75% 초과 → 정밀 수렴 필요',
+                'priority': 'high',
+                'trigger': 'wide_range',
+                'estimated_time': '1-3시간',
+                'auto_execute': False
+            }
+        
+        # Trigger 4: 기회 크기 큼 (medium)
+        if value > 100_000_000_000:  # 1,000억
+            value_billions = value / 1_000_000_000
+            logger.info(f"\n  ✅ Trigger 3: 큰 기회 ({value_billions:.0f}억 > 1,000억)")
+            logger.info(f"     → Phase 2 권고 (정밀 검증)")
+            
+            return {
+                'recommendation': 'domain_reasoner',
+                'reason': f'기회 크기 {value_billions:.0f}억 → 1,000억 초과 → 정밀 검증 필요',
+                'priority': 'medium',
+                'trigger': 'large_opportunity',
+                'estimated_time': '2-4시간',
+                'auto_execute': False
+            }
+        
+        # Trigger 5: 신규 시장 (medium)
+        if is_new_market:
+            logger.info(f"\n  ✅ Trigger 5: 신규 시장 감지")
+            logger.info(f"     → Phase 2 권고 (s9 Case Analogies 전이)")
+            
+            return {
+                'recommendation': 'domain_reasoner',
+                'reason': '신규 시장 (직접 데이터 부족) → s9 Case Analogies (사례 전이) 필요',
+                'priority': 'medium',
+                'trigger': 'new_market',
+                'estimated_time': '2-3시간',
+                'auto_execute': False
+            }
+        
+        # 모든 트리거 없음 → Guestimation 충분
+        logger.info(f"\n  ✅ 모든 트리거 통과 → Guestimation 충분")
+        logger.info(f"     신뢰도: {confidence*100:.0f}%, 범위: ±{(range_width-1)*50:.0f}%")
+        
+        return {
+            'recommendation': 'guestimation_sufficient',
+            'reason': f'신뢰도 {confidence*100:.0f}%, 범위 ±{(range_width-1)*50:.0f}% → Guestimation 충분',
+            'priority': 'low',
+            'trigger': 'sufficient',
+            'estimated_time': 'N/A',
+            'auto_execute': False
+        }
+    
     def _generate_recommendations(
         self,
         process_check: Dict[str, Any],
