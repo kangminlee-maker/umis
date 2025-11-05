@@ -1,39 +1,40 @@
 # ========================================
-# Multi-Layer Guestimation 글로벌 설정
-# v2.0 - 2025-11-05
+# Multi-Layer Guestimation 상세 설정
+# v2.1 - 2025-11-05
 # ========================================
 #
-# 이 파일 하나로 UMIS 전체의 LLM 및 웹 검색 모드 제어
-# 코드 수정 없이 설정만 변경하면 전체 시스템에 반영
+# ⚠️ 주의: 글로벌 모드는 .env 파일에서 설정!
+#
+#   .env 파일:
+#     UMIS_MODE=native              ← 전체 시스템 LLM 모드
+#     UMIS_WEB_SEARCH_MODE=native   ← 웹 검색 모드
+#     UMIS_INTERACTIVE=false        ← Interactive 모드
+#
+# 이 YAML 파일:
+#   선택된 모드의 세부 동작 설정
+#   (results_count, threshold, prompt_template 등)
+#
+# ========================================
 
-version: "2.0"
+version: "2.1"
 updated: "2025-11-05"
 
 # ========================================
-# 글로벌 모드 설정 (여기만 수정!)
+# 역할 분담
 # ========================================
-
-global_modes:
-  
-  # LLM 사용 모드 (Layer 2)
-  llm_mode: "native"
-  # 옵션:
-  #   "native"   - Cursor Agent LLM 사용 (권장, 비용 $0)
-  #   "external" - OpenAI API 호출 (자동화, 비용 발생)
-  #   "skip"     - Layer 2 건너뛰기
-  
-  # 웹 검색 모드 (Layer 3)
-  web_search_mode: "native"
-  # 옵션:
-  #   "native"   - 사용자가 직접 검색 후 입력 (권장, 비용 $0)
-  #   "api"      - SerpAPI 호출 (자동화, 월 100회 무료)
-  #   "scraping" - 직접 스크래핑 (불안정, 사용 비권장)
-  #   "skip"     - Layer 3 건너뛰기
-  
-  # Interactive 모드 (사용자 입력 활성화)
-  interactive_mode: false
-  # true:  사용자 입력 대기 (Native 모드에서)
-  # false: 자동으로 다음 레이어 시도
+#
+# .env 파일 (글로벌 모드 선택):
+#   - UMIS_MODE: native/external
+#   - UMIS_WEB_SEARCH_MODE: native/api/skip
+#   - UMIS_INTERACTIVE: true/false
+#
+# 이 YAML 파일 (세부 설정):
+#   - Native 모드일 때 어떻게 동작?
+#   - External 모드일 때 어떤 모델?
+#   - API 검색은 몇 개 결과?
+#   - 유사도 임계값은?
+#
+# ========================================
 
 # ========================================
 # Layer 2: LLM 직접 답변 설정
@@ -231,10 +232,11 @@ usage_examples:
   
   example_1_native_mode:
     description: "기본 설정 (Native Mode, 비용 $0)"
-    settings:
-      llm_mode: "native"
-      web_search_mode: "native"
-      interactive_mode: false
+    env_settings: |
+      # .env 파일:
+      UMIS_MODE=native
+      UMIS_WEB_SEARCH_MODE=native
+      UMIS_INTERACTIVE=false
     
     behavior: |
       Layer 2: 사용자에게 LLM 질문 안내 (자동 실행 안 함)
@@ -243,10 +245,25 @@ usage_examples:
   
   example_2_external_automation:
     description: "완전 자동화 (비용 발생)"
-    settings:
-      llm_mode: "external"
-      web_search_mode: "api"
-      interactive_mode: false
+    env_settings: |
+      # .env 파일:
+      UMIS_MODE=external
+      UMIS_WEB_SEARCH_MODE=api
+      UMIS_INTERACTIVE=false
+      
+      # API 키 필수:
+      OPENAI_API_KEY=sk-proj-...
+      SERPAPI_KEY=your-key
+    
+    yaml_settings: |
+      # 이 YAML 파일:
+      layer_2_llm:
+        external:
+          enabled: true  # ← 활성화!
+      
+      layer_3_web_search:
+        api:
+          enabled: true  # ← 활성화!
     
     behavior: |
       Layer 2: OpenAI API 자동 호출
@@ -255,10 +272,11 @@ usage_examples:
   
   example_3_interactive:
     description: "사용자 입력 모드"
-    settings:
-      llm_mode: "native"
-      web_search_mode: "native"
-      interactive_mode: true
+    env_settings: |
+      # .env 파일:
+      UMIS_MODE=native
+      UMIS_WEB_SEARCH_MODE=native
+      UMIS_INTERACTIVE=true  # ← Interactive 활성화!
     
     behavior: |
       Layer 2: "LLM 답변을 입력하세요:" 프롬프트
@@ -283,18 +301,21 @@ warnings:
     recommendation: "사용 비권장"
 
 # ========================================
-# API 키 환경변수
+# 환경변수 가이드
 # ========================================
-
-required_env_vars:
-  layer_2_external:
-    - OPENAI_API_KEY  # LLM API용
-  
-  layer_3_api:
-    - SERPAPI_KEY     # SerpAPI용
-    # 또는
-    - GOOGLE_SEARCH_API_KEY
-    - GOOGLE_SEARCH_ENGINE_ID
+#
+# 글로벌 모드는 .env 파일에서 설정!
+#
+# 필수 환경변수:
+#   UMIS_MODE=native/external           ← 전체 시스템 모드
+#   UMIS_WEB_SEARCH_MODE=native/api     ← 웹 검색 모드
+#   UMIS_INTERACTIVE=true/false         ← Interactive 모드
+#   OPENAI_API_KEY=sk-proj-...          ← API 키 (항상 필요)
+#
+# 추가 환경변수 (External Mode 사용 시):
+#   SERPAPI_KEY=your-key                ← 웹 검색 API용
+#
+# ========================================
 
 # ========================================
 # 고급 설정
