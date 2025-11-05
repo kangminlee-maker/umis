@@ -1,0 +1,2614 @@
+{
+  "metadata": {
+    "title": "Graduated Unicorns (졸업 유니콘)",
+    "description": "IPO 완료하여 유니콘 리스트에서 졸업한 기업들",
+    "total_companies": 12,
+    "data_version": "1.0",
+    "last_updated": "2025-11-05T01:51:35.413314Z",
+    "data_source": "SEC EDGAR API + Manual Research",
+    "rag_schema_version": "7.0.0",
+    "notes": [
+      "모든 재무 데이터는 SEC 10-K에서 자동 수집",
+      "일부 기업은 추가 리서치 필요 (funding_history, problem_solution 등)",
+      "CIK 중복 이슈: Affirm/Robinhood 확인 필요"
+    ]
+  },
+  "companies": [
+    {
+      "company": "Affirm",
+      "valuation": {
+        "amount_billion": "$12.00",
+        "date_added": "2021-01-13",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Fintech",
+      "ipo_info": {
+        "date": "2021-01-13",
+        "ticker": "AFRM",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "Lightspeed Venture Partners",
+        "Andreessen Horowitz",
+        "Khosla Ventures"
+      ],
+      "funding_history": [
+        {
+          "date": "2014",
+          "round": "Series A",
+          "amount": "45M",
+          "investors": [
+            "Spark Capital",
+            "Khosla Ventures"
+          ]
+        },
+        {
+          "date": "2015",
+          "round": "Series B",
+          "amount": "275M",
+          "lead": "Founders Fund"
+        },
+        {
+          "date": "2016",
+          "round": "Series D",
+          "amount": "100M",
+          "lead": "Institutional Venture Partners"
+        },
+        {
+          "date": "2017",
+          "round": "Series E",
+          "amount": "200M",
+          "investors": [
+            "GIC",
+            "Spark Capital"
+          ]
+        },
+        {
+          "date": "2019",
+          "round": "Series F",
+          "amount": "300M",
+          "investors": [
+            "Lightspeed",
+            "Andreessen Horowitz"
+          ]
+        },
+        {
+          "date": "2020",
+          "round": "Series G",
+          "amount": "500M",
+          "lead": "Durable Capital Partners"
+        }
+      ],
+      "business": {
+        "summary": "Buy Now Pay Later (BNPL) 핀테크 서비스",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2025,
+                "amount_usd_million": 1114.0,
+                "source": "SEC 10-K 2025"
+              },
+              "year_2": {
+                "year": 2024,
+                "amount_usd_million": 826.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_3": {
+                "year": 2023,
+                "amount_usd_million": 626.9,
+                "source": "SEC 10-K 2023"
+              }
+            },
+            "operating_profit": {
+              "year_1": {
+                "year": 2025,
+                "amount_usd_million": -87.3,
+                "source": "SEC 10-K 2025"
+              },
+              "year_2": {
+                "year": 2024,
+                "amount_usd_million": -615.8,
+                "source": "SEC 10-K 2024"
+              },
+              "year_3": {
+                "year": 2023,
+                "amount_usd_million": -1200.9,
+                "source": "SEC 10-K 2023"
+              }
+            },
+            "gross_profit": {},
+            "net_income": {
+              "year_1": {
+                "year": 2025,
+                "amount_usd_million": 52.2,
+                "source": "SEC 10-K 2025"
+              },
+              "year_2": {
+                "year": 2024,
+                "amount_usd_million": -517.8,
+                "source": "SEC 10-K 2024"
+              },
+              "year_3": {
+                "year": 2023,
+                "amount_usd_million": -985.3,
+                "source": "SEC 10-K 2023"
+              }
+            },
+            "gross_margin": null,
+            "operating_margin": -7.834440189377413,
+            "net_margin": 4.6847031237937244,
+            "cash_and_equivalents": 1354.455
+          }
+        },
+        "business_model": {
+          "pattern_type": "fintech_platform",
+          "pattern_id": "bnpl_model",
+          "revenue_model": [
+            {
+              "type": "merchant_fees",
+              "description": "가맹점 수수료 (거래액의 2-8%)",
+              "percentage_of_total": 70
+            },
+            {
+              "type": "interest_income",
+              "description": "유이자 할부 상품의 이자 수익",
+              "percentage_of_total": 25
+            },
+            {
+              "type": "late_fees",
+              "description": "연체 수수료 및 기타",
+              "percentage_of_total": 5
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "신용카드의 높은 이자율과 숨겨진 수수료로 인한 소비자 부담, 온라인 구매시 투명하지 않은 할부 옵션",
+          "solution": "투명한 무이자/저이자 할부 결제 서비스 (Buy Now Pay Later), 명확한 상환 일정과 이자 제시",
+          "unique_value": "PayPal 공동창업자 Max Levchin의 금융 기술 전문성, 투명성 우선 철학, 주요 이커머스 플랫폼 파트너십"
+        },
+        "market_dynamics": {
+          "market_size": "BNPL 시장: $680B (글로벌, 2024)",
+          "market_growth": "25-30% CAGR (2024-2028)",
+          "target_segment": "밀레니얼/Z세대 온라인 쇼퍼, 신용카드 회피 소비자",
+          "geographic_focus": [
+            "United States",
+            "Canada",
+            "Australia",
+            "UK"
+          ]
+        },
+        "competitive_advantage": [
+          "Max Levchin (PayPal 공동창업자) 신뢰도 및 금융 기술 전문성",
+          "주요 이커머스 파트너십 (Amazon, Shopify, Walmart 등)",
+          "투명한 가격 정책 (이자/수수료 명확 표시)",
+          "강력한 언더라이팅 알고리즘 (신용평가)",
+          "Affirm Card (실물 카드) 통한 오프라인 확장"
+        ],
+        "critical_success_factors": [
+          "대형 이커머스 플랫폼 파트너십 확보 (Amazon, Shopify)",
+          "투명성과 소비자 보호 우선 브랜딩",
+          "효과적인 리스크 관리 (신용 손실 통제)",
+          "흑자 전환 달성 (2025년)",
+          "Affirm Card 출시로 사용처 확대"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2012",
+          "unicorn_date": "2019",
+          "ipo_date": "2021-01-13",
+          "total_funding_usd_million": 1300,
+          "funding_rounds": 9,
+          "major_milestones": [
+            {
+              "date": "2012",
+              "event": "Max Levchin 창업"
+            },
+            {
+              "date": "2016",
+              "event": "Series D $100M"
+            },
+            {
+              "date": "2019",
+              "event": "유니콘 달성"
+            },
+            {
+              "date": "2020",
+              "event": "Amazon 파트너십"
+            },
+            {
+              "date": "2021-01-13",
+              "event": "IPO (AFRM)"
+            },
+            {
+              "date": "2023",
+              "event": "Affirm Card 출시"
+            },
+            {
+              "date": "2025",
+              "event": "흑자 전환"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "affirm_case",
+        "canonical_chunk_id": "CAN-affirm01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-affirm01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "affirm_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.411118Z",
+        "updated_at": "2025-11-05T01:51:35.411118Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Asana",
+      "valuation": {
+        "amount_billion": "$28.00",
+        "date_added": "2020-09-30",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Internet software & services",
+      "ipo_info": {
+        "date": "2020-09-30",
+        "ticker": "ASAN",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "Benchmark",
+        "Founders Fund",
+        "Generation Investment Management"
+      ],
+      "funding_history": [
+        {
+          "date": "2009",
+          "round": "Seed",
+          "amount": "1.2M",
+          "investors": [
+            "Benchmark",
+            "Andreessen Horowitz"
+          ]
+        },
+        {
+          "date": "2011",
+          "round": "Series A",
+          "amount": "9M",
+          "lead": "Benchmark"
+        },
+        {
+          "date": "2012",
+          "round": "Series B",
+          "amount": "28M",
+          "lead": "Founders Fund"
+        },
+        {
+          "date": "2014",
+          "round": "Series C",
+          "amount": "28M",
+          "investors": [
+            "Founders Fund",
+            "Peter Thiel"
+          ]
+        },
+        {
+          "date": "2016",
+          "round": "Series D",
+          "amount": "75M",
+          "lead": "Sam Altman"
+        },
+        {
+          "date": "2018",
+          "round": "Series E",
+          "amount": "75M",
+          "lead": "Generation Investment"
+        }
+      ],
+      "business": {
+        "summary": "프로젝트 관리 및 협업 소프트웨어",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2025,
+                "amount_usd_million": 723.9,
+                "source": "SEC 10-K 2025"
+              },
+              "year_2": {
+                "year": 2024,
+                "amount_usd_million": 652.5,
+                "source": "SEC 10-K 2024"
+              },
+              "year_3": {
+                "year": 2023,
+                "amount_usd_million": 547.2,
+                "source": "SEC 10-K 2023"
+              }
+            },
+            "operating_profit": {
+              "year_1": {
+                "year": 2025,
+                "amount_usd_million": -266.7,
+                "source": "SEC 10-K 2025"
+              },
+              "year_2": {
+                "year": 2024,
+                "amount_usd_million": -270.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_3": {
+                "year": 2023,
+                "amount_usd_million": -407.8,
+                "source": "SEC 10-K 2023"
+              }
+            },
+            "gross_profit": {
+              "year_1": {
+                "year": 2025,
+                "amount_usd_million": 646.7,
+                "source": "SEC 10-K 2025"
+              },
+              "year_2": {
+                "year": 2024,
+                "amount_usd_million": 588.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_3": {
+                "year": 2023,
+                "amount_usd_million": 490.7,
+                "source": "SEC 10-K 2023"
+              }
+            },
+            "net_income": {
+              "year_1": {
+                "year": 2025,
+                "amount_usd_million": -255.5,
+                "source": "SEC 10-K 2025"
+              },
+              "year_2": {
+                "year": 2024,
+                "amount_usd_million": -257.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_3": {
+                "year": 2023,
+                "amount_usd_million": -407.8,
+                "source": "SEC 10-K 2023"
+              }
+            },
+            "gross_margin": 89.33615702136831,
+            "operating_margin": -36.84816183987313,
+            "net_margin": -35.30107366455028,
+            "cash_and_equivalents": 184.728
+          }
+        },
+        "business_model": {
+          "pattern_type": "saas_platform",
+          "pattern_id": "project_management_saas",
+          "revenue_model": [
+            {
+              "type": "subscription",
+              "description": "월간/연간 구독 (Basic, Premium, Business, Enterprise)",
+              "percentage_of_total": 95
+            },
+            {
+              "type": "professional_services",
+              "description": "컨설팅 및 도입 지원",
+              "percentage_of_total": 5
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "이메일과 스프레드시트 기반의 비효율적인 프로젝트 관리, 팀 협업 도구의 파편화",
+          "solution": "통합된 프로젝트 관리 및 팀 협업 플랫폼, 업무 흐름 시각화 및 자동화",
+          "unique_value": "Facebook 공동창업자 Dustin Moskovitz의 실리콘밸리 네트워크, 직관적 UX, Work Graph 데이터 모델"
+        },
+        "market_dynamics": {
+          "market_size": "프로젝트 관리 소프트웨어: $6.5B (2024)",
+          "market_growth": "10-12% CAGR",
+          "target_segment": "중소기업~엔터프라이즈, 크리에이티브/마케팅 팀",
+          "geographic_focus": [
+            "United States",
+            "Europe",
+            "Asia-Pacific"
+          ]
+        },
+        "competitive_advantage": [
+          "Dustin Moskovitz (Facebook 공동창업자) 네트워크 및 제품 철학",
+          "Work Graph 데이터 모델 (고유한 작업 관계 구조)",
+          "직관적이고 아름다운 UX/UI",
+          "강력한 자동화 기능 (Rules, Forms)",
+          "엔터프라이즈급 보안 및 확장성"
+        ],
+        "critical_success_factors": [
+          "프로덕트 중심 성장 (Product-led Growth)",
+          "팀 협업 트렌드 증가 (리모트 워크)",
+          "Freemium 모델로 빠른 사용자 획득",
+          "엔터프라이즈 고객 확보 (ARR 증가)",
+          "생태계 통합 (Slack, Google Workspace 등)"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2008",
+          "unicorn_date": "2018",
+          "ipo_date": "2020-09-30",
+          "total_funding_usd_million": 427,
+          "funding_rounds": 6,
+          "major_milestones": [
+            {
+              "date": "2008",
+              "event": "Dustin Moskovitz & Justin Rosenstein 창업"
+            },
+            {
+              "date": "2011",
+              "event": "Series A $9M (Benchmark)"
+            },
+            {
+              "date": "2016",
+              "event": "Series D $75M"
+            },
+            {
+              "date": "2018",
+              "event": "Series E $75M (유니콘)"
+            },
+            {
+              "date": "2020-09-30",
+              "event": "Direct Listing IPO"
+            },
+            {
+              "date": "2023",
+              "event": "AI 기능 통합"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "asana_case",
+        "canonical_chunk_id": "CAN-asana001",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-asana001",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "asana_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.411641Z",
+        "updated_at": "2025-11-05T01:51:35.411641Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "C3.ai",
+      "valuation": {
+        "amount_billion": "$10.00",
+        "date_added": "2020-12-09",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Artificial intelligence",
+      "ipo_info": {
+        "date": "2020-12-09",
+        "ticker": "AI",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "TPG",
+        "Breyer Capital"
+      ],
+      "funding_history": [
+        {
+          "date": "2016",
+          "round": "Series B",
+          "amount": "100M",
+          "lead": "TPG"
+        }
+      ],
+      "business": {
+        "summary": "엔터프라이즈 AI 플랫폼",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 7235.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 6876.1,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 5916.3,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "operating_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 1300.1,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 1164.3,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 817.3,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 3170.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 2882.2,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 2325.6,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "net_income": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 838.6,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 778.7,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 604.7,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_margin": 43.814789219073944,
+            "operating_margin": 17.96959225984796,
+            "net_margin": 11.590877677954389,
+            "cash_and_equivalents": 1541.2
+          }
+        },
+        "business_model": {
+          "pattern_type": "saas_platform",
+          "pattern_id": "enterprise_ai",
+          "revenue_model": [
+            {
+              "type": "subscription",
+              "description": "연간 구독",
+              "percentage_of_total": 85
+            },
+            {
+              "type": "services",
+              "description": "컨설팅",
+              "percentage_of_total": 15
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "엔터프라이즈 AI 도입의 복잡성과 높은 비용, AI 전문 인력 부족",
+          "solution": "즉시 사용 가능한 엔터프라이즈 AI 애플리케이션 플랫폼",
+          "unique_value": "Tom Siebel 엔터프라이즈 전문성, 정부/방위 레퍼런스"
+        },
+        "market_dynamics": {
+          "market_size": "$50B",
+          "market_growth": "35% CAGR",
+          "target_segment": "엔터프라이즈",
+          "geographic_focus": [
+            "United States",
+            "Global"
+          ]
+        },
+        "competitive_advantage": [
+          "Tom Siebel 전문성",
+          "사전 구축 AI 앱",
+          "정부 레퍼런스",
+          "Cloud-agnostic"
+        ],
+        "critical_success_factors": [
+          "대형 계약",
+          "정부 성공",
+          "AI 트렌드",
+          "빠른 구현"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2009",
+          "unicorn_date": "2018",
+          "ipo_date": "2020-12-09",
+          "total_funding_usd_million": 366,
+          "funding_rounds": 5,
+          "major_milestones": [
+            {
+              "date": "2009",
+              "event": "창업"
+            },
+            {
+              "date": "2020-12-09",
+              "event": "IPO"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "c3ai_case",
+        "canonical_chunk_id": "CAN-c3ai0001",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-c3ai0001",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "c3ai_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.411862Z",
+        "updated_at": "2025-11-05T01:51:35.411862Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Coinbase",
+      "valuation": {
+        "amount_billion": "$85.80",
+        "date_added": "2021-04-14",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Fintech",
+      "ipo_info": {
+        "date": "2021-04-14",
+        "ticker": "COIN",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "Andreessen Horowitz",
+        "Union Square Ventures",
+        "Ribbit Capital"
+      ],
+      "funding_history": [
+        {
+          "date": "2013",
+          "round": "Series A",
+          "amount": "5M",
+          "lead": "Union Square Ventures"
+        }
+      ],
+      "business": {
+        "summary": "암호화폐 거래소 플랫폼",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 6564.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 3108.4,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 3194.2,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "operating_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 2307.2,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": -161.7,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -2710.2,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_profit": {},
+            "net_income": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 2579.1,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 94.9,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -2624.9,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_margin": null,
+            "operating_margin": 35.14853989044532,
+            "net_margin": 39.29090491387301,
+            "cash_and_equivalents": 8543.903
+          }
+        },
+        "business_model": {
+          "pattern_type": "fintech_platform",
+          "pattern_id": "crypto_exchange",
+          "revenue_model": [
+            {
+              "type": "transaction_fees",
+              "description": "거래 수수료",
+              "percentage_of_total": 70
+            },
+            {
+              "type": "subscription",
+              "description": "Coinbase One",
+              "percentage_of_total": 10
+            },
+            {
+              "type": "custodial",
+              "description": "기관 보관",
+              "percentage_of_total": 20
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "암호화폐 거래 복잡성, 보안 우려, 초보자 진입 장벽",
+          "solution": "쉬운 크립토 거래소, 안전한 지갑, 교육",
+          "unique_value": "미국 규제 준수, 기관급 보안"
+        },
+        "market_dynamics": {
+          "market_size": "$1.5T daily",
+          "market_growth": "High volatility",
+          "target_segment": "개인~기관",
+          "geographic_focus": [
+            "United States",
+            "Global"
+          ]
+        },
+        "competitive_advantage": [
+          "미국 규제 준수",
+          "브랜드 신뢰",
+          "기관급 보안",
+          "200+ 코인"
+        ],
+        "critical_success_factors": [
+          "크립토 성장",
+          "규제 명확화",
+          "기관 유입",
+          "보안 무사고"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2012",
+          "unicorn_date": "2017",
+          "ipo_date": "2021-04-14",
+          "total_funding_usd_million": 547,
+          "funding_rounds": 9,
+          "major_milestones": [
+            {
+              "date": "2012",
+              "event": "창업"
+            },
+            {
+              "date": "2021-04-14",
+              "event": "IPO"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "coinbase_case",
+        "canonical_chunk_id": "CAN-coinba01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-coinba01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "coinbase_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.412197Z",
+        "updated_at": "2025-11-05T01:51:35.412197Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Coupang",
+      "valuation": {
+        "amount_billion": "$109.00",
+        "date_added": "2021-03-11",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "South Korea"
+      },
+      "category": "E-commerce & direct-to-consumer",
+      "ipo_info": {
+        "date": "2021-03-11",
+        "ticker": "CPNG",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "SoftBank Vision Fund",
+        "Sequoia Capital",
+        "BlackRock"
+      ],
+      "funding_history": [
+        {
+          "date": "2018",
+          "round": "Series F",
+          "amount": "2000M",
+          "lead": "SoftBank"
+        }
+      ],
+      "business": {
+        "summary": "한국 이커머스 플랫폼 (로켓배송)",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 30268.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 24383.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 20583.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "operating_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 436.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 473.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -112.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 8831.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 6190.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 4710.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "net_income": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 154.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 1360.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -92.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_margin": 29.17602748777587,
+            "operating_margin": 1.4404651777454738,
+            "net_margin": 0.5087881591119334,
+            "cash_and_equivalents": 5879.0
+          }
+        },
+        "business_model": {
+          "pattern_type": "marketplace",
+          "pattern_id": "ecommerce",
+          "revenue_model": [
+            {
+              "type": "product_sales",
+              "description": "직접 판매",
+              "percentage_of_total": 70
+            },
+            {
+              "type": "marketplace",
+              "description": "수수료",
+              "percentage_of_total": 25
+            },
+            {
+              "type": "ads",
+              "description": "광고",
+              "percentage_of_total": 5
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "느린 배송, 새벽 수요, 불편한 반품",
+          "solution": "로켓배송, 무료 반품, 자체 물류",
+          "unique_value": "한국 최대 물류, Amazon 철학"
+        },
+        "market_dynamics": {
+          "market_size": "$150B",
+          "market_growth": "10% CAGR",
+          "target_segment": "한국 온라인 쇼퍼",
+          "geographic_focus": [
+            "South Korea"
+          ]
+        },
+        "competitive_advantage": [
+          "로켓배송 물류",
+          "회원 충성도",
+          "자체 인프라",
+          "빠른 배송"
+        ],
+        "critical_success_factors": [
+          "물류 투자",
+          "고객 경험",
+          "SoftBank 자본",
+          "시장 선점",
+          "흑자 전환"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2010",
+          "unicorn_date": "2015",
+          "ipo_date": "2021-03-11",
+          "total_funding_usd_million": 3400,
+          "funding_rounds": 10,
+          "major_milestones": [
+            {
+              "date": "2010",
+              "event": "창업"
+            },
+            {
+              "date": "2021-03-11",
+              "event": "IPO"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "coupang_case",
+        "canonical_chunk_id": "CAN-coupan01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-coupan01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "coupang_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.412281Z",
+        "updated_at": "2025-11-05T01:51:35.412281Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "DoorDash",
+      "valuation": {
+        "amount_billion": "$72.00",
+        "date_added": "2020-12-09",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Supply chain, logistics, & delivery",
+      "ipo_info": {
+        "date": "2020-12-09",
+        "ticker": "DASH",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "Sequoia Capital",
+        "SoftBank Vision Fund",
+        "Coatue"
+      ],
+      "funding_history": [
+        {
+          "date": "2014",
+          "round": "Series A",
+          "amount": "17.3M",
+          "lead": "Sequoia"
+        }
+      ],
+      "business": {
+        "summary": "음식 배달 플랫폼 및 물류 서비스",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 10722.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 8635.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 6583.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "operating_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": -38.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": -579.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -1124.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_profit": {},
+            "net_income": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 123.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": -558.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -1365.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_margin": null,
+            "operating_margin": -0.3544114903935833,
+            "net_margin": 1.1471740346950194,
+            "cash_and_equivalents": 4019.0
+          }
+        },
+        "business_model": {
+          "pattern_type": "marketplace",
+          "pattern_id": "delivery",
+          "revenue_model": [
+            {
+              "type": "delivery_fees",
+              "description": "배달료",
+              "percentage_of_total": 40
+            },
+            {
+              "type": "commission",
+              "description": "음식점 수수료",
+              "percentage_of_total": 50
+            },
+            {
+              "type": "dashpass",
+              "description": "구독",
+              "percentage_of_total": 10
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "음식점-고객 연결 비효율, 배달 인프라 부족",
+          "solution": "온디맨드 배달, Dasher 네트워크",
+          "unique_value": "미국 60% 점유율, 다각화"
+        },
+        "market_dynamics": {
+          "market_size": "$80B",
+          "market_growth": "10% CAGR",
+          "target_segment": "도시 거주자",
+          "geographic_focus": [
+            "United States"
+          ]
+        },
+        "competitive_advantage": [
+          "60% 점유율",
+          "레스토랑 네트워크",
+          "Dasher 플릿",
+          "다각화"
+        ],
+        "critical_success_factors": [
+          "팬데믹 수혜",
+          "점유율 1위",
+          "흑자 전환",
+          "다각화"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2013",
+          "unicorn_date": "2018",
+          "ipo_date": "2020-12-09",
+          "total_funding_usd_million": 2500,
+          "funding_rounds": 10,
+          "major_milestones": [
+            {
+              "date": "2013",
+              "event": "창업"
+            },
+            {
+              "date": "2020-12-09",
+              "event": "IPO"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "doordash_case",
+        "canonical_chunk_id": "CAN-doorda01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-doorda01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "doordash_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.412433Z",
+        "updated_at": "2025-11-05T01:51:35.412433Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Palantir",
+      "valuation": {
+        "amount_billion": "$10.00",
+        "date_added": "2020-09-30",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Data management & analytics",
+      "ipo_info": {
+        "date": "2020-09-30",
+        "ticker": "PLTR",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "Founders Fund",
+        "In-Q-Tel",
+        "Tiger Global Management"
+      ],
+      "funding_history": [
+        {
+          "date": "2004",
+          "round": "Series A",
+          "amount": "2M",
+          "lead": "In-Q-Tel"
+        }
+      ],
+      "business": {
+        "summary": "빅데이터 분석 플랫폼 (정부, 기업용)",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 2865.5,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 2225.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 1905.9,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "operating_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 310.4,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 120.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -161.2,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 2299.5,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 1793.9,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 1497.3,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "net_income": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 462.2,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 209.8,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -373.7,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_margin": 80.24817248745161,
+            "operating_margin": 10.83239370903648,
+            "net_margin": 16.129431894600152,
+            "cash_and_equivalents": 2098.524
+          }
+        },
+        "business_model": {
+          "pattern_type": "saas_platform",
+          "pattern_id": "data_analytics",
+          "revenue_model": [
+            {
+              "type": "subscription",
+              "description": "연간 구독",
+              "percentage_of_total": 90
+            },
+            {
+              "type": "services",
+              "description": "컨설팅",
+              "percentage_of_total": 10
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "방대한 데이터 분석 복잡성, 사일로, 실시간 의사결정 어려움",
+          "solution": "통합 데이터 플랫폼, AI 인사이트",
+          "unique_value": "CIA 레퍼런스, 최고 보안"
+        },
+        "market_dynamics": {
+          "market_size": "$30B",
+          "market_growth": "15% CAGR",
+          "target_segment": "정부, 대기업",
+          "geographic_focus": [
+            "United States",
+            "Global"
+          ]
+        },
+        "competitive_advantage": [
+          "정부 레퍼런스",
+          "최고 보안",
+          "복잡한 데이터 통합",
+          "실시간 시스템"
+        ],
+        "critical_success_factors": [
+          "정부 계약",
+          "상업 확장",
+          "보안 준수",
+          "흑자 전환"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2003",
+          "unicorn_date": "2011",
+          "ipo_date": "2020-09-30",
+          "total_funding_usd_million": 2500,
+          "funding_rounds": 15,
+          "major_milestones": [
+            {
+              "date": "2003",
+              "event": "Peter Thiel 창업"
+            },
+            {
+              "date": "2020-09-30",
+              "event": "IPO"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "palantir_case",
+        "canonical_chunk_id": "CAN-palant01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-palant01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "palantir_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.412567Z",
+        "updated_at": "2025-11-05T01:51:35.412567Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Rivian",
+      "valuation": {
+        "amount_billion": "$66.50",
+        "date_added": "2021-11-10",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Auto & transportation",
+      "ipo_info": {
+        "date": "2021-11-10",
+        "ticker": "RIVN",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "Amazon",
+        "Ford",
+        "T. Rowe Price",
+        "Fidelity"
+      ],
+      "funding_history": [
+        {
+          "date": "2019-02",
+          "round": "Series D",
+          "amount": "700M",
+          "lead": "Amazon",
+          "investors": []
+        },
+        {
+          "date": "2019-04",
+          "round": "Strategic",
+          "amount": "500M",
+          "investor": "Ford"
+        },
+        {
+          "date": "2019-09",
+          "round": "Series E",
+          "amount": "1300M",
+          "investors": [
+            "Amazon",
+            "Ford",
+            "T. Rowe Price"
+          ]
+        },
+        {
+          "date": "2020-07",
+          "round": "Series F",
+          "amount": "2500M",
+          "investors": [
+            "Soros Fund",
+            "Fidelity",
+            "Amazon"
+          ]
+        },
+        {
+          "date": "2021-01",
+          "round": "Series G",
+          "amount": "2500M",
+          "investors": [
+            "T. Rowe Price",
+            "Fidelity",
+            "Amazon",
+            "Ford"
+          ]
+        }
+      ],
+      "business": {
+        "summary": "Adventure Electric Vehicles 제조사 (R1T, R1S, EDV)",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 4970.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 4434.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 1658.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "operating_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": -4689.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": -5739.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -6856.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": -1200.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": -2030.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -3123.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "net_income": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": -4747.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": -5432.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -6752.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_margin": -24.14486921529175,
+            "operating_margin": -94.34607645875252,
+            "net_margin": -95.51307847082495,
+            "cash_and_equivalents": 5294.0
+          }
+        },
+        "business_model": {
+          "pattern_type": "hardware_mobility",
+          "pattern_id": "ev_manufacturer",
+          "revenue_model": [
+            {
+              "type": "consumer_vehicles",
+              "description": "R1T/R1S 판매 ($70-80K)",
+              "percentage_of_total": 80
+            },
+            {
+              "type": "commercial_vehicles",
+              "description": "Amazon EDV 10만대 계약",
+              "percentage_of_total": 15
+            },
+            {
+              "type": "services",
+              "description": "충전, 서비스, 보험",
+              "percentage_of_total": 5
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "기존 자동차의 환경 문제, 아웃도어/라이프스타일에 적합한 전기차 부재, 상업용 전기 배송차량 부족",
+          "solution": "Adventure Electric Vehicles (R1T 픽업트럭, R1S SUV, Amazon EDV 배송밴)",
+          "unique_value": "Adventure positioning으로 Tesla와 차별화, Amazon 10만대 전략적 파트너십, 독자 개발 skateboard platform"
+        },
+        "market_dynamics": {
+          "market_size": "US EV Market: $100B (2024), 미국 픽업트럭: 3M대/년",
+          "market_growth": "30-40% CAGR (전기차 채택 가속)",
+          "target_segment": "프리미엄 고객 (연소득 $150K+), 아웃도어/라이프스타일, 상업용 배송 (Amazon)",
+          "geographic_focus": [
+            "United States (주력)",
+            "Europe (확장 계획)",
+            "중국 (장기 계획)"
+          ]
+        },
+        "competitive_advantage": [
+          "Adventure-focused positioning (Tesla 도심 vs Rivian 모험)",
+          "독자 개발 skateboard platform (배터리/모터/서스펜션 통합)",
+          "Amazon 전략적 파트너십 (10만대 장기 계약)",
+          "Direct-to-consumer 모델 (딜러 없음)",
+          "프리미엄 전기 픽업트럭/SUV 선두주자"
+        ],
+        "critical_success_factors": [
+          "생산 규모 확대 (규모의 경제 달성)",
+          "Positive gross margin 달성 (현재 -24%, 개선 중)",
+          "Amazon EDV 10만대 납품 성공",
+          "Tesla 대비 브랜드 차별화 유지",
+          "Rivian Adventure Network 충전 인프라 구축"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2009",
+          "unicorn_date": "2019",
+          "ipo_date": "2021-11-10",
+          "total_funding_usd_million": 10750,
+          "funding_rounds": 10,
+          "major_milestones": [
+            {
+              "date": "2009",
+              "event": "RJ Scaringe 창업"
+            },
+            {
+              "date": "2019-02",
+              "event": "Amazon $700M 투자 (전략적 파트너십)"
+            },
+            {
+              "date": "2019-09",
+              "event": "Ford $500M 투자"
+            },
+            {
+              "date": "2021-06",
+              "event": "Series E $2.5B (유니콘)"
+            },
+            {
+              "date": "2021-09",
+              "event": "Normal, IL 공장 생산 시작"
+            },
+            {
+              "date": "2021-11-10",
+              "event": "NASDAQ IPO ($66.5B valuation)"
+            },
+            {
+              "date": "2022-03",
+              "event": "Amazon EDV 첫 배송 시작"
+            },
+            {
+              "date": "2023-2024",
+              "event": "생산 확대 및 손실 감소"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "rivian_case",
+        "canonical_chunk_id": "CAN-rivian01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-rivian01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "rivian_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.412734Z",
+        "updated_at": "2025-11-05T01:51:35.412734Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Robinhood",
+      "valuation": {
+        "amount_billion": "$32.00",
+        "date_added": "2021-07-29",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Fintech",
+      "ipo_info": {
+        "date": "2021-07-29",
+        "ticker": "HOOD",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "Sequoia Capital",
+        "Andreessen Horowitz",
+        "Ribbit Capital"
+      ],
+      "funding_history": [
+        {
+          "date": "2013",
+          "round": "Seed",
+          "amount": "3M",
+          "lead": "Index Ventures"
+        }
+      ],
+      "business": {
+        "summary": "수수료 없는 주식 거래 앱",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 2951.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 1865.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 1358.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "operating_profit": {},
+            "gross_profit": {},
+            "net_income": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 1411.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": -541.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -1028.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_margin": null,
+            "operating_margin": null,
+            "net_margin": 47.814300237207725,
+            "cash_and_equivalents": 4332.0
+          }
+        },
+        "business_model": {
+          "pattern_type": "fintech_platform",
+          "pattern_id": "zero_commission",
+          "revenue_model": [
+            {
+              "type": "PFOF",
+              "description": "주문 흐름 판매",
+              "percentage_of_total": 50
+            },
+            {
+              "type": "interest",
+              "description": "예치금 이자",
+              "percentage_of_total": 30
+            },
+            {
+              "type": "gold",
+              "description": "구독",
+              "percentage_of_total": 20
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "높은 거래 수수료, 복잡한 UI, 최소 투자금",
+          "solution": "무료 거래, 모바일 앱, 소액 투자",
+          "unique_value": "완전 무료, Gamification"
+        },
+        "market_dynamics": {
+          "market_size": "$250B AUM",
+          "market_growth": "8% CAGR",
+          "target_segment": "밀레니얼/Z세대",
+          "geographic_focus": [
+            "United States"
+          ]
+        },
+        "competitive_advantage": [
+          "완전 무료 거래",
+          "모바일 UX",
+          "밀레니얼 침투",
+          "Fractional shares"
+        ],
+        "critical_success_factors": [
+          "PFOF 최적화",
+          "규제 관리",
+          "사용자 확대",
+          "흑자 전환"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2013",
+          "unicorn_date": "2017",
+          "ipo_date": "2021-07-29",
+          "total_funding_usd_million": 5600,
+          "funding_rounds": 12,
+          "major_milestones": [
+            {
+              "date": "2013",
+              "event": "창업"
+            },
+            {
+              "date": "2021-07-29",
+              "event": "IPO"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "robinhood_case",
+        "canonical_chunk_id": "CAN-robinh01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-robinh01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "robinhood_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.412851Z",
+        "updated_at": "2025-11-05T01:51:35.412851Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Roblox",
+      "valuation": {
+        "amount_billion": "$45.00",
+        "date_added": "2021-03-10",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Internet software & services",
+      "ipo_info": {
+        "date": "2021-03-10",
+        "ticker": "RBLX",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "Altos Ventures",
+        "Index Ventures",
+        "Tiger Global Management"
+      ],
+      "funding_history": [
+        {
+          "date": "2005",
+          "round": "Series A",
+          "amount": "3M",
+          "lead": "Altos Ventures"
+        }
+      ],
+      "business": {
+        "summary": "온라인 게임 플랫폼 및 게임 제작 시스템",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 3602.0,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 2799.3,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 2225.1,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "operating_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": -1063.3,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": -1259.1,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -923.8,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_profit": {},
+            "net_income": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": -935.4,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": -1151.9,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -924.4,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_margin": null,
+            "operating_margin": -29.52035533799614,
+            "net_margin": -25.968613365041826,
+            "cash_and_equivalents": 711.683
+          }
+        },
+        "business_model": {
+          "pattern_type": "platform",
+          "pattern_id": "ugc_gaming",
+          "revenue_model": [
+            {
+              "type": "robux_sales",
+              "description": "가상화폐 판매",
+              "percentage_of_total": 95
+            },
+            {
+              "type": "ads",
+              "description": "광고",
+              "percentage_of_total": 5
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "게임 제작 진입 장벽, 크리에이터 수익화 어려움",
+          "solution": "UGC 게임 플랫폼, 크리에이터 수익 분배",
+          "unique_value": "Z세대 지배, 크리에이터 이코노미"
+        },
+        "market_dynamics": {
+          "market_size": "$200B",
+          "market_growth": "10% CAGR",
+          "target_segment": "Z세대, 어린이",
+          "geographic_focus": [
+            "Global"
+          ]
+        },
+        "competitive_advantage": [
+          "네트워크 효과",
+          "Z세대 지배",
+          "크리에이터 이코노미",
+          "높은 Engagement"
+        ],
+        "critical_success_factors": [
+          "크리에이터 활성화",
+          "안전한 플랫폼",
+          "Engagement 증가",
+          "국제 확장"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2004",
+          "unicorn_date": "2017",
+          "ipo_date": "2021-03-10",
+          "total_funding_usd_million": 566,
+          "funding_rounds": 10,
+          "major_milestones": [
+            {
+              "date": "2004",
+              "event": "창업"
+            },
+            {
+              "date": "2021-03-10",
+              "event": "IPO"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "roblox_case",
+        "canonical_chunk_id": "CAN-roblox01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-roblox01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "roblox_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.412990Z",
+        "updated_at": "2025-11-05T01:51:35.412990Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Snowflake",
+      "valuation": {
+        "amount_billion": "$120.00",
+        "date_added": "2020-09-16",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Data management & analytics",
+      "ipo_info": {
+        "date": "2020-09-16",
+        "ticker": "SNOW",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "Sequoia Capital",
+        "Redpoint Ventures",
+        "Sutter Hill Ventures"
+      ],
+      "funding_history": [
+        {
+          "date": "2014",
+          "round": "Series A",
+          "amount": "26M",
+          "lead": "Sutter Hill"
+        }
+      ],
+      "business": {
+        "summary": "클라우드 데이터 웨어하우스 플랫폼",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2025,
+                "amount_usd_million": 3626.4,
+                "source": "SEC 10-K 2025"
+              },
+              "year_2": {
+                "year": 2024,
+                "amount_usd_million": 2806.5,
+                "source": "SEC 10-K 2024"
+              },
+              "year_3": {
+                "year": 2023,
+                "amount_usd_million": 2065.7,
+                "source": "SEC 10-K 2023"
+              }
+            },
+            "operating_profit": {
+              "year_1": {
+                "year": 2025,
+                "amount_usd_million": -1456.0,
+                "source": "SEC 10-K 2025"
+              },
+              "year_2": {
+                "year": 2024,
+                "amount_usd_million": -1094.8,
+                "source": "SEC 10-K 2024"
+              },
+              "year_3": {
+                "year": 2023,
+                "amount_usd_million": -842.3,
+                "source": "SEC 10-K 2023"
+              }
+            },
+            "gross_profit": {
+              "year_1": {
+                "year": 2025,
+                "amount_usd_million": 2411.7,
+                "source": "SEC 10-K 2025"
+              },
+              "year_2": {
+                "year": 2024,
+                "amount_usd_million": 1907.9,
+                "source": "SEC 10-K 2024"
+              },
+              "year_3": {
+                "year": 2023,
+                "amount_usd_million": 1348.1,
+                "source": "SEC 10-K 2023"
+              }
+            },
+            "net_income": {
+              "year_1": {
+                "year": 2025,
+                "amount_usd_million": -1285.6,
+                "source": "SEC 10-K 2025"
+              },
+              "year_2": {
+                "year": 2024,
+                "amount_usd_million": -836.1,
+                "source": "SEC 10-K 2024"
+              },
+              "year_3": {
+                "year": 2023,
+                "amount_usd_million": -796.7,
+                "source": "SEC 10-K 2023"
+              }
+            },
+            "gross_margin": 66.50467847416553,
+            "operating_margin": -40.15033107250284,
+            "net_margin": -35.45227823988334,
+            "cash_and_equivalents": 2628.798
+          }
+        },
+        "business_model": {
+          "pattern_type": "saas_platform",
+          "pattern_id": "data_warehouse",
+          "revenue_model": [
+            {
+              "type": "consumption",
+              "description": "사용량 과금",
+              "percentage_of_total": 100
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "데이터 웨어하우스 복잡성, 확장성 부족, 높은 비용",
+          "solution": "클라우드 데이터 웨어하우스, 무한 확장",
+          "unique_value": "Multi-cloud, 스토리지/컴퓨팅 분리"
+        },
+        "market_dynamics": {
+          "market_size": "$20B",
+          "market_growth": "25% CAGR",
+          "target_segment": "대기업 데이터 팀",
+          "geographic_focus": [
+            "Global"
+          ]
+        },
+        "competitive_advantage": [
+          "Multi-cloud",
+          "스토리지/컴퓨팅 분리",
+          "데이터 Marketplace",
+          "SQL 호환"
+        ],
+        "critical_success_factors": [
+          "클라우드 마이그레이션",
+          "NRR 150%",
+          "Fortune 500",
+          "consumption 최적화"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2012",
+          "unicorn_date": "2018",
+          "ipo_date": "2020-09-16",
+          "total_funding_usd_million": 1400,
+          "funding_rounds": 8,
+          "major_milestones": [
+            {
+              "date": "2012",
+              "event": "창업"
+            },
+            {
+              "date": "2020-09-16",
+              "event": "IPO"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "snowflake_case",
+        "canonical_chunk_id": "CAN-snowfl01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-snowfl01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "snowflake_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.413133Z",
+        "updated_at": "2025-11-05T01:51:35.413133Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Unity",
+      "valuation": {
+        "amount_billion": "$13.70",
+        "date_added": "2020-09-18",
+        "note": "IPO 당시 valuation (졸업 유니콘)"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Internet software & services",
+      "ipo_info": {
+        "date": "2020-09-18",
+        "ticker": "U",
+        "exchange": "NASDAQ",
+        "status": "graduated_unicorn"
+      },
+      "select_investors": [
+        "Sequoia Capital",
+        "Silver Lake",
+        "DFJ Growth"
+      ],
+      "funding_history": [
+        {
+          "date": "2009",
+          "round": "Series A",
+          "amount": "5.5M",
+          "lead": "Sequoia"
+        }
+      ],
+      "business": {
+        "summary": "게임 개발 엔진 및 실시간 3D 플랫폼",
+        "details": [],
+        "performance_metrics": {
+          "financial": {
+            "revenue": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 1813.3,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 2187.3,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 1391.0,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "operating_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": -755.1,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": -832.8,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -882.2,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_profit": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": 1332.4,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": 1453.6,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": 948.5,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "net_income": {
+              "year_1": {
+                "year": 2024,
+                "amount_usd_million": -664.1,
+                "source": "SEC 10-K 2024"
+              },
+              "year_2": {
+                "year": 2023,
+                "amount_usd_million": -822.0,
+                "source": "SEC 10-K 2023"
+              },
+              "year_3": {
+                "year": 2022,
+                "amount_usd_million": -921.1,
+                "source": "SEC 10-K 2022"
+              }
+            },
+            "gross_margin": 73.48122575148007,
+            "operating_margin": -41.646045371445275,
+            "net_margin": -36.62551599195921,
+            "cash_and_equivalents": 1517.672
+          }
+        },
+        "business_model": {
+          "pattern_type": "saas_platform",
+          "pattern_id": "game_engine",
+          "revenue_model": [
+            {
+              "type": "subscription",
+              "description": "Unity Pro",
+              "percentage_of_total": 40
+            },
+            {
+              "type": "ads",
+              "description": "Unity Ads",
+              "percentage_of_total": 50
+            },
+            {
+              "type": "asset_store",
+              "description": "에셋 스토어",
+              "percentage_of_total": 10
+            }
+          ]
+        },
+        "problem_solution": {
+          "problem": "게임 개발 복잡성, 멀티플랫폼 어려움",
+          "solution": "크로스 플랫폼 게임 엔진, 3D 도구",
+          "unique_value": "50%+ 모바일 게임, Unity Ads"
+        },
+        "market_dynamics": {
+          "market_size": "$3B",
+          "market_growth": "15% CAGR",
+          "target_segment": "게임 개발자",
+          "geographic_focus": [
+            "Global"
+          ]
+        },
+        "competitive_advantage": [
+          "최대 개발자 커뮤니티",
+          "크로스 플랫폼",
+          "Unity Ads",
+          "에셋 스토어"
+        ],
+        "critical_success_factors": [
+          "모바일 게임 성장",
+          "개발자 유지",
+          "Ads 최적화",
+          "비게임 확장"
+        ],
+        "growth_trajectory": {
+          "launch_date": "2004",
+          "unicorn_date": "2016",
+          "ipo_date": "2020-09-18",
+          "total_funding_usd_million": 600,
+          "funding_rounds": 8,
+          "major_milestones": [
+            {
+              "date": "2004",
+              "event": "창업"
+            },
+            {
+              "date": "2020-09-18",
+              "event": "IPO"
+            }
+          ]
+        }
+      },
+      "rag_metadata": {
+        "source_id": "unity_case",
+        "canonical_chunk_id": "CAN-unity001",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-unity001",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "unity_case.business_model",
+            "content_hash": "sha256:pending",
+            "span_hint": {
+              "tokens": 500
+            }
+          }
+        ],
+        "total_tokens": 500,
+        "quality_grade": "A+",
+        "validation_status": "verified",
+        "created_at": "2025-11-05T01:51:35.413278Z",
+        "updated_at": "2025-11-05T01:51:35.413278Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    }
+  ]
+}

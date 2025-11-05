@@ -548,27 +548,32 @@ rag_subsystem:
   
   active_collections:
     explorer:
-      - "explorer_knowledge_base (354개)"
-      - "projected_index (71개)"
+      collections:
+        - "explorer_knowledge_base (354개)"
+        - "projected_index (71개)"
       usage: "s2, s7, s9 (패턴, 사례)"
     
     quantifier:
-      - "calculation_methodologies (30개)"
-      - "market_benchmarks (100개)"
+      collections:
+        - "calculation_methodologies (30개)"
+        - "market_benchmarks (100개)"
       usage: "s2, s7 (합의, 벤치마크)"
     
     validator:
-      - "data_sources_registry (50개)"
-      - "definition_validation_cases (84개)"
+      collections:
+        - "data_sources_registry (50개)"
+        - "definition_validation_cases (84개)"
       usage: "s10 (정의, 검증)"
     
     observer:
-      - "market_structure_patterns (30개)"
-      - "value_chain_benchmarks (50개)"
+      collections:
+        - "market_structure_patterns (30개)"
+        - "value_chain_benchmarks (50개)"
       usage: "s2, s7 (시장 구조)"
     
     system:
-      - "system_knowledge (25개 도구)"
+      collections:
+        - "system_knowledge (25개 도구)"
       usage: "메타 지식"
   
   retrieval:
@@ -818,9 +823,9 @@ report_template:
       umis_stewart: "Guardian 품질 평가"
     
     section_6_sensitivity_analysis:
-      - "Top-N 결정 요인 (영향도 별점)"
-      - "민감도 계산 (±10% 변동 시 영향)"
-      
+      items:
+        - "Top-N 결정 요인 (영향도 별점)"
+        - "민감도 계산 (±10% 변동 시 영향)"
       umis_bill: "Excel Sensitivity 시트"
     
     section_7_risks_and_next_steps:

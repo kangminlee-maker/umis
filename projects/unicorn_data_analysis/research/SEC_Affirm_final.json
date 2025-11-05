@@ -1,0 +1,66 @@
+{
+  "company": "Affirm",
+  "cik": "0001820953",
+  "data_source": "SEC EDGAR API",
+  "retrieved_at": "2025-11-05",
+  "performance_metrics": {
+    "financial": {
+      "revenue": {
+        "year_1": {
+          "year": 2025,
+          "amount_usd_million": 1114.0,
+          "source": "SEC 10-K 2025"
+        },
+        "year_2": {
+          "year": 2024,
+          "amount_usd_million": 826.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_3": {
+          "year": 2023,
+          "amount_usd_million": 626.9,
+          "source": "SEC 10-K 2023"
+        }
+      },
+      "operating_profit": {
+        "year_1": {
+          "year": 2025,
+          "amount_usd_million": -87.3,
+          "source": "SEC 10-K 2025"
+        },
+        "year_2": {
+          "year": 2024,
+          "amount_usd_million": -615.8,
+          "source": "SEC 10-K 2024"
+        },
+        "year_3": {
+          "year": 2023,
+          "amount_usd_million": -1200.9,
+          "source": "SEC 10-K 2023"
+        }
+      },
+      "gross_profit": {},
+      "net_income": {
+        "year_1": {
+          "year": 2025,
+          "amount_usd_million": 52.2,
+          "source": "SEC 10-K 2025"
+        },
+        "year_2": {
+          "year": 2024,
+          "amount_usd_million": -517.8,
+          "source": "SEC 10-K 2024"
+        },
+        "year_3": {
+          "year": 2023,
+          "amount_usd_million": -985.3,
+          "source": "SEC 10-K 2023"
+        }
+      },
+      "gross_margin": null,
+      "operating_margin": -7.834440189377413,
+      "net_margin": 4.6847031237937244,
+      "cash_and_equivalents": 1354.455
+    }
+  }
+}
