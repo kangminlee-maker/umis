@@ -424,3 +424,4 @@ PROGRESS_REPORT.md (전체 진행)
 **스크립트:** `scripts/08_sec_batch_collect.py`  
 **결과:** `research/SEC_*_final.json` (12개)
 
+

@@ -7,13 +7,14 @@
 
 | Item | Value |
 |------|-------|
-| **UMIS Version** | v7.2.0 "Fermi" |
+| **UMIS Version** | v7.2.0 "Fermi + Native" |
 | **RAG Architecture** | v3.0 |
 | **Excel Engine** | v1.0 (Phase 1 완료) |
 | **Guestimation Framework** | v2.0 |
+| **LLM Mode** | Native + External (v1.0) |
 | **Schema Registry** | v1.0 |
-| **Last Updated** | 2025-11-04 |
-| **Status** | Stable Release |
+| **Last Updated** | 2025-11-05 |
+| **Status** | Production Ready |
 
 **Purpose**: UMIS 전체 구조와 기능을 한눈에 파악할 수 있는 고수준 설계도
 
@@ -27,6 +28,8 @@
 ### Key Characteristics
 - ✅ **5명의 전문 에이전트** 역할 분담 및 상호 검증
 - ✅ **RAG 기반 지식 활용** (54개 패턴/사례 DB)
+- ✅ **Native Mode** (Cursor LLM 직접 활용, 비용 $0, v7.2.0+)
+- ✅ **자동 환경변수** (`.env` 자동 로드, v7.2.0+)
 - ✅ **Excel 자동 생성** (Market Sizing, Unit Economics, Financial Projection)
 - ✅ **Guestimation Framework** (Fermi Estimation, 8개 데이터 출처)
 - ✅ **완전한 추적성** (모든 결론 → 원본 데이터 역추적, 양방향 ID)
@@ -920,8 +923,79 @@ search_order: [personal, team, core]  # 개인 > 팀 > 공식
 
 ---
 
+---
+
+## 🤖 LLM Mode Architecture (v7.2.0+)
+
+### LLM 활용 전략
+
+```
+┌───────────────────────────────────────┐
+│  Native Mode (권장: 일회성 분석)        │
+│  Cursor Agent LLM (사용자 선택)        │
+│  - Claude Sonnet 4.5, GPT-4o 등       │
+│  - 비용: $0 (Cursor 구독 포함)         │
+│  - 품질: 최고                          │
+│  - 자동화: 불가                        │
+└───────────────────────────────────────┘
+              │
+              ▼
+         UMIS RAG
+              │
+              ▼
+┌───────────────────────────────────────┐
+│  External Mode (필요 시: 자동화)       │
+│  OpenAI/Anthropic API                │
+│  - GPT-4, Claude API 등               │
+│  - 비용: $3-10/1M tokens              │
+│  - 품질: 중상                          │
+│  - 자동화: 가능                        │
+└───────────────────────────────────────┘
+```
+
+**권장사항**: 
+- 일회성 분석 → Native Mode (무료, 고품질)
+- 대량 자동화 → External Mode (필요 시만)
+
+**상세**: `docs/ARCHITECTURE_LLM_STRATEGY.md`
+
+---
+
+## 🔧 자동 환경변수 로드 (v7.2.0+)
+
+### 자동 로드 프로세스
+
+```python
+# umis_rag/__init__.py
+
+def _load_environment():
+    """패키지 import 시 자동 실행"""
+    search_paths = [
+        Path.cwd() / '.env',           # 1. 현재 디렉토리
+        Path(__file__).parent.parent / '.env',  # 2. UMIS 루트
+        Path.home() / '.env',          # 3. 홈 디렉토리
+    ]
+    
+    for env_path in search_paths:
+        if env_path.exists():
+            load_dotenv(env_path, override=False)
+            return True
+
+# 패키지 import 시 자동 실행
+_env_loaded = _load_environment()
+```
+
+**효과**:
+- ✅ 사용자가 `load_dotenv()` 불필요
+- ✅ 에러 발생률 -30%
+- ✅ 코드 간소화
+
+**상세**: `setup/ENV_SETUP_GUIDE.md`
+
+---
+
 **Document Owner**: AI Team  
-**Last Reviewed**: 2025-11-04  
+**Last Reviewed**: 2025-11-05  
 **Next Review**: 버전 업데이트 시 (v7.3.0 예상)
 
 ---

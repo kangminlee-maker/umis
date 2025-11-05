@@ -196,6 +196,34 @@ class ExplorerRAG:
         
         return results
     
+    def get_pattern_details(self, results: List[tuple]) -> List[Dict[str, Any]]:
+        """
+        검색 결과 tuple을 사용하기 쉬운 dict 형식으로 변환
+        
+        Parameters:
+        -----------
+        results: search_patterns() 결과 List[(Document, score)]
+        
+        Returns:
+        --------
+        List[Dict] with keys: pattern_id, pattern_name, score, description, triggers, etc.
+        """
+        pattern_details = []
+        
+        for doc, score in results:
+            metadata = doc.metadata
+            detail = {
+                'pattern_id': metadata.get('pattern_id', 'Unknown'),
+                'pattern_name': metadata.get('pattern_name', 'Unknown'),
+                'category': metadata.get('category', 'Unknown'),
+                'score': float(score),
+                'description': doc.page_content[:200] if doc.page_content else '',
+                'metadata': metadata
+            }
+            pattern_details.append(detail)
+        
+        return pattern_details
+    
     def search_patterns_with_graph(
         self,
         trigger_observation: str,

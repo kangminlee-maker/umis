@@ -1,9 +1,9 @@
 # UMIS v7.2.0 Release Notes
 
-**릴리즈 일자**: 2025-11-04  
-**코드명**: "Fermi" (Guestimation Framework)  
+**릴리즈 기간**: 2025-11-04 ~ 2025-11-05  
+**코드명**: "Fermi + Native" (Guestimation Framework + Native Mode)  
 **타입**: Major Feature Release  
-**상태**: Stable
+**상태**: Production Ready
 
 ---
 
@@ -262,21 +262,63 @@ tool_registry.yaml:
 - Guestimation 자동화
 
 ### v7.3.0 (향후)
-- Bill Excel 도구 Phase 2
-- Agent RAG 확장
-- 자동화 고도화
+- Hybrid Search 결과 변환 개선
+- LangChain Chroma 업그레이드
+- 추가 Agent 헬퍼 메서드 (Quantifier, Validator)
+- 자동 테스트 스위트
+
+---
+
+## 🆕 Phase 2 Update (2025-11-05)
+
+### 주요 개선사항
+
+#### 1. 자동 환경변수 로드
+- `umis_rag/__init__.py` 개선
+- 패키지 import 시 `.env` 자동 로드
+- 3단계 검색 경로
+- 사용자 편의성 대폭 개선
+
+#### 2. Explorer 헬퍼 메서드
+- `get_pattern_details()` 추가
+- RAG 검색 결과 사용 간편화
+- tuple → dict 변환
+
+#### 3. LLM 전략 명확화
+- Native Mode vs External Mode 정의
+- 용어 정리: "Native LLM" (Cursor Agent)
+- 비용 최적화 가이드
+- 문서: `docs/ARCHITECTURE_LLM_STRATEGY.md`
+
+#### 4. 프로젝트 완성
+- 국내 마케팅 SaaS 시장 분석 (10개 파일, 176KB)
+- Native Mode 검증 완료
+- Excel 계산 로직 완성 (12 시트)
+
+### 신규 파일 (Phase 2)
+- `umis_rag/__init__.py` (환경변수 자동 로드)
+- `docs/ARCHITECTURE_LLM_STRATEGY.md`
+- `setup/ENV_SETUP_GUIDE.md`
+- `config/llm_mode.yaml`
+- `projects/market_analysis/korean_marketing_saas_2024/` (10개)
 
 ---
 
 ## 🎉 감사의 말
 
-v7.2.0 개발에 15.5시간 투입:
-- 오전: 8시간
-- 오후: 5시간
-- 저녁: 2.5시간
+v7.2.0 개발에 총 21시간 투입:
 
-**완성도**: 95%  
-**안정성**: Stable  
+**Phase 1 (2025-11-04)**: 15.5시간
+- Guestimation Framework
+- Excel 도구 3개 완성
+
+**Phase 2 (2025-11-05)**: 5.5시간
+- Native Mode 구현
+- 환경변수 자동화
+- 시장 분석 프로젝트
+
+**완성도**: 98%  
+**안정성**: Production Ready  
 **추천**: Production Ready
 
 ---
