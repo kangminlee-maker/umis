@@ -89,27 +89,23 @@ class MultiLayerGuestimation:
         """
         self.project_context = project_context or {}
         
-        # 글로벌 설정 로드
-        self.config_loader = get_multilayer_config()
-        self.global_modes = self.config_loader.get_global_modes()
+        # 글로벌 모드: .env 환경변수에서 로드! (v7.2.1+)
+        import umis_rag
+        self.llm_mode = config_override.get('llm_mode', umis_rag.UMIS_MODE) if config_override else umis_rag.UMIS_MODE
+        self.web_search_mode = config_override.get('web_search_mode', umis_rag.UMIS_WEB_SEARCH_MODE) if config_override else umis_rag.UMIS_WEB_SEARCH_MODE
+        self.interactive_mode = config_override.get('interactive_mode', umis_rag.UMIS_INTERACTIVE) if config_override else umis_rag.UMIS_INTERACTIVE
         
-        # 설정 오버라이드 적용
-        if config_override:
-            if 'llm_mode' in config_override:
-                self.global_modes.llm_mode = config_override['llm_mode']
-            if 'web_search_mode' in config_override:
-                self.global_modes.web_search_mode = config_override['web_search_mode']
-            if 'interactive_mode' in config_override:
-                self.global_modes.interactive_mode = config_override['interactive_mode']
+        # YAML 설정 로더 (상세 설정용)
+        self.config_loader = get_multilayer_config()
         
         # 기존 GuestimationEngine 활용 (Layer 7용)
         self.benchmark_engine = GuestimationEngine()
         
-        # 레이어별 활성화 상태 (글로벌 설정 기반)
+        # 레이어별 활성화 상태 (.env 글로벌 모드 기반)
         self.layer_enabled = {
             DataSource.PROJECT_DATA: True,  # 항상 활성
-            DataSource.LLM_DIRECT: self.global_modes.llm_mode != 'skip',
-            DataSource.WEB_CONSENSUS: self.global_modes.web_search_mode != 'skip',
+            DataSource.LLM_DIRECT: self.llm_mode != 'skip',
+            DataSource.WEB_CONSENSUS: self.web_search_mode != 'skip',
             DataSource.LAW: True,
             DataSource.BEHAVIORAL: True,
             DataSource.STATISTICAL: True,
@@ -242,22 +238,20 @@ class MultiLayerGuestimation:
             result.logic_steps.append("❌ Layer 2: 복잡한 질문 → LLM 직접 답변 부적합 → Layer 3으로")
             return result
         
-        # 글로벌 설정에 따라 분기
-        llm_mode = self.global_modes.llm_mode
-        
-        if llm_mode == 'native':
+        # .env 글로벌 모드에 따라 분기
+        if self.llm_mode == 'native':
             return self._llm_native_mode(question, result)
-        elif llm_mode == 'external':
+        elif self.llm_mode == 'external':
             return self._llm_external_mode(question, result)
         else:  # skip
-            result.logic_steps.append("⚠️ Layer 2: LLM 모드 'skip' → Layer 3으로")
+            result.logic_steps.append("⚠️ Layer 2: LLM 모드 'skip' (.env: UMIS_MODE) → Layer 3으로")
             return result
     
     def _llm_native_mode(self, question: str, result: EstimationResult) -> EstimationResult:
         """Layer 2 - Native Mode (Cursor LLM 활용)"""
         
         # Interactive 모드: 사용자 입력
-        if self.global_modes.interactive_mode:
+        if self.interactive_mode:
             result.logic_steps.append("💡 Layer 2: LLM 직접 답변 (Native Interactive)")
             print(f"\n❓ LLM에게 질문하세요: {question}")
             print("   (Cursor Composer/Chat에서 질문 후 답변만 입력)")
@@ -348,24 +342,22 @@ class MultiLayerGuestimation:
             source_layer=DataSource.WEB_CONSENSUS
         )
         
-        # 글로벌 설정에 따라 분기
-        web_mode = self.global_modes.web_search_mode
-        
-        if web_mode == 'native':
+        # .env 글로벌 모드에 따라 분기
+        if self.web_search_mode == 'native':
             return self._web_native_mode(question, result)
-        elif web_mode == 'api':
+        elif self.web_search_mode == 'api':
             return self._web_api_mode(question, result)
-        elif web_mode == 'scraping':
+        elif self.web_search_mode == 'scraping':
             return self._web_scraping_mode(question, result)
         else:  # skip
-            result.logic_steps.append("⚠️ Layer 3: 웹 검색 모드 'skip' → Layer 4로")
+            result.logic_steps.append("⚠️ Layer 3: 웹 검색 모드 'skip' (.env: UMIS_WEB_SEARCH_MODE) → Layer 4로")
             return result
     
     def _web_native_mode(self, question: str, result: EstimationResult) -> EstimationResult:
         """Layer 3 - Native Mode (사용자가 직접 검색)"""
         
         # Interactive 모드: 사용자 입력
-        if self.global_modes.interactive_mode:
+        if self.interactive_mode:
             result.logic_steps.append("💡 Layer 3: 웹 검색 (Native Interactive)")
             print(f"\n🔍 웹 검색하세요: {question}")
             print("   권장: Google, Naver에서 검색 후 상위 5-10개 공통값 확인")
