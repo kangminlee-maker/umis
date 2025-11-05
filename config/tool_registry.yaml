@@ -6,7 +6,7 @@
 version: '7.2.0'
 created: '2025-11-03'
 updated: '2025-11-05'
-total_tools: 26
+total_tools: 28
 
 # ========================================
 # 도구 목록
@@ -1169,6 +1169,277 @@ tools:
       ```
       
       **상세**: umis.yaml → tools_and_templates.methodologies.guestimation
+
+  - tool_id: universal:domain_reasoner
+    tool_key: tool:universal:domain_reasoner_10_signals
+    
+    metadata:
+      agent: "quantifier, validator"
+      category: "estimation_methodology"
+      complexity: "high"
+      context_size: 500
+      priority: "high"
+      version: "0.9-umis"
+      source_file: "umis.yaml"
+      source_section: "tools_and_templates.methodologies.domain_reasoner"
+      source_lines: "5690-5891"
+    
+    when_to_use:
+      keywords:
+        - 정밀
+        - 증거
+        - 검증
+        - should vs will
+        - domain reasoner
+        - 신호
+        - 합의
+        - 전이
+      
+      conditions:
+        - "정밀 분석 필요 (±30% 이내)"
+        - "신규 시장 (사례 전이)"
+        - "규제 산업 (의료/금융)"
+        - "투자 심사 (재현성)"
+        - "Phase 2 전환 (Guardian 권고)"
+      
+      scenarios:
+        - "시니어 케어 로봇 시장 규모를 정밀하게 분석해줘"
+        - "배달 플랫폼 수수료율을 증거 기반으로 추정해줘"
+        - "의료 AI 시장 규모 (규제 검증 필요)"
+    
+    content: |
+      # Domain-Centric Reasoner (10-Signal Stack)
+      
+      **정의**: 10가지 신호 우선순위 기반 정밀 추론 + RAG 중심 증거 기반 의사결정
+      
+      > "RAG는 근거·경계·정의·전이 제공자. 규제/물리가 최우선."
+      
+      ## 10가지 신호 스택 (우선순위)
+      
+      **Precedence**: s3 → s8 → s6 → s10 → s2 → s9 → s7 → s5 → s4 → s1
+      
+      1. **s1_llm_guess** (0.15): LLM 초안 (낮은 가중치)
+      2. **s2_rag_consensus** (0.9): 핵심! 독립 문헌 합의 범위 (≥2 출처)
+      3. **s3_laws_ethics_physics** (1.0): 최우선! 규제/물리/윤리 제약
+      4. **s4_behavioral_econ** (0.6): Should vs Will 분리
+      5. **s5_stat_patterns** (0.75): 통계 패턴 (80-20, S-Curve)
+      6. **s6_math_relations** (1.0): 최우선! 차원 분석, 보존 법칙
+      7. **s7_rules_of_thumb** (0.7): 산업 경험 공식
+      8. **s8_time_space_bounds** (1.0): 최우선! 시공간 절대 제약
+      9. **s9_case_analogies** (0.85): RAG! 유사 사례 전이 보정
+      10. **s10_industry_kpi** (0.95): RAG! 정의 표준화
+      
+      ## RAG 중심 설계
+      
+      - **s2**: explorer/quantifier/validator RAG → 합의 범위
+      - **s9**: success_case_library → 사례 전이
+      - **s10**: kpi_definitions.yaml → 정의 표준화
+      
+      ## 6단계 파이프라인
+      
+      1. **정의 고정** (s10): KPI 표준 정의 → SRC_DEF_xxx
+      2. **제약 확인** (s3, s8): 법/물리 상·하한 설정
+      3. **구조 분해**: 도메인 모형 (시장 = 고객 × 단가 × 빈도)
+      4. **RAG 검색** (s2, s9, s10): 합의 범위, 사례, 정의
+      5. **융합** (우선순위): 가중 평균, IQR, trimmed mean
+      6. **보정** (s4): Should vs Will (행동경제학)
+      
+      ## Should vs Will 분석
+      
+      - **Should**: 이상적/규범적 결론 (편향 제거)
+        - 용도: 정책 권고, 목표 설정
+      
+      - **Will**: 현실적 예측 (편향 반영)
+        - 조정: 손실회피 (×0.4-0.6), 현상유지 (×0.5), 시장지배력
+        - 용도: 실제 채택률, 매출 예측
+      
+      - **Gap**: (Should - Will) / Should × 100%
+      
+      ## 출력 (7개 섹션)
+      
+      1. 요약 (결론/범위/신뢰도)
+      2. 신호별 근거 (s3→s8→s6→s10→s2→s9→s7→s5→s4→s1)
+      3. 정량 결과 (점/범위/Should/Will)
+      4. **증거표** (ID/출처/정의/값/지리/기간/방법론/가중치/모순)
+      5. **검증 로그** (단위·차원·규제·비교사례 체크리스트)
+      6. 민감도 분석 (Top-N 결정 요인)
+      7. 리스크 & 다음 행동 (잔여 불확실성, 필요 데이터)
+      
+      ## 언제 사용?
+      
+      - ✅ 정밀 분석 (목표 명확, ±30% 수렴)
+      - ✅ 신규 시장 (직접 데이터 부족 → s9 사례 전이)
+      - ✅ 규제 산업 (의료/금융 → s3 Laws 필수)
+      - ✅ 투자 심사 (재현성 → 증거표 필수)
+      - ❌ 초기 탐색 (빠른 판단 → Guestimation)
+      - ❌ 시간 제약 (< 1시간 → Guestimation)
+      
+      ## 구현
+      
+      ```python
+      from umis_rag.methodologies.domain_reasoner import DomainReasonerEngine
+      
+      engine = DomainReasonerEngine()
+      result = engine.execute(
+          question="시니어 케어 로봇 시장 규모",
+          domain="healthcare",
+          geography="KR",
+          time_horizon="2030"
+      )
+      
+      # result['should_vs_will']
+      # result['evidence_table']
+      # result['verification_log']
+      ```
+      
+      **상세**: 
+      - umis.yaml → tools_and_templates.methodologies.domain_reasoner
+      - data/raw/umis_domain_reasoner_methodology.yaml (1,028줄)
+      - docs/GUESTIMATION_COMPARISON.md (비교 가이드)
+
+  - tool_id: universal:hybrid_strategy
+    tool_key: tool:universal:hybrid_strategy
+    
+    metadata:
+      agent: "all"
+      category: "workflow_strategy"
+      complexity: "low"
+      context_size: 200
+      priority: "critical"
+      version: "1.0"
+      source_file: "umis.yaml"
+      source_section: "tools_and_templates.methodologies.hybrid_strategy"
+      source_lines: "5893-6043"
+    
+    when_to_use:
+      keywords:
+        - 하이브리드
+        - hybrid
+        - auto
+        - 자동
+        - phase
+      
+      conditions:
+        - "방법론 선택 불확실"
+        - "최적 전략 필요"
+        - "@auto 명령어"
+      
+      scenarios:
+        - "@auto 국내 OTT 시장 규모"
+        - "어떤 방법론을 써야 할지 모르겠어"
+        - "Guardian이 자동으로 판단하게 해줘"
+    
+    content: |
+      # Hybrid 2-Phase Strategy
+      
+      **철학**: "빠른 질문에는 Guestimation, 중요한 결정에는 Domain Reasoner"
+      
+      ## 2단계 접근법
+      
+      ### Phase 1: Rapid Scan (항상 실행)
+      
+      - **방법**: Guestimation
+      - **시간**: 5-30분
+      - **정확도**: ±50% (자릿수)
+      - **목적**: 빠른 가늠, 기회 필터링
+      
+      ### Guardian 평가 (자동)
+      
+      **5가지 전환 트리거**:
+      
+      1. **신뢰도 < 50%** → Phase 2 권고 (high)
+         - 이유: RAG Consensus (s2) 필요
+      
+      2. **범위 폭 > ±75%** → Phase 2 권고 (high)
+         - 이유: 정밀 수렴 필요
+      
+      3. **기회 > 1,000억** → Phase 2 권고 (medium)
+         - 이유: 중요도 높음 → 검증 필요
+      
+      4. **규제 산업** → Phase 2 필수 (required)
+         - 이유: s3 Laws/Ethics/Physics 검증 필수
+      
+      5. **신규 시장** → Phase 2 권고 (medium)
+         - 이유: s9 Case Analogies 필요
+      
+      **결정 로직**:
+      ```python
+      if priority == 'required':
+          → Phase 2 자동 실행
+      elif priority == 'high':
+          → Phase 2 권고 (사용자 확인)
+      elif priority == 'medium':
+          → Phase 2 제안 (선택)
+      else:
+          → Phase 1 완료
+      ```
+      
+      ### Phase 2: Deep Dive (조건부)
+      
+      - **방법**: Domain Reasoner
+      - **시간**: 1-4시간
+      - **정확도**: ±30% (수렴)
+      - **목적**: 정밀 분석, Should vs Will
+      
+      ## 사용 시나리오
+      
+      | 상황 | 방법 | 예시 |
+      |------|------|------|
+      | 초기 탐색 | Phase 1 only | "음악 스트리밍 대략 규모?" |
+      | 성숙 시장 | Phase 1 only | "국내 OTT (데이터 풍부)" |
+      | 신규 시장 | Phase 1→2 | "시니어 케어 로봇 (사례 전이)" |
+      | 규제 산업 | Phase 1→2 필수 | "의료 AI (의료기기법)" |
+      | 투자 심사 | Phase 1→2 | "VC 검토 (증거표)" |
+      
+      ## @ 명령어
+      
+      ```bash
+      # 자동 판단 (권장!)
+      @auto [질문]
+      
+      # 명시적 Guestimation
+      @guestimate [질문]
+      
+      # 명시적 Domain Reasoner
+      @reasoner [질문]
+      
+      # Agent 조합
+      @Explorer guestimate 기회 크기
+      @Quantifier reasoner 시장 규모
+      @Validator reasoner KPI 정의
+      ```
+      
+      ## 비교 매트릭스
+      
+      | 차원 | Guestimation | Domain Reasoner | Hybrid |
+      |------|-------------|-----------------|--------|
+      | 속도 | ⚡⚡⚡ 5-30분 | 🐢 1-4시간 | 15분-4시간 |
+      | 정확도 | ±50% | ±30% | ±30% (P2 시) |
+      | 추적성 | 중간 (EST_ID) | 높음 (증거표) | 높음 (P2 시) |
+      | 용도 | 초기 탐색 | 정밀 분석 | 모든 상황 |
+      
+      ## 구현
+      
+      ```python
+      from umis_rag.agents.quantifier import Quantifier
+      
+      bill = Quantifier()
+      
+      # 자동 모드 (Guardian 판단)
+      result = bill.calculate_sam_with_hybrid(
+          market_definition=market_def,
+          method='auto'  # ← 핵심!
+      )
+      
+      # result['phase_1']: Guestimation 결과
+      # result['recommendation']: Guardian 평가
+      # result['phase_2']: Domain Reasoner 결과 (if triggered)
+      # result['final_result']: 최종 결과
+      ```
+      
+      **상세**: 
+      - umis.yaml → tools_and_templates.methodologies.hybrid_strategy
+      - docs/GUESTIMATION_COMPARISON.md (상세 비교)
 
 # ========================================
 # END

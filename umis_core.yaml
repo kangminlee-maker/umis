@@ -38,53 +38,163 @@ _meta:
     전체 시스템을 압축 요약.
   
   ai_reading_guide: |
-    ⭐ AI는 이 순서로 읽으세요:
+    ⚠️ AI: 이 파일을 읽는 것만으로는 부족합니다!
     
-    1. Quick Start (50줄) - 이 파일 사용법
-    2. Decision Guide (150줄) - 어떤 도구 로드?
-    3. Agent Summary (필요시) - 각 Agent 역할
-    4. System Details (참고용) - 시스템 구조
+    필수 실행 프로세스:
+    1. ✅ 이 파일 읽기 (umis_core.yaml) - INDEX 파악
+    2. ✅ 쿼리 분석 (agent + keywords)
+    3. ⭐ System RAG 실행 (run_terminal_cmd 필수!)
+    4. ✅ 로드된 도구로 작업
+    
+    핵심: System RAG 없이는 도구 content 없음!
 
 # ========================================
-# Section 0: QUICK START (AI 필수!)
+# Section 0: QUICK START (AI 필수 실행!)
 # ========================================
 
 quick_start_for_ai:
   
   this_file_purpose:
-    what: "UMIS 전체 시스템의 압축된 INDEX"
-    when: "항상 먼저 로드 (50줄만 읽어도 OK)"
-    why: "컨텍스트 89% 절약 (5,508 → 580)"
+    what: "UMIS 전체 시스템의 압축된 INDEX (도구 목록)"
+    when: "모든 프로젝트 시작 시 첫 번째로 읽기"
+    why: "컨텍스트 절약 + 필요한 도구만 로드"
+    warning: "이 파일은 INDEX일 뿐! 실제 도구 content는 System RAG로 로드해야 함"
   
-  how_to_use:
-    step_1: "사용자 쿼리 분석"
-    step_2: "Section 1 (Decision Guide)에서 필요한 tool_key 찾기"
-    step_3: "System RAG로 tool_key 검색"
-    step_4: "로드된 도구 content 활용"
-    step_5: "필요시 Agent Summary 참조"
+  mandatory_execution_process:
+    
+    step_0_prerequisite:
+      check: "System RAG Collection 존재 확인"
+      command: "python3 scripts/query_system_rag.py --stats"
+      if_fails: "python3 scripts/build_system_knowledge.py (1분)"
+    
+    step_1_load_index:
+      action: "read_file tool 사용"
+      file: "umis_core.yaml"
+      lines_to_read:
+        - "40-87: Quick Start"
+        - "88-110: Agent Selection"
+        - "289-469: Decision Guide"
+      output: "필요한 tool_key 리스트 식별"
+      mandatory: true
+    
+    step_2_parse_query:
+      action: "사용자 쿼리 분석"
+      extract:
+        - "agent_id (explorer, quantifier, ...)"
+        - "task_type (패턴 검색, SAM 계산, ...)"
+        - "keywords (구독, 시장 규모, ...)"
+      refer_to: "Lines 96-109 (agent_selection_flowchart)"
+    
+    step_3_identify_tools:
+      action: "Decision Guide 참조하여 tool_key 선택"
+      refer_to: "Lines 289-469 (decision_guide)"
+      output: "tool_key 리스트 (예: ['tool:explorer:pattern_search'])"
+    
+    step_4_execute_system_rag:
+      action: "⭐ run_terminal_cmd tool 사용 (필수!)"
+      command_template: "python3 scripts/query_system_rag.py {tool_key}"
+      
+      examples:
+        single: "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
+        multiple: |
+          python3 scripts/query_system_rag.py tool:observer:market_structure
+          python3 scripts/query_system_rag.py tool:explorer:pattern_search
+          python3 scripts/query_system_rag.py tool:quantifier:sam_4methods
+      
+      expected_output: "도구 content (200-800줄/개)"
+      mandatory: true
+      skip_penalty: "도구 없음 → 작업 실패"
+    
+    step_5_use_loaded_tools:
+      action: "System RAG로 로드한 content 기반 작업"
+      context_composition:
+        - "umis_core.yaml (709줄, INDEX)"
+        - "System RAG 결과 (200-2,500줄, 도구 content)"
+        - "total: 900-3,200줄 (vs 6,102줄 전체)"
+      savings: "47-85% 컨텍스트 절약"
   
-  common_patterns:
+  real_execution_examples:
     
-    pattern_1_simple_query:
-      example: "@Explorer, 구독 모델 패턴"
-      step_1: "agent=explorer, keywords=['패턴']"
-      step_2: "Decision Guide → tool:explorer:pattern_search"
-      step_3: "System RAG 검색 (0.1ms)"
-      result: "총 컨텍스트 50 + 400 = 450줄 (92% 절약!)"
+    example_1_explorer_pattern:
+      user_query: "@Explorer, 구독 모델 패턴"
+      
+      ai_actions:
+        action_1_read_index:
+          tool: "read_file"
+          file: "umis_core.yaml"
+          lines: "40-110"
+          output: "Agent=explorer, task=pattern_search 파악"
+        
+        action_2_identify_tool:
+          refer: "Line 347 (decision_guide.explorer.key_tools)"
+          tool_key: "tool:explorer:pattern_search"
+        
+        action_3_system_rag:
+          tool: "run_terminal_cmd"
+          command: "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
+          expected: "~400줄 도구 content"
+          mandatory: true
+        
+        action_4_execute:
+          use: "로드된 도구 content"
+          action: "RAG 패턴 검색 실행"
+      
+      context_total: "709 + 400 = 1,109줄 (vs 6,102줄, 82% 절약)"
     
-    pattern_2_complex_query:
-      example: "음악 스트리밍 시장 분석"
-      step_1: "task='시장 분석'"
-      step_2: "Decision Guide → 3개 도구 필요"
-      step_3: "tool:observer:market_structure"
-      step_3: "tool:explorer:pattern_search"
-      step_3: "tool:quantifier:sam_4methods"
-      result: "총 컨텍스트 50 + 1,200 = 1,250줄 (77% 절약!)"
+    example_2_market_analysis:
+      user_query: "음악 스트리밍 시장 분석"
+      
+      ai_actions:
+        action_1_read_index:
+          tool: "read_file"
+          file: "umis_core.yaml"
+          lines: "88-110"
+          output: "시장 분석 = Observer → Explorer → Quantifier"
+        
+        action_2_identify_tools:
+          refer: "Lines 296-469 (decision_guide)"
+          tool_keys:
+            - "tool:observer:market_structure"
+            - "tool:explorer:pattern_search"
+            - "tool:quantifier:sam_4methods"
+        
+        action_3_system_rag:
+          tool: "run_terminal_cmd (3회 실행)"
+          commands:
+            - "python3 scripts/query_system_rag.py tool:observer:market_structure"
+            - "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
+            - "python3 scripts/query_system_rag.py tool:quantifier:sam_4methods"
+          expected: "~1,200줄 (3개 도구)"
+          mandatory: true
+        
+        action_4_execute_workflow:
+          step_1: "Observer: 시장 구조 관찰 (로드된 도구 활용)"
+          step_2: "Explorer: 기회 발굴 (로드된 도구 + RAG)"
+          step_3: "Quantifier: SAM 계산 (로드된 도구)"
+      
+      context_total: "709 + 1,200 = 1,909줄 (vs 6,102줄, 69% 절약)"
+  
+  critical_reminder:
+    warning: |
+      ⚠️ AI: System RAG 실행을 건너뛰지 마세요!
+      
+      ❌ 잘못된 접근:
+        1. umis_core.yaml만 읽기
+        2. 바로 작업 시작
+        → 도구 content 없음 → 작업 실패
+      
+      ✅ 올바른 접근:
+        1. umis_core.yaml 읽기 (INDEX)
+        2. tool_key 식별
+        3. System RAG 실행 (run_terminal_cmd)
+        4. 로드된 도구로 작업
+        → 성공!
   
   shortcuts:
-    - "도구 목록": "python scripts/query_system_rag.py --list"
-    - "도구 검색": "python scripts/query_system_rag.py tool:explorer:pattern_search"
-    - "Agent 역할": "Section 2 참조"
+    - "도구 목록": "python3 scripts/query_system_rag.py --list"
+    - "도구 검색": "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
+    - "통계 확인": "python3 scripts/query_system_rag.py --stats"
+    - "인덱스 재구축": "python3 scripts/build_system_knowledge.py"
 
 # ========================================
 # Section 1: DECISION GUIDE (AI 핵심!)
@@ -261,15 +371,15 @@ universal_tools:
       - "자릿수 (500억? 5000억?)"
     
     data_sources_8:
-      - "1. 프로젝트 데이터"
-      - "2. LLM 직접 ('한국 인구?')"
-      - "3. 검색 공통 맥락 (웹)"
-      - "4. 법칙 (물리/법률)"
-      - "5. 행동경제학 (Loss Aversion)"
-      - "6. 통계 패턴 (80-20)"
-      - "7. Rule of Thumb (RAG)"
-      - "8. 시공간 제약 (24h)"
-      
+      sources:
+        - "1. 프로젝트 데이터"
+        - "2. LLM 직접 ('한국 인구?')"
+        - "3. 검색 공통 맥락 (웹)"
+        - "4. 법칙 (물리/법률)"
+        - "5. 행동경제학 (Loss Aversion)"
+        - "6. 통계 패턴 (80-20)"
+        - "7. Rule of Thumb (RAG)"
+        - "8. 시공간 제약 (24h)"
       rag_position: "출처 7의 일부 (12.5%)"
     
     benchmark_check: "4대 기준 (제품, 소비자, 가격, 맥락) → 3개 이상 유사"

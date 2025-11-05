@@ -259,8 +259,9 @@ class EstimationDetailsBuilder:
                 else:
                     ws.cell(row=current_row, column=3).number_format = '#,##0'
             
-            # Named Range 생성
-            self.fe.define_named_range(est_id, 'Estimation_Details', f'C{current_row}')
+            # Named Range 생성 (이미 존재하면 건너뜀)
+            if est_id not in self.fe.named_ranges:
+                self.fe.define_named_range(est_id, 'Estimation_Details', f'C{current_row}')
             
             ws.cell(row=current_row, column=4).value = est.get('used_in', '')
             ws.cell(row=current_row, column=4).font = Font(size=9)

@@ -1,0 +1,66 @@
+{
+  "company": "DoorDash",
+  "cik": "0001792789",
+  "data_source": "SEC EDGAR API",
+  "retrieved_at": "2025-11-05",
+  "performance_metrics": {
+    "financial": {
+      "revenue": {
+        "year_1": {
+          "year": 2024,
+          "amount_usd_million": 10722.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_2": {
+          "year": 2023,
+          "amount_usd_million": 8635.0,
+          "source": "SEC 10-K 2023"
+        },
+        "year_3": {
+          "year": 2022,
+          "amount_usd_million": 6583.0,
+          "source": "SEC 10-K 2022"
+        }
+      },
+      "operating_profit": {
+        "year_1": {
+          "year": 2024,
+          "amount_usd_million": -38.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_2": {
+          "year": 2023,
+          "amount_usd_million": -579.0,
+          "source": "SEC 10-K 2023"
+        },
+        "year_3": {
+          "year": 2022,
+          "amount_usd_million": -1124.0,
+          "source": "SEC 10-K 2022"
+        }
+      },
+      "gross_profit": {},
+      "net_income": {
+        "year_1": {
+          "year": 2024,
+          "amount_usd_million": 123.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_2": {
+          "year": 2023,
+          "amount_usd_million": -558.0,
+          "source": "SEC 10-K 2023"
+        },
+        "year_3": {
+          "year": 2022,
+          "amount_usd_million": -1365.0,
+          "source": "SEC 10-K 2022"
+        }
+      },
+      "gross_margin": null,
+      "operating_margin": -0.3544114903935833,
+      "net_margin": 1.1471740346950194,
+      "cash_and_equivalents": 4019.0
+    }
+  }
+}

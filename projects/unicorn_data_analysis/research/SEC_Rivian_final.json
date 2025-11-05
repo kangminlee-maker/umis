@@ -1,0 +1,82 @@
+{
+  "company": "Rivian",
+  "cik": "0001874178",
+  "data_source": "SEC EDGAR API",
+  "retrieved_at": "2025-11-05",
+  "performance_metrics": {
+    "financial": {
+      "revenue": {
+        "year_1": {
+          "year": 2024,
+          "amount_usd_million": 4970.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_2": {
+          "year": 2023,
+          "amount_usd_million": 4434.0,
+          "source": "SEC 10-K 2023"
+        },
+        "year_3": {
+          "year": 2022,
+          "amount_usd_million": 1658.0,
+          "source": "SEC 10-K 2022"
+        }
+      },
+      "operating_profit": {
+        "year_1": {
+          "year": 2024,
+          "amount_usd_million": -4689.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_2": {
+          "year": 2023,
+          "amount_usd_million": -5739.0,
+          "source": "SEC 10-K 2023"
+        },
+        "year_3": {
+          "year": 2022,
+          "amount_usd_million": -6856.0,
+          "source": "SEC 10-K 2022"
+        }
+      },
+      "gross_profit": {
+        "year_1": {
+          "year": 2024,
+          "amount_usd_million": -1200.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_2": {
+          "year": 2023,
+          "amount_usd_million": -2030.0,
+          "source": "SEC 10-K 2023"
+        },
+        "year_3": {
+          "year": 2022,
+          "amount_usd_million": -3123.0,
+          "source": "SEC 10-K 2022"
+        }
+      },
+      "net_income": {
+        "year_1": {
+          "year": 2024,
+          "amount_usd_million": -4747.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_2": {
+          "year": 2023,
+          "amount_usd_million": -5432.0,
+          "source": "SEC 10-K 2023"
+        },
+        "year_3": {
+          "year": 2022,
+          "amount_usd_million": -6752.0,
+          "source": "SEC 10-K 2022"
+        }
+      },
+      "gross_margin": -24.14486921529175,
+      "operating_margin": -94.34607645875252,
+      "net_margin": -95.51307847082495,
+      "cash_and_equivalents": 5294.0
+    }
+  }
+}

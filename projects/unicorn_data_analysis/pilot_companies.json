@@ -1,0 +1,1550 @@
+{
+  "metadata": {
+    "selection_date": "2025-11-04T16:04:27.670401Z",
+    "total_candidates": 800,
+    "selected_count": 10,
+    "selection_criteria": [
+      "밸류에이션 Top 30 내",
+      "한국 기업 2개 포함",
+      "상장/유명 기업 우선",
+      "산업 다양성 고려"
+    ]
+  },
+  "pilot_companies": [
+    {
+      "company": "Stripe",
+      "valuation": {
+        "amount_billion": "$95.00",
+        "date_added": "2014.1.23"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Fintech",
+      "select_investors": [
+        "Khosla Ventures",
+        "Lowercase Capital",
+        "CapitalG"
+      ],
+      "funding_history": [
+        {
+          "date": "2016",
+          "amount": "150M",
+          "currency": "USD",
+          "investors": [
+            "CapitalG"
+          ]
+        },
+        {
+          "date": "2018",
+          "amount": "245M",
+          "currency": "USD",
+          "investors": [
+            "Tiger Global"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "100M",
+          "currency": "USD",
+          "investors": [
+            "Tiger Global"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "250M",
+          "currency": "USD",
+          "investors": [
+            "Andreessen Horowitz"
+          ]
+        },
+        {
+          "date": "2021",
+          "amount": "600M",
+          "currency": "USD",
+          "investors": [
+            "Allianz X",
+            "AXA Group",
+            "Baillie Gifford",
+            "Fidelity Management"
+          ]
+        }
+      ],
+      "business": {
+        "summary": "온라인 결제 솔루션 API 제공사",
+        "details": [
+          "이후 확장하여, 법인카드 서비스, 스타트업 자금대출 서비스 등 다양한 금융 서비스를 제공",
+          "지금까지 제공되고 있는 stripe 자체 프로덕트는 총 16개 (https://stripe.com/)"
+        ],
+        "business_model": {
+          "pattern_type": "fintech_platform",
+          "pattern_id": "fintech_platform_pattern",
+          "revenue_model": []
+        },
+        "problem_solution": {
+          "problem": null,
+          "solution": "온라인 결제 솔루션 API 제공사",
+          "unique_value": null
+        },
+        "unit_economics": {
+          "arpu": null,
+          "cac": null,
+          "ltv": null,
+          "churn_rate": null,
+          "gross_margin": null,
+          "_note": "대부분 비공개 정보, 리서치 필요"
+        },
+        "market_dynamics": {
+          "market_size": null,
+          "market_growth": null,
+          "target_segment": null,
+          "geographic_focus": [
+            "United States"
+          ]
+        },
+        "competitive_advantage": [],
+        "key_metrics": {
+          "mau": null,
+          "dau": null,
+          "engagement_rate": null,
+          "gmv": null,
+          "arr": null,
+          "_note": "리서치 필요"
+        },
+        "critical_success_factors": [],
+        "growth_trajectory": {
+          "launch_date": "2007",
+          "unicorn_date": "2014.1.23",
+          "total_funding_usd_million": 1345.0,
+          "funding_rounds": 5,
+          "major_milestones": []
+        }
+      },
+      "rag_metadata": {
+        "source_id": "stripe_case",
+        "canonical_chunk_id": "CAN-stripe01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-stripe01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "stripe_case.business_model",
+            "content_hash": "sha256:c2841073c384c8dd711babbafef8ee12ca060c7bb841e61535da5cd1b719c95e",
+            "span_hint": {
+              "tokens": 14
+            }
+          }
+        ],
+        "total_tokens": 14,
+        "quality_grade": "B",
+        "validation_status": "pending",
+        "created_at": "2025-11-04T16:04:27.662708Z",
+        "updated_at": "2025-11-04T16:04:27.662708Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "SpaceX",
+      "valuation": {
+        "amount_billion": "$74.00",
+        "date_added": "2012.12.1"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Other",
+      "select_investors": [
+        "Founders Fund",
+        "Draper Fisher Jurvetson",
+        "Rothenberg Ventures"
+      ],
+      "funding_history": [
+        {
+          "date": "2019",
+          "amount": "273M",
+          "currency": "USD",
+          "investors": [
+            "Founders Fund"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "500M",
+          "currency": "USD",
+          "investors": [
+            "Baillie Gifford"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "314M",
+          "currency": "USD",
+          "investors": [
+            "Vanedge Capital"
+          ]
+        },
+        {
+          "date": "2020",
+          "amount": "221M",
+          "currency": "USD",
+          "investors": [
+            "Unknown"
+          ]
+        },
+        {
+          "date": "2020",
+          "amount": "1.9B",
+          "currency": "USD",
+          "investors": [
+            "Unknown"
+          ]
+        },
+        {
+          "date": "2021",
+          "amount": "850M",
+          "currency": "USD",
+          "investors": [
+            "Unknown"
+          ]
+        }
+      ],
+      "business": {
+        "summary": "항공우주 장비 제조/생산 및 우주 수송 회사",
+        "details": [],
+        "business_model": {
+          "pattern_type": "other",
+          "pattern_id": "other_pattern",
+          "revenue_model": []
+        },
+        "problem_solution": {
+          "problem": null,
+          "solution": "항공우주 장비 제조/생산 및 우주 수송 회사",
+          "unique_value": null
+        },
+        "unit_economics": {
+          "arpu": null,
+          "cac": null,
+          "ltv": null,
+          "churn_rate": null,
+          "gross_margin": null,
+          "_note": "대부분 비공개 정보, 리서치 필요"
+        },
+        "market_dynamics": {
+          "market_size": null,
+          "market_growth": null,
+          "target_segment": null,
+          "geographic_focus": [
+            "United States"
+          ]
+        },
+        "competitive_advantage": [],
+        "key_metrics": {
+          "mau": null,
+          "dau": null,
+          "engagement_rate": null,
+          "gmv": null,
+          "arr": null,
+          "_note": "리서치 필요"
+        },
+        "critical_success_factors": [],
+        "growth_trajectory": {
+          "launch_date": "2005",
+          "unicorn_date": "2012.12.1",
+          "total_funding_usd_million": 4058.0,
+          "funding_rounds": 6,
+          "major_milestones": []
+        }
+      },
+      "rag_metadata": {
+        "source_id": "spacex_case",
+        "canonical_chunk_id": "CAN-spacex01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-spacex01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "spacex_case.business_model",
+            "content_hash": "sha256:91bbe2d3660761240daab64dffe18a061344767af5dc10eb87200787d874233d",
+            "span_hint": {
+              "tokens": 16
+            }
+          }
+        ],
+        "total_tokens": 16,
+        "quality_grade": "B",
+        "validation_status": "pending",
+        "created_at": "2025-11-04T16:04:27.662725Z",
+        "updated_at": "2025-11-04T16:04:27.662725Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Klarna",
+      "valuation": {
+        "amount_billion": "$45.60",
+        "date_added": "2011.12.12"
+      },
+      "location": {
+        "country": "Sweden"
+      },
+      "category": "Fintech",
+      "select_investors": [
+        "Institutional Venture Partners",
+        "Sequoia Capital",
+        "General Atlantic"
+      ],
+      "funding_history": [
+        {
+          "date": "2014",
+          "amount": "125.3M",
+          "currency": "USD",
+          "investors": [
+            "Sequoia Capital"
+          ]
+        },
+        {
+          "date": "2015",
+          "amount": "80M",
+          "currency": "USD",
+          "investors": [
+            "Northzone",
+            "Wellington Management"
+          ]
+        },
+        {
+          "date": "2017",
+          "amount": "250M",
+          "currency": "USD",
+          "investors": [
+            "Permira"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "93M",
+          "currency": "USD",
+          "investors": [
+            "Sequoia Capital",
+            "Northzone",
+            "Permira"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "460M",
+          "currency": "USD",
+          "investors": [
+            "BlackRock",
+            "Dragoneer Investment Group"
+          ]
+        },
+        {
+          "date": "2020",
+          "amount": "650M",
+          "currency": "USD",
+          "investors": [
+            "BlackRock",
+            "GIC",
+            "HMI Capital",
+            "Silver Lake"
+          ]
+        },
+        {
+          "date": "2021",
+          "amount": "639M",
+          "currency": "USD",
+          "investors": [
+            "WestCap Group",
+            "ADIT Ventures",
+            "SoftBank Vision Fund 2",
+            "Honeycomb Asset Management"
+          ]
+        }
+      ],
+      "business": {
+        "summary": "유럽 최대의 핀테크회사, 스웨덴 국적, BNPL 모델",
+        "details": [
+          "Klarna가 비용을 선지급하고 추후에 고객에게 그 금액을 할부 형태로 청구하는 interest-free financing 서비스",
+          "소비자들에게는 interest fee를 최소한으로 요구하고, 가맹점들에게 높은 payment fee 받아 수익 창출"
+        ],
+        "business_model": {
+          "pattern_type": "fintech_platform",
+          "pattern_id": "fintech_platform_pattern",
+          "revenue_model": []
+        },
+        "problem_solution": {
+          "problem": null,
+          "solution": "유럽 최대의 핀테크회사, 스웨덴 국적, BNPL 모델",
+          "unique_value": null
+        },
+        "unit_economics": {
+          "arpu": null,
+          "cac": null,
+          "ltv": null,
+          "churn_rate": null,
+          "gross_margin": null,
+          "_note": "대부분 비공개 정보, 리서치 필요"
+        },
+        "market_dynamics": {
+          "market_size": null,
+          "market_growth": null,
+          "target_segment": null,
+          "geographic_focus": [
+            "Sweden"
+          ]
+        },
+        "competitive_advantage": [],
+        "key_metrics": {
+          "mau": null,
+          "dau": null,
+          "engagement_rate": null,
+          "gmv": null,
+          "arr": null,
+          "_note": "리서치 필요"
+        },
+        "critical_success_factors": [],
+        "growth_trajectory": {
+          "launch_date": "2004",
+          "unicorn_date": "2011.12.12",
+          "total_funding_usd_million": 2297.3,
+          "funding_rounds": 7,
+          "major_milestones": []
+        }
+      },
+      "rag_metadata": {
+        "source_id": "klarna_case",
+        "canonical_chunk_id": "CAN-klarna01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-klarna01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "klarna_case.business_model",
+            "content_hash": "sha256:fb43184d8abab1e83a577e6d10865c75e8d792871717de7dafcbb702f7b7b07d",
+            "span_hint": {
+              "tokens": 16
+            }
+          }
+        ],
+        "total_tokens": 16,
+        "quality_grade": "B",
+        "validation_status": "pending",
+        "created_at": "2025-11-04T16:04:27.662737Z",
+        "updated_at": "2025-11-04T16:04:27.662737Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Instacart",
+      "valuation": {
+        "amount_billion": "$39.00",
+        "date_added": "2014.12.30"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Supply chain, logistics, & delivery",
+      "select_investors": [
+        "Khosla Ventures",
+        "Kleiner Perkins Caufield & Byers",
+        "Collaborative Fund"
+      ],
+      "funding_history": [
+        {
+          "date": "2017",
+          "amount": "400M",
+          "currency": "USD",
+          "investors": [
+            "Sequoia Capital"
+          ]
+        },
+        {
+          "date": "2018",
+          "amount": "200M",
+          "currency": "USD",
+          "investors": [
+            "Coatue"
+          ]
+        },
+        {
+          "date": "2018",
+          "amount": "150M",
+          "currency": "USD",
+          "investors": [
+            "Coatue"
+          ]
+        },
+        {
+          "date": "2018",
+          "amount": "600M",
+          "currency": "USD",
+          "investors": [
+            "D1 Capital Partners"
+          ]
+        },
+        {
+          "date": "2018",
+          "amount": "271M",
+          "currency": "USD",
+          "investors": [
+            "Tiger Global"
+          ]
+        },
+        {
+          "date": "2020",
+          "amount": "225M",
+          "currency": "USD",
+          "investors": [
+            "DST Global",
+            "General Catalyst"
+          ]
+        },
+        {
+          "date": "2020",
+          "amount": "100M",
+          "currency": "BRL",
+          "investors": [
+            "T. Rowe Price"
+          ]
+        },
+        {
+          "date": "2020",
+          "amount": "200M",
+          "currency": "USD",
+          "investors": [
+            "D1 Capital Partners",
+            "Valiant Peregrine Fund"
+          ]
+        },
+        {
+          "date": "2021",
+          "amount": "265M",
+          "currency": "USD",
+          "investors": [
+            "Andreessen Horowitz",
+            "D1 Capital Partners",
+            "Fidelity Management"
+          ]
+        }
+      ],
+      "business": {
+        "summary": "식료품 주문 - 대신 장을 보아 배달해주는 커머스 서비스",
+        "details": [],
+        "business_model": {
+          "pattern_type": "marketplace",
+          "pattern_id": "marketplace_pattern",
+          "revenue_model": []
+        },
+        "problem_solution": {
+          "problem": null,
+          "solution": "식료품 주문 - 대신 장을 보아 배달해주는 커머스 서비스",
+          "unique_value": null
+        },
+        "unit_economics": {
+          "arpu": null,
+          "cac": null,
+          "ltv": null,
+          "churn_rate": null,
+          "gross_margin": null,
+          "_note": "대부분 비공개 정보, 리서치 필요"
+        },
+        "market_dynamics": {
+          "market_size": null,
+          "market_growth": null,
+          "target_segment": null,
+          "geographic_focus": [
+            "United States"
+          ]
+        },
+        "competitive_advantage": [],
+        "key_metrics": {
+          "mau": null,
+          "dau": null,
+          "engagement_rate": null,
+          "gmv": null,
+          "arr": null,
+          "_note": "리서치 필요"
+        },
+        "critical_success_factors": [],
+        "growth_trajectory": {
+          "launch_date": "2007",
+          "unicorn_date": "2014.12.30",
+          "total_funding_usd_million": 2411.0,
+          "funding_rounds": 9,
+          "major_milestones": []
+        }
+      },
+      "rag_metadata": {
+        "source_id": "instacart_case",
+        "canonical_chunk_id": "CAN-instac01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-instac01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "instacart_case.business_model",
+            "content_hash": "sha256:cda5e0172b04e294a300b1413531260177fd68a0857786dc344f81233a0e3471",
+            "span_hint": {
+              "tokens": 24
+            }
+          }
+        ],
+        "total_tokens": 24,
+        "quality_grade": "B",
+        "validation_status": "pending",
+        "created_at": "2025-11-04T16:04:27.662746Z",
+        "updated_at": "2025-11-04T16:04:27.662746Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Bytedance",
+      "valuation": {
+        "amount_billion": "$140.00",
+        "date_added": "2017.4.7"
+      },
+      "location": {
+        "country": "China"
+      },
+      "category": "Artificial intelligence",
+      "select_investors": [
+        "Sequoia Capital China",
+        "SIG Asia Investments",
+        "Sina Weibo",
+        "SoftBank Group"
+      ],
+      "funding_history": [
+        {
+          "date": "2014",
+          "amount": "100M",
+          "currency": "USD",
+          "investors": [
+            "Sequoia China"
+          ]
+        },
+        {
+          "date": "2017.April",
+          "amount": "1B",
+          "currency": "USD",
+          "investors": [
+            "Sequoia China"
+          ]
+        },
+        {
+          "date": "2017.Aug",
+          "amount": "2B",
+          "currency": "USD",
+          "investors": [
+            "General Atlantic"
+          ]
+        },
+        {
+          "date": "2018.Oct",
+          "amount": "3B",
+          "currency": "USD",
+          "investors": [
+            "SoftBank Vision Fund",
+            "KKR"
+          ]
+        },
+        {
+          "date": "2019.Apr",
+          "amount": "1.3B",
+          "currency": "USD",
+          "investors": [
+            "Goldman Sachs",
+            "Morgan Stanley"
+          ]
+        },
+        {
+          "date": "2020.Dec",
+          "amount": "2B",
+          "currency": "BRL",
+          "investors": [
+            "KKR",
+            "Sequoia Capital"
+          ]
+        }
+      ],
+      "business": {
+        "summary": "숏폼 비디오 콘텐츠 SNS 틱톡 운영사",
+        "details": [],
+        "business_model": {
+          "pattern_type": "ai_platform",
+          "pattern_id": "ai_platform_pattern",
+          "revenue_model": []
+        },
+        "problem_solution": {
+          "problem": null,
+          "solution": "숏폼 비디오 콘텐츠 SNS 틱톡 운영사",
+          "unique_value": null
+        },
+        "unit_economics": {
+          "arpu": null,
+          "cac": null,
+          "ltv": null,
+          "churn_rate": null,
+          "gross_margin": null,
+          "_note": "대부분 비공개 정보, 리서치 필요"
+        },
+        "market_dynamics": {
+          "market_size": null,
+          "market_growth": null,
+          "target_segment": null,
+          "geographic_focus": [
+            "China"
+          ]
+        },
+        "competitive_advantage": [],
+        "key_metrics": {
+          "mau": null,
+          "dau": null,
+          "engagement_rate": null,
+          "gmv": null,
+          "arr": null,
+          "_note": "리서치 필요"
+        },
+        "critical_success_factors": [],
+        "growth_trajectory": {
+          "launch_date": "2010",
+          "unicorn_date": "2017.4.7",
+          "total_funding_usd_million": 9400.0,
+          "funding_rounds": 6,
+          "major_milestones": []
+        }
+      },
+      "rag_metadata": {
+        "source_id": "bytedance_case",
+        "canonical_chunk_id": "CAN-byteda01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-byteda01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "bytedance_case.business_model",
+            "content_hash": "sha256:c2e91e1781d670c52b7f455866eebddcb36afb7a27fe332869a28148a904f376",
+            "span_hint": {
+              "tokens": 16
+            }
+          }
+        ],
+        "total_tokens": 16,
+        "quality_grade": "B",
+        "validation_status": "pending",
+        "created_at": "2025-11-04T16:04:27.662475Z",
+        "updated_at": "2025-11-04T16:04:27.662475Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Databricks",
+      "valuation": {
+        "amount_billion": "$28.00",
+        "date_added": "2019.2.5"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Data management & analytics",
+      "select_investors": [
+        "Andreessen Horowitz",
+        "New Enterprise Associates",
+        "Battery Ventures"
+      ],
+      "funding_history": [
+        {
+          "date": "2017",
+          "amount": "140M",
+          "currency": "USD",
+          "investors": [
+            "Andreessen Horowitz"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "250M",
+          "currency": "USD",
+          "investors": [
+            "Andreessen Horowitz"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "400M",
+          "currency": "USD",
+          "investors": [
+            "Andreessen Horowitz"
+          ]
+        },
+        {
+          "date": "2021",
+          "amount": "1B",
+          "currency": "USD",
+          "investors": [
+            "Franklin Templeton Investments"
+          ]
+        },
+        {
+          "date": "2021",
+          "amount": "1.6B",
+          "currency": "USD",
+          "investors": [
+            "Counterpoint Global"
+          ]
+        }
+      ],
+      "business": {
+        "summary": "기업들이 가진 대량의 데이터를 AI base로 처리, 분석할 수 있는 소프트웨어 제공",
+        "details": [
+          "빅데이터 분석 소프트웨어 가운데 가장 빠르다고 알려진 ‘아파치 스파크’를 기반으로 한 데이터 분석 플랫폼이며, 해당 플랫폼이 업계 표준으로 자리잡았다는 평"
+        ],
+        "business_model": {
+          "pattern_type": "saas_tool",
+          "pattern_id": "saas_tool_pattern",
+          "revenue_model": []
+        },
+        "problem_solution": {
+          "problem": null,
+          "solution": "기업들이 가진 대량의 데이터를 AI base로 처리, 분석할 수 있는 소프트웨어 제공",
+          "unique_value": null
+        },
+        "unit_economics": {
+          "arpu": null,
+          "cac": null,
+          "ltv": null,
+          "churn_rate": null,
+          "gross_margin": null,
+          "_note": "대부분 비공개 정보, 리서치 필요"
+        },
+        "market_dynamics": {
+          "market_size": null,
+          "market_growth": null,
+          "target_segment": null,
+          "geographic_focus": [
+            "United States"
+          ]
+        },
+        "competitive_advantage": [],
+        "key_metrics": {
+          "mau": null,
+          "dau": null,
+          "engagement_rate": null,
+          "gmv": null,
+          "arr": null,
+          "_note": "리서치 필요"
+        },
+        "critical_success_factors": [],
+        "growth_trajectory": {
+          "launch_date": "2012",
+          "unicorn_date": "2019.2.5",
+          "total_funding_usd_million": 3390.0,
+          "funding_rounds": 5,
+          "major_milestones": []
+        }
+      },
+      "rag_metadata": {
+        "source_id": "databricks_case",
+        "canonical_chunk_id": "CAN-databr01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-databr01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "databricks_case.business_model",
+            "content_hash": "sha256:9bdba1b8bedf1e344ac03e72bede8b70d98363d67a23169cbe4c542a7015ce0f",
+            "span_hint": {
+              "tokens": 27
+            }
+          }
+        ],
+        "total_tokens": 27,
+        "quality_grade": "B",
+        "validation_status": "pending",
+        "created_at": "2025-11-04T16:04:27.662783Z",
+        "updated_at": "2025-11-04T16:04:27.662783Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Rivian",
+      "valuation": {
+        "amount_billion": "$27.60",
+        "date_added": "2019.9.10"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "Auto & transportation",
+      "select_investors": [
+        "Amazon",
+        "Ford Motor Company",
+        "Cox Automotive"
+      ],
+      "funding_history": [
+        {
+          "date": "2018",
+          "amount": "200M",
+          "currency": "USD",
+          "investors": [
+            "Standard Chartered Bank"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "700M",
+          "currency": "USD",
+          "investors": [
+            "Amazon"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "500M",
+          "currency": "USD",
+          "investors": [
+            "Ford Motor"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "350M",
+          "currency": "USD",
+          "investors": [
+            "Cox Automotive"
+          ]
+        },
+        {
+          "date": "2019.Jul",
+          "amount": "1.3B",
+          "currency": "USD",
+          "investors": [
+            "T. Rowe Price"
+          ]
+        },
+        {
+          "date": "2019.Dec",
+          "amount": "2.5B",
+          "currency": "USD",
+          "investors": [
+            "T. Rowe Price"
+          ]
+        },
+        {
+          "date": "2021.Jan",
+          "amount": "2.7B",
+          "currency": "USD",
+          "investors": [
+            "T. Rowe Price"
+          ]
+        },
+        {
+          "date": "2021.Jul",
+          "amount": "2.5B",
+          "currency": "USD",
+          "investors": [
+            "Climate Pledge Fund",
+            "D1 Capital Partners",
+            "Ford Motor",
+            "T. Rowe Price"
+          ]
+        }
+      ],
+      "business": {
+        "summary": "미국의 전기 자동차 자동차 제조업체",
+        "details": [],
+        "business_model": {
+          "pattern_type": "hardware_mobility",
+          "pattern_id": "hardware_mobility_pattern",
+          "revenue_model": []
+        },
+        "problem_solution": {
+          "problem": null,
+          "solution": "미국의 전기 자동차 자동차 제조업체",
+          "unique_value": null
+        },
+        "unit_economics": {
+          "arpu": null,
+          "cac": null,
+          "ltv": null,
+          "churn_rate": null,
+          "gross_margin": null,
+          "_note": "대부분 비공개 정보, 리서치 필요"
+        },
+        "market_dynamics": {
+          "market_size": null,
+          "market_growth": null,
+          "target_segment": null,
+          "geographic_focus": [
+            "United States"
+          ]
+        },
+        "competitive_advantage": [],
+        "key_metrics": {
+          "mau": null,
+          "dau": null,
+          "engagement_rate": null,
+          "gmv": null,
+          "arr": null,
+          "_note": "리서치 필요"
+        },
+        "critical_success_factors": [],
+        "growth_trajectory": {
+          "launch_date": "2012",
+          "unicorn_date": "2019.9.10",
+          "total_funding_usd_million": 10750.0,
+          "funding_rounds": 8,
+          "major_milestones": []
+        }
+      },
+      "rag_metadata": {
+        "source_id": "rivian_case",
+        "canonical_chunk_id": "CAN-rivian01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-rivian01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "rivian_case.business_model",
+            "content_hash": "sha256:af6e56007066816b1c3aa464b372c6f71c8ea195ff97bb4bbc2ca7147c2400c5",
+            "span_hint": {
+              "tokens": 16
+            }
+          }
+        ],
+        "total_tokens": 16,
+        "quality_grade": "B",
+        "validation_status": "pending",
+        "created_at": "2025-11-04T16:04:27.662791Z",
+        "updated_at": "2025-11-04T16:04:27.662791Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "Fanatics",
+      "valuation": {
+        "amount_billion": "$18.00",
+        "date_added": "2012.6.6"
+      },
+      "location": {
+        "country": "United States"
+      },
+      "category": "E-commerce & direct-to-consumer",
+      "select_investors": [
+        "SoftBank Group",
+        "Andreessen Horowitz",
+        "Temasek Holdings"
+      ],
+      "funding_history": [
+        {
+          "date": "2015",
+          "amount": "300M",
+          "currency": "USD",
+          "investors": [
+            "Silver Lake"
+          ]
+        },
+        {
+          "date": "2017",
+          "amount": "1B",
+          "currency": "USD",
+          "investors": [
+            "SoftBank Vision Fund"
+          ]
+        },
+        {
+          "date": "2020",
+          "amount": "350M",
+          "currency": "USD",
+          "investors": [
+            "Fidelity Management and Research Company",
+            "Thrive Capital"
+          ]
+        },
+        {
+          "date": "2021",
+          "amount": "320M",
+          "currency": "USD",
+          "investors": [
+            "Blackstone Group",
+            "Franklin Templeton Investments",
+            "Major League Baseball",
+            "Neuberger Berman Group",
+            "Silver Lake",
+            "Thrive Capital"
+          ]
+        }
+      ],
+      "business": {
+        "summary": "스포츠웨어, 스포츠 장비 vertical 커머스 플랫폼",
+        "details": [
+          "https://www.fanatics.com/"
+        ],
+        "business_model": {
+          "pattern_type": "marketplace",
+          "pattern_id": "marketplace_pattern",
+          "revenue_model": []
+        },
+        "problem_solution": {
+          "problem": null,
+          "solution": "스포츠웨어, 스포츠 장비 vertical 커머스 플랫폼",
+          "unique_value": null
+        },
+        "unit_economics": {
+          "arpu": null,
+          "cac": null,
+          "ltv": null,
+          "churn_rate": null,
+          "gross_margin": null,
+          "_note": "대부분 비공개 정보, 리서치 필요"
+        },
+        "market_dynamics": {
+          "market_size": null,
+          "market_growth": null,
+          "target_segment": null,
+          "geographic_focus": [
+            "United States"
+          ]
+        },
+        "competitive_advantage": [],
+        "key_metrics": {
+          "mau": null,
+          "dau": null,
+          "engagement_rate": null,
+          "gmv": null,
+          "arr": null,
+          "_note": "리서치 필요"
+        },
+        "critical_success_factors": [],
+        "growth_trajectory": {
+          "launch_date": "2005",
+          "unicorn_date": "2012.6.6",
+          "total_funding_usd_million": 1970.0,
+          "funding_rounds": 4,
+          "major_milestones": []
+        }
+      },
+      "rag_metadata": {
+        "source_id": "fanatics_case",
+        "canonical_chunk_id": "CAN-fanati01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-fanati01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "fanatics_case.business_model",
+            "content_hash": "sha256:da7a37b5e9cb69aa7f42fbb231a42badefdcbf013e8ee86149dba14da91d5f8c",
+            "span_hint": {
+              "tokens": 18
+            }
+          }
+        ],
+        "total_tokens": 18,
+        "quality_grade": "B",
+        "validation_status": "pending",
+        "created_at": "2025-11-04T16:04:27.662807Z",
+        "updated_at": "2025-11-04T16:04:27.662807Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "BYJU's",
+      "valuation": {
+        "amount_billion": "$16.50",
+        "date_added": "2017.7.25"
+      },
+      "location": {
+        "country": "India"
+      },
+      "category": "Edtech",
+      "select_investors": [
+        "Tencent Holdings",
+        "Lightspeed India Partners",
+        "Sequoia Capital India"
+      ],
+      "funding_history": [
+        {
+          "date": "2019",
+          "amount": "31M",
+          "currency": "USD",
+          "investors": [
+            "General Atlantic",
+            "Tencent"
+          ]
+        },
+        {
+          "date": "2019",
+          "amount": "150M",
+          "currency": "USD",
+          "investors": [
+            "Qatar Investment Authority"
+          ]
+        },
+        {
+          "date": "2020",
+          "amount": "200M",
+          "currency": "USD",
+          "investors": [
+            "Tiger Global Management"
+          ]
+        },
+        {
+          "date": "2020",
+          "amount": "122M",
+          "currency": "USD",
+          "investors": [
+            "DST Global"
+          ]
+        },
+        {
+          "date": "2020",
+          "amount": "500M",
+          "currency": "USD",
+          "investors": [
+            "Silver Lake"
+          ]
+        },
+        {
+          "date": "2021",
+          "amount": "460M",
+          "currency": "USD",
+          "investors": [
+            "MC Global Edtech Investment Holdings"
+          ]
+        },
+        {
+          "date": "2021",
+          "amount": "350M",
+          "currency": "USD",
+          "investors": [
+            "UBS"
+          ]
+        }
+      ],
+      "business": {
+        "summary": "인도 교육 서비스 (유치원 - 12학년)",
+        "details": [
+          "인도 대학교 입시에 대한 모든 멘토링 및 모의시험 제공",
+          "https://byjus.com/"
+        ],
+        "business_model": {
+          "pattern_type": "education_service",
+          "pattern_id": "education_service_pattern",
+          "revenue_model": []
+        },
+        "problem_solution": {
+          "problem": null,
+          "solution": "인도 교육 서비스 (유치원 - 12학년)",
+          "unique_value": null
+        },
+        "unit_economics": {
+          "arpu": null,
+          "cac": null,
+          "ltv": null,
+          "churn_rate": null,
+          "gross_margin": null,
+          "_note": "대부분 비공개 정보, 리서치 필요"
+        },
+        "market_dynamics": {
+          "market_size": null,
+          "market_growth": null,
+          "target_segment": null,
+          "geographic_focus": [
+            "India"
+          ]
+        },
+        "competitive_advantage": [],
+        "key_metrics": {
+          "mau": null,
+          "dau": null,
+          "engagement_rate": null,
+          "gmv": null,
+          "arr": null,
+          "_note": "리서치 필요"
+        },
+        "critical_success_factors": [],
+        "growth_trajectory": {
+          "launch_date": "2010",
+          "unicorn_date": "2017.7.25",
+          "total_funding_usd_million": 1813.0,
+          "funding_rounds": 7,
+          "major_milestones": []
+        }
+      },
+      "rag_metadata": {
+        "source_id": "byju_s_case",
+        "canonical_chunk_id": "CAN-byjus001",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-byjus001",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "byju_s_case.business_model",
+            "content_hash": "sha256:61d706dfec81f0ad37b357eb0b2a45c32e3ae667d2d159b110973966191b5344",
+            "span_hint": {
+              "tokens": 15
+            }
+          }
+        ],
+        "total_tokens": 15,
+        "quality_grade": "B",
+        "validation_status": "pending",
+        "created_at": "2025-11-04T16:04:27.662824Z",
+        "updated_at": "2025-11-04T16:04:27.662824Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    },
+    {
+      "company": "DJI Innovations",
+      "valuation": {
+        "amount_billion": "$15.00",
+        "date_added": "2015.1.23"
+      },
+      "location": {
+        "country": "China"
+      },
+      "category": "Hardware",
+      "select_investors": [
+        "Accel",
+        "Sequoia Capital"
+      ],
+      "funding_history": [
+        {
+          "date": "2014",
+          "amount": "30M",
+          "currency": "USD",
+          "investors": [
+            "Sequoia Capital China"
+          ]
+        },
+        {
+          "date": "2015",
+          "amount": "75M",
+          "currency": "USD",
+          "investors": [
+            "Accel"
+          ]
+        }
+      ],
+      "business": {
+        "summary": "드론 개발, 제조, 판매 유통 회사",
+        "details": [],
+        "business_model": {
+          "pattern_type": "hardware",
+          "pattern_id": "hardware_pattern",
+          "revenue_model": []
+        },
+        "problem_solution": {
+          "problem": null,
+          "solution": "드론 개발, 제조, 판매 유통 회사",
+          "unique_value": null
+        },
+        "unit_economics": {
+          "arpu": null,
+          "cac": null,
+          "ltv": null,
+          "churn_rate": null,
+          "gross_margin": null,
+          "_note": "대부분 비공개 정보, 리서치 필요"
+        },
+        "market_dynamics": {
+          "market_size": null,
+          "market_growth": null,
+          "target_segment": null,
+          "geographic_focus": [
+            "China"
+          ]
+        },
+        "competitive_advantage": [],
+        "key_metrics": {
+          "mau": null,
+          "dau": null,
+          "engagement_rate": null,
+          "gmv": null,
+          "arr": null,
+          "_note": "리서치 필요"
+        },
+        "critical_success_factors": [],
+        "growth_trajectory": {
+          "launch_date": "2008",
+          "unicorn_date": "2015.1.23",
+          "total_funding_usd_million": 105.0,
+          "funding_rounds": 2,
+          "major_milestones": []
+        }
+      },
+      "rag_metadata": {
+        "source_id": "dji_innovations_case",
+        "canonical_chunk_id": "CAN-djiinn01",
+        "domain": "case_study",
+        "content_type": "normalized_full",
+        "version": "7.0.0",
+        "lineage": {
+          "from": "CAN-djiinn01",
+          "via": [],
+          "evidence_ids": [],
+          "created_by": {
+            "agent": "Explorer",
+            "overlay_layer": "core",
+            "tenant_id": null
+          }
+        },
+        "sections": [
+          {
+            "agent_view": "explorer",
+            "anchor_path": "dji_innovations_case.business_model",
+            "content_hash": "sha256:4a34fa5356ceeb0c0a3a624b89fb952625938f54892e1f830e1b045e2e7fadbe",
+            "span_hint": {
+              "tokens": 16
+            }
+          }
+        ],
+        "total_tokens": 16,
+        "quality_grade": "B",
+        "validation_status": "pending",
+        "created_at": "2025-11-04T16:04:27.662852Z",
+        "updated_at": "2025-11-04T16:04:27.662852Z",
+        "embedding": {
+          "model": "text-embedding-3-large",
+          "dimension": 3072,
+          "space": "cosine"
+        }
+      }
+    }
+  ]
+}

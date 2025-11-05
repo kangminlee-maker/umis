@@ -159,7 +159,25 @@ class ExplorerRAG:
         # v7.1.0: Hybrid Search 우선 (Knowledge Graph)
         if use_graph and self.hybrid_search:
             logger.info("  🔍 Hybrid Search (Vector + Graph)")
-            return self.search_patterns_with_graph(query, top_k=top_k)
+            hybrid_result = self.search_patterns_with_graph(query, top_k=top_k)
+            
+            # HybridResult → List[tuple] 변환 (일관성)
+            if hybrid_result and hasattr(hybrid_result, 'direct_matches'):
+                # PatternMatch 객체 → (Document, score) tuple 변환
+                converted = []
+                for match in hybrid_result.direct_matches:
+                    if hasattr(match, 'document') and hasattr(match, 'similarity'):
+                        converted.append((match.document, match.similarity))
+                    elif hasattr(match, 'doc') and hasattr(match, 'score'):
+                        converted.append((match.doc, match.score))
+                
+                if converted:
+                    logger.info(f"  ✅ Hybrid 결과 변환: {len(converted)}개")
+                    return converted
+            
+            # Fallback to vector if conversion failed
+            logger.warning("  ⚠️ Hybrid 결과 변환 실패 → Vector로 폴백")
+            use_graph = False
         
         # Fallback: Vector만
         logger.info("  🔍 Vector Search")
@@ -177,6 +195,34 @@ class ExplorerRAG:
             logger.info(f"    #{i} {pattern_id} (유사도: {score:.4f})")
         
         return results
+    
+    def get_pattern_details(self, results: List[tuple]) -> List[Dict[str, Any]]:
+        """
+        검색 결과 tuple을 사용하기 쉬운 dict 형식으로 변환
+        
+        Parameters:
+        -----------
+        results: search_patterns() 결과 List[(Document, score)]
+        
+        Returns:
+        --------
+        List[Dict] with keys: pattern_id, pattern_name, score, description, triggers, etc.
+        """
+        pattern_details = []
+        
+        for doc, score in results:
+            metadata = doc.metadata
+            detail = {
+                'pattern_id': metadata.get('pattern_id', 'Unknown'),
+                'pattern_name': metadata.get('pattern_name', 'Unknown'),
+                'category': metadata.get('category', 'Unknown'),
+                'score': float(score),
+                'description': doc.page_content[:200] if doc.page_content else '',
+                'metadata': metadata
+            }
+            pattern_details.append(detail)
+        
+        return pattern_details
     
     def search_patterns_with_graph(
         self,
@@ -219,8 +265,8 @@ class ExplorerRAG:
         logger.info(f"[Explorer] Hybrid Search 시작")
         logger.info(f"  관찰: {trigger_observation[:100]}")
         
-        # 1. Vector 검색
-        vector_results = self.search_patterns(trigger_observation, top_k)
+        # 1. Vector 검색 (use_graph=False로 재귀 방지!)
+        vector_results = self.search_patterns(trigger_observation, top_k, use_graph=False)
         
         # 2. Hybrid 검색
         hybrid_result = self.hybrid_search.search(
