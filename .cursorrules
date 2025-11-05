@@ -1,20 +1,20 @@
 # ========================================
 # UMIS RAG Cursor Rules - AI Optimized
-# v7.0.0 | Non-coder | Cursor-only
+# v7.2.0 | Non-coder | Cursor-only
 # ========================================
 
 # === PART 1: UMIS 개념 (AI 필수 이해) ===
 
 system:
   name: Universal Market Intelligence System
-  version: 7.0.0
+  version: 7.2.0
   
   agents:
-    Observer: {name: Albert, role: market_structure, rag: false}
-    Explorer: {name: Steve, role: opportunity_discovery, rag: true}  # 유일!
-    Quantifier: {name: Bill, role: market_sizing, rag: false}
-    Validator: {name: Rachel, role: data_verification, rag: false}
-    Guardian: {name: Stewart, role: process_monitoring, rag: false}
+    Observer: {name: Albert, role: market_structure, rag: true}       # v7.1.0+
+    Explorer: {name: Steve, role: opportunity_discovery, rag: true}   # v7.0.0+
+    Quantifier: {name: Bill, role: market_sizing, rag: true}         # v7.1.0+
+    Validator: {name: Rachel, role: data_verification, rag: true}    # v7.1.0+
+    Guardian: {name: Stewart, role: process_monitoring, rag: true}   # v7.1.0+ (Meta-RAG)
   
   # id: Agent ID (Observer, Explorer, ...)
   # name: Default name (Albert, Steve, ...) → agent_names.yaml로 커스터마이징
@@ -24,15 +24,45 @@ system:
   discovery_sprint: 명확도<7 → 5-Agent 병렬 탐색 → 목표 구체화
   
   rag:
-    active: Explorer only
-    architecture: v3.0 (Canonical → Projected → Graph)
+    active: 5-Agent RAG (v7.1.0+)
+    architecture: v3.0 (4-Layer: Canonical → Projected → Graph → Memory)
+    
     layers:
-      vector: data/chroma/ (canonical_index, projected_index)
-      graph: Neo4j (optional, 13 patterns, 45 relationships)
-      memory: Query/Goal/RAE Memory
+      layer_1_canonical: "정규화된 원본"
+      layer_2_projected: "Agent별 검색용 뷰"
+      layer_3_graph: "Neo4j (13 노드, 45 관계)"
+      layer_4_memory: "Query/Goal/RAE Memory"
+    
+    collections:
+      explorer:
+        - "explorer_knowledge_base (54개 패턴)"
+        - "31 Business Models + 23 Disruption Patterns"
+      
+      quantifier:
+        - "calculation_methodologies (30개, 빌드 필요)"
+        - "market_benchmarks (100개, 빌드 필요)"
+      
+      validator:
+        - "data_sources_registry (50개, 빌드 필요)"
+        - "definition_validation_cases (84개, 빌드 필요)"
+      
+      observer:
+        - "market_structure_patterns (30개, 빌드 필요)"
+        - "value_chain_benchmarks (50개, 빌드 필요)"
+      
+      guardian:
+        - "goal_memory (목표 정렬)"
+        - "query_memory (순환 감지)"
+        - "rae_index (평가 일관성)"
+      
+      system:
+        - "system_knowledge (28개 도구)" # ✅ 빌드 완료!
+    
     sources: 
       - data/raw/umis_business_model_patterns.yaml (31 patterns)
       - data/raw/umis_disruption_patterns.yaml (23 patterns)
+      - data/raw/market_benchmarks.yaml (추가 예정)
+      - data/raw/definition_validation_cases.yaml (추가 예정)
 
 user:
   skill: no-coding
@@ -227,90 +257,402 @@ guardian_meta_rag:
               print(f"💡 {rec}")
 
 # ========================================
-# PART 7: System RAG (Key-based)
+# PART 7: System RAG (Key-based) - AI 필수 실행!
+# ========================================
+#
+# ⚠️ AI: 모든 UMIS 프로젝트 시작 시 이 섹션을 따르세요!
 # ========================================
 
 system_rag:
   enabled: true
-  index_file: "umis_core.yaml"
-  tool_registry: "config/tool_registry.yaml"
-  total_tools: 25
+  collection: "system_knowledge"
+  total_tools: 28
   
   purpose: |
-    AI가 5분 내 UMIS 전체 파악
-    컨텍스트 77% 절약 (5,508줄 → 450-2,850줄)
+    AI가 UMIS 전체 시스템을 빠르게 파악하고
+    필요한 도구만 정확히 로드하여 컨텍스트 77% 절약
+
+# ========================================
+# AI 필수 실행 프로세스 (모든 프로젝트 시작 시!)
+# ========================================
+
+ai_mandatory_process:
   
-  # AI 사용 전략
-  ai_strategy:
-    step_1_always_load:
+  when_to_execute:
+    - "프로젝트 시작 시 (첫 대화)"
+    - "Agent 멘션 감지 시 (@Explorer, @Quantifier 등)"
+    - "시장 분석 요청 시"
+    - "복잡한 작업 시작 전"
+  
+  # ===== STEP 1: umis_core.yaml 로드 (필수!) =====
+  step_1_load_index:
+    action: "read_file tool 사용"
+    file: "umis_core.yaml"
+    reason: "UMIS 전체 개요 파악 (709줄, INDEX)"
+    
+    what_to_read:
+      critical:
+        - "Lines 40-87: Quick Start (AI 사용법)"
+        - "Lines 88-110: Agent Selection (어떤 Agent?)"
+        - "Lines 289-469: Decision Guide (어떤 도구?)"
+      
+      optional:
+        - "Lines 477-686: Agent Summary (상세)"
+    
+    key_takeaways:
+      - "28개 도구 tool_key 형식"
+      - "Agent별 주요 도구"
+      - "Workflow 순서"
+    
+    mandatory: true
+    skip_condition: "none (항상 실행)"
+  
+  # ===== STEP 2: 쿼리 분석 =====
+  step_2_parse_query:
+    action: "사용자 요청에서 필요한 Agent + 도구 파악"
+    
+    parsing_rules:
+      
+      agent_detection:
+        - "@Explorer" → agent=explorer
+        - "@Quantifier" → agent=quantifier
+        - "@Validator" → agent=validator
+        - "@Observer" → agent=observer
+        - "@Guardian" → agent=guardian
+        - "시장 분석" → observer+explorer+quantifier
+        - "기회 발굴" → explorer
+        - "SAM 계산" → quantifier+validator
+      
+      tool_key_mapping:
+        explorer:
+          "패턴": "tool:explorer:pattern_search"
+          "기회": "tool:explorer:7_step_process"
+          "검증": "tool:explorer:validation_protocol"
+          "가설": "tool:explorer:hypothesis_generation"
+        
+        quantifier:
+          "SAM|시장 규모": "tool:quantifier:sam_4methods"
+          "성장": "tool:quantifier:growth_analysis"
+          "시나리오": "tool:quantifier:scenario_planning"
+          "벤치마크": "tool:quantifier:benchmark_analysis"
+        
+        validator:
+          "정의": "tool:validator:data_definition"
+          "출처": "tool:validator:source_verification"
+          "소싱": "tool:validator:creative_sourcing"
+          "Gap": "tool:validator:gap_analysis"
+        
+        observer:
+          "구조": "tool:observer:market_structure"
+          "가치사슬": "tool:observer:value_chain"
+          "비효율": "tool:observer:inefficiency_detection"
+          "파괴": "tool:observer:disruption_opportunity"
+        
+        guardian:
+          "진행": "tool:guardian:progress_monitoring"
+          "품질": "tool:guardian:quality_evaluation"
+        
+        framework:
+          "시장 정의": "tool:framework:13_dimensions"
+          "Discovery": "tool:framework:discovery_sprint"
+          "7 Powers": "tool:framework:7_powers"
+          "경쟁": "tool:framework:competitive_analysis"
+        
+        universal:
+          "guestimate|추정": "tool:universal:guestimation"
+          "reasoner|정밀": "tool:universal:domain_reasoner_10_signals"
+          "hybrid|auto": "tool:universal:hybrid_strategy"
+  
+  # ===== STEP 3: System RAG 검색 (필수!) =====
+  step_3_execute_system_rag:
+    action: "run_terminal_cmd tool 사용하여 필요한 도구 로드"
+    
+    command_template: "python3 scripts/query_system_rag.py {tool_key}"
+    
+    execution_examples:
+      
+      example_1_single_tool:
+        query: "@Explorer, 구독 모델 패턴"
+        tool_key: "tool:explorer:pattern_search"
+        command: "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
+        expected_output: "도구 content (~400줄)"
+        context_total: "709 (umis_core) + 400 (도구) = 1,109줄"
+      
+      example_2_multiple_tools:
+        query: "음악 스트리밍 시장 분석"
+        tool_keys:
+          - "tool:observer:market_structure"
+          - "tool:explorer:pattern_search"
+          - "tool:quantifier:sam_4methods"
+        commands:
+          - "python3 scripts/query_system_rag.py tool:observer:market_structure"
+          - "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
+          - "python3 scripts/query_system_rag.py tool:quantifier:sam_4methods"
+        expected_output: "3개 도구 content (~1,200줄)"
+        context_total: "709 + 1,200 = 1,909줄 (vs 6,102줄, 69% 절약)"
+      
+      example_3_workflow:
+        query: "피아노 구독 서비스 Discovery Sprint"
+        tool_keys:
+          - "tool:framework:discovery_sprint"
+          - "tool:observer:market_structure"
+          - "tool:explorer:pattern_search"
+          - "tool:quantifier:sam_4methods"
+          - "tool:validator:data_definition"
+        commands: "각 도구별 query_system_rag.py 실행"
+        expected_output: "5개 도구 content (~2,500줄)"
+        context_total: "709 + 2,500 = 3,209줄 (vs 6,102줄, 47% 절약)"
+    
+    mandatory: true
+    reason: "도구 없이는 작업 불가능"
+    fallback: "System RAG 실패 시 umis.yaml 전체 로드 (비효율)"
+  
+  # ===== STEP 4: Workflow 실행 =====
+  step_4_execute_workflow:
+    action: "로드된 도구 content 기반으로 작업 수행"
+    
+    workflow_types:
+      
+      discovery_sprint:
+        when: "목표 불명확 (명확도 < 7)"
+        tools:
+          - "tool:framework:discovery_sprint"
+          - "모든 Agent 도구 (5-Agent 병렬)"
+        duration: "1-3일"
+      
+      comprehensive_study:
+        when: "상세 분석 필요"
+        tools:
+          - "tool:observer:market_structure"
+          - "tool:explorer:7_step_process"
+          - "tool:quantifier:sam_4methods"
+          - "tool:validator:data_definition"
+        duration: "2-4주"
+      
+      rapid_assessment:
+        when: "빠른 파악"
+        tools:
+          - "tool:observer:market_structure"
+          - "tool:explorer:pattern_search"
+          - "tool:universal:guestimation"
+        duration: "1-3일"
+      
+      opportunity_discovery:
+        when: "기회 발굴"
+        tools:
+          - "tool:explorer:pattern_search"
+          - "tool:explorer:7_step_process"
+          - "tool:explorer:validation_protocol"
+        duration: "3-5일"
+
+# ========================================
+# AI 실행 체크리스트 (모든 프로젝트!)
+# ========================================
+
+ai_execution_checklist:
+  
+  before_starting_any_project:
+    - step: "1. umis_core.yaml 읽기 (read_file)"
       file: "umis_core.yaml"
-      size: "580줄"
-      content: "전체 시스템 개요"
+      focus: "Lines 40-110 (Quick Start + Agent Selection)"
+      mandatory: true
     
-    step_2_parse_query:
-      action: "사용자 쿼리에서 agent + keywords 추출"
-      
-      examples:
-        - query: "@Explorer, 구독 모델 패턴"
-          parse:
-            agent: "explorer"
-            keywords: ["구독", "모델", "패턴"]
-        
-        - query: "음악 스트리밍 시장 규모"
-          parse:
-            agent: "quantifier"
-            keywords: ["시장 규모", "SAM"]
+    - step: "2. 쿼리 분석 (agent + keywords)"
+      action: "사용자 요청에서 필요한 Agent와 도구 파악"
+      output: "agent_id, tool_keys 리스트"
+      mandatory: true
     
-    step_3_key_selection:
-      rules:
-        - if: "agent=explorer AND '패턴' in keywords"
-          key: "tool:explorer:pattern_search"
-        
-        - if: "agent=explorer AND '기회' in keywords"
-          key: "tool:explorer:7_step_process"
-        
-        - if: "agent=quantifier AND 'SAM' in keywords"
-          key: "tool:quantifier:sam_4methods"
-        
-        - if: "agent=validator AND '정의' in keywords"
-          key: "tool:validator:data_definition"
-        
-        - if: "agent=observer AND '구조' in keywords"
-          key: "tool:observer:market_structure"
-        
-        - if: "task='시장 분석'"
-          keys:
-            - "tool:observer:market_structure"
-            - "tool:explorer:pattern_search"
-            - "tool:quantifier:sam_4methods"
-        
-        - if: "task='Discovery Sprint'"
-          keys:
-            - "tool:framework:discovery_sprint"
-            - "모든 Agent 도구"
+    - step: "3. System RAG 실행 (run_terminal_cmd)"
+      action: "각 tool_key마다 query_system_rag.py 실행"
+      command: "python3 scripts/query_system_rag.py {tool_key}"
+      repeat: "필요한 모든 도구에 대해"
+      mandatory: true
     
-    step_4_search:
-      for_each_key:
-        command: "python scripts/query_system_rag.py {key}"
-        result: "도구 content (200-800줄)"
-        latency: "0.1ms (KeyDirectory)"
-    
-    step_5_context:
-      load:
-        always: "umis_core.yaml (50줄, 핵심만)"
-        searched: "System RAG 결과 (200-2,800줄)"
-      
-      total_examples:
-        simple: "450줄 (vs 5,508줄, 92% 절약)"
-        medium: "1,250줄 (vs 5,508줄, 77% 절약)"
-        complex: "2,850줄 (vs 5,508줄, 48% 절약)"
-      
-      average_saving: "77%"
+    - step: "4. 로드된 도구 content 활용"
+      action: "System RAG 결과를 컨텍스트에 포함하여 작업 수행"
+      mandatory: true
   
-  shortcuts:
-    - "도구 목록": "python scripts/query_system_rag.py --list"
-    - "도구 검색": "python scripts/query_system_rag.py tool:explorer:pattern_search"
-    - "시스템 재구축": "python scripts/build_system_knowledge.py"
+  failure_handling:
+    if_system_rag_fails:
+      - action: "umis.yaml 전체 로드 (fallback)"
+      - warning: "컨텍스트 비효율 (6,102줄)"
+      - notify_user: "System RAG 실패, 전체 파일 로드 중"
+    
+    if_collection_missing:
+      - command: "python3 scripts/build_system_knowledge.py"
+      - message: "System RAG 인덱스 구축 중 (1분)"
+      - retry: "구축 후 다시 검색"
+
+# ========================================
+# AI 사용 예시 (따라하세요!)
+# ========================================
+
+ai_usage_examples:
+  
+  example_1_simple:
+    user_query: "@Explorer, 구독 모델 패턴 찾아줘"
+    
+    ai_process:
+      step_1: |
+        # umis_core.yaml 읽기
+        read_file("umis_core.yaml", offset=40, limit=70)
+        → Quick Start 이해
+      
+      step_2: |
+        # 쿼리 분석
+        agent = "explorer"
+        keywords = ["구독", "모델", "패턴"]
+        tool_key = "tool:explorer:pattern_search"
+      
+      step_3: |
+        # System RAG 실행
+        run_terminal_cmd("python3 scripts/query_system_rag.py tool:explorer:pattern_search")
+        
+        결과: 도구 content (~400줄) 획득
+      
+      step_4: |
+        # 작업 수행
+        로드된 "tool:explorer:pattern_search" content 기반으로
+        → RAG 패턴 검색 프로세스 이해
+        → 실제 RAG 검색 실행
+        → 구독 모델 패턴 분석
+    
+    context_used: "709 + 400 = 1,109줄 (vs 6,102줄, 82% 절약)"
+  
+  example_2_complex:
+    user_query: "음악 스트리밍 시장 분석"
+    
+    ai_process:
+      step_1: |
+        # umis_core.yaml 읽기
+        read_file("umis_core.yaml", offset=88, limit=110)
+        → Decision Guide 참조
+        → "시장 분석" = Observer → Explorer → Quantifier
+      
+      step_2: |
+        # 필요한 도구 식별
+        tool_keys = [
+          "tool:observer:market_structure",
+          "tool:explorer:pattern_search",
+          "tool:quantifier:sam_4methods"
+        ]
+      
+      step_3: |
+        # System RAG 실행 (병렬 또는 순차)
+        for key in tool_keys:
+          run_terminal_cmd(f"python3 scripts/query_system_rag.py {key}")
+        
+        결과: 3개 도구 content (~1,200줄) 획득
+      
+      step_4: |
+        # Workflow 실행
+        1. Observer: 시장 구조 관찰 (market_structure 도구 활용)
+        2. Explorer: 기회 발굴 (pattern_search 도구 + RAG)
+        3. Quantifier: SAM 계산 (sam_4methods 도구)
+    
+    context_used: "709 + 1,200 = 1,909줄 (vs 6,102줄, 69% 절약)"
+  
+  example_3_discovery_sprint:
+    user_query: "피아노 구독 서비스 시장 (목표 불명확)"
+    
+    ai_process:
+      step_1: |
+        # umis_core.yaml 읽기
+        read_file("umis_core.yaml")
+        → Discovery Sprint 필요 판단 (명확도 < 7)
+      
+      step_2: |
+        # Discovery Sprint 도구 + 모든 Agent 도구
+        tool_keys = [
+          "tool:framework:discovery_sprint",
+          "tool:observer:market_structure",
+          "tool:explorer:pattern_search",
+          "tool:explorer:7_step_process",
+          "tool:quantifier:sam_4methods",
+          "tool:validator:data_definition",
+          "tool:guardian:progress_monitoring"
+        ]
+      
+      step_3: |
+        # System RAG 실행 (7개 도구)
+        for key in tool_keys:
+          run_terminal_cmd(f"python3 scripts/query_system_rag.py {key}")
+      
+      step_4: |
+        # Discovery Sprint 실행
+        → 5-Agent 병렬 탐색
+        → 목표 구체화
+        → 다음 단계 결정
+    
+    context_used: "709 + 2,500 = 3,209줄 (vs 6,102줄, 47% 절약)"
+
+# ========================================
+# 자주 사용하는 도구 키 (Quick Reference)
+# ========================================
+
+common_tool_keys:
+  
+  explorer:
+    - "tool:explorer:pattern_search (RAG 패턴 검색)"
+    - "tool:explorer:7_step_process (7단계 기회 발굴)"
+    - "tool:explorer:validation_protocol (가설 검증)"
+    - "tool:explorer:hypothesis_generation (가설 생성)"
+  
+  quantifier:
+    - "tool:quantifier:sam_4methods (SAM 4가지 방법)"
+    - "tool:quantifier:growth_analysis (성장률 분석)"
+    - "tool:quantifier:scenario_planning (시나리오)"
+    - "tool:quantifier:benchmark_analysis (벤치마크)"
+  
+  validator:
+    - "tool:validator:data_definition (데이터 정의 검증)"
+    - "tool:validator:creative_sourcing (창의적 소싱)"
+    - "tool:validator:gap_analysis (Gap 분석)"
+    - "tool:validator:source_verification (출처 검증)"
+  
+  observer:
+    - "tool:observer:market_structure (시장 구조)"
+    - "tool:observer:value_chain (가치사슬)"
+    - "tool:observer:inefficiency_detection (비효율 감지)"
+    - "tool:observer:disruption_opportunity (파괴 기회)"
+  
+  guardian:
+    - "tool:guardian:progress_monitoring (진행 모니터링)"
+    - "tool:guardian:quality_evaluation (품질 평가)"
+  
+  framework:
+    - "tool:framework:13_dimensions (13차원 시장 정의)"
+    - "tool:framework:discovery_sprint (Discovery Sprint)"
+    - "tool:framework:7_powers (7 Powers)"
+    - "tool:framework:counter_positioning (Counter-Positioning)"
+  
+  universal:
+    - "tool:universal:guestimation (빠른 추정)"
+    - "tool:universal:domain_reasoner_10_signals (정밀 분석)"
+    - "tool:universal:hybrid_strategy (하이브리드)"
+
+# ========================================
+# 디버깅 명령 (System RAG 문제 시)
+# ========================================
+
+debug_commands:
+  
+  check_collection:
+    command: "python3 scripts/query_system_rag.py --stats"
+    output: "Collection 상태, Agent별 도구 수"
+  
+  list_all_keys:
+    command: "python3 scripts/query_system_rag.py --list"
+    output: "사용 가능한 모든 tool_key"
+  
+  rebuild_index:
+    command: "python3 scripts/build_system_knowledge.py"
+    when: "Collection 없음 또는 손상"
+    duration: "1분"
+  
+  test_search:
+    command: "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
+    purpose: "검색 테스트"
 
 # ========================================
 # END
