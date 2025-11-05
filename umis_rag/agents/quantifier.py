@@ -37,6 +37,13 @@ sys.path.insert(0, str(project_root))
 from umis_rag.core.config import settings
 from umis_rag.utils.logger import logger
 
+# v7.2.1: Multi-Layer Guestimation 통합
+from umis_rag.utils.multilayer_guestimation import (
+    MultiLayerGuestimation,
+    BenchmarkCandidate,
+    EstimationResult as MultiLayerResult
+)
+
 
 class QuantifierRAG:
     """
@@ -64,6 +71,9 @@ class QuantifierRAG:
     def __init__(self):
         """Quantifier RAG 에이전트 초기화"""
         logger.info("Quantifier RAG 에이전트 초기화")
+        
+        # v7.2.1: Multi-Layer Guestimation 엔진
+        self.multilayer_guestimation = None  # Lazy 초기화
         
         # Embeddings
         self.embeddings = OpenAIEmbeddings(
@@ -431,6 +441,81 @@ class QuantifierRAG:
             'signal_breakdown': result.signal_breakdown,
             'evidence_table': result.evidence_table
         }
+
+
+    def estimate_with_multilayer(
+        self,
+        question: str,
+        project_context: Optional[Dict] = None,
+        target_profile: Optional[BenchmarkCandidate] = None
+    ) -> MultiLayerResult:
+        """
+        Multi-Layer Guestimation으로 추정
+        
+        8개 레이어를 순차적으로 시도하여 최적의 추정 방법 자동 선택
+        
+        Args:
+            question: 추정 질문 (예: "한국 음식점 재방문 주기는?")
+            project_context: 프로젝트 데이터 (확정된 값들)
+            target_profile: 타겟 프로필 (비교 기준)
+        
+        Returns:
+            MultiLayerResult (EstimationResult)
+        
+        Usage:
+            quantifier = QuantifierRAG()
+            result = quantifier.estimate_with_multilayer(
+                "한국 SaaS 평균 Churn Rate는?",
+                target_profile=BenchmarkCandidate(...)
+            )
+        """
+        logger.info(f"[Quantifier] Multi-Layer Guestimation 시작: {question}")
+        
+        # Lazy 초기화
+        if self.multilayer_guestimation is None:
+            self.multilayer_guestimation = MultiLayerGuestimation(
+                project_context=project_context or {}
+            )
+        
+        # RAG 벤치마크 검색 (Layer 7용)
+        rag_candidates = []
+        if self.benchmark_store and target_profile:
+            logger.info("  🔍 RAG 벤치마크 검색 중...")
+            
+            # 키워드 추출하여 검색
+            results = self.benchmark_store.similarity_search_with_score(
+                question,
+                k=5
+            )
+            
+            # BenchmarkCandidate로 변환 (간소화)
+            for doc, score in results:
+                metadata = doc.metadata
+                candidate = BenchmarkCandidate(
+                    name=metadata.get('name', 'Unknown'),
+                    value=metadata.get('value', 0.0),
+                    product_type=metadata.get('product_type', 'unknown'),
+                    consumer_type=metadata.get('consumer_type', 'unknown'),
+                    price=metadata.get('price'),
+                    is_essential=metadata.get('is_essential', False),
+                    source=metadata.get('source', 'RAG'),
+                    context=metadata
+                )
+                rag_candidates.append(candidate)
+            
+            logger.info(f"  ✅ RAG 후보: {len(rag_candidates)}개")
+        
+        # Multi-Layer 추정
+        result = self.multilayer_guestimation.estimate(
+            question=question,
+            target_profile=target_profile,
+            rag_candidates=rag_candidates
+        )
+        
+        logger.info(f"  ✅ 추정 완료 - 출처: {result.source_layer.name if result.source_layer else 'None'}")
+        logger.info(f"     값: {result.get_display_value()}, 신뢰도: {result.confidence:.0%}")
+        
+        return result
 
 
 # Quantifier RAG 인스턴스 (싱글톤)
