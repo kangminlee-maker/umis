@@ -103,7 +103,7 @@ class MarketSizingWorkbookGenerator:
         estimations = [a for a in assumptions if a.get('data_type') == '추정치']
         if estimations:
             print(f"   2/9 Estimation Details...")
-            estimation_builder = EstimationDetailsBuilder(wb)
+            estimation_builder = EstimationDetailsBuilder(wb, self.formula_engine)
             estimation_builder.create_sheet(estimations)
         
         # 4-7. Method 시트들 (4가지)

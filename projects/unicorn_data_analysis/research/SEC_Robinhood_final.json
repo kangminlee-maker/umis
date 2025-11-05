@@ -1,0 +1,50 @@
+{
+  "company": "Robinhood",
+  "cik": "0001783879",
+  "data_source": "SEC EDGAR API",
+  "retrieved_at": "2025-11-05",
+  "performance_metrics": {
+    "financial": {
+      "revenue": {
+        "year_1": {
+          "year": 2024,
+          "amount_usd_million": 2951.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_2": {
+          "year": 2023,
+          "amount_usd_million": 1865.0,
+          "source": "SEC 10-K 2023"
+        },
+        "year_3": {
+          "year": 2022,
+          "amount_usd_million": 1358.0,
+          "source": "SEC 10-K 2022"
+        }
+      },
+      "operating_profit": {},
+      "gross_profit": {},
+      "net_income": {
+        "year_1": {
+          "year": 2024,
+          "amount_usd_million": 1411.0,
+          "source": "SEC 10-K 2024"
+        },
+        "year_2": {
+          "year": 2023,
+          "amount_usd_million": -541.0,
+          "source": "SEC 10-K 2023"
+        },
+        "year_3": {
+          "year": 2022,
+          "amount_usd_million": -1028.0,
+          "source": "SEC 10-K 2022"
+        }
+      },
+      "gross_margin": null,
+      "operating_margin": null,
+      "net_margin": 47.814300237207725,
+      "cash_and_equivalents": 4332.0
+    }
+  }
+}

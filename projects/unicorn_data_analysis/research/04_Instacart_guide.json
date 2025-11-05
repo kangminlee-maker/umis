@@ -1,0 +1,113 @@
+{
+  "company": "Instacart",
+  "category": "competitive",
+  "country": "United States",
+  "competitors": [
+    "DoorDash",
+    "Uber Eats",
+    "Amazon Fresh"
+  ],
+  "search_queries": {
+    "revenue_financial": [
+      {
+        "query": "\"Instacart\" revenue \"$\" billion million 2023 2024",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20revenue%20%22%24%22%20billion%20million%202023%202024"
+      },
+      {
+        "query": "\"Instacart\" annual revenue growth rate financial performance",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20annual%20revenue%20growth%20rate%20financial%20performance"
+      },
+      {
+        "query": "\"Instacart\" profitability operating margin EBITDA",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20profitability%20operating%20margin%20EBITDA"
+      }
+    ],
+    "operational_metrics": [
+      {
+        "query": "\"Instacart\" MAU million users 2024 statistics",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20MAU%20million%20users%202024%20statistics"
+      },
+      {
+        "query": "\"Instacart\" announces XX million customers subscribers",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20announces%20XX%20million%20customers%20subscribers"
+      },
+      {
+        "query": "\"Instacart\" GMV gross merchandise value",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20GMV%20gross%20merchandise%20value"
+      },
+      {
+        "query": "\"Instacart\" ARR annual recurring revenue",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20ARR%20annual%20recurring%20revenue"
+      }
+    ],
+    "business_model": [
+      {
+        "query": "\"Instacart\" business model how does make money",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20business%20model%20how%20does%20make%20money"
+      },
+      {
+        "query": "\"Instacart\" revenue model pricing strategy",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20revenue%20model%20pricing%20strategy"
+      },
+      {
+        "query": "\"Instacart\" fee structure commission rate",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20fee%20structure%20commission%20rate"
+      }
+    ],
+    "problem_solution": [
+      {
+        "query": "\"Instacart\" problem solving value proposition",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20problem%20solving%20value%20proposition"
+      },
+      {
+        "query": "\"Instacart\" why customers choose competitive advantage",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20why%20customers%20choose%20competitive%20advantage"
+      },
+      {
+        "query": "\"Instacart\" founder story startup journey",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20founder%20story%20startup%20journey"
+      }
+    ],
+    "competitive": [
+      {
+        "query": "\"Instacart\" vs DoorDash market share comparison",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20vs%20DoorDash%20market%20share%20comparison"
+      },
+      {
+        "query": "\"Instacart\" competitive advantage moat network effects",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20competitive%20advantage%20moat%20network%20effects"
+      },
+      {
+        "query": "\"Instacart\" differentiation unique features",
+        "url": "https://www.google.com/search?q=%22Instacart%22%20differentiation%20unique%20features"
+      }
+    ]
+  },
+  "site_specific": {
+    "techcrunch": {
+      "query": "site:techcrunch.com \"Instacart\" revenue OR funding OR metrics",
+      "url": "https://www.google.com/search?q=site%3Atechcrunch.com%20%22Instacart%22%20revenue%20OR%20funding%20OR%20metrics"
+    },
+    "bloomberg": {
+      "query": "site:bloomberg.com \"Instacart\" financial OR revenue",
+      "url": "https://www.google.com/search?q=site%3Abloomberg.com%20%22Instacart%22%20financial%20OR%20revenue"
+    },
+    "wsj": {
+      "query": "site:wsj.com \"Instacart\" valuation OR financial",
+      "url": "https://www.google.com/search?q=site%3Awsj.com%20%22Instacart%22%20valuation%20OR%20financial"
+    },
+    "theinformation": {
+      "query": "site:theinformation.com \"Instacart\"",
+      "url": "https://www.google.com/search?q=site%3Atheinformation.com%20%22Instacart%22"
+    },
+    "sec": {
+      "query": "\"Instacart\" site:sec.gov 10-K OR S-1",
+      "url": "https://www.google.com/search?q=%22Instacart%22%20site%3Asec.gov%2010-K%20OR%20S-1"
+    }
+  },
+  "direct_urls": {
+    "crunchbase": "https://www.crunchbase.com/organization/instacart",
+    "sec": "https://www.sec.gov/cgi-bin/browse-edgar?company=Instacart&action=getcompany",
+    "google_company": "https://www.google.com/search?q=%22Instacart%22%20official%20website"
+  }
+}

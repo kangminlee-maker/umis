@@ -244,8 +244,9 @@ class Method2BottomUpBuilder:
             ws[f'A{i}'] = seg.get('name')
             ws[f'A{i}'].font = Font(bold=True)
             
-            # B: Total Population
-            ws[f'B{i}'] = self.fe.create_assumption_ref(seg.get('total_population'))
+            # B: Total Population (또는 target_customers)
+            pop_id = seg.get('total_population') or seg.get('target_customers')
+            ws[f'B{i}'] = self.fe.create_assumption_ref(pop_id)
             ws[f'B{i}'].number_format = '#,##0'
             
             # C: Narrowing Filters (설명만)
@@ -325,7 +326,7 @@ class Method2BottomUpBuilder:
         self.fe.define_named_range(
             name='SAM_Method2',
             sheet='Method_2_BottomUp',
-            cell=f'F{total_row}',
+            cell=f'H{total_row}',
             scope='workbook'
         )
         
