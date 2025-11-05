@@ -100,18 +100,13 @@ def _get_global_mode():
     
     return mode
 
-def _get_web_search_mode():
-    """웹 검색 모드 반환"""
-    return os.getenv('UMIS_WEB_SEARCH_MODE', 'native').lower()
-
-def _is_interactive():
-    """Interactive 모드 여부"""
-    return os.getenv('UMIS_INTERACTIVE', 'false').lower() == 'true'
-
 # UMIS 전역 설정 (시스템 전체 적용)
 UMIS_MODE = _get_global_mode()  # LLM 제공자 (native/external)
-UMIS_WEB_SEARCH_MODE = _get_web_search_mode()  # 웹 검색 제공자
-UMIS_INTERACTIVE = _is_interactive()  # Interactive 설정
+
+# 참고: 
+# - 웹 검색 모드: config/multilayer_config.yaml (Guestimation 전용)
+# - Interactive: config/multilayer_config.yaml (Guestimation 전용)
+# - UMIS 실행 모드: config/runtime.yaml (hybrid/rag_full 등)
 
 # ============================================================================
 # 기존 설정 import
@@ -122,8 +117,6 @@ __all__ = [
     "settings", 
     "__version__", 
     "_env_loaded",
-    "UMIS_MODE",           # LLM 제공자 설정 (전역)
-    "UMIS_WEB_SEARCH_MODE",  # 웹 검색 제공자 (전역)
-    "UMIS_INTERACTIVE"     # Interactive 설정 (전역)
+    "UMIS_MODE",           # LLM 제공자 설정 (전역, .env)
 ]
 

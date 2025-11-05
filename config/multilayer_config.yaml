@@ -20,20 +20,40 @@ version: "2.1"
 updated: "2025-11-05"
 
 # ========================================
-# 역할 분담
+# 역할 분담 (중요!)
 # ========================================
 #
-# .env 파일 (글로벌 모드 선택):
-#   - UMIS_MODE: native/external
-#   - UMIS_WEB_SEARCH_MODE: native/api/skip
-#   - UMIS_INTERACTIVE: true/false
+# .env 파일 (UMIS 전역 설정):
+#   - UMIS_MODE: native/external  ← 전체 시스템 LLM 제공자
 #
-# 이 YAML 파일 (세부 설정):
-#   - Native 모드일 때 어떻게 동작?
-#   - External 모드일 때 어떤 모델?
-#   - API 검색은 몇 개 결과?
-#   - 유사도 임계값은?
+# 이 YAML 파일 (Guestimation 전용 설정):
+#   - web_search_mode: native/api/scraping/skip  ← Layer 3 웹 검색
+#   - interactive_mode: true/false  ← Layer 2,3 사용자 입력
+#   - 상세 설정: results_count, threshold 등
 #
+# 참고: UMIS 전체 실행 모드는 config/runtime.yaml 참조
+#   - mode: hybrid (yaml_only/hybrid/rag_full)
+#   - environment: development/production
+#
+# ========================================
+
+# ========================================
+# Guestimation 전용 설정
+# ========================================
+
+# 웹 검색 모드 (Layer 3)
+web_search_mode: "native"
+# 옵션:
+#   "native"   - Cursor web_search tool 사용 (권장, 무료)
+#   "api"      - SerpAPI 호출 (자동화, 월 100회 무료)
+#   "scraping" - BeautifulSoup 스크래핑 (불안정)
+#   "skip"     - Layer 3 건너뛰기
+
+# Interactive 모드 (Layer 2, 3 사용자 입력)
+interactive_mode: false
+# true:  Layer 2, 3에서 사용자 입력 프롬프트
+# false: 안내만 하고 자동으로 다음 레이어
+
 # ========================================
 
 # ========================================
@@ -110,7 +130,7 @@ layer_3_web_search:
       - "Wikipedia"
     
     # 결과 수 권장
-    recommended_count: 5
+    recommended_count: 20
   
   # API Mode 설정 (SerpAPI)
   api:
@@ -136,12 +156,25 @@ layer_3_web_search:
       # 일 무료 한도
       free_quota: 100  # 100회/일
   
-  # Scraping Mode 설정 (사용 비권장)
+  # Scraping Mode 설정 (BeautifulSoup)
   scraping:
-    enabled: false
+    enabled: false  # 기본 비활성 (불안정)
     warning: "불안정하고 robots.txt 위반 가능성"
+    
+    # BeautifulSoup 설정
     user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
     timeout: 5  # 초
+    max_retries: 2
+    
+    # 파싱할 검색 엔진
+    search_engines:
+      - name: "Google"
+        url_template: "https://www.google.com/search?q={query}"
+        snippet_selector: "div.VwiC3b"  # CSS selector
+      
+      - name: "Naver"
+        url_template: "https://search.naver.com/search.naver?query={query}"
+        snippet_selector: "div.total_dsc"
   
   # 공통값 추출 설정 (사용자 요청 반영)
   consensus_extraction:
