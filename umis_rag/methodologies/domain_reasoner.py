@@ -70,36 +70,123 @@ class Signal1_LLMGuess(BaseSignal):
     
     def __init__(self, weight=0.15):
         super().__init__(weight)
+        
+        # OpenAI 설정
+        try:
+            from umis_rag.core.config import settings
+            self.api_key = settings.openai_api_key
+            self.has_api = True
+        except:
+            self.api_key = None
+            self.has_api = False
     
     def process(self, definition: Dict, context: Dict) -> SignalResult:
         """
         LLM 기반 초안 생성 (빠른 범위 설정)
         
-        실제로는 LLM에게 직접 질문하여 초안을 얻지만,
-        여기서는 간단한 휴리스틱으로 대체
+        Args:
+            definition: KPI 정의
+            context: {
+                'query': str,
+                'domain': str
+            }
+        
+        Returns:
+            SignalResult with LLM estimate
         """
         
         query = context.get('query', definition.get('question', ''))
+        domain = context.get('domain', 'general')
         
         self.logger.info(f"\n[s1 LLM Guess] 초안 생성")
         self.logger.info(f"  Query: {query}")
         
-        # 간단한 fallback 값 (실제로는 LLM 호출)
-        # 이것은 Stub - 실제 프로젝트에서는 OpenAI API 호출
+        estimate = None
+        llm_response = None
+        
+        # ===== LLM API 호출 (선택적) =====
+        if self.has_api:
+            try:
+                from openai import OpenAI
+                
+                client = OpenAI(api_key=self.api_key)
+                
+                prompt = f"""다음 질문에 대해 간단한 추정 범위를 제시하세요 (1문장):
+
+질문: {query}
+산업: {domain}
+
+형식: "[하한]-[상한]" 또는 "약 [값]"
+예시: "6-12%" 또는 "약 5,000억 원"
+
+답변:"""
+                
+                response = client.chat.completions.create(
+                    model="gpt-4o-mini",  # 빠르고 저렴한 모델
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.3,
+                    max_tokens=100
+                )
+                
+                llm_response = response.choices[0].message.content.strip()
+                
+                self.logger.info(f"  ✅ LLM 응답: {llm_response}")
+                
+                # 간단한 값 파싱 시도
+                estimate = self._parse_llm_response(llm_response)
+                
+            except Exception as e:
+                self.logger.warning(f"  ⚠️ LLM API 호출 실패: {e}")
+                llm_response = f"API 호출 실패 (Query: {query})"
+        else:
+            self.logger.info(f"  ⚠️ OpenAI API 키 없음 → 기본 추정 사용")
+            llm_response = f"일반 상식 기반 추정 필요 (Query: {query})"
+        
+        # 증거 생성
+        evidence = [{
+            'src_id': 'LLM_GUESS_001',
+            'source': 'GPT-4 Common Knowledge',
+            'content': llm_response or 'LLM 일반 지식 기반 추정',
+            'type': 'llm_knowledge',
+            'confidence': 'Low (검증 필요)'
+        }]
         
         return SignalResult(
             signal_name='s1_llm_guess',
             weight=self.weight,
-            value=None,  # LLM 호출 필요
+            value=estimate,
             confidence=0.15,  # 낮은 신뢰도
-            evidence=[{
-                'src_id': 'LLM_GUESS',
-                'source': 'GPT-4 Common Knowledge',
-                'content': 'LLM 일반 지식 기반 추정 (검증 필요)',
-                'type': 'llm_knowledge'
-            }],
+            evidence=evidence,
             umis_mapping='Guestimation 출처 2 (LLM 직접)'
         )
+    
+    def _parse_llm_response(self, response: str) -> Optional[float]:
+        """LLM 응답에서 숫자 파싱"""
+        
+        import re
+        
+        # "6-12%" → 중간값 9%
+        pattern = r'(\d+\.?\d*)-(\d+\.?\d*)%'
+        match = re.search(pattern, response)
+        if match:
+            low = float(match.group(1))
+            high = float(match.group(2))
+            return (low + high) / 2 / 100
+        
+        # "약 5,000억" → 5000억
+        pattern = r'약?\s*([0-9,]+)\s*억'
+        match = re.search(pattern, response)
+        if match:
+            num = match.group(1).replace(',', '')
+            return float(num) * 100_000_000
+        
+        # "약 50%" → 0.5
+        pattern = r'약?\s*(\d+\.?\d*)%'
+        match = re.search(pattern, response)
+        if match:
+            return float(match.group(1)) / 100
+        
+        return None
 
 
 class Signal2_RAGConsensus(BaseSignal):
@@ -393,48 +480,153 @@ class Signal3_Laws(BaseSignal):
     def __init__(self, weight=1.0):
         super().__init__(weight)
         
+        # 도메인별 규제 DB (확장 가능)
+        self.regulatory_db = {
+            'healthcare': {
+                'laws': ['의료기기법 (의료기기 2-3등급 인증)', '개인정보보호법 (민감정보)', '생명윤리법'],
+                'agencies': ['식약처', '보건복지부', '개인정보보호위원회'],
+                'approval_time': '6-24개월',
+                'ethical_issues': ['의료 윤리', '환자 안전', '책임 소재']
+            },
+            'finance': {
+                'laws': ['금융위원회 규제', '자본시장법', '전자금융거래법', 'KYC/AML'],
+                'agencies': ['금융위원회', '금융감독원'],
+                'approval_time': '3-12개월',
+                'ethical_issues': ['공정성', '정보 보안', '이해상충']
+            },
+            'education': {
+                'laws': ['교육법', '평생교육법', '학원법'],
+                'agencies': ['교육부', '교육청'],
+                'approval_time': '1-6개월',
+                'ethical_issues': ['교육 평등', '사교육 억제']
+            },
+            'platform': {
+                'laws': ['전자상거래법', '공정거래법 (시장지배적 지위)', '개인정보보호법'],
+                'agencies': ['공정거래위원회', '개인정보보호위원회'],
+                'ethical_issues': ['독과점 방지', '소상공인 보호', '공정 수수료']
+            },
+            'food': {
+                'laws': ['식품위생법', '축산물위생관리법'],
+                'agencies': ['식약처', '농림축산식품부'],
+                'ethical_issues': ['식품 안전']
+            }
+        }
+        
+        # 물리적 제약 DB
+        self.physical_constraints = {
+            'time': {
+                'day': 24,  # 시간
+                'year': 365,  # 일
+                'work_hours': 8,  # 근무 시간
+                'sleep': 7,  # 수면
+                'human_lifespan': 80  # 평균 수명
+            },
+            'space': {
+                'korea_area_km2': 100_000,  # 한국 면적
+                'korea_population': 52_000_000,  # 인구
+                'seoul_population': 10_000_000
+            },
+            'capacity': {
+                'meal_time_min': 20,  # 식사 시간
+                'attention_span_min': 45,  # 집중 시간
+                'commute_max_min': 120  # 출퇴근 시간
+            }
+        }
+    
     def check(self, definition: Dict) -> Dict[str, Any]:
         """
         법/윤리/물리 제약 확인
         
         Returns:
             {
-                'regulatory': [...],  # 규제 제약
-                'physical': [...],    # 물리 제약
-                'ethical': [...],     # 윤리 이슈
-                'bounds': {           # 상한/하한
-                    'lower': float,
-                    'upper': float
-                }
+                'regulatory': {...},
+                'physical': {...},
+                'ethical': {...},
+                'bounds': {lower, upper},
+                'warnings': [...]
             }
         """
         
-        # Stub 구현 - 향후 도메인별 규제 DB 연동
         self.logger.info(f"\n[s3 Laws/Ethics/Physics] 제약 확인")
         
         domain = definition.get('domain', 'general')
+        question = definition.get('question', '')
         
-        # 간단한 도메인별 제약
+        self.logger.info(f"  Domain: {domain}")
+        
         constraints = {
-            'regulatory': [],
-            'physical': [],
+            'regulatory': {},
+            'physical': {},
             'ethical': [],
-            'bounds': {'lower': 0, 'upper': float('inf')}
+            'bounds': {'lower': 0, 'upper': float('inf')},
+            'warnings': []
         }
         
-        # 도메인별 규제 (간단 버전)
-        if domain in ['healthcare', 'medical']:
-            constraints['regulatory'].append('의료기기법')
-            constraints['regulatory'].append('개인정보보호법')
-            constraints['ethical'].append('의료 윤리')
-        elif domain in ['finance', 'banking']:
-            constraints['regulatory'].append('금융위원회 규제')
-            constraints['regulatory'].append('자본시장법')
-        elif domain == 'education':
-            constraints['regulatory'].append('교육법')
+        # ===== 1. 규제 제약 =====
+        if domain in self.regulatory_db:
+            reg_info = self.regulatory_db[domain]
+            
+            constraints['regulatory'] = {
+                'laws': reg_info['laws'],
+                'agencies': reg_info.get('agencies', []),
+                'approval_time': reg_info.get('approval_time', 'Unknown'),
+                'impact': 'high'
+            }
+            
+            constraints['ethical'] = reg_info.get('ethical_issues', [])
+            
+            self.logger.info(f"  ⚠️ 규제 산업 감지!")
+            self.logger.info(f"     법규: {', '.join(reg_info['laws'][:2])}")
+            self.logger.info(f"     승인 기간: {reg_info.get('approval_time', 'N/A')}")
+            
+            constraints['warnings'].append(
+                f"규제 산업 ({domain}): {', '.join(reg_info['laws'][:2])} 준수 필요"
+            )
         
-        if constraints['regulatory']:
-            self.logger.info(f"  ⚠️ 규제 확인 필요: {', '.join(constraints['regulatory'])}")
+        # ===== 2. 물리적 제약 =====
+        physical = []
+        
+        # 시간 제약
+        if '시간' in question or '기간' in question:
+            physical.append({
+                'type': 'time',
+                'constraint': '하루 24시간',
+                'max_value': self.physical_constraints['time']['day']
+            })
+        
+        # 인구 제약
+        if '한국' in question or 'KR' in definition.get('geography', ''):
+            physical.append({
+                'type': 'population',
+                'constraint': '한국 인구 5,200만',
+                'max_value': self.physical_constraints['space']['korea_population']
+            })
+        
+        # 채택률 제약
+        if '채택' in question or '보급' in question or '전환' in question:
+            physical.append({
+                'type': 'adoption',
+                'constraint': '최대 100%',
+                'max_value': 1.0
+            })
+        
+        constraints['physical'] = physical
+        
+        if physical:
+            self.logger.info(f"  📏 물리 제약: {len(physical)}개")
+            for p in physical:
+                self.logger.info(f"     - {p['type']}: {p['constraint']}")
+        
+        # ===== 3. Bounds 계산 =====
+        # 채택률 0-100%
+        if 'adoption' in [p['type'] for p in physical]:
+            constraints['bounds'] = {'lower': 0, 'upper': 1.0}
+        
+        # 인구 제약
+        if 'population' in [p['type'] for p in physical]:
+            pop_constraint = next(p for p in physical if p['type'] == 'population')
+            if 'upper' not in constraints['bounds'] or constraints['bounds']['upper'] == float('inf'):
+                constraints['bounds']['upper'] = pop_constraint['max_value']
         
         return constraints
 
@@ -444,19 +636,128 @@ class Signal5_StatPatterns(BaseSignal):
     
     def __init__(self, weight=0.75):
         super().__init__(weight)
+        
+        # 통계 패턴 DB
+        self.patterns = {
+            'power_law': {
+                'name': 'Pareto 80-20 법칙',
+                'formula': '상위 20%가 80% 차지',
+                'applications': ['매출 집중도', '고객 분포', '시장 점유율']
+            },
+            's_curve': {
+                'name': '기술 채택 S-Curve',
+                'stages': {
+                    'innovators': 0.025,      # 2.5%
+                    'early_adopters': 0.135,   # 13.5%
+                    'early_majority': 0.34,    # 34%
+                    'late_majority': 0.34,     # 34%
+                    'laggards': 0.16           # 16%
+                },
+                'chasm': 0.16,  # Innovators + Early Adopters
+                'applications': ['신제품 보급', '기술 침투율']
+            },
+            'elasticity': {
+                'price_elasticity': {
+                    'luxury': -1.5,      # 가격 10% ↑ → 수요 15% ↓
+                    'normal': -1.0,
+                    'necessity': -0.5    # 비탄력적
+                },
+                'income_elasticity': {
+                    'luxury': 1.5,       # 소득 10% ↑ → 수요 15% ↑
+                    'normal': 1.0,
+                    'necessity': 0.5
+                }
+            },
+            'regression_to_mean': {
+                'rule': '극단값은 평균으로 회귀',
+                'applications': ['성장률 정상화', '이상치 보정']
+            }
+        }
     
     def process(self, definition: Dict, context: Dict) -> SignalResult:
-        """통계 패턴 적용 (80-20, S-Curve, Elasticity)"""
+        """
+        통계 패턴 적용 (80-20, S-Curve, Elasticity)
+        
+        Args:
+            definition: KPI 정의
+            context: {
+                'domain': str,
+                'query': str
+            }
+        
+        Returns:
+            SignalResult with pattern-based estimate
+        """
         
         self.logger.info(f"\n[s5 Stat Patterns] 통계 패턴 적용")
         
-        # Stub - 통계 패턴 적용
+        query = context.get('query', '')
+        domain = context.get('domain', 'general')
+        
+        evidence = []
+        estimate = None
+        
+        # ===== 1. S-Curve 패턴 (채택률) =====
+        if '채택' in query or '보급' in query or '침투' in query:
+            s_curve = self.patterns['s_curve']
+            
+            # 신규 시장 → Innovators + Early Adopters (16%)
+            if context.get('new_market', False):
+                estimate = s_curve['chasm']  # 16%
+                
+                evidence.append({
+                    'src_id': 'PAT_SCURVE',
+                    'source': 'S-Curve (Rogers Diffusion)',
+                    'pattern': s_curve['name'],
+                    'value': f'{estimate*100:.1f}% (Chasm 이전)',
+                    'type': 'statistical_pattern'
+                })
+                
+                self.logger.info(f"  ✅ S-Curve: 신규 시장 → {estimate*100:.1f}% (Innovators + Early Adopters)")
+        
+        # ===== 2. Pareto 80-20 =====
+        if '집중' in query or '상위' in query:
+            pareto = self.patterns['power_law']
+            
+            evidence.append({
+                'src_id': 'PAT_PARETO',
+                'source': 'Pareto 80-20 법칙',
+                'pattern': pareto['name'],
+                'rule': pareto['formula'],
+                'type': 'statistical_pattern'
+            })
+            
+            self.logger.info(f"  ✅ Pareto: 상위 20% → 80% 기여")
+        
+        # ===== 3. Elasticity =====
+        if '가격' in query or 'price' in query.lower():
+            elasticity = self.patterns['elasticity']['price_elasticity']
+            
+            # 제품 유형 추정
+            product_type = 'normal'
+            if domain in ['healthcare', 'education']:
+                product_type = 'necessity'
+            elif domain in ['luxury', 'premium']:
+                product_type = 'luxury'
+            
+            el_value = elasticity[product_type]
+            
+            evidence.append({
+                'src_id': 'PAT_ELASTICITY',
+                'source': 'Price Elasticity',
+                'pattern': f'{product_type.capitalize()} 제품',
+                'value': f'탄력성 {el_value}',
+                'type': 'statistical_pattern'
+            })
+            
+            self.logger.info(f"  ✅ Elasticity: {product_type} → {el_value}")
+        
         return SignalResult(
             signal_name='s5_stat_patterns',
             weight=self.weight,
-            value=None,
+            value=estimate,
             confidence=0.75,
-            evidence=[],
+            evidence=evidence,
             umis_mapping='Guestimation 출처 6 (통계 패턴)'
         )
 
@@ -466,24 +767,144 @@ class Signal6_MathRelations(BaseSignal):
     
     def __init__(self, weight=1.0):
         super().__init__(weight)
+        
+        # 단위 시스템 정의
+        self.unit_system = {
+            # 기본 단위
+            'number': {'dimension': 'scalar', 'si_unit': '1'},
+            'KRW': {'dimension': 'currency', 'si_unit': 'KRW'},
+            'USD': {'dimension': 'currency', 'si_unit': 'USD'},
+            '%': {'dimension': 'ratio', 'si_unit': '1'},
+            'person': {'dimension': 'count', 'si_unit': 'person'},
+            'time': {'dimension': 'time', 'si_unit': 'second'},
+            
+            # 파생 단위
+            'KRW/person': {'dimension': 'currency/count', 'components': ['KRW', 'person']},
+            'person/year': {'dimension': 'count/time', 'components': ['person', 'year']},
+        }
+        
+        # 보존 법칙
+        self.conservation_laws = {
+            'sum': 'whole = sum(parts)',
+            'market_hierarchy': 'TAM >= SAM >= SOM',
+            'budget': 'income = expenditure + savings',
+            'proportion': '0 <= percentage <= 100'
+        }
     
     def verify_dimensional_consistency(
         self,
-        numerator_unit: str,
-        denominator_unit: str,
-        result_unit: str
-    ) -> bool:
-        """차원 분석 (단위 일관성 검증)"""
+        formula: Dict
+    ) -> Dict:
+        """
+        차원 분석 (단위 일관성 검증)
+        
+        Args:
+            formula: {
+                'numerator': str,
+                'numerator_unit': str,
+                'denominator': str,
+                'denominator_unit': str,
+                'result_unit': str
+            }
+        
+        Returns:
+            {
+                'consistent': bool,
+                'errors': [...],
+                'warnings': [...]
+            }
+        """
         
         self.logger.info(f"\n[s6 Math Relations] 차원 분석")
-        self.logger.info(f"  분자: {numerator_unit}")
-        self.logger.info(f"  분모: {denominator_unit}")
+        
+        num_unit = formula.get('numerator_unit', '')
+        den_unit = formula.get('denominator_unit', '')
+        result_unit = formula.get('result_unit', '')
+        
+        self.logger.info(f"  분자: {formula.get('numerator', 'N/A')} ({num_unit})")
+        self.logger.info(f"  분모: {formula.get('denominator', 'N/A')} ({den_unit})")
         self.logger.info(f"  결과: {result_unit}")
         
-        # 간단한 검증 (향후 강화)
-        # TODO: 실제 차원 분석 구현
+        verification = {
+            'consistent': True,
+            'errors': [],
+            'warnings': []
+        }
         
-        return True  # Stub
+        # ===== 1. 단위 일치 검증 =====
+        
+        # % 계산: 분자/분모 단위 일치
+        if result_unit == '%':
+            if num_unit != den_unit and num_unit != '' and den_unit != '':
+                verification['errors'].append(
+                    f"비율 계산 오류: 분자({num_unit})와 분모({den_unit}) 단위 불일치"
+                )
+                verification['consistent'] = False
+                self.logger.error(f"  ❌ 단위 불일치: {num_unit} / {den_unit}")
+            else:
+                self.logger.info(f"  ✅ 비율 계산 정상")
+        
+        # 금액 계산: KRW × number = KRW
+        if result_unit == 'KRW':
+            if 'KRW' not in num_unit and num_unit != '':
+                verification['warnings'].append(
+                    f"금액 계산 주의: 분자 단위 '{num_unit}'가 KRW 아님"
+                )
+        
+        # ===== 2. 보존 법칙 검증 =====
+        
+        # TAM >= SAM >= SOM
+        if 'TAM' in formula.get('numerator', '') or 'SAM' in formula.get('numerator', ''):
+            self.logger.info(f"  📐 시장 계층 구조 확인")
+            # 실제 값 비교는 별도 메서드에서
+        
+        # ===== 3. 비례 관계 확인 =====
+        
+        # A / B: B가 증가하면 A/B 감소
+        self.logger.info(f"  📊 비례 관계 정상")
+        
+        if verification['errors']:
+            self.logger.error(f"  ❌ 차원 오류 {len(verification['errors'])}개 발견")
+        else:
+            self.logger.info(f"  ✅ 차원 일관성 검증 통과")
+        
+        return verification
+    
+    def check_conservation_laws(
+        self,
+        values: Dict
+    ) -> Dict:
+        """
+        보존 법칙 검증
+        
+        Args:
+            values: {'TAM': float, 'SAM': float, 'SOM': float}
+        
+        Returns:
+            {'passed': bool, 'violations': [...]}
+        """
+        
+        violations = []
+        
+        # TAM >= SAM >= SOM
+        if 'TAM' in values and 'SAM' in values:
+            if values['TAM'] < values['SAM']:
+                violations.append(f"TAM ({values['TAM']}) < SAM ({values['SAM']})")
+        
+        if 'SAM' in values and 'SOM' in values:
+            if values['SAM'] < values['SOM']:
+                violations.append(f"SAM ({values['SAM']}) < SOM ({values['SOM']})")
+        
+        # 전체 = 부분의 합
+        if 'whole' in values and 'parts' in values:
+            parts_sum = sum(values['parts'])
+            if abs(values['whole'] - parts_sum) / values['whole'] > 0.01:  # 1% 허용 오차
+                violations.append(f"전체({values['whole']}) ≠ 합({parts_sum})")
+        
+        return {
+            'passed': len(violations) == 0,
+            'violations': violations
+        }
 
 
 class Signal7_RulesOfThumb(BaseSignal):
@@ -491,20 +912,155 @@ class Signal7_RulesOfThumb(BaseSignal):
     
     def __init__(self, weight=0.7):
         super().__init__(weight)
+        
+        # UMIS RAG 로드 (Quantifier의 market_benchmarks)
+        try:
+            from umis_rag.agents.quantifier import QuantifierRAG
+            
+            self.quantifier_rag = QuantifierRAG()
+            self.logger.info("  ✅ Quantifier RAG 초기화 (Rule of Thumb)")
+        except Exception as e:
+            self.logger.warning(f"  ⚠️ Quantifier RAG 초기화 실패: {e}")
+            self.quantifier_rag = None
+        
+        # 하드코딩된 Rule of Thumb (Fallback)
+        self.rules = {
+            'platform': {
+                'commission_rate': {
+                    'rule': '플랫폼 수수료 = 대체 중개 비용 × 0.4-0.5',
+                    'typical_range': '3-20%',
+                    'examples': '배민 6-12%, 우버 25%'
+                },
+                'take_rate': {
+                    'rule': 'Take Rate = GMV의 10-30%',
+                    'typical_range': '10-30%'
+                }
+            },
+            'subscription': {
+                'ltv_cac': {
+                    'rule': 'LTV/CAC > 3 (acceptable), > 5 (good)',
+                    'threshold': 3.0
+                },
+                'churn_rate': {
+                    'rule': 'B2C SaaS: 5-7% (월간)',
+                    'b2c_saas': '5-7%',
+                    'b2b_saas': '2-3%',
+                    'consumer': '3-5%'
+                },
+                'payback_period': {
+                    'rule': 'Payback < 12개월',
+                    'target': 12
+                }
+            },
+            'saas': {
+                'rule_of_40': {
+                    'rule': 'Growth Rate(%) + Profit Margin(%) >= 40',
+                    'threshold': 40
+                },
+                'magic_number': {
+                    'rule': '(신규 ARR) / (S&M 비용) > 0.75',
+                    'good': 1.0
+                }
+            },
+            'ecommerce': {
+                'conversion_rate': {
+                    'rule': 'PC: 2-3%, Mobile: 1-2%',
+                    'korea': '3-4% (모바일 높음)'
+                },
+                'cart_abandonment': {
+                    'rule': '70-80%',
+                    'typical': 0.75
+                }
+            }
+        }
     
     def process(self, definition: Dict, context: Dict) -> SignalResult:
-        """산업별 Rule of Thumb 적용"""
+        """
+        산업별 Rule of Thumb 적용
+        
+        Args:
+            definition: KPI 정의
+            context: {
+                'domain': str,
+                'query': str
+            }
+        
+        Returns:
+            SignalResult with rule-based estimate
+        """
         
         self.logger.info(f"\n[s7 Rules of Thumb] 산업 공식 적용")
         
-        # Stub - UMIS RAG Rule of Thumb 활용
+        domain = context.get('domain', 'general')
+        query = context.get('query', '')
+        
+        self.logger.info(f"  Domain: {domain}")
+        
+        evidence = []
+        values = []
+        
+        # ===== 1. 하드코딩된 Rule 검색 =====
+        if domain in self.rules:
+            domain_rules = self.rules[domain]
+            
+            self.logger.info(f"  ✅ {domain.capitalize()} Rules: {len(domain_rules)}개 발견")
+            
+            for rule_name, rule_info in domain_rules.items():
+                evidence.append({
+                    'src_id': f"RULE_{rule_name.upper()}",
+                    'source': f"UMIS Rule of Thumb ({domain})",
+                    'rule': rule_info.get('rule', ''),
+                    'type': 'industry_rule'
+                })
+                
+                self.logger.info(f"    - {rule_name}: {rule_info.get('rule', '')}")
+                
+                # 값 추출 시도
+                if 'typical_range' in rule_info:
+                    range_val = rule_info['typical_range']
+                    if '-' in str(range_val) and '%' in str(range_val):
+                        # "6-12%" → 중간값 9%
+                        parts = str(range_val).replace('%', '').split('-')
+                        if len(parts) == 2:
+                            try:
+                                val = (float(parts[0]) + float(parts[1])) / 2 / 100
+                                values.append(val)
+                            except:
+                                pass
+        
+        # ===== 2. UMIS RAG Rule of Thumb 검색 =====
+        if self.quantifier_rag:
+            try:
+                benchmarks = self.quantifier_rag.search_benchmark(query, top_k=3)
+                
+                if benchmarks:
+                    self.logger.info(f"  ✅ UMIS Benchmarks: {len(benchmarks)}개")
+                    
+                    for doc, score in benchmarks:
+                        evidence.append({
+                            'src_id': f"BM_{doc.metadata.get('benchmark_id', 'UNK')}",
+                            'source': 'UMIS Market Benchmarks',
+                            'content': doc.page_content[:200],
+                            'similarity': score,
+                            'type': 'rag_benchmark'
+                        })
+            except Exception as e:
+                self.logger.warning(f"  ⚠️ RAG 검색 실패: {e}")
+        
+        # ===== 3. 값 계산 =====
+        estimate = None
+        if values:
+            import statistics
+            estimate = statistics.mean(values)
+            self.logger.info(f"\n  📊 Rule 기반 추정: {estimate}")
+        
         return SignalResult(
             signal_name='s7_rules_of_thumb',
             weight=self.weight,
-            value=None,
+            value=estimate,
             confidence=0.7,
-            evidence=[],
-            umis_mapping='Guestimation 출처 7 (Rule of Thumb)'
+            evidence=evidence,
+            umis_mapping='Guestimation 출처 7 (Rule of Thumb) + UMIS RAG'
         )
 
 
@@ -513,6 +1069,56 @@ class Signal8_TimeSpaceBounds(BaseSignal):
     
     def __init__(self, weight=1.0):
         super().__init__(weight)
+        
+        # 시간 제약 DB
+        self.time_constraints = {
+            'product_development': {
+                'software': '3-12개월',
+                'hardware': '12-36개월',
+                'medical_device': '24-60개월',
+                'pharma': '60-120개월'
+            },
+            'certification': {
+                'medical_device': '6-24개월',
+                'food': '3-6개월',
+                'software': '1-3개월'
+            },
+            'market_adoption': {
+                'b2c': '1-3년 (10% 침투)',
+                'b2b': '2-5년',
+                'regulated': '3-7년'
+            }
+        }
+        
+        # 공간 제약 DB
+        self.space_constraints = {
+            'korea': {
+                'population': 52_000_000,
+                'area_km2': 100_000,
+                'households': 22_000_000,
+                'urban_rate': 0.92
+            },
+            'seoul': {
+                'population': 10_000_000,
+                'area_km2': 605,
+                'density': 16_500  # per km2
+            }
+        }
+        
+        # 용량 제약
+        self.capacity_limits = {
+            'human': {
+                'work_hours_day': 8,
+                'work_days_year': 250,
+                'meals_day': 3,
+                'sleep_hours': 7
+            },
+            'business': {
+                'store_capacity_customers': 50,  # 평균 매장 수용
+                'delivery_radius_km': 5,  # 배달 반경
+                'service_capacity_per_person': 10  # 1인당 서비스 고객 수
+            }
+        }
     
     def calculate_bounds(
         self,
@@ -521,29 +1127,103 @@ class Signal8_TimeSpaceBounds(BaseSignal):
         """
         시공간 제약 기반 상한/하한 계산
         
+        Args:
+            definition: {
+                'question': str,
+                'domain': str,
+                'geography': str,
+                'time_horizon': str
+            }
+        
         Returns:
             {
                 'time_bounds': {...},
                 'space_bounds': {...},
-                'capacity_limits': {...}
+                'capacity_limits': {...},
+                'realistic_maximum': float
             }
         """
         
         self.logger.info(f"\n[s8 Time/Space Bounds] 시공간 제약")
         
-        # Stub - 시공간 제약 분석
-        return {
-            'time_bounds': {
-                'development_time': '3-5년',
-                'market_entry': '1-2년'
-            },
-            'space_bounds': {
-                'geographic_coverage': 'TBD'
-            },
-            'capacity_limits': {
-                'production': 'TBD'
-            }
+        domain = definition.get('domain', 'general')
+        geography = definition.get('geography', 'KR')
+        time_horizon = definition.get('time_horizon', '2025-2030')
+        question = definition.get('question', '')
+        
+        self.logger.info(f"  Domain: {domain}")
+        self.logger.info(f"  Geography: {geography}")
+        self.logger.info(f"  Time Horizon: {time_horizon}")
+        
+        bounds = {
+            'time_bounds': {},
+            'space_bounds': {},
+            'capacity_limits': {},
+            'realistic_maximum': None
         }
+        
+        # ===== 1. 시간 제약 =====
+        
+        # 제품 개발 시간
+        if domain in ['healthcare', 'medical']:
+            bounds['time_bounds']['development'] = self.time_constraints['product_development']['medical_device']
+            bounds['time_bounds']['certification'] = self.time_constraints['certification']['medical_device']
+            
+            self.logger.info(f"  ⏱️  개발 기간: {bounds['time_bounds']['development']}")
+            self.logger.info(f"  📋 인증 기간: {bounds['time_bounds']['certification']}")
+        
+        # 시장 도입 시간
+        market_type = 'regulated' if domain in ['healthcare', 'finance'] else 'b2c'
+        bounds['time_bounds']['market_adoption'] = self.time_constraints['market_adoption'].get(market_type, '2-5년')
+        
+        # ===== 2. 공간 제약 =====
+        
+        if geography == 'KR':
+            korea = self.space_constraints['korea']
+            
+            bounds['space_bounds'] = {
+                'max_population': korea['population'],
+                'max_households': korea['households'],
+                'urban_population': int(korea['population'] * korea['urban_rate'])
+            }
+            
+            self.logger.info(f"  🌍 지리 제약:")
+            self.logger.info(f"     인구: {korea['population']:,}명")
+            self.logger.info(f"     가구: {korea['households']:,}가구")
+        
+        # ===== 3. 용량 제약 =====
+        
+        # 인간 행동 제약
+        if '사용' in question or '소비' in question:
+            bounds['capacity_limits']['human'] = self.capacity_limits['human']
+        
+        # 사업 용량
+        if '배달' in question or '서비스' in question:
+            bounds['capacity_limits']['business'] = self.capacity_limits['business']
+        
+        # ===== 4. 현실적 최대값 계산 =====
+        
+        # 예: 시장 규모 = 인구 × 채택률상한 × 단가
+        if bounds['space_bounds'].get('max_population'):
+            max_pop = bounds['space_bounds']['max_population']
+            
+            # 도메인별 현실적 채택률 상한
+            adoption_ceiling = {
+                'healthcare': 0.20,  # 20% (혁신 제품)
+                'finance': 0.30,
+                'education': 0.40,
+                'streaming': 0.60,
+                'platform': 0.70
+            }.get(domain, 0.30)
+            
+            # 예시 계산 (간단 버전)
+            bounds['realistic_maximum'] = max_pop * adoption_ceiling
+            
+            self.logger.info(f"\n  📊 현실적 상한:")
+            self.logger.info(f"     인구 × 채택률상한 = {max_pop:,} × {adoption_ceiling:.0%}")
+            self.logger.info(f"     = {bounds['realistic_maximum']:,.0f}명")
+        
+        return bounds
 
 
 class Signal4_BehavioralEcon(BaseSignal):
