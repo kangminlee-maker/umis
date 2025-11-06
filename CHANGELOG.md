@@ -5,13 +5,14 @@
 
 ---
 
-## v7.2.1 (2025-11-05) - Multi-Layer Guestimation 🌟
+## v7.2.1 (2025-11-05~06) - Multi-Layer + Fermi Model Search 🎯
 
 ### 🎊 릴리즈 하이라이트
 
-**작업 시간**: 40분  
-**주요 기능**: Multi-Layer Guestimation 구현  
-**완성도**: 100%
+**작업 기간**: 2일 (2025-11-05~06)  
+**작업 시간**: ~6시간  
+**주요 기능**: Multi-Layer Guestimation + Fermi Model Search  
+**완성도**: Multi-Layer 82%, Fermi 95%
 
 ### 🚀 주요 기능
 
@@ -73,6 +74,59 @@ result = quantifier.estimate_with_multilayer(
 - ✅ 단위 테스트 통과
 - ✅ 통합 테스트 통과 (Quantifier)
 - ✅ 8개 레이어 정상 작동
+
+---
+
+#### Fermi Model Search 엔진 ⭐⭐⭐⭐⭐ (2025-11-06)
+
+**파일**: `umis_rag/utils/fermi_model_search.py` (748줄)
+
+**핵심 개념**:
+- "논리의 퍼즐 맞추기"
+- 가용 데이터(Bottom-up) ⟷ 개념 분해(Top-down) 반복
+- "채울 수 있는 모형" 찾기
+
+**Phase 1-4**:
+1. 초기 스캔: 가용 데이터 파악
+2. 모형 생성: LLM이 3-5개 후보 제시
+3. 실행 가능성: 퍼즐 맞추기 (재귀)
+4. 재조립: Backtracking
+
+**재귀 구조**:
+- Unknown 변수 → 즉시 재귀 호출
+- Max depth: 4
+- 순환 감지: A → B → A 중단
+
+**12개 모형 템플릿**:
+- 시장 규모 (2개)
+- LTV (2개)
+- CAC (2개)
+- Unit Economics, Churn, Conversion, ARPU (2개), Growth
+
+**사용 예**:
+```python
+from umis_rag.utils.fermi_model_search import fermi_estimate
+
+result = fermi_estimate("음식점 SaaS 시장은?")
+# → 모형: 시장 = 고객 × 디지털 × 전환 × ARPU × 12
+# → 각 변수 재귀 추정
+# → 재조립: 202억원
+```
+
+### 설정 아키텍처 정리
+
+**3계층 구조**:
+1. `.env`: UMIS_MODE (전역 LLM 제공자)
+2. `config/multilayer_config.yaml`: Guestimation 전용
+3. `config/runtime.yaml`: UMIS 실행 환경
+
+### 신규 파일
+- `umis_rag/utils/fermi_model_search.py` (748줄)
+- `config/fermi_model_search.yaml` (1,257줄)
+- `scripts/test_fermi_model_search.py`
+- `GUESTIMATION_FLOWCHART.md` (692줄)
+- `FERMI_TO_MULTILAYER_EVOLUTION.md`
+- `GUESTIMATION_ARCHITECTURE.md`
 
 ---
 

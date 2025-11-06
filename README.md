@@ -20,10 +20,10 @@ AI 에이전트 5명이 협업하여 시장을 분석하는 **RAG 기반 프레�
 - ✅ **코딩 불필요**: Cursor Composer만으로 사용
 
 ### v7.2.1 주요 기능 (최신)
-- 🌟 **Multi-Layer Guestimation**: 8개 레이어 자동 시도 (완전 구현!)
+- 🎯 **Fermi Model Search**: 모형 만들기 + 퍼즐 맞추기 (완전 구현!)
+- 🌟 **Multi-Layer Guestimation**: 8개 레이어 자동 시도 (82% 완성)
 - 🎉 **Native Mode**: Cursor LLM 직접 활용 (비용 $0, 최고 품질)
 - 🎉 **자동 환경변수**: `.env` 자동 로드 (코드 간소화)
-- ⭐ **Explorer 헬퍼**: RAG 검색 결과 사용 간편화
 - ⭐ **Excel 도구 3개**: Market Sizing, Unit Economics, Financial Projection
 - ⭐ **Guestimation Framework**: Fermi 추정 체계화
 - ⭐ Explorer RAG (31개 비즈니스 모델 + 23개 Disruption 패턴)
