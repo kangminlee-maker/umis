@@ -1,14 +1,47 @@
 # UMIS v7.2.1 현재 상태
 
 **버전**: v7.2.1  
-**마지막 업데이트**: 2025-11-05  
-**상태**: Production Ready (Multi-Layer Guestimation 완성)
+**마지막 업데이트**: 2025-11-06  
+**상태**: Production Ready (Multi-Layer + Fermi Model Search 완성)
 
 ---
 
-## 🆕 v7.2.1 신규 기능 (2025-11-05 최신)
+## 🆕 v7.2.1 신규 기능 (2025-11-05~06 최신)
 
-### 1. Multi-Layer Guestimation 엔진 🌟
+### 1. Fermi Model Search 엔진 🎯 (신규!)
+
+**"논리의 퍼즐 맞추기" - Fermi 본질 구현**
+
+```python
+from umis_rag.utils.fermi_model_search import fermi_estimate
+
+result = fermi_estimate("음식점 SaaS 시장 규모는?")
+# → Phase 1: 가용 데이터 파악 (Bottom-up)
+# → Phase 2: 모형 생성 (Top-down, LLM)
+# → Phase 3: 퍼즐 맞추기 (실행 가능성 체크)
+# → Phase 4: 재조립 (Backtracking)
+# → 결과: 202억원
+```
+
+**핵심 특징**:
+- ✅ 모형 만들기 (Fermi 핵심)
+- ✅ Bottom-up ⟷ Top-down 반복
+- ✅ 재귀 구조 (변수도 Guestimation, max depth 4)
+- ✅ 12개 비즈니스 지표 템플릿
+- ✅ 순환 감지
+
+**파일**:
+- `umis_rag/utils/fermi_model_search.py` (748줄)
+- `config/fermi_model_search.yaml` (1,257줄 설계)
+- `GUESTIMATION_FLOWCHART.md` (순서도)
+
+**지표**:
+- 시장 규모, LTV, CAC, Unit Economics
+- Churn, Conversion, ARPU, Growth
+
+---
+
+### 2. Multi-Layer Guestimation 엔진 🌟
 
 ```python
 from umis_rag.utils.multilayer_guestimation import MultiLayerGuestimation
