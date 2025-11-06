@@ -330,28 +330,45 @@ Model 2:
             return self._get_default_models(question)
     
     def _get_default_models(self, question: str) -> List[FermiModel]:
-        """기본 모형 (LLM 없을 때)"""
+        """
+        기본 모형 템플릿 (LLM 없을 때)
         
-        # 간단한 키워드 기반 모형
+        비즈니스 지표별 여러 모형 제공
+        """
+        
+        # 시장 규모 (TAM, SAM, SOM)
         if "시장" in question or "TAM" in question or "SAM" in question:
             return [
                 FermiModel(
                     id="MODEL_001",
-                    formula="market = customers * arpu * 12",
-                    description="시장 = 고객 수 × ARPU × 12개월",
+                    formula="market = customers * adoption_rate * arpu * 12",
+                    description="시장 = 고객 수 × 도입률 × ARPU × 12",
                     variables=[
                         FermiVariable(name="customers", available=False),
+                        FermiVariable(name="adoption_rate", available=False),
+                        FermiVariable(name="arpu", available=False),
+                        FermiVariable(name="12", value=12, available=True, confidence=1.0),
+                    ]
+                ),
+                FermiModel(
+                    id="MODEL_002",
+                    formula="market = customers * digital_rate * conversion_rate * arpu * 12",
+                    description="시장 = 고객 × 디지털율 × 전환율 × ARPU × 12",
+                    variables=[
+                        FermiVariable(name="customers", available=False),
+                        FermiVariable(name="digital_rate", available=False),
+                        FermiVariable(name="conversion_rate", available=False),
                         FermiVariable(name="arpu", available=False),
                         FermiVariable(name="12", value=12, available=True, confidence=1.0),
                     ]
                 ),
             ]
         
-        # LTV
-        elif "LTV" in question or "생애가치" in question:
+        # LTV (고객 생애 가치)
+        elif "LTV" in question or "생애가치" in question or "고객가치" in question:
             return [
                 FermiModel(
-                    id="MODEL_001",
+                    id="MODEL_LTV_001",
                     formula="ltv = arpu * (1 / churn)",
                     description="LTV = ARPU / Churn Rate",
                     variables=[
@@ -359,11 +376,123 @@ Model 2:
                         FermiVariable(name="churn", available=False),
                     ]
                 ),
+                FermiModel(
+                    id="MODEL_LTV_002",
+                    formula="ltv = arpu * average_lifetime",
+                    description="LTV = ARPU × 평균 생애 (개월)",
+                    variables=[
+                        FermiVariable(name="arpu", available=False),
+                        FermiVariable(name="average_lifetime", available=False),
+                    ]
+                ),
             ]
         
-        # 기본 모형 (단일 값 - 모형 불필요)
+        # CAC (고객 획득 비용)
+        elif "CAC" in question or "획득.*비용" in question or "획득.*단가" in question:
+            return [
+                FermiModel(
+                    id="MODEL_CAC_001",
+                    formula="cac = marketing_cost / new_customers",
+                    description="CAC = 마케팅 비용 / 신규 고객",
+                    variables=[
+                        FermiVariable(name="marketing_cost", available=False),
+                        FermiVariable(name="new_customers", available=False),
+                    ]
+                ),
+                FermiModel(
+                    id="MODEL_CAC_002",
+                    formula="cac = cpc * (1 / cvr)",
+                    description="CAC = CPC / CVR",
+                    variables=[
+                        FermiVariable(name="cpc", available=False),
+                        FermiVariable(name="cvr", available=False),
+                    ]
+                ),
+            ]
+        
+        # Unit Economics (LTV/CAC)
+        elif "LTV/CAC" in question or "Unit.*Economics" in question:
+            return [
+                FermiModel(
+                    id="MODEL_UE_001",
+                    formula="ratio = ltv / cac",
+                    description="비율 = LTV / CAC",
+                    variables=[
+                        FermiVariable(name="ltv", available=False),
+                        FermiVariable(name="cac", available=False),
+                    ]
+                ),
+            ]
+        
+        # Churn Rate (해지율)
+        elif "churn" in question.lower() or "해지율" in question or "이탈률" in question:
+            return [
+                FermiModel(
+                    id="MODEL_CHURN_001",
+                    formula="churn = churned / total",
+                    description="Churn = 해지 고객 / 전체 고객",
+                    variables=[
+                        FermiVariable(name="churned", available=False),
+                        FermiVariable(name="total", available=False),
+                    ]
+                ),
+            ]
+        
+        # Conversion Rate (전환율)
+        elif "전환율" in question or "conversion" in question.lower():
+            return [
+                FermiModel(
+                    id="MODEL_CVR_001",
+                    formula="cvr = converted / total",
+                    description="전환율 = 전환 고객 / 전체 방문자",
+                    variables=[
+                        FermiVariable(name="converted", available=False),
+                        FermiVariable(name="total", available=False),
+                    ]
+                ),
+            ]
+        
+        # ARPU (상세 분해)
+        elif "ARPU" in question or "객단가" in question:
+            return [
+                FermiModel(
+                    id="MODEL_ARPU_001",
+                    formula="arpu = base_fee + extra_fee",
+                    description="ARPU = 기본료 + 추가료",
+                    variables=[
+                        FermiVariable(name="base_fee", available=False),
+                        FermiVariable(name="extra_fee", available=False),
+                    ]
+                ),
+                FermiModel(
+                    id="MODEL_ARPU_002",
+                    formula="arpu = (tier1_price * tier1_ratio) + (tier2_price * tier2_ratio)",
+                    description="ARPU = Tier별 가중 평균",
+                    variables=[
+                        FermiVariable(name="tier1_price", available=False),
+                        FermiVariable(name="tier1_ratio", available=False),
+                        FermiVariable(name="tier2_price", available=False),
+                        FermiVariable(name="tier2_ratio", available=False),
+                    ]
+                ),
+            ]
+        
+        # 성장률
+        elif "성장률" in question or "growth" in question.lower():
+            return [
+                FermiModel(
+                    id="MODEL_GROWTH_001",
+                    formula="growth = (this_year - last_year) / last_year",
+                    description="성장률 = (올해 - 작년) / 작년",
+                    variables=[
+                        FermiVariable(name="this_year", available=False),
+                        FermiVariable(name="last_year", available=False),
+                    ]
+                ),
+            ]
+        
+        # 기본 모형 (단순 질문 - 모형 불필요)
         else:
-            # 단순 질문은 빈 리스트 반환 (모형 불필요)
             return []
     
     def _parse_llm_models(self, llm_response: str) -> List[FermiModel]:
