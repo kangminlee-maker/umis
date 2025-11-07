@@ -78,7 +78,7 @@ python3 scripts/build_system_knowledge.py
 - ai_reading_guide: 경고 메시지 추가
 - mandatory_execution_process: 5단계 프로세스 (명령 포함)
 - real_execution_examples: 실제 실행 예시
-- critical_reminder: ❌/✅ 비교
+- critical_reminder: 🚫/✅ 비교
 
 # 명확화:
 - action: "read_file tool 사용"
@@ -112,8 +112,8 @@ python3 scripts/02_build_index.py --agent explorer
 | goal_memory | 0 | ⚠️ | Guardian | 동적 생성 |
 | query_memory | 0 | ⚠️ | Guardian | 동적 생성 |
 | rae_index | 0 | ⚠️ | Guardian | 동적 생성 |
-| definition_validation_cases | 0 | ❌ | Validator | ⭐⭐⭐ |
-| data_sources_registry | 0 | ❌ | Validator | ⭐⭐⭐ |
+| definition_validation_cases | 0 | 🚫 | Validator | ⭐⭐⭐ |
+| data_sources_registry | 0 | 🚫 | Validator | ⭐⭐⭐ |
 
 **Guardian Collections**: 동적 생성 (프로젝트 진행 시 자동)  
 **Validator Collections**: 빌드 필요 (향후 작업)
@@ -175,7 +175,7 @@ AI: "Observer의 market_structure 도구를 사용하겠습니다..."
 
 **해결**:
 ```python
-# ❌ 틀림
+# 🚫 틀림
 "tool:observer:market_structure를 사용합니다"
 
 # ✅ 올바름
@@ -195,8 +195,8 @@ run_terminal_cmd("python3 scripts/query_system_rag.py tool:observer:market_struc
 AI 작업:
   - Albert (Observer): 시장 구조 관찰 ✅
   - Steve (Explorer): 기회 발굴 ✅
-  - Bill (Quantifier): 생략 ❌
-  - Rachel (Validator): 생략 ❌
+  - Bill (Quantifier): 생략 🚫
+  - Rachel (Validator): 생략 🚫
 
 문제:
   - SAM 계산 없음
@@ -317,11 +317,11 @@ python3 scripts/query_rag.py pattern "구독 모델"
 
 ```yaml
 문제:
-  ❌ System RAG Collection 없음
-  ❌ .cursorrules 설명만 (명령 없음)
-  ❌ umis_core.yaml INDEX만 (실행 가이드 없음)
-  ❌ Explorer RAG 비어있음
-  ❌ Workflow 명확성 부족
+  🚫 System RAG Collection 없음
+  🚫 .cursorrules 설명만 (명령 없음)
+  🚫 umis_core.yaml INDEX만 (실행 가이드 없음)
+  🚫 Explorer RAG 비어있음
+  🚫 Workflow 명확성 부족
 
 결과:
   - System RAG 접근 실패

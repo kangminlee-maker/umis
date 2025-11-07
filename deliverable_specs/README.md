@@ -30,11 +30,11 @@ deliverable_specs/
 
 ### **Spec vs Output**
 
-| Spec (명세서) | Output (산출물) | 사용자 |
-|--------------|----------------|--------|
-| `.yaml` (AI용) | `.yaml/.xlsx/.md` (사람용) | AI |
-| 구조화된 스키마 | 실제 데이터/내용 | 사람 |
-| `deliverable_specs/` | `projects/XXX/02_analysis/` | - |
+| Spec (명세서)       | Output (산출물)            | 사용자 |
+|---------------------|----------------------------|--------|
+| `.yaml` (AI용)      | `.yaml/.xlsx/.md` (사람용) | AI     |
+| 구조화된 스키마     | 실제 데이터/내용           | 사람   |
+| `deliverable_specs` | `projects/XXX/02_analysis` | -      |
 
 **예시**:
 ```
@@ -51,7 +51,7 @@ Output (사람이 읽음):
 
 ### 1. Validator (Rachel) - 데이터 검증
 
-**source_registry_spec.yaml** (162줄)
+**source_registry_spec.yaml** (240여 줄)
 - **Output**: `source_registry.yaml` (Pure YAML)
 - **Schema**: 17개 필수 필드
 - **핵심**: `original_definition` vs `needed_definition` Gap 분석
@@ -61,7 +61,7 @@ Output (사람이 읽음):
 
 ### 2. Quantifier (Bill) - 정량 분석
 
-**market_sizing_workbook_spec.yaml** (301줄)
+**market_sizing_workbook_spec.yaml** (460여 줄)
 - **Output**: `market_sizing_*.xlsx` (9개 시트 Excel)
 - **핵심 시트**:
   - Sheet 1: Assumptions (직접데이터 vs 추정치 구분)

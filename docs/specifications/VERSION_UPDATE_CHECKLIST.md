@@ -22,8 +22,8 @@
 - ✅ GitHub 첫 페이지
 - ✅ 3분 내 UMIS 파악
 - ✅ 빠른 시작 링크
-- ❌ 상세 아키텍처 (→ BLUEPRINT)
-- ❌ 버전 변경 이력 (→ CHANGELOG)
+- 🚫 상세 아키텍처 (→ BLUEPRINT)
+- 🚫 버전 변경 이력 (→ CHANGELOG)
 
 #### UMIS_ARCHITECTURE_BLUEPRINT.md (기술 설계도)
 - ✅ 시스템 전체 구조 이해
@@ -32,23 +32,23 @@
 - ✅ 5-Agent, 5-Layer RAG 상세
 - ✅ Data Flow, Configuration
 - ✅ Best Practices
-- ❌ 설치 상세 (→ INSTALL.md)
-- ❌ 버전 이력 상세 (→ CHANGELOG)
+- 🚫 설치 상세 (→ INSTALL.md)
+- 🚫 버전 이력 상세 (→ CHANGELOG)
 
 #### CURRENT_STATUS.md (현재 상태)
 - ✅ 지금 뭐가 작동하는지
 - ✅ 통계 및 테스트 결과
 - ✅ 사용 방법 (코드 예시)
 - ✅ 다음 단계 계획
-- ❌ 아키텍처 설명 (→ BLUEPRINT)
-- ❌ 과거 버전 (→ CHANGELOG)
+- 🚫 아키텍처 설명 (→ BLUEPRINT)
+- 🚫 과거 버전 (→ CHANGELOG)
 
 #### CHANGELOG.md (버전 이력)
 - ✅ 모든 버전 변경 사항
 - ✅ Breaking Changes
 - ✅ 날짜 및 상태
-- ❌ 아키텍처 상세 (→ BLUEPRINT)
-- ❌ 현재 상태 (→ CURRENT_STATUS)
+- 🚫 아키텍처 상세 (→ BLUEPRINT)
+- 🚫 현재 상태 (→ CURRENT_STATUS)
 
 ---
 
@@ -321,7 +321,7 @@
 NEW_VERSION=$1
 
 if [ -z "$NEW_VERSION" ]; then
-  echo "❌ 사용법: ./update_version.sh 7.1.0"
+  echo "🚫 사용법: ./update_version.sh 7.1.0"
   exit 1
 fi
 

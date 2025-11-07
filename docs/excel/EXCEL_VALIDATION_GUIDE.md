@@ -137,7 +137,7 @@ start examples/excel/golden_financial_projection.xlsx
 
 ## 📋 검증 체크리스트
 
-### Financial Projection ✅/❌
+### Financial Projection ✅/🚫
 
 - [ ] Revenue_Buildup
   - [ ] Year 0: ₩1,250억 (B9)
@@ -159,7 +159,7 @@ start examples/excel/golden_financial_projection.xlsx
   - [ ] 값이 표시됨 (빈 셀 없음)
   - [ ] Golden과 일치
 
-### Unit Economics ✅/❌
+### Unit Economics ✅/🚫
 
 - [ ] LTV_Calculation
   - [ ] LTV 방법 1: ₩78,750
@@ -227,7 +227,7 @@ start examples/excel/golden_financial_projection.xlsx
   E5 = =D5*(1+$H$5)
 
 비정상 패턴:
-  C5 = =C5*(1+$H$5) ❌ (자기 참조!)
+  C5 = =C5*(1+$H$5) 🚫 (자기 참조!)
 ```
 
 ### 계산 결과 확인

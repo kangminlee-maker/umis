@@ -206,13 +206,13 @@ sheets:
       location: "시트 하단 (Row 10 이하)"
       required_checks:
         - test: "논리적 상한"
-          formula: "=IF(SAM < TAM, '✅', '❌')"
+          formula: "=IF(SAM < TAM, '✅', '🚫')"
         - test: "논리적 하한"
-          formula: "=IF(SAM > {known_minimum}, '✅', '❌')"
+          formula: "=IF(SAM > {known_minimum}, '✅', '🚫')"
         - test: "비율 합리성"
-          formula: "=IF(AND(all_ratios_0_to_100%), '✅', '❌')"
+          formula: "=IF(AND(all_ratios_0_to_100%), '✅', '🚫')"
         - test: "최종 타당성"
-          formula: "=IF(AND(상한, 하한, 비율), '✅ 통과', '❌ 재검토')"
+          formula: "=IF(AND(상한, 하한, 비율), '✅ 통과', '🚫 재검토')"
   
   sheet_4_method_2_bottomup:
     name: "Method_2_BottomUp"
@@ -293,7 +293,7 @@ sheets:
     convergence_test:
       max_min_ratio: "=MAX(B2:B5)/MIN(B2:B5)"
       pass_30: "=IF(ratio<=1.3, '✅ 통과', '⚠️')"
-      pass_50: "=IF(ratio<=1.5, '✅ 수용', '❌')"
+      pass_50: "=IF(ratio<=1.5, '✅ 수용', '🚫')"
     
     final_sam_selection:
       method: "중간값 or 가중평균"

@@ -10,9 +10,9 @@
 이 문서는 **AI가 UMIS를 제대로 사용하기 위한** 필수 가이드입니다.
 
 **문제 상황**:
-- ❌ umis_core.yaml만 읽고 작업 시작 → 도구 content 없음 → 실패
-- ❌ System RAG 실행 건너뜀 → Observer/Explorer만 사용 → Workflow 무시
-- ❌ 도구 목록만 보고 실제 content 로드 안 함 → 기능 이해 부족
+- 🚫 umis_core.yaml만 읽고 작업 시작 → 도구 content 없음 → 실패
+- 🚫 System RAG 실행 건너뜀 → Observer/Explorer만 사용 → Workflow 무시
+- 🚫 도구 목록만 보고 실제 content 로드 안 함 → 기능 이해 부족
 
 **해결책**:
 - ✅ umis_core.yaml (INDEX) + System RAG (도구 content) 필수 조합
@@ -59,7 +59,7 @@
 ### 비유
 
 ```
-❌ 나쁜 방식:
+🚫 나쁜 방식:
   도서관에서 백과사전 전권(6,102페이지) 다 읽기
   → 시간 오래 걸림, 비효율
 
@@ -265,7 +265,7 @@ for key in tool_keys:
 
 ## 자주 하는 실수
 
-### ❌ 실수 1: System RAG 건너뛰기
+### 🚫 실수 1: System RAG 건너뛰기
 
 **잘못된 접근**:
 ```python
@@ -302,7 +302,7 @@ run_terminal_cmd("python3 scripts/query_system_rag.py tool:observer:market_struc
 
 ---
 
-### ❌ 실수 2: Workflow 무시
+### 🚫 실수 2: Workflow 무시
 
 **잘못된 접근**:
 ```
@@ -331,7 +331,7 @@ AI:
 
 ---
 
-### ❌ 실수 3: 도구 선택 오류
+### 🚫 실수 3: 도구 선택 오류
 
 **잘못된 접근**:
 ```
@@ -365,7 +365,7 @@ AI:
 
 **증상**:
 ```
-❌ Collection [system_knowledge] does not exist
+🚫 Collection [system_knowledge] does not exist
 ```
 
 **해결**:
@@ -382,7 +382,7 @@ python3 scripts/build_system_knowledge.py
 
 **증상**:
 ```
-❌ 도구 없음: tool:xxx:yyy
+🚫 도구 없음: tool:xxx:yyy
 ```
 
 **확인**:
@@ -414,7 +414,7 @@ AI가 "도구를 사용합니다"라고만 하고 실제 실행 안 함
 
 **해결**:
 ```python
-# ❌ 틀린 방식 (언급만)
+# 🚫 틀린 방식 (언급만)
 "tool:explorer:pattern_search를 사용하겠습니다"
 
 # ✅ 올바른 방식 (실행!)
@@ -621,7 +621,7 @@ python3 scripts/query_system_rag.py tool:explorer:pattern_search
 3. **System RAG 실행** (run_terminal_cmd) ⭐⭐⭐
 4. **로드된 도구로 작업**
 
-### ❌ AI가 하면 안 되는 것
+### 🚫 AI가 하면 안 되는 것
 
 1. umis_core.yaml만 읽고 작업 시작
 2. System RAG 건너뛰기

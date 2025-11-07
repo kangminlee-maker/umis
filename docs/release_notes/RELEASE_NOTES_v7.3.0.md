@@ -99,7 +99,7 @@ result = quantifier.estimate_with_guestimation(
 ### Deprecated APIs
 
 ```python
-# ❌ DEPRECATED (v7.2.1)
+# 🚫 DEPRECATED (v7.2.1)
 from umis_rag.utils.multilayer_guestimation import MultiLayerGuestimation
 quantifier.estimate_with_multilayer(...)
 

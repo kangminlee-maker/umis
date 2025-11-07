@@ -76,8 +76,8 @@ def _try_llm_direct(self, question: str) -> EstimationResult:
 - ✅ 간단한 구현
 
 **단점**:
-- ❌ 사용자 개입 필요
-- ❌ 자동화 불가
+- 🚫 사용자 개입 필요
+- 🚫 자동화 불가
 
 ---
 
@@ -138,7 +138,7 @@ def _try_llm_direct(self, question: str) -> EstimationResult:
             result.logic_steps.append(f"⚠️ Layer 2: LLM 답변 '{answer}' (숫자 추출 실패) → Layer 3으로")
     
     except Exception as e:
-        result.logic_steps.append(f"❌ Layer 2: LLM API 에러 ({e}) → Layer 3으로")
+        result.logic_steps.append(f"🚫 Layer 2: LLM API 에러 ({e}) → Layer 3으로")
     
     return result
 
@@ -178,8 +178,8 @@ def _extract_number(self, text: str) -> Optional[float]:
 - ✅ 배치 처리 가능
 
 **단점**:
-- ❌ API 비용 (~$0.001/질문)
-- ❌ Native LLM보다 품질 낮을 수 있음
+- 🚫 API 비용 (~$0.001/질문)
+- 🚫 Native LLM보다 품질 낮을 수 있음
 
 ---
 
@@ -267,8 +267,8 @@ def _try_web_consensus(self, question: str) -> EstimationResult:
 - ✅ 품질 좋음
 
 **단점**:
-- ❌ 자동화 불가
-- ❌ 사용자 개입 필요
+- 🚫 자동화 불가
+- 🚫 사용자 개입 필요
 
 ---
 
@@ -287,7 +287,7 @@ def _web_search_api(self, question: str) -> EstimationResult:
         
         api_key = os.getenv('SERPAPI_KEY')
         if not api_key:
-            result.logic_steps.append("❌ Layer 3: SERPAPI_KEY 없음 → Layer 4로")
+            result.logic_steps.append("🚫 Layer 3: SERPAPI_KEY 없음 → Layer 4로")
             return result
         
         # 검색 실행
@@ -334,7 +334,7 @@ def _web_search_api(self, question: str) -> EstimationResult:
             result.logic_steps.append(f"⚠️ Layer 3: 충분한 결과 없음 ({len(numbers)}개) → Layer 4로")
     
     except Exception as e:
-        result.logic_steps.append(f"❌ Layer 3: 웹 검색 에러 ({e}) → Layer 4로")
+        result.logic_steps.append(f"🚫 Layer 3: 웹 검색 에러 ({e}) → Layer 4로")
     
     return result
 ```
@@ -345,8 +345,8 @@ def _web_search_api(self, question: str) -> EstimationResult:
 - ✅ 복수 출처 (신뢰도 높음)
 
 **단점**:
-- ❌ API 비용 (무료 100회/월)
-- ❌ API 키 필요
+- 🚫 API 비용 (무료 100회/월)
+- 🚫 API 키 필요
 
 ---
 
@@ -414,7 +414,7 @@ def _web_search_scraping(self, question: str) -> EstimationResult:
             return result
     
     except Exception as e:
-        result.logic_steps.append(f"❌ Layer 3: 스크래핑 에러 → Layer 4로")
+        result.logic_steps.append(f"🚫 Layer 3: 스크래핑 에러 → Layer 4로")
     
     return result
 ```
@@ -424,9 +424,9 @@ def _web_search_scraping(self, question: str) -> EstimationResult:
 - ✅ API 키 불필요
 
 **단점**:
-- ❌ 불안정 (HTML 구조 변경 시)
-- ❌ Rate limit 위험
-- ❌ robots.txt 위반 가능성
+- 🚫 불안정 (HTML 구조 변경 시)
+- 🚫 Rate limit 위험
+- 🚫 robots.txt 위반 가능성
 
 ---
 

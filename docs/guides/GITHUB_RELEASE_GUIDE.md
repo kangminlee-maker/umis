@@ -178,7 +178,7 @@ python3 setup/setup.py
 ### 3. 발행 설정
 
 - **Set as the latest release**: ✅ 체크
-- **Set as a pre-release**: ❌ 체크 해제 (Production Ready)
+- **Set as a pre-release**: 🚫 체크 해제 (Production Ready)
 
 ---
 

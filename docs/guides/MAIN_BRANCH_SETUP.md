@@ -17,11 +17,11 @@ UMIS는 **두 가지 브랜치 전략**을 사용합니다:
 
 ### main 브랜치 (릴리즈)
 - ✅ 핵심 코드 및 문서만
-- ❌ `archive/` 제외 (전체)
-- ❌ `dev_docs/` 제외 (전체)
+- 🚫 `archive/` 제외 (전체)
+- 🚫 `dev_docs/` 제외 (전체)
 - ⚠️ `projects/` 폴더 유지, 내용만 제외
   - `projects/README.md` ✅ 포함
-  - `projects/*` ❌ 제외
+  - `projects/*` 🚫 제외
 
 ---
 
