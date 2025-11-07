@@ -39,6 +39,7 @@ from umis_rag.utils.logger import logger
 
 # v7.3.1: Estimator (Fermi) Agent 통합
 from umis_rag.agents.estimator import get_estimator_rag
+from umis_rag.agents.estimator.models import EstimationResult
 
 
 class QuantifierRAG:
