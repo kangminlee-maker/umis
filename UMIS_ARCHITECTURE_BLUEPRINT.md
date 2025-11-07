@@ -7,16 +7,17 @@
 
 | Item | Value |
 |------|-------|
-| **UMIS Version** | v7.3.0 "Guestimation v3.0" |
+| **UMIS Version** | v7.3.2 "Estimator Agent + Single Source" |
+| **Agent System** | 6-Agent (Observer, Explorer, Quantifier, Validator, Guardian, **Estimator**) ⭐ |
 | **RAG Architecture** | v3.0 |
 | **Excel Engine** | v1.0 (Phase 1 완료) |
-| **Guestimation Framework** | v3.0 (MVP 작동) ⭐ |
-| **Multi-Layer Guestimation** | v2.1 → v3.0 재설계 |
-| **Fermi Model Search** | v1.0 (완성) |
+| **Estimator Agent** | v3.0 (3-Tier + Learning) ⭐ |
+| **Single Source Policy** | v1.0 (추정 일원화) ⭐ |
+| **Fermi Model Search** | v1.0 (Tier 3 준비) |
 | **LLM Mode** | Native + External (v1.0) |
 | **Schema Registry** | v1.0 |
-| **Last Updated** | 2025-11-07 |
-| **Status** | Design Complete + MVP Working |
+| **Last Updated** | 2025-11-08 |
+| **Status** | Production Ready |
 
 **Purpose**: UMIS 전체 구조와 기능을 한눈에 파악할 수 있는 고수준 설계도
 
@@ -25,10 +26,12 @@
 ## 🎯 System Overview
 
 ### What is UMIS?
-시장 분석을 위한 **5-Agent 협업 시스템** + **Multi-Layer RAG 아키텍처** + **Excel 자동 생성**
+시장 분석을 위한 **6-Agent 협업 시스템** + **Multi-Layer RAG 아키텍처** + **Excel 자동 생성**
 
 ### Key Characteristics
-- ✅ **5명의 전문 에이전트** 역할 분담 및 상호 검증
+- ✅ **6명의 전문 에이전트** 역할 분담 및 상호 검증 (v7.3.1+)
+- ✅ **Estimator (Fermi) Agent** 값 추정 및 판단 전문가 (v7.3.1+)
+- ✅ **Single Source of Truth** 모든 값 추정은 Estimator만 (v7.3.2+)
 - ✅ **RAG 기반 지식 활용** (54개 패턴/사례 DB)
 - ✅ **Fermi Model Search** (모형 만들기 + 퍼즐 맞추기, v7.2.1+)
 - ✅ **Multi-Layer Guestimation** (8개 레이어, v7.2.1+)
@@ -159,7 +162,7 @@ Cursor Composer (Cmd+I):
 
 ## 💡 Core Concepts
 
-### 1. 5-Agent System (Business Layer)
+### 1. 6-Agent System (Business Layer) - v7.3.1+
 
 #### Agent 역할 및 산출물
 
@@ -170,11 +173,13 @@ Cursor Composer (Cmd+I):
 | **quantifier** | Bill | 정량 분석 + Excel 생성 | market_sizing.xlsx (10 sheets)<br>unit_economics.xlsx (10 sheets)<br>financial_projection.xlsx (11 sheets) | validator, observer |
 | **validator** | Rachel | 데이터 검증 | source_registry.yaml | - (검증자) |
 | **guardian** | Stewart | 프로세스 관리 | .project_meta.yaml, deliverables_registry.yaml | - (메타 관리자) |
+| **estimator** | **Fermi** | **값 추정 및 판단** ⭐ | **EstimationResult** (값 + 근거) | - (협업 파트너) |
 
 **핵심**: 
-- **Agent ID 불변** (observer, explorer, ...) → 폴더/파일 경로
+- **Agent ID 불변** (observer, explorer, quantifier, validator, guardian, **estimator**) → 폴더/파일 경로
 - **Name 변경 가능** (config/agent_names.yaml) → 사용자 UI
 - **상호 검증** (각 산출물 2-3명 검증)
+- **Estimator 특수성** (v7.3.1+): 협업 파트너 (모든 Agent가 필요 시 호출)
 
 #### 데이터 흐름 (순차적 의존성)
 
@@ -654,7 +659,17 @@ umis/
 │   │   ├── quantifier.py              # Quantifier 에이전트
 │   │   ├── validator.py               # Validator 에이전트
 │   │   ├── observer.py                # Observer 에이전트
-│   │   └── guardian.py                # Guardian 에이전트
+│   │   ├── guardian.py                # Guardian 에이전트
+│   │   └── estimator/                 # ⭐ Estimator 에이전트 (v7.3.1+)
+│   │       ├── estimator.py           # EstimatorRAG 통합 클래스
+│   │       ├── tier1.py               # Fast Path
+│   │       ├── tier2.py               # Judgment Path
+│   │       ├── learning_writer.py     # 학습 시스템
+│   │       ├── source_collector.py    # 11개 Source
+│   │       ├── judgment.py            # 판단 엔진
+│   │       ├── models.py              # 데이터 모델
+│   │       ├── rag_searcher.py        # RAG 검색
+│   │       └── sources/               # Physical, Soft, Value
 │   ├── deliverables/
 │   │   └── excel/                     # Excel 자동 생성 시스템 (v7.2.0)
 │   │       ├── formula_engine.py      # Excel 함수 엔진
@@ -998,11 +1013,32 @@ _env_loaded = _load_environment()
 
 ---
 
-## 🎯 Guestimation v3.0 (v7.3.0+) ⭐
+## 🎯 Estimator (Fermi) Agent (v7.3.1+) ⭐
 
-### Context-Aware Judgment + Learning System
+### 6번째 Agent - 값 추정 및 판단 전문가
 
-**핵심**: "맥락 기반 판단 + 학습하는 시스템"
+**핵심**: "맥락 기반 판단 + 학습하는 시스템 + Single Source of Truth"
+
+**역할**:
+- 모든 값/데이터 추정 (유일한 권한, v7.3.2+)
+- 11개 Source 통합 판단
+- 추정 근거 완전 제공
+- 학습 시스템 (사용할수록 6-16배 빠름)
+
+**위치**: `umis_rag/agents/estimator/` (v7.3.1+)
+
+**클래스**: `EstimatorRAG` (통합 인터페이스)
+
+**사용**:
+```python
+from umis_rag.agents.estimator import EstimatorRAG
+
+estimator = EstimatorRAG()
+result = estimator.estimate("B2B SaaS Churn Rate는?", domain="B2B_SaaS")
+
+# 또는 Cursor에서
+@Fermi, B2B SaaS Churn Rate는?
+```
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -1061,9 +1097,15 @@ Value Sources (값 결정):
 **RAG 통합**:
 - Collection 증가 없음 (13개 유지)
 - Canonical-Projected 활용
-- agent_view="guestimation"
+- agent_view="estimator" (v7.3.1+)
 
-**파일**: `umis_rag/guestimation_v3/` (10개, 2,180줄)
+**파일**: `umis_rag/agents/estimator/` (13개, 2,800줄)
+
+**v7.3.2 신규**: Single Source of Truth + Reasoning Transparency
+- `reasoning_detail`: 상세 근거 (전략, 증거, 과정)
+- `component_estimations`: 개별 요소 논리
+- `estimation_trace`: 추정 과정 추적
+- `Validator.validate_estimation()`: 교차 검증
 
 ---
 
@@ -1113,9 +1155,64 @@ Value Sources (값 결정):
 
 ---
 
+---
+
+## 🎯 Single Source of Truth (v7.3.2+) ⭐
+
+### 추정 일원화 원칙
+
+**원칙**: "모든 값/데이터 추정은 Estimator (Fermi) Agent만 수행"
+
+```yaml
+적용:
+  ✅ Quantifier: 계산 OK, 추정 NO → Estimator 호출
+  ✅ Validator: 검증 OK, 추정 NO → Estimator 호출
+  ✅ Observer: 관찰 OK, 추정 NO → Estimator 호출
+  ✅ Explorer: 가설 OK, 추정 NO → Estimator 호출
+  ✅ Guardian: 평가 OK, 추정 NO → Estimator 호출
+  ✅ Estimator: 추정 OK (유일한 권한)
+
+이유:
+  1. 데이터 일관성
+     - 같은 질문 → 같은 답 (보장)
+  
+  2. 학습 효율
+     - 모든 추정이 한 곳에 축적
+     - Tier 2 → Tier 1 진화
+  
+  3. 근거 추적
+     - 추정값의 출처 명확
+     - 재현 가능성
+```
+
+### 추정 근거 제공 (v7.3.2)
+
+```python
+result = estimator.estimate("Churn Rate는?")
+
+# 필수 제공
+result.reasoning_detail = {
+  'method': 'weighted_average',
+  'sources_used': ['statistical', 'rag'],
+  'why_this_method': '증거 유사',
+  'evidence_breakdown': [...],
+  'judgment_process': [...]
+}
+
+result.component_estimations = [...]  # 개별 요소
+result.estimation_trace = [...]       # 과정 추적
+```
+
+**효과**:
+- ✅ 완전한 투명성
+- ✅ 재현 가능
+- ✅ 검증 가능
+
+---
+
 **Document Owner**: AI Team  
-**Last Reviewed**: 2025-11-06  
-**Next Review**: 버전 업데이트 시 (v7.3.0 예상)
+**Last Reviewed**: 2025-11-08  
+**Next Review**: 버전 업데이트 시 (v7.4.0 예상)
 
 ---
 
