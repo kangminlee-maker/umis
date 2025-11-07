@@ -12,11 +12,11 @@ from umis_rag.agents.quantifier import QuantifierRAG
 from umis_rag.agents.estimator import EstimatorRAG
 
 
-def test_quantifier_guestimation_v3():
-    """Quantifier + Guestimation v3.0 통합 테스트"""
+def test_quantifier_estimator():
+    """Quantifier + Estimator Agent 통합 테스트"""
     
     print("\n" + "=" * 60)
-    print("Quantifier + Guestimation v3.0 통합 테스트")
+    print("Quantifier + Estimator (Fermi) Agent 통합 테스트")
     print("=" * 60)
     
     # Quantifier 초기화
@@ -28,7 +28,7 @@ def test_quantifier_guestimation_v3():
     print("Test Case 1: SaaS Churn Rate")
     print("-" * 60)
     
-    result = quantifier.estimate_with_guestimation(
+    result = quantifier.estimate(
         question="B2B SaaS Churn Rate는?",
         domain="B2B_SaaS"
     )
@@ -56,7 +56,7 @@ def test_quantifier_guestimation_v3():
     print("Test Case 2: 한국 음식점 월매출")
     print("-" * 60)
     
-    result2 = quantifier.estimate_with_guestimation(
+    result2 = quantifier.estimate(
         question="한국 음식점 월매출은?",
         domain="Food_Service",
         region="한국"
@@ -78,7 +78,7 @@ def test_quantifier_guestimation_v3():
     print("Test Case 3: 한국 인구 (Built-in)")
     print("-" * 60)
     
-    result3 = quantifier.estimate_with_guestimation(
+    result3 = quantifier.estimate(
         question="한국 인구는?",
         region="한국"
     )
@@ -97,16 +97,16 @@ def test_quantifier_guestimation_v3():
     print("🎉 Quantifier v3.0 통합 테스트 완료!")
     print("=" * 60)
     
-    print("\n✅ v3.0 개선 사항:")
-    print("  - Multi-Layer v2.1 (Sequential) → v3.0 (Judgment)")
-    print("  - 학습하는 시스템 (사용할수록 빨라짐)")
-    print("  - Context-Aware 판단")
-    print("  - 11개 Source 통합")
+    print("\n✅ v7.3.1 개선 사항:")
+    print("  - Estimator (Fermi) Agent 통합")
+    print("  - 6-Agent 시스템 완성")
+    print("  - 간결한 API (estimate)")
+    print("  - 학습하는 시스템")
 
 
 if __name__ == "__main__":
     try:
-        test_quantifier_guestimation_v3()
+        test_quantifier_estimator()
     except Exception as e:
         print(f"\n❌ 오류 발생: {e}")
         import traceback

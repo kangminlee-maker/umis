@@ -212,7 +212,7 @@ def test_e2e_learning_flow():
     
     # 3. Projection 가능성 확인
     print(f"\n  Projection 준비:")
-    print(f"    - chunk_type: 'learned_rule' → guestimation view")
+    print(f"    - chunk_type: 'learned_rule' → estimator view")
     print(f"    - ttl: persistent (영구 저장)")
     print(f"    - metadata_mapping: 19개 필드 매핑")
     
@@ -255,8 +255,8 @@ def test_projection_rule_completeness():
     learned_rule = chunk_type_rules['learned_rule']
     
     # target_agents
-    assert 'guestimation' in learned_rule.get('target_agents', []), "❌ guestimation agent 없음"
-    print("✅ target_agents: guestimation")
+    assert 'estimator' in learned_rule.get('target_agents', []), "❌ estimator agent 없음"
+    print("✅ target_agents: estimator")
     
     # ttl
     assert learned_rule.get('ttl') == 'persistent', "❌ ttl != persistent"
