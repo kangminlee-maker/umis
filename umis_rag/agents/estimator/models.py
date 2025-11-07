@@ -285,6 +285,28 @@ class EstimationResult:
     should_learn: bool = False
     learn_metadata: Dict[str, Any] = field(default_factory=dict)
     
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # v7.3.2: 추정 근거 및 추적 (Single Source)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    
+    # 상세 근거
+    reasoning_detail: Dict[str, Any] = field(default_factory=dict)
+    # {
+    #   'method': 'weighted_average',
+    #   'sources_used': ['statistical', 'rag'],
+    #   'why_this_method': '증거 3개, 신뢰도 유사',
+    #   'evidence_breakdown': [...]
+    # }
+    
+    # Decomposition 추적 (Tier 3용, 선택)
+    decomposition: Optional['DecompositionTrace'] = None
+    
+    # 개별 요소 추정 논리
+    component_estimations: List['ComponentEstimation'] = field(default_factory=list)
+    
+    # 추정 과정 추적
+    estimation_trace: List[str] = field(default_factory=list)
+    
     def is_successful(self) -> bool:
         """추정 성공 여부"""
         return self.value is not None or self.value_range is not None
@@ -296,6 +318,45 @@ class EstimationResult:
         elif self.value_range:
             return f"{self.value_range[0]:,.0f} ~ {self.value_range[1]:,.0f}{self.unit}"
         return "추정 불가"
+
+
+@dataclass
+class ComponentEstimation:
+    """
+    개별 요소의 추정 논리 (v7.3.2)
+    
+    예: "월결제액 = 10,000원"을 어떻게 추정했는지 기록
+    """
+    component_name: str  # "월결제액"
+    component_value: float  # 10,000
+    estimation_method: str  # "statistical_pattern"
+    reasoning: str  # "SaaS 평균 요금 분포"
+    confidence: float  # 0.75
+    sources: List[str] = field(default_factory=list)  # ["rag_benchmark"]
+    
+    # 추가 메타
+    raw_data: Any = None
+
+
+@dataclass
+class DecompositionTrace:
+    """
+    Decomposition 추적 (v7.3.2 - Tier 3용)
+    
+    Fermi처럼 분해한 경우의 이력
+    예: ARPU = 월결제액 / 활성사용자
+    """
+    formula: str  # "ARPU = 월결제액 / 활성사용자"
+    variables: Dict[str, EstimationResult] = field(default_factory=dict)
+    # {
+    #   '월결제액': EstimationResult(...),
+    #   '활성사용자': EstimationResult(...)
+    # }
+    calculation_logic: str = ""  # 계산 논리 설명
+    depth: int = 0  # 재귀 깊이 (max 4)
+    
+    # 추가 메타
+    decomposition_reasoning: str = ""  # 왜 이렇게 분해했는지
 
 
 # ═══════════════════════════════════════════════════════

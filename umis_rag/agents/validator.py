@@ -37,6 +37,9 @@ sys.path.insert(0, str(project_root))
 from umis_rag.core.config import settings
 from umis_rag.utils.logger import logger
 
+# v7.3.2: Estimator 통합 (추정치 검증용)
+from umis_rag.agents.estimator import get_estimator_rag
+
 
 class ValidatorRAG:
     """
@@ -64,6 +67,9 @@ class ValidatorRAG:
     def __init__(self):
         """Validator RAG 에이전트 초기화"""
         logger.info("Validator RAG 에이전트 초기화")
+        
+        # v7.3.2: Estimator 연결 (교차 검증용)
+        self.estimator = None  # Lazy 초기화
         
         # Embeddings
         self.embeddings = OpenAIEmbeddings(
@@ -516,6 +522,129 @@ class ValidatorRAG:
             })
         
         return gaps
+
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # v7.3.2: Estimator 교차 검증
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    
+    def validate_estimation(
+        self,
+        question: str,
+        claimed_value: float,
+        context: Optional[Dict] = None
+    ) -> Dict[str, Any]:
+        """
+        추정값의 합리성 검증 (Estimator 교차 검증)
+        
+        원칙:
+        -----
+        1. 직접 추정 금지 ❌
+        2. Estimator에게 교차 검증 요청 ✅
+        3. 비교 및 판단
+        
+        Args:
+            question: 질문 (예: "B2B SaaS Churn Rate는?")
+            claimed_value: 주장된 값 (예: 0.08)
+            context: 맥락 (domain, region 등)
+        
+        Returns:
+            {
+                'claimed_value': 0.08,
+                'estimator_value': 0.06,
+                'estimator_confidence': 0.85,
+                'estimator_reasoning': {...},
+                'difference_pct': 0.33,
+                'validation_result': 'caution'
+            }
+        
+        Example:
+            >>> validator = ValidatorRAG()
+            >>> result = validator.validate_estimation(
+            ...     "B2B SaaS Churn Rate는?",
+            ...     claimed_value=0.08,
+            ...     context={'domain': 'B2B_SaaS'}
+            ... )
+            >>> print(result['validation_result'])  # 'caution'
+        """
+        logger.info(f"[Validator] 추정값 검증: {question} = {claimed_value}")
+        
+        # Estimator Lazy 초기화
+        if self.estimator is None:
+            self.estimator = get_estimator_rag()
+            logger.info("  ✅ Estimator 연결")
+        
+        # Estimator에게 교차 검증 요청
+        est_result = self.estimator.estimate(
+            question=question,
+            domain=context.get('domain') if context else None,
+            region=context.get('region') if context else None
+        )
+        
+        if not est_result:
+            return {
+                'validation': 'unable',
+                'reason': 'Estimator 추정 실패'
+            }
+        
+        # 비교
+        diff_pct = abs(claimed_value - est_result.value) / est_result.value if est_result.value else 0
+        
+        validation = {
+            'claimed_value': claimed_value,
+            'estimator_value': est_result.value,
+            'estimator_confidence': est_result.confidence,
+            'estimator_tier': est_result.tier,
+            
+            # v7.3.2: 상세 근거 포함
+            'estimator_reasoning': est_result.reasoning_detail,
+            'estimator_components': est_result.component_estimations,
+            'estimator_trace': est_result.estimation_trace,
+            
+            'difference_pct': diff_pct,
+            
+            'validation_result': (
+                'pass' if diff_pct < 0.30 else
+                'caution' if diff_pct < 0.50 else
+                'fail'
+            ),
+            
+            'recommendation': self._generate_recommendation(
+                claimed_value, est_result, diff_pct
+            )
+        }
+        
+        logger.info(f"  검증: {validation['validation_result']} (차이 {diff_pct:.0%})")
+        
+        return validation
+    
+    def _generate_recommendation(
+        self,
+        claimed: float,
+        est_result,
+        diff_pct: float
+    ) -> str:
+        """검증 결과 기반 권장사항"""
+        
+        lines = []
+        lines.append(f"주장값: {claimed}")
+        lines.append(f"Estimator 추정: {est_result.value} (신뢰도 {est_result.confidence:.0%})")
+        lines.append(f"차이: {diff_pct:.0%}")
+        lines.append(f"")
+        
+        if diff_pct < 0.30:
+            lines.append("✅ 검증 통과: 합리적 범위")
+        elif diff_pct < 0.50:
+            lines.append("⚠️  주의: 차이가 다소 큼")
+            lines.append(f"Estimator 근거 확인 권장:")
+            if est_result.reasoning_detail:
+                lines.append(f"  - 전략: {est_result.reasoning_detail.get('method')}")
+                lines.append(f"  - 증거: {est_result.reasoning_detail.get('evidence_count')}개")
+        else:
+            lines.append("❌ 검증 실패: 차이가 매우 큼")
+            lines.append(f"Estimator 추정 재검토 필요")
+        
+        return "\n".join(lines)
 
 
 # Validator RAG 인스턴스 (싱글톤)
