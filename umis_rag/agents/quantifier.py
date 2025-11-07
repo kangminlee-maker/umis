@@ -37,20 +37,9 @@ sys.path.insert(0, str(project_root))
 from umis_rag.core.config import settings
 from umis_rag.utils.logger import logger
 
-# v7.2.1: Multi-Layer Guestimation 통합
-# DEPRECATED: v2.1 → v3.0으로 대체 (2025-11-07)
-# TODO: Guestimation v3.0 통합 필요
-# from umis_rag.utils.multilayer_guestimation import (
-#     MultiLayerGuestimation,
-#     BenchmarkCandidate,
-#     EstimationResult as MultiLayerResult
-# )
-
-# v7.3.0: Guestimation v3.0 통합
-from umis_rag.guestimation_v3.tier1 import Tier1FastPath
-from umis_rag.guestimation_v3.tier2 import Tier2JudgmentPath
-from umis_rag.guestimation_v3.learning_writer import LearningWriter
-from umis_rag.guestimation_v3.models import Context as GuestimationContext
+# v7.3.1: Estimator (Fermi) Agent 통합
+from umis_rag.agents.estimator import get_estimator_rag
+from umis_rag.agents.estimator.models import EstimationResult
 
 
 class QuantifierRAG:
@@ -80,10 +69,8 @@ class QuantifierRAG:
         """Quantifier RAG 에이전트 초기화"""
         logger.info("Quantifier RAG 에이전트 초기화")
         
-        # v7.3.0: Guestimation v3.0 엔진
-        self.guestimation_tier1 = None  # Lazy 초기화
-        self.guestimation_tier2 = None
-        self.learning_writer = None
+        # v7.3.1: Estimator (Fermi) Agent
+        self.estimator = None  # Lazy 초기화
         
         # Embeddings
         self.embeddings = OpenAIEmbeddings(
@@ -453,120 +440,56 @@ class QuantifierRAG:
         }
 
 
-    def estimate_with_guestimation(
+    def estimate(
         self,
         question: str,
-        project_context: Optional[Dict] = None,
         domain: Optional[str] = None,
-        region: Optional[str] = None
-    ) -> Dict[str, Any]:
+        region: Optional[str] = None,
+        time_period: Optional[str] = None
+    ) -> EstimationResult:
         """
-        Guestimation v3.0으로 추정
+        Estimator (Fermi) Agent로 추정
         
-        v7.3.0에서 Multi-Layer v2.1 → v3.0 (3-Tier)로 대체
+        v7.3.1: Estimator Agent 통합 (간결화)
         
         Args:
             question: 추정 질문 (예: "한국 SaaS Churn Rate는?")
-            project_context: 프로젝트 데이터 (확정된 값들)
             domain: 도메인 (예: "B2B_SaaS", "Food_Service")
             region: 지역 (예: "한국", "서울")
+            time_period: 시점 (예: "2024")
         
         Returns:
-            {
-                'value': float,
-                'range': tuple,
-                'confidence': float,
-                'tier': int,  # 1 (빠름) or 2 (정확)
-                'reasoning': str,
-                'execution_time': float,
-                'learned': bool
-            }
+            EstimationResult
         
         Usage:
             quantifier = QuantifierRAG()
-            result = quantifier.estimate_with_guestimation(
+            result = quantifier.estimate(
                 "한국 SaaS 평균 Churn Rate는?",
                 domain="B2B_SaaS",
                 region="한국"
             )
         """
-        logger.info(f"[Quantifier] Guestimation v3.0 시작: {question}")
+        logger.info(f"[Quantifier] Estimator Agent 호출: {question}")
         
         # Lazy 초기화
-        if self.guestimation_tier1 is None:
-            self.guestimation_tier1 = Tier1FastPath()
-            logger.info("  ✅ Tier 1 초기화")
+        if self.estimator is None:
+            self.estimator = get_estimator_rag()
+            logger.info("  ✅ Estimator Agent 로드")
         
-        if self.guestimation_tier2 is None:
-            # Learning Writer 초기화 (Canonical 필요)
-            if self.learning_writer is None and hasattr(self, 'canonical_store'):
-                self.learning_writer = LearningWriter(
-                    canonical_collection=self.canonical_store._collection
-                )
-                logger.info("  ✅ Learning Writer 초기화")
-            
-            self.guestimation_tier2 = Tier2JudgmentPath(
-                learning_writer=self.learning_writer
-            )
-            logger.info("  ✅ Tier 2 초기화")
-        
-        # Context 생성
-        context = GuestimationContext(
-            domain=domain or "General",
+        # Estimator Agent에 위임
+        result = self.estimator.estimate(
+            question=question,
+            domain=domain,
             region=region,
-            time_period="2024",
-            project_data=project_context or {}
+            time_period=time_period
         )
         
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Tier 1 시도 (Fast Path)
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        result = self.guestimation_tier1.estimate(question, context)
-        
         if result:
-            logger.info(f"  ✅ Tier 1 성공: {result.value} (신뢰도 {result.confidence:.0%})")
-            return {
-                'value': result.value,
-                'range': result.value_range,
-                'confidence': result.confidence,
-                'tier': 1,
-                'reasoning': result.reasoning,
-                'execution_time': result.execution_time,
-                'learned': False
-            }
+            logger.info(f"  ✅ 완료: {result.value} (Tier {result.tier})")
+        else:
+            logger.warning("  ❌ 추정 실패")
         
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Tier 2 실행 (Judgment Path)
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        logger.info("  → Tier 2 실행")
-        result = self.guestimation_tier2.estimate(question, context)
-        
-        if not result:
-            logger.warning("  ❌ Tier 2 실패")
-            return {
-                'value': None,
-                'confidence': 0.0,
-                'tier': 0,
-                'reasoning': '추정 실패'
-            }
-        
-        logger.info(f"  ✅ Tier 2 완료: {result.value} (신뢰도 {result.confidence:.0%})")
-        
-        return {
-            'value': result.value,
-            'range': result.value_range,
-            'confidence': result.confidence,
-            'tier': 2,
-            'reasoning': result.reasoning,
-            'execution_time': result.execution_time,
-            'learned': result.should_learn,
-            
-            # 추가 정보
-            'evidence_count': len(result.value_estimates),
-            'judgment_strategy': result.judgment_strategy,
-            'boundaries': len(result.boundaries),
-            'soft_guides': len(result.soft_guides)
-        }
+        return result
 
 
 # Quantifier RAG 인스턴스 (싱글톤)
