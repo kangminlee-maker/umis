@@ -1,9 +1,11 @@
 # Estimator Single Source of Truth 설계
 
 **작성일**: 2025-11-07  
+**업데이트**: 2025-11-07 23:30  
 **원칙**: 모든 값 추정은 Estimator에게 위임  
 **이유**: 데이터 일관성 (여러 Agent가 추정하면 무너짐)  
-**우선순위**: P0 (Critical!)
+**우선순위**: P0 (Critical!)  
+**상태**: v7.3.1 배포 후 v7.3.2로 구현
 
 ---
 
@@ -13,7 +15,15 @@
 
 ```yaml
 원칙:
-  "모든 값 추정은 Estimator (Fermi) Agent만 수행한다"
+  "모든 값/데이터 추정은 Estimator (Fermi) Agent만 수행한다"
+
+정확한 의미:
+  "추정 금지" = "데이터/값 추정 금지"
+  
+  금지: 값/데이터 직접 추정, 근사값 생성, 기본값, 하드코딩
+  허용: 확정 데이터, 계산, 검증, 검색, Estimator 호출
+
+참조: dev_docs/ESTIMATION_POLICY_CLARIFICATION.md
 
 이유:
   1. 데이터 일관성
@@ -31,12 +41,19 @@
      - 재현 가능성
 
 적용:
-  ✅ Quantifier: 추정 금지, Estimator 호출만
-  ✅ Validator: 추정 금지, Estimator 호출만
-  ✅ Observer: 추정 금지, Estimator 호출만
-  ✅ Explorer: 추정 금지, Estimator 호출만
-  ✅ Guardian: 추정 금지, Estimator 호출만
-  ✅ Estimator: 유일한 추정 권한
+  ✅ Quantifier: 계산 OK, 추정 NO → Estimator 호출
+  ✅ Validator: 검증 OK, 추정 NO → Estimator 호출
+  ✅ Observer: 관찰 OK, 추정 NO → Estimator 호출
+  ✅ Explorer: 가설 OK, 추정 NO → Estimator 호출
+  ✅ Guardian: 평가 OK, 추정 NO → Estimator 호출
+  ✅ Estimator: 추정 OK (유일한 권한)
+
+결론 (MECE 분석):
+  - Validator + Estimator 통합 검토 → 분리 유지 권장 (92% vs 60%)
+  - 본질적 차이: Validation (확인) vs Estimation (생성)
+  - 검색 중복은 문제 아님 (도구 공유, 목적 다름)
+  
+참조: dev_docs/VALIDATOR_ESTIMATOR_MERGE_ANALYSIS.md
 ```
 
 ---
@@ -910,10 +927,47 @@ Phase 5: 문서화 (30분)
 - ✅ **근거 필수 제공**
 - ✅ **데이터 일관성**
 
-**다음**: 이 설계를 구현하시겠습니까?
+---
 
-1. **지금 진행** → 3.5시간 작업
-2. **나중에** → 설계 리뷰 후
-3. **수정 필요** → 피드백
+## 🚀 배포 전략 (옵션 3: 병행)
 
-어떻게 하시겠습니까? 🎯
+### Stage 1: v7.3.1 Main 배포 (10분) - 진행 중
+
+```bash
+현재 완료:
+  ✅ Estimator (Fermi) Agent
+  ✅ 6-Agent 시스템
+  ✅ 아키텍처 일관성
+  ✅ Alpha 통합 완료
+
+배포:
+  1. git checkout main
+  2. git merge alpha --no-ff
+  3. git rm -r archive/ dev_docs/
+  4. Release v7.3.1
+  5. git push origin main
+```
+
+### Stage 2: Single Source 구현 (3.5시간) - 다음
+
+```bash
+Feature Branch:
+  - feature/single-source-policy
+  
+작업:
+  Phase 1: 데이터 모델 확장 (1시간)
+  Phase 2: Tier 2 근거 생성 (1시간)
+  Phase 3: Quantifier 위임 확인 (30분)
+  Phase 4: Validator 통합 (30분)
+  Phase 5: 문서화 (30분)
+```
+
+### Stage 3: v7.3.2 배포 - 이후
+
+```bash
+검증 후 Main 배포
+```
+
+---
+
+**다음**: v7.3.1 Main 배포 진행! 🚀
