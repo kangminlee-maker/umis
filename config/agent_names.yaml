@@ -5,12 +5,13 @@
 #
 # ========================================
 
-# 기본값 (UMIS v6.2 전통적 이름)
+# 기본값 (UMIS v7.3.1 - 6-Agent 시스템)
 observer: Albert
 explorer: Steve
 quantifier: Bill
 validator: Rachel
 guardian: Stewart
+estimator: Fermi  # v7.3.1: 값 추정 및 판단 전문가
 owner: Owner
 
 # ========================================
