@@ -42,7 +42,7 @@ class HybridProjector:
     
     def project(self, canonical_chunk: Dict) -> List[Dict]:
         """
-        Canonical → Projected (6개 Agent)
+        Canonical → Projected (Agent별)
         
         Args:
             canonical_chunk: Canonical 청크
@@ -52,6 +52,17 @@ class HybridProjector:
         """
         projected_chunks = []
         
+        # Step 0: Chunk Type 체크 (v7.3.0+)
+        chunk_type = canonical_chunk.get('metadata', {}).get('chunk_type') or canonical_chunk.get('chunk_type')
+        
+        # Chunk Type별 규칙 (learned_rule 등)
+        if chunk_type:
+            type_projections = self._apply_chunk_type_rules(canonical_chunk, chunk_type)
+            if type_projections:
+                projected_chunks.extend(type_projections)
+                return projected_chunks  # Chunk Type 규칙이 있으면 종료
+        
+        # 기본 Agent 목록
         agents = ['observer', 'explorer', 'quantifier', 'validator', 'guardian']
         
         for agent in agents:
@@ -69,6 +80,43 @@ class HybridProjector:
             if should_project:
                 projected = self._create_projected(canonical_chunk, agent)
                 projected_chunks.append(projected)
+        
+        return projected_chunks
+    
+    def _apply_chunk_type_rules(self, canonical: Dict, chunk_type: str) -> List[Dict]:
+        """
+        Chunk Type별 규칙 적용 (v7.3.0+)
+        
+        Args:
+            canonical: Canonical 청크
+            chunk_type: 청크 타입 (learned_rule 등)
+        
+        Returns:
+            Projected 청크 리스트 (없으면 빈 리스트)
+        """
+        chunk_type_rules = self.rules.get('chunk_type_rules', {})
+        
+        if chunk_type not in chunk_type_rules:
+            return []
+        
+        rule = chunk_type_rules[chunk_type]
+        target_agents = rule.get('target_agents', [])
+        
+        if not target_agents:
+            return []
+        
+        # Projected 청크 생성
+        projected_chunks = []
+        
+        for agent in target_agents:
+            projected = self._create_projected_with_mapping(
+                canonical=canonical,
+                agent=agent,
+                rule=rule
+            )
+            projected_chunks.append(projected)
+        
+        logger.info(f"Chunk Type 규칙 적용: {chunk_type} → {target_agents}")
         
         return projected_chunks
     
@@ -193,6 +241,95 @@ Agent 역할:
             'created_at': datetime.now().isoformat(),
             'updated_at': datetime.now().isoformat(),
             'content': section_content
+        }
+    
+    def _create_projected_with_mapping(
+        self,
+        canonical: Dict,
+        agent: str,
+        rule: Dict
+    ) -> Dict:
+        """
+        Chunk Type 규칙 기반 Projected 생성 (v7.3.0+)
+        
+        metadata_mapping 적용
+        """
+        projected_id = generate_id("PRJ", f"{canonical.get('canonical_chunk_id', 'unknown')}-{agent}")
+        
+        # Metadata 매핑 적용
+        metadata_mapping = rule.get('metadata_mapping', {})
+        projected_metadata = {}
+        
+        canonical_metadata = canonical.get('metadata', {})
+        
+        for source_key, target_key in metadata_mapping.items():
+            if source_key in canonical_metadata:
+                projected_metadata[target_key] = canonical_metadata[source_key]
+        
+        # 기본 필드
+        projected_metadata.update({
+            'canonical_chunk_id': canonical.get('canonical_chunk_id'),
+            'agent_view': agent,
+            'projection_method': 'chunk_type_rule',
+            'chunk_type': canonical_metadata.get('chunk_type')
+        })
+        
+        # TTL 설정
+        ttl = rule.get('ttl', 'on_demand')
+        
+        if ttl == 'persistent':
+            materialization = {
+                'strategy': 'persistent',
+                'cache_ttl_hours': None,
+                'persist_profile': 'always',
+                'last_materialized_at': datetime.now().isoformat(),
+                'access_count': 0
+            }
+        else:
+            materialization = {
+                'strategy': 'on_demand',
+                'cache_ttl_hours': 24,
+                'persist_profile': None,
+                'last_materialized_at': datetime.now().isoformat(),
+                'access_count': 0
+            }
+        
+        return {
+            'projected_chunk_id': projected_id,
+            'agent_view': agent,
+            'canonical_chunk_id': canonical.get('canonical_chunk_id'),
+            'projection_method': 'chunk_type_rule',
+            
+            # Content
+            'content': canonical.get('content', ''),
+            
+            # Metadata (매핑 적용)
+            'metadata': projected_metadata,
+            
+            # TTL
+            'materialization': materialization,
+            
+            # Lineage
+            'lineage': {
+                'from': canonical.get('canonical_chunk_id'),
+                'via': [
+                    {
+                        'step': 1,
+                        'action': 'projection',
+                        'rule_id': f"chunk_type:{canonical_metadata.get('chunk_type')}",
+                        'chunk_id': projected_id
+                    }
+                ],
+                'evidence_ids': [canonical.get('canonical_chunk_id')],
+                'created_by': {
+                    'agent': 'system',
+                    'overlay_layer': 'core',
+                    'tenant_id': None
+                }
+            },
+            
+            'created_at': datetime.now().isoformat(),
+            'updated_at': datetime.now().isoformat()
         }
     
     def _extract_agent_section(self, canonical: Dict, agent: str) -> str:
