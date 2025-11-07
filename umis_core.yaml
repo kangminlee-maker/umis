@@ -25,12 +25,13 @@
 # ========================================
 
 _meta:
-  version: "7.1.0"
+  version: "7.3.2"
   created: "2025-11-04"
+  updated: "2025-11-08"
   type: "index"
-  original_size: "5,508줄"
-  compressed_size: "580줄"
-  context_saving: "89%"
+  original_size: "6,102줄"
+  compressed_size: "819줄"
+  context_saving: "87%"
   
   purpose: |
     System RAG의 핵심 INDEX.
