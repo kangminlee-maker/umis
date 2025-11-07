@@ -104,9 +104,9 @@ def _get_global_mode():
 UMIS_MODE = _get_global_mode()  # LLM 제공자 (native/external)
 
 # 참고: 
-# - 웹 검색 모드: config/multilayer_config.yaml (Guestimation 전용)
-# - Interactive: config/multilayer_config.yaml (Guestimation 전용)
 # - UMIS 실행 모드: config/runtime.yaml (hybrid/rag_full 등)
+# - Guestimation 설정: Tier1Config, Tier2Config (v3.0, 코드 내장)
+# - LLM 모드: 위에서 자동 로드
 
 # ============================================================================
 # 기존 설정 import

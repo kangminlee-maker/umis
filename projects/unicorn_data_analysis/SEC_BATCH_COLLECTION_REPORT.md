@@ -425,3 +425,4 @@ PROGRESS_REPORT.md (전체 진행)
 **결과:** `research/SEC_*_final.json` (12개)
 
 
+

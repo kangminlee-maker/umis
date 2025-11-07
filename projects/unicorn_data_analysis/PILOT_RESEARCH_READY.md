@@ -585,3 +585,4 @@ open 07_Rivian_checklist.md
 **예상 완료:** 2주 내 (10시간 작업)
 
 
+
