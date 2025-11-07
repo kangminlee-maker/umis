@@ -186,29 +186,57 @@ def test_learning_writer_basic():
     
     # Test Case 3: 학습하면 안 되는 경우 (증거 부족)
     print("\n" + "-" * 60)
-    print("Test Case 3: 학습 조건 미달 (증거 부족)")
+    print("Test Case 3: 학습 조건 미달 (증거 부족, confidence=0.85)")
     print("-" * 60)
     
     few_evidence_result = EstimationResult(
         question="테스트",
         value=100,
-        confidence=0.90,  # 높지만
+        confidence=0.85,  # 0.90 미만
+        value_estimates=[
+            ValueEstimate(
+                source_type=SourceType.DEFINITE_DATA,
+                value=100,
+                confidence=0.85
+            )
+        ],  # 증거 1개만! (confidence < 0.90이면 2개 필요)
+        judgment_strategy="single_source"
+    )
+    
+    should_learn_few = writer.should_learn(few_evidence_result)
+    print(f"학습 가치: {should_learn_few}")
+    print(f"  - Confidence: {few_evidence_result.confidence:.2f} (< 0.90)")
+    print(f"  - Evidence: {len(few_evidence_result.value_estimates)}개 (< 2)")
+    
+    assert not should_learn_few, "❌ 증거 부족 케이스 실패"
+    print("✅ 증거 부족은 학습 안 함 (정상)")
+    
+    # Test Case 4: 높은 신뢰도는 증거 1개도 OK
+    print("\n" + "-" * 60)
+    print("Test Case 4: 높은 신뢰도 (confidence=0.90, 증거 1개)")
+    print("-" * 60)
+    
+    high_confidence_result = EstimationResult(
+        question="테스트",
+        value=100,
+        confidence=0.90,  # >= 0.90
         value_estimates=[
             ValueEstimate(
                 source_type=SourceType.DEFINITE_DATA,
                 value=100,
                 confidence=0.90
             )
-        ],  # 증거 1개만!
+        ],  # 증거 1개 (confidence >= 0.90이면 OK!)
         judgment_strategy="single_source"
     )
     
-    should_learn_few = writer.should_learn(few_evidence_result)
-    print(f"학습 가치: {should_learn_few}")
-    print(f"  - Evidence: {len(few_evidence_result.value_estimates)}개 (< 2)")
+    should_learn_high = writer.should_learn(high_confidence_result)
+    print(f"학습 가치: {should_learn_high}")
+    print(f"  - Confidence: {high_confidence_result.confidence:.2f} (>= 0.90)")
+    print(f"  - Evidence: {len(high_confidence_result.value_estimates)}개 (>= 1)")
     
-    assert not should_learn_few, "❌ 증거 부족 케이스 실패"
-    print("✅ 증거 부족은 학습 안 함 (정상)")
+    assert should_learn_high, "❌ 높은 신뢰도 케이스 실패"
+    print("✅ 높은 신뢰도는 증거 1개도 학습 (정상)")
     
     print("\n" + "=" * 60)
     print("✅ 모든 테스트 통과!")
@@ -281,11 +309,13 @@ def test_user_contribution():
     metadata2 = stored2['metadatas'][0]
     print(f"  - Confidence: {metadata2['confidence']} (검증 대기)")
     print(f"  - Verified: {metadata2.get('verified')}")
+    print(f"  - Evidence: {metadata2['evidence_count']}개 (1개로 충분)")
     
-    assert metadata2['confidence'] == 0.80, "❌ 업계 상식 confidence 오류"
+    assert metadata2['confidence'] == 0.90, "❌ 업계 상식 confidence 오류"
     assert metadata2['verified'] == False, "❌ verified 플래그 오류"
+    assert metadata2['evidence_count'] == 1, "❌ evidence_count 오류"
     
-    print("✅ 업계 상식 저장 성공 (검증 대기)")
+    print("✅ 업계 상식 저장 성공 (검증 대기, 증거 1개)")
     
     print("\n" + "=" * 60)
     print("✅ User Contribution 테스트 통과!")
@@ -311,8 +341,9 @@ if __name__ == "__main__":
         
         print("\n다음 단계:")
         print("  1. ✅ Learning Writer 구현 완료")
-        print("  2. ⏳ Projection Generator 수정 (Step 2)")
-        print("  3. ⏳ Tier 1-2 연결 (Step 3-4)")
+        print("  2. ✅ Confidence 기반 유연화 적용")
+        print("  3. ⏳ Projection Generator 수정 (Step 2)")
+        print("  4. ⏳ Tier 1-2 연결 (Step 3-4)")
         
     except AssertionError as e:
         print(f"\n❌ 테스트 실패: {e}")
