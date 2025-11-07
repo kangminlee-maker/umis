@@ -75,12 +75,12 @@ pattern_defaults:
   disruption_patterns:
     priority_agents: [explorer, observer]
 
-# Chunk Type별 규칙 (v7.3.0+)
+# Chunk Type별 규칙 (v7.3.1+)
 chunk_type_rules:
   
-  # Learned Rule (Guestimation 학습 결과)
+  # Learned Rule (Estimator 학습 결과)
   learned_rule:
-    target_agents: [guestimation]
+    target_agents: [estimator]
     strategy: "direct_projection"
     ttl: "persistent"  # 학습된 규칙은 영구 저장
     
@@ -89,16 +89,16 @@ chunk_type_rules:
       rule_id: "rule_id"
       
       # 값
-      value: "guestimation_value"
-      unit: "guestimation_unit"
-      confidence: "guestimation_confidence"
-      range_min: "guestimation_value_min"
-      range_max: "guestimation_value_max"
+      value: "estimator_value"
+      unit: "estimator_unit"
+      confidence: "estimator_confidence"
+      range_min: "estimator_value_min"
+      range_max: "estimator_value_max"
       
       # 맥락
-      domain: "guestimation_domain"
-      region: "guestimation_region"
-      time_period: "guestimation_time_period"
+      domain: "estimator_domain"
+      region: "estimator_region"
+      time_period: "estimator_time_period"
       
       # 증거 및 전략
       evidence_sources: "sources"
@@ -111,7 +111,7 @@ chunk_type_rules:
       last_used: "last_used"
       last_verified: "last_verified"
     
-    reason: "Tier 2/3 학습 결과 → Tier 1 재사용"
+    reason: "Estimator (Fermi) Agent 학습 결과 → Tier 1 재사용"
 
 # LLM 판단 로그
 llm_log_path: "data/llm_projection_log.jsonl"

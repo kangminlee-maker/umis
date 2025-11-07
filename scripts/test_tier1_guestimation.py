@@ -11,8 +11,8 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from umis_rag.guestimation_v3.tier1 import Tier1FastPath
-from umis_rag.guestimation_v3.models import Context, Intent
+from umis_rag.agents.estimator.tier1 import Tier1FastPath
+from umis_rag.agents.estimator.models import Context, Intent
 
 
 def test_builtin_rules():

@@ -15,11 +15,14 @@ system:
     Quantifier: {name: Bill, role: market_sizing, rag: true}         # v7.1.0+
     Validator: {name: Rachel, role: data_verification, rag: true}    # v7.1.0+
     Guardian: {name: Stewart, role: process_monitoring, rag: true}   # v7.1.0+ (Meta-RAG)
+    Estimator: {name: Fermi, role: value_estimation_judgment, rag: true}  # v7.3.1+ (Learning)
   
   # id: Agent ID (Observer, Explorer, ...)
   # name: Default name (Albert, Steve, ...) → agent_names.yaml로 커스터마이징
   
   flow: Observer(observe)→Explorer(rag+hypothesize)→Quantifier(calculate)→Validator(verify)→Guardian(approve)
+  
+  estimator_role: "협업 파트너 (모든 Agent가 필요 시 호출)"
   
   discovery_sprint: 명확도<7 → 5-Agent 병렬 탐색 → 목표 구체화
   
