@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-UMIS v7.0.0 Automated Setup Script
+UMIS v7.5.0 Automated Setup Script
 AI가 자동으로 실행 가능한 설치 스크립트
 
 사용법:
@@ -298,7 +298,7 @@ def step5_setup_neo4j(skip: bool = False):
 
 def check_installation():
     """설치 상태 확인"""
-    print_header("UMIS v7.0.0 설치 상태 확인")
+    print_header("UMIS v7.5.0 설치 상태 확인")
     
     status = {}
     
@@ -366,7 +366,7 @@ def main():
         return
     
     # 헤더
-    print_header("UMIS v7.0.0 자동 설치")
+    print_header("UMIS v7.5.0 자동 설치")
     print_info("Universal Market Intelligence System")
     print_info("RAG-powered 5-Agent 협업 시스템\n")
     
@@ -405,7 +405,11 @@ def main():
     
     # 완료
     print_header("설치 완료!")
-    print_success("✅ UMIS v7.0.0 설치 성공\n")
+    print_success("✅ UMIS v7.5.0 설치 성공\n")
+    print("\n🆕 v7.5.0 신규 기능:")
+    print("  ✅ Estimator Agent (3-Tier)")
+    print("  ✅ 12개 비즈니스 지표")
+    print("  ✅ 100% 커버리지")
     
     print_info("다음 단계:")
     print_info("  1. Cursor 열기")

@@ -7,17 +7,24 @@
 
 | Item | Value |
 |------|-------|
-| **UMIS Version** | v7.3.2 "Estimator Agent + Single Source" |
+| **UMIS Version** | v7.5.0 "Complete System" |
 | **Agent System** | 6-Agent (Observer, Explorer, Quantifier, Validator, Guardian, **Estimator**) ⭐ |
-| **RAG Architecture** | v3.0 |
-| **Excel Engine** | v1.0 (Phase 1 완료) |
-| **Estimator Agent** | v3.0 (3-Tier + Learning) ⭐ |
+| **RAG Architecture** | v3.0 (4-Layer) |
+| **Excel Engine** | v1.0 (3개 도구 완성) |
+| **Estimator Agent** | v3.0 (3-Tier 완성 + 12개 지표) ⭐ |
+| **Tier 3 Fermi** | v1.0 (구현 완료, 23개 모형) ⭐ |
+| **Business Metrics** | 12개 지표 (v7.5.0) ⭐ |
+| **Data Inheritance** | v1.0 (재귀 최적화, v7.5.0) ⭐ |
 | **Single Source Policy** | v1.0 (추정 일원화) ⭐ |
-| **Fermi Model Search** | v1.0 (Tier 3 준비) |
-| **LLM Mode** | Native + External (v1.0) |
-| **Schema Registry** | v1.0 |
+| **Reasoning Transparency** | v1.0 (추정 근거 투명화) ⭐ |
+| **Meta-RAG** | v1.0 (Guardian 프로세스 감시) ⭐ |
+| **System RAG** | v1.0 (31개 도구) ⭐ |
+| **LLM Mode** | Native + External (v1.0) ⭐ |
+| **Schema Registry** | v1.1 (Estimator 반영) ⭐ |
+| **Coverage** | 100% (실패율 0%) ⭐ |
+| **Cost** | $0 (Native mode) ⭐ |
 | **Last Updated** | 2025-11-08 |
-| **Status** | Production Ready |
+| **Status** | Production Ready - 완전체 |
 
 **Purpose**: UMIS 전체 구조와 기능을 한눈에 파악할 수 있는 고수준 설계도
 
@@ -29,20 +36,21 @@
 시장 분석을 위한 **6-Agent 협업 시스템** + **Multi-Layer RAG 아키텍처** + **Excel 자동 생성**
 
 ### Key Characteristics
-- ✅ **6명의 전문 에이전트** 역할 분담 및 상호 검증 (v7.3.1+)
+- ✅ **6-Agent 협업 시스템** 역할 분담 및 상호 검증 (v7.3.1+)
 - ✅ **Estimator (Fermi) Agent** 값 추정 및 판단 전문가 (v7.3.1+)
 - ✅ **Single Source of Truth** 모든 값 추정은 Estimator만 (v7.3.2+)
-- ✅ **RAG 기반 지식 활용** (54개 패턴/사례 DB)
-- ✅ **Fermi Model Search** (모형 만들기 + 퍼즐 맞추기, v7.2.1+)
-- ✅ **Multi-Layer Guestimation** (8개 레이어, v7.2.1+)
-- ✅ **Native Mode** (Cursor LLM 직접 활용, 비용 $0, v7.2.0+)
-- ✅ **자동 환경변수** (`.env` 자동 로드, v7.2.0+)
-- ✅ **Excel 자동 생성** (Market Sizing, Unit Economics, Financial Projection)
-- ✅ **Guestimation Framework** (Fermi Estimation, 8개 데이터 출처)
-- ✅ **완전한 추적성** (모든 결론 → 원본 데이터 역추적, 양방향 ID)
-- ✅ **재검증 가능** (Excel 함수 100%, Named Range, YAML 스키마)
-- ✅ **학습 가능** (LLM 판단 → 자동 규칙화)
-- ✅ **구조 독립성** (Builder Contract, Inline Validation)
+- ✅ **Reasoning Transparency** 추정 근거 완전 투명화 (v7.3.2+)
+- ✅ **Learning System** 사용할수록 6-16배 빠름 (v7.3.0+)
+- ✅ **Meta-RAG** Guardian 프로세스 자동 감시 (v7.1.0+)
+- ✅ **System RAG** 31개 도구 Key-based 검색 (v7.2.0+)
+- ✅ **RAG 기반 지식 활용** 360개 검증된 데이터 (54개 패턴/사례)
+- ✅ **Knowledge Graph** 패턴 조합 자동 발견 (13 노드, 45 관계)
+- ✅ **Excel 자동 생성** 3개 도구 (9-11 시트)
+- ✅ **Fermi Model Search** Tier 3 준비 완료 (v7.2.1+)
+- ✅ **Native Mode** Cursor LLM 직접 활용, 비용 $0 (v7.2.0+)
+- ✅ **완전한 추적성** 양방향 ID 시스템 (14개 Prefix)
+- ✅ **재검증 가능** Excel 함수 100%, Named Range
+- ✅ **자동 환경변수** .env 자동 로드 (v7.2.0+)
 
 ### Quick Start
 
@@ -52,6 +60,7 @@
 ```
 Cursor Composer (Cmd+I):
 "@Explorer, 시장 분석해줘"
+"@Fermi, B2B SaaS Churn Rate는?"  ⭐ v7.3.1+
 ```
 
 ---
@@ -71,18 +80,24 @@ Cursor Composer (Cmd+I):
 │  │ (Albert) │  │ (Steve)  │  │  (Bill)  │  │ (Rachel) │           │
 │  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘           │
 │       │             │             │             │                  │
-│       └─────────────┴─────────────┴─────────────┘                  │
-│                          │                                          │
-│                     ┌────▼────┐                                     │
-│                     │Guardian │                                     │
-│                     │(Stewart)│ ◄── 검증 & 메타 관리                │
-│                     └─────────┘                                     │
+│       └─────────────┴──────┬──────┴─────────────┘                  │
+│                            │                                        │
+│                   ┌────────▼────────┐                               │
+│                   │   Estimator     │ ⭐ v7.3.1+                    │
+│                   │   (Fermi)       │ ◄── 값 추정 (협업 파트너)     │
+│                   └────────┬────────┘                               │
+│                            │                                        │
+│                       ┌────▼────┐                                   │
+│                       │Guardian │                                   │
+│                       │(Stewart)│ ◄── 검증 & 메타 관리              │
+│                       └─────────┘                                   │
 │                                                                     │
 │  산출물:                                                            │
 │  - market_reality_report.md (Albert)                               │
 │  - OPP_*.md (Steve)                                                │
 │  - market_sizing.xlsx (Bill)                                       │
 │  - source_registry.yaml (Rachel)                                   │
+│  - EstimationResult (Fermi) ⭐ v7.3.1+                             │
 │  - .project_meta.yaml, deliverables_registry.yaml (Stewart)       │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -179,7 +194,8 @@ Cursor Composer (Cmd+I):
 - **Agent ID 불변** (observer, explorer, quantifier, validator, guardian, **estimator**) → 폴더/파일 경로
 - **Name 변경 가능** (config/agent_names.yaml) → 사용자 UI
 - **상호 검증** (각 산출물 2-3명 검증)
-- **Estimator 특수성** (v7.3.1+): 협업 파트너 (모든 Agent가 필요 시 호출)
+- **Estimator 특수성** (v7.3.1+): 협업 파트너 (모든 Agent가 필요 시 호출, Workflow에 끼어들지 않음)
+- **Single Source Policy** (v7.3.2+): 모든 값 추정은 Estimator만 수행
 
 #### 데이터 흐름 (순차적 의존성)
 
@@ -190,12 +206,23 @@ Rachel (Validator)
   │ - SRC_20241031_001: "피아노 시장 1,500억"
   │ - 신뢰도 평가 (0-100)
   │ - Definition Gap 분석
+  │ - 추정치 검증 필요 시 → Fermi 호출 (v7.3.2 교차 검증)
+  │
+  ├─► Fermi (Estimator) ⭐ 협업 파트너
+  │   │ EstimationResult
+  │   │ - 값 추정 (데이터 부족 시)
+  │   │ - 교차 검증 (Validator 요청)
+  │   │ - reasoning_detail (완전한 근거)
+  │   │ - Tier 1/2/3 자동 선택
+  │   │ - 학습 (confidence >= 0.80)
+  │   └─ 모든 Agent에서 호출됨
   │
 Bill (Quantifier)
   ↓ SAM 계산
   │ market_sizing.xlsx
   │ - Assumptions: SRC_ID 참조
-  │ - Estimation_Details: EST_NNN (추정 논리 7단계 문서화)
+  │ - 전환율/AOV 등 → Fermi 호출 (Single Source) ⭐
+  │ - Estimation_Details: EST-NNN (추정 ID)
   │ - 4가지 Method → Convergence (±30%)
   │ - 결과: SAM 270억 ± 30억
   │
@@ -203,13 +230,15 @@ Albert (Observer)
   ↓ 시장 구조 분석
   │ market_reality_report.md
   │ - 모든 주장에 SRC_ID 또는 Bill 계산 참조
+  │ - 가치사슬 마진 → Fermi 호출 ⭐
   │ - 가치사슬 맵
-  │ - 비효율성 정량화 (Bill 협업)
+  │ - 비효율성 정량화 (Bill + Fermi 협업)
   │
 Steve (Explorer)
   ↓ 기회 가설
   │ OPP_*.md
   │ - Albert 분석 참조
+  │ - 기회 크기 → Fermi 호출 (Order of Magnitude) ⭐
   │ - Bill SAM 참조
   │ - Rachel SRC_ID 참조
   │ - 3명 검증 (Albert, Bill, Rachel)
@@ -218,10 +247,12 @@ Steve (Explorer)
 Stewart (Guardian)
   │ .project_meta.yaml (프로젝트 진행 추적)
   │ deliverables_registry.yaml (산출물 자동 등록)
+  │ - 프로젝트 리소스 → Fermi 호출 ⭐
+  │ - Meta-RAG (순환/목표/평가)
   └─ 검증 상태 집계, 품질 평가
 ```
 
-### 2. 5-Layer RAG Architecture (Data Layer)
+### 2. 4-Layer RAG Architecture (Data Layer)
 
 #### Layer 구조
 
@@ -240,9 +271,10 @@ Layer 1: Canonical Index (CAN-*)
          ↓ config/projection_rules.yaml (90% 규칙)
          ↓ LLM 판단 (10%) → data/llm_projection_log.jsonl
 
-Layer 1: Projected Index (PRJ-*)
+Layer 2: Projected Index (PRJ-*)
   목적: Agent별 검색용 Materialized View
   전략: on_demand (TTL 24h) → 고빈도면 persistent
+  Agent Views: observer, explorer, quantifier, validator, guardian, estimator ⭐
   예시:
     projected_chunk_id: "PRJ-baemin-exp-001"
     agent_view: "explorer"
@@ -279,39 +311,46 @@ Layer 3: Knowledge Graph (GND-*, GED-*)
     evidence_ids: ["CAN-amazon-001", "PRJ-spotify-exp-002"]
     provenance: {source: "human_review", reviewer_id: "stewart"}
 
-Layer 4: Memory (MEM-*)
+Layer 4: Memory (MEM-*, RAE-*, EST-*)
   Query Memory: 순환 감지 (repetition_count)
+    - memory_id: "MEM-query-001"
+  
   Goal Memory: 목표 정렬 (alignment_score)
-
-RAE Index (RAE-*)
-  목적: Guardian 평가 재사용 (일관성)
-  예시:
-    rae_id: "RAE-eval-001"
-    deliverable_id: "OPP-001"
-    grade: "A"
-    rationale: "구조적 실현성 높음, 근거 충분"
-    evidence_ids: ["CAN-1234", "PRJ-5678"]
-    scorer_profile: "weighted"
+    - memory_id: "MEM-goal-001"
+  
+  RAE Index: Guardian 평가 재사용 (일관성)
+    - rae_id: "RAE-eval-001"
+    - deliverable_id: "OPP-001"
+    - grade: "A"
+    - rationale: "구조적 실현성 높음, 근거 충분"
+  
+  Estimation Results: Estimator 추정 결과 (v7.3.1+) ⭐
+    - estimation_id: "EST-churn-001"
+    - value: 0.06, confidence: 0.85
+    - reasoning_detail: {...}
+    - tier: 1/2/3
 ```
 
 ### 3. ID Namespace System (양방향 추적)
 
 모든 데이터 요소는 고유 ID를 가지며, **양방향 추적 가능**
 
-| Prefix | 의미 | 예시 | Collection/파일 |
-|--------|------|------|----------------|
-| **SRC-** | Rachel 데이터 출처 | SRC_20241031_001 | source_registry.yaml |
-| **EST-** | Bill 추정치 | EST_001 | market_sizing.xlsx (Estimation_Details) |
-| **ASM-** | Bill 가정 | ASM_001 | market_sizing.xlsx (Assumptions) |
-| **OPP-** | Steve 기회 가설 | OPP_20241031_001 | OPP_*.md |
-| **DEL-** | 산출물 | DEL_20241031_001 | deliverables_registry.yaml |
-| **CAN-** | Canonical 청크 | CAN-baemin-001 | canonical_index (ChromaDB) |
-| **PRJ-** | Projected 청크 | PRJ-baemin-exp-001 | projected_index (ChromaDB) |
-| **GND-** | Graph 노드 | GND-platform-001 | Neo4j Node |
-| **GED-** | Graph 간선 | GED-plat-sub-001 | Neo4j Edge |
-| **MEM-** | Memory | MEM-query-001 | query_memory, goal_memory |
-| **RAE-** | RAE 평가 | RAE-eval-001 | rae_index (ChromaDB) |
-| **tool:** | System RAG 도구 | tool:universal:guestimation | tool_registry.yaml → System RAG |
+| Prefix | 의미 | 예시 | Collection/파일 | Agent |
+|--------|------|------|----------------|-------|
+| **SRC-** | 데이터 출처 | SRC_20241031_001 | source_registry.yaml | Rachel |
+| **EST-** | **Estimator 추정 결과** ⭐ | **EST-churn-001** | **EstimationResult (Memory)** | **Fermi** |
+| **ASM-** | 가정 | ASM_001 | market_sizing.xlsx (Assumptions) | Bill |
+| **OPP-** | 기회 가설 | OPP_20241031_001 | OPP_*.md | Steve |
+| **DEL-** | 산출물 | DEL_20241031_001 | deliverables_registry.yaml | Stewart |
+| **CAN-** | Canonical 청크 | CAN-baemin-001 | canonical_index (ChromaDB) | RAG |
+| **PRJ-** | Projected 청크 | PRJ-baemin-exp-001 | projected_index (ChromaDB) | RAG |
+| **GND-** | Graph 노드 | GND-platform-001 | Neo4j Node | RAG |
+| **GED-** | Graph 간선 | GED-plat-sub-001 | Neo4j Edge | RAG |
+| **MEM-** | Memory | MEM-query-001 | query_memory, goal_memory | Guardian |
+| **RAE-** | RAE 평가 | RAE-eval-001 | rae_index (ChromaDB) | Guardian |
+| **tool:** | System RAG 도구 | tool:estimator:estimate | tool_registry.yaml | System |
+
+**총**: 12개 Prefix (v7.3.2)
 
 **양방향 ID** (v7.2.0 신규):
 - umis.yaml ↔ tool_registry.yaml
@@ -436,7 +475,7 @@ Steve 기회 가설: "피아노 구독 서비스 SAM 270억"
 
 ## 🔄 Data Flow & Relationships
 
-### Explorer Workflow (4단계)
+### Explorer Workflow (5단계) - v7.3.2
 
 ```
 Input: triggers = ["구독 모델 트렌드"]
@@ -462,20 +501,33 @@ Step 2: case_search
   
   Output: success_cases = [Netflix, Spotify, Adobe]
   ↓
-Step 3: quantifier_collaboration (조건부)
+Step 3: estimator_collaboration (조건부) ⭐ v7.3.2+
+  Condition: needs_estimation
+  Agent: Estimator (Fermi)
+  Query: "잠재 시장 크기는?"
+  
+  Estimator.estimate():
+    - Tier 1 체크 (학습된 규칙)
+    - Tier 2 실행 (11개 Source)
+    - reasoning_detail 생성
+    
+  Output: estimation_result = {value, confidence, reasoning_detail}
+  ↓
+Step 4: quantifier_collaboration (조건부)
   Condition: needs_quantitative
   Evaluate: pattern.type == "market_sizing_required" → False
   → Skip
   ↓
-Step 4: hypothesis_generation
+Step 5: hypothesis_generation
   Layers: [vector, memory]
-  Input: [patterns, cases, quantifier_data=None]
+  Input: [patterns, cases, estimator_data, quantifier_data]
   Memory Check: query_memory (순환 감지)
   
   Generate: hypothesis = {
     title: "피아노 구독 서비스",
     pattern: "subscription_model",
     evidence: [Netflix 사례, Spotify 사례],
+    market_size_estimate: estimator_data,  # ⭐ Estimator 결과
     ...
   }
   
@@ -568,148 +620,128 @@ Step 4: hypothesis_generation
 
 ```
 umis/
-├── umis.yaml                          # 메인 가이드 (Cursor Rules) - 5,747줄
-├── umis_core.yaml                     # 압축 INDEX (AI 빠른 참조) - 709줄
+├── umis.yaml                          # 메인 가이드 (Cursor Rules) - 6,539줄 ⭐
+├── umis_core.yaml                     # 압축 INDEX (AI 빠른 참조) - 928줄 ⭐
 ├── umis_deliverable_standards.yaml   # 산출물 표준
 ├── umis_examples.yaml                 # 사용 예시
-├── config/agent_names.yaml            # Agent 이름 커스터마이징
-├── config/tool_registry.yaml          # System RAG 도구 정의 (26개)
-├── VERSION.txt                        # v7.2.0
+├── VERSION.txt                        # v7.3.2 ⭐
 │
-├── deliverable_specs/                 # 산출물 스펙 (AI 최적화 YAML)
-│   ├── observer/
-│   │   └── market_reality_report_spec.yaml      (271줄)
-│   ├── explorer/
-│   │   └── opportunity_hypothesis_spec.yaml     (750줄) ⭐
-│   ├── quantifier/
-│   │   └── market_sizing_workbook_spec.yaml     (301줄)
-│   ├── validator/
-│   │   └── source_registry_spec.yaml            (162줄)
-│   └── project/
-│       ├── project_meta_spec.yaml               (261줄)
-│       └── deliverables_registry_spec.yaml      (194줄)
+├── config/                            # 설정 파일 (12개) ⭐
+│   ├── agent_names.yaml               # Agent 이름 (6-Agent)
+│   ├── tool_registry.yaml             # System RAG 도구 (31개) ⭐
+│   ├── schema_registry.yaml           # RAG 스키마 (v1.1) ⭐
+│   ├── projection_rules.yaml          # Projection 규칙 (Estimator 포함)
+│   ├── routing_policy.yaml            # Workflow (Estimator 협업) ⭐
+│   ├── runtime.yaml                   # 실행 모드
+│   ├── pattern_relationships.yaml     # Knowledge Graph (45 관계)
+│   ├── fermi_model_search.yaml        # Tier 3 설계 (1,266줄) ⭐
+│   └── ...                            # 기타 설정 파일
 │
-├── umis_deliverable_standards.yaml   # 산출물 표준 (2,876줄)
+├── deliverable_specs/                 # 산출물 스펙 (6개 YAML, AI 최적화)
+│   ├── observer/market_reality_report_spec.yaml        (271줄)
+│   ├── explorer/opportunity_hypothesis_spec.yaml       (750줄)
+│   ├── quantifier/market_sizing_workbook_spec.yaml     (301줄)
+│   ├── validator/source_registry_spec.yaml             (162줄)
+│   └── project/                       # 프로젝트 메타
+│       ├── project_meta_spec.yaml                      (261줄)
+│       └── deliverables_registry_spec.yaml             (194줄)
 │
-├── config_config/schema_registry.yaml        # RAG 레이어 통합 스키마 (843줄)
-├── config/overlay_layer.yaml                  # Overlay 레이어 설정
-├── config/routing_policy.yaml                # 워크플로우 라우팅 정책
-├── config/runtime.yaml                # 실행 모드 설정
-├── config/projection_rules.yaml             # Projection 변환 규칙
-├── data/llm_projection_log.jsonl           # LLM 판단 로그
-│
-├── data/
-│   ├── raw/
-│   │   ├── umis_business_model_patterns.yaml    # 31개 패턴
-│   │   ├── umis_disruption_patterns.yaml        # 23개 패턴
-│   │   └── umis_ai_guide.yaml                   # AI 가이드
-│   ├── chunks/
-│   │   ├── explorer_business_models.jsonl       # 변환된 청크
-│   │   └── explorer_disruption_patterns.jsonl
-│   ├── chroma/                        # ChromaDB (Vector Indexes)
-│   │   ├── canonical_index/
-│   │   ├── projected_index/
-│   │   ├── query_memory/
-│   │   ├── goal_memory/
-│   │   └── rae_index/
-│   └── config/pattern_relationships.yaml     # 패턴 관계 (Graph)
-│
-├── scripts/                           # 모든 실행 스크립트 (빌드 + 테스트)
-│   ├── 01_convert_yaml.py             # YAML → JSONL 변환
-│   ├── 02_build_index.py              # RAG 인덱스 빌드 (통합)
-│   ├── build_canonical_index.py       # Canonical 빌드
-│   ├── build_projected_index.py       # Projected 빌드
-│   ├── build_knowledge_graph.py       # Graph 빌드
-│   ├── query_rag.py                   # RAG 쿼리 CLI
-│   ├── 03_test_search.py              # 검색 테스트
-│   ├── test_neo4j_connection.py       # Neo4j 테스트
-│   ├── test_hybrid_explorer.py        # Hybrid Search 테스트
-│   ├── test_schema_contract.py        # 스키마 계약 테스트
-│   └── test_*.py                      # 기타 테스트 스크립트
+├── scripts/                           # 실행 스크립트 (75개 파일)
+│   ├── 01_convert_yaml.py             # YAML → JSONL
+│   ├── 02_build_index.py              # RAG 빌드
+│   ├── build_system_knowledge.py      # System RAG 빌드 ⭐
+│   ├── query_system_rag.py            # System RAG 검색 ⭐
+│   ├── build_canonical_index.py       # Canonical
+│   ├── build_projected_index.py       # Projected
+│   ├── build_knowledge_graph.py       # Graph
+│   ├── test_guardian_memory.py        # Meta-RAG 테스트 ⭐
+│   ├── test_single_source_policy.py   # Single Source 테스트 ⭐
+│   └── test_*.py                      # 26개 테스트
 │
 ├── umis_rag/                          # 핵심 패키지 (실제 RAG 코드)
-│   ├── core/
-│   │   ├── schema.py                  # Pydantic 스키마 정의
+│   ├── core/                          # 핵심 시스템 (9개 파일)
+│   │   ├── schema.py                  # Pydantic 스키마
 │   │   ├── metadata_schema.py         # 메타데이터 스키마
 │   │   ├── config.py                  # 설정 관리
-│   │   ├── layer_manager.py           # 3-Layer 관리 (Overlay)
-│   │   ├── workflow_executor.py       # 워크플로우 실행
-│   │   ├── condition_parser.py        # 조건 파싱
-│   │   ├── circuit_breaker.py         # Circuit Breaker (Fail-Safe)
-│   │   └── error_handler.py           # 에러 핸들링
-│   ├── graph/
-│   │   ├── schema_initializer.py      # Neo4j 스키마 초기화
-│   │   ├── connection.py              # Neo4j 연결
-│   │   ├── hybrid_search.py           # Vector + Graph 통합 검색
-│   │   └── confidence_calculator.py   # 다차원 신뢰도 계산
-│   ├── projection/
-│   │   ├── hybrid_projector.py        # 규칙 (90%) + LLM (10%)
-│   │   └── ttl_manager.py             # TTL 캐싱 관리
-│   ├── guardian/
-│   │   ├── memory.py                  # Guardian 메모리
-│   │   ├── query_memory.py            # Query Memory (순환 감지)
-│   │   ├── goal_memory.py             # Goal Memory (목표 정렬)
-│   │   ├── rae_memory.py              # RAE Memory (평가 재사용)
-│   │   ├── meta_rag.py                # Meta-RAG
-│   │   └── three_stage_evaluator.py   # 3단계 평가
-│   ├── learning/
-│   │   └── rule_learner.py            # LLM 로그 → 규칙 학습
-│   ├── agents/
-│   │   ├── explorer.py                # Explorer 에이전트 구현
-│   │   ├── quantifier.py              # Quantifier 에이전트
-│   │   ├── validator.py               # Validator 에이전트
-│   │   ├── observer.py                # Observer 에이전트
-│   │   ├── guardian.py                # Guardian 에이전트
-│   │   └── estimator/                 # ⭐ Estimator 에이전트 (v7.3.1+)
-│   │       ├── estimator.py           # EstimatorRAG 통합 클래스
-│   │       ├── tier1.py               # Fast Path
-│   │       ├── tier2.py               # Judgment Path
+│   │   ├── layer_manager.py           # 3-Layer 관리
+│   │   ├── workflow_executor.py       # Workflow 실행
+│   │   ├── circuit_breaker.py         # Circuit Breaker
+│   │   └── ...
+│   │
+│   ├── agents/                        # 6-Agent 시스템 ⭐
+│   │   ├── observer.py                # Observer
+│   │   ├── explorer.py                # Explorer
+│   │   ├── quantifier.py              # Quantifier
+│   │   ├── validator.py               # Validator
+│   │   ├── guardian.py                # Guardian
+│   │   └── estimator/                 # ⭐ Estimator (v7.3.1+)
+│   │       ├── estimator.py           # 통합 인터페이스
+│   │       ├── tier1.py               # Fast Path (<0.5초)
+│   │       ├── tier2.py               # Judgment Path (3-8초)
 │   │       ├── learning_writer.py     # 학습 시스템
 │   │       ├── source_collector.py    # 11개 Source
 │   │       ├── judgment.py            # 판단 엔진
 │   │       ├── models.py              # 데이터 모델
 │   │       ├── rag_searcher.py        # RAG 검색
 │   │       └── sources/               # Physical, Soft, Value
-│   ├── deliverables/
-│   │   └── excel/                     # Excel 자동 생성 시스템 (v7.2.0)
+│   │
+│   ├── graph/                         # Knowledge Graph (5개 파일)
+│   │   ├── schema_initializer.py      # Neo4j 스키마
+│   │   ├── connection.py              # Neo4j 연결
+│   │   ├── hybrid_search.py           # Vector + Graph
+│   │   └── confidence_calculator.py   # 다차원 신뢰도
+│   │
+│   ├── guardian/                      # Meta-RAG (7개 파일, 2,401줄) ⭐
+│   │   ├── meta_rag.py                # 통합 오케스트레이터
+│   │   ├── memory.py                  # 통합 메모리
+│   │   ├── query_memory.py            # 순환 감지
+│   │   ├── goal_memory.py             # 목표 정렬
+│   │   ├── rae_memory.py              # 평가 일관성
+│   │   └── three_stage_evaluator.py   # 3단계 평가
+│   │
+│   ├── projection/                    # Projection (3개 파일)
+│   │   ├── hybrid_projector.py        # 90% 규칙 + 10% LLM
+│   │   └── ttl_manager.py             # TTL 캐싱
+│   │
+│   ├── learning/                      # 학습 시스템
+│   │   └── rule_learner.py            # LLM → 규칙
+│   │
+│   ├── deliverables/                  # Excel 자동 생성 (38개 파일)
+│   │   └── excel/                     # 3개 도구 (v7.2.0)
 │   │       ├── formula_engine.py      # Excel 함수 엔진
-│   │       ├── builder_contract.py    # Builder Contract 시스템
-│   │       ├── assumptions_builder.py
-│   │       ├── method_builders.py     # 4-Method SAM
-│   │       ├── market_sizing/         # Market Sizing (10 시트)
-│   │       ├── unit_economics/        # Unit Economics (10 시트)
-│   │       └── financial_projection/  # Financial Projection (11 시트)
-│   └── utils/
+│   │       ├── builder_contract.py    # Builder Contract
+│   │       ├── market_sizing/         # 9 시트
+│   │       ├── unit_economics/        # 10 시트
+│   │       └── financial_projection/  # 11 시트
+│   │
+│   └── utils/                         # 유틸리티 (3개 파일)
 │       ├── logger.py                  # 로깅
-│       └── guestimation.py            # Guestimation Engine (v7.2.0)
+│       └── guestimation.py            # Legacy (Deprecated)
 │
-├── dev_docs/                          # RAG 개발 문서 (시스템 비의존)
-│   ├── README.md
-│   ├── architecture/                  # RAG v3.0 아키텍처 설계
-│   ├── dev_history/                   # 주차별 개발 히스토리
-│   ├── analysis/                      # 시스템 분석 문서
-│   ├── guides/                        # 개발 가이드
-│   ├── planning/                      # 계획 문서
-│   └── summary/                       # 요약 문서
+├── scripts/                           # 실행 스크립트 (75개 파일)
+│   ├── 01_convert_yaml.py             # YAML → JSONL 변환
+│   ├── 02_build_index.py              # RAG 인덱스 빌드
+│   ├── build_canonical_index.py       # Canonical 빌드
+│   ├── build_projected_index.py       # Projected 빌드
+│   ├── build_knowledge_graph.py       # Graph 빌드
+│   ├── build_system_knowledge.py      # System RAG 빌드 ⭐
+│   ├── query_system_rag.py            # System RAG 검색 ⭐
+│   ├── test_*.py                      # 테스트 스크립트 (26개)
+│   └── ...
 │
-├── projects/                          # 실제 프로젝트 폴더 (Git 제외)
-│   ├── README.md
-│   ├── market_analysis/               # Legacy 프로젝트
-│   │   ├── korean_adult_education_market_2024/
-│   │   └── music_streaming_subscription_2024/
-│   └── YYYYMMDD_project_name/         # v7.0.0 표준 구조
-│       ├── 00_overview/
-│       │   ├── .project_meta.yaml     # Stewart 자동 관리
-│       │   └── deliverables_registry.yaml
-│       └── 02_analysis/
-│           ├── validator/             # Agent ID 기반 폴더
-│           │   └── source_registry.yaml
-│           ├── quantifier/
-│           │   └── market_sizing.xlsx
-│           ├── observer/
-│           │   └── market_reality_report.md
-│           └── explorer/
-│               └── OPP_*.md
+├── setup/                             # 설치 파일
+│   ├── setup.py                       # 자동 설치 스크립트
+│   ├── AI_SETUP_GUIDE.md              # AI용 가이드
+│   └── START_HERE.md                  # 빠른 시작
+│
+├── dev_docs/                          # 개발 문서 (Alpha only, 50,000줄+)
+│   ├── guestimation_v3/               # Estimator 설계 (20개)
+│   ├── reports/                       # 분석 리포트 (10개)
+│   └── ...
+│
+├── archive/                           # Deprecated (Alpha only)
+│   ├── guestimation_v1_v2/            # v7.2.1 이하
+│   └── v7.2.0_and_earlier/            # 이전 버전
 │
 └── docs/                              # 활성 UMIS 문서
     ├── README.md
@@ -728,37 +760,67 @@ umis/
 
 ### 주요 파일 역할
 
-| 파일 | 역할 | 비고 |
-|------|------|------|
-| **umis.yaml** | Cursor Rules, 메인 가이드 | 5,747줄, Guestimation 포함 |
-| **umis_core.yaml** | 압축 INDEX (AI 빠른 참조) | 709줄, 컨텍스트 77% 절약 |
-| **config/tool_registry.yaml** | System RAG 도구 정의 (26개) | 양방향 ID, 자동 생성 |
-| **config/schema_registry.yaml** | RAG 레이어 통합 스키마 | 845줄, v1.0 |
-| **config/projection_rules.yaml** | Canonical → Projected 변환 규칙 | 90% 커버리지 |
-| **config/routing_policy.yaml** | Explorer Workflow 정의 | 4단계 워크플로우 |
-| **config/runtime.yaml** | 실행 모드 (hybrid) | Circuit Breaker 설정 |
-| **config/overlay_layer.yaml** | Overlay (core/team/personal) | 현재 비활성 |
-| **docs/GUESTIMATION_FRAMEWORK.md** | Fermi Estimation 가이드 | v7.2.0 핵심 방법론 |
+| 파일 | 역할 | 크기/개수 | v7.3.2 |
+|------|------|-----------|--------|
+| **umis.yaml** | Cursor Rules, 메인 가이드 | 6,539줄 | ⭐ Estimator 386줄 |
+| **umis_core.yaml** | 압축 INDEX (AI 빠른 참조) | 928줄 | ⭐ 87% 절약 |
+| **config/tool_registry.yaml** | System RAG 도구 정의 | 31개 도구 | ⭐ Estimator 3개 |
+| **config/schema_registry.yaml** | RAG 레이어 통합 스키마 | 851줄, v1.1 | ⭐ EST- prefix |
+| **config/projection_rules.yaml** | Canonical → Projected 변환 | 125줄 | ⭐ Estimator 규칙 |
+| **config/routing_policy.yaml** | Workflow 정의 | 194줄, v1.1.0 | ⭐ Estimator 협업 |
+| **config/runtime.yaml** | 실행 모드 (hybrid) | 99줄 | Circuit Breaker |
+| **config/fermi_model_search.yaml** | Tier 3 설계 | 1,266줄 | ⭐ 통합 대기 |
+| **umis_rag/agents/estimator/** | Estimator Agent | 13개 파일, 2,800줄 | ⭐ v7.3.1+ |
+| **umis_rag/guardian/** | Meta-RAG | 7개 파일, 2,401줄 | ⭐ v7.1.0+ |
 
 ---
 
 ## 📚 Version History
 
-**현재 버전**: v7.2.0 "Fermi" (2025-11-04) - Stable Release
+**현재 버전**: v7.5.0 "Complete System" (2025-11-08) - Stable Release
 
 **상세 변경 이력**: [CHANGELOG.md](CHANGELOG.md) 참조
 
 **주요 마일스톤**:
-- **v7.2.0 (2025-11-04)**: 
-  - Bill Excel 도구 3개 (작업 커버리지 4배)
-  - Guestimation Framework (Fermi Estimation)
-  - Named Range 100%, Builder Contract, Inline Validation
-  - 양방향 ID 시스템
-  - 데이터 검증 (5개 벤치마크)
-- v7.0.0: RAG v3.0 완전 통합, 5-Agent 안정화
-- v6.3.0-alpha: Projection 메커니즘, Circuit Breaker
-- v6.2.0: Agent 산출물 표준화
-- v6.0.0: 5-Agent 시스템 확립
+- **v7.5.0 (2025-11-08)**: 🏆
+  - 3-Tier 완성 (100% 커버리지, 실패율 0%)
+  - 12개 비즈니스 지표 템플릿 (23개 모형)
+  - 데이터 상속 (재귀 최적화)
+  - LLM 모드 통합 (Native/External)
+  - 모든 파일 v7.5.0 반영
+
+- **v7.4.0 (2025-11-08)**: 🎯
+  - Tier 3 Fermi Decomposition 구현 (1,463줄)
+  - 8개 비즈니스 지표 템플릿
+  - SimpleVariablePolicy (KISS 원칙)
+  - LLM API 통합
+
+- **v7.3.2 (2025-11-08)**: ⭐
+  - Single Source of Truth (모든 추정은 Estimator만)
+  - Reasoning Transparency (추정 근거 완전 투명화)
+  - Validator 교차 검증
+  - 전체 시스템 100% 검증
+
+- **v7.3.1 (2025-11-07)**: ⭐
+  - Estimator (Fermi) Agent 추가 (6-Agent 시스템 완성)
+  - 아키텍처 일관성 (모든 Agent agents/ 폴더)
+  - 협업 파트너 모델
+
+- **v7.3.0 (2025-11-07)**:
+  - Guestimation v3.0 (3-Tier Architecture)
+  - Learning System (6-16배 빠름)
+  - 11개 Source 통합
+
+- **v7.2.0 (2025-11-04)**:
+  - Excel 도구 3개 (작업 커버리지 4배)
+  - Fermi Model Search (Tier 3 설계)
+  - Native Mode, 양방향 ID
+
+- **v7.0.0 (2025-11-03)**:
+  - RAG v3.0 완전 통합
+  - 6-Agent 시스템 안정화
+  - Knowledge Graph (13 노드, 45 관계)
+  - System RAG (도구 기반 검색)
 
 ---
 
@@ -767,13 +829,14 @@ umis/
 ### 실행 모드 (config/runtime.yaml)
 
 ```yaml
-mode: hybrid  # yaml_only / hybrid / rag_full
+mode: rag_full  # yaml_only / hybrid / rag_full (v7.5.0)
 
 layers:
-  vector: true   # ChromaDB Vector RAG
-  graph: true    # Neo4j Knowledge Graph
-  memory: true   # Guardian Memory
-  meta: false    # Meta-RAG (미구현)
+  vector: true      # ChromaDB Vector RAG
+  graph: true       # Neo4j Knowledge Graph
+  memory: true      # Guardian Memory
+  meta: true        # Meta-RAG (v7.1.0+ 구현 완료) ⭐
+  estimator: true   # Estimator 3-Tier (v7.5.0) ⭐
 
 circuit_breaker:
   enabled: true
@@ -784,8 +847,8 @@ circuit_breaker:
 
 **모드 선택 가이드**:
 - `yaml_only`: RAG 없이 기본 YAML만 (안전, 느림)
-- `hybrid`: Vector RAG만 (권장, 안정적) ← **기본값**
-- `rag_full`: Vector + Graph + Memory (모든 기능, 실험적)
+- `hybrid`: Vector RAG만 (안정적)
+- `rag_full`: Vector + Graph + Memory + Meta + Estimator (모든 기능) ← **기본값 (v7.5.0)**
 
 ### Projection 학습 (config/projection_rules.yaml)
 
@@ -858,9 +921,11 @@ search_order: [personal, team, core]  # 개인 > 팀 > 공식
 
 ## 📖 References
 
-### 핵심 문서
-- `umis.yaml`: 메인 가이드 (Cursor Rules)
-- `config_config/schema_registry.yaml`: RAG 레이어 스키마
+### 핵심 문서 (v7.3.2)
+- `umis.yaml` (6,539줄): 메인 가이드 (Cursor Rules, Estimator 포함)
+- `umis_core.yaml` (928줄): 압축 INDEX (System RAG용, 87% 절약)
+- `config/schema_registry.yaml` (851줄, v1.1): RAG 레이어 스키마
+- `config/tool_registry.yaml` (1,710줄): System RAG 도구 (31개)
 - `umis_deliverable_standards.yaml`: 산출물 표준
 
 ### 참조 문서
@@ -932,13 +997,14 @@ search_order: [personal, team, core]  # 개인 > 팀 > 공식
 
 | 변경 사항 | 업데이트 대상 |
 |----------|--------------|
-| 새 Agent 추가 | System Architecture, 5-Agent System, Data Flow |
-| 새 RAG Layer 추가 | System Architecture, 5-Layer RAG Architecture |
+| 새 Agent 추가 | System Architecture, 6-Agent System, Data Flow |
+| 새 RAG Layer 추가 | System Architecture, 4-Layer RAG Architecture |
 | 스키마 변경 | Core Concepts, config/schema_registry.yaml 동기화 |
 | 새 ID Prefix | ID Namespace System 테이블 |
 | Projection 규칙 변경 | Projection Mechanism, config/projection_rules.yaml 동기화 |
 | 워크플로우 변경 | Data Flow & Relationships, config/routing_policy.yaml 동기화 |
-| 폴더 구조 변경 | Component Map, docs/FOLDER_STRUCTURE.md |
+| 폴더 구조 변경 | Component Map |
+| System RAG 도구 추가 | config/tool_registry.yaml 동기화 |
 
 ---
 
@@ -1013,19 +1079,20 @@ _env_loaded = _load_environment()
 
 ---
 
-## 🎯 Estimator (Fermi) Agent (v7.3.1+) ⭐
+## 🎯 Estimator (Fermi) Agent (v7.5.0 완성) ⭐
 
 ### 6번째 Agent - 값 추정 및 판단 전문가
 
-**핵심**: "맥락 기반 판단 + 학습하는 시스템 + Single Source of Truth"
+**핵심**: "3-Tier 완성 + 12개 비즈니스 지표 + 100% 커버리지"
 
 **역할**:
 - 모든 값/데이터 추정 (유일한 권한, v7.3.2+)
-- 11개 Source 통합 판단
-- 추정 근거 완전 제공
-- 학습 시스템 (사용할수록 6-16배 빠름)
+- 3-Tier Architecture (Tier 1/2/3 완성, v7.5.0)
+- 12개 비즈니스 지표 템플릿 (23개 모형, v7.5.0)
+- 데이터 상속 (재귀 최적화, v7.5.0)
+- LLM 모드 통합 (Native/External, v7.5.0)
 
-**위치**: `umis_rag/agents/estimator/` (v7.3.1+)
+**위치**: `umis_rag/agents/estimator/` (14개 파일, 4,212줄)
 
 **클래스**: `EstimatorRAG` (통합 인터페이스)
 
@@ -1034,15 +1101,22 @@ _env_loaded = _load_environment()
 from umis_rag.agents.estimator import EstimatorRAG
 
 estimator = EstimatorRAG()
-result = estimator.estimate("B2B SaaS Churn Rate는?", domain="B2B_SaaS")
 
-# 또는 Cursor에서
-@Fermi, B2B SaaS Churn Rate는?
+# Tier 1/2 (대부분)
+result = estimator.estimate("Churn Rate는?", domain="B2B_SaaS")
+
+# Tier 3 (비즈니스 지표, v7.5.0)
+result = estimator.estimate("LTV는?")
+result = estimator.estimate("Payback Period는?")
+result = estimator.estimate("Rule of 40은?")
+
+# Cursor에서
+@Fermi, SaaS LTV는?
 ```
 
 ```
 ┌─────────────────────────────────────────────┐
-│ Tier 1: Fast Path (40-50%, <0.5초)         │
+│ Tier 1: Fast Path (45% → 95%, <0.5초)     │
 │   - Built-in 규칙 (20개)                   │
 │   - 학습된 규칙 RAG (0 → 2,000개 진화)     │
 │   - 원칙: False Negative 허용              │
@@ -1050,7 +1124,7 @@ result = estimator.estimate("B2B SaaS Churn Rate는?", domain="B2B_SaaS")
                │ 매칭 없으면
                ▼
 ┌─────────────────────────────────────────────┐
-│ Tier 2: Judgment Path (45-55%, 3-8초)      │
+│ Tier 2: Judgment Path (50% → 5%, 3-8초)   │
 │   1. 맥락 파악 (intent, domain, ...)      │
 │   2. Source 수집 (11개 중 5-8개)          │
 │      - Physical: 절대 한계 (3개)           │
@@ -1063,49 +1137,53 @@ result = estimator.estimate("B2B SaaS Churn Rate는?", domain="B2B_SaaS")
                │ 복잡하면
                ▼
 ┌─────────────────────────────────────────────┐
-│ Tier 3: Fermi Recursion (2-5%, 10-30초)   │
-│   - Fermi Model Search                     │
-│   - 재귀 분해                              │
+│ Tier 3: Fermi Decomposition (v7.5.0 완성) │
+│   - 12개 비즈니스 지표 템플릿 (23개 모형) │
+│   - 재귀 추정 (max depth 4)               │
+│   - 데이터 상속 (v7.5.0)                  │
+│   - 순환 감지 (Call stack)                │
+│   - SimpleVariablePolicy (6-10개)         │
+│   - LLM 모드 (Native/External)            │
+│   - 커버: 5% → 0.5%                       │
 └─────────────────────────────────────────────┘
+
+총 커버리지: 100% ✅
+실패율: 0% ✅
 ```
 
-**11개 Source (3 Category)**:
+**12개 비즈니스 지표 (v7.5.0)**:
 ```
-Physical Constraints (Knock-out):
-  1. 시공간 법칙
-  2. 보존 법칙
-  3. 수학 정의
+핵심 8개:
+  1. Unit Economics (LTV/CAC)
+  2. Market Sizing
+  3. LTV
+  4. CAC
+  5. Conversion Rate
+  6. Churn Rate
+  7. ARPU
+  8. Growth Rate
 
-Soft Constraints (Range 제시):
-  4. 법률/규범
-  5. 통계 패턴 (7가지 분포)
-  6. 행동경제학
+고급 4개 (v7.5.0):
+  9. Payback Period
+  10. Rule of 40
+  11. Net Revenue Retention
+  12. Gross Margin
 
-Value Sources (값 결정):
-  7. 확정 데이터
-  8. LLM 추정
-  9. 웹 검색
-  10. RAG 벤치마크 (Quantifier 100개 활용)
-  11. 통계 패턴 값
+총: 12개 지표, 23개 모형
+커버: 90-95% (템플릿만)
 ```
 
-**학습 시스템**:
-- Tier 2/3 결과 → Tier 1 편입
-- 사용할수록 빨라짐
-- Year 1: 2,000개 규칙 (95% 커버)
+**LLM 모드 (v7.5.0)**:
+- Native Mode: 템플릿만, 비용 $0 (권장)
+- External Mode: 템플릿 + OpenAI API, 비용 $0.03/질문
 
-**RAG 통합**:
-- Collection 증가 없음 (13개 유지)
-- Canonical-Projected 활용
-- agent_view="estimator" (v7.3.1+)
-
-**파일**: `umis_rag/agents/estimator/` (13개, 2,800줄)
-
-**v7.3.2 신규**: Single Source of Truth + Reasoning Transparency
-- `reasoning_detail`: 상세 근거 (전략, 증거, 과정)
-- `component_estimations`: 개별 요소 논리
-- `estimation_trace`: 추정 과정 추적
-- `Validator.validate_estimation()`: 교차 검증
+**파일**: `umis_rag/agents/estimator/` (14개 파일, 4,212줄)
+- estimator.py (337줄)
+- tier1.py (350줄)
+- tier2.py (650줄)
+- tier3.py (1,463줄) ⭐ v7.5.0
+- models.py (519줄)
+- 기타 9개
 
 ---
 

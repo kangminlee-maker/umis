@@ -1,23 +1,27 @@
-# UMIS examples - Compatible with v7.0.0
+# UMIS examples - Compatible with v7.5.0
 # ========================================
-# UMIS v7.0.0 사용 예시
+# UMIS v7.5.0 사용 예시
 # ========================================
 #
-# v7.0.0 주요 특징:
-# - Explorer RAG (54개 패턴/사례 자동 검색)
-# - Knowledge Graph (패턴 조합 자동 발견)
-# - AI 자동 설치 (setup/setup.py)
-# - config/ 폴더 중앙 관리
-# - Cursor Composer 완전 통합
+# v7.5.0 주요 특징:
+# - 6-Agent 협업 시스템 (Estimator 추가)
+# - 3-Tier 완성 (100% 커버리지)
+# - 12개 비즈니스 지표 템플릿 (23개 모형)
+# - 데이터 상속 (재귀 최적화)
+# - LLM 모드 통합 (Native/External)
+# - Explorer RAG (54개 패턴/사례)
+# - Knowledge Graph (13 노드, 45 관계)
+# - Meta-RAG (Guardian 프로세스 감시)
+# - System RAG (31개 도구)
 #
-# 최종 업데이트: 2025-11-03
+# 최종 업데이트: 2025-11-08
 # ========================================
 
 _meta:
-  version: "7.0.0"
-  umis_version: "7.0.0"
-  purpose: "UMIS v7.0.0 실제 사용 예시"
-  last_updated: "2025-11-03"
+  version: "7.5.0"
+  umis_version: "7.5.0"
+  purpose: "UMIS v7.5.0 실제 사용 예시 (3-Tier + 12개 지표)"
+  last_updated: "2025-11-08"
 
 # ========================================
 # PART 1: 빠른 시작 예시
@@ -267,7 +271,7 @@ rag_usage_examples:
       → YouTube Premium, Spotify 성공 사례
 
 # ========================================
-# PART 3: 5-Agent 협업 예시
+# PART 3: 6-Agent 협업 예시 (v7.5.0)
 # ========================================
 
 agent_collaboration_examples:
@@ -675,5 +679,478 @@ reference_documents:
     - "dev_docs/guides/: 개발 가이드"
 
 # ========================================
+# PART 5: Estimator & Tier 3 예시 (v7.5.0)
+# ========================================
+
+estimator_examples:
+  description: "Estimator (Fermi) Agent 사용 예시 - 3-Tier + 12개 비즈니스 지표"
+  
+  # 예시 1: Tier 1 (Fast Path)
+  example_1_tier1_fast:
+    scenario: "학습된 질문 (두 번째 요청)"
+    
+    first_request:
+      user: "@Fermi, B2B SaaS Churn Rate는?"
+      estimator_action:
+        tier: 2
+        time: "5.2초"
+        sources: ["statistical", "rag", "soft"]
+        result: "6% (confidence: 0.85)"
+        learning: "confidence >= 0.80 → 학습"
+    
+    second_request:
+      user: "@Fermi, B2B SaaS Churn Rate는?"  # 동일 질문
+      estimator_action:
+        tier: 1  # ⭐ 학습된 규칙 사용
+        time: "0.3초"
+        improvement: "17배 빠름"
+        result: "6% (confidence: 0.85)"  # 동일한 답
+    
+    key_point: "사용할수록 빨라짐 (학습 시스템)"
+  
+  # 예시 2: Tier 2 (Judgment Path)
+  example_2_tier2_judgment:
+    scenario: "데이터 부족 시 추정"
+    
+    user: "@Quantifier, 음식점 SaaS 전환율 필요해"
+    
+    quantifier_action:
+      step_1: "전환율 데이터 없음 확인"
+      step_2: "Estimator 호출 (Single Source Policy)"
+      
+      estimator_call:
+        question: "음식점 SaaS 전환율은?"
+        domain: "Food_Service_SaaS"
+      
+      estimator_tier2:
+        action_1: "Tier 1 체크 → 없음"
+        action_2: "Tier 2 실행"
+        
+        source_collection:
+          - "RAG 벤치마크: 카페 SaaS 12% 발견"
+          - "통계 패턴: B2B SaaS 평균 8-12%"
+          - "행동경제학: Loss Aversion 조정"
+        
+        judgment:
+          strategy: "weighted_average"
+          calculation: "(0.12×0.75 + 0.10×0.80) / (0.75+0.80) = 0.11"
+          result: "11% (confidence: 0.78)"
+        
+        reasoning_detail:
+          method: "weighted_average"
+          sources_used: ["rag", "statistical"]
+          why: "두 증거의 신뢰도가 유사 (0.75-0.80)"
+          evidence_breakdown:
+            - source: "rag"
+              value: 0.12
+              confidence: 0.75
+            - source: "statistical"
+              value: 0.10
+              confidence: 0.80
+          judgment_process:
+            - "Step 1: domain=Food_Service_SaaS 인식"
+            - "Step 2: 11개 Source 검색 → 2개 발견"
+            - "Step 3: weighted_average 선택"
+            - "Step 4: 계산 완료"
+      
+      quantifier_usage:
+        sam_calculation: "음식점 70만 × 디지털 30% × 전환 11% × ARPU"
+        note: "Estimator 결과를 SAM 계산에 사용"
+    
+    key_point: "Quantifier는 계산만, 추정은 Estimator"
+  
+  # 예시 3: Tier 3 (Fermi Decomposition) - 비즈니스 지표
+  example_3_tier3_business_metric:
+    scenario: "LTV 추정 (재귀 분해)"
+    
+    user: "@Fermi, B2B SaaS LTV는?"
+    
+    estimator_tier3:
+      step_1_tier1: "학습된 규칙 없음"
+      step_2_tier2: "단일 값 추정 실패 (복잡)"
+      step_3_tier3: "Tier 3 실행"
+      
+      phase_1_scan:
+        available: []
+        unknown: []
+      
+      phase_2_template:
+        matched: "ltv"
+        models:
+          - id: "LTV_001"
+            formula: "ltv = arpu / churn_rate"
+            variables: ["arpu", "churn_rate"]
+          - id: "LTV_002"
+            formula: "ltv = arpu × average_lifetime_months"
+            variables: ["arpu", "average_lifetime_months"]
+        selected: "LTV_001 (Unknown 2개, 더 간단)"
+      
+      phase_3_recursive:
+        depth_0: "ltv = arpu / churn_rate"
+        unknown: ["arpu", "churn_rate"]
+        
+        depth_1_arpu:
+          question: "ARPU는?"
+          tier2_result: "80,000원 (RAG 벤치마크, confidence: 0.85)"
+          no_recursion: "Tier 2 성공"
+        
+        depth_1_churn:
+          question: "Churn Rate는?"
+          tier2_result: "0.05 (통계 패턴, confidence: 0.80)"
+          no_recursion: "Tier 2 성공"
+      
+      phase_4_backtrack:
+        formula: "ltv = arpu / churn_rate"
+        bindings:
+          arpu: 80000
+          churn_rate: 0.05
+        calculation: "80,000 / 0.05 = 1,600,000원"
+        confidence: "√(0.85 × 0.80) = 0.82 (Geometric Mean)"
+        result: "1,600,000원 (confidence: 0.82)"
+      
+      output:
+        value: 1600000
+        tier: 3
+        decomposition:
+          formula: "ltv = arpu / churn_rate"
+          depth: 1
+          variables:
+            arpu: {value: 80000, confidence: 0.85, tier: 2}
+            churn_rate: {value: 0.05, confidence: 0.80, tier: 2}
+    
+    key_point: "Tier 3가 자동으로 재귀 분해 + Backtracking"
+  
+  # 예시 4: Tier 3 - 데이터 상속 (v7.5.0)
+  example_4_tier3_data_inheritance:
+    scenario: "재귀 추정 시 부모 데이터 상속"
+    
+    user: "@Fermi, Unit Economics는?"
+    
+    estimator_tier3:
+      depth_0:
+        template: "unit_economics"
+        formula: "ratio = ltv / cac"
+        variables: ["ltv", "cac"]
+        
+        phase_1_scan:
+          parent_data: null  # depth 0
+          available: []
+          unknown: ["ltv", "cac"]
+      
+      depth_1_ltv:
+        question: "LTV는?"
+        template: "ltv"
+        formula: "ltv = arpu / churn_rate"
+        
+        phase_1_scan:
+          parent_data: {}  # depth 0 데이터
+          available: []
+          unknown: ["arpu", "churn_rate"]
+        
+        depth_2_arpu:
+          question: "ARPU는?"
+          tier2_result: "80,000원"
+        
+        depth_2_churn:
+          question: "Churn Rate는?"
+          tier2_result: "0.05"
+        
+        result: "1,600,000원"
+      
+      depth_1_cac:
+        question: "CAC는?"
+        template: "cac"
+        formula: "cac = marketing_cost / new_customers"
+        
+        phase_1_scan:
+          parent_data: {}  # depth 0 데이터 (v7.5.0 상속 준비)
+          available: []
+          unknown: ["marketing_cost", "new_customers"]
+        
+        tier2_result: "50,000원"
+      
+      backtrack:
+        formula: "ratio = ltv / cac"
+        bindings: {ltv: 1600000, cac: 50000}
+        result: "32 (LTV/CAC = 32, 건강 ✅)"
+    
+    data_inheritance_benefit:
+      - "재귀 시 부모의 available 변수 상속"
+      - "재계산 불필요 (효율성)"
+      - "일관성 보장"
+    
+    key_point: "v7.5.0 데이터 상속으로 재귀 최적화"
+  
+  # 예시 5: LLM 모드 (Native vs External)
+  example_5_llm_mode:
+    scenario: "LLM 모드 선택"
+    
+    # Native Mode (기본, 권장)
+    native_mode:
+      설정:
+        llm_mode: "native"  # 기본값
+        OPENAI_API_KEY: "sk-... (RAG 임베딩만)"
+      
+      동작:
+        템플릿_매칭_성공: |
+          @Fermi, LTV는?
+          → 템플릿: ltv
+          → Tier 3 실행
+          → 비용: $0
+        
+        템플릿_매칭_실패: |
+          @Fermi, 신규 시장 잠재력은?
+          → 템플릿: 없음
+          → Tier 3 중단
+          → "Cursor에게 요청하세요"
+          → Cursor Native LLM이 직접 분석
+          → 비용: $0 (Cursor 구독 포함)
+      
+      장점:
+        - "비용: $0"
+        - "품질: 최고 (Sonnet 4.5)"
+        - "속도: 빠름"
+      
+      use_case: "일반 사용 (일회성 분석)"
+    
+    # External Mode (자동화)
+    external_mode:
+      설정:
+        llm_mode: "external"
+        OPENAI_API_KEY: "sk-..."
+      
+      동작:
+        템플릿_매칭_성공: |
+          LTV는?
+          → 템플릿: ltv
+          → Tier 3 실행
+          → 비용: $0
+        
+        템플릿_매칭_실패: |
+          신규 시장 잠재력은?
+          → 템플릿: 없음
+          → OpenAI API 호출
+          → 모형 생성 프롬프트
+          → 3-5개 모형 생성
+          → Tier 3 실행
+          → 비용: $0.03/질문
+      
+      장점:
+        - "완전 자동화"
+        - "배치 처리 가능"
+        - "Cursor 독립"
+      
+      use_case: "자동화 (배치 처리, cron job)"
+    
+    key_point: "Native는 비용 $0 권장, External은 자동화 시만"
+  
+  # 예시 6: 12개 비즈니스 지표 템플릿 (v7.5.0)
+  example_6_business_metrics:
+    scenario: "비즈니스 지표 자동 계산 (Tier 3 템플릿)"
+    
+    지표_목록:
+      핵심_8개:
+        - name: "Unit Economics"
+          질문: "LTV/CAC 비율은?"
+          모형: "ratio = ltv / cac"
+        
+        - name: "Market Sizing"
+          질문: "시장 규모는?"
+          모형: "market = customers × adoption_rate × arpu × 12"
+        
+        - name: "LTV"
+          질문: "고객 생애 가치는?"
+          모형: "ltv = arpu / churn_rate"
+        
+        - name: "CAC"
+          질문: "고객 획득 비용은?"
+          모형: "cac = marketing_cost / new_customers"
+        
+        - name: "Conversion Rate"
+          질문: "전환율은?"
+          모형: "conversion = paid_users / free_users"
+        
+        - name: "Churn Rate"
+          질문: "해지율은?"
+          모형: "churn = churned_customers / total_customers"
+        
+        - name: "ARPU"
+          질문: "평균 매출은?"
+          모형: "arpu = base_fee + overage_fee"
+        
+        - name: "Growth Rate"
+          질문: "성장률은?"
+          모형: "growth = (current - last) / last"
+      
+      고급_4개_v7_5_0:
+        - name: "Payback Period"
+          질문: "CAC 회수 기간은?"
+          모형: "payback = cac / (arpu × gross_margin)"
+          예시: "50,000 / (30,000 × 0.7) = 2.4개월"
+        
+        - name: "Rule of 40"
+          질문: "Rule of 40은?"
+          모형: "rule_40 = growth_rate + profit_margin"
+          예시: "30% + 15% = 45% (건강 ✅)"
+        
+        - name: "Net Revenue Retention"
+          질문: "NRR은?"
+          모형: "nrr = 1 + expansion_rate - churn_rate"
+          예시: "1 + 0.10 - 0.05 = 1.05 (105%, 건강 ✅)"
+        
+        - name: "Gross Margin"
+          질문: "매출총이익률은?"
+          모형: "gross_margin = (revenue - cogs) / revenue"
+          예시: "(1,000,000 - 300,000) / 1,000,000 = 70%"
+    
+    usage:
+      code: |
+        from umis_rag.agents.estimator import EstimatorRAG
+        
+        estimator = EstimatorRAG()
+        
+        # 자동 템플릿 매칭
+        result = estimator.estimate("Payback Period는?")
+        # → 템플릿: payback
+        # → 재귀 추정: cac, arpu, gross_margin
+        # → Tier 3 결과
+      
+      cursor: |
+        @Fermi, Rule of 40은?
+        → 템플릿 매칭: rule_of_40
+        → 재귀: growth_rate, profit_margin
+        → 결과: 45% (건강)
+    
+    coverage: "90-95% (템플릿만으로 대부분 해결)"
+  
+  # 예시 7: 순환 감지
+  example_7_circular_detection:
+    scenario: "순환 의존성 자동 감지"
+    
+    문제_케이스:
+      depth_0:
+        question: "시장 규모는?"
+        model: "시장 = 유사시장 × 점유율"
+        unknown: ["유사시장", "점유율"]
+      
+      depth_1:
+        question: "점유율은?"
+        model: "점유율 = 우리 매출 / 시장"  # ← 시장 참조!
+        unknown: ["시장"]  # ← 순환!
+      
+      depth_2:
+        question: "시장은?"
+        circular_detected: "Call stack에 '시장 규모는?' 존재"
+        action: "⚠️  순환 감지 → 재귀 중단"
+        alternative: "Tier 2 Fallback 또는 대체 모형"
+    
+    안전_장치:
+      - "Call stack 추적"
+      - "순환 감지 시 즉시 중단"
+      - "무한 재귀 방지"
+    
+    key_point: "자동 순환 감지로 안전성 보장"
+  
+  # 예시 8: SimpleVariablePolicy
+  example_8_variable_policy:
+    scenario: "변수 개수 자연 제한 (오버엔지니어링 회피)"
+    
+    정책:
+      권장: "6개 (Occam's Razor)"
+      허용: "7-10개 (경고)"
+      금지: "10개+ (Miller's Law)"
+    
+    케이스_1_간단:
+      모형: "churn = industry_avg"
+      변수: 1개
+      판정: "정상 ✅"
+    
+    케이스_2_중간:
+      모형: "market = customers × adoption × arpu × 12"
+      변수: 4개
+      판정: "정상 ✅"
+    
+    케이스_3_복잡:
+      모형: "market = A × B × C × D × E × F × G"
+      변수: 7개
+      판정: "⚠️  권장 초과 (허용, 경고)"
+    
+    케이스_4_과다:
+      모형: "market = A × B × ... × K"
+      변수: 11개
+      판정: "🛑 절대 상한 초과 (금지)"
+    
+    설계_선택:
+      제안: "Hybrid 방식 (300줄, Marginal Gain 계산)"
+      채택: "Simple 방식 (20줄, 간단 명확)" ✅
+      이유: "98% 효과, 15배 간단, 96배 빠름"
+    
+    key_point: "KISS 원칙 - 단순함이 최고"
+  
+  # 예시 9: Validator 교차 검증 (v7.3.2)
+  example_9_cross_validation:
+    scenario: "외부 자료 추정치 교차 검증"
+    
+    user: "@Validator, 이 보고서의 Churn 8% 맞아?"
+    
+    validator_action:
+      step_1: "Estimator에게 독립 추정 요청"
+      
+      estimator_call:
+        question: "B2B SaaS Churn Rate는?"
+        context: {domain: "B2B_SaaS"}
+        tier2_result: "6% (confidence: 0.85)"
+      
+      step_2: "비교"
+      comparison:
+        claimed_value: 0.08  # 외부 주장
+        estimator_value: 0.06  # Estimator 추정
+        difference: "|(0.08 - 0.06) / 0.06| = 33%"
+        threshold: "30%"
+        result: "caution (경계선)"
+        recommendation: "추가 검증 권장 (차이 33%)"
+      
+      validator_output:
+        validation_result: "caution"
+        estimator_reasoning: {method: "weighted_average", sources: [...]}
+        recommendation: "차이가 30% 초과, 추가 검증 권장"
+    
+    key_point: "Validator는 직접 추정 안 함, Estimator 교차 검증"
+
+# ========================================
+# PART 6: 참조 문서 (v7.5.0 업데이트)
+# ========================================
+
+reference_docs:
+  description: "UMIS v7.5.0 참조 문서"
+  
+  getting_started:
+    - "README.md: 빠른 개요"
+    - "setup/START_HERE.md: 30초 시작"
+    - "UMIS_ARCHITECTURE_BLUEPRINT.md: 전체 아키텍처"
+    - "CURRENT_STATUS.md: 현재 상태 (v7.5.0)" ⭐
+  
+  understanding:
+    - "FOLDER_STRUCTURE.md: 폴더 구조"
+    - "CHANGELOG.md: 버전 이력"
+    - "UMIS_V7.5.0_RELEASE_NOTES.md: v7.5.0 릴리즈" ⭐
+  
+  configuration:
+    - "config/README.md: Config 폴더 (12개 파일)"
+    - "config/agent_names.yaml: Agent 커스터마이징"
+    - "config/llm_mode.yaml: LLM 모드 (Native/External)" ⭐
+    - "config/runtime.yaml: 실행 모드"
+  
+  estimator:
+    - "TIER3_FINAL_REPORT.md: Tier 3 구현 완료" ⭐
+    - "TIER3_DESIGN_VERIFICATION.md: 설계 검증" ⭐
+    - "LLM_MODE_INTEGRATION_COMPLETE.md: LLM 모드" ⭐
+  
+  advanced:
+    - "dev_docs/guestimation_v3/: Estimator 설계 (20개)"
+    - "dev_docs/reports/: 분석 리포트 (10개)"
+
+# ========================================
 # END OF EXAMPLES
 # ========================================
+

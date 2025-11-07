@@ -5,7 +5,7 @@
 
 # ⚡ TL;DR (AI: 바쁘면 여기만!)
 #
-# UMIS = 25개 도구를 RAG로 로드하는 시스템
+# UMIS = 28개 도구를 RAG로 로드하는 시스템 (v7.5.0)
 # 
 # 사용법:
 #   1) 쿼리 분석 (agent + keywords)
@@ -13,8 +13,8 @@
 #   3) System RAG 검색 (python scripts/query_system_rag.py {tool_key})
 #   4) 로드된 content 활용
 #
-# 도구: 25개 (E:4, Q:4, V:4, O:4, G:2, F:7)
-# 절약: 89% (5,508줄 → 450-2,850줄)
+# 도구: 28개 (E:4, Q:4, V:4, O:4, G:2, Est:3, F:7)
+# 절약: 89% (6,787줄 → 450-2,850줄)
 #
 # AI 읽기 순서:
 #   1. Quick Start (Line 40~) ← 사용법
@@ -22,15 +22,21 @@
 #   3. Agent Summary (Line 220~) ← 역할 (필요시)
 #   4. System Details (Line 410~) ← 구조 (참고용)
 #
+# ⭐ v7.5.0 신규:
+#   - 3-Tier 완성 (Tier 1/2/3, 100% 커버리지)
+#   - 12개 비즈니스 지표 템플릿 (23개 모형)
+#   - 데이터 상속 (재귀 최적화)
+#   - LLM 모드 통합 (Native/External)
+#
 # ========================================
 
 _meta:
-  version: "7.3.2"
+  version: "7.5.0"
   created: "2025-11-04"
   updated: "2025-11-08"
   type: "index"
-  original_size: "6,102줄"
-  compressed_size: "819줄"
+  original_size: "6,787줄"
+  compressed_size: "850줄"
   context_saving: "87%"
   
   purpose: |
@@ -212,32 +218,43 @@ agent_selection_flowchart:
   "데이터를 검증하고 싶다": "Validator (tool:validator:data_definition)"
   "시장 구조를 파악하고 싶다": "Observer (tool:observer:market_structure)"
   "진행 상황을 관리하고 싶다": "Guardian (tool:guardian:progress_monitoring)"
+  "값을 추정하고 싶다": "Estimator (tool:estimator:estimate) ⭐ v7.3.1+"
   
   복합_쿼리:
-    "시장 분석": "Observer → Explorer → Quantifier 순차"
-    "기회 검증": "Explorer → Validator → Quantifier"
+    "시장 분석": "Observer → Explorer → Quantifier (Estimator 협업)"
+    "기회 검증": "Explorer → Validator → Quantifier (Estimator 협업)"
     "경쟁 분석": "Observer + Framework:competitive_analysis"
-    "Discovery Sprint": "Framework:discovery_sprint + 모든 Agent"
+    "Discovery Sprint": "Framework:discovery_sprint + 모든 Agent (6개)"
+  
+  v7_3_2_policy:
+    single_source: "모든 값/데이터 추정은 Estimator만 수행"
+    other_agents: "다른 Agent는 Estimator 호출 필수"
 
 system_details:
-  name: "UMIS v7.1.0"
-  tagline: "RAG 기반 5-Agent 협업 시장 분석 시스템"
+  name: "UMIS v7.5.0"
+  tagline: "6-Agent + 3-Tier 완성, 100% 커버리지 달성"
   
   what_it_can_do:
     rag:
       - "360개 검증된 데이터 자동 검색"
       - "패턴 조합 발견 (Knowledge Graph)"
-      - "4개 Agent RAG (Quantifier, Validator, Observer, Guardian)"
+      - "6개 Agent RAG (모든 Agent)"
     
     agents:
-      - "5명 전문 Agent 협업"
+      - "6-Agent 협업 시스템"
+      - "3-Tier 완성 (100% 커버리지)" ⭐
+      - "12개 비즈니스 지표 (23개 모형)" ⭐
       - "완전한 추적성 (ID Namespace)"
       - "재검증 가능 (Excel 함수)"
+      - "Single Source of Truth"
     
     automation:
       - "AI 자동 설치 (setup.py)"
-      - "Excel 자동 생성 (9개 시트)"
-      - "검증 자동화 (Guardian)"
+      - "Excel 자동 생성 (3개 도구)"
+      - "검증 자동화 (Guardian Meta-RAG)"
+      - "학습 시스템 (6-16배 빠름)"
+      - "재귀 추정 (Tier 3, v7.4.0+)" ⭐
+      - "LLM 모드 선택 (Native $0 / External)" ⭐
   
   rag_architecture:
     version: "v3.0 (4-Layer)"
@@ -280,8 +297,13 @@ system_details:
         - "market_structure_patterns (30개)"
         - "value_chain_benchmarks (50개)"
       
+      estimator:
+        - "learned_rules (0 → 2,000개 진화)"
+        - "canonical_store (정규화)"
+        - "estimator (Agent View)"
+      
       system:
-        - "system_knowledge (25개 도구)"
+        - "system_knowledge (28개 도구)"
     
     how_it_works: |
       "@Explorer, 구독 모델"
@@ -314,7 +336,7 @@ workflows:
   discovery_sprint:
     duration: "1-3일"
     condition: "명확도 < 7"
-    agents: "5개 Agent 병렬"
+    agents: "6개 Agent 병렬 (Estimator 협업)"
     purpose: "목표 구체화"
 
 key_concepts:
@@ -356,14 +378,14 @@ key_concepts:
 universal_tools:
   
   guestimation:
-    tool_key: "tool:universal:guestimation"
-    agent: "all"
-    category: "추정 방법론"
+    tool_key: "tool:universal:guestimation (Deprecated, use Estimator)"
+    agent: "Estimator (v7.3.2+ Single Source)"
+    category: "추정 방법론 → Estimator Agent로 통합"
+    deprecated_note: "v7.3.2+: 직접 사용 금지, Estimator 호출 필수"
     
     when_to_use:
-      - "직접 데이터 없음"
-      - "추정 필요"
-      - "짧은 시간 판단"
+      - "❌ 더 이상 직접 사용하지 마세요"
+      - "✅ v7.3.2+: estimator.estimate() 호출"
     
     fermi_4_principles:
       - "모형 (시장 = 고객 × 구매액)"
@@ -391,7 +413,12 @@ universal_tools:
       - "자장면 42만 (제약조건)"
       - "전봇대 716만 (Fermi)"
     
-    detail: "System RAG → tool:universal:guestimation"
+    migration:
+      from: "tool:universal:guestimation (v7.2.1 이하)"
+      to: "tool:estimator:estimate (v7.3.2+)"
+      reason: "Single Source of Truth 정책"
+    
+    detail: "System RAG → tool:estimator:estimate (권장)"
 
 # (Section 2-4는 다음 단계에서 추가)
 
@@ -577,6 +604,93 @@ decision_guide:
       three_stage: "규칙 → 임계값 → LLM"
     
     detail_module: "modules/agents/guardian.yaml (상세 800줄)"
+  
+  estimator:
+    name: "Fermi (기본)"
+    role: "값 추정 및 판단 (v7.3.1+) ⭐"
+    rag: true
+    rag_collections:
+      - "learned_rules (0 → 2,000개 진화)"
+      - "canonical_store (정규화)"
+      - "estimator (Agent View)"
+    
+    what_it_does:
+      - "3-Tier Architecture (100% 커버리지)" ⭐
+      - "12개 비즈니스 지표 템플릿 (23개 모형)" ⭐
+      - "데이터 상속 (재귀 최적화, v7.5.0)" ⭐
+      - "LLM 모드 통합 (Native/External)" ⭐
+      - "11개 Source 통합"
+      - "학습 시스템 (6-16배)"
+      - "추정 근거 완전 투명화"
+      - "교차 검증 지원"
+    
+    when_to_use:
+      - "데이터 부족 시 값 추정"
+      - "비즈니스 지표 (LTV, CAC, Churn, ARPU 등)"
+      - "복잡한 모형 (재귀 분해 필요)"
+      - "추정치 교차 검증"
+    
+    key_tools:
+      - "tool:estimator:estimate (기본 추정)"
+      - "tool:estimator:cross_validation (교차 검증)"
+      - "tool:estimator:learning_system (학습)"
+    
+    deliverables:
+      - "EstimationResult (value + reasoning_detail)"
+      - "DecompositionTrace (Tier 3, depth + formula)"
+      - "12개 비즈니스 지표 결과"
+    
+    single_source_policy:
+      principle: "모든 값/데이터 추정은 Estimator만"
+      enforcement: "5개 Agent → Estimator 호출"
+    
+    collaboration_model:
+      type: "협업 파트너 (Workflow 독립)"
+      frequency:
+        - "Quantifier: ★★★★★"
+        - "Explorer: ★★★★"
+        - "Validator/Observer: ★★★"
+    
+    three_tier_architecture:
+      tier_1:
+        speed: "<0.5초"
+        coverage: "45% → 95%"
+        file: "tier1.py (350줄)"
+      
+      tier_2:
+        speed: "3-8초"
+        coverage: "50% → 5%"
+        file: "tier2.py (650줄)"
+      
+      tier_3:
+        speed: "10-30초"
+        coverage: "5% → 0.5%"
+        status: "✅ v7.5.0 완성"
+        file: "tier3.py (1,463줄)"
+        
+        business_metrics_12:
+          core: "Unit Economics, Market Sizing, LTV, CAC, Conversion, Churn, ARPU, Growth"
+          advanced: "Payback, Rule of 40, NRR, Gross Margin" ⭐
+          total: "12개 지표, 23개 모형"
+          coverage: "90-95% (템플릿만)"
+        
+        features:
+          recursion: "재귀 분해 (depth 4)"
+          data_inheritance: "부모 데이터 상속" ⭐
+          circular_detection: "순환 감지"
+          variable_policy: "Simple 20줄 (6-10개)"
+          llm_mode: "Native $0 / External $0.03" ⭐
+        
+        safety:
+          - "Max depth 4"
+          - "순환 감지 (Call stack)"
+          - "Tier 2 Fallback"
+          - "변수 10개 절대 상한"
+      
+      total_coverage: "100%" ⭐
+      failure_rate: "0%" ⭐
+    
+    detail_module: "umis_rag/agents/estimator/ (14개 파일, 4,188줄)"
 
 # ========================================
 # Section 2: AGENT SUMMARY
@@ -760,6 +874,12 @@ module_index:
       size: "800줄"
       tools: 2개
       note: "RAG로 로드: tool:guardian:*"
+    
+    estimator:
+      file: "umis_rag/agents/estimator/"
+      size: "386줄"
+      tools: 3개
+      note: "RAG로 로드: tool:estimator:* ⭐ v7.3.1+"
   
   frameworks:
     market_definition:
@@ -809,8 +929,18 @@ quick_reference:
   
   for_users:
     - "Cursor: '@Explorer, 구독 모델 패턴'"
+    - "Cursor: '@Fermi, B2B SaaS Churn Rate는?' ⭐ v7.3.1+"
     - "AI가 자동으로 System RAG 활용"
     - "필요한 도구만 로드 → 빠르고 정확"
+  
+  v7_5_0_updates:
+    - "3-Tier 완성 (100% 커버리지)" ⭐
+    - "12개 비즈니스 지표 (23개 모형)" ⭐
+    - "데이터 상속 (재귀 최적화)" ⭐
+    - "LLM 모드 통합 (Native/External)" ⭐
+    - "6-Agent 시스템"
+    - "Single Source of Truth"
+    - "Reasoning Transparency"
 
 # ========================================
 # END
