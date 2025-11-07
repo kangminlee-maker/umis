@@ -243,6 +243,31 @@ Agent 역할:
             'content': section_content
         }
     
+    def _extract_agent_section(self, canonical: Dict, agent: str) -> str:
+        """
+        Canonical에서 Agent별 섹션 추출
+        
+        anchor_path로 위치 찾기
+        """
+        sections = canonical.get('sections', [])
+        
+        # sections가 JSON 문자열이면 파싱
+        if isinstance(sections, str):
+            try:
+                sections = json.loads(sections)
+            except:
+                sections = []
+        
+        for section in sections:
+            if isinstance(section, dict) and section.get('agent_view') == agent:
+                anchor = section.get('anchor_path')
+                # 실제로는 anchor로 YAML 경로 파싱
+                # 여기서는 간단히 전체 내용 반환
+                return canonical.get('content', '')
+        
+        # 섹션 없으면 전체 반환
+        return canonical.get('content', '')
+    
     def _create_projected_with_mapping(
         self,
         canonical: Dict,
@@ -331,29 +356,4 @@ Agent 역할:
             'created_at': datetime.now().isoformat(),
             'updated_at': datetime.now().isoformat()
         }
-    
-    def _extract_agent_section(self, canonical: Dict, agent: str) -> str:
-        """
-        Canonical에서 Agent별 섹션 추출
-        
-        anchor_path로 위치 찾기
-        """
-        sections = canonical.get('sections', [])
-        
-        # sections가 JSON 문자열이면 파싱
-        if isinstance(sections, str):
-            try:
-                sections = json.loads(sections)
-            except:
-                sections = []
-        
-        for section in sections:
-            if isinstance(section, dict) and section.get('agent_view') == agent:
-                anchor = section.get('anchor_path')
-                # 실제로는 anchor로 YAML 경로 파싱
-                # 여기서는 간단히 전체 내용 반환
-                return canonical.get('content', '')
-        
-        # 섹션 없으면 전체 반환
-        return canonical.get('content', '')
 
