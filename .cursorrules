@@ -1,33 +1,33 @@
 # ========================================
 # UMIS RAG Cursor Rules - AI Optimized
-# v7.2.0 | Non-coder | Cursor-only
+# v7.5.0 | Non-coder | Cursor-only
 # ========================================
 
 # === PART 1: UMIS 개념 (AI 필수 이해) ===
 
 system:
   name: Universal Market Intelligence System
-  version: 7.2.0
+  version: 7.5.0
   
   agents:
     Observer: {name: Albert, role: market_structure, rag: true}       # v7.1.0+
     Explorer: {name: Steve, role: opportunity_discovery, rag: true}   # v7.0.0+
     Quantifier: {name: Bill, role: market_sizing, rag: true}         # v7.1.0+
     Validator: {name: Rachel, role: data_verification, rag: true}    # v7.1.0+
-    Guardian: {name: Stewart, role: process_monitoring, rag: true}   # v7.1.0+ (Meta-RAG)
-    Estimator: {name: Fermi, role: value_estimation_judgment, rag: true}  # v7.3.1+ (Learning)
+    Guardian: {name: Stewart, role: process_monitoring, rag: true}   # v7.1.0+ (Meta-RAG ✅)
+    Estimator: {name: Fermi, role: value_estimation_3tier, rag: true}  # v7.5.0+ (3-Tier ✅)
   
   # id: Agent ID (Observer, Explorer, ...)
   # name: Default name (Albert, Steve, ...) → agent_names.yaml로 커스터마이징
   
   flow: Observer(observe)→Explorer(rag+hypothesize)→Quantifier(calculate)→Validator(verify)→Guardian(approve)
   
-  estimator_role: "협업 파트너 (모든 Agent가 필요 시 호출)"
+  estimator_role: "협업 파트너 (모든 Agent가 필요 시 호출, 100% 커버리지)"
   
-  discovery_sprint: 명확도<7 → 5-Agent 병렬 탐색 → 목표 구체화
+  discovery_sprint: 명확도<7 → 6-Agent 병렬 탐색 (Estimator 협업) → 목표 구체화
   
   rag:
-    active: 5-Agent RAG (v7.1.0+)
+    active: 6-Agent RAG (v7.5.0+)
     architecture: v3.0 (4-Layer: Canonical → Projected → Graph → Memory)
     
     layers:
@@ -58,8 +58,13 @@ system:
         - "query_memory (순환 감지)"
         - "rae_index (평가 일관성)"
       
+      estimator:
+        - "learned_rules (0 → 2,000개 진화)"
+        - "canonical_store (정규화)"
+        - "estimator (Agent View)"
+      
       system:
-        - "system_knowledge (28개 도구)" # ✅ 빌드 완료!
+        - "system_knowledge (31개 도구)" # ✅ 빌드 완료!
     
     sources: 
       - data/raw/umis_business_model_patterns.yaml (31 patterns)
@@ -94,7 +99,7 @@ setup:
   
   messages:
     start: |
-      🚀 UMIS v7.0.0 자동 설치 시작
+      🚀 UMIS v7.5.0 자동 설치 시작
       
       setup/AI_SETUP_GUIDE.md 참조하여 진행합니다.
       소요 시간: 2-3분
@@ -112,6 +117,7 @@ setup:
       
       사용: Cmd+I → @umis.yaml
       "@Explorer, 시장 분석해줘"
+      "@Fermi, LTV는?" ⭐ v7.5.0 신규!
 
 ## Agent 이름 커스터마이징
 agent_names:
@@ -269,11 +275,16 @@ guardian_meta_rag:
 system_rag:
   enabled: true
   collection: "system_knowledge"
-  total_tools: 28
+  total_tools: 31
   
   purpose: |
     AI가 UMIS 전체 시스템을 빠르게 파악하고
-    필요한 도구만 정확히 로드하여 컨텍스트 77% 절약
+    필요한 도구만 정확히 로드하여 컨텍스트 87% 절약
+  
+  v7_5_0_update:
+    estimator_tools: 3
+    total: 31
+    coverage: "100% (Tier 1/2/3)"
 
 # ========================================
 # AI 필수 실행 프로세스 (모든 프로젝트 시작 시!)
@@ -322,9 +333,13 @@ ai_mandatory_process:
         - "@Validator" → agent=validator
         - "@Observer" → agent=observer
         - "@Guardian" → agent=guardian
-        - "시장 분석" → observer+explorer+quantifier
-        - "기회 발굴" → explorer
-        - "SAM 계산" → quantifier+validator
+        - "@Fermi" → agent=estimator
+        - "@Estimator" → agent=estimator
+        - "시장 분석" → observer+explorer+quantifier (estimator 협업)
+        - "기회 발굴" → explorer (estimator 협업)
+        - "SAM 계산" → quantifier+validator (estimator 협업)
+        - "값 추정" → estimator
+        - "LTV|CAC|Churn" → estimator
       
       tool_key_mapping:
         explorer:
@@ -354,6 +369,13 @@ ai_mandatory_process:
         guardian:
           "진행": "tool:guardian:progress_monitoring"
           "품질": "tool:guardian:quality_evaluation"
+        
+        estimator:
+          "추정": "tool:estimator:estimate"
+          "LTV|CAC|Churn|ARPU": "tool:estimator:estimate"
+          "Payback|Rule of 40|NRR": "tool:estimator:estimate"
+          "교차검증": "tool:estimator:cross_validation"
+          "학습": "tool:estimator:learning_system"
         
         framework:
           "시장 정의": "tool:framework:13_dimensions"
@@ -583,11 +605,45 @@ ai_usage_examples:
       
       step_4: |
         # Discovery Sprint 실행
-        → 5-Agent 병렬 탐색
+        → 6-Agent 병렬 탐색 (Estimator 협업 가능)
         → 목표 구체화
         → 다음 단계 결정
     
-    context_used: "709 + 2,500 = 3,209줄 (vs 6,102줄, 47% 절약)"
+    context_used: "949 + 2,500 = 3,449줄 (vs 6,663줄, 48% 절약)"
+  
+  example_4_estimator:
+    user_query: "@Fermi, SaaS LTV는?"
+    
+    ai_process:
+      step_1: |
+        # umis_core.yaml 읽기
+        read_file("umis_core.yaml", offset=603, limit=90)
+        → Estimator 섹션 파악
+        → 3-Tier Architecture
+        → 12개 비즈니스 지표
+      
+      step_2: |
+        # 도구 식별
+        tool_key = "tool:estimator:estimate"
+      
+      step_3: |
+        # System RAG 실행
+        run_terminal_cmd("python3 scripts/query_system_rag.py tool:estimator:estimate")
+        
+        결과: Estimator 도구 content (~500줄) 획득
+      
+      step_4: |
+        # EstimatorRAG 사용
+        from umis_rag.agents.estimator import EstimatorRAG
+        
+        estimator = EstimatorRAG()
+        result = estimator.estimate("SaaS LTV는?")
+        
+        # Tier 1 → 2 → 3 자동 시도
+        # Tier 3: 템플릿 ltv, 재귀 추정, Backtracking
+        # 결과: value, tier, decomposition
+    
+    context_used: "949 + 500 = 1,449줄 (vs 6,663줄, 78% 절약)"
 
 # ========================================
 # 자주 사용하는 도구 키 (Quick Reference)
@@ -622,6 +678,11 @@ common_tool_keys:
   guardian:
     - "tool:guardian:progress_monitoring (진행 모니터링)"
     - "tool:guardian:quality_evaluation (품질 평가)"
+  
+  estimator:
+    - "tool:estimator:estimate (값 추정, 3-Tier)" ⭐ v7.5.0
+    - "tool:estimator:cross_validation (교차 검증)"
+    - "tool:estimator:learning_system (학습 시스템)"
   
   framework:
     - "tool:framework:13_dimensions (13차원 시장 정의)"

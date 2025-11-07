@@ -1,7 +1,7 @@
 # UMIS - Universal Market Intelligence System
 
 [![GitHub](https://img.shields.io/badge/GitHub-umis-blue?logo=github)](https://github.com/kangminlee-maker/umis)
-[![Version](https://img.shields.io/badge/version-7.3.2-green)](https://github.com/kangminlee-maker/umis/releases)
+[![Version](https://img.shields.io/badge/version-7.5.0-green)](https://github.com/kangminlee-maker/umis/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 > **"불확실성을 기회로 전환하는 시장 분석 시스템"**
@@ -10,7 +10,7 @@
 
 ## 🎯 UMIS란?
 
-AI 에이전트 5명이 협업하여 시장을 분석하는 **RAG 기반 프레임워크**
+AI 에이전트 6명이 협업하여 시장을 분석하는 **RAG 기반 프레임워크** (v7.5.0)
 
 ### 핵심 특징
 - ✅ **6-Agent 협업**: Observer, Explorer, Quantifier, Validator, Guardian, **Estimator** (v7.3.1+)
@@ -19,11 +19,13 @@ AI 에이전트 5명이 협업하여 시장을 분석하는 **RAG 기반 프레�
 - ✅ **재검증 가능**: Excel 함수, YAML 스키마
 - ✅ **코딩 불필요**: Cursor Composer만으로 사용
 
-### v7.3.2 주요 기능 (최신)
-- 🎯 **Estimator (Fermi) Agent**: 6번째 Agent, 값 추정 전문가 (v7.3.1)
+### v7.5.0 주요 기능 (최신) ⭐
+- 🏆 **3-Tier 완성**: Tier 1/2/3, 100% 커버리지, 실패율 0% (v7.5.0)
+- 🎯 **12개 비즈니스 지표**: LTV, CAC, Payback, Rule of 40, NRR 등 (v7.5.0)
+- 🌟 **데이터 상속**: 재귀 최적화, 10-20% 시간 절약 (v7.5.0)
+- 🎉 **LLM 모드 통합**: Native $0 / External $0.03 (v7.5.0)
+- 🎯 **Estimator Agent**: 6번째 Agent, 값 추정 전문가 (v7.3.1)
 - 🌟 **Single Source of Truth**: 모든 값 추정은 Estimator만 (v7.3.2)
-- 🎉 **추정 근거 투명화**: reasoning_detail, component_estimations (v7.3.2)
-- 🎉 **Validator 교차 검증**: validate_estimation() 메서드 (v7.3.2)
 - 📚 **학습 시스템**: 사용할수록 6-16배 빠름 (v7.3.0)
 
 ### v7.2.1 주요 기능
