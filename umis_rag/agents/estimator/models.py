@@ -285,6 +285,28 @@ class EstimationResult:
     should_learn: bool = False
     learn_metadata: Dict[str, Any] = field(default_factory=dict)
     
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # v7.3.2: 추정 근거 및 추적 (Single Source)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    
+    # 상세 근거
+    reasoning_detail: Dict[str, Any] = field(default_factory=dict)
+    # {
+    #   'method': 'weighted_average',
+    #   'sources_used': ['statistical', 'rag'],
+    #   'why_this_method': '증거 3개, 신뢰도 유사',
+    #   'evidence_breakdown': [...]
+    # }
+    
+    # Decomposition 추적 (Tier 3용, 선택)
+    decomposition: Optional['DecompositionTrace'] = None
+    
+    # 개별 요소 추정 논리
+    component_estimations: List['ComponentEstimation'] = field(default_factory=list)
+    
+    # 추정 과정 추적
+    estimation_trace: List[str] = field(default_factory=list)
+    
     def is_successful(self) -> bool:
         """추정 성공 여부"""
         return self.value is not None or self.value_range is not None
