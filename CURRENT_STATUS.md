@@ -1,12 +1,42 @@
-# UMIS v7.3.1 현재 상태
+# UMIS v7.3.2 현재 상태
 
-**버전**: v7.3.1  
-**마지막 업데이트**: 2025-11-07  
-**상태**: Production Ready (6-Agent System + Estimator (Fermi) Agent)
+**버전**: v7.3.2  
+**마지막 업데이트**: 2025-11-08  
+**상태**: Production Ready (6-Agent + Single Source of Truth)
 
 ---
 
-## 🆕 v7.3.1 신규 기능 (2025-11-07 최신)
+## 🆕 v7.3.2 신규 기능 (2025-11-08 최신)
+
+### ⭐ Single Source of Truth + Reasoning Transparency
+
+**핵심 원칙**: "모든 값/데이터 추정은 Estimator (Fermi) Agent만"
+
+```python
+from umis_rag.agents.estimator import EstimatorRAG
+
+estimator = EstimatorRAG()
+result = estimator.estimate("B2B SaaS Churn Rate는?", domain="B2B_SaaS")
+
+# v7.3.2 신규: 상세 근거
+print(result.reasoning_detail)  # 전략, 증거, 과정
+print(result.component_estimations)  # 개별 요소 논리
+print(result.estimation_trace)  # 추정 과정 추적
+```
+
+**핵심 특징**:
+- ✅ 데이터 일관성 (같은 질문 → 같은 답)
+- ✅ 학습 효율 (모든 추정이 한 곳에 축적)
+- ✅ 근거 투명화 (reasoning_detail)
+- ✅ Validator 교차 검증
+
+**파일**:
+- `umis_rag/agents/estimator/tier2.py` (근거 생성)
+- `umis_rag/agents/validator.py` (validate_estimation)
+
+---
+
+## 🆕 v7.3.1 기능 (2025-11-07)
 
 ### ⭐ Estimator (Fermi) Agent - 6번째 Agent 추가!
 

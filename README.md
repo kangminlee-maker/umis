@@ -1,7 +1,7 @@
 # UMIS - Universal Market Intelligence System
 
 [![GitHub](https://img.shields.io/badge/GitHub-umis-blue?logo=github)](https://github.com/kangminlee-maker/umis)
-[![Version](https://img.shields.io/badge/version-7.2.1-green)](https://github.com/kangminlee-maker/umis/releases)
+[![Version](https://img.shields.io/badge/version-7.3.2-green)](https://github.com/kangminlee-maker/umis/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 > **"불확실성을 기회로 전환하는 시장 분석 시스템"**
@@ -13,13 +13,20 @@
 AI 에이전트 5명이 협업하여 시장을 분석하는 **RAG 기반 프레임워크**
 
 ### 핵심 특징
-- ✅ **5-Agent 협업**: Observer, Explorer, Quantifier, Validator, Guardian
+- ✅ **6-Agent 협업**: Observer, Explorer, Quantifier, Validator, Guardian, **Estimator** (v7.3.1+)
 - ✅ **RAG 지식 활용**: 54개 검증된 패턴/사례 자동 검색
 - ✅ **완전한 추적성**: 모든 결론 → 원본 데이터 역추적
 - ✅ **재검증 가능**: Excel 함수, YAML 스키마
 - ✅ **코딩 불필요**: Cursor Composer만으로 사용
 
-### v7.2.1 주요 기능 (최신)
+### v7.3.2 주요 기능 (최신)
+- 🎯 **Estimator (Fermi) Agent**: 6번째 Agent, 값 추정 전문가 (v7.3.1)
+- 🌟 **Single Source of Truth**: 모든 값 추정은 Estimator만 (v7.3.2)
+- 🎉 **추정 근거 투명화**: reasoning_detail, component_estimations (v7.3.2)
+- 🎉 **Validator 교차 검증**: validate_estimation() 메서드 (v7.3.2)
+- 📚 **학습 시스템**: 사용할수록 6-16배 빠름 (v7.3.0)
+
+### v7.2.1 주요 기능
 - 🎯 **Fermi Model Search**: 모형 만들기 + 퍼즐 맞추기 (완전 구현!)
 - 🌟 **Multi-Layer Guestimation**: 8개 레이어 자동 시도 (82% 완성)
 - 🎉 **Native Mode**: Cursor LLM 직접 활용 (비용 $0, 최고 품질)
