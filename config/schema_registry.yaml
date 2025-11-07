@@ -1,24 +1,27 @@
 # ========================================
-# UMIS RAG Schema Registry v1.0
+# UMIS RAG Schema Registry v1.1
 # ========================================
 #
 # 날짜: 2025-11-02
-# 버전: 1.0
-# UMIS: 7.0.0
+# 버전: 1.1
+# UMIS: 7.5.0
 # Architecture: v3.0
 # 목적: 모든 RAG Layer 통합 스키마 정의
 #
 # 강화: ID/Lineage, anchor, 근거, 감사성(A)
+# v7.5.0: Estimator agent_specific 필드, Tier 3 완성
 #
 # ========================================
 
 _meta:
-  version: "1.0"
+  version: "1.1"
   architecture_version: "3.0"
-  umis_version: "7.0.0"
+  umis_version: "7.5.0"
   purpose: "모든 RAG Layer 통합 스키마"
   expert_feedback: "반영 완료 (P0 7개)"
-  last_updated: "2025-11-02"
+  last_updated: "2025-11-08"
+  v7_3_2_updates: "Estimator Agent 추가 (6-Agent 시스템)"
+  v7_5_0_updates: "Estimator agent_specific 필드 추가, Tier 3 완성"
 
 # ========================================
 # PART 1: ID 네임스페이스 (v3.0 P0-1)
@@ -63,6 +66,13 @@ id_namespaces:
     pattern: "RAE-[a-z0-9]{8}"
     description: "RAE Index (평가 메모리)"
     example: "RAE-eval-001"
+  
+  estimation:
+    prefix: "EST-"
+    pattern: "EST-[a-z0-9]{8}"
+    description: "Estimator 추정 결과 (v7.3.1+)"
+    example: "EST-churn-001"
+    note: "추정치 ID (EstimationResult)"
 
 # ========================================
 # PART 2: Core Fields (모든 Collection)
@@ -258,7 +268,7 @@ layer_1_canonical:
         properties:
           agent_view:
             type: enum
-            values: [observer, explorer, quantifier, validator, guardian]
+            values: [observer, explorer, quantifier, validator, guardian, estimator]
           
           anchor_path:
             type: string
@@ -328,7 +338,7 @@ layer_1_projected:
     
     agent_view:
       type: enum
-      values: [observer, explorer, quantifier, validator, guardian]
+      values: [observer, explorer, quantifier, validator, guardian, estimator]
       required: true
       description: "어느 Agent용인가"
     
@@ -442,6 +452,16 @@ layer_1_projected:
       guardian:
         - guardian_checks: array[string]
         - guardian_approval: bool
+      
+      estimator:
+        - estimator_tier: enum[1, 2, 3]
+        - estimator_value: float
+        - estimator_confidence: float
+        - estimator_method: string
+        - estimator_sources: array[string]
+        - estimator_depth: int
+        - estimator_formula: string
+        - estimator_business_metric: string
 
 # ========================================
 # PART 5: Layer 3 - Knowledge Graph
