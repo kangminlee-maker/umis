@@ -75,6 +75,44 @@ pattern_defaults:
   disruption_patterns:
     priority_agents: [explorer, observer]
 
+# Chunk Type별 규칙 (v7.3.0+)
+chunk_type_rules:
+  
+  # Learned Rule (Guestimation 학습 결과)
+  learned_rule:
+    target_agents: [guestimation]
+    strategy: "direct_projection"
+    ttl: "persistent"  # 학습된 규칙은 영구 저장
+    
+    metadata_mapping:
+      # 핵심 식별자
+      rule_id: "rule_id"
+      
+      # 값
+      value: "guestimation_value"
+      unit: "guestimation_unit"
+      confidence: "guestimation_confidence"
+      range_min: "guestimation_value_min"
+      range_max: "guestimation_value_max"
+      
+      # 맥락
+      domain: "guestimation_domain"
+      region: "guestimation_region"
+      time_period: "guestimation_time_period"
+      
+      # 증거 및 전략
+      evidence_sources: "sources"
+      evidence_count: "evidence_count"
+      judgment_strategy: "judgment_strategy"
+      
+      # 통계
+      usage_count: "usage_count"
+      created_at: "created_at"
+      last_used: "last_used"
+      last_verified: "last_verified"
+    
+    reason: "Tier 2/3 학습 결과 → Tier 1 재사용"
+
 # LLM 판단 로그
 llm_log_path: "data/llm_projection_log.jsonl"
 

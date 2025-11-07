@@ -11,6 +11,7 @@ from umis_rag.utils.logger import logger
 from .models import Context, EstimationResult, Tier2Config, Intent
 from .source_collector import SourceCollector
 from .judgment import JudgmentSynthesizer
+from .learning_writer import LearningWriter
 
 
 class Tier2JudgmentPath:
@@ -35,7 +36,8 @@ class Tier2JudgmentPath:
     def __init__(
         self,
         config: Optional[Tier2Config] = None,
-        llm_mode: str = "native"
+        llm_mode: str = "native",
+        learning_writer: Optional[LearningWriter] = None
     ):
         """
         초기화
@@ -43,9 +45,11 @@ class Tier2JudgmentPath:
         Args:
             config: Tier 2 설정
             llm_mode: LLM 모드
+            learning_writer: 학습 Writer (옵션)
         """
         self.config = config or Tier2Config()
         self.llm_mode = llm_mode
+        self.learning_writer = learning_writer
         
         logger.info("[Tier 2] Judgment Path 초기화")
         
@@ -56,6 +60,9 @@ class Tier2JudgmentPath:
         self.synthesizer = JudgmentSynthesizer()
         
         logger.info(f"  ✅ Tier 2 준비 완료")
+        
+        if self.learning_writer:
+            logger.info(f"  ✅ Learning Writer 연결됨")
     
     def estimate(
         self,
@@ -158,9 +165,20 @@ class Tier2JudgmentPath:
         )
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Step 7: 학습 판단
+        # Step 7: 학습 판단 및 실행
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         result.should_learn = self._should_learn(result)
+        
+        if result.should_learn and self.learning_writer:
+            try:
+                rule_id = self.learning_writer.save_learned_rule(
+                    question=question,
+                    result=result,
+                    context=context
+                )
+                logger.info(f"  📚 학습 완료: {rule_id}")
+            except Exception as e:
+                logger.error(f"  ❌ 학습 실패: {e}")
         
         logger.info(f"  ✅ 완료: {result.value:,.0f} (신뢰도 {result.confidence:.0%}, {elapsed:.2f}초)")
         
@@ -233,13 +251,32 @@ class Tier2JudgmentPath:
         return conflicts
     
     def _should_learn(self, result: EstimationResult) -> bool:
-        """학습 가치 판단"""
+        """
+        학습 가치 판단 (Confidence 기반 유연화)
         
-        # 기준
+        조건:
+        1. confidence >= 0.80
+        2. evidence_count:
+           - confidence >= 0.90: 1개 OK
+           - confidence >= 0.80: 2개 필요
+        3. 충돌 해결
+        """
+        
+        # Confidence 체크
         if result.confidence < 0.80:
             return False
         
-        if len(result.value_estimates) < 2:
+        # Evidence 개수 체크 (Confidence 기반 유연화)
+        if result.confidence >= 0.90:
+            min_evidence = 1  # 매우 높은 신뢰도
+        else:
+            min_evidence = 2  # 일반
+        
+        if len(result.value_estimates) < min_evidence:
+            return False
+        
+        # 충돌 해결 여부
+        if result.conflicts_detected and not result.conflicts_resolved:
             return False
         
         # 학습 가치 있음
