@@ -4,7 +4,7 @@ Tier 2: Judgment Path
 맥락 파악 → 증거 수집 → 평가 → 종합 판단
 """
 
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Any
 import time
 
 from umis_rag.utils.logger import logger
