@@ -1,12 +1,41 @@
-# UMIS v7.2.1 현재 상태
+# UMIS v7.3.1 현재 상태
 
-**버전**: v7.2.1  
-**마지막 업데이트**: 2025-11-06  
-**상태**: Production Ready (Multi-Layer + Fermi Model Search 완성)
+**버전**: v7.3.1  
+**마지막 업데이트**: 2025-11-07  
+**상태**: Production Ready (6-Agent System + Estimator (Fermi) Agent)
 
 ---
 
-## 🆕 v7.2.1 신규 기능 (2025-11-05~06 최신)
+## 🆕 v7.3.1 신규 기능 (2025-11-07 최신)
+
+### ⭐ Estimator (Fermi) Agent - 6번째 Agent 추가!
+
+**6-Agent 시스템 완성**: Observer, Explorer, Quantifier, Validator, Guardian, **Estimator**
+
+```python
+from umis_rag.agents.estimator import EstimatorRAG
+
+estimator = EstimatorRAG()
+result = estimator.estimate("B2B SaaS Churn Rate는?", domain="B2B_SaaS")
+
+# 또는
+@Fermi, B2B SaaS Churn Rate는?
+```
+
+**핵심 특징**:
+- ✅ 3-Tier Architecture (Fast → Judgment → Fermi)
+- ✅ 11개 Source 통합 (Physical, Soft, Value)
+- ✅ 학습 시스템 (사용할수록 6-16배 빨라짐)
+- ✅ Context-Aware 판단
+- ✅ 모든 Agent의 협업 파트너
+
+**파일**:
+- `umis_rag/agents/estimator/` (완전한 Agent 구조)
+- `config/agent_names.yaml` (estimator: Fermi)
+
+---
+
+## 🆕 v7.3.0 기능 (2025-11-07)
 
 ### 1. Fermi Model Search 엔진 🎯 (신규!)
 
