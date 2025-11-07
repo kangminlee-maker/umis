@@ -1,7 +1,7 @@
 """
-Guestimation RAG Searcher
+Estimator RAG Searcher
 
-projected_index Collection에서 학습된 규칙 검색
+projected_index Collection에서 학습된 규칙 검색 (agent_view="estimator")
 """
 
 from typing import List, Dict, Any, Optional, Tuple
@@ -15,25 +15,25 @@ from umis_rag.utils.logger import logger
 from .models import Context, LearnedRule
 
 
-class GuestimationRAGSearcher:
+class EstimatorRAGSearcher:
     """
     학습된 규칙 검색 (projected_index)
     
     역할:
     -----
-    - projected_index에서 agent_view="guestimation" 검색
+    - projected_index에서 agent_view="estimator" 검색
     - 맥락 기반 필터링
     - 시점 조정
     
     사용:
     ----
-    searcher = GuestimationRAGSearcher()
+    searcher = EstimatorRAGSearcher()
     results = searcher.search("한국 음식점 월매출은?", context)
     """
     
     def __init__(self):
         """초기화"""
-        logger.info("[Guestimation RAG] 초기화")
+        logger.info("[Estimator RAG] 초기화")
         
         # Embeddings
         self.embeddings = OpenAIEmbeddings(
@@ -55,7 +55,7 @@ class GuestimationRAGSearcher:
             
             # guestimation 청크 수 (현재는 0개)
             # TODO: 실제로는 filter로 카운트 필요
-            logger.info(f"  ℹ️  guestimation 청크: 0개 (학습되면 증가)")
+            logger.info(f"  ℹ️  estimator 청크: 0개 (학습되면 증가)")
             
         except Exception as e:
             logger.error(f"  ❌ projected_index 로드 실패: {e}")
@@ -81,25 +81,25 @@ class GuestimationRAGSearcher:
             List[(LearnedRule, similarity)]
         """
         if not self.projected_store:
-            logger.warning("[Guestimation RAG] projected_index 없음")
+            logger.warning("[Estimator RAG] projected_index 없음")
             return []
         
-        logger.info(f"[Guestimation RAG] 검색: {question}")
+        logger.info(f"[Estimator RAG] 검색: {question}")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # Step 1: 기본 필터 (agent_view)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        base_filter = {"agent_view": "guestimation"}
+        base_filter = {"agent_view": "estimator"}
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # Step 2: 맥락 기반 필터 추가
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         if context:
             if context.domain and context.domain != "General":
-                base_filter["guestimation_domain"] = context.domain
+                base_filter["estimator_domain"] = context.domain
             
             if context.region:
-                base_filter["guestimation_region"] = context.region
+                base_filter["estimator_region"] = context.region
         
         logger.info(f"  필터: {base_filter}")
         
@@ -150,31 +150,31 @@ class GuestimationRAGSearcher:
         
         # Context 재구성
         context = Context(
-            intent=metadata.get('guestimation_intent', 'get_value'),
-            domain=metadata.get('guestimation_domain', 'General'),
-            region=metadata.get('guestimation_region'),
-            time_period=metadata.get('guestimation_time_period')
+            intent=metadata.get('estimator_intent', 'get_value'),
+            domain=metadata.get('estimator_domain', 'General'),
+            region=metadata.get('estimator_region'),
+            time_period=metadata.get('estimator_time_period')
         )
         
         # LearnedRule 생성
         rule = LearnedRule(
             rule_id=metadata.get('rule_id', 'UNKNOWN'),
             
-            question_original=metadata.get('guestimation_question', ''),
-            question_normalized=metadata.get('guestimation_question_normalized', ''),
-            question_template=metadata.get('guestimation_question_template', ''),
-            question_keywords=metadata.get('guestimation_question_keywords', []),
+            question_original=metadata.get('estimator_question', ''),
+            question_normalized=metadata.get('estimator_question_normalized', ''),
+            question_template=metadata.get('estimator_question_template', ''),
+            question_keywords=metadata.get('estimator_question_keywords', []),
             
             context=context,
             
-            value=metadata.get('guestimation_value', 0.0),
+            value=metadata.get('estimator_value', 0.0),
             value_range=(
-                metadata.get('guestimation_value_min', 0.0),
-                metadata.get('guestimation_value_max', 0.0)
+                metadata.get('estimator_value_min', 0.0),
+                metadata.get('estimator_value_max', 0.0)
             ),
-            unit=metadata.get('guestimation_unit', ''),
-            confidence=metadata.get('guestimation_confidence', 0.0),
-            uncertainty=metadata.get('guestimation_uncertainty', 0.3),
+            unit=metadata.get('estimator_unit', ''),
+            confidence=metadata.get('estimator_confidence', 0.0),
+            uncertainty=metadata.get('estimator_uncertainty', 0.3),
             
             tier_origin=metadata.get('tier_origin', 'unknown'),
             sources=metadata.get('sources', []),

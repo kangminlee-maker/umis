@@ -363,7 +363,7 @@ class LearningWriter:
             
             # Projection용 sections
             'sections': json.dumps([{
-                'agent_view': 'guestimation',
+                'agent_view': 'estimator',
                 'anchor_path': f'learned_rules.{rule_id.lower()}',
                 'content_hash': self._content_hash(result)
             }])
