@@ -50,7 +50,9 @@ class LearningWriter:
         """기본 설정"""
         return {
             'min_confidence': 0.80,
-            'min_evidence_count': 2,
+            'min_evidence_count': 2,  # 일반 케이스
+            'min_evidence_high_confidence': 1,  # confidence >= 0.90
+            'high_confidence_threshold': 0.90,
             'enable_learning': True,
             'auto_projection': True
         }
@@ -112,11 +114,13 @@ class LearningWriter:
     
     def should_learn(self, result: EstimationResult) -> bool:
         """
-        학습 가치 판단
+        학습 가치 판단 (Confidence 기반 유연화)
         
         조건:
         1. confidence >= 0.80
-        2. evidence_count >= 2 (단, confidence=1.0이면 예외)
+        2. evidence_count:
+           - confidence >= 0.90: 1개 OK (매우 높은 신뢰도)
+           - confidence >= 0.80: 2개 필요 (일반)
         3. 충돌 없음
         
         Args:
@@ -133,10 +137,16 @@ class LearningWriter:
         if result.confidence < self.config['min_confidence']:
             return False
         
-        # Evidence 개수 체크 (확정 사실 예외)
-        if result.confidence < 1.0:  # 확정 사실 아님
-            if len(result.value_estimates) < self.config['min_evidence_count']:
-                return False
+        # Evidence 개수 체크 (Confidence 기반 유연화)
+        if result.confidence >= self.config['high_confidence_threshold']:
+            # 매우 높은 신뢰도 (>= 0.90): 증거 1개도 OK
+            min_evidence = self.config['min_evidence_high_confidence']
+        else:
+            # 일반 신뢰도 (0.80~0.89): 증거 2개 필요
+            min_evidence = self.config['min_evidence_count']
+        
+        if len(result.value_estimates) < min_evidence:
+            return False
         
         # 충돌 체크 (있으면 학습 안 함)
         if result.conflicts_detected and not result.conflicts_resolved:
@@ -483,28 +493,22 @@ class UserContribution:
         source: str = "domain_expert"
     ) -> str:
         """
-        업계 상식 저장 (임시)
+        업계 상식 저장 (검증 대기)
         
         TODO: 검증 로직 (3회 일치 → 확정)
         """
         
-        # 임시 저장 (검증 대기)
+        # 검증 대기 (confidence 0.90 → 증거 1개로 학습 가능)
         result = EstimationResult(
             question=question,
             value=value,
-            confidence=0.80,  # 검증 대기
+            confidence=0.90,  # 높은 신뢰도 (증거 1개 OK)
             value_estimates=[
                 ValueEstimate(
                     source_type=SourceType.DEFINITE_DATA,
                     value=value,
-                    confidence=0.80,
-                    source_detail=source
-                ),
-                # 2개 이상 필요 (학습 조건)
-                ValueEstimate(
-                    source_type=SourceType.DEFINITE_DATA,
-                    value=value,
-                    confidence=0.80,
+                    confidence=0.90,
+                    source_detail=source,
                     reasoning="업계 상식 (검증 대기)"
                 )
             ],
