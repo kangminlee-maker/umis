@@ -4,11 +4,14 @@ Tier 2: Judgment Path
 맥락 파악 → 증거 수집 → 평가 → 종합 판단
 """
 
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Any
 import time
 
 from umis_rag.utils.logger import logger
-from .models import Context, EstimationResult, Tier2Config, Intent
+from .models import (
+    Context, EstimationResult, Tier2Config, Intent,
+    ComponentEstimation, DecompositionTrace
+)
 from .source_collector import SourceCollector
 from .judgment import JudgmentSynthesizer
 from .learning_writer import LearningWriter
@@ -161,7 +164,24 @@ class Tier2JudgmentPath:
             conflicts_detected=conflicts,
             conflicts_resolved=(len(conflicts) == 0),
             
-            execution_time=elapsed
+            execution_time=elapsed,
+            
+            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            # v7.3.2: 추정 근거 및 추적
+            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            reasoning_detail=self._create_reasoning_detail(
+                judgment, value_estimates, context
+            ),
+            
+            component_estimations=self._create_component_estimations(
+                value_estimates
+            ),
+            
+            estimation_trace=self._build_estimation_trace(
+                value_estimates, judgment
+            ),
+            
+            decomposition=None  # Tier 3에서 구현
         )
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -281,4 +301,127 @@ class Tier2JudgmentPath:
         
         # 학습 가치 있음
         return True
+    
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # v7.3.2: 추정 근거 생성 메서드들
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    
+    def _create_reasoning_detail(
+        self,
+        judgment: Dict,
+        value_estimates: List,
+        context: Context
+    ) -> Dict[str, Any]:
+        """
+        상세 근거 생성
+        
+        Returns:
+            {
+                'method': 'weighted_average',
+                'sources_used': ['statistical', 'rag'],
+                'evidence_count': 3,
+                'why_this_method': '...',
+                'evidence_breakdown': [...]
+            }
+        """
+        return {
+            'method': judgment['strategy'],
+            'sources_used': [est.source_type.value for est in value_estimates],
+            'evidence_count': len(value_estimates),
+            'why_this_method': self._explain_strategy(judgment['strategy']),
+            
+            # 각 증거의 상세
+            'evidence_breakdown': [
+                {
+                    'source': est.source_type.value,
+                    'value': est.value,
+                    'confidence': est.confidence,
+                    'reasoning': est.reasoning,
+                    'source_detail': est.source_detail
+                }
+                for est in value_estimates
+            ],
+            
+            # 판단 과정
+            'judgment_process': [
+                f"1. 맥락 파악: domain={context.domain}, region={context.region}",
+                f"2. {len(value_estimates)}개 증거 수집 완료",
+                f"3. 전략 선택: {judgment['strategy']}",
+                f"4. 계산: {judgment['reasoning']}",
+                f"5. 신뢰도: {judgment['confidence']:.0%}"
+            ],
+            
+            # 맥락 정보
+            'context_info': {
+                'domain': context.domain,
+                'region': context.region,
+                'time_period': context.time_period
+            }
+        }
+    
+    def _explain_strategy(self, strategy: str) -> str:
+        """
+        전략 선택 이유 설명
+        
+        사용자가 이해할 수 있도록 명확히
+        """
+        explanations = {
+            'weighted_average': '증거들의 신뢰도가 비슷하여 가중 평균 적용',
+            'conservative': '의사결정용이므로 보수적 하한 선택',
+            'range': '증거 분산이 커서 범위로 제시',
+            'single_best': '하나의 증거가 압도적으로 신뢰도 높음'
+        }
+        return explanations.get(strategy, f'전략: {strategy}')
+    
+    def _create_component_estimations(
+        self,
+        value_estimates: List
+    ) -> List[ComponentEstimation]:
+        """
+        개별 요소 추정 논리 생성
+        
+        각 증거(Source)를 ComponentEstimation으로 변환
+        """
+        components = []
+        
+        for est in value_estimates:
+            component = ComponentEstimation(
+                component_name=est.source_type.value,
+                component_value=est.value,
+                estimation_method=est.source_type.value,
+                reasoning=est.reasoning,
+                confidence=est.confidence,
+                sources=[est.source_detail] if est.source_detail else [],
+                raw_data=est.raw_data
+            )
+            components.append(component)
+        
+        return components
+    
+    def _build_estimation_trace(
+        self,
+        value_estimates: List,
+        judgment: Dict
+    ) -> List[str]:
+        """
+        추정 과정 추적 (스텝별 기록)
+        
+        Returns:
+            ['맥락 파악 완료', '증거 수집 완료', ...]
+        """
+        trace = []
+        
+        trace.append("Step 1: 맥락 파악 완료")
+        trace.append(f"Step 2: {len(value_estimates)}개 Source 수집 완료")
+        
+        for i, est in enumerate(value_estimates, 1):
+            trace.append(
+                f"  증거 {i}: {est.source_type.value} = {est.value} "
+                f"(신뢰도 {est.confidence:.0%})"
+            )
+        
+        trace.append(f"Step 3: 전략 선택 - {judgment['strategy']}")
+        trace.append(f"Step 4: 종합 판단 완료 - {judgment['value']} (신뢰도 {judgment['confidence']:.0%})")
+        
+        return trace
 
