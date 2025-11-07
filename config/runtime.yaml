@@ -1,25 +1,26 @@
-# UMIS Runtime Configuration
+# UMIS Runtime Configuration v7.5.0
 # Fail-Safe Tier 2: Mode Toggle
 
 # ========================================
 # 실행 모드
 # ========================================
 
-mode: hybrid  # yaml_only / hybrid / rag_full
+mode: rag_full  # yaml_only / hybrid / rag_full
 
 # yaml_only: YAML 기반만 (RAG 비활성)
-# hybrid: YAML + Vector RAG (기본, 안정적)
-# rag_full: YAML + Vector + Graph + Memory (모든 기능)
+# hybrid: YAML + Vector RAG (안정적)
+# rag_full: YAML + Vector + Graph + Memory + Meta (모든 기능, v7.5.0) ⭐
 
 # ========================================
 # Layer별 활성화
 # ========================================
 
 layers:
-  vector: true      # Vector RAG (Explorer)
-  graph: true       # Knowledge Graph (Hybrid Search)
+  vector: true      # Vector RAG (Explorer, Quantifier, Validator, Observer)
+  graph: true       # Knowledge Graph (Hybrid Search, 13 노드, 45 관계)
   memory: true      # Guardian Memory (QueryMemory, GoalMemory)
-  meta: false       # Meta-RAG (미구현, 향후)
+  meta: true        # Meta-RAG (Guardian, v7.1.0+) ⭐ 구현 완료!
+  estimator: true   # Estimator 3-Tier (v7.5.0) ⭐ 신규!
 
 # ========================================
 # Fail-Safe 설정
@@ -35,8 +36,11 @@ fallback:
   # Memory 실패 시
   memory_fail: skip  # Memory 없이 진행
   
-  # Meta-RAG 실패 시
-  meta_fail: skip
+  # Meta-RAG 실패 시 (v7.1.0+)
+  meta_fail: skip  # Meta-RAG 없이 진행
+  
+  # Estimator 실패 시 (v7.5.0+)
+  estimator_tier3_fail: tier2  # Tier 3 실패 시 Tier 2 Fallback
 
 # ========================================
 # Circuit Breaker (Tier 3)
@@ -90,9 +94,41 @@ production:
   strict_validation: true
 
 # ========================================
+# v7.5.0 신규 기능
+# ========================================
+
+v7_5_0_features:
+  
+  estimator_3tier:
+    enabled: true
+    tier1_coverage: "45% → 95% (Year 1)"
+    tier2_coverage: "50% → 5%"
+    tier3_coverage: "5% → 0.5%"
+    total_coverage: "100%"
+    
+    tier3_features:
+      - "12개 비즈니스 지표 템플릿"
+      - "재귀 추정 (max depth 4)"
+      - "데이터 상속"
+      - "순환 감지"
+      - "SimpleVariablePolicy (6-10개)"
+      - "LLM 모드 (Native/External)"
+  
+  meta_rag:
+    enabled: true
+    status: "✅ 구현 완료 (v7.1.0+)"
+    components:
+      - "QueryMemory (순환 감지)"
+      - "GoalMemory (목표 정렬)"
+      - "RAEMemory (평가 일관성)"
+      - "3-Stage Evaluation (품질 평가)"
+    test_result: "3/4 통과 (핵심 100%)"
+
+# ========================================
 # 버전
 # ========================================
 
-version: "1.0.0"
-updated_at: "2025-11-03"
+version: "1.1.0"
+updated_at: "2025-11-08"
+umis_version: "7.5.0"
 

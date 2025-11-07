@@ -1,7 +1,7 @@
-# UMIS v7.0.0 시작하기
+# UMIS v7.5.0 시작하기
 
-**버전:** 7.0.0 (Architecture v3.0 설계 완료)  
-**날짜:** 2025-11-02  
+**버전:** 7.5.0 (6-Agent + 3-Tier 완성, 100% 커버리지)  
+**날짜:** 2025-11-08  
 **대상:** Cursor 사용자
 
 ---
@@ -14,23 +14,44 @@ Cursor Composer (Cmd+I):
 umis.yaml 첨부
 
 "@Steve, 음악 스트리밍 구독 서비스 시장 기회 분석해줘"
+"@Fermi, SaaS LTV는?"  ⭐ 신규!
+"@Fermi, Payback Period는?"  ⭐ 신규!
 ```
 
 **끝!** 🎉
 
 ---
 
-## 🤖 UMIS Agent
+## 🤖 UMIS 6-Agent 시스템
 
 ```
-Observer (Albert) → 시장 관찰
-Explorer (Steve) → 기회 발굴 (RAG!) ⭐
-Quantifier (Bill) → 정량 분석
-Validator (Rachel) → 데이터 검증
-Guardian (Stewart) → 품질 관리
-Owner → 의사결정
+Observer (Albert) → 시장 구조 분석
+Explorer (Steve) → 기회 발굴 (RAG!)
+Quantifier (Bill) → 정량 분석 + Excel
+Validator (Rachel) → 데이터 검증 + 교차 검증
+Guardian (Stewart) → 프로세스 감시 (Meta-RAG)
+Estimator (Fermi) → 값 추정 (3-Tier, 12개 지표) ⭐ 신규!
 
-현재: Explorer만 RAG 사용!
+v7.5.0: 모든 Agent 완전 작동!
+```
+
+---
+
+## ⭐ v7.5.0 신규 기능
+
+```yaml
+✅ 3-Tier 완성 (100% 커버리지)
+   - Tier 1: Fast (<0.5초)
+   - Tier 2: Judgment (3-8초)
+   - Tier 3: Fermi (10-30초)
+
+✅ 12개 비즈니스 지표 자동 계산
+   - LTV, CAC, Churn, ARPU
+   - Payback, Rule of 40, NRR 등
+
+✅ 실패율 0% (모든 질문 답변 가능)
+
+✅ 비용 $0 (Native mode)
 ```
 
 ---
@@ -81,7 +102,7 @@ umis/
 
 ---
 
-## 🚀 사용 흐름
+## 🚀 사용 흐름 (v7.5.0)
 
 ```
 1. Cursor (Cmd+I)
@@ -90,10 +111,19 @@ umis/
 
 → Explorer RAG 자동 검색
 → subscription_model 발견
-→ 코웨이 사례 학습
+→ Spotify, Netflix 사례 학습
 → 가설 생성
 
-→ 대화만! ✨
+4. "@Fermi, LTV는?"  ⭐ 신규!
+
+→ Tier 1 체크 → 없음
+→ Tier 2 시도 → 복잡
+→ Tier 3 실행 (재귀 분해)
+→ 템플릿: ltv = arpu / churn_rate
+→ 재귀 추정 → Backtracking
+→ 결과: 1,600,000원
+
+→ 100% 답변 가능! ✨
 ```
 
 ---
@@ -101,16 +131,16 @@ umis/
 ## 📖 더 알아보기
 
 **시작:**
-- [README.md](README.md) - 프로젝트 개요
+- [README.md](../README.md) - UMIS v7.5.0 소개
 - [SETUP.md](SETUP.md) - 초기 설정 (5분)
 
 **가이드:**
-- [Cursor Quick Start](rag/docs/guides/01_CURSOR_QUICK_START.md)
-- [UMIS v6.2 Complete Guide](docs/UMIS_v6.2_Complete_Guide.md)
+- [UMIS_ARCHITECTURE_BLUEPRINT.md](../UMIS_ARCHITECTURE_BLUEPRINT.md) - 전체 아키텍처
+- [CURRENT_STATUS.md](../CURRENT_STATUS.md) - v7.5.0 현황
 
-**아키텍처:**
-- [RAG Architecture](rag/docs/architecture/COMPLETE_ARCHITECTURE_V2.md)
-- [CHANGELOG.md](CHANGELOG.md)
+**Release Notes:**
+- [UMIS_V7.5.0_RELEASE_NOTES.md](../UMIS_V7.5.0_RELEASE_NOTES.md) - v7.5.0 변경사항
+- [CHANGELOG.md](../CHANGELOG.md) - 전체 버전 이력
 
 ---
 

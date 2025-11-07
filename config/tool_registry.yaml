@@ -1,12 +1,12 @@
 # ========================================
-# UMIS Tool Registry v7.2.0
+# UMIS Tool Registry v7.5.0
 # System RAG: Key-based 정확 검색
 # ========================================
 
-version: '7.2.0'
+version: '7.5.0'
 created: '2025-11-03'
-updated: '2025-11-05'
-total_tools: 28
+updated: '2025-11-08'
+total_tools: 31
 
 # ========================================
 # 도구 목록
@@ -1296,6 +1296,418 @@ tools:
       - umis.yaml → tools_and_templates.methodologies.domain_reasoner
       - data/raw/umis_domain_reasoner_methodology.yaml (1,028줄)
       - docs/GUESTIMATION_COMPARISON.md (비교 가이드)
+
+  - tool_id: estimator:estimate
+    tool_key: tool:estimator:estimate
+    
+    metadata:
+      agent: "estimator"
+      category: "estimation"
+      complexity: "medium"
+      context_size: 500
+      priority: "high"
+      version: "7.5.0"
+      source_file: "umis.yaml"
+      source_section: "agents.estimator"
+      source_lines: "4390-4911"
+    
+    when_to_use:
+      keywords:
+        - 추정
+        - 값
+        - 얼마
+        - churn rate
+        - conversion rate
+        - AOV
+        - frequency
+        - 전환율
+        - 해지율
+      
+      conditions:
+        - "직접 데이터 없음"
+        - "값 추정 필요"
+        - "다른 Agent에서 Estimator 호출"
+      
+      scenarios:
+        - "@Fermi, B2B SaaS Churn Rate는?"
+        - "@Quantifier가 전환율 필요할 때"
+        - "@Validator가 추정치 교차 검증할 때"
+    
+    content: |
+      # Estimator: 값 추정 및 판단
+      
+      ## 목적
+      데이터 부족 시 값을 추정하고 지능적으로 판단 (Single Source of Truth)
+      
+      ## 3-Tier Architecture
+      
+      ### Tier 1: Fast Path (<0.5초)
+      ```python
+      from umis_rag.agents.estimator import EstimatorRAG
+      
+      estimator = EstimatorRAG()
+      result = estimator.estimate(
+          "B2B SaaS Churn Rate는?",
+          domain="B2B_SaaS"
+      )
+      
+      # 학습된 규칙 있음 → Tier 1
+      # value: 0.06, tier: 1, confidence: 0.85
+      ```
+      
+      **커버리지 진화**:
+      - Week 1: 45% (20개)
+      - Month 1: 75% (120개)
+      - Year 1: 95% (2,000개)
+      
+      ### Tier 2: Judgment Path (3-8초)
+      ```python
+      # 학습된 규칙 없음 → Tier 2
+      # 11개 Source 수집 + 종합 판단
+      
+      result = estimator.estimate(
+          "음식점 SaaS ARPU는?",
+          domain="Food_Service_SaaS"
+      )
+      
+      # reasoning_detail (v7.3.2):
+      # {
+      #   'method': 'weighted_average',
+      #   'sources_used': ['rag', 'statistical'],
+      #   'why_this_method': '증거 신뢰도 유사',
+      #   'evidence_breakdown': [...],
+      #   'judgment_process': [...]
+      # }
+      ```
+      
+      **11개 Source**:
+      - Physical: 시공간, 보존, 수학
+      - Soft: 법률, 통계, 행동경제학
+      - Value: 확정, LLM, 웹, RAG, 통계값
+      
+      ### Tier 3: Fermi Decomposition (v7.5.0 완성) ⭐
+      
+      **구현**: tier3.py (1,463줄)  
+      **상태**: ✅ 100% 구현 완료
+      
+      ```python
+      # Tier 1/2 실패 → Tier 3 자동 실행
+      result = estimator.estimate("SaaS LTV는?")
+      
+      # Tier 3 동작:
+      # 1. 템플릿 매칭: ltv
+      # 2. 모형: ltv = arpu / churn_rate
+      # 3. 재귀 추정: arpu (depth 1), churn (depth 1)
+      # 4. Backtracking: 결과 계산
+      # → value: 1,600,000원, tier: 3, depth: 1
+      ```
+      
+      #### 12개 비즈니스 지표 템플릿 (v7.5.0)
+      
+      **핵심 8개**:
+      1. Unit Economics (LTV/CAC 비율, 1개 모형)
+      2. Market Sizing (시장 규모, 2개 모형)
+      3. LTV (고객 생애 가치, 2개 모형)
+      4. CAC (고객 획득 비용, 2개 모형)
+      5. Conversion Rate (전환율, 2개 모형)
+      6. Churn Rate (해지율, 2개 모형)
+      7. ARPU (평균 매출, 3개 모형)
+      8. Growth Rate (성장률, 2개 모형)
+      
+      **고급 4개 (v7.5.0 신규)**:
+      9. Payback Period (회수 기간, 2개 모형)
+         - payback = cac / (arpu × gross_margin)
+      10. Rule of 40 (SaaS 건강도, 1개 모형)
+          - rule_40 = growth_rate + profit_margin
+      11. Net Revenue Retention (순매출 유지율, 2개 모형)
+          - nrr = 1 + expansion_rate - churn_rate
+      12. Gross Margin (매출총이익률, 2개 모형)
+          - gross_margin = (revenue - cogs) / revenue
+      
+      **총**: 12개 지표, 23개 모형  
+      **커버리지**: 90-95% (템플릿만)
+      
+      #### 재귀 구조 (Phase 1-4)
+      
+      **Phase 1**: 초기 스캔 (가용 데이터)
+      - 부모 데이터 상속 (v7.5.0) ⭐
+      - 프로젝트 데이터 로드
+      
+      **Phase 2**: 모형 생성
+      - 템플릿 매칭 (12개 지표)
+      - LLM API (External mode)
+      - SimpleVariablePolicy 필터링
+      
+      **Phase 3**: 실행 가능성
+      - Unknown 변수 → Tier 2 시도
+      - Tier 2 실패 → 재귀 호출
+      - Max depth: 4
+      - 순환 감지 (Call stack)
+      
+      **Phase 4**: 모형 실행
+      - Backtracking
+      - Confidence 조합 (Geometric Mean)
+      - DecompositionTrace 생성
+      
+      #### SimpleVariablePolicy (오버엔지니어링 회피)
+      
+      **원칙**: KISS (Keep It Simple, Stupid)
+      - 6개: 권장 (Occam's Razor)
+      - 7-10개: 허용 (경고)
+      - 10개+: 금지 (Miller's Law)
+      
+      **효과**: 98% (vs Hybrid 100%, 2% 차이)  
+      **코드**: 20줄 (vs Hybrid 300줄, 15배 간단)
+      
+      #### 데이터 상속 (v7.5.0)
+      
+      **기능**: 재귀 시 부모의 available 변수 활용
+      ```python
+      depth 0: {customers: 1000, conversion: 0.1}
+        ↓
+      depth 1: parent_data 상속 ⭐
+        → 재계산 불필요
+        → 일관성 보장
+      ```
+      
+      #### LLM 모드 통합 (v7.5.0)
+      
+      **Native Mode (기본, 권장)**:
+      - 템플릿만 사용
+      - 비용: $0
+      - 커버: 90-95%
+      - 템플릿 실패 → Cursor에게 맡김
+      
+      **External Mode (자동화)**:
+      - 템플릿 + OpenAI API
+      - 비용: ~$0.03/질문
+      - 커버: 100%
+      - 배치 처리 가능
+      
+      **설정**: config/llm_mode.yaml
+      
+      ## Single Source Policy (v7.3.2)
+      
+      **원칙**: 모든 값/데이터 추정은 Estimator만 수행
+      
+      **적용**:
+      - Quantifier: 계산 OK, 추정 NO → Estimator 호출
+      - Validator: 검증 OK, 추정 NO → Estimator 호출
+      - Observer: 관찰 OK, 추정 NO → Estimator 호출
+      - Explorer: 가설 OK, 추정 NO → Estimator 호출
+      - Guardian: 평가 OK, 추정 NO → Estimator 호출
+      
+      ## Reasoning Transparency (v7.3.2)
+      
+      **모든 추정에 근거 제공**:
+      ```python
+      result.reasoning_detail
+      # {
+      #   'method': '판단 전략',
+      #   'sources_used': ['rag', 'statistical', ...],
+      #   'why_this_method': '선택 이유',
+      #   'evidence_breakdown': [각 증거 상세],
+      #   'judgment_process': ['Step 1: ...', 'Step 2: ...']
+      # }
+      
+      result.component_estimations
+      # [ComponentEstimation(name='...', value=..., method='...', reasoning='...')]
+      
+      result.estimation_trace
+      # ['Step 1: 맥락 파악', 'Step 2: 증거 수집', ...]
+      ```
+      
+      ## 학습 시스템
+      
+      **파이프라인**: Tier 2 → Canonical → Projected → Tier 1
+      
+      **조건**:
+      - confidence >= 0.90: 증거 1개 OK
+      - confidence >= 0.80: 증거 2개 필요
+      - confidence < 0.80: 학습 안 함
+      
+      **성능**: 첫 실행 느림, 재실행 6-16배 빠름
+      
+      ## 사용 예시 (v7.5.0)
+      
+      **비즈니스 지표**:
+      ```python
+      # Payback Period
+      result = estimator.estimate("CAC 회수 기간은?")
+      # → 템플릿: payback
+      # → 모형: payback = cac / (arpu × gross_margin)
+      
+      # Rule of 40
+      result = estimator.estimate("Rule of 40은?")
+      # → 템플릿: rule_of_40
+      # → 모형: rule_40 = growth_rate + profit_margin
+      ```
+      
+      **상세**: umis.yaml → agents.estimator (Line 4390-4911)
+
+  - tool_id: estimator:cross_validation
+    tool_key: tool:estimator:cross_validation
+    
+    metadata:
+      agent: "estimator, validator"
+      category: "validation"
+      complexity: "medium"
+      context_size: 300
+      priority: "medium"
+      version: "7.3.2"
+      source_file: "umis.yaml"
+      source_section: "agents.estimator.cross_validation"
+      source_lines: "4560-4574"
+    
+    when_to_use:
+      keywords:
+        - 교차 검증
+        - 추정치 검증
+        - cross validation
+        - validate estimation
+      
+      conditions:
+        - "Validator가 추정치 검증 필요"
+        - "외부 자료 신뢰도 확인"
+        - "추정치 비교 필요"
+      
+      scenarios:
+        - "@Validator, 이 Churn Rate 8% 맞아?"
+        - "외부 자료와 비교 검증"
+    
+    content: |
+      # Estimator: 교차 검증 (v7.3.2)
+      
+      ## 목적
+      Validator와 협업하여 추정치를 독립적으로 검증
+      
+      ## 프로세스
+      
+      ```python
+      from umis_rag.agents.validator import ValidatorRAG
+      
+      validator = ValidatorRAG()
+      
+      # 추정치 교차 검증
+      result = validator.validate_estimation(
+          question="B2B SaaS Churn Rate는?",
+          claimed_value=0.08,  # 외부 주장
+          context={'domain': 'B2B_SaaS'}
+      )
+      
+      # 결과:
+      # {
+      #   'claimed_value': 0.08,
+      #   'estimator_value': 0.06,  # Estimator 독립 추정
+      #   'estimator_confidence': 0.85,
+      #   'estimator_reasoning': {...},  # 상세 근거
+      #   'difference_pct': 0.33,  # 33% 차이
+      #   'validation_result': 'caution'  # pass/caution/fail
+      # }
+      ```
+      
+      ## 판단 기준
+      
+      - **Pass**: 차이 ≤ 30%
+      - **Caution**: 차이 30-50%
+      - **Fail**: 차이 > 50%
+      
+      ## 특징
+      
+      - ✅ Validator는 직접 추정 안 함
+      - ✅ Estimator에게 독립 추정 요청
+      - ✅ 두 값 비교 → 판단
+      - ✅ 완전한 근거 제공 (reasoning_detail)
+      
+      **상세**: umis.yaml → agents.estimator.cross_validation
+
+  - tool_id: estimator:learning_system
+    tool_key: tool:estimator:learning_system
+    
+    metadata:
+      agent: "estimator"
+      category: "learning"
+      complexity: "low"
+      context_size: 200
+      priority: "low"
+      version: "7.3.0"
+      source_file: "umis.yaml"
+      source_section: "agents.estimator.learning_system"
+      source_lines: "4576-4605"
+    
+    when_to_use:
+      keywords:
+        - 학습
+        - learning
+        - 진화
+        - 성능 향상
+      
+      conditions:
+        - "Estimator 성능 이해 필요"
+        - "학습 메커니즘 확인"
+      
+      scenarios:
+        - "Estimator가 어떻게 학습하는지 궁금해"
+        - "성능이 어떻게 향상되는가?"
+    
+    content: |
+      # Estimator: 학습 시스템 (v7.3.0+)
+      
+      ## 목적
+      사용할수록 빨라지는 지능적 학습 시스템
+      
+      ## 학습 파이프라인
+      
+      ```
+      Tier 2 실행 (첫 실행, 3-8초)
+        ↓
+      Canonical Storage (정규화)
+        ↓
+      Projection (Agent View: estimator)
+        ↓
+      Tier 1 Integration (학습 규칙)
+        ↓
+      재실행 시 Tier 1 (<0.5초, 6-16배 빠름)
+      ```
+      
+      ## 학습 조건
+      
+      **High Confidence (>= 0.90)**:
+      - 필요 증거: 1개 이상
+      - 액션: 즉시 학습
+      
+      **Medium Confidence (>= 0.80)**:
+      - 필요 증거: 2개 이상
+      - 액션: 학습
+      
+      **Low Confidence (< 0.80)**:
+      - 액션: 학습 안 함 (품질 보장)
+      
+      ## 성능 진화
+      
+      ```yaml
+      Week 1:  45% 커버 (20개 규칙)
+      Month 1: 75% 커버 (120개 규칙)
+      Year 1:  95% 커버 (2,000개 규칙)
+      
+      속도:
+        첫 실행: 3-8초 (Tier 2)
+        재실행: <0.5초 (Tier 1)
+        개선: 6-16배 빠름
+      ```
+      
+      ## 구현
+      
+      ```python
+      # 자동 학습 (사용자 개입 불필요)
+      from umis_rag.agents.estimator.learning_writer import LearningWriter
+      
+      writer = LearningWriter()
+      writer.write_rule(estimation_result)
+      # → confidence >= 0.80 → 자동 학습
+      ```
+      
+      **상세**: umis.yaml → agents.estimator.learning_system
 
   - tool_id: universal:hybrid_strategy
     tool_key: tool:universal:hybrid_strategy

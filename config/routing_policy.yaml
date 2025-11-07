@@ -30,7 +30,17 @@ explorer_workflow:
       output: success_cases
       required: false
     
-    # Step 3: Quantifier 협업 (조건부)
+    # Step 3: Estimator 협업 (v7.3.2+ 조건부)
+    - id: estimator_collaboration
+      name: "값 추정 요청"
+      agent: estimator
+      when: needs_estimation
+      input: estimation_query
+      output: estimation_result
+      required: false
+      note: "기회 크기, 우선순위 판단 시 사용"
+    
+    # Step 4: Quantifier 협업 (조건부)
     - id: quantifier_collaboration
       name: "정량 분석 요청"
       agent: quantifier
@@ -39,12 +49,12 @@ explorer_workflow:
       output: market_sizing
       required: false
     
-    # Step 4: 가설 생성
+    # Step 5: 가설 생성
     - id: hypothesis_generation
       name: "기회 가설 생성"
       method: generate_hypothesis
       when: always
-      input: [patterns, cases, quantifier_data]
+      input: [patterns, cases, estimator_data, quantifier_data]
       layers: [vector, memory]  # Memory로 순환 체크
       output: hypothesis
       required: true
@@ -138,6 +148,7 @@ execution:
   
   # 선택적 실행
   optional:
+    - estimator_collaboration
     - quantifier_collaboration
     - validator_collaboration
   
@@ -152,6 +163,11 @@ execution:
 # ========================================
 
 conditions:
+  needs_estimation:
+    check: "requires_value_estimation == true"
+    default: false
+    note: "v7.3.2+ Estimator 협업 조건"
+  
   needs_quantitative:
     check: "pattern.type == 'market_sizing_required'"
     default: false
@@ -169,7 +185,9 @@ conditions:
 # ========================================
 
 _meta:
-  version: "1.0.0"
+  version: "1.1.0"
   created_at: "2025-11-03"
+  updated_at: "2025-11-08"
   schema: "routing_policy_v1"
+  v7_3_2_updates: "Estimator 협업 추가"
 
