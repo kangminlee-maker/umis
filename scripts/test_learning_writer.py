@@ -10,8 +10,8 @@ from pathlib import Path
 umis_root = Path(__file__).parent.parent
 sys.path.insert(0, str(umis_root))
 
-from umis_rag.guestimation_v3.learning_writer import LearningWriter, UserContribution
-from umis_rag.guestimation_v3.models import (
+from umis_rag.agents.estimator.learning_writer import LearningWriter, UserContribution
+from umis_rag.agents.estimator.models import (
     EstimationResult,
     Context,
     ValueEstimate,

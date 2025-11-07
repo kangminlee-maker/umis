@@ -10,7 +10,7 @@ from pathlib import Path
 
 from umis_rag.utils.logger import logger
 from .models import Context, EstimationResult, Tier1Config, LearnedRule
-from .rag_searcher import GuestimationRAGSearcher
+from .rag_searcher import EstimatorRAGSearcher
 
 
 class Tier1FastPath:
@@ -46,7 +46,7 @@ class Tier1FastPath:
         logger.info(f"  ✅ Built-in 규칙: {len(self.builtin_rules)}개")
         
         # RAG Searcher
-        self.rag_searcher = GuestimationRAGSearcher()
+        self.rag_searcher = EstimatorRAGSearcher()
         logger.info(f"  ✅ RAG Searcher 준비")
     
     def _load_builtin_rules(self) -> List[Dict]:
