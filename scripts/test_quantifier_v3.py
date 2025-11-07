@@ -9,6 +9,7 @@ umis_root = Path(__file__).parent.parent
 sys.path.insert(0, str(umis_root))
 
 from umis_rag.agents.quantifier import QuantifierRAG
+from umis_rag.agents.estimator import EstimatorRAG
 
 
 def test_quantifier_guestimation_v3():
