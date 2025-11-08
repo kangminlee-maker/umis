@@ -1,0 +1,66 @@
+// UMIS Agent Configuration - Protocol Buffers 정의
+// v7.5.0 - Production Format Optimization
+
+syntax = "proto3";
+
+package umis.agent;
+
+// Agent 설정 (전체)
+message AgentConfig {
+  map<string, AgentSettings> agents = 1;  // agent_id → settings
+  SystemConfig system = 2;
+  RAGConfig rag = 3;
+}
+
+// Agent별 설정
+message AgentSettings {
+  string agent_id = 1;           // observer, explorer, etc.
+  string default_name = 2;       // Albert, Steve, etc.
+  bool rag_enabled = 3;
+  repeated string collections = 4;  // RAG collection names
+  AgentRole role = 5;
+  map<string, string> metadata = 6;
+}
+
+// Agent 역할
+enum AgentRole {
+  UNKNOWN_ROLE = 0;
+  MARKET_STRUCTURE = 1;
+  OPPORTUNITY_DISCOVERY = 2;
+  MARKET_SIZING = 3;
+  DATA_VERIFICATION = 4;
+  PROCESS_MONITORING = 5;
+  VALUE_ESTIMATION = 6;
+}
+
+// 시스템 설정
+message SystemConfig {
+  string version = 1;
+  string workflow = 2;
+  repeated string active_agents = 3;
+  bool discovery_sprint_enabled = 4;
+  int32 discovery_threshold = 5;  // 명확도 임계값
+}
+
+// RAG 설정
+message RAGConfig {
+  bool active = 1;
+  string architecture = 2;
+  repeated Layer layers = 3;
+  map<string, Collection> collections = 4;
+}
+
+message Layer {
+  int32 layer_number = 1;
+  string name = 2;
+  string description = 3;
+  string storage_type = 4;  // chroma, neo4j, memory
+}
+
+message Collection {
+  string name = 1;
+  string agent_id = 2;
+  int32 document_count = 3;
+  string status = 4;  // active, building, empty
+}
+
