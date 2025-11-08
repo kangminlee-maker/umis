@@ -32,7 +32,53 @@
 
 ### 2.1 텍스트 기반 (Human-Readable)
 
-#### A. JSON
+#### A. TOON (Token-Oriented Object Notation) ⭐ NEW
+
+**특징**:
+- **LLM 프롬프트 전용** 설계
+- 테이블 데이터를 컴팩트하게
+- JSON 대비 토큰 40% 감소
+- 인간 가독성 + 구조 명시
+
+**성능**:
+```
+파일 크기: JSON 대비 40% 감소 (uniform 데이터)
+토큰 수: JSON 대비 40% 감소 (LLM 프롬프트)
+파싱 속도: JSON과 비슷
+LLM 가독성: 매우 높음
+```
+
+**예시**:
+```toon
+benchmarks[3]{industry,metric,p50,p90}:
+  SaaS,CAC,1200,3500
+  SaaS,LTV,5000,15000
+  E-commerce,CAC,50,150
+```
+
+vs JSON:
+```json
+{"benchmarks": [
+  {"industry": "SaaS", "metric": "CAC", "p50": 1200, "p90": 3500},
+  {"industry": "SaaS", "metric": "LTV", "p50": 5000, "p90": 15000},
+  {"industry": "E-commerce", "metric": "CAC", "p50": 50, "p90": 150}
+]}
+```
+
+**적용 가능 영역**:
+- ✅✅ LLM 프롬프트 (벤치마크, 예제)
+- ✅✅ Estimator Rules (2,000개)
+- ✅ LLM Output 요청
+- ❌ 저장 (MessagePack이 더 빠름)
+- ❌ API (JSON이 표준)
+
+**마이그레이션 난이도**: ⭐⭐⭐ (Python 구현 대기 중)
+
+**참고**: https://github.com/toon-format/toon
+
+---
+
+#### B. JSON
 **특징**:
 - 가장 널리 사용되는 데이터 교환 포맷
 - Python `json` 모듈로 기본 지원
