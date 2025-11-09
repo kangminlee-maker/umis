@@ -1,0 +1,941 @@
+{
+  "generated_at": "2025-11-09T11:21:04.927577",
+  "python_imports": {
+    "umis_rag/__init__.py": [
+      "umis_rag.core.config",
+      "os",
+      "warnings"
+    ],
+    "umis_rag/core/condition_parser.py": [
+      "re",
+      "umis_rag.utils.logger",
+      "sys"
+    ],
+    "umis_rag/core/__init__.py": [
+      "umis_rag.core.config"
+    ],
+    "umis_rag/core/circuit_breaker.py": [
+      "time",
+      "umis_rag.utils.logger",
+      "sys"
+    ],
+    "umis_rag/core/error_handler.py": [
+      "time",
+      "umis_rag.utils.logger",
+      "sys"
+    ],
+    "umis_rag/core/layer_manager.py": [
+      "umis_rag.utils.logger",
+      "sys",
+      "yaml"
+    ],
+    "umis_rag/core/workflow_executor.py": [
+      "umis_rag.core.condition_parser",
+      "umis_rag.utils.logger",
+      "sys",
+      "yaml"
+    ],
+    "umis_rag/core/schema.py": [
+      "hashlib",
+      "yaml"
+    ],
+    "umis_rag/learning/rule_learner.py": [
+      "sys",
+      "umis_rag.utils.logger",
+      "json",
+      "yaml"
+    ],
+    "umis_rag/graph/confidence_calculator.py": [
+      "umis_rag.utils.logger"
+    ],
+    "umis_rag/graph/hybrid_search.py": [
+      "umis_rag.graph.connection",
+      "umis_rag.graph.confidence_calculator",
+      "umis_rag.utils.logger"
+    ],
+    "umis_rag/graph/connection.py": [
+      "os",
+      "umis_rag.utils.logger"
+    ],
+    "umis_rag/graph/schema_initializer.py": [
+      "umis_rag.graph.connection",
+      "umis_rag.utils.logger"
+    ],
+    "umis_rag/agents/validator.py": [
+      "umis_rag.core.config",
+      "umis_rag.agents.estimator",
+      "umis_rag.utils.logger",
+      "yaml",
+      "sys"
+    ],
+    "umis_rag/agents/observer.py": [
+      "umis_rag.core.config",
+      "umis_rag.utils.logger",
+      "sys"
+    ],
+    "umis_rag/agents/explorer.py": [
+      "umis_rag.core.config",
+      "umis_rag.graph.connection",
+      "umis_rag.graph.hybrid_search",
+      "umis_rag.utils.logger",
+      "sys"
+    ],
+    "umis_rag/agents/quantifier.py": [
+      "umis_rag.core.config",
+      "umis_rag.methodologies.domain_reasoner",
+      "umis_rag.agents.estimator",
+      "umis_rag.agents.estimator.models",
+      "umis_rag.utils.logger",
+      "umis_rag.guardian.meta_rag",
+      "sys"
+    ],
+    "umis_rag/methodologies/domain_reasoner.py": [
+      "umis_rag.core.config",
+      "re",
+      "umis_rag.agents.validator",
+      "umis_rag.utils.logger",
+      "umis_rag.agents.quantifier",
+      "yaml",
+      "umis_rag.agents.explorer",
+      "statistics",
+      "sys"
+    ],
+    "umis_rag/utils/fermi_model_search.py": [
+      "re",
+      "os",
+      "umis_rag"
+    ],
+    "umis_rag/utils/__init__.py": [
+      "umis_rag.utils.logger"
+    ],
+    "umis_rag/utils/logger.py": [
+      "umis_rag.core.config",
+      "sys"
+    ],
+    "umis_rag/guardian/goal_memory.py": [
+      "umis_rag.core.config",
+      "umis_rag.utils.logger",
+      "hashlib",
+      "numpy",
+      "sys"
+    ],
+    "umis_rag/guardian/memory.py": [
+      "umis_rag.guardian.goal_memory",
+      "umis_rag.utils.logger",
+      "umis_rag.guardian.query_memory",
+      "sys"
+    ],
+    "umis_rag/guardian/three_stage_evaluator.py": [
+      "umis_rag.core.config",
+      "umis_rag.guardian.rae_memory",
+      "re",
+      "umis_rag.utils.logger",
+      "json",
+      "sys"
+    ],
+    "umis_rag/guardian/rae_memory.py": [
+      "umis_rag.core.config",
+      "umis_rag.utils.logger",
+      "json",
+      "hashlib",
+      "sys"
+    ],
+    "umis_rag/guardian/meta_rag.py": [
+      "umis_rag.guardian.memory",
+      "umis_rag.utils.logger",
+      "umis_rag.guardian.three_stage_evaluator",
+      "sys"
+    ],
+    "umis_rag/guardian/query_memory.py": [
+      "umis_rag.core.config",
+      "umis_rag.utils.logger",
+      "hashlib",
+      "sys"
+    ],
+    "umis_rag/projection/ttl_manager.py": [
+      "umis_rag.core.config",
+      "umis_rag.projection.hybrid_projector",
+      "chromadb",
+      "umis_rag.utils.logger",
+      "json",
+      "sys"
+    ],
+    "umis_rag/projection/hybrid_projector.py": [
+      "umis_rag.core.config",
+      "umis_rag.utils.logger",
+      "json",
+      "yaml",
+      "umis_rag.core.schema"
+    ],
+    "umis_rag/deliverables/excel/should_vs_will_builder.py": [
+      "umis_rag.deliverables.excel.formula_engine",
+      "sys"
+    ],
+    "umis_rag/deliverables/excel/golden_test_framework.py": [
+      "re"
+    ],
+    "umis_rag/deliverables/excel/formula_reference_validator.py": [
+      "re"
+    ],
+    "umis_rag/deliverables/excel/excel_validator.py": [
+      "re"
+    ],
+    "umis_rag/agents/estimator/rag_searcher.py": [
+      "umis_rag.core.config",
+      "umis_rag.utils.logger"
+    ],
+    "umis_rag/agents/estimator/tier1.py": [
+      "umis_rag.utils.logger",
+      "yaml"
+    ],
+    "umis_rag/agents/estimator/judgment.py": [
+      "umis_rag.utils.logger",
+      "statistics"
+    ],
+    "umis_rag/agents/estimator/learning_writer.py": [
+      "hashlib",
+      "json"
+    ],
+    "umis_rag/agents/estimator/tier3.py": [
+      "time",
+      "umis_rag.core.config",
+      "re",
+      "umis_rag.agents.estimator.models",
+      "umis_rag.agents.estimator.tier2",
+      "umis_rag.utils.logger",
+      "yaml",
+      "math",
+      "copy",
+      "sys"
+    ],
+    "umis_rag/agents/estimator/source_collector.py": [
+      "time",
+      "umis_rag.utils.logger",
+      "concurrent.futures"
+    ],
+    "umis_rag/agents/estimator/tier2.py": [
+      "time",
+      "umis_rag.utils.logger"
+    ],
+    "umis_rag/agents/estimator/estimator.py": [
+      "umis_rag.core.config",
+      "umis_rag.utils.logger",
+      "sys"
+    ],
+    "umis_rag/agents/estimator/sources/soft.py": [
+      "umis_rag.utils.logger",
+      "statistics"
+    ],
+    "umis_rag/agents/estimator/sources/value.py": [
+      "os",
+      "umis_rag.agents.quantifier",
+      "umis_rag.utils.logger",
+      "re"
+    ],
+    "umis_rag/agents/estimator/sources/physical.py": [
+      "umis_rag.utils.logger"
+    ],
+    "scripts/test_e2e_full_workflow.py": [
+      "umis_rag.methodologies.domain_reasoner",
+      "traceback",
+      "chromadb",
+      "umis_rag.agents.validator",
+      "umis_rag.agents.quantifier",
+      "yaml",
+      "umis_rag.agents.explorer",
+      "umis_rag.guardian.meta_rag",
+      "sys"
+    ],
+    "scripts/test_tier2_guestimation.py": [
+      "umis_rag.agents.estimator.models",
+      "umis_rag.agents.estimator.tier2",
+      "sys"
+    ],
+    "scripts/diagnose_market_sizing.py": [
+      "sys"
+    ],
+    "scripts/validate_consistency.py": [
+      "umis_rag.core.config",
+      "re",
+      "chromadb",
+      "argparse",
+      "yaml",
+      "sys"
+    ],
+    "scripts/test_tier3_basic.py": [
+      "umis_rag.utils.logger",
+      "umis_rag.agents.estimator.models",
+      "umis_rag.agents.estimator.tier3",
+      "sys"
+    ],
+    "scripts/final_qa_all_excel.py": [
+      "umis_rag.deliverables.excel.excel_validator",
+      "umis_rag.deliverables.excel.golden_test_framework",
+      "sys"
+    ],
+    "scripts/check_all_dashboards.py": [
+      "sys"
+    ],
+    "scripts/impact_analyzer.py": [
+      "re",
+      "argparse",
+      "json"
+    ],
+    "scripts/download_prebuilt_db.py": [
+      "os",
+      "chromadb",
+      "gdown",
+      "tarfile",
+      "urllib.request",
+      "shutil",
+      "subprocess",
+      "sys"
+    ],
+    "scripts/test_unit_economics_complete.py": [
+      "umis_rag.deliverables.excel.unit_economics.unit_economics_generator",
+      "traceback",
+      "sys"
+    ],
+    "scripts/01_convert_yaml.py": [
+      "yaml",
+      "umis_rag.utils.logger",
+      "json",
+      "sys"
+    ],
+    "scripts/validate_formula_references.py": [
+      "umis_rag.deliverables.excel.formula_reference_validator",
+      "sys"
+    ],
+    "scripts/build_system_knowledge.py": [
+      "chromadb",
+      "sys",
+      "yaml"
+    ],
+    "scripts/03_test_search.py": [
+      "umis_rag.core.config",
+      "argparse",
+      "umis_rag.utils.logger",
+      "sys"
+    ],
+    "scripts/test_learning_e2e.py": [
+      "umis_rag.agents.estimator.learning_writer",
+      "umis_rag.agents.estimator.models",
+      "umis_rag.agents.estimator.tier2",
+      "yaml",
+      "umis_rag.agents.estimator.tier1",
+      "traceback",
+      "sys"
+    ],
+    "scripts/test_single_source_policy.py": [
+      "umis_rag.agents.estimator",
+      "umis_rag.agents.validator",
+      "umis_rag.agents.estimator.models",
+      "umis_rag.agents.estimator.tier2",
+      "traceback",
+      "sys"
+    ],
+    "scripts/test_all_improvements.py": [
+      "time",
+      "umis_rag.learning.rule_learner",
+      "umis_rag.guardian.rae_memory",
+      "umis_rag.core.circuit_breaker",
+      "umis_rag.utils.logger",
+      "json",
+      "yaml",
+      "sys"
+    ],
+    "scripts/generate_example_financial_projection.py": [
+      "umis_rag.deliverables.excel.financial_projection",
+      "traceback",
+      "sys"
+    ],
+    "scripts/test_guardian_memory.py": [
+      "umis_rag.guardian.memory",
+      "umis_rag.utils.logger",
+      "umis_rag.guardian.goal_memory",
+      "umis_rag.guardian.query_memory",
+      "sys"
+    ],
+    "scripts/test_agent_rag.py": [
+      "umis_rag.agents.validator",
+      "umis_rag.agents.quantifier",
+      "umis_rag.agents.observer",
+      "traceback",
+      "sys"
+    ],
+    "scripts/02_build_index.py": [
+      "umis_rag.core.config",
+      "argparse",
+      "umis_rag.utils.logger",
+      "json",
+      "sys"
+    ],
+    "scripts/verify_tool_coverage.py": [
+      "re",
+      "yaml"
+    ],
+    "scripts/test_signal10_kpi.py": [
+      "umis_rag.methodologies.domain_reasoner",
+      "sys"
+    ],
+    "scripts/find_all_hardcoded_ranges.py": [
+      "re",
+      "sys"
+    ],
+    "scripts/build_canonical_index.py": [
+      "umis_rag.core.config",
+      "chromadb",
+      "umis_rag.utils.logger",
+      "hashlib",
+      "json",
+      "yaml",
+      "umis_rag.core.schema",
+      "sys"
+    ],
+    "scripts/test_explorer_patterns.py": [
+      "umis_rag.agents.explorer",
+      "sys"
+    ],
+    "scripts/test_quantifier_v3.py": [
+      "umis_rag.agents.quantifier",
+      "umis_rag.agents.estimator",
+      "traceback",
+      "sys"
+    ],
+    "scripts/verify_market_sizing_formulas.py": [
+      "re",
+      "sys"
+    ],
+    "scripts/generate_dependency_matrix.py": [
+      "ast",
+      "re",
+      "json",
+      "yaml"
+    ],
+    "scripts/test_unit_economics_batch2.py": [
+      "umis_rag.deliverables.excel.unit_economics.unit_economics_generator",
+      "traceback",
+      "sys"
+    ],
+    "scripts/test_quantifier_hybrid.py": [
+      "umis_rag.agents.quantifier",
+      "traceback",
+      "sys"
+    ],
+    "scripts/qa_all_example_files.py": [
+      "umis_rag.deliverables.excel.excel_validator",
+      "sys"
+    ],
+    "scripts/test_schema_contract.py": [
+      "pytest",
+      "chromadb",
+      "umis_rag.core.schema",
+      "sys"
+    ],
+    "scripts/test_source_collector.py": [
+      "umis_rag.agents.estimator.source_collector",
+      "umis_rag.agents.estimator.models",
+      "sys"
+    ],
+    "scripts/generate_example_market_sizing.py": [
+      "traceback",
+      "umis_rag.deliverables.excel.market_sizing_generator",
+      "sys"
+    ],
+    "scripts/query_system_rag.py": [
+      "time",
+      "chromadb",
+      "sys"
+    ],
+    "scripts/test_hybrid_explorer.py": [
+      "umis_rag.graph.hybrid_search",
+      "umis_rag.utils.logger",
+      "umis_rag.agents.explorer",
+      "traceback",
+      "sys"
+    ],
+    "scripts/check_named_ranges.py": [
+      "sys"
+    ],
+    "scripts/create_market_analysis_excel.py": [
+      "sys"
+    ],
+    "scripts/benchmark_formats.py": [
+      "time",
+      "msgpack",
+      "pandas",
+      "argparse",
+      "json",
+      "cbor2",
+      "tempfile",
+      "yaml",
+      "sys"
+    ],
+    "scripts/test_financial_projection_batch4.py": [
+      "umis_rag.deliverables.excel.financial_projection.financial_projection_generator",
+      "traceback",
+      "sys"
+    ],
+    "scripts/populate_all_excel_values.py": [
+      "math",
+      "sys"
+    ],
+    "scripts/build_projected_index.py": [
+      "umis_rag.core.config",
+      "umis_rag.projection.hybrid_projector",
+      "chromadb",
+      "umis_rag.utils.logger",
+      "json",
+      "sys"
+    ],
+    "scripts/test_financial_projection_complete.py": [
+      "umis_rag.deliverables.excel.financial_projection.financial_projection_generator",
+      "traceback",
+      "sys"
+    ],
+    "scripts/generate_example_unit_economics.py": [
+      "traceback",
+      "umis_rag.deliverables.excel.unit_economics",
+      "sys"
+    ],
+    "scripts/check_assumptions_values.py": [
+      "sys"
+    ],
+    "scripts/test_kpi_validation.py": [
+      "umis_rag.agents.validator",
+      "sys"
+    ],
+    "scripts/query_rag.py": [
+      "umis_rag.agents.explorer",
+      "argparse",
+      "sys"
+    ],
+    "scripts/test_excel_generation.py": [
+      "traceback",
+      "umis_rag.deliverables.excel.market_sizing_generator",
+      "sys"
+    ],
+    "scripts/test_fermi_model_search.py": [
+      "umis_rag.utils.fermi_model_search",
+      "sys"
+    ],
+    "scripts/build_balanced.py": [
+      "msgpack",
+      "sys",
+      "json",
+      "yaml",
+      "shutil",
+      "traceback",
+      "gzip"
+    ],
+    "scripts/build_secure_production.py": [
+      "msgpack",
+      "base64",
+      "os",
+      "zstandard",
+      "argparse",
+      "json",
+      "hashlib",
+      "yaml",
+      "shutil",
+      "subprocess",
+      "traceback",
+      "sys"
+    ],
+    "scripts/test_tier1_guestimation.py": [
+      "umis_rag.agents.estimator.tier1",
+      "umis_rag.agents.estimator.models",
+      "sys"
+    ],
+    "scripts/create_golden_workbook.py": [
+      "sys"
+    ],
+    "scripts/test_hybrid_integration.py": [
+      "umis_rag.agents.validator",
+      "umis_rag.guardian.meta_rag",
+      "umis_rag.methodologies.domain_reasoner",
+      "sys"
+    ],
+    "scripts/test_system_rag_determinism.py": [
+      "time",
+      "sys"
+    ],
+    "scripts/test_financial_projection_batch5.py": [
+      "umis_rag.deliverables.excel.financial_projection.financial_projection_generator",
+      "traceback",
+      "sys"
+    ],
+    "scripts/test_tier3_business_metrics.py": [
+      "umis_rag.utils.logger",
+      "umis_rag.agents.estimator.models",
+      "umis_rag.agents.estimator.tier3",
+      "sys"
+    ],
+    "scripts/build_knowledge_graph.py": [
+      "umis_rag.graph.connection",
+      "traceback",
+      "argparse",
+      "umis_rag.utils.logger",
+      "hashlib",
+      "yaml",
+      "umis_rag.graph.schema_initializer",
+      "sys"
+    ],
+    "scripts/build_agent_rag_collections.py": [
+      "umis_rag.core.config",
+      "os",
+      "chromadb",
+      "argparse",
+      "json",
+      "yaml",
+      "sys"
+    ],
+    "scripts/test_unit_economics_batch1.py": [
+      "umis_rag.deliverables.excel.unit_economics.unit_economics_generator",
+      "traceback",
+      "sys"
+    ],
+    "scripts/test_learning_writer.py": [
+      "traceback",
+      "umis_rag.agents.estimator.models",
+      "umis_rag.agents.estimator.learning_writer",
+      "sys"
+    ],
+    "scripts/test_signal2_rag_consensus.py": [
+      "umis_rag.methodologies.domain_reasoner",
+      "sys"
+    ],
+    "scripts/test_market_sizing_v7_2.py": [
+      "umis_rag.deliverables.excel.formula_engine",
+      "umis_rag.deliverables.excel.assumptions_builder",
+      "umis_rag.deliverables.excel.method_builders"
+    ],
+    "scripts/validate_benchmarks.py": [
+      "yaml"
+    ],
+    "scripts/golden_test_all.py": [
+      "umis_rag.deliverables.excel.golden_test_framework",
+      "sys"
+    ],
+    "scripts/test_all_excel_generators.py": [
+      "traceback",
+      "umis_rag.deliverables.excel.financial_projection",
+      "umis_rag.deliverables.excel.excel_validator",
+      "umis_rag.deliverables.excel.unit_economics",
+      "umis_rag.deliverables.excel.market_sizing_generator",
+      "sys"
+    ],
+    "scripts/build_kpi_library.py": [
+      "yaml"
+    ],
+    "scripts/validate_generated_excel.py": [
+      "umis_rag.deliverables.excel.excel_validator",
+      "sys"
+    ],
+    "scripts/validate_all_yaml.py": [
+      "yaml"
+    ],
+    "scripts/populate_market_sizing_values.py": [
+      "math",
+      "sys"
+    ],
+    "scripts/diagnose_excel_formulas.py": [
+      "sys"
+    ],
+    "scripts/regenerate_all_examples.py": [
+      "os",
+      "umis_rag.deliverables.excel.golden_test_framework",
+      "umis_rag.deliverables.excel.financial_projection",
+      "umis_rag.deliverables.excel.unit_economics",
+      "umis_rag.deliverables.excel.market_sizing_generator",
+      "sys"
+    ],
+    "scripts/extract_tools_from_umis.py": [
+      "yaml"
+    ],
+    "scripts/test_should_vs_will.py": [
+      "umis_rag.methodologies.domain_reasoner",
+      "sys"
+    ],
+    "scripts/build_minimal.py": [
+      "sys",
+      "json",
+      "yaml",
+      "shutil",
+      "traceback",
+      "gzip"
+    ],
+    "scripts/test_neo4j_connection.py": [
+      "umis_rag.graph.connection",
+      "umis_rag.utils.logger",
+      "umis_rag.graph.schema_initializer",
+      "sys"
+    ],
+    "scripts/estimate_korean_practical_education_market.py": [
+      "traceback",
+      "umis_rag.deliverables.excel.market_sizing_generator",
+      "sys"
+    ],
+    "scripts/compare_with_golden.py": [
+      "sys"
+    ],
+    "scripts/diagnose_market_sizing_detailed.py": [
+      "sys"
+    ]
+  },
+  "yaml_refs": {
+    "config/schema_registry.yaml": {
+      "agents": [
+        "observer",
+        "guardian",
+        "validator",
+        "explorer",
+        "quantifier",
+        "estimator"
+      ],
+      "collections": [
+        "rae_index",
+        "goal_memory",
+        "canonical_index",
+        "query_memory",
+        "projected_index"
+      ],
+      "files": []
+    },
+    "config/runtime.yaml": {
+      "agents": [
+        "estimator"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "config/projection_rules.yaml": {
+      "agents": [
+        "explorer",
+        "observer",
+        "guardian",
+        "quantifier",
+        "estimator",
+        "validator"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "config/llm_mode.yaml": {
+      "agents": [
+        "observer",
+        "explorer"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "config/routing_policy.yaml": {
+      "agents": [
+        "explorer",
+        "observer",
+        "quantifier",
+        "estimator",
+        "validator"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "config/tool_registry.yaml": {
+      "agents": [
+        "explorer",
+        "observer",
+        "guardian",
+        "quantifier",
+        "estimator",
+        "validator"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "config/pattern_relationships.yaml": {
+      "agents": [
+        "validator"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "config/tool_registry_sample.yaml": {
+      "agents": [
+        "explorer"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "config/overlay_layer.yaml": {
+      "agents": [
+        "guardian"
+      ],
+      "collections": [],
+      "files": [
+        "data/personal/{user_name}/",
+        "data/team/",
+        "data/core/"
+      ]
+    },
+    "config/agent_names.yaml": {
+      "agents": [
+        "observer",
+        "guardian",
+        "validator",
+        "explorer",
+        "quantifier",
+        "estimator"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "data/raw/market_structure_patterns.yaml": {
+      "agents": [
+        "observer"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "data/raw/calculation_methodologies.yaml": {
+      "agents": [
+        "quantifier"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "data/raw/definition_validation_cases.yaml": {
+      "agents": [
+        "validator"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "data/raw/umis_business_model_patterns.yaml": {
+      "agents": [
+        "explorer"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "data/raw/value_chain_benchmarks.yaml": {
+      "agents": [
+        "observer"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "data/raw/market_benchmarks.yaml": {
+      "agents": [
+        "quantifier"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "data/raw/umis_domain_reasoner_methodology.yaml": {
+      "agents": [
+        "explorer",
+        "observer",
+        "guardian",
+        "quantifier",
+        "validator"
+      ],
+      "collections": [],
+      "files": [
+        "data/raw/umis_domain_reasoner_methodology.yaml",
+        "data/raw/kpi_definitions.yaml"
+      ]
+    },
+    "data/raw/kpi_definitions.yaml": {
+      "agents": [
+        "validator"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "data/raw/umis_ai_guide.yaml": {
+      "agents": [
+        "observer",
+        "guardian",
+        "validator",
+        "explorer",
+        "quantifier"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "data/raw/data_sources_registry.yaml": {
+      "agents": [
+        "validator"
+      ],
+      "collections": [],
+      "files": []
+    },
+    "data/raw/umis_disruption_patterns.yaml": {
+      "agents": [
+        "explorer"
+      ],
+      "collections": [],
+      "files": []
+    }
+  },
+  "agent_collections": {
+    "explorer": [
+      "field:execution_strategy",
+      "field:business_model",
+      "field:trigger_observations",
+      "field:churn_rate",
+      "field:critical_success_factors",
+      "field:competitive_landscape",
+      "projected_index",
+      "field:revenue_model"
+    ],
+    "observer": [
+      "field:trigger_observations",
+      "field:competitive_landscape",
+      "field:market_structure",
+      "value_chain_benchmarks",
+      "market_structure_patterns"
+    ],
+    "guardian": [
+      "field:churn_rate",
+      "field:critical_success_factors",
+      "field:data_reliability"
+    ],
+    "quantifier": [
+      "field:churn_rate",
+      "market_benchmarks",
+      "field:market_size",
+      "calculation_methodologies",
+      "field:revenue_model"
+    ],
+    "validator": [
+      "definition_validation_cases",
+      "field:source_citations",
+      "data_sources_registry",
+      "field:data_reliability"
+    ]
+  },
+  "collection_agents": {
+    "data_sources_registry": [
+      "validator"
+    ],
+    "definition_validation_cases": [
+      "validator"
+    ],
+    "market_structure_patterns": [
+      "observer"
+    ],
+    "value_chain_benchmarks": [
+      "observer"
+    ],
+    "projected_index": [
+      "explorer"
+    ],
+    "calculation_methodologies": [
+      "quantifier"
+    ],
+    "market_benchmarks": [
+      "quantifier"
+    ]
+  }
+}

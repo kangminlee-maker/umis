@@ -1,0 +1,115 @@
+{
+  "target": "explorer",
+  "new_name": "opportunity_hunter",
+  "change_type": "agent_rename",
+  "total_affected_files": 53,
+  "direct_dependencies": {
+    "code": [
+      "umis_rag/core/metadata_schema.py",
+      "umis_rag/core/workflow_executor.py",
+      "umis_rag/learning/rule_learner.py",
+      "umis_rag/graph/hybrid_search.py",
+      "umis_rag/agents/__init__.py",
+      "umis_rag/agents/explorer.py",
+      "umis_rag/methodologies/domain_reasoner.py",
+      "umis_rag/guardian/rae_memory.py",
+      "umis_rag/projection/hybrid_projector.py"
+    ],
+    "config": [
+      "config/schema_registry.yaml",
+      "config/projection_rules.yaml",
+      "config/llm_mode.yaml",
+      "config/routing_policy.yaml",
+      "config/tool_registry.yaml",
+      "config/tool_registry_sample.yaml",
+      "config/agent_names.yaml",
+      "data/raw/umis_domain_reasoner_methodology.yaml"
+    ],
+    "data": [
+      "data/chunks/explorer_disruption_patterns.jsonl",
+      "data/chunks/explorer_business_models.jsonl"
+    ],
+    "docs": [
+      "umis.yaml",
+      "umis_core.yaml",
+      ".cursorrules",
+      "README.md",
+      "umis_examples.yaml",
+      "umis_deliverable_standards.yaml",
+      "docs/release_notes/RELEASE_NOTES_v7.0.0.md",
+      "docs/specifications/FOLDER_STRUCTURE.md",
+      "docs/specifications/VERSION_UPDATE_CHECKLIST.md",
+      "docs/architecture/GITHUB_DEPLOYMENT_STRATEGY.md",
+      "docs/architecture/ARCHITECTURE_LLM_STRATEGY.md",
+      "docs/architecture/HYBRID_DEVELOPMENT_STRATEGY.md",
+      "docs/architecture/TOON_FORMAT_ANALYSIS.md",
+      "docs/architecture/DEPENDENCY_MATRIX.md",
+      "docs/architecture/DEPENDENCY_MANAGEMENT_STRATEGY.md",
+      "docs/guides/GITHUB_RELEASE_GUIDE.md",
+      "docs/guides/INSTALL.md",
+      "docs/guides/SYSTEM_RAG_INTERFACE_GUIDE.md",
+      "docs/reports/SYSTEM_RAG_VERIFICATION_REPORT.md"
+    ],
+    "scripts": [
+      "scripts/test_e2e_full_workflow.py",
+      "scripts/impact_analyzer.py",
+      "scripts/01_convert_yaml.py",
+      "scripts/build_system_knowledge.py",
+      "scripts/03_test_search.py",
+      "scripts/test_all_improvements.py",
+      "scripts/02_build_index.py",
+      "scripts/build_canonical_index.py",
+      "scripts/test_explorer_patterns.py",
+      "scripts/generate_dependency_matrix.py",
+      "scripts/test_schema_contract.py",
+      "scripts/query_system_rag.py",
+      "scripts/test_hybrid_explorer.py",
+      "scripts/build_projected_index.py",
+      "scripts/query_rag.py"
+    ]
+  },
+  "indirect_dependencies_count": 7,
+  "indirect_dependencies": [
+    [
+      "umis_rag/methodologies/domain_reasoner.py",
+      "scripts/test_signal10_kpi.py"
+    ],
+    [
+      "umis_rag/methodologies/domain_reasoner.py",
+      "scripts/test_hybrid_integration.py"
+    ],
+    [
+      "umis_rag/methodologies/domain_reasoner.py",
+      "scripts/test_signal2_rag_consensus.py"
+    ],
+    [
+      "umis_rag/methodologies/domain_reasoner.py",
+      "scripts/test_should_vs_will.py"
+    ],
+    [
+      "umis_rag/methodologies/domain_reasoner.py",
+      "umis_rag/agents/quantifier.py"
+    ],
+    [
+      "umis_rag/guardian/rae_memory.py",
+      "umis_rag/guardian/three_stage_evaluator.py"
+    ],
+    [
+      "umis_rag/projection/hybrid_projector.py",
+      "umis_rag/projection/ttl_manager.py"
+    ]
+  ],
+  "estimated_time_minutes": 157,
+  "recommended_steps": [
+    "변경 전 현재 브랜치 커밋 또는 stash",
+    "새 브랜치 생성: git checkout -b refactor/변경명",
+    "scripts/safe_refactor.py 사용 (자동 리팩토링)",
+    "YAML 설정 파일 수동 업데이트",
+    "RAG 인덱스 재구축 (scripts/02_build_index.py)",
+    "문서 업데이트 (umis.yaml, umis_core.yaml)",
+    "pytest 실행 (테스트 존재 시)",
+    "scripts/validate_consistency.py 실행",
+    "의존성 매트릭스 재생성",
+    "git commit -m 'refactor: 변경 설명'"
+  ]
+}
