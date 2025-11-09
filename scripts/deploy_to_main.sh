@@ -37,10 +37,12 @@ git merge alpha --no-ff --no-commit
 echo "✅ Merge 완료 (커밋 전)"
 
 echo ""
-echo "Step 4: 제외 폴더 삭제"
+echo "Step 4: 제외 폴더/파일 삭제"
 echo "  - projects/"
 echo "  - archive/"
 echo "  - dev_docs/"
+echo "  - cursor_global_rules.txt"
+echo "  - .env.backup_*"
 
 # 존재하는 폴더만 삭제
 if [ -d "projects" ]; then
@@ -57,6 +59,16 @@ if [ -d "dev_docs" ]; then
     git rm -r dev_docs/ 2>/dev/null || true
     echo "  ✅ dev_docs/ 제거"
 fi
+
+# 개인 설정 파일 제거
+if [ -f "cursor_global_rules.txt" ]; then
+    git rm cursor_global_rules.txt 2>/dev/null || true
+    echo "  ✅ cursor_global_rules.txt 제거"
+fi
+
+# 환경변수 백업 파일 제거
+git rm .env.backup_* 2>/dev/null || true
+echo "  ✅ .env.backup_* 제거 (있다면)"
 
 echo ""
 echo "Step 5: 커밋 메시지 입력"
@@ -79,6 +91,8 @@ Alpha → Main merge 완료
 - projects/ (Alpha only)
 - archive/ (Alpha only)
 - dev_docs/ (Alpha only)
+- cursor_global_rules.txt (개인 설정)
+- .env.backup_* (환경변수 백업)
 
 Main: Production 코드만
 Release Notes: docs/release_notes/RELEASE_NOTES_$VERSION.md"
