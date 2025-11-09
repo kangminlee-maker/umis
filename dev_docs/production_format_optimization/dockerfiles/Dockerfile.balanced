@@ -1,0 +1,74 @@
+# UMIS Balanced 프로덕션 Dockerfile
+# 개발: YAML → 프로덕션: JSON.gz + MessagePack
+
+# ============================================
+# Stage 1: Builder (빌드 환경)
+# ============================================
+FROM python:3.11-slim AS builder
+
+WORKDIR /build
+
+# 1. 빌드 의존성 설치
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt msgpack
+
+# 2. YAML 원본 복사 (빌드용)
+COPY umis.yaml umis_core.yaml ./
+COPY config/ config/
+COPY data/ data/
+
+# 3. 빌드 스크립트 복사
+COPY scripts/build_balanced.py scripts/
+
+# 4. Balanced 빌드 실행 ⭐
+RUN python scripts/build_balanced.py
+
+# 5. 빌드 검증
+RUN echo "✅ Validating build..." && \
+    test -f dist/umis.json.gz && \
+    test -f dist/data/umis_business_model_patterns.msgpack && \
+    echo "✅ Build artifacts verified"
+
+# ============================================
+# Stage 2: Production (프로덕션 이미지)
+# ============================================
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# 메타데이터
+LABEL maintainer="UMIS Team"
+LABEL version="7.5.0"
+LABEL description="UMIS Production (Balanced: JSON.gz + MessagePack)"
+
+# 1. 런타임 의존성만
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt msgpack && \
+    rm requirements.txt
+
+# 2. dist/ 만 복사 (YAML 제외!) ⭐
+COPY --from=builder /build/dist/ /app/dist/
+
+# 3. Python 코드
+COPY umis_rag/ /app/umis_rag/
+
+# 4. 환경변수 (프로덕션 모드)
+ENV UMIS_ENV=production
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# 5. 비root 사용자 (보안)
+RUN useradd -m -u 1000 umis && \
+    chown -R umis:umis /app
+USER umis
+
+# 6. 포트 노출
+EXPOSE 8000
+
+# 7. 헬스체크
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+  CMD python -c "import sys; sys.exit(0)" || exit 1
+
+# 8. 실행
+CMD ["python", "-m", "umis_rag.cli"]
+
