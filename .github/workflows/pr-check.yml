@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [develop, main, alpha]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   validate:
     runs-on: ubuntu-latest
