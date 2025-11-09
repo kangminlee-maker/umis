@@ -451,7 +451,7 @@ class Tier1Config:
     enabled: bool = True
     
     # 임계값
-    min_similarity: float = 0.85  # RAG 검색
+    min_similarity: float = 0.95  # RAG 검색 (v7.5.0: 0.85→0.95 강화, Tier 3 집중)
     
     # Built-in 규칙
     builtin_rules_count: int = 20
@@ -466,7 +466,7 @@ class Tier2Config:
     enabled: bool = True
     
     # 임계값
-    min_confidence: float = 0.60
+    min_confidence: float = 0.80  # v7.5.0: 0.60→0.80 강화, Tier 3 집중
     min_evidence_count: int = 2
     max_evidence_count: int = 5
     

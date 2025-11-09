@@ -33,36 +33,36 @@ _meta:
 
 relationships:
   # === Platform 조합 (5개) ===
-  
+
   - id: "REL-001"
     source: "platform_business_model"
     target: "subscription_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "플랫폼 락인 + 안정적 수익"
     description: "플랫폼이 구독 모델을 추가하면 충성도 증가 및 예측 가능한 수익 확보"
-    
+
     evidence_ids:
       - "CAN-amazon-prime"
       - "CAN-spotify-premium"
       - "CAN-linkedin-premium"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "stewart"
       timestamp: "2025-11-03T00:00:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
         value: 0.92
         note: "Amazon Prime 사례와 매우 유사"
-      
+
       coverage:
         method: "distribution"
         value: 0.15
         note: "전체 플랫폼의 15%가 구독 모델 채택"
-      
+
       validation:
         method: "checklist"
         value: true
@@ -70,9 +70,9 @@ relationships:
           - "검증된 성공 사례 존재"
           - "3년 이상 검증"
           - "여러 산업 적용 가능"
-      
+
       overall: 0.85
-      
+
       reasoning:
         - "Best case similarity 0.92 (Amazon Prime)"
         - "15% coverage - 강한 패턴"
@@ -82,19 +82,19 @@ relationships:
     source: "platform_business_model"
     target: "freemium_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "무료 유입 + 플랫폼 락인"
     description: "무료 버전으로 사용자 확보 후 프리미엄 기능으로 수익화"
-    
+
     evidence_ids:
       - "CAN-linkedin"
       - "CAN-dropbox"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "stewart"
       timestamp: "2025-11-03T00:10:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -115,20 +115,20 @@ relationships:
     source: "platform_business_model"
     target: "advertising_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "트래픽 monetization + 무료 서비스"
     description: "플랫폼 트래픽을 광고로 수익화하여 사용자에게 무료 제공"
-    
+
     evidence_ids:
       - "CAN-google-search"
       - "CAN-facebook"
       - "CAN-youtube"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "stewart"
       timestamp: "2025-11-03T00:20:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -149,19 +149,19 @@ relationships:
     source: "subscription_model"
     target: "direct_to_consumer_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "직접 관계 + 반복 수익"
     description: "D2C로 고객 데이터 확보 후 구독으로 LTV 극대화"
-    
+
     evidence_ids:
       - "CAN-dollar-shave-club"
       - "CAN-netflix"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "rachel"
       timestamp: "2025-11-03T00:30:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -182,19 +182,19 @@ relationships:
     source: "freemium_model"
     target: "advertising_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "무료 사용자 수익화 + 프리미엄 유도"
     description: "무료 사용자는 광고로, 프리미엄 사용자는 구독으로 이중 수익화"
-    
+
     evidence_ids:
       - "CAN-spotify"
       - "CAN-youtube-premium"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "stewart"
       timestamp: "2025-11-03T00:40:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -212,24 +212,24 @@ relationships:
         - "Dual monetization validated"
 
   # === Content/IP 조합 (5개) ===
-  
+
   - id: "REL-006"
     source: "licensing_model"
     target: "subscription_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "IP 활용 + 반복 수익"
     description: "라이센스 IP를 구독 서비스로 제공하여 안정적 수익"
-    
+
     evidence_ids:
       - "CAN-adobe-creative-cloud"
       - "CAN-microsoft-365"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "bill"
       timestamp: "2025-11-03T00:50:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -250,19 +250,19 @@ relationships:
     source: "licensing_model"
     target: "platform_business_model"
     type: "ENABLES"
-    
+
     synergy: "IP 제공 → 플랫폼 차별화"
     description: "독점 라이센스가 플랫폼의 경쟁 우위 창출"
-    
+
     evidence_ids:
       - "CAN-netflix-content"
       - "CAN-nintendo-switch"
-    
+
     provenance:
       source: "auto_rule"
       reviewer_id: null
       timestamp: "2025-11-03T01:00:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -283,19 +283,19 @@ relationships:
     source: "franchise_model"
     target: "subscription_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "반복 구매 → 구독 전환"
     description: "프랜차이즈 고객을 구독 회원으로 전환하여 충성도 강화"
-    
+
     evidence_ids:
       - "CAN-starbucks-rewards"
       - "CAN-mcdonalds-plus"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "rachel"
       timestamp: "2025-11-03T01:10:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -316,19 +316,19 @@ relationships:
     source: "advertising_model"
     target: "freemium_model"
     type: "PREREQUISITE"
-    
+
     synergy: "무료 트래픽 필요 → 광고 수익"
     description: "광고 모델은 대량 무료 사용자가 선행 조건"
-    
+
     evidence_ids:
       - "CAN-google"
       - "CAN-facebook"
-    
+
     provenance:
       source: "auto_rule"
       reviewer_id: null
       timestamp: "2025-11-03T01:20:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -349,19 +349,19 @@ relationships:
     source: "direct_to_consumer_model"
     target: "franchise_model"
     type: "COUNTERS"
-    
+
     synergy: "D2C가 중개 제거 → 프랜차이즈 도전"
     description: "D2C 모델이 프랜차이즈의 약점(마진 압박) 공략"
-    
+
     evidence_ids:
       - "CAN-warby-parker"
       - "CAN-casper"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T01:30:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -379,24 +379,24 @@ relationships:
         - "Margin compression proven"
 
   # === 추가 Business Model 조합 (5개) ===
-  
+
   - id: "REL-011"
     source: "subscription_model"
     target: "licensing_model"
     type: "ENABLES"
-    
+
     synergy: "구독 → IP 지속 사용권"
     description: "구독이 라이센스 IP에 대한 지속적 접근 제공"
-    
+
     evidence_ids:
       - "CAN-adobe"
       - "CAN-autodesk"
-    
+
     provenance:
       source: "auto_rule"
       reviewer_id: null
       timestamp: "2025-11-03T01:40:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -417,19 +417,19 @@ relationships:
     source: "platform_business_model"
     target: "direct_to_consumer_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "플랫폼 + 자사 상품"
     description: "플랫폼이 자체 D2C 상품으로 추가 수익 및 데이터 확보"
-    
+
     evidence_ids:
       - "CAN-amazon-basics"
       - "CAN-coupang-rocket"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "stewart"
       timestamp: "2025-11-03T01:50:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -450,19 +450,19 @@ relationships:
     source: "freemium_model"
     target: "direct_to_consumer_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "무료 유입 + D2C 전환"
     description: "Freemium으로 고객 확보 후 D2C로 직접 판매"
-    
+
     evidence_ids:
       - "CAN-notion"
       - "CAN-figma"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "rachel"
       timestamp: "2025-11-03T02:00:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -483,19 +483,19 @@ relationships:
     source: "advertising_model"
     target: "subscription_model"
     type: "COUNTERS"
-    
+
     synergy: "광고 제거 → 프리미엄 유도"
     description: "광고 모델의 불편함이 구독 모델의 가치 제안"
-    
+
     evidence_ids:
       - "CAN-youtube-premium"
       - "CAN-spotify-premium"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "stewart"
       timestamp: "2025-11-03T02:10:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -516,19 +516,19 @@ relationships:
     source: "franchise_model"
     target: "platform_business_model"
     type: "COUNTERS"
-    
+
     synergy: "플랫폼이 프랜차이즈 중개 제거"
     description: "플랫폼이 프랜차이즈 본사 역할을 대체하여 효율화"
-    
+
     evidence_ids:
       - "CAN-uber-vs-taxi"
       - "CAN-airbnb-vs-hotel"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T02:20:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -550,24 +550,24 @@ relationships:
 # ========================================
 
   # === Innovation Disruption (3개) ===
-  
+
   - id: "REL-016"
     source: "innovation_disruption"
     target: "platform_business_model"
     type: "ENABLES"
-    
+
     synergy: "기술 혁신 → 플랫폼 가능"
     description: "기술 패러다임 전환이 새로운 플랫폼 비즈니스를 가능하게 함"
-    
+
     evidence_ids:
       - "CAN-apple-app-store"
       - "CAN-android-play"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T02:30:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -588,19 +588,19 @@ relationships:
     source: "innovation_disruption"
     target: "direct_to_consumer_model"
     type: "ENABLES"
-    
+
     synergy: "기술 혁신 → D2C 가능"
     description: "디지털 기술이 제조사의 직접 판매를 가능하게 함"
-    
+
     evidence_ids:
       - "CAN-tesla-direct-sales"
       - "CAN-warby-parker"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T02:40:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -621,19 +621,19 @@ relationships:
     source: "innovation_disruption"
     target: "subscription_model"
     type: "ENABLES"
-    
+
     synergy: "기술 → 구독 추적 가능"
     description: "클라우드/SaaS 기술이 구독 모델을 용이하게 함"
-    
+
     evidence_ids:
       - "CAN-netflix-streaming"
       - "CAN-adobe-cloud"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "bill"
       timestamp: "2025-11-03T02:50:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -651,24 +651,24 @@ relationships:
         - "Technology prerequisite"
 
   # === Low-End Disruption (3개) ===
-  
+
   - id: "REL-019"
     source: "low_end_disruption"
     target: "freemium_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "저가 진입 + 무료 유도"
     description: "저가 시장 공략과 프리미엄 모델의 시너지"
-    
+
     evidence_ids:
       - "CAN-zoom-vs-webex"
       - "CAN-canva"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T03:00:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -689,19 +689,19 @@ relationships:
     source: "low_end_disruption"
     target: "platform_business_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "저가 공급자 → 플랫폼"
     description: "저가 공급자를 모아 플랫폼화하여 시장 공략"
-    
+
     evidence_ids:
       - "CAN-pinduoduo"
       - "CAN-wish"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T03:10:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -722,19 +722,19 @@ relationships:
     source: "low_end_disruption"
     target: "direct_to_consumer_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "중간 마진 제거 → 저가"
     description: "D2C로 유통 마진 제거하여 저가 공략"
-    
+
     evidence_ids:
       - "CAN-xiaomi"
       - "CAN-brandless"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "bill"
       timestamp: "2025-11-03T03:20:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -752,24 +752,24 @@ relationships:
         - "Margin elimination verified"
 
   # === Channel Disruption (3개) ===
-  
+
   - id: "REL-022"
     source: "channel_disruption"
     target: "direct_to_consumer_model"
     type: "ENABLES"
-    
+
     synergy: "채널 혁신 = D2C"
     description: "새로운 유통 채널이 D2C를 가능하게 함"
-    
+
     evidence_ids:
       - "CAN-warby-parker"
       - "CAN-casper"
-    
+
     provenance:
       source: "auto_rule"
       reviewer_id: null
       timestamp: "2025-11-03T03:30:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -790,19 +790,19 @@ relationships:
     source: "channel_disruption"
     target: "platform_business_model"
     type: "ENABLES"
-    
+
     synergy: "새 채널 → 플랫폼 가능"
     description: "온라인 채널이 플랫폼 비즈니스를 가능하게 함"
-    
+
     evidence_ids:
       - "CAN-alibaba"
       - "CAN-amazon"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "stewart"
       timestamp: "2025-11-03T03:40:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -823,19 +823,19 @@ relationships:
     source: "channel_disruption"
     target: "subscription_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "새 채널 + 구독 편의"
     description: "디지털 채널이 구독 관리를 용이하게 함"
-    
+
     evidence_ids:
       - "CAN-netflix"
       - "CAN-dollar-shave"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "rachel"
       timestamp: "2025-11-03T03:50:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -853,24 +853,24 @@ relationships:
         - "Friction reduction validated"
 
   # === Experience Disruption (3개) ===
-  
+
   - id: "REL-025"
     source: "experience_disruption"
     target: "direct_to_consumer_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "경험 혁신 + 직접 관계"
     description: "D2C로 고객 경험을 완전히 통제하여 혁신"
-    
+
     evidence_ids:
       - "CAN-apple-store"
       - "CAN-tesla-showroom"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T04:00:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -891,19 +891,19 @@ relationships:
     source: "experience_disruption"
     target: "subscription_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "지속적 경험 개선"
     description: "구독 관계에서 경험을 지속적으로 개선"
-    
+
     evidence_ids:
       - "CAN-netflix-ux"
       - "CAN-spotify-discover"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "rachel"
       timestamp: "2025-11-03T04:10:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -924,19 +924,19 @@ relationships:
     source: "experience_disruption"
     target: "platform_business_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "플랫폼 경험 차별화"
     description: "플랫폼의 사용자 경험이 경쟁 우위 창출"
-    
+
     evidence_ids:
       - "CAN-uber-ux"
       - "CAN-airbnb-ux"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "stewart"
       timestamp: "2025-11-03T04:20:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -954,24 +954,24 @@ relationships:
         - "Friction elimination key"
 
   # === Continuous Innovation (3개) ===
-  
+
   - id: "REL-028"
     source: "continuous_innovation_disruption"
     target: "subscription_model"
     type: "ENABLES"
-    
+
     synergy: "구독 → 지속 개선"
     description: "구독 모델이 지속적 혁신의 수익 기반 제공"
-    
+
     evidence_ids:
       - "CAN-tesla-ota"
       - "CAN-adobe-updates"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "bill"
       timestamp: "2025-11-03T04:30:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -992,19 +992,19 @@ relationships:
     source: "continuous_innovation_disruption"
     target: "platform_business_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "플랫폼 + 빠른 반복"
     description: "플랫폼이 빠른 실험과 개선을 가능하게 함"
-    
+
     evidence_ids:
       - "CAN-amazon-ab-test"
       - "CAN-google-experiments"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T04:40:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1025,19 +1025,19 @@ relationships:
     source: "continuous_innovation_disruption"
     target: "freemium_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "무료 사용자 = 테스터"
     description: "Freemium 사용자가 혁신 실험 대상이 됨"
-    
+
     evidence_ids:
       - "CAN-dropbox-features"
       - "CAN-slack-beta"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "rachel"
       timestamp: "2025-11-03T04:50:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1059,24 +1059,24 @@ relationships:
 # ========================================
 
   # === Disruption 조합 (10개) ===
-  
+
   - id: "REL-031"
     source: "low_end_disruption"
     target: "channel_disruption"
     type: "COMBINES_WITH"
-    
+
     synergy: "새 채널 + 저가 공략"
     description: "새로운 채널을 통해 저가 시장 진입"
-    
+
     evidence_ids:
       - "CAN-pinduoduo-social"
       - "CAN-shein-tiktok"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T05:00:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1097,19 +1097,19 @@ relationships:
     source: "innovation_disruption"
     target: "experience_disruption"
     type: "ENABLES"
-    
+
     synergy: "기술 혁신 → 경험 혁신"
     description: "새로운 기술이 새로운 경험을 가능하게 함"
-    
+
     evidence_ids:
       - "CAN-iphone-touch"
       - "CAN-tesla-screen"
-    
+
     provenance:
       source: "auto_rule"
       reviewer_id: null
       timestamp: "2025-11-03T05:10:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1130,19 +1130,19 @@ relationships:
     source: "low_end_disruption"
     target: "innovation_disruption"
     type: "PREREQUISITE"
-    
+
     synergy: "기술 발전 → 저가 가능"
     description: "기술 혁신이 저가 제품을 가능하게 함"
-    
+
     evidence_ids:
       - "CAN-chinese-ev"
       - "CAN-xiaomi-tech"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "bill"
       timestamp: "2025-11-03T05:20:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1163,19 +1163,19 @@ relationships:
     source: "experience_disruption"
     target: "channel_disruption"
     type: "COMBINES_WITH"
-    
+
     synergy: "새 채널 + 새 경험"
     description: "새로운 채널에서 새로운 경험 제공"
-    
+
     evidence_ids:
       - "CAN-warby-parker-home-try"
       - "CAN-glossier-instagram"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "rachel"
       timestamp: "2025-11-03T05:30:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1196,19 +1196,19 @@ relationships:
     source: "continuous_innovation_disruption"
     target: "innovation_disruption"
     type: "COMBINES_WITH"
-    
+
     synergy: "초기 혁신 + 지속 개선"
     description: "파괴적 혁신 후 지속적 개선으로 우위 유지"
-    
+
     evidence_ids:
       - "CAN-tesla-continuous"
       - "CAN-spacex-iteration"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T05:40:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1229,19 +1229,19 @@ relationships:
     source: "hybrid_disruption"
     target: "innovation_disruption"
     type: "COMBINES_WITH"
-    
+
     synergy: "여러 혁신 동시 적용"
     description: "복합 Disruption 전략으로 강력한 진입"
-    
+
     evidence_ids:
       - "CAN-tesla-multi"
       - "CAN-amazon-multi"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "stewart"
       timestamp: "2025-11-03T05:50:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1262,19 +1262,19 @@ relationships:
     source: "hybrid_disruption"
     target: "low_end_disruption"
     type: "COMBINES_WITH"
-    
+
     synergy: "저가 + 다른 혁신"
     description: "저가 공략에 다른 차별화 요소 추가"
-    
+
     evidence_ids:
       - "CAN-xiaomi-ecosystem"
       - "CAN-byd-integration"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "bill"
       timestamp: "2025-11-03T06:00:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1295,19 +1295,19 @@ relationships:
     source: "hybrid_disruption"
     target: "channel_disruption"
     type: "COMBINES_WITH"
-    
+
     synergy: "채널 + 다른 혁신"
     description: "새로운 채널과 다른 혁신 요소 결합"
-    
+
     evidence_ids:
       - "CAN-warby-parker-multi"
       - "CAN-allbirds-sustainable"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "rachel"
       timestamp: "2025-11-03T06:10:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1328,19 +1328,19 @@ relationships:
     source: "hybrid_disruption"
     target: "experience_disruption"
     type: "COMBINES_WITH"
-    
+
     synergy: "경험 + 다른 혁신"
     description: "경험 혁신에 다른 차별화 추가"
-    
+
     evidence_ids:
       - "CAN-apple-ecosystem"
       - "CAN-nike-community"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T06:20:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1361,19 +1361,19 @@ relationships:
     source: "continuous_innovation_disruption"
     target: "experience_disruption"
     type: "ENABLES"
-    
+
     synergy: "지속 개선 → 경험 향상"
     description: "지속적 혁신이 경험을 계속 개선함"
-    
+
     evidence_ids:
       - "CAN-tesla-updates"
       - "CAN-netflix-algorithm"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "rachel"
       timestamp: "2025-11-03T06:30:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1398,19 +1398,19 @@ relationships:
     source: "platform_business_model"
     target: "licensing_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "플랫폼 + IP 라이센스"
     description: "플랫폼에서 제3자 IP 라이센스로 생태계 확장"
-    
+
     evidence_ids:
       - "CAN-spotify-licensing"
       - "CAN-youtube-content-id"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "stewart"
       timestamp: "2025-11-03T06:40:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1431,19 +1431,19 @@ relationships:
     source: "freemium_model"
     target: "licensing_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "무료 + IP 접근"
     description: "무료로 기본 IP 제공, 프리미엄으로 전체 접근"
-    
+
     evidence_ids:
       - "CAN-canva-elements"
       - "CAN-notion-templates"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "rachel"
       timestamp: "2025-11-03T06:50:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1464,19 +1464,19 @@ relationships:
     source: "advertising_model"
     target: "licensing_model"
     type: "COMBINES_WITH"
-    
+
     synergy: "광고 + IP 콘텐츠"
     description: "라이센스 콘텐츠로 트래픽 확보 후 광고 수익화"
-    
+
     evidence_ids:
       - "CAN-youtube-creator"
       - "CAN-spotify-podcasts"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "bill"
       timestamp: "2025-11-03T07:00:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1497,19 +1497,19 @@ relationships:
     source: "franchise_model"
     target: "licensing_model"
     type: "PREREQUISITE"
-    
+
     synergy: "IP 라이센스 = 프랜차이즈 기반"
     description: "프랜차이즈는 브랜드/운영 IP 라이센싱이 핵심"
-    
+
     evidence_ids:
       - "CAN-mcdonalds"
       - "CAN-subway"
-    
+
     provenance:
       source: "auto_rule"
       reviewer_id: null
       timestamp: "2025-11-03T07:10:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"
@@ -1530,19 +1530,19 @@ relationships:
     source: "subscription_model"
     target: "franchise_model"
     type: "COUNTERS"
-    
+
     synergy: "구독이 반복 프랜차이즈 방문 대체"
     description: "구독 모델이 프랜차이즈의 반복 구매 모델 도전"
-    
+
     evidence_ids:
       - "CAN-blue-apron-vs-restaurants"
       - "CAN-peloton-vs-gyms"
-    
+
     provenance:
       source: "humn_review"
       reviewer_id: "steve"
       timestamp: "2025-11-03T07:20:00Z"
-    
+
     confidence:
       similarity:
         method: "vector_embedding"

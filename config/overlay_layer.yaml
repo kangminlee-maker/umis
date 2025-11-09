@@ -19,40 +19,40 @@ layers:
     write_access: "admin_only"
     validation: "guardian_required"
     description: "공식 검증된 데이터만"
-    
+
     content:
       - umis_business_model_patterns.yaml
       - umis_disruption_patterns.yaml
       - verified_cases.yaml
-    
+
     promotion_required: true
-  
+
   team:
     path: "data/team/"
     priority: 2  # 중간
     write_access: "team_members"
     validation: "team_lead_approval"
     description: "팀 공유 표준 데이터"
-    
+
     content:
       - team_patterns.yaml
       - team_cases.yaml
       - team_best_practices.yaml
-    
+
     promotion_from: personal
-  
+
   personal:
     path: "data/personal/{user_name}/"
     priority: 1  # 가장 높음 (우선)
     write_access: "owner_only"
     validation: "none"
     description: "개인 실험 데이터"
-    
+
     content:
       - experiments.yaml
       - draft_ideas.yaml
       - scratch.yaml
-    
+
     isolated: true
 
 # ========================================
@@ -72,7 +72,7 @@ search_order: [personal, team, core]
 
 merge_strategy:
   default: replace  # append / replace / patch
-  
+
   by_type:
     patterns: append    # 패턴은 누적
     cases: append       # 사례도 누적
@@ -87,25 +87,25 @@ promotion:
     validation:
       - "team_review"
       - "2명 이상 승인"
-    
+
     approval:
       - "team_lead"
-    
+
     process:
       - "Pull Request 생성"
       - "Team Review"
       - "Approval"
       - "Merge to team/"
-  
+
   team_to_core:
     validation:
       - "guardian_evaluation"
       - "schema_compliance"
       - "evidence_based"
-    
+
     approval:
       - "core_maintainer"
-    
+
     process:
       - "Guardian 검증 요청"
       - "Core Maintainer Review"
@@ -121,12 +121,12 @@ acl:
     read: public
     write: admin_only
     delete: admin_only
-  
+
   team:
     read: team_members
     write: team_members
     delete: team_lead
-  
+
   personal:
     read: owner_only
     write: owner_only
@@ -140,7 +140,7 @@ current_user:
   name: "kangmin"
   role: "admin"
   tenant_id: "user_kangmin"
-  
+
   # 현재는 모든 Layer 접근 가능
   access: [core, team, personal]
 

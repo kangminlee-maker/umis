@@ -11,14 +11,14 @@
 | **Agent System** | 6-Agent (Observer, Explorer, Quantifier, Validator, Guardian, **Estimator**) ⭐ |
 | **RAG Architecture** | v3.0 (4-Layer) |
 | **Excel Engine** | v1.0 (3개 도구 완성) |
-| **Estimator Agent** | v3.0 (3-Tier 완성 + 12개 지표) ⭐ |
-| **Tier 3 Fermi** | v1.0 (구현 완료, 23개 모형) ⭐ |
-| **Business Metrics** | 12개 지표 (v7.5.0) ⭐ |
+| **Estimator Agent** | v3.0 (3-Tier 완성, 순수 추정 전문) |
+| **Tier 1/2 Threshold** | 0.95/0.80 (강화, v7.5.0) |
+| **Context Propagation** | 구체적 질문 생성 (v7.5.0) |
 | **Data Inheritance** | v1.0 (재귀 최적화, v7.5.0) ⭐ |
 | **Single Source Policy** | v1.0 (추정 일원화) ⭐ |
 | **Reasoning Transparency** | v1.0 (추정 근거 투명화) ⭐ |
 | **Meta-RAG** | v1.0 (Guardian 프로세스 감시) ⭐ |
-| **System RAG** | v1.0 (31개 도구) ⭐ |
+| **System RAG** | v1.0 (29개 도구, v7.5.0) |
 | **LLM Mode** | Native + External (v1.0) ⭐ |
 | **Schema Registry** | v1.1 (Estimator 반영) ⭐ |
 | **Coverage** | 100% (실패율 0%) ⭐ |
@@ -185,17 +185,17 @@ Cursor Composer (Cmd+I):
 |----------|------------|------|--------|--------|
 | **observer** | Albert | 시장 구조 분석 | market_reality_report.md | quantifier, validator, guardian |
 | **explorer** | Steve | 기회 발굴 (RAG) | OPP_*.md | observer, quantifier, validator |
-| **quantifier** | Bill | 정량 분석 + Excel 생성 | market_sizing.xlsx (10 sheets)<br>unit_economics.xlsx (10 sheets)<br>financial_projection.xlsx (11 sheets) | validator, observer |
+| **quantifier** | Bill | 계산 전문 (31개 방법론) + Excel | market_sizing.xlsx (10 sheets)<br>unit_economics.xlsx (10 sheets)<br>financial_projection.xlsx (11 sheets) | validator, observer |
 | **validator** | Rachel | 데이터 검증 | source_registry.yaml | - (검증자) |
 | **guardian** | Stewart | 프로세스 관리 | .project_meta.yaml, deliverables_registry.yaml | - (메타 관리자) |
-| **estimator** | **Fermi** | **값 추정 및 판단** ⭐ | **EstimationResult** (값 + 근거) | - (협업 파트너) |
+| **estimator** | **Fermi** | **값 추정 전문 (MECE)** | **EstimationResult** (값 + 근거 + tier) | - (협업 파트너) |
 
 **핵심**: 
 - **Agent ID 불변** (observer, explorer, quantifier, validator, guardian, **estimator**) → 폴더/파일 경로
 - **Name 변경 가능** (config/agent_names.yaml) → 사용자 UI
 - **상호 검증** (각 산출물 2-3명 검증)
-- **Estimator 특수성** (v7.3.1+): 협업 파트너 (모든 Agent가 필요 시 호출, Workflow에 끼어들지 않음)
-- **Single Source Policy** (v7.3.2+): 모든 값 추정은 Estimator만 수행
+- **Estimator 특수성** (v7.3.1+): 협업 파트너 (모든 Agent가 필요 시 호출, Workflow 독립)
+- **MECE 원칙** (v7.5.0): Estimator = 추정, Quantifier = 계산 (역할 명확 분리)
 
 #### 데이터 흐름 (순차적 의존성)
 
@@ -218,11 +218,12 @@ Rachel (Validator)
   │   └─ 모든 Agent에서 호출됨
   │
 Bill (Quantifier)
-  ↓ SAM 계산
+  ↓ 계산 수행 (31개 방법론)
   │ market_sizing.xlsx
   │ - Assumptions: SRC_ID 참조
-  │ - 전환율/AOV 등 → Fermi 호출 (Single Source) ⭐
-  │ - Estimation_Details: EST-NNN (추정 ID)
+  │ - 필요한 값 (ARPU, Churn 등) → Fermi 호출
+  │ - Fermi 추정 결과로 계산 수행 (LTV = ARPU / Churn)
+  │ - Estimation_Details: EST-NNN (Fermi 추정 ID)
   │ - 4가지 Method → Convergence (±30%)
   │ - 결과: SAM 270억 ± 30억
   │
@@ -782,12 +783,15 @@ umis/
 **상세 변경 이력**: [CHANGELOG.md](CHANGELOG.md) 참조
 
 **주요 마일스톤**:
-- **v7.5.0 (2025-11-08)**: 🏆
-  - 3-Tier 완성 (100% 커버리지, 실패율 0%)
-  - 12개 비즈니스 지표 템플릿 (23개 모형)
-  - 데이터 상속 (재귀 최적화)
-  - LLM 모드 통합 (Native/External)
-  - 모든 파일 v7.5.0 반영
+- **v7.5.0 (2025-11-10)**:
+  - Estimator/Quantifier 역할 분리 (MECE 달성)
+  - Tier 1/2 임계값 강화 (0.95/0.80, Tier 3 집중)
+  - Context 전달 개선 (재귀 시 구체적 질문)
+  - Domain Reasoner 제거 (Estimator Tier 2로 대체)
+  - 비즈니스 지표 템플릿 → Quantifier로 이동
+  - Tool Registry 정리 (31→29개)
+  - 코드 단순화 (3,000줄 감소)
+  - YAML 품질 100% (5,865줄 trailing spaces 제거)
 
 - **v7.4.0 (2025-11-08)**: 🎯
   - Tier 3 Fermi Decomposition 구현 (1,463줄)
@@ -1079,111 +1083,129 @@ _env_loaded = _load_environment()
 
 ---
 
-## 🎯 Estimator (Fermi) Agent (v7.5.0 완성) ⭐
+## 🎯 Estimator (Fermi) Agent (v7.5.0 역할 명확화)
 
-### 6번째 Agent - 값 추정 및 판단 전문가
+### 6번째 Agent - 값 추정 전문가
 
-**핵심**: "3-Tier 완성 + 12개 비즈니스 지표 + 100% 커버리지"
+**핵심**: "순수 추정 전문 (계산은 Quantifier) + 3-Tier + 100% 커버리지"
 
-**역할**:
-- 모든 값/데이터 추정 (유일한 권한, v7.3.2+)
-- 3-Tier Architecture (Tier 1/2/3 완성, v7.5.0)
-- 12개 비즈니스 지표 템플릿 (23개 모형, v7.5.0)
-- 데이터 상속 (재귀 최적화, v7.5.0)
-- LLM 모드 통합 (Native/External, v7.5.0)
+**역할 (v7.5.0 MECE)**:
+- 값 추정 전문 (데이터 없을 때 만들어냄)
+- 계산은 Quantifier 담당 (역할 명확 분리)
+- 3-Tier Architecture (Tier 1→2→3 자동 선택)
+- Tier 임계값 강화 (0.95/0.80, Tier 3 집중)
+- Context 전달 개선 (재귀 시 구체적 질문)
+- LLM 모드 통합 (Native/External)
 
-**위치**: `umis_rag/agents/estimator/` (14개 파일, 4,212줄)
+**위치**: `umis_rag/agents/estimator/` (14개 파일, 2,281줄, v7.5.0 단순화)
 
 **클래스**: `EstimatorRAG` (통합 인터페이스)
 
-**사용**:
+**역할 분리 (v7.5.0)**:
+```python
+# Estimator: 값 추정만
+estimator.estimate("B2B SaaS ARPU는?", domain="B2B_SaaS")
+# → 80,000원 (Tier 2, 벤치마크 기반)
+
+# Quantifier: 계산만
+quantifier.calculate_ltv(...)
+# 내부적으로:
+#   1. ARPU 필요 → estimator.estimate("ARPU는?") 
+#   2. Churn 필요 → estimator.estimate("Churn은?")
+#   3. 계산: LTV = 80,000 / 0.05 = 1,600,000원
+```
+
+**사용 예시**:
 ```python
 from umis_rag.agents.estimator import EstimatorRAG
 
 estimator = EstimatorRAG()
 
-# Tier 1/2 (대부분)
-result = estimator.estimate("Churn Rate는?", domain="B2B_SaaS")
+# Tier 1/2 (증거 기반)
+result = estimator.estimate("B2B SaaS Churn Rate는?", domain="B2B_SaaS")
 
-# Tier 3 (비즈니스 지표, v7.5.0)
-result = estimator.estimate("LTV는?")
-result = estimator.estimate("Payback Period는?")
-result = estimator.estimate("Rule of 40은?")
+# Tier 3 (일반 Fermi 분해)
+result = estimator.estimate("서울 음식점 수는?")
 
 # Cursor에서
-@Fermi, SaaS LTV는?
+@Fermi, B2B SaaS 한국 ARPU는?
 ```
 
 ```
 ┌─────────────────────────────────────────────┐
-│ Tier 1: Fast Path (45% → 95%, <0.5초)     │
+│ Tier 1: Fast Path (유사도 0.95+, <0.5초)  │
 │   - Built-in 규칙 (20개)                   │
 │   - 학습된 규칙 RAG (0 → 2,000개 진화)     │
-│   - 원칙: False Negative 허용              │
+│   - v7.5.0: 임계값 강화 (0.85→0.95)       │
+│   - 원칙: 정확한 매칭만                    │
 └──────────────┬──────────────────────────────┘
-               │ 매칭 없으면
+               │ 유사도 < 0.95
                ▼
 ┌─────────────────────────────────────────────┐
-│ Tier 2: Judgment Path (50% → 5%, 3-8초)   │
-│   1. 맥락 파악 (intent, domain, ...)      │
-│   2. Source 수집 (11개 중 5-8개)          │
+│ Tier 2: Judgment (confidence 0.80+, 3-8초) │
+│   1. 맥락 파악 (intent, domain, region)   │
+│   2. Source 수집 (11개)                   │
 │      - Physical: 절대 한계 (3개)           │
 │      - Soft: 범위 제시 (3개)              │
 │      - Value: 값 결정 (5개)               │
-│   3. 증거 평가 (맥락 기반)                │
-│   4. 종합 판단 (4가지 전략)               │
+│   3. 증거 평가 및 판단 (4가지 전략)       │
+│   4. v7.5.0: 임계값 강화 (0.60→0.80)     │
 │   5. 학습 (Tier 1 편입)                   │
 └──────────────┬──────────────────────────────┘
-               │ 복잡하면
+               │ confidence < 0.80
                ▼
 ┌─────────────────────────────────────────────┐
-│ Tier 3: Fermi Decomposition (v7.5.0 완성) │
-│   - 12개 비즈니스 지표 템플릿 (23개 모형) │
+│ Tier 3: Fermi (일반 분해, 10-30초)        │
+│   - 일반 Fermi 분해 (물리적/수학적)       │
 │   - 재귀 추정 (max depth 4)               │
 │   - 데이터 상속 (v7.5.0)                  │
+│   - Context 전달 (구체적 질문, v7.5.0)    │
 │   - 순환 감지 (Call stack)                │
-│   - SimpleVariablePolicy (6-10개)         │
-│   - LLM 모드 (Native/External)            │
-│   - 커버: 5% → 0.5%                       │
+│   - v7.5.0: 비즈니스 템플릿 제거          │
+│     → Quantifier가 계산 담당              │
 └─────────────────────────────────────────────┘
 
-총 커버리지: 100% ✅
-실패율: 0% ✅
+총 커버리지: 100%
+실패율: 0%
+역할: 순수 추정 (계산은 Quantifier)
 ```
 
-**12개 비즈니스 지표 (v7.5.0)**:
+**Estimator vs Quantifier 역할 (v7.5.0 MECE)**:
 ```
-핵심 8개:
-  1. Unit Economics (LTV/CAC)
-  2. Market Sizing
-  3. LTV
-  4. CAC
-  5. Conversion Rate
-  6. Churn Rate
-  7. ARPU
-  8. Growth Rate
+Estimator (추정):
+  - "B2B SaaS ARPU는?" → 80,000원 (Tier 2, 벤치마크)
+  - "서울 음식점 수는?" → 600,000개 (Tier 3, Fermi)
+  - "Churn Rate는?" → 5% (Tier 2, 업계 평균)
 
-고급 4개 (v7.5.0):
-  9. Payback Period
-  10. Rule of 40
-  11. Net Revenue Retention
-  12. Gross Margin
+Quantifier (계산, 31개 방법론):
+  - LTV = ARPU / Churn_Rate
+  - Payback = CAC / (ARPU × Gross_Margin)
+  - Rule of 40 = Growth_Rate + Profit_Margin
+  - 계산에 필요한 값 → Estimator에게 요청
 
-총: 12개 지표, 23개 모형
-커버: 90-95% (템플릿만)
+협업:
+  Quantifier: "LTV 계산 필요"
+    → "ARPU는?" Estimator 호출 → 80,000원
+    → "Churn은?" Estimator 호출 → 5%
+    → 계산: LTV = 80,000 / 0.05 = 1,600,000원
 ```
 
 **LLM 모드 (v7.5.0)**:
-- Native Mode: 템플릿만, 비용 $0 (권장)
-- External Mode: 템플릿 + OpenAI API, 비용 $0.03/질문
+- Native Mode: 비용 $0, Cursor LLM 사용 (권장)
+- External Mode: 비용 $0.03/질문, OpenAI API
 
-**파일**: `umis_rag/agents/estimator/` (14개 파일, 4,212줄)
+**파일**: `umis_rag/agents/estimator/` (14개 파일, 2,281줄, v7.5.0 단순화)
 - estimator.py (337줄)
 - tier1.py (350줄)
-- tier2.py (650줄)
-- tier3.py (1,463줄) ⭐ v7.5.0
-- models.py (519줄)
+- tier2.py (428줄)
+- tier3.py (1,463줄, 비즈니스 템플릿 제거)
+- models.py (519줄, 임계값 강화)
 - 기타 9개
+
+**v7.5.0 변경**:
+- Tier 1/2 임계값 강화 (Tier 3 집중)
+- 비즈니스 지표 템플릿 제거 → Quantifier로
+- Context 전달 개선 (구체적 질문)
 
 ---
 
@@ -1221,15 +1243,17 @@ result = estimator.estimate("Rule of 40은?")
 ```
 
 **재귀 구조**:
-- Unknown 변수 → 즉시 재귀 호출
+- Unknown 변수 → Tier 2 시도 → 재귀 호출
 - Max depth: 4
 - 순환 감지
+- Context 전달 (v7.5.0, 구체적 질문)
 
-**12개 비즈니스 지표 템플릿**:
-- 시장 규모, LTV, CAC, Unit Economics
-- Churn, Conversion, ARPU, Growth
+**v7.5.0 변경**:
+- 비즈니스 지표 템플릿 제거 (Quantifier로 이동)
+- Tier 3는 일반 Fermi 분해만 (물리적/수학적)
+- 예: 음식점 수, 탁구공 개수, 커피 시장
 
-**파일**: `umis_rag/utils/fermi_model_search.py` (748줄)
+**파일**: `umis_rag/agents/estimator/tier3.py` (1,463줄)
 
 ---
 
@@ -1288,9 +1312,9 @@ result.estimation_trace = [...]       # 과정 추적
 
 ---
 
-**Document Owner**: AI Team  
-**Last Reviewed**: 2025-11-08  
-**Next Review**: 버전 업데이트 시 (v7.4.0 예상)
+**Document Owner**: AI Team
+**Last Reviewed**: 2025-11-10 (v7.5.0 반영)
+**Next Review**: 버전 업데이트 시
 
 ---
 

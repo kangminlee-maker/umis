@@ -40,10 +40,22 @@ import re
 
 
 # ═══════════════════════════════════════════════════════
-# 비즈니스 지표 템플릿 (12개)
+# 비즈니스 지표 템플릿 - REMOVED (v7.5.0)
+# ═══════════════════════════════════════════════════════
+# 
+# v7.5.0 변경:
+# - 비즈니스 지표 계산 공식은 Quantifier로 이동
+# - Estimator는 순수 값 추정만 담당
+# - Tier 3는 일반적 Fermi 분해에 집중
+#
+# 이전 위치: tier3.py BUSINESS_METRIC_TEMPLATES
+# 신규 위치: data/raw/calculation_methodologies.yaml (Quantifier)
+#
 # ═══════════════════════════════════════════════════════
 
-BUSINESS_METRIC_TEMPLATES = {
+# v7.5.0: 비즈니스 지표 템플릿 제거됨
+# Quantifier가 LTV, CAC, ARPU 등의 계산 공식 소유
+BUSINESS_METRIC_TEMPLATES_REMOVED = {
     # Unit Economics (우선 - "ltv/cac" 정확 매칭)
     "unit_economics": {
         "keywords": ["unit economics", "ltv/cac", "비율", "ratio", "경제성"],
@@ -726,8 +738,10 @@ class Tier3FermiPath:
         """
         기본 템플릿 모형 생성
         
-        1. 비즈니스 지표 템플릿 매칭
-        2. LLM API 모형 생성 (TODO)
+        v7.5.0 변경:
+        - 비즈니스 지표 템플릿 제거됨
+        - LLM 기반 일반 분해만 수행 (External mode)
+        - Native mode는 Cursor에게 위임
         
         Args:
             question: 질문
@@ -737,12 +751,9 @@ class Tier3FermiPath:
         Returns:
             FermiModel 리스트
         """
-        # 1. 템플릿 매칭 시도 (우선, Native/External 공통)
-        template_models = self._match_business_metric_template(question)
-        
-        if template_models:
-            logger.info(f"{'  ' * depth}    템플릿 매칭: {len(template_models)}개 모형")
-            return template_models
+        # v7.5.0: 비즈니스 지표 템플릿 제거
+        # 비즈니스 지표(LTV, CAC 등)는 Quantifier가 처리
+        # Tier 3는 일반적 Fermi 분해만 담당
         
         # 2. LLM 모형 생성 (External mode만)
         if self.llm_mode == 'external' and self.llm_client:
@@ -751,9 +762,10 @@ class Tier3FermiPath:
             if llm_models:
                 return llm_models
         elif self.llm_mode == 'native':
-            logger.info(f"{'  ' * depth}    템플릿 없음 + Native Mode → Cursor에게 요청")
-            logger.info(f"{'  ' * depth}    ℹ️  Tier 3 자동 중단 (Native LLM은 Cursor가 처리)")
-            return []  # Native mode에서는 Cursor가 직접 분석
+            logger.info(f"{'  ' * depth}    Native Mode → Cursor LLM에게 Fermi 분해 요청")
+            logger.info(f"{'  ' * depth}    ℹ️  비즈니스 지표(LTV, CAC 등)는 Quantifier가 처리")
+            logger.info(f"{'  ' * depth}    ℹ️  Tier 3는 일반 Fermi 분해만 담당")
+            return []  # Native mode에서는 Cursor가 직접 Fermi 분해 수행
         
         # 3. Fallback: 기본 모형
         logger.warning(f"{'  ' * depth}    Fallback: 기본 모형")
@@ -781,55 +793,21 @@ class Tier3FermiPath:
         question: str
     ) -> List[FermiModel]:
         """
-        비즈니스 지표 템플릿 매칭
+        비즈니스 지표 템플릿 매칭 - DISABLED (v7.5.0)
         
-        12개 템플릿에서 질문과 매칭되는 모형 찾기
+        v7.5.0 변경:
+        - 비즈니스 지표 템플릿 제거됨
+        - Quantifier가 LTV, CAC 등의 계산 담당
+        - Estimator Tier 3는 일반적 Fermi 분해만 수행
         
         Args:
             question: 질문
         
         Returns:
-            매칭된 FermiModel 리스트
+            빈 리스트 (항상 매칭 없음)
         """
-        question_lower = question.lower()
-        
-        # 템플릿 검색 (정확도 순: 긴 키워드 우선)
-        for metric_name, template in BUSINESS_METRIC_TEMPLATES.items():
-            # 키워드 매칭 (긴 키워드 우선 - "ltv/cac"가 "ltv"보다 우선)
-            matched_keywords = [kw for kw in template['keywords'] if kw in question_lower]
-            
-            if matched_keywords:
-                # 가장 긴 키워드로 매칭 (더 구체적)
-                best_match = max(matched_keywords, key=len)
-                logger.info(f"    📋 템플릿 매칭: {metric_name} (키워드: '{best_match}')")
-                
-                # 템플릿 모형 변환
-                models = []
-                for model_template in template['models']:
-                    # 변수 파싱
-                    variables = {}
-                    for var_name in model_template['variables']:
-                        variables[var_name] = FermiVariable(
-                            name=var_name,
-                            available=False,  # 기본적으로 unknown
-                            need_estimate=True
-                        )
-                    
-                    model = FermiModel(
-                        model_id=model_template['id'],
-                        name=metric_name,
-                        formula=model_template['formula'],
-                        description=model_template['description'],
-                        variables=variables,
-                        total_variables=len(variables),
-                        unknown_count=len(variables)
-                    )
-                    
-                    models.append(model)
-                
-                return models
-        
-        # 매칭 실패
+        # v7.5.0: 비즈니스 지표 템플릿 제거
+        # Quantifier가 비즈니스 지표 계산 담당
         return []
     
     def _generate_llm_models(
@@ -1124,14 +1102,15 @@ models:
         Returns:
             EstimationResult 또는 None
         """
-        question = f"{var_name}는?"
+        # Context를 질문에 명시적으로 포함 (v7.5.0)
+        question = self._build_contextualized_question(var_name, context)
         
         logger.info(f"{'  ' * depth}      [Recursive] {question}")
         
         # 1. Tier 2 먼저 시도 (재귀 최소화)
         tier2_result = self.tier2.estimate(question, context)
         
-        if tier2_result and tier2_result.confidence >= 0.7:
+        if tier2_result and tier2_result.confidence >= 0.80:  # v7.5.0: 0.7→0.8 강화
             logger.info(f"{'  ' * depth}        ✅ Tier 2 성공 (재귀 불필요)")
             return tier2_result
         
@@ -1405,6 +1384,51 @@ models:
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     # 유틸리티
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    
+    def _build_contextualized_question(
+        self,
+        var_name: str,
+        context: Context
+    ) -> str:
+        """
+        Context를 포함한 구체적인 질문 생성 (v7.5.0)
+        
+        변수 이름만으로는 애매하므로, 맥락을 명시적으로 포함
+        
+        Args:
+            var_name: 변수 이름 (예: "arpu", "churn_rate")
+            context: 맥락
+        
+        Returns:
+            구체화된 질문 문자열
+        
+        Example:
+            >>> _build_contextualized_question("arpu", Context(domain="B2B_SaaS", region="한국"))
+            >>> # "B2B SaaS 한국 시장의 ARPU는?"
+        """
+        # 변수 이름 정리 (snake_case → 띄어쓰기)
+        readable_var = var_name.replace('_', ' ').upper()
+        
+        # Context 요소 수집
+        context_parts = []
+        
+        if context.domain and context.domain != "General":
+            context_parts.append(context.domain.replace('_', ' '))
+        
+        if context.region:
+            context_parts.append(context.region)
+        
+        if context.time_period:
+            context_parts.append(context.time_period)
+        
+        # 질문 조립
+        if context_parts:
+            context_str = " ".join(context_parts)
+            question = f"{context_str} 시장의 {readable_var}는?"
+        else:
+            question = f"{readable_var}는?"
+        
+        return question
     
     def _execute_formula_simple(
         self,
