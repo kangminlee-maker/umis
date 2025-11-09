@@ -279,166 +279,24 @@ class QuantifierRAG:
         
         return result
 
-    def calculate_sam_with_hybrid(
-        self,
-        market_definition: Dict,
-        method: str = 'auto'
-    ) -> Dict:
-        """
-        Hybrid Guestimation: SAM 계산 (2단계 전략)
-        
-        Args:
-            market_definition: {
-                'market_name': str,
-                'industry': str,
-                'geography': str,
-                'time_horizon': str,
-                'context': {
-                    'regulatory': bool,
-                    'new_market': bool,
-                    ...
-                }
-            }
-            method: 'auto' | 'guestimation' | 'domain_reasoner'
-        
-        Returns:
-            {
-                'phase_1': {...},          # Guestimation 결과
-                'recommendation': {...},    # Guardian 평가
-                'phase_2': {...} | None,   # Domain Reasoner 결과 (조건부)
-                'final_result': {...},      # 최종 결과
-                'method_used': str
-            }
-        """
-        
-        logger.info("\n" + "=" * 70)
-        logger.info("Hybrid Guestimation: SAM 계산")
-        logger.info("=" * 70)
-        logger.info(f"  시장: {market_definition.get('market_name', 'Unknown')}")
-        logger.info(f"  방법: {method}")
-        
-        # ===== Phase 1: Guestimation (항상 실행) =====
-        logger.info("\n[Phase 1] Guestimation 실행")
-        logger.info("-" * 70)
-        
-        phase_1_result = self._execute_guestimation(market_definition)
-        
-        logger.info(f"  추정값: {phase_1_result.get('value', 'N/A')}")
-        logger.info(f"  범위: {phase_1_result.get('range', 'N/A')}")
-        logger.info(f"  신뢰도: {phase_1_result.get('confidence', 0)*100:.0f}%")
-        
-        # ===== Guardian 평가 =====
-        logger.info("\n[Guardian] 방법론 평가")
-        logger.info("-" * 70)
-        
-        from umis_rag.guardian.meta_rag import GuardianMetaRAG
-        
-        guardian = GuardianMetaRAG()
-        
-        recommendation = guardian.recommend_methodology(
-            estimate_result=phase_1_result,
-            context=market_definition.get('context', {})
-        )
-        
-        logger.info(f"  권고: {recommendation['recommendation']}")
-        logger.info(f"  이유: {recommendation['reason']}")
-        logger.info(f"  우선순위: {recommendation['priority']}")
-        
-        # ===== Phase 2: Domain Reasoner (조건부) =====
-        phase_2_result = None
-        
-        # 자동 모드 & Phase 2 권고
-        if method == 'auto' and recommendation['recommendation'] == 'domain_reasoner':
-            
-            logger.info(f"\n{'='*70}")
-            logger.info(f"Guardian 권고: Phase 2 진행")
-            logger.info(f"  이유: {recommendation['reason']}")
-            logger.info(f"  우선순위: {recommendation['priority']}")
-            logger.info(f"{'='*70}")
-            
-            # Required → 자동 실행
-            if recommendation['priority'] == 'required':
-                logger.info("\n→ 자동 실행 (필수)")
-                phase_2_result = self._execute_domain_reasoner(market_definition, phase_1_result)
-            
-            # High → 사용자 확인 (실제로는 자동 실행, CLI에서는 확인 필요)
-            elif recommendation['priority'] in ['high', 'medium']:
-                logger.info(f"\n→ Phase 2 권고 (우선순위: {recommendation['priority']})")
-                logger.info(f"  예상 시간: {recommendation['estimated_time']}")
-                
-                # CLI 모드에서는 자동 실행 (실제 Cursor에서는 사용자 확인)
-                logger.info("  → 자동 실행 (CLI 모드)")
-                phase_2_result = self._execute_domain_reasoner(market_definition, phase_1_result)
-        
-        # 명시적 Domain Reasoner 요청
-        elif method == 'domain_reasoner':
-            logger.info("\n[Phase 2] Domain Reasoner 명시적 실행")
-            phase_2_result = self._execute_domain_reasoner(market_definition, phase_1_result)
-        
-        # ===== 최종 결과 =====
-        final_result = phase_2_result if phase_2_result else phase_1_result
-        method_used = 'domain_reasoner' if phase_2_result else 'guestimation'
-        
-        logger.info("\n" + "=" * 70)
-        logger.info("최종 결과")
-        logger.info("=" * 70)
-        logger.info(f"  사용 방법론: {method_used}")
-        logger.info(f"  추정값: {final_result.get('point_estimate', final_result.get('value', 'N/A'))}")
-        
-        return {
-            'phase_1': phase_1_result,
-            'recommendation': recommendation,
-            'phase_2': phase_2_result,
-            'final_result': final_result,
-            'method_used': method_used
-        }
-    
-    def _execute_guestimation(self, market_definition: Dict) -> Dict:
-        """Phase 1: Guestimation 실행"""
-        
-        # Stub - 실제로는 Guestimation 로직 호출
-        # 여기서는 간단한 추정
-        
-        return {
-            'value': 100_000_000_000,  # 1,000억 (예시)
-            'range': (50_000_000_000, 150_000_000_000),
-            'confidence': 0.6,
-            'method': 'guestimation',
-            'est_id': 'EST_001'
-        }
-    
-    def _execute_domain_reasoner(
-        self,
-        market_definition: Dict,
-        phase_1_result: Dict
-    ) -> Dict:
-        """Phase 2: Domain Reasoner 실행"""
-        
-        logger.info("\n[Phase 2] Domain Reasoner 실행")
-        logger.info("-" * 70)
-        
-        from umis_rag.methodologies.domain_reasoner import DomainReasonerEngine
-        
-        engine = DomainReasonerEngine()
-        
-        # Domain Reasoner 실행
-        result = engine.execute(
-            question=market_definition.get('market_name', 'Market'),
-            domain=market_definition.get('industry', 'general'),
-            geography=market_definition.get('geography', 'KR'),
-            time_horizon=market_definition.get('time_horizon', '2025-2030'),
-            phase_1_context=phase_1_result
-        )
-        
-        return {
-            'point_estimate': result.point_estimate,
-            'range_estimate': result.range_estimate,
-            'should_vs_will': result.should_vs_will,
-            'confidence': result.confidence,
-            'signal_breakdown': result.signal_breakdown,
-            'evidence_table': result.evidence_table
-        }
-
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # calculate_sam_with_hybrid() 제거됨 (v7.5.0)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 
+    # v7.2.0 이하: Guestimation = 기능 (Quantifier가 직접 호출)
+    # v7.3.0+: Guestimation → Estimator Agent로 진화
+    # v7.5.0: Estimator Tier 2/3 완성 → Domain Reasoner 대체
+    # 
+    # 대체 방법:
+    #   Before: quantifier.calculate_sam_with_hybrid(market_def)
+    #   After:  estimator.estimate(question, context)
+    # 
+    # Archive:
+    #   - umis_rag/methodologies/domain_reasoner.py
+    #   - data/raw/umis_domain_reasoner_methodology.yaml
+    #   - scripts/test_quantifier_hybrid.py
+    #   - scripts/test_e2e_full_workflow.py
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
     def estimate(
         self,

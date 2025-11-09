@@ -29,16 +29,16 @@ layers:
 fallback:
   # Vector RAG 실패 시
   vector_fail: yaml_only
-  
+
   # Graph 실패 시
   graph_fail: skip  # Vector만 사용
-  
+
   # Memory 실패 시
   memory_fail: skip  # Memory 없이 진행
-  
+
   # Meta-RAG 실패 시 (v7.1.0+)
   meta_fail: skip  # Meta-RAG 없이 진행
-  
+
   # Estimator 실패 시 (v7.5.0+)
   estimator_tier3_fail: tier2  # Tier 3 실패 시 Tier 2 Fallback
 
@@ -48,16 +48,16 @@ fallback:
 
 circuit_breaker:
   enabled: true
-  
+
   # 실패 카운트
   failure_threshold: 3
-  
+
   # 타임아웃
   timeout_seconds: 30
-  
+
   # 복구 시간 (초)
   recovery_timeout: 60
-  
+
   # 자동 재시도
   auto_retry: true
   max_retries: 2
@@ -70,10 +70,10 @@ performance:
   # 캐시
   cache_enabled: true
   cache_ttl_hours: 24
-  
+
   # 동시성
   max_concurrent_requests: 5
-  
+
   # 로깅
   detailed_logging: true
 
@@ -98,14 +98,14 @@ production:
 # ========================================
 
 v7_5_0_features:
-  
+
   estimator_3tier:
     enabled: true
     tier1_coverage: "45% → 95% (Year 1)"
     tier2_coverage: "50% → 5%"
     tier3_coverage: "5% → 0.5%"
     total_coverage: "100%"
-    
+
     tier3_features:
       - "12개 비즈니스 지표 템플릿"
       - "재귀 추정 (max depth 4)"
@@ -113,7 +113,7 @@ v7_5_0_features:
       - "순환 감지"
       - "SimpleVariablePolicy (6-10개)"
       - "LLM 모드 (Native/External)"
-  
+
   meta_rag:
     enabled: true
     status: "✅ 구현 완료 (v7.1.0+)"

@@ -3,9 +3,9 @@
 # v1.0 - 2025-11-05
 # ========================================
 #
-# 상태: ✅ 100% 구현 완료! (v7.5.0)
+# 상태:  100% 구현 완료! (v7.5.0)
 # 용도: Estimator Agent Tier 3 (Fermi Decomposition) 로직 정의
-# 통합 완료: umis_rag/agents/estimator/tier3.py (1,463줄) ⭐
+# 통합 완료: umis_rag/agents/estimator/tier3.py (1,463줄) 
 #
 # ⚠️ 이 파일은 Deprecated가 아닙니다!
 # → Tier 3 설계 문서 + 참조용 (1,270줄)
@@ -32,7 +32,7 @@ implementation_details:
   recursion: "재귀 로직 (Line 1122-1152)"
   circular_detection: "순환 감지 (Line 1283-1304)"
   formula_parser: "안전한 수식 파서 (Line 1327-1368)"
-  
+
   tests:
     - "scripts/test_tier3_basic.py (4/4 통과)"
     - "scripts/test_tier3_business_metrics.py (4/4 통과)"
@@ -44,44 +44,44 @@ implementation_details:
 initial_scan:
   name: "가용 데이터 빠른 스캔"
   purpose: "내가 알고 있는 숫자, 쉽게 구할 수 있는 숫자 파악"
-  
+
   process:
     step_1_project_data:
       action: "프로젝트 컨텍스트 확인"
       example:
         given: ["음식점 수: 70만", "서울 인구: 950만"]
-    
+
     step_2_quick_llm:
       action: "간단한 사실 LLM에게 질문"
       examples:
         - "한국 인구는?"
         - "일반적인 월 구독료는?"
       threshold: "5초 이내 답변 가능"
-    
+
     step_3_obvious_sources:
       action: "명백히 구할 수 있는 출처 식별"
       examples:
         - "통계청: 사업체 수"
         - "업계 평균: SaaS Churn Rate"
         - "물리 법칙: 하루 24시간"
-  
+
   output:
     available_data:
       - name: "음식점 수"
         value: 700000
         source: "Layer 3 (웹 검색)"
         confidence: 0.8
-      
+
       - name: "디지털 도구 사용률"
         value: 0.30
         source: "Layer 6 (통계)"
         confidence: 0.6
-      
+
       - name: "일반 전환율"
         value: 0.10
         source: "Layer 6 (통계)"
         confidence: 0.5
-    
+
     unknown_data:
       - "음식점 마케팅 SaaS 도입률"
       - "음식점 전용 SaaS ARPU"
@@ -93,22 +93,22 @@ initial_scan:
 model_generation:
   name: "여러 후보 모형 생성 (개념 분해)"
   purpose: "가능한 모든 decomposition 방법 탐색"
-  
+
   llm_prompt_template: |
     질문: {question}
-    
+
     가용한 데이터:
     {available_data}
-    
+
     모를 가능성이 있는 것:
     {unknown_data}
-    
+
     임무:
     1. 이 질문에 답하기 위한 계산 모형을 5개 제시하세요.
     2. 각 모형은 다른 분해 방식을 사용하세요.
     3. 가용한 데이터를 최대한 활용하세요.
     4. 모를 수 있는 변수는 최소화하세요.
-    
+
     출력 형식:
     Model 1:
       formula: "시장 = A × B × C"
@@ -117,7 +117,7 @@ model_generation:
         - B: 도입률 (모름, 추정 필요)
         - C: ARPU (모름, 추정 필요)
       unknown_count: 2
-      
+
     Model 2:
       formula: "시장 = A × B × C × D"
       variables:
@@ -126,10 +126,10 @@ model_generation:
         - C: 전환율 (가용!)
         - D: ARPU (모름, RAG 시도 가능)
       unknown_count: 1  # ← 더 좋음!
-  
+
   candidate_models:
     # LLM이 생성한 후보들
-    
+
     model_1_direct:
       id: "MODEL_001"
       name: "직접 도입률"
@@ -140,27 +140,27 @@ model_generation:
           available: true
           source: "Layer 3 (웹)"
           value: 700000
-        
+
         adoption_rate:
           name: "SaaS 도입률"
           available: false
           need_estimate: true
           layer_attempts: [1, 2, 3, 4, 5, 6, 7, 8]
-        
+
         arpu:
           name: "평균 ARPU"
           available: false
           need_estimate: true
           layer_attempts: [7]  # RAG 가능성
-        
+
         multiplier:
           name: "12개월"
           available: true
           value: 12
-      
+
       unknown_count: 2
       feasibility_score: 0.3  # 2개 unknown → 낮음
-    
+
     model_2_decomposed:
       id: "MODEL_002"
       name: "디지털 분해"
@@ -171,33 +171,33 @@ model_generation:
           available: true
           source: "Layer 3"
           value: 700000
-        
+
         digital_rate:
           name: "디지털 도구 사용률"
-          available: true  # ✅ 가용!
+          available: true  #  가용!
           source: "Layer 6 (통계)"
           value: 0.30
-        
+
         conversion_rate:
           name: "유료 전환율"
-          available: true  # ✅ 가용!
+          available: true  #  가용!
           source: "Layer 6 (통계)"
           value: 0.10
-        
+
         arpu:
           name: "평균 ARPU"
           available: false  # 1개만 unknown
           need_estimate: true
           layer_attempts: [7]
-        
+
         multiplier:
           name: "12개월"
           available: true
           value: 12
-      
+
       unknown_count: 1  # ← Model 1보다 좋음!
       feasibility_score: 0.7
-    
+
     model_3_proxy:
       id: "MODEL_003"
       name: "유사 시장 비율"
@@ -208,15 +208,15 @@ model_generation:
           available: false
           need_estimate: true
           layer_attempts: [3, 7]  # 웹 또는 RAG
-        
+
         ratio:
           name: "음식점 비율"
           available: false
           need_estimate: true
-      
+
       unknown_count: 2
       feasibility_score: 0.4
-    
+
     model_4_detailed:
       id: "MODEL_004"
       name: "상세 분해 (6개 변수)"
@@ -229,7 +229,7 @@ model_generation:
         conversion: {available: true, value: 0.10}
         arpu: {available: false}
         multiplier: {available: true, value: 12}
-      
+
       variable_count: 7  # 6개 + 상수
       unknown_count: 2
       feasibility_score: 0.5
@@ -242,43 +242,43 @@ model_generation:
 recursive_guestimation:
   concept: "모형의 변수 자체가 Guestimation 대상 (재귀 함수)"
   max_depth: 4
-  
+
   recursion_logic:
     base_cases:
       - condition: "depth >= 4"
         action: "Multi-Layer 단일 값 모드 강제 전환"
         reason: "무한 재귀 방지"
-      
+
       - condition: "변수가 Multi-Layer로 즉시 추정 가능"
         action: "재귀 중단, 단일 값 사용"
         example: "ARPU → Layer 7 (RAG) 발견 → 재귀 불필요"
-      
+
       - condition: "순환 의존성 감지 (A → B → A)"
         action: "재귀 중단, 대체 모형 시도"
-    
+
     recursive_case:
       action: "Unknown 변수는 즉시 재귀 호출 (현재 구현)"
       note: "Multi-Layer는 향후 구현 예정"
-      
+
       example:
         depth_0:
           question: "음식점 SaaS 시장은?"
           model: "시장 = 음식점 × 디지털 × 전환 × ARPU × 12"
           unknown_vars: ["ARPU"]
-        
+
         depth_1_recursive_call:
           question: "ARPU는?"  # ← 재귀!
           parent_var: "ARPU"
           depth: 1
-          
+
           # ARPU도 모형 생성 시도
           phase_2_models:
             - "ARPU = 기본료 + 추가료"
             - "ARPU = Tier별 가중 평균"
-          
+
           selected: "ARPU = 기본료 + 추가료"
           unknown_vars: ["기본료", "추가료"]
-          
+
           # ========================================
           # 향후: Multi-Layer 시도 후 재귀 (주석)
           # ========================================
@@ -288,49 +288,49 @@ recursive_guestimation:
           #   추가료:
           #     layer_1_7: "모두 실패 → 재귀 호출"
           # ========================================
-          
+
           # 현재: 바로 재귀 호출
           immediate_recursion: true
-        
+
         depth_2_recursive_calls:
           question_1: "기본료는?"  # ← 재귀!
           depth: 2
-          
+
           # ========================================
           # 향후: Multi-Layer 시도 (주석)
           # ========================================
           # multilayer_attempt:
-          #   layer_7: "50,000원 발견 ✅"
+          #   layer_7: "50,000원 발견 "
           # result: "50,000원 (재귀 중단)"
           # ========================================
-          
+
           # 현재: 모형 생성 시도 → 단순해서 모형 불필요 판단
           models_generated: []  # 단순 질문
           fallback: "기본값 사용"
           result: "50,000원 (추정)"
-          
+
           question_2: "추가료는?"  # ← 재귀!
           depth: 2
           models: ["추가료 = 사용량 × 단가"]
           unknown_vars: ["사용량", "단가"]
-        
+
         depth_3_recursive_calls:
           question_1: "사용량은?"  # ← 재귀!
           depth: 3
           models_generated: []  # 단순 질문
           result: "1,000건 (추정)"
-          
+
           question_2: "단가는?"  # ← 재귀!
           depth: 3
           models_generated: []  # 단순 질문
           result: "30원 (추정)"
-        
+
         backtracking:
           depth_3_result: "추가료 = 1,000 × 30 = 30,000원"
           depth_2_result: "ARPU = 50,000 + 30,000 = 80,000원"
           depth_1_result: "ARPU = 80,000원"
           depth_0_result: "시장 = 70만 × 30% × 10% × 80,000 × 12 = 202억"
-  
+
   depth_preference:
     scoring:
       depth_0: 1.0   # 재귀 없음 (최선!)
@@ -338,16 +338,16 @@ recursive_guestimation:
       depth_2: 0.6   # 2단계 재귀 (괜찮음)
       depth_3: 0.4   # 3단계 재귀 (선호 낮음)
       depth_4: 0.2   # 4단계 재귀 (최후)
-    
+
     model_score_adjustment:
       formula: "base_score × depth_penalty"
-      
+
       example:
         model_with_depth_1:
           base_score: 0.70
           depth_penalty: 0.8
           final_score: 0.56
-        
+
         model_with_depth_0:
           base_score: 0.65
           depth_penalty: 1.0
@@ -356,7 +356,7 @@ recursive_guestimation:
 # ========================================
 # 비즈니스 지표 템플릿 (12개, v7.5.0 구현 완료)
 # ========================================
-# 
+#
 # 구현 위치: tier3.py Line 35-267
 # 총: 12개 지표, 23개 모형
 # 커버리지: 90-95% (템플릿만)
@@ -364,7 +364,7 @@ recursive_guestimation:
 # ========================================
 
 business_metrics_templates_v7_5_0:
-  
+
   implemented_metrics_12:
     core_8:
       - "Unit Economics (1개 모형)"
@@ -375,26 +375,26 @@ business_metrics_templates_v7_5_0:
       - "Churn Rate (2개 모형)"
       - "ARPU (3개 모형)"
       - "Growth Rate (2개 모형)"
-    
+
     advanced_4_v7_5_0:
-      - "Payback Period (2개 모형)" ⭐
-      - "Rule of 40 (1개 모형)" ⭐
-      - "Net Revenue Retention (2개 모형)" ⭐
-      - "Gross Margin (2개 모형)" ⭐
-    
+      - "Payback Period (2개 모형)"
+      - "Rule of 40 (1개 모형)"
+      - "Net Revenue Retention (2개 모형)"
+      - "Gross Margin (2개 모형)"
+
     total: "12개 지표, 23개 모형"
-    
+
     usage_example:
       code: |
         from umis_rag.agents.estimator import EstimatorRAG
-        
+
         estimator = EstimatorRAG()
-        
+
         # 자동 템플릿 매칭
         result = estimator.estimate("Payback Period는?")
         # → 템플릿: payback
         # → PAYBACK_001: payback = cac / (arpu × gross_margin)
-      
+
       cursor: "@Fermi, Rule of 40은?"
 
 # ========================================
@@ -402,7 +402,7 @@ business_metrics_templates_v7_5_0:
 # ========================================
 
 business_metrics_examples:
-  
+
   # 시장 규모
   market_sizing:
     question: "국내 B2B SaaS 시장은?"
@@ -410,7 +410,7 @@ business_metrics_examples:
       - "TAM = 기업 수 × 도입률 × ARPU × 12"
       - "SAM = TAM × 타겟 비율"
       - "SOM = SAM × 점유율 목표"
-  
+
   # 고객 생애 가치
   ltv:
     question: "SaaS 고객 LTV는?"
@@ -418,7 +418,7 @@ business_metrics_examples:
       - "LTV = ARPU × (1 / Churn Rate)"
       - "LTV = ARPU × Average Lifetime"
       - "LTV = ARPU × Retention Months"
-    
+
     recursive_example:
       depth_0: "LTV = ARPU × (1 / Churn)"
       depth_1_arpu:
@@ -430,7 +430,7 @@ business_metrics_examples:
         models: null  # 단일 값
         result: "0.05 (Layer 6)"
         depth: 0  # 재귀 불필요
-  
+
   # 고객 획득 비용
   cac:
     question: "CAC는?"
@@ -438,7 +438,7 @@ business_metrics_examples:
       - "CAC = 마케팅 비용 / 신규 고객"
       - "CAC = CPC × (1 / CVR)"
       - "CAC = CPM / 1000 × (1 / CTR) × (1 / CVR)"
-  
+
   # 전환율
   conversion_rate:
     question: "Freemium → Paid 전환율은?"
@@ -446,7 +446,7 @@ business_metrics_examples:
       - "전환율 = 유료 가입 / 무료 가입"
       - "전환율 = 업계 평균 × 제품 우수성"
       - "전환율 = f(가격, 기능, UX, 경쟁)"
-  
+
   # 해지율
   churn_rate:
     question: "월간 Churn Rate는?"
@@ -454,7 +454,7 @@ business_metrics_examples:
       - "Churn = 해지 고객 / 전체 고객"
       - "Churn = 1 - Retention Rate"
       - "Churn = 업계 평균 / Loss Aversion 배율"
-  
+
   # 성장률
   growth_rate:
     question: "YoY 성장률은?"
@@ -462,27 +462,27 @@ business_metrics_examples:
       - "성장률 = (올해 - 작년) / 작년"
       - "성장률 = 시장 성장 + 점유율 변화"
       - "성장률 = (신규 획득 - Churn) / 기존 고객"
-  
+
   # Unit Economics
   unit_economics:
     question: "LTV/CAC 비율은?"
     models:
       - "Ratio = LTV / CAC"
       - "Ratio = (ARPU/Churn) / (마케팅비/전환고객)"
-    
+
     recursive_example:
       depth_0: "Ratio = LTV / CAC"
       depth_1_ltv:
         question: "LTV는?"
         models: ["LTV = ARPU × (1/Churn)"]
-        depth_2_arpu: "ARPU는?" → 재귀
-        depth_2_churn: "Churn은?" → 재귀
+        depth_2_arpu: "ARPU는? (재귀)"
+        depth_2_churn: "Churn은? (재귀)"
       depth_1_cac:
         question: "CAC는?"
         models: ["CAC = 마케팅비 / 신규"]
-        depth_2_marketing: "마케팅비는?" → 재귀
-        depth_2_new: "신규 고객은?" → 재귀
-  
+        depth_2_marketing: "마케팅비는? (재귀)"
+        depth_2_new: "신규 고객은? (재귀)"
+
   # ARPU (복잡한 분해)
   arpu_detailed:
     question: "SaaS ARPU는?"
@@ -491,7 +491,7 @@ business_metrics_examples:
       - "ARPU = 기본료 + 초과료"  # 2개
       - "ARPU = 기본료 + 사용량료 + 추가기능료"  # 3개
       - "ARPU = (기본 × 기본고객% + 프로 × 프로고객% + ...)"  # 가중평균
-    
+
     variable_count_variation:
       simple: 1  # 기본료만
       moderate: 3  # 기본 + 사용량 + 추가
@@ -505,19 +505,19 @@ business_metrics_examples:
 feasibility_check:
   name: "모형 실행 가능성 체크 (퍼즐 맞추기)"
   purpose: "각 모형의 변수를 실제로 채울 수 있는지 검증"
-  
+
   process:
     for_each_model:
       step_1_try_available:
         action: "available=true인 변수 확인"
         result: "즉시 사용 가능"
-      
+
       step_2_estimate_unknown:
         action: "unknown 변수 재귀 호출로 추정"
-        
+
         example_model_2:
           variable: "arpu"
-          
+
           # ========================================
           # 향후 구현: Multi-Layer 시도 (현재 주석)
           # ========================================
@@ -525,19 +525,19 @@ feasibility_check:
           #   layer_1:
           #     try: "project_context에 'ARPU' 있는가?"
           #     result: "없음"
-          #   
+          #
           #   layer_2:
           #     try: "LLM에게 '음식점 SaaS ARPU는?'"
           #     result: "복잡한 추정 → 실패"
-          #   
+          #
           #   layer_3:
           #     try: "웹 검색"
           #     result: "구체적 데이터 없음"
-          #   
+          #
           #   layer_4_6:
           #     try: "법칙, 행동경제학, 통계"
           #     result: "매칭 없음"
-          #   
+          #
           #   layer_7:
           #     try: "RAG market_benchmarks 검색"
           #     search_query: "음식점 마케팅 도구 ARPU"
@@ -545,70 +545,68 @@ feasibility_check:
           #       - name: "카페 마케팅 도구"
           #         value: 80000
           #         comparability: 3.5/4  # 채택!
-          #     result: "80,000원 발견 ✅"
-          #   
+          #     result: "80,000원 발견 "
+          #
           #   final: "80,000원 (Layer 7, confidence 87.5%)"
           # ========================================
-          
+
           # 현재 구현: 바로 재귀 호출
           recursive_call:
             condition: "변수가 unknown"
             action: "즉시 재귀 호출 (depth < 4)"
-            
+
             call:
               question: "ARPU는?"
               depth: "parent_depth + 1"
               context: "parent의 가용 데이터 상속"
-            
+
             result:
               model_found: "ARPU = 기본료 + 추가료"
               value: 80000
               depth_used: 2
-            
+
             backtrack: "80,000원을 parent 모형에 전달"
-      
+
       step_3_alternative_search:
         action: "unknown 변수 추정 실패 시 대체 변수 탐색"
-        
+
         example:
           failed_variable: "도입률"
           alternatives_llm_suggests:
             - "도입률 = 디지털 사용률 × 전환율"
             - "→ 2개로 분해 (각각 구할 수 있는지 체크)"
-      
+
       step_4_score_model:
         criteria:
           unknown_count:
             weight: 0.5
             score: "(total_vars - unknown) / total_vars"
-          
+
           confidence_sum:
             weight: 0.3
             score: "평균 confidence"
-          
+
           complexity:
             weight: 0.2
             score: "1 / variable_count"
-        
+
         formula: "score = Σ(criterion × weight)"
-        
+
         example_model_2:
           total_vars: 5
           unknown: 1  # arpu만
           unknown_filled: true  # Layer 7에서 채움
           avg_confidence: 0.72
-          complexity: 1/5 = 0.2
-          
-          score: "(4/5)×0.5 + 0.72×0.3 + 0.2×0.2"
-               = "0.4 + 0.216 + 0.04"
-               = "0.656"
-  
+          complexity: "1/5 = 0.2"
+          score_calculation: "(4/5)×0.5 + 0.72×0.3 + 0.2×0.2 = 0.4 + 0.216 + 0.04 = 0.656"
+          score: 0.656
+
   output:
     ranked_models:
       - rank: 1
         model: "MODEL_002"
         score: 0.656
-        status: "실행 가능 ✅"
+        status: "실행 가능 "
         all_variables_filled: true
         values:
           restaurants: 700000
@@ -616,7 +614,7 @@ feasibility_check:
           conversion_rate: 0.10
           arpu: 80000
           multiplier: 12
-      
+
       - rank: 2
         model: "MODEL_001"
         score: 0.35
@@ -624,7 +622,7 @@ feasibility_check:
         missing: ["adoption_rate"]
         alternatives_suggested:
           - "adoption_rate → digital_rate × conversion"
-      
+
       - rank: 3
         model: "MODEL_003"
         score: 0.20
@@ -637,9 +635,9 @@ feasibility_check:
 
 model_execution:
   name: "선택된 모형 실행 및 계산"
-  
+
   selected_model: "MODEL_002"
-  
+
   step_1_variable_binding:
     action: "각 변수에 값 할당"
     bindings:
@@ -648,83 +646,83 @@ model_execution:
       conversion_rate: 0.10
       arpu: 80000
       multiplier: 12
-  
+
   step_2_calculation:
     formula: "market = restaurants × digital_rate × conversion_rate × arpu × 12"
-    
+
     calculation_steps:
       - step: "700,000 × 0.30"
         intermediate: 210000
         description: "디지털 도구 사용 음식점"
-      
+
       - step: "210,000 × 0.10"
         intermediate: 21000
         description: "유료 전환 음식점"
-      
+
       - step: "21,000 × 80,000"
         intermediate: 1680000000
         description: "월 매출"
-      
+
       - step: "1,680,000,000 × 12"
         final: 20160000000
         description: "연 매출"
-    
+
     result:
       value: 20160000000
       display: "약 202억원"
       unit: "원/년"
-  
+
   step_3_confidence:
     action: "각 변수의 confidence 조합"
-    
+
     variable_confidences:
       restaurants: 0.80  # Layer 3 (웹)
       digital_rate: 0.60  # Layer 6 (통계)
       conversion_rate: 0.50  # Layer 6 (통계)
       arpu: 0.875  # Layer 7 (RAG, 3.5/4)
       multiplier: 1.00  # 확정
-    
+
     combination_method: "geometric_mean"
     # √(0.80 × 0.60 × 0.50 × 0.875 × 1.00)
-    
+
     final_confidence: 0.67
-  
+
   step_4_output:
     estimation_result:
       question: "음식점 마케팅 SaaS 시장 규모는?"
-      
+
       value: 20160000000
       display: "202억원"
-      
+
       model:
         id: "MODEL_002"
         formula: "시장 = 음식점 × 디지털율 × 전환율 × ARPU × 12"
         description: "디지털 도구 사용 음식점 → 유료 전환 → 연간화"
-      
+
       components:
         - name: "음식점 수"
           value: 700000
           source: "Layer 3 (웹 검색)"
           confidence: 0.80
-        
+
         - name: "디지털 도구 사용률"
           value: 0.30
           source: "Layer 6 (통계 - 소상공인 평균)"
           confidence: 0.60
-        
+
         - name: "유료 전환율"
           value: 0.10
           source: "Layer 6 (통계 - Freemium 평균)"
           confidence: 0.50
-        
+
         - name: "평균 ARPU"
           value: 80000
           source: "Layer 7 (RAG - 카페 마케팅 도구)"
           confidence: 0.875
-      
+
       confidence: 0.67
       error_range: "±30%"
-      
+
       logic_trace:
         - "초기 스캔: 3개 가용, 1개 unknown"
         - "모형 생성: 3개 후보"
@@ -740,7 +738,7 @@ model_execution:
 iteration_logic:
   name: "모형 탐색 반복 (퍼즐 맞추기)"
   purpose: "실행 불가능한 모형 → 대체 모형 시도"
-  
+
   iteration_example:
     round_1:
       selected_model: "MODEL_001"
@@ -748,40 +746,40 @@ iteration_logic:
         formula: "market = restaurants × adoption_rate × arpu × 12"
         missing: ["adoption_rate", "arpu"]
         result: "2개 unknown → feasibility 낮음"
-      
+
       action: "대체 변수 탐색"
-      
+
       llm_query: |
         "adoption_rate"를 대체할 수 있는 변수 조합은?
-        
+
         가용한 것:
         - 음식점 수
         - 디지털 사용률
         - 전환율
-      
+
       llm_response: |
         adoption_rate = digital_usage_rate × conversion_rate
-        
+
         이유:
         - digital_usage_rate: 30% (가용!)
         - conversion_rate: 10% (가용!)
         - 조합: 30% × 10% = 3% (adoption_rate 근사)
-      
+
       new_model:
         formula: "market = restaurants × digital × conversion × arpu × 12"
         # adoption_rate를 2개 변수로 분해!
-      
+
       result: "MODEL_002 발견 → feasibility 향상!"
-    
+
     round_2:
       selected_model: "MODEL_002"
       attempt:
         missing: ["arpu"]
         layer_7_try: "RAG 검색"
-        result: "80,000원 발견 ✅"
-      
+        result: "80,000원 발견 "
+
       action: "모든 변수 채움 → 실행!"
-    
+
     termination:
       conditions:
         - "실행 가능한 모형 발견"
@@ -795,41 +793,41 @@ iteration_logic:
 # 설계 논의:
 #   - Hard Limit 6개 → 찜찜함
 #   - Hybrid 방식 (300줄, Marginal Gain) → 오버엔지니어링
-#   - Simple 방식 (20줄) → 채택 ✅
+#   - Simple 방식 (20줄) → 채택 
 #
 # 구현: tier3.py Line 295-325
 # 평가: 98% 효과, 15배 간단, KISS 원칙 준수
 # ========================================
 
 variable_convergence_policy:
-  
+
   implemented_simple:
     name: "SimpleVariablePolicy"
     code: "20줄 (tier3.py Line 295-325)"
-    
+
     principle:
       recommended: "6개 (Occam's Razor)"
       allowed: "7-10개 (경고 포함)"
       absolute: "10개 초과 금지 (Miller's Law)"
-    
+
     rationale:
       occam: "간단할수록 좋음 (Occam's Razor)"
       miller: "인간 인지 한계 7±2 (Miller's Law)"
       practical: "98% 효과, 오버엔지니어링 회피"
-    
+
     alternatives_considered:
       hybrid_300:
         code: "300줄"
         features: "Marginal Gain + Diminishing Returns"
         effect: "100%"
         decision: "❌ 오버엔지니어링 (2% 차이, 15배 복잡)"
-      
+
       simple_20:
         code: "20줄"
         features: "6개 권장 + 10개 절대"
         effect: "98%"
-        decision: "✅ 채택 (KISS 원칙)"
-  
+        decision: " 채택 (KISS 원칙)"
+
   design_documents:
     - "TIER3_VARIABLE_CONVERGENCE_DESIGN.md (700줄)"
     - "TIER3_OVERENGINEERING_CHECK.md (400줄)"
@@ -845,19 +843,19 @@ variable_convergence_policy:
 # ========================================
 
 data_inheritance_v7_5_0:
-  
+
   feature:
     description: "재귀 추정 시 부모의 available 변수 상속"
     parameter: "parent_data: Dict = None"
-    
+
     example:
       depth_0:
         available: {customers: 1000, conversion: 0.1}
-      
+
       depth_1:
-        parent_data: {customers: 1000, conversion: 0.1}  # ⭐ 상속
+        parent_data: {customers: 1000, conversion: 0.1}  #  상속
         benefit: "재계산 불필요"
-    
+
     implementation:
       estimate_signature: |
         def estimate(
@@ -865,9 +863,9 @@ data_inheritance_v7_5_0:
             context: Context = None,
             available_data: Dict = None,
             depth: int = 0,
-            parent_data: Dict = None  # ⭐ v7.5.0
+            parent_data: Dict = None  #  v7.5.0
         ):
-      
+
       phase1_scan: |
         # Step 0: 부모 데이터 상속 (v7.5.0)
         if parent_data:
@@ -885,34 +883,34 @@ data_inheritance_v7_5_0:
 # ========================================
 
 llm_mode_integration:
-  
+
   native_mode:
     description: "Cursor LLM 사용 (기본, 권장)"
     cost: "$0"
     coverage: "90-95% (템플릿만)"
-    
+
     behavior:
       template_match: "템플릿 사용 → Tier 3 실행"
       template_fail: "Tier 3 중단 → Cursor에게 맡김"
-    
+
     reason: |
       Native LLM (Sonnet 4.5)이 더 우수
       비용 $0
       복잡한 모형은 Cursor가 직접 처리
-  
+
   external_mode:
     description: "OpenAI API 사용 (자동화)"
     cost: "~$0.03/질문"
     coverage: "100% (템플릿 + LLM)"
-    
+
     behavior:
       template_match: "템플릿 사용 → Tier 3 실행"
       template_fail: "OpenAI API 호출 → 모형 생성 → Tier 3 실행"
-    
+
     reason: |
       자동화 필요 시 (배치 처리, cron job)
       Cursor 없이 독립 실행
-  
+
   implementation:
     init: "tier3.py Line 387-405"
     phase2: "tier3.py Line 646-665"
@@ -923,7 +921,7 @@ llm_mode_integration:
 # ========================================
 
 model_selection_criteria:
-  
+
   criterion_1_unknown_count:
     name: "Unknown 변수 개수"
     weight: 0.5
@@ -933,13 +931,13 @@ model_selection_criteria:
       1_unknown: 0.7
       2_unknown: 0.4
       3_plus: 0.2
-  
+
   criterion_2_confidence:
     name: "평균 confidence"
     weight: 0.3
     rule: "높을수록 좋음"
     scoring: "avg(variable_confidences)"
-  
+
   criterion_3_complexity:
     name: "모형 복잡도"
     weight: 0.2
@@ -952,7 +950,7 @@ model_selection_criteria:
       6_vars: 0.3
       7_plus: 0.0  # 금지
     note: "Occam's Razor - 최대 6개까지"
-  
+
   criterion_4_depth:
     name: "재귀 깊이"
     weight: 0.1  # 보너스
@@ -963,11 +961,11 @@ model_selection_criteria:
       depth_2: 0.6  # 2단계
       depth_3: 0.4  # 3단계
       depth_4: 0.2  # 4단계 (최대)
-  
+
   final_score:
     formula: "Σ(criterion_score × weight)"
     total_weight: 1.1  # 0.5 + 0.3 + 0.2 + 0.1 (depth 보너스)
-    
+
     example_comparison:
       model_1:
         unknown_count: 2
@@ -977,11 +975,9 @@ model_selection_criteria:
         complexity_score: 0.7
         depth: 1
         depth_score: 0.8
-        
-        total: "0.4×0.5 + 0.5×0.3 + 0.7×0.2 + 0.8×0.1"
-             = "0.20 + 0.15 + 0.14 + 0.08"
-             = "0.57"
-      
+        total_calculation: "0.4×0.5 + 0.5×0.3 + 0.7×0.2 + 0.8×0.1 = 0.20 + 0.15 + 0.14 + 0.08 = 0.57"
+        total: 0.57
+
       model_2:
         unknown_count: 1
         unknown_score: 0.7
@@ -990,11 +986,9 @@ model_selection_criteria:
         complexity_score: 0.5
         depth: 0  # 재귀 없음!
         depth_score: 1.0
-        
-        total: "0.7×0.5 + 0.72×0.3 + 0.5×0.2 + 1.0×0.1"
-             = "0.35 + 0.216 + 0.10 + 0.10"
-             = "0.77"  # ← 승자! (depth 0 보너스)
-      
+        total_calculation: "0.7×0.5 + 0.72×0.3 + 0.5×0.2 + 1.0×0.1 = 0.35 + 0.216 + 0.10 + 0.10 = 0.77"
+        total: 0.77  # 승자! (depth 0 보너스)
+
       model_4_detailed:
         unknown_count: 2
         unknown_score: 0.4
@@ -1003,10 +997,8 @@ model_selection_criteria:
         complexity_score: 0.3
         depth: 2  # 2단계 재귀
         depth_score: 0.6
-        
-        total: "0.4×0.5 + 0.65×0.3 + 0.3×0.2 + 0.6×0.1"
-             = "0.20 + 0.195 + 0.06 + 0.06"
-             = "0.52"  # (depth 2라 점수 낮음)
+        total_calculation: "0.4×0.5 + 0.65×0.3 + 0.3×0.2 + 0.6×0.1 = 0.20 + 0.195 + 0.06 + 0.06 = 0.52"
+        total: 0.52  # depth 2라 점수 낮음
 
 # ========================================
 # 대체 변수 탐색 전략
@@ -1014,28 +1006,28 @@ model_selection_criteria:
 
 alternative_variable_search:
   name: "Missing 변수 대체 방법"
-  
+
   strategy_1_decompose:
     name: "변수 분해"
     example:
       original: "도입률 (unknown)"
       decompose: "도입률 = 인지율 × 관심율 × 전환율"
       check: "각각 구할 수 있는가?"
-  
+
   strategy_2_proxy:
     name: "유사 변수 사용"
     example:
       original: "음식점 SaaS 도입률 (unknown)"
       proxy: "소상공인 SaaS 도입률 (가용?)"
       adjustment: "× 업종 조정 계수"
-  
+
   strategy_3_benchmark:
     name: "업계 평균 사용"
     example:
       original: "ARPU (unknown)"
       benchmark: "유사 vertical SaaS ARPU"
       source: "Layer 7 (RAG)"
-  
+
   strategy_4_constraint:
     name: "범위로 대체"
     example:
@@ -1049,27 +1041,27 @@ alternative_variable_search:
 
 recursive_example_detailed:
   question: "음식점 Vertical SaaS LTV는?"
-  
+
   depth_0:
     model: "LTV = ARPU × (1 / Churn Rate)"
     variables:
       arpu: {available: false, need_recursive: true}
       churn: {available: false, need_recursive: true}
-  
+
   depth_1_arpu:
     question: "ARPU는?"
     depth: 1
-    
+
     # Phase 1-2: ARPU에 대한 모형 생성
     models_generated:
       - "ARPU = 기본료 + 추가료"
       - "ARPU = Tier별 가중 평균"
-    
+
     selected_model: "ARPU = 기본료 + 추가료"
     variables:
       기본료: {available: false, need_recursive: true}
       추가료: {available: false, need_recursive: true}
-    
+
     # ========================================
     # 향후: Multi-Layer 우선 시도 (주석)
     # ========================================
@@ -1077,115 +1069,115 @@ recursive_example_detailed:
     #   layer_1_7: "RAG 검색 등"
     #   result: "발견 시 재귀 불필요"
     # ========================================
-    
+
     # 현재: 바로 재귀 호출
     immediate_recursion: true
-  
+
   depth_2_기본료:
     question: "기본료는?"
     depth: 2
-    
+
     # Phase 2: 모형 시도
     models_generated: []  # 단순 질문 (모형 불필요 판단)
-    
+
     # ========================================
     # 향후: Multi-Layer (주석)
     # ========================================
     # multilayer_result: "50,000원 (Layer 7 RAG)"
     # ========================================
-    
+
     # 현재: 추정값 사용
     estimated_value: 50000
     method: "업계 평균 또는 추정"
     recursive: false  # Depth 2라 단순 값
-  
+
   depth_2_추가료:
     question: "추가료는?"
     depth: 2
-    
+
     # Phase 2: 모형 생성
     models_generated: ["추가료 = 사용량 × 단가"]
     selected: "추가료 = 사용량 × 단가"
-    
+
     variables:
       사용량: {available: false, need_recursive: true}
       단가: {available: false, need_recursive: true}
-    
+
     # 현재: 바로 재귀
     immediate_recursion: true
-  
+
   depth_3_사용량:
     question: "평균 사용량은?"
     depth: 3
-    
+
     # Phase 2: 단순 질문
     models_generated: []  # 모형 불필요
-    
+
     # ========================================
     # 향후: Multi-Layer (주석)
     # ========================================
     # multilayer_result: "1,000건 (Layer 6 통계)"
     # ========================================
-    
+
     # 현재: 추정값
     estimated_value: 1000
     method: "업계 평균"
     recursive: false  # Depth 3
-  
+
   depth_3_단가:
     question: "단가는?"
     depth: 3
-    
+
     # Phase 2: 단순 질문
     models_generated: []
-    
+
     # ========================================
     # 향후: Multi-Layer (주석)
     # ========================================
     # multilayer_result: "30원 (Layer 7 RAG)"
     # ========================================
-    
+
     # 현재: 추정값
     estimated_value: 30
     method: "업계 평균"
     recursive: false  # Depth 3
-  
+
   depth_1_churn:
     question: "Churn Rate는?"
     depth: 1
-    
+
     # Phase 2: 단순 질문
     models_generated: []  # 모형 불필요
-    
+
     # ========================================
     # 향후: Multi-Layer (주석)
     # ========================================
     # multilayer_result: "0.05 (Layer 6 통계)"
     # ========================================
-    
+
     # 현재: 업계 평균
     estimated_value: 0.05
     method: "SaaS 업계 평균"
     recursive: false
-  
+
   backtrack_calculation:
     depth_3_complete:
       - "사용량 = 1,000건"
       - "단가 = 30원"
-    
+
     depth_2_complete:
       - "추가료 = 1,000 × 30 = 30,000원"
       - "기본료 = 50,000원"
-    
+
     depth_1_complete:
       - "ARPU = 50,000 + 30,000 = 80,000원"
       - "Churn = 0.05"
-    
+
     depth_0_complete:
       - "LTV = 80,000 × (1 / 0.05)"
       - "LTV = 80,000 × 20"
       - "LTV = 1,600,000원"
-  
+
   final_result:
     value: 1600000
     max_depth_reached: 3
@@ -1202,7 +1194,7 @@ recursive_example_detailed:
 
 circular_dependency_detection:
   concept: "A → B → A 순환 방지"
-  
+
   detection_method:
     call_stack_tracking:
       structure:
@@ -1212,24 +1204,24 @@ circular_dependency_detection:
           question: "점유율은?"
         - depth: 2
           question: "시장 규모는?"  # ← 순환!
-      
+
       detection: "call_stack에 동일 질문 존재"
       action: "재귀 중단, 대체 모형 시도"
-  
+
   example:
     scenario:
       depth_0:
         question: "음식점 SaaS 시장은?"
         model: "시장 = 유사시장 × 점유율"
-      
+
       depth_1:
         question: "점유율은?"
         model: "점유율 = 우리 매출 / 시장"  # ← 시장 참조!
-      
+
       depth_2:
         question: "시장은?"  # ← 순환 감지!
         action: "중단!"
-    
+
     resolution:
       action: "Model 변경"
       alternative_model: "점유율 = 업계 평균 (Layer 6)"
@@ -1241,19 +1233,19 @@ circular_dependency_detection:
 
 output_format:
   fermi_estimation_result:
-    
+
     # 기본 정보
     question: "string"
     value: "number"
     unit: "string"
-    
+
     # Fermi 핵심!
     model:
       id: "MODEL_ID"
       formula: "mathematical expression"
       description: "설명"
       selection_reason: "왜 이 모형을 선택했는가"
-    
+
     # 분해된 요소들
     components:
       - name: "variable name"
@@ -1261,23 +1253,23 @@ output_format:
         source: "Layer X"
         confidence: "0.0-1.0"
         how_obtained: "어떻게 구했는가"
-    
+
     # 계산 과정 (재조립)
     calculation_steps:
       - step: "A × B"
         result: "intermediate"
       - step: "intermediate × C"
         result: "final"
-    
+
     # 대체 모형들
     alternative_models:
       - id: "MODEL_YYY"
         why_not_selected: "이유"
-    
+
     # 신뢰도
     confidence: "combined confidence"
     error_range: "±X%"
-    
+
     # 추적성 (Fermi 8단계)
     fermi_trace:
       step_1_problem: "문제 정의"
@@ -1294,10 +1286,10 @@ output_format:
 # ========================================
 
 usage_scenario:
-  
+
   scenario_1_complex_estimation:
     question: "국내 B2B SaaS 시장 규모는?"
-    
+
     process:
       phase_1_scan:
         available:
@@ -1305,37 +1297,37 @@ usage_scenario:
           - "B2B SaaS 도입률 평균: 20% (업계)"
           - "평균 ARPU: 50만원 (RAG)"
         unknown: []
-      
+
       phase_2_models:
         generated:
           - "시장 = 기업 × 도입률 × ARPU × 12"
           - "시장 = SMB시장 + Mid시장 + Enterprise시장"
           - "시장 = 글로벌 × 한국 비중"
-      
+
       phase_3_feasibility:
-        model_1: "3개 변수 모두 가용 ✅"
+        model_1: "3개 변수 모두 가용 "
         model_2: "세그먼트별 데이터 부족 ❌"
         model_3: "글로벌 데이터 있지만 비중 불확실 △"
-        
+
         selected: "MODEL_1"
-      
+
       phase_4_execute:
         calculation: "120만 × 20% × 50만 × 12"
         result: "1.44조원"
-  
+
   scenario_2_iteration_needed:
     question: "음식점 재방문 주기는?"
-    
+
     iteration:
       round_1:
         models: ["재방문 = f(만족도, 거리, 가격)"]
         feasibility: "3개 변수 모두 unknown ❌"
         action: "대체 모형 필요"
-      
+
       round_2:
         alternative: "직접 RAG 벤치마크 검색"
         models: ["유사 업종 재방문 주기"]
-        feasibility: "Layer 7에서 발견 ✅"
+        feasibility: "Layer 7에서 발견 "
         result: "30일"
 
 # ========================================
@@ -1343,50 +1335,50 @@ usage_scenario:
 # ========================================
 
 llm_prompts:
-  
+
   model_generation:
     system: |
       당신은 Fermi Estimation 전문가입니다.
       질문을 계산 가능한 수학적 모형으로 분해하세요.
-    
+
     user_template: |
       질문: {question}
-      
+
       가용한 데이터:
       {available_data}
-      
+
       임무:
       1. 이 질문에 답하기 위한 계산 모형을 3-5개 제시
       2. 각 모형은 다른 분해 방식 사용
       3. 가용 데이터 최대한 활용
       4. Unknown 변수 최소화
       5. 간단할수록 좋음 (Occam's Razor)
-      
+
       출력:
       Model 1: [수식]
         Variables: [A (가용), B (unknown), ...]
         Logic: [왜 이렇게 분해?]
-      
+
       Model 2: ...
-  
+
   alternative_variable:
     system: |
       당신은 변수 분해 전문가입니다.
       Unknown 변수를 가용한 변수들로 분해하세요.
-    
+
     user_template: |
       Unknown 변수: {variable_name}
-      
+
       가용한 변수들:
       {available_variables}
-      
+
       질문:
       "{variable_name}"를 가용한 변수들로 표현할 수 있나요?
-      
+
       예시:
       - 도입률 = 인지율 × 전환율
       - ARPU = 기본료 + 추가료
-      
+
       가능하면 수식과 논리를 제시하세요.
 
 # ========================================
@@ -1394,76 +1386,76 @@ llm_prompts:
 # ========================================
 
 execution_flow_summary:
-  
+
   input:
     question: "string"
     project_context: "Dict (optional)"
-  
+
   process:
     phase_1:
       name: "초기 스캔 (v7.5.0 구현)"
       duration: "5-10초"
       output: "available_data, unknown_data"
       implementation: "tier3.py _phase1_scan() (Line 582-666)"
-      
+
       v7_5_0_feature:
-        data_inheritance: "부모 데이터 상속 (Line 615-629)" ⭐
+        data_inheritance: "부모 데이터 상속 (Line 615-629)" 
         benefit: "재계산 불필요, 일관성 보장"
-    
+
     phase_2:
       name: "모형 생성 (v7.5.0 구현)"
       duration: "템플릿 즉시, LLM 10-20초"
       output: "1-5개 모형"
       implementation: "tier3.py _phase2_generate_models() (Line 668-738)"
-      
+
       v7_5_0_feature:
-        template_matching: "12개 지표 우선 매칭 (Line 685-827)" ⭐
-        llm_integration: "External mode만 LLM 호출 (Line 730-920)" ⭐
-        variable_policy: "SimpleVariablePolicy 필터링 (Line 713-725)" ⭐
-    
+        template_matching: "12개 지표 우선 매칭 (Line 685-827)" 
+        llm_integration: "External mode만 LLM 호출 (Line 730-920)" 
+        variable_policy: "SimpleVariablePolicy 필터링 (Line 713-725)" 
+
     phase_3:
       name: "실행 가능성 체크 (v7.5.0 구현)"
       duration: "각 모형당 5-60초 (재귀)"
       output: "ranked_models"
       implementation: "tier3.py _phase3_check_feasibility() (Line 928-1043)"
-      
+
       v7_5_0_feature:
         recursion: "재귀 추정 (Line 1045-1152)"
         tier2_first: "Tier 2 우선 시도 (재귀 최소화)"
         scoring: "4개 기준 점수화 (Line 1154-1257)"
-    
+
     phase_4:
       name: "최선 모형 실행 (v7.5.0 구현)"
       duration: "5초"
       output: "EstimationResult (decomposition 포함)"
       implementation: "tier3.py _phase4_execute() (Line 1259-1324)"
-      
+
       v7_5_0_feature:
-        formula_parser: "안전한 수식 파서 (Line 1327-1368)" ⭐
+        formula_parser: "안전한 수식 파서 (Line 1327-1368)" 
         geometric_mean: "Confidence 조합"
         decomposition_trace: "DecompositionTrace 생성"
-  
+
   total_time:
     template_match: "10-30초 (재귀 depth에 따라)"
     llm_generation: "+10-20초 (External mode, 템플릿 없을 때만)"
-    
+
     typical:
       simple: "10-15초 (depth 0-1)"
       medium: "15-25초 (depth 2)"
       complex: "25-30초 (depth 3-4)"
-  
+
   fallback:
     condition: "모든 모형 실행 불가"
-    
+
     tier3_fallback_v7_5_0:
       depth_4_reached:
         action: "Tier 2 Fallback (tier3.py Line 506-512)"
         reason: "Max depth 도달"
-      
+
       circular_detected:
         action: "재귀 중단 (tier3.py Line 513-516)"
         reason: "순환 의존성"
-      
+
       template_fail_native:
         action: "Tier 3 중단 (tier3.py Line 662-665)"
         reason: "Native mode는 Cursor에게 맡김"
@@ -1474,47 +1466,47 @@ execution_flow_summary:
 # ========================================
 
 v7_5_0_implementation_summary:
-  
-  status: "✅ 100% 구현 완료"
+
+  status: " 100% 구현 완료"
   version: "v7.5.0"
   date: "2025-11-08"
-  
+
   files:
     main: "tier3.py (1,463줄)"
     tests:
       - "test_tier3_basic.py (222줄, 4/4)"
       - "test_tier3_business_metrics.py (254줄, 4/4)"
     integration: "estimator.py (+12줄)"
-  
+
   features_implemented:
-    - "✅ Phase 1-4 완전 구현"
-    - "✅ 12개 비즈니스 지표 템플릿 (23개 모형)"
-    - "✅ SimpleVariablePolicy (20줄, KISS)"
-    - "✅ 재귀 로직 (max depth 4)"
-    - "✅ 순환 감지 (Call stack)"
-    - "✅ 데이터 상속 (v7.5.0)"
-    - "✅ 안전한 수식 파서 (+,-,*,/,괄호,×)"
-    - "✅ LLM 모드 통합 (Native/External)"
-    - "✅ Tier 2 우선 시도 (재귀 최소화)"
-    - "✅ EstimatorRAG 통합 (Tier 1→2→3)"
-  
+    - " Phase 1-4 완전 구현"
+    - " 12개 비즈니스 지표 템플릿 (23개 모형)"
+    - " SimpleVariablePolicy (20줄, KISS)"
+    - " 재귀 로직 (max depth 4)"
+    - " 순환 감지 (Call stack)"
+    - " 데이터 상속 (v7.5.0)"
+    - " 안전한 수식 파서 (+,-,*,/,괄호,×)"
+    - " LLM 모드 통합 (Native/External)"
+    - " Tier 2 우선 시도 (재귀 최소화)"
+    - " EstimatorRAG 통합 (Tier 1→2→3)"
+
   test_results:
     total: "8/8 (100%)"
     basic: "4/4"
     business_metrics: "4/4"
     linter: "0 errors"
-  
+
   coverage:
     tier_3: "5% → 0.5% (Year 1)"
     total_system: "100% (Tier 1/2/3)"
     failure_rate: "0%"
-  
+
   performance:
     template_match: "90-95% 커버"
     llm_needed: "5-10% (External mode만)"
     cost_native: "$0"
     cost_external: "~$0.03/질문"
-  
+
   design_vs_implementation:
     design: "fermi_model_search.yaml (1,270줄)"
     implementation: "tier3.py (1,463줄)"
@@ -1523,8 +1515,8 @@ v7_5_0_implementation_summary:
       - "Multi-Layer 통합: 미구현 (Tier 2로 대체)"
       - "변수 정책: Hybrid 대신 Simple 채택"
       - "LLM: Native 모드 추가"
-  
-  production_ready: "✅ YES"
+
+  production_ready: " YES"
 
 # ========================================
 # END

@@ -8,9 +8,31 @@ FILE CREATION STRATEGY - MANDATORY:
   2. search_replace: Add sections sequentially, max 200-300 lines each
   Reason: 700+ line write operations fail frequently, cause errors, cannot recover
 
-SPLIT PROCESS:
+SPLIT PROCESS - MANDATORY:
 Step 1: write tool - skeleton with imports, constants, class/function signatures
 Step 2-N: search_replace - add implementation by logical sections (classes, function groups, config sections)
 Each addition: 200-300 lines max
 Never attempt single write operation >700 lines
 
+EMOJI POLICY - MANDATORY:
+- NEVER use emojis in code, comments, or responses
+- Exception: Only when user explicitly requests emoji usage
+- Reason: Professional consistency, avoid visual noise
+
+TRAILING SPACES - MANDATORY:
+- ALWAYS check for trailing whitespace before completing edits
+- Remove all trailing spaces at line ends
+- Apply to: All file types (.py, .yaml, .md, .txt, etc.)
+- Tool sequence: After write/search_replace → verify no trailing spaces
+- Reason: Git diff pollution, linting errors, professional standards
+
+YAML VALIDATION - MANDATORY:
+- ALWAYS validate YAML syntax before completing edits
+- Check: Indentation (spaces only, no tabs), key-value format, list syntax
+- Run validation: Use yamllint or Python yaml.safe_load() mentally
+- Common errors to prevent:
+  - Mixed tabs/spaces
+  - Incorrect indentation levels
+  - Missing colons after keys
+  - Unquoted special characters (: [ ] { } # etc.)
+- Reason: Runtime errors, data corruption, deployment failures

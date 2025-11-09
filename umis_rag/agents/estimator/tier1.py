@@ -180,7 +180,7 @@ class Tier1FastPath:
         )
         
         if not results:
-            logger.info("    RAG 매칭 없음 (유사도 <0.85)")
+            logger.info("    RAG 매칭 없음 (유사도 <0.95)")
             return None
         
         # 최고 유사도 선택
