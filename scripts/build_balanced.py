@@ -69,6 +69,10 @@ class BalancedBuilder:
             with open(src_path, 'r', encoding='utf-8') as f:
                 data = yaml.safe_load(f)
             
+            # 데이터 검증
+            if data is None:
+                raise ValueError(f"YAML 파싱 결과가 None입니다 (빈 파일이거나 주석만 있음)")
+            
             # JSON 직렬화 (최소 크기)
             json_str = json.dumps(
                 data,
@@ -109,6 +113,10 @@ class BalancedBuilder:
             # YAML 로드
             with open(src_path, 'r', encoding='utf-8') as f:
                 data = yaml.safe_load(f)
+            
+            # 데이터 검증
+            if data is None:
+                raise ValueError(f"YAML 파싱 결과가 None입니다 (빈 파일이거나 주석만 있음)")
             
             # MessagePack 직렬화
             packed = msgpack.packb(data, use_bin_type=True)
