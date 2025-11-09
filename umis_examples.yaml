@@ -29,11 +29,11 @@ _meta:
 
 quick_start_examples:
   description: "UMIS v7.0.0 빠른 시작"
-  
+
   # 예시 1: AI 자동 설치
   example_1_auto_install:
     user: "UMIS 설치해줘"
-    
+
     ai_action:
       1: "setup/AI_SETUP_GUIDE.md 참조"
       2: "python setup/setup.py 실행"
@@ -42,18 +42,18 @@ quick_start_examples:
       5: "OpenAI API 키 입력 안내"
       6: "RAG 인덱스 빌드 (python scripts/02_build_index.py)"
       7: "완료 메시지"
-    
+
     duration: "2-3분"
     cost: "$0.006 (OpenAI API)"
-  
+
   # 예시 2: 첫 분석 요청
   example_2_first_analysis:
     user: |
       Cursor Composer (Cmd+I):
       umis.yaml 첨부
-      
+
       "@Explorer, 음악 스트리밍 구독 서비스 시장 분석해줘"
-    
+
     explorer_rag_workflow:
       step_1_pattern_search:
         action: "Vector RAG 검색 (자동)"
@@ -62,7 +62,7 @@ quick_start_examples:
           - "subscription_model (0.95 similarity)"
           - "platform_business_model (0.87)"
           - "advertising_model (0.72)"
-      
+
       step_2_case_search:
         action: "성공 사례 검색 (자동)"
         pattern: "subscription_model"
@@ -70,14 +70,14 @@ quick_start_examples:
           - "Spotify: 2억 유료 구독자"
           - "Netflix: 구독 모델 선도"
           - "Apple Music: 번들링 전략"
-      
+
       step_3_graph_search:
         action: "패턴 조합 발견 (Knowledge Graph)"
         combinations:
           - "subscription + platform (confidence: 0.87)"
           - "subscription + advertising (confidence: 0.78)"
         insight: "하이브리드 모델 (유료 + 광고) 최적"
-      
+
       step_4_hypothesis:
         action: "기회 가설 생성"
         hypothesis: |
@@ -85,24 +85,24 @@ quick_start_examples:
           - Spotify 모델 (유료 구독)
           - YouTube Music 모델 (프리미엄 + 광고)
           - 로컬 아티스트 중심 차별화 기회
-          
+
           추천: 하이브리드 모델 (프리미엄 유료 + 광고 무료)
-    
+
     result: "RAG 기반 검증된 패턴 + 실제 사례로 가설 생성"
-  
+
   # 예시 3: Agent 이름 커스터마이징
   example_3_customization:
     user: |
       config/agent_names.yaml 수정:
-      
+
       explorer: Alex
-    
+
     usage: |
       Cursor:
       "@Alex, 기회 찾아봐"
-      
+
       → Alex (Explorer)가 RAG 검색 시작
-    
+
     bidirectional:
       input: "@Alex"
       mapping: "Alex → Explorer"
@@ -114,120 +114,120 @@ quick_start_examples:
 
 rag_usage_examples:
   description: "Explorer RAG 활용 실제 사례"
-  
+
   # 예시 1: 패턴 매칭
   pattern_matching:
     scenario: "구독 모델 시장 진입 검토"
-    
+
     user_query: "@Explorer, 구독 모델 패턴 찾아줘"
-    
+
     rag_search:
       vector_search:
         query: "구독 모델"
         collection: "projected_index"
         filter: "agent_view=explorer"
         top_k: 5
-        
+
         results:
           - pattern_id: "subscription_model"
             similarity: 0.95
             content: "recurring_revenue, retention, churn_rate..."
-          
+
           - pattern_id: "platform_business_model"
             similarity: 0.82
             content: "network_effects와 subscription 조합..."
-      
+
       graph_search:
         query: "(subscription)-[COMBINES_WITH]->()"
-        
+
         combinations:
           - subscription + platform (confidence: 0.87)
             evidence: "Spotify, Netflix"
-          
+
           - subscription + licensing (confidence: 0.75)
             evidence: "Adobe Creative Cloud"
-        
+
         insight: "플랫폼과 구독 조합이 가장 강력"
-    
+
     explorer_output: |
       🔍 구독 모델 패턴 발견!
-      
+
       **핵심 패턴**: subscription_model
       - Recurring Revenue (반복 수익)
       - Retention이 핵심 (해지율 관리)
       - Churn Rate 5-7% 목표
-      
+
       **성공 사례**:
       - Spotify: 유료 전환율 46%
       - Netflix: 해지율 2.4%
       - Adobe: 구독 전환 후 매출 3배
-      
+
       **조합 패턴**:
       - 구독 + 플랫폼 (Spotify 모델)
       - 구독 + 라이선싱 (Adobe 모델)
-      
+
       **권장 전략**: 플랫폼 효과와 구독 모델 결합
-  
+
   # 예시 2: 사례 검색
   case_search:
     scenario: "음악 산업 구독 서비스 벤치마킹"
-    
+
     user_query: "@Explorer, 음악 산업 구독 서비스 성공 사례 찾아줘"
-    
+
     rag_search:
       filter:
         industry: "음악"
         pattern: "subscription_model"
         chunk_type: "success_case"
-      
+
       results:
         - case: "Spotify"
           key_metrics:
             subscribers: "2억명 (유료)"
             churn_rate: "5.2%"
             conversion_rate: "46% (무료→유료)"
-          
+
           critical_success_factors:
             - "개인화 추천 알고리즘"
             - "플랫폼 효과 (아티스트 + 청취자)"
             - "프리미엄 차별화 (광고 제거, 오프라인)"
-        
+
         - case: "Apple Music"
           key_metrics:
             subscribers: "8,800만명"
             bundling: "Apple One 번들"
-          
+
           critical_success_factors:
             - "기기 생태계 통합"
             - "독점 콘텐츠"
             - "Family Plan"
-    
+
     explorer_output: |
       🎵 음악 구독 서비스 사례 분석
-      
+
       **Spotify 모델**:
       - 프리미엄 전환 46% (업계 최고)
       - 핵심: 개인화 + 플랫폼 효과
       - 해지율 5.2% (우수)
-      
+
       **Apple Music 모델**:
       - 생태계 통합 (iPhone, iPad, Mac)
       - 번들링으로 이탈 방지
-      
+
       **한국 시장 적용**:
       - 로컬 아티스트 중심 차별화
       - K-POP 글로벌 팬 공략
       - 하이브리드 모델 (유료 + 광고)
-  
+
   # 예시 3: 패턴 조합 발견
   pattern_combination:
     scenario: "플랫폼 비즈니스 혁신 기회"
-    
+
     user_query: "@Explorer, 플랫폼 모델과 조합 가능한 패턴 찾아줘"
-    
+
     graph_search:
       query: "(platform)-[COMBINES_WITH]->()"
-      
+
       top_combinations:
         - combination: "platform + subscription"
           confidence: 0.87
@@ -236,7 +236,7 @@ rag_usage_examples:
             - "네트워크 효과 + 반복 수익"
             - "플랫폼 성장 = 구독 가치 증가"
             - "양면 시장에서 lock-in 강화"
-        
+
         - combination: "platform + advertising"
           confidence: 0.85
           evidence: ["Google", "Facebook", "YouTube"]
@@ -244,7 +244,7 @@ rag_usage_examples:
             - "무료 접근 + 광고 수익"
             - "네트워크 효과 극대화"
             - "데이터 기반 타겟팅"
-        
+
         - combination: "platform + licensing"
           confidence: 0.72
           evidence: ["Uber (차량)", "Airbnb (숙소)"]
@@ -252,20 +252,20 @@ rag_usage_examples:
             - "자산 소유 없이 중개"
             - "공급자 라이선싱"
             - "경량화된 구조"
-    
+
     explorer_output: |
       🔗 플랫폼 조합 패턴 발견!
-      
+
       **최고 조합**: platform + subscription (0.87)
       - Spotify, Netflix, LinkedIn 검증
       - 네트워크 효과 + 반복 수익
       - 추천: 음악, 영상, B2B SaaS
-      
+
       **2위**: platform + advertising (0.85)
       - Google, Facebook, YouTube
       - 무료 + 광고 수익
       - 추천: 소셜 미디어, 검색
-      
+
       **인사이트**:
       하이브리드 모델 (구독 + 광고) 고려
       → YouTube Premium, Spotify 성공 사례
@@ -276,12 +276,12 @@ rag_usage_examples:
 
 agent_collaboration_examples:
   description: "v7.0.0 Agent 협업 실제 시나리오"
-  
+
   # 시나리오: 피아노 구독 서비스 시장 분석
   scenario_piano_subscription:
     project: "피아노 구독 서비스 시장 분석"
     duration: "3일"
-    
+
     # Day 1: Discovery Sprint
     day_1_discovery:
       rachel_validator:
@@ -291,53 +291,53 @@ agent_collaboration_examples:
             data: "한국 피아노 시장 1,500억원"
             source: "한국문화예술위원회 2023"
             reliability: 85
-          
+
           - source_id: "SRC_20241031_002"
             data: "피아노 학원 수 3,000개"
             reliability: 75
             note: "추정치 (전체 음악학원 × 30%)"
-        
+
         deliverable: "source_registry.yaml"
-      
+
       bill_quantifier:
         task: "초기 시장 규모 추정"
         input: "Rachel의 SRC_ID 참조"
-        
+
         calculation:
           method_1_topdown: "1,500억 × 피아노 비중 15% = 225억"
           method_2_bottomup: "3,000 학원 × 평균 매출 9,000만 = 270억"
           convergence: "225억 ~ 270억"
-        
+
         deliverable: "초기 SAM 추정"
-      
+
       albert_observer:
         task: "피아노 시장 구조 관찰"
-        
+
         value_chain:
           - "제조사 (야마하, 삼익, 영창)"
           - "유통 (대리점, 악기점)"
           - "최종 (가정용 70%, 학원용 30%)"
-        
+
         inefficiency: "높은 초기 비용 → 진입장벽 → 구독 기회?"
-        
+
         deliverable: "market_reality_report.md"
-      
+
       steve_explorer:
         task: "기회 발굴 (RAG 활용!)"
-        
+
         rag_search:
           step_1: "구독 모델 패턴 검색"
           found: "subscription_model (31개 패턴 중 발견)"
-          
+
           step_2: "유사 사례 검색"
           found:
             - "Peloton: 운동기구 구독"
             - "코웨이: 정수기 구독 (해지율 4.2%)"
             - "Rent the Runway: 의류 구독"
-          
+
           step_3: "패턴 조합 (Graph)"
           found: "subscription + platform (레슨 매칭)"
-        
+
         hypothesis:
           title: "피아노 구독 + 레슨 매칭 플랫폼"
           model: "월 5만원 (피아노 대여 + 온라인 레슨)"
@@ -345,31 +345,31 @@ agent_collaboration_examples:
             - "코웨이 해지율 4.2% (낮음)"
             - "Peloton 모델 (기구 + 컨텐츠)"
             - "구독 + 플랫폼 조합 검증 (confidence 0.87)"
-        
+
         deliverable: "OPP_20241031_001_piano_subscription.md"
-    
+
     # Day 2-3: 검증 및 정교화
     validation:
       albert_review:
         question: "피아노 시장 구조에서 구독 모델 가능한가?"
         analysis: "가정용 70% 시장에서 초기 비용 부담 해소 → 구독 적합"
-        result: "✅ 구조적 실현 가능성 통과"
-      
+        result: " 구조적 실현 가능성 통과"
+
       bill_review:
         question: "월 5만원 모델 경제적으로 성립하는가?"
         calculation:
           revenue: "5만원 × 5,000명 = 2.5억/월"
           cost: "피아노 감가 + 배송 + 관리"
           margin: "20% 예상"
-        result: "✅ 경제적 타당성 통과"
-      
+        result: " 경제적 타당성 통과"
+
       rachel_review:
         question: "코웨이 해지율 4.2% 데이터 신뢰할 만한가?"
         verification: "공시자료 확인, 신뢰도 95%"
-        result: "✅ 근거 신뢰성 통과"
-    
+        result: " 근거 신뢰성 통과"
+
     final_output:
-      status: "3명 검증 통과 ✅"
+      status: "3명 검증 통과 "
       grade: "A"
       recommendation: "실행 계획 수립 단계로 진행"
 
@@ -379,47 +379,47 @@ agent_collaboration_examples:
 
 rag_search_examples:
   description: "다양한 RAG 검색 시나리오"
-  
+
   # Python API 사용
   python_api_example:
     code: |
       from umis_rag.agents.explorer import ExplorerRAG
-      
+
       explorer = ExplorerRAG()
-      
+
       # 패턴 검색
       patterns = explorer.search_patterns("구독 모델")
-      
+
       # 결과: [subscription_model, platform, ...]
-      
+
       # 사례 검색
       cases = explorer.search_cases(
           "음악 산업",
           pattern_id="subscription_model"
       )
-      
+
       # Hybrid Search (Vector + Graph)
       result = explorer.search_patterns_with_graph("구독 모델")
-      
+
       # 결과: 패턴 + 조합 + 인사이트
-  
+
   # CLI 사용
   cli_example:
     commands:
       search_pattern: |
         python scripts/query_rag.py "구독 모델"
-      
+
       search_case: |
         python scripts/query_rag.py case "음악" --pattern subscription_model
-      
+
       rebuild: |
         python scripts/02_build_index.py --agent explorer
-  
+
   # Cursor 사용 (권장)
   cursor_example:
     natural_language: |
       "@Explorer, 플랫폼 비즈니스 모델 패턴 찾아줘"
-      
+
       → Explorer가 자동으로:
         1. RAG 검색
         2. 패턴 발견
@@ -433,37 +433,37 @@ rag_search_examples:
 
 project_structure_example:
   description: "v7.0.0 표준 프로젝트 구조"
-  
+
   project_folder:
     path: "projects/20251103_piano_subscription/"
-    
+
     structure:
       00_overview:
         - ".project_meta.yaml (Stewart 자동 생성)"
         - "deliverables_registry.yaml (Stewart 자동 관리)"
         - "project_charter.md"
         - "progress_tracker.md"
-      
+
       02_analysis:
         validator:
           - "source_registry.yaml (Rachel)"
-        
+
         quantifier:
           - "market_sizing_piano.xlsx (Bill)"
           - "Sheet 1: Assumptions"
           - "Sheet 2: Estimation_Details (EST_001: 30% 비중 추정 논리)"
           - "Sheet 3-6: 4가지 Method"
           - "Sheet 7: Convergence (±30% 수렴)"
-        
+
         observer:
           - "market_reality_report.md (Albert)"
           - "모든 주장에 SRC_ID 또는 Bill 계산 참조"
-        
+
         explorer:
           - "OPP_20241031_001_piano_subscription.md (Steve)"
           - "Frontmatter: 검증 상태 (Albert, Bill, Rachel)"
           - "Markdown: 7개 섹션"
-      
+
       03_insights:
         - "key_findings.md"
         - "strategic_recommendations.md"
@@ -474,53 +474,53 @@ project_structure_example:
 
 configuration_examples:
   description: "config/ 폴더 활용"
-  
+
   # Agent 이름 변경
   agent_customization:
     file: "config/agent_names.yaml"
-    
+
     example_1_english:
       before: "explorer: Steve"
       after: "explorer: Alex"
       usage: "@Alex, 기회 찾아봐"
-    
+
     example_2_korean:
       before: "observer: Albert"
       after: "observer: 관찰자"
       usage: "@관찰자, 시장 구조 분석해줘"
-  
+
   # 실행 모드 변경
   runtime_mode:
     file: "config/runtime.yaml"
-    
+
     modes:
       yaml_only: "RAG 없이 YAML만 (안전)"
       hybrid: "Vector RAG만 (권장, 기본값)"
       rag_full: "Vector + Graph + Memory (모든 기능)"
-    
+
     change_example:
       current: "mode: hybrid"
       change_to: "mode: rag_full"
       effect: "Knowledge Graph 활성화"
-  
+
   # Projection 규칙 추가
   projection_rules_add:
     file: "config/projection_rules.yaml"
-    
+
     add_new_rule:
       field: "customer_lifetime_value"
       agents: "[explorer, quantifier]"
       reason: "LTV는 기회 평가 + 계산 모두 필요"
-      
+
       before: |
         # LLM 판단 (10%, 느림, 비용)
-      
+
       after: |
         customer_lifetime_value:
           agents: [explorer, quantifier]
           reason: "LTV 평가 + 계산"
           learned: false  # 수동 추가
-        
+
         # 규칙 적용 (90%, 빠름, 무료)
 
 # ========================================
@@ -529,44 +529,44 @@ configuration_examples:
 
 learning_system_example:
   description: "Projection 자동 학습"
-  
+
   llm_projection_log:
     file: "data/llm_projection_log.jsonl"
-    
+
     learning_process:
       1st_build:
-        field: "churn_rate" (규칙 없음)
+        field: "churn_rate (규칙 없음)"
         llm_decision:
           - "explorer: true (구독 평가에 필요)"
           - "quantifier: true (해지율 계산)"
-        
+
         log: |
           {"source_id": "...", "agent": "explorer", "decision": true}
           {"source_id": "...", "agent": "quantifier", "decision": true}
-      
+
       2nd_build:
         field: "churn_rate"
-        llm_decision: "[explorer, quantifier]" (동일)
+        llm_decision: "[explorer, quantifier] (동일)"
         log: "추가 로깅"
-      
+
       3rd_build:
         field: "churn_rate"
-        llm_decision: "[explorer, quantifier]" (동일)
-        
+        llm_decision: "[explorer, quantifier] (동일)"
+
         consistency_check: "3/3 일관성 100% (≥90%)"
-        
+
         auto_rule_generation: |
           config/projection_rules.yaml에 자동 추가:
-          
+
           churn_rate:
             agents: [explorer, quantifier, guardian]
             reason: "구독 평가 + 계산 + 검증"
             learned: true  # ← 학습으로 생성!
-      
+
       4th_build:
         field: "churn_rate"
         decision: "규칙 적용 (LLM 불필요)"
-        
+
         benefit:
           - "빠름 (LLM 호출 없음)"
           - "비용 절감 (API 비용 0)"
@@ -578,10 +578,10 @@ learning_system_example:
 
 version_update_example:
   description: "v7.0.0 → v7.1.0 업데이트 프로세스"
-  
+
   auto_script:
     command: "./update_version.sh 7.1.0"
-    
+
     auto_updates:
       - "VERSION.txt → 7.1.0"
       - "umis.yaml 첫 줄 → Compatible with v7.1.0"
@@ -590,16 +590,16 @@ version_update_example:
       - "README.md 배지 업데이트"
       - "BLUEPRINT Version Info 업데이트"
       - "CURRENT_STATUS 버전/날짜 업데이트"
-    
+
     duration: "3초"
-  
+
   manual_updates:
     1: "CHANGELOG.md 새 섹션 작성 (10분)"
     2: "BLUEPRINT 마일스톤 업데이트 (2분)"
     3: "CURRENT_STATUS 완성 기능 업데이트 (3분)"
-    
+
     duration: "15분"
-  
+
   total: "3초 (자동) + 15분 (수동) = 75% 시간 절감"
 
 # ========================================
@@ -608,48 +608,48 @@ version_update_example:
 
 troubleshooting_examples:
   description: "자주 발생하는 문제 및 해결"
-  
+
   # RAG 인덱스 없음
   rag_not_built:
     symptom: "Explorer가 패턴을 못 찾음"
-    
+
     solution: |
       python scripts/02_build_index.py --agent explorer
-      
+
       # 소요: 1-2분, 비용: $0.006
-  
+
   # OpenAI API 키 오류
   api_key_error:
     symptom: "OpenAI Authentication Error"
-    
+
     solution: |
       1. .env 파일 확인
       2. OPENAI_API_KEY=your-key 수정
       3. 재시도
-  
+
   # Neo4j 연결 실패
   neo4j_connection_error:
     symptom: "Neo4j connection failed"
-    
+
     solution: |
       # Docker 확인
       docker ps | grep neo4j
-      
+
       # 없으면 실행
       docker-compose up -d
-      
+
       # 연결 테스트
       python scripts/test_neo4j_connection.py
-  
+
   # Config 파일 찾을 수 없음
   config_not_found:
     symptom: "FileNotFoundError: config/..."
-    
+
     solution: |
       # v7.0.0에서 config/ 폴더로 이동됨
       # 오래된 참조 확인
       grep -r "agent_names.yaml" . --include="*.py"
-      
+
       # config/agent_names.yaml로 수정
 
 # ========================================
@@ -658,22 +658,22 @@ troubleshooting_examples:
 
 reference_documents:
   description: "추가 학습 자료"
-  
+
   getting_started:
     - "INSTALL.md: 설치 가이드"
     - "setup/START_HERE.md: 30초 빠른 시작"
     - "UMIS_ARCHITECTURE_BLUEPRINT.md: 전체 아키텍처"
-  
+
   understanding:
     - "FOLDER_STRUCTURE.md: 폴더 구조"
     - "CURRENT_STATUS.md: 현재 상태"
     - "CHANGELOG.md: 버전 이력"
-  
+
   configuration:
     - "config/README.md: Config 폴더 설명"
     - "config/agent_names.yaml: Agent 커스터마이징"
     - "config/runtime.yaml: 실행 모드"
-  
+
   advanced:
     - "dev_docs/architecture/: RAG v3.0 아키텍처"
     - "dev_docs/guides/: 개발 가이드"
@@ -684,11 +684,11 @@ reference_documents:
 
 estimator_examples:
   description: "Estimator (Fermi) Agent 사용 예시 - 3-Tier + 12개 비즈니스 지표"
-  
+
   # 예시 1: Tier 1 (Fast Path)
   example_1_tier1_fast:
     scenario: "학습된 질문 (두 번째 요청)"
-    
+
     first_request:
       user: "@Fermi, B2B SaaS Churn Rate는?"
       estimator_action:
@@ -697,45 +697,45 @@ estimator_examples:
         sources: ["statistical", "rag", "soft"]
         result: "6% (confidence: 0.85)"
         learning: "confidence >= 0.80 → 학습"
-    
+
     second_request:
       user: "@Fermi, B2B SaaS Churn Rate는?"  # 동일 질문
       estimator_action:
-        tier: 1  # ⭐ 학습된 규칙 사용
+        tier: 1  #  학습된 규칙 사용
         time: "0.3초"
         improvement: "17배 빠름"
         result: "6% (confidence: 0.85)"  # 동일한 답
-    
+
     key_point: "사용할수록 빨라짐 (학습 시스템)"
-  
+
   # 예시 2: Tier 2 (Judgment Path)
   example_2_tier2_judgment:
     scenario: "데이터 부족 시 추정"
-    
+
     user: "@Quantifier, 음식점 SaaS 전환율 필요해"
-    
+
     quantifier_action:
       step_1: "전환율 데이터 없음 확인"
       step_2: "Estimator 호출 (Single Source Policy)"
-      
+
       estimator_call:
         question: "음식점 SaaS 전환율은?"
         domain: "Food_Service_SaaS"
-      
+
       estimator_tier2:
         action_1: "Tier 1 체크 → 없음"
         action_2: "Tier 2 실행"
-        
+
         source_collection:
           - "RAG 벤치마크: 카페 SaaS 12% 발견"
           - "통계 패턴: B2B SaaS 평균 8-12%"
           - "행동경제학: Loss Aversion 조정"
-        
+
         judgment:
           strategy: "weighted_average"
           calculation: "(0.12×0.75 + 0.10×0.80) / (0.75+0.80) = 0.11"
           result: "11% (confidence: 0.78)"
-        
+
         reasoning_detail:
           method: "weighted_average"
           sources_used: ["rag", "statistical"]
@@ -752,28 +752,28 @@ estimator_examples:
             - "Step 2: 11개 Source 검색 → 2개 발견"
             - "Step 3: weighted_average 선택"
             - "Step 4: 계산 완료"
-      
+
       quantifier_usage:
         sam_calculation: "음식점 70만 × 디지털 30% × 전환 11% × ARPU"
         note: "Estimator 결과를 SAM 계산에 사용"
-    
+
     key_point: "Quantifier는 계산만, 추정은 Estimator"
-  
+
   # 예시 3: Tier 3 (Fermi Decomposition) - 비즈니스 지표
   example_3_tier3_business_metric:
     scenario: "LTV 추정 (재귀 분해)"
-    
+
     user: "@Fermi, B2B SaaS LTV는?"
-    
+
     estimator_tier3:
       step_1_tier1: "학습된 규칙 없음"
       step_2_tier2: "단일 값 추정 실패 (복잡)"
       step_3_tier3: "Tier 3 실행"
-      
+
       phase_1_scan:
         available: []
         unknown: []
-      
+
       phase_2_template:
         matched: "ltv"
         models:
@@ -784,21 +784,21 @@ estimator_examples:
             formula: "ltv = arpu × average_lifetime_months"
             variables: ["arpu", "average_lifetime_months"]
         selected: "LTV_001 (Unknown 2개, 더 간단)"
-      
+
       phase_3_recursive:
         depth_0: "ltv = arpu / churn_rate"
         unknown: ["arpu", "churn_rate"]
-        
+
         depth_1_arpu:
           question: "ARPU는?"
           tier2_result: "80,000원 (RAG 벤치마크, confidence: 0.85)"
           no_recursion: "Tier 2 성공"
-        
+
         depth_1_churn:
           question: "Churn Rate는?"
           tier2_result: "0.05 (통계 패턴, confidence: 0.80)"
           no_recursion: "Tier 2 성공"
-      
+
       phase_4_backtrack:
         formula: "ltv = arpu / churn_rate"
         bindings:
@@ -807,7 +807,7 @@ estimator_examples:
         calculation: "80,000 / 0.05 = 1,600,000원"
         confidence: "√(0.85 × 0.80) = 0.82 (Geometric Mean)"
         result: "1,600,000원 (confidence: 0.82)"
-      
+
       output:
         value: 1600000
         tier: 3
@@ -817,87 +817,87 @@ estimator_examples:
           variables:
             arpu: {value: 80000, confidence: 0.85, tier: 2}
             churn_rate: {value: 0.05, confidence: 0.80, tier: 2}
-    
+
     key_point: "Tier 3가 자동으로 재귀 분해 + Backtracking"
-  
+
   # 예시 4: Tier 3 - 데이터 상속 (v7.5.0)
   example_4_tier3_data_inheritance:
     scenario: "재귀 추정 시 부모 데이터 상속"
-    
+
     user: "@Fermi, Unit Economics는?"
-    
+
     estimator_tier3:
       depth_0:
         template: "unit_economics"
         formula: "ratio = ltv / cac"
         variables: ["ltv", "cac"]
-        
+
         phase_1_scan:
           parent_data: null  # depth 0
           available: []
           unknown: ["ltv", "cac"]
-      
+
       depth_1_ltv:
         question: "LTV는?"
         template: "ltv"
         formula: "ltv = arpu / churn_rate"
-        
+
         phase_1_scan:
           parent_data: {}  # depth 0 데이터
           available: []
           unknown: ["arpu", "churn_rate"]
-        
+
         depth_2_arpu:
           question: "ARPU는?"
           tier2_result: "80,000원"
-        
+
         depth_2_churn:
           question: "Churn Rate는?"
           tier2_result: "0.05"
-        
+
         result: "1,600,000원"
-      
+
       depth_1_cac:
         question: "CAC는?"
         template: "cac"
         formula: "cac = marketing_cost / new_customers"
-        
+
         phase_1_scan:
           parent_data: {}  # depth 0 데이터 (v7.5.0 상속 준비)
           available: []
           unknown: ["marketing_cost", "new_customers"]
-        
+
         tier2_result: "50,000원"
-      
+
       backtrack:
         formula: "ratio = ltv / cac"
         bindings: {ltv: 1600000, cac: 50000}
-        result: "32 (LTV/CAC = 32, 건강 ✅)"
-    
+        result: "32 (LTV/CAC = 32, 건강 )"
+
     data_inheritance_benefit:
       - "재귀 시 부모의 available 변수 상속"
       - "재계산 불필요 (효율성)"
       - "일관성 보장"
-    
+
     key_point: "v7.5.0 데이터 상속으로 재귀 최적화"
-  
+
   # 예시 5: LLM 모드 (Native vs External)
   example_5_llm_mode:
     scenario: "LLM 모드 선택"
-    
+
     # Native Mode (기본, 권장)
     native_mode:
       설정:
         llm_mode: "native"  # 기본값
         OPENAI_API_KEY: "sk-... (RAG 임베딩만)"
-      
+
       동작:
         템플릿_매칭_성공: |
           @Fermi, LTV는?
           → 템플릿: ltv
           → Tier 3 실행
           → 비용: $0
-        
+
         템플릿_매칭_실패: |
           @Fermi, 신규 시장 잠재력은?
           → 템플릿: 없음
@@ -905,27 +905,27 @@ estimator_examples:
           → "Cursor에게 요청하세요"
           → Cursor Native LLM이 직접 분석
           → 비용: $0 (Cursor 구독 포함)
-      
+
       장점:
         - "비용: $0"
         - "품질: 최고 (Sonnet 4.5)"
         - "속도: 빠름"
-      
+
       use_case: "일반 사용 (일회성 분석)"
-    
+
     # External Mode (자동화)
     external_mode:
       설정:
         llm_mode: "external"
         OPENAI_API_KEY: "sk-..."
-      
+
       동작:
         템플릿_매칭_성공: |
           LTV는?
           → 템플릿: ltv
           → Tier 3 실행
           → 비용: $0
-        
+
         템플릿_매칭_실패: |
           신규 시장 잠재력은?
           → 템플릿: 없음
@@ -934,173 +934,173 @@ estimator_examples:
           → 3-5개 모형 생성
           → Tier 3 실행
           → 비용: $0.03/질문
-      
+
       장점:
         - "완전 자동화"
         - "배치 처리 가능"
         - "Cursor 독립"
-      
+
       use_case: "자동화 (배치 처리, cron job)"
-    
+
     key_point: "Native는 비용 $0 권장, External은 자동화 시만"
-  
+
   # 예시 6: 12개 비즈니스 지표 템플릿 (v7.5.0)
   example_6_business_metrics:
     scenario: "비즈니스 지표 자동 계산 (Tier 3 템플릿)"
-    
+
     지표_목록:
       핵심_8개:
         - name: "Unit Economics"
           질문: "LTV/CAC 비율은?"
           모형: "ratio = ltv / cac"
-        
+
         - name: "Market Sizing"
           질문: "시장 규모는?"
           모형: "market = customers × adoption_rate × arpu × 12"
-        
+
         - name: "LTV"
           질문: "고객 생애 가치는?"
           모형: "ltv = arpu / churn_rate"
-        
+
         - name: "CAC"
           질문: "고객 획득 비용은?"
           모형: "cac = marketing_cost / new_customers"
-        
+
         - name: "Conversion Rate"
           질문: "전환율은?"
           모형: "conversion = paid_users / free_users"
-        
+
         - name: "Churn Rate"
           질문: "해지율은?"
           모형: "churn = churned_customers / total_customers"
-        
+
         - name: "ARPU"
           질문: "평균 매출은?"
           모형: "arpu = base_fee + overage_fee"
-        
+
         - name: "Growth Rate"
           질문: "성장률은?"
           모형: "growth = (current - last) / last"
-      
+
       고급_4개_v7_5_0:
         - name: "Payback Period"
           질문: "CAC 회수 기간은?"
           모형: "payback = cac / (arpu × gross_margin)"
           예시: "50,000 / (30,000 × 0.7) = 2.4개월"
-        
+
         - name: "Rule of 40"
           질문: "Rule of 40은?"
           모형: "rule_40 = growth_rate + profit_margin"
-          예시: "30% + 15% = 45% (건강 ✅)"
-        
+          예시: "30% + 15% = 45% (건강 )"
+
         - name: "Net Revenue Retention"
           질문: "NRR은?"
           모형: "nrr = 1 + expansion_rate - churn_rate"
-          예시: "1 + 0.10 - 0.05 = 1.05 (105%, 건강 ✅)"
-        
+          예시: "1 + 0.10 - 0.05 = 1.05 (105%, 건강 )"
+
         - name: "Gross Margin"
           질문: "매출총이익률은?"
           모형: "gross_margin = (revenue - cogs) / revenue"
           예시: "(1,000,000 - 300,000) / 1,000,000 = 70%"
-    
+
     usage:
       code: |
         from umis_rag.agents.estimator import EstimatorRAG
-        
+
         estimator = EstimatorRAG()
-        
+
         # 자동 템플릿 매칭
         result = estimator.estimate("Payback Period는?")
         # → 템플릿: payback
         # → 재귀 추정: cac, arpu, gross_margin
         # → Tier 3 결과
-      
+
       cursor: |
         @Fermi, Rule of 40은?
         → 템플릿 매칭: rule_of_40
         → 재귀: growth_rate, profit_margin
         → 결과: 45% (건강)
-    
+
     coverage: "90-95% (템플릿만으로 대부분 해결)"
-  
+
   # 예시 7: 순환 감지
   example_7_circular_detection:
     scenario: "순환 의존성 자동 감지"
-    
+
     문제_케이스:
       depth_0:
         question: "시장 규모는?"
         model: "시장 = 유사시장 × 점유율"
         unknown: ["유사시장", "점유율"]
-      
+
       depth_1:
         question: "점유율은?"
         model: "점유율 = 우리 매출 / 시장"  # ← 시장 참조!
         unknown: ["시장"]  # ← 순환!
-      
+
       depth_2:
         question: "시장은?"
         circular_detected: "Call stack에 '시장 규모는?' 존재"
         action: "⚠️  순환 감지 → 재귀 중단"
         alternative: "Tier 2 Fallback 또는 대체 모형"
-    
+
     안전_장치:
       - "Call stack 추적"
       - "순환 감지 시 즉시 중단"
       - "무한 재귀 방지"
-    
+
     key_point: "자동 순환 감지로 안전성 보장"
-  
+
   # 예시 8: SimpleVariablePolicy
   example_8_variable_policy:
     scenario: "변수 개수 자연 제한 (오버엔지니어링 회피)"
-    
+
     정책:
       권장: "6개 (Occam's Razor)"
       허용: "7-10개 (경고)"
       금지: "10개+ (Miller's Law)"
-    
+
     케이스_1_간단:
       모형: "churn = industry_avg"
       변수: 1개
-      판정: "정상 ✅"
-    
+      판정: "정상 "
+
     케이스_2_중간:
       모형: "market = customers × adoption × arpu × 12"
       변수: 4개
-      판정: "정상 ✅"
-    
+      판정: "정상 "
+
     케이스_3_복잡:
       모형: "market = A × B × C × D × E × F × G"
       변수: 7개
       판정: "⚠️  권장 초과 (허용, 경고)"
-    
+
     케이스_4_과다:
       모형: "market = A × B × ... × K"
       변수: 11개
       판정: "🛑 절대 상한 초과 (금지)"
-    
+
     설계_선택:
       제안: "Hybrid 방식 (300줄, Marginal Gain 계산)"
-      채택: "Simple 방식 (20줄, 간단 명확)" ✅
+      채택: "Simple 방식 (20줄, 간단 명확)" 
       이유: "98% 효과, 15배 간단, 96배 빠름"
-    
+
     key_point: "KISS 원칙 - 단순함이 최고"
-  
+
   # 예시 9: Validator 교차 검증 (v7.3.2)
   example_9_cross_validation:
     scenario: "외부 자료 추정치 교차 검증"
-    
+
     user: "@Validator, 이 보고서의 Churn 8% 맞아?"
-    
+
     validator_action:
       step_1: "Estimator에게 독립 추정 요청"
-      
+
       estimator_call:
         question: "B2B SaaS Churn Rate는?"
         context: {domain: "B2B_SaaS"}
         tier2_result: "6% (confidence: 0.85)"
-      
+
       step_2: "비교"
       comparison:
         claimed_value: 0.08  # 외부 주장
@@ -1109,12 +1109,12 @@ estimator_examples:
         threshold: "30%"
         result: "caution (경계선)"
         recommendation: "추가 검증 권장 (차이 33%)"
-      
+
       validator_output:
         validation_result: "caution"
         estimator_reasoning: {method: "weighted_average", sources: [...]}
         recommendation: "차이가 30% 초과, 추가 검증 권장"
-    
+
     key_point: "Validator는 직접 추정 안 함, Estimator 교차 검증"
 
 # ========================================
@@ -1123,29 +1123,29 @@ estimator_examples:
 
 reference_docs:
   description: "UMIS v7.5.0 참조 문서"
-  
+
   getting_started:
     - "README.md: 빠른 개요"
     - "setup/START_HERE.md: 30초 시작"
     - "UMIS_ARCHITECTURE_BLUEPRINT.md: 전체 아키텍처"
-    - "CURRENT_STATUS.md: 현재 상태 (v7.5.0)" ⭐
-  
+    - "CURRENT_STATUS.md: 현재 상태 (v7.5.0)" 
+
   understanding:
     - "FOLDER_STRUCTURE.md: 폴더 구조"
     - "CHANGELOG.md: 버전 이력"
-    - "UMIS_V7.5.0_RELEASE_NOTES.md: v7.5.0 릴리즈" ⭐
-  
+    - "UMIS_V7.5.0_RELEASE_NOTES.md: v7.5.0 릴리즈" 
+
   configuration:
     - "config/README.md: Config 폴더 (12개 파일)"
     - "config/agent_names.yaml: Agent 커스터마이징"
-    - "config/llm_mode.yaml: LLM 모드 (Native/External)" ⭐
+    - "config/llm_mode.yaml: LLM 모드 (Native/External)" 
     - "config/runtime.yaml: 실행 모드"
-  
+
   estimator:
-    - "TIER3_FINAL_REPORT.md: Tier 3 구현 완료" ⭐
-    - "TIER3_DESIGN_VERIFICATION.md: 설계 검증" ⭐
-    - "LLM_MODE_INTEGRATION_COMPLETE.md: LLM 모드" ⭐
-  
+    - "TIER3_FINAL_REPORT.md: Tier 3 구현 완료" 
+    - "TIER3_DESIGN_VERIFICATION.md: 설계 검증" 
+    - "LLM_MODE_INTEGRATION_COMPLETE.md: LLM 모드" 
+
   advanced:
     - "dev_docs/guestimation_v3/: Estimator 설계 (20개)"
     - "dev_docs/reports/: 분석 리포트 (10개)"

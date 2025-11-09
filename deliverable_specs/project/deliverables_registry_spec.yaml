@@ -1,12 +1,12 @@
 # ========================================
 # Deliverables Registry Specification
 # ========================================
-# 
+#
 # Agent: Stewart (Guardian) - 자동 관리
 # Output: deliverables_registry.yaml
 # Format: Pure YAML
 # Purpose: 모든 산출물 자동 등록 및 추적
-# 
+#
 # ========================================
 
 spec_meta:
@@ -26,31 +26,31 @@ output_file:
 # ========================================
 
 yaml_schema:
-  
+
   registry_meta:
     project_name: {type: "string"}
     created_date: {type: "date", auto: true}
     last_updated: {type: "datetime", auto: true}
     total_deliverables: {type: "integer", auto_calculate: true}
-  
+
   deliverables:
     type: "array"
     auto_append: true
     item_schema: "deliverable_entry"
 
   deliverable_entry_schema:
-    
+
     deliverable_id:
       type: "string"
       format: "DEL_YYYYMMDD_NNN"
       auto_generate: true
       example: "DEL_20241031_001"
-    
+
     agent_id:
       type: "enum"
       values: ["validator", "quantifier", "observer", "explorer"]
       required: true
-    
+
     agent_name:
       type: "string"
       auto_populate: "agent_id 기반 매핑"
@@ -59,49 +59,49 @@ yaml_schema:
         quantifier: "Bill (Quantifier)"
         observer: "Albert (Observer)"
         explorer: "Steve (Explorer)"
-    
+
     file_path:
       type: "string"
       format: "상대 경로"
       example: "02_analysis/validator/data_sources/source_registry.yaml"
-    
+
     file_type:
       type: "enum"
       values: ["yaml", "xlsx", "md", "pdf"]
-    
+
     file_size:
       type: "string"
       format: "XXX KB or XXX MB"
       auto_detect: true
-    
+
     created_date:
       type: "date"
       auto_generate: true
-    
+
     status:
       type: "enum"
       values: ["draft", "completed", "validated"]
       default: "draft"
       updatable: true
-    
+
     validation_status:
       type: "object"
-      
+
       required_validators:
         type: "array"
         values: ["observer", "quantifier", "validator", "guardian"]
         description: "필수 검증자 목록"
-      
+
       completed_validators:
         type: "array"
         default: []
         auto_append: "검증 완료시"
-      
+
       passed:
         type: "enum"
         values: ["pending", "true", "false", "partial"]
         default: "pending"
-    
+
     metadata:
       description: {type: "text", nullable: true}
       tags: {type: "array", nullable: true}
@@ -112,12 +112,12 @@ yaml_schema:
 # ========================================
 
 auto_registration:
-  
+
   trigger:
     signal: "[DELIVERABLE_COMPLETE]"
     format: "[DELIVERABLE_COMPLETE] {agent_id} {filename}"
     example: "[DELIVERABLE_COMPLETE] validator source_registry.yaml"
-  
+
   workflow:
     step_1: "신호 파싱 (agent_id, filename)"
     step_2: "deliverable_id 생성 (DEL_YYYYMMDD_NNN)"
@@ -129,17 +129,17 @@ auto_registration:
     step_8: "deliverables array에 추가"
     step_9: "total_deliverables += 1"
     step_10: ".project_meta.yaml도 업데이트"
-  
+
   required_validators_logic:
     validator_deliverables:  # Rachel
       required: []  # 데이터는 기반이므로 검증 불필요
-    
+
     quantifier_deliverables:  # Bill
       required: ["validator", "observer"]  # Rachel 데이터, Albert 구조
-    
+
     observer_deliverables:  # Albert
       required: ["quantifier", "validator", "guardian"]  # Bill 정량, Rachel 데이터, Stewart 논리
-    
+
     explorer_deliverables:  # Steve
       required: ["observer", "quantifier", "validator"]  # Albert 구조, Bill 경제성, Rachel 신뢰성
 
@@ -148,22 +148,22 @@ auto_registration:
 # ========================================
 
 validation_tracking:
-  
+
   on_validation_received:
     trigger: "검증자가 피드백 제공"
     update_actions:
       - "completed_validators에 {validator_id} 추가"
       - "passed 상태 업데이트"
       - "관련 산출물 status 업데이트"
-  
+
   status_transition:
     rules:
       - if: "all required_validators completed AND all passed"
         then: "status = 'validated', passed = 'true'"
-      
+
       - if: "some passed, some conditional"
         then: "status = 'validated', passed = 'partial'"
-      
+
       - if: "any failed"
         then: "status = 'draft', passed = 'false'"
 
@@ -172,31 +172,31 @@ validation_tracking:
 # ========================================
 
 query_capabilities:
-  
+
   by_agent:
     query: "agent_id = 'explorer'"
     returns: "Explorer의 모든 산출물 목록"
-  
+
   by_status:
     query: "status = 'validated'"
     returns: "검증 완료된 산출물"
-  
+
   by_type:
     query: "file_type = 'xlsx'"
     returns: "모든 Excel 파일"
-  
+
   pending_validation:
     query: "status = 'completed' AND passed = 'pending'"
     returns: "검증 대기 중인 산출물"
 
 dashboard_generation:
-  
+
   summary_stats:
     auto_calculate:
       - "에이전트별 산출물 개수"
       - "검증 완료율"
       - "평균 검증 소요 시간"
-  
+
   visualization:
     - "산출물 생성 타임라인"
     - "검증 상태 파이 차트"
@@ -222,7 +222,7 @@ example_entry: |
     metadata:
       description: "데이터 출처 등록 (15개 source)"
       tags: ["data", "registry"]
-  
+
   - deliverable_id: "DEL_20241103_001"
     agent_id: "quantifier"
     agent_name: "Bill (Quantifier)"
@@ -239,7 +239,7 @@ example_entry: |
       description: "SAM 계산 (270억원 ±11%)"
       tags: ["sam", "calculation"]
       related_deliverables: ["DEL_20241031_001", "DEL_20241103_002"]
-  
+
   - deliverable_id: "DEL_20241108_001"
     agent_id: "explorer"
     agent_name: "Steve (Explorer)"

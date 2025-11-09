@@ -14,52 +14,52 @@ _meta:
 
 # 필드별 Agent 매핑
 field_rules:
-  
+
   # 사업모델 관련
   business_model:
     agents: [explorer]
     reason: "기회 발굴에 핵심"
-  
+
   trigger_observations:
     agents: [observer, explorer]
     reason: "구조 관찰 + 기회 인식"
-  
+
   execution_strategy:
     agents: [explorer]
     reason: "기회 실행 전략"
-  
+
   critical_success_factors:
     agents: [explorer, guardian]
     reason: "성공 요인 + 검증"
-  
+
   # 정량 데이터
   market_size:
     agents: [quantifier]
     reason: "시장 규모 계산"
-  
+
   churn_rate:
     agents: [explorer, quantifier, guardian]
     reason: "구독 평가 + 계산 + 검증"
     learned: false
-  
+
   revenue_model:
     agents: [explorer, quantifier]
     reason: "수익 구조 + 계산"
-  
+
   # 검증 관련
   source_citations:
     agents: [validator]
     reason: "출처 검증"
-  
+
   data_reliability:
     agents: [validator, guardian]
     reason: "신뢰도 평가 + 최종 검증"
-  
+
   # 구조 분석
   market_structure:
     agents: [observer]
     reason: "시장 구조 관찰"
-  
+
   competitive_landscape:
     agents: [observer, explorer]
     reason: "경쟁 구도 + 기회"
@@ -68,49 +68,49 @@ field_rules:
 pattern_defaults:
   platform_business_model:
     priority_agents: [explorer, observer]
-  
+
   subscription_model:
     priority_agents: [explorer, quantifier]
-  
+
   disruption_patterns:
     priority_agents: [explorer, observer]
 
 # Chunk Type별 규칙 (v7.3.1+)
 chunk_type_rules:
-  
+
   # Learned Rule (Estimator 학습 결과)
   learned_rule:
     target_agents: [estimator]
     strategy: "direct_projection"
     ttl: "persistent"  # 학습된 규칙은 영구 저장
-    
+
     metadata_mapping:
       # 핵심 식별자
       rule_id: "rule_id"
-      
+
       # 값
       value: "estimator_value"
       unit: "estimator_unit"
       confidence: "estimator_confidence"
       range_min: "estimator_value_min"
       range_max: "estimator_value_max"
-      
+
       # 맥락
       domain: "estimator_domain"
       region: "estimator_region"
       time_period: "estimator_time_period"
-      
+
       # 증거 및 전략
       evidence_sources: "sources"
       evidence_count: "evidence_count"
       judgment_strategy: "judgment_strategy"
-      
+
       # 통계
       usage_count: "usage_count"
       created_at: "created_at"
       last_used: "last_used"
       last_verified: "last_verified"
-    
+
     reason: "Estimator (Fermi) Agent 학습 결과 → Tier 1 재사용"
 
 # LLM 판단 로그

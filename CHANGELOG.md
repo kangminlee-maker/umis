@@ -5,18 +5,48 @@
 
 ---
 
-## v7.5.0 (2025-11-08) - "Complete Business Metrics" 🏆
+## v7.5.0 (2025-11-10) - "Estimator/Quantifier 역할 분리 (MECE)" 🏆
 
 ### 주요 변경사항
-- ✅ 12개 비즈니스 지표 템플릿 (23개 모형)
-- ✅ 데이터 상속 (재귀 최적화)
-- ✅ LLM 모드 통합 (Native/External)
-- ✅ 모든 파일 v7.5.0 반영
+- ✅ **Estimator/Quantifier 역할 분리** (MECE 달성)
+- ✅ **Tier 1/2 임계값 강화** (0.85→0.95, 0.60→0.80)
+- ✅ **Context 전달 개선** (재귀 시 구체적 질문)
+- ✅ **Domain Reasoner 제거** (Estimator Tier 2로 대체)
+- ✅ **비즈니스 지표 템플릿 이동** (Estimator → Quantifier)
+- ✅ **Tool Registry 정리** (31→29개)
+- ✅ **코드 단순화** (3,000줄 감소)
+- ✅ **YAML 품질 100%** (5,865줄 trailing spaces 제거)
 
 ### 상세
-**tier3.py**: 1,143줄 → 1,463줄 (+320줄)  
-**커버리지**: 100% (실패율 0%)  
-**테스트**: 8/8 통과
+**역할 분리**:
+- Estimator: 값 추정만 (2,281줄, -1,907줄 46% 감소)
+- Quantifier: 계산만 (31개 방법론)
+- MECE 달성 (중복 0%)
+
+**코드 변경**:
+- `umis_rag/agents/estimator/models.py`: 임계값 강화
+- `umis_rag/agents/estimator/tier3.py`: 비즈니스 템플릿 제거
+- `umis_rag/agents/quantifier.py`: calculate_sam_with_hybrid 제거
+- `umis_rag/guardian/meta_rag.py`: recommend_methodology Deprecated
+- `data/raw/calculation_methodologies.yaml`: 비즈니스 공식 강화
+
+**문서 변경**:
+- `umis.yaml`: 간결화 (6,790→6,163줄, 627줄 감소)
+- `umis_core.yaml`: 역할 명확화
+- `UMIS_ARCHITECTURE_BLUEPRINT.md`: v7.5.0 반영
+
+**YAML 품질**:
+- Trailing spaces: 5,865줄 제거
+- 이모지: 150자 제거
+- 파싱 성공: 32/32개 (100%)
+
+**Archive**:
+- Domain Reasoner (1,907줄 + 1,033줄 YAML)
+- 테스트 파일 6개
+- umis_ai_guide.yaml
+
+**커버리지**: 100% 유지
+**테스트**: 전체 통과
 
 ---
 
