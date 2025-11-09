@@ -8,332 +8,332 @@ meta:
   principle: "False Positive 절대 금지"
 
 rules:
-  
+
   # ═══════════════════════════════════════
   # 공식 통계 (5개)
   # ═══════════════════════════════════════
-  
+
   - rule_id: "BUILTIN-STAT-001"
     pattern: "한국 인구"
-    
+
     matches:
       - "한국 인구는?"
       - "대한민국 인구는?"
       - "한국 총인구는?"
-    
+
     excludes:
       - "미래" # 예측은 제외
       - "예측"
       - "증가"
-    
+
     result:
       value: 51740000
       unit: "명"
       confidence: 0.95
       source: "통계청 2024"
       last_updated: "2024-01"
-  
+
   - rule_id: "BUILTIN-STAT-002"
     pattern: "서울 인구"
-    
+
     matches:
       - "서울 인구는?"
       - "서울시 인구는?"
-    
+
     excludes:
       - "미래"
       - "예측"
-    
+
     result:
       value: 9500000
       unit: "명"
       confidence: 0.95
       source: "통계청 2024"
       last_updated: "2024-01"
-  
+
   - rule_id: "BUILTIN-STAT-003"
     pattern: "한국 가구수"
-    
+
     matches:
       - "한국 가구수는?"
       - "한국 총 가구는?"
       - "대한민국 가구 수는?"
-    
+
     result:
       value: 21000000
       unit: "가구"
       confidence: 0.90
       source: "통계청 2023"
       last_updated: "2023-01"
-  
+
   - rule_id: "BUILTIN-STAT-004"
     pattern: "한국 GDP"
-    
+
     matches:
       - "한국 GDP는?"
       - "한국 국내총생산은?"
       - "대한민국 GDP는?"
-    
+
     result:
       value: 1800000000000000  # 1,800조원
       unit: "원"
       confidence: 0.90
       source: "한국은행 2023"
       last_updated: "2023"
-  
+
   - rule_id: "BUILTIN-STAT-005"
     pattern: "서울 면적"
-    
+
     matches:
       - "서울 면적은?"
       - "서울시 면적은?"
-    
+
     result:
       value: 605
       unit: "km²"
       confidence: 0.95
       source: "공식 통계"
-  
+
   # ═══════════════════════════════════════
   # 물리/시간 상수 (5개)
   # ═══════════════════════════════════════
-  
+
   - rule_id: "BUILTIN-PHY-001"
     pattern: "하루 시간"
-    
+
     matches:
       - "하루는 몇 시간?"
       - "하루는 몇시간?"
       - "1일은 몇 시간?"
-    
+
     result:
       value: 24
       unit: "시간"
       confidence: 1.0
       source: "물리 상수"
-  
+
   - rule_id: "BUILTIN-PHY-002"
     pattern: "일주일 일수"
-    
+
     matches:
       - "일주일은 몇 일?"
       - "1주일은 몇일?"
       - "한 주는 며칠?"
-    
+
     result:
       value: 7
       unit: "일"
       confidence: 1.0
       source: "시간 정의"
-  
+
   - rule_id: "BUILTIN-PHY-003"
     pattern: "한 달 일수"
-    
+
     matches:
       - "한 달은 몇 일?"
       - "1개월은 며칠?"
-    
+
     result:
       value: 30
       unit: "일"
       confidence: 0.95
       note: "평균값 (28-31일 변동)"
-  
+
   - rule_id: "BUILTIN-PHY-004"
     pattern: "일년 개월"
-    
+
     matches:
       - "1년은 몇 개월?"
       - "일년은 몇개월?"
-    
+
     result:
       value: 12
       unit: "개월"
       confidence: 1.0
       source: "시간 정의"
-  
+
   - rule_id: "BUILTIN-PHY-005"
     pattern: "1년 일수"
-    
+
     matches:
       - "1년은 몇 일?"
       - "일년은 며칠?"
-    
+
     result:
       value: 365
       unit: "일"
       confidence: 0.99
       note: "평년 기준 (윤년 366일)"
-  
+
   # ═══════════════════════════════════════
   # 법률/제도 상수 (5개)
   # ═══════════════════════════════════════
-  
+
   - rule_id: "BUILTIN-LAW-001"
     pattern: "최저임금"
-    
+
     matches:
       - "최저임금은?"
       - "최저시급은?"
       - "2024년 최저임금은?"
-    
+
     excludes:
       - "2025" # 미래는 제외
       - "미국"
       - "일본"
-    
+
     result:
       value: 9860
       unit: "원/시간"
       confidence: 1.0
       source: "고용노동부 2024"
       last_updated: "2024-01"
-      
+
       notes:
         - "2024년 기준"
         - "한국 기준"
         - "수습 90% (8,874원)"
-  
+
   - rule_id: "BUILTIN-LAW-002"
     pattern: "주휴수당"
-    
+
     matches:
       - "주휴수당은?"
       - "주휴일 수당은?"
-    
+
     result:
       value: 1  # 1일분
       unit: "일분"
       confidence: 1.0
       source: "근로기준법"
-      
+
       notes:
         - "주 15시간 이상 근무 시"
-  
+
   - rule_id: "BUILTIN-LAW-003"
     pattern: "법정근로시간"
-    
+
     matches:
       - "법정근로시간은?"
       - "주당 근로시간은?"
       - "법정 근로 시간은?"
-    
+
     result:
       value: 52
       unit: "시간/주"
       confidence: 1.0
       source: "근로기준법"
-      
+
       notes:
         - "연장 포함 최대"
         - "기본 40시간 + 연장 12시간"
-  
+
   - rule_id: "BUILTIN-LAW-004"
     pattern: "법정 퇴직금"
-    
+
     matches:
       - "퇴직금 기준은?"
       - "법정 퇴직금은?"
-    
+
     result:
       formula: "평균임금 × 재직일수 / 365 × 30"
       confidence: 1.0
       source: "근로기준법"
-      
+
       notes:
         - "1년 이상 재직 시"
-  
+
   - rule_id: "BUILTIN-LAW-005"
     pattern: "법정 공휴일"
-    
+
     matches:
       - "법정 공휴일은?"
       - "공휴일 며칠?"
-    
+
     result:
       value: 15
       unit: "일/년"
       confidence: 0.95
       source: "공휴일법"
-      
+
       notes:
         - "대체공휴일 제외"
         - "년도별 차이 있음"
-  
+
   # ═══════════════════════════════════════
   # 수학/비즈니스 상수 (5개)
   # ═══════════════════════════════════════
-  
+
   - rule_id: "BUILTIN-MATH-001"
     pattern: "확률 범위"
-    
+
     matches:
       - "확률 범위는?"
       - "확률은 0부터?"
-    
+
     result:
       range: [0, 1]
       confidence: 1.0
       source: "수학 정의"
-  
+
   - rule_id: "BUILTIN-MATH-002"
     pattern: "백분율 범위"
-    
+
     matches:
       - "백분율 범위는?"
       - "퍼센트는 몇까지?"
-    
+
     result:
       range: [0, 100]
       confidence: 1.0
       source: "수학 정의"
-  
+
   - rule_id: "BUILTIN-BIZ-001"
     pattern: "Rule of 40"
-    
+
     matches:
       - "Rule of 40은?"
       - "Rule of 40이란?"
-    
+
     result:
       formula: "성장률(%) + 수익률(%) >= 40"
       confidence: 1.0
       source: "SaaS 업계 관행"
-      
+
       notes:
         - "건강한 SaaS 기준"
         - "실제로는 유연하게 적용"
-  
+
   - rule_id: "BUILTIN-BIZ-002"
     pattern: "LTV/CAC 비율"
-    
+
     matches:
       - "LTV CAC 비율은?"
       - "LTV/CAC는?"
-    
+
     result:
       range: [3, 5]
       unit: "배"
       confidence: 0.90
       source: "SaaS 업계 관행"
-      
+
       notes:
         - "건강한 기준: 3배 이상"
         - "좋음: 5배 이상"
-  
+
   - rule_id: "BUILTIN-BIZ-003"
     pattern: "CAC Payback"
-    
+
     matches:
       - "CAC Payback은?"
       - "CAC 회수 기간은?"
-    
+
     result:
       range: [6, 12]
       unit: "개월"
       confidence: 0.85
       source: "SaaS 업계 관행"
-      
+
       notes:
         - "좋음: 12개월 이내"
         - "우수: 6개월 이내"

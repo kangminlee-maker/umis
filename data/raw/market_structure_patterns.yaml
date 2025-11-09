@@ -17,7 +17,7 @@ _meta:
   collection: "market_structure_patterns"
   total_patterns: 30
   last_updated: "2025-11-03"
-  
+
   categories:
     - "경쟁 구조"
     - "유통 구조"
@@ -30,114 +30,114 @@ _meta:
 # ========================================
 
 competition_structures:
-  
+
   - pattern_id: "STR_COMP_001"
     pattern_name: "독과점 시장 (Monopoly/Oligopoly)"
     category: "competition"
     market_concentration: "매우 높음"
     hhi: "> 2500"
-    
+
     characteristics:
       - "소수 기업이 시장 지배"
       - "신규 진입 어려움"
       - "가격 결정력 높음"
       - "규모의 경제"
-    
+
     examples:
       - market: "한국 포털 검색"
         structure: "사실상 독과점"
         players:
           - company: "Naver"
             market_share: "60%"
-          
+
           - company: "Google"
             market_share: "30%"
-        
+
         hhi: 4500
         barriers:
           - "네트워크 효과"
           - "데이터 축적"
           - "브랜드 인지도"
-      
+
       - market: "한국 배달앱"
         structure: "과점"
         players:
           - company: "배달의민족"
             market_share: "65%"
-          
+
           - company: "쿠팡이츠"
             market_share: "25%"
-          
+
           - company: "요기요"
             market_share: "8%"
-        
+
         hhi: 4900
-    
+
     implications_for_entry:
       - "정면 경쟁 어려움"
       - "틈새 시장 공략"
       - "차별화 전략 필수"
       - "대규모 자본 필요"
-    
+
     disruption_opportunities:
       - "기술 혁신 (AI, 블록체인)"
       - "규제 변화"
       - "고객 니즈 변화"
       - "인접 시장에서 진입"
-    
+
     observer_analysis:
       strength: "기존 플레이어 안정적 수익"
       weakness: "혁신 동력 부족"
       opportunity: "차별화 포인트 찾기"
       threat: "규제 강화"
-  
+
   - pattern_id: "STR_COMP_002"
     pattern_name: "완전 경쟁 시장 (Perfect Competition)"
     category: "competition"
     market_concentration: "매우 낮음"
     hhi: "< 1000"
-    
+
     characteristics:
       - "다수의 경쟁자"
       - "진입 장벽 낮음"
       - "제품 동질성 높음"
       - "가격 경쟁 치열"
-    
+
     examples:
       - market: "커피 전문점"
         players: "수천 개"
         differentiation: "낮음"
         competition: "가격 + 위치"
-      
+
       - market: "온라인 쇼핑몰"
         players: "수만 개"
         differentiation: "낮음"
         competition: "가격 + 배송"
-    
+
     implications_for_entry:
       - "진입 쉬움"
       - "차별화 어려움"
       - "마진 낮음"
       - "규모화 필요"
-    
+
     survival_strategies:
       - "틈새 시장 특화"
       - "브랜딩"
       - "운영 효율화"
       - "고객 경험 차별화"
-  
+
   - pattern_id: "STR_COMP_003"
     pattern_name: "과점 경쟁 (Oligopolistic Competition)"
     category: "competition"
     market_concentration: "높음"
     hhi: "1500-2500"
-    
+
     characteristics:
       - "소수(3-5개) 기업이 시장 주도"
       - "상호 의존성 높음"
       - "가격 담합 가능성"
       - "비가격 경쟁 (광고, 브랜드)"
-    
+
     examples:
       - market: "통신사 (한국)"
         players:
@@ -146,304 +146,304 @@ competition_structures:
           - "LG U+: 25%"
         hhi: 3650
         competition_type: "비가격 (네트워크 품질, 요금제)"
-      
+
       - market: "항공사 (한국)"
         players:
           - "대한항공: 50%"
           - "아시아나: 30%"
           - "저비용항공사: 20%"
         hhi: 3400
-      
+
       - market: "맥주 (한국)"
         players:
           - "하이트진로: 60%"
           - "오비맥주: 35%"
           - "기타: 5%"
         hhi: 4825
-    
+
     competitive_behavior:
       price_leadership: "1위 기업이 가격 결정, 나머지 추종"
       tacit_collusion: "암묵적 담합 (명시적 합의 없이도 유사한 가격)"
       non_price_competition: "광고, 브랜드, 서비스로 경쟁"
-    
+
     implications_for_entry:
       difficulty: "어려움"
       strategies:
         - "틈새 시장 공략"
         - "차별화 (예: 저비용 항공사)"
         - "혁신 (예: 수제 맥주)"
-    
+
     disruption_opportunities:
       - "기술 혁신으로 비용 구조 변경"
       - "규제 완화 시 진입"
       - "소비자 니즈 변화 (예: 프리미엄/저가)"
-  
+
   - pattern_id: "STR_COMP_004"
     pattern_name: "독점적 경쟁 (Monopolistic Competition)"
     category: "competition"
     market_concentration: "중간"
     hhi: "1000-1500"
-    
+
     characteristics:
       - "많은 경쟁자이지만 제품 차별화"
       - "진입/퇴출 자유"
       - "단기 독점 이윤 가능"
       - "장기적으로는 정상 이윤"
-    
+
     examples:
       - market: "레스토랑"
         differentiation: "음식 종류, 위치, 분위기"
         competition: "다수이지만 각자 틈새 확보"
-      
+
       - market: "의류 브랜드"
         differentiation: "디자인, 타겟, 가격대"
         players: "수천 개이지만 세분화"
-      
+
       - market: "모바일 게임"
         differentiation: "장르, 스타일, IP"
         competition: "각자 팬층 확보"
-    
+
     key_success_factor: "차별화 (Differentiation)"
-    
+
     strategies:
       - "독특한 브랜드 정체성"
       - "특정 고객층 집중"
       - "지속적 혁신"
-    
+
     vs_perfect_competition:
       similarity: "다수 경쟁자, 자유 진입"
       difference: "제품 차별화 가능"
-  
+
   - pattern_id: "STR_COMP_005"
     pattern_name: "듀오폴리 (Duopoly)"
     category: "competition"
     market_concentration: "매우 높음"
     hhi: "> 4500"
-    
+
     characteristics:
       - "2개 기업이 시장 지배"
       - "극도의 상호 의존성"
       - "치킨 게임 가능"
-    
+
     examples:
       - market: "항공기 제조"
         players:
           - company: "Boeing"
             market_share: "44%"
-          
+
           - company: "Airbus"
             market_share: "55%"
-        
+
         hhi: 5000+
         competition: "기술 혁신, 국가 지원"
-      
+
       - market: "콜라"
         players:
           - company: "Coca-Cola"
             market_share: "42%"
-          
+
           - company: "PepsiCo"
             market_share: "30%"
-        
+
         hhi: 2664
         note: "실제로는 기타 음료 포함하면 과점"
-      
+
       - market: "게임 콘솔 (한국)"
         players:
           - company: "PlayStation (Sony)"
             market_share: "65%"
-          
+
           - company: "Xbox (Microsoft)"
             market_share: "20%"
-        
+
         note: "Nintendo Switch는 다른 세그먼트"
-    
+
     competitive_dynamics:
       nash_equilibrium: "두 기업 모두 현상 유지가 최선"
       prisoner_dilemma: "가격 전쟁 시 양쪽 모두 손해"
       innovation_race: "기술 혁신으로 경쟁"
-    
+
     entry_barriers: "거의 불가능 (막대한 자본, 기술)"
-    
+
     disruption: "파괴적 혁신 (예: 전기차 → Tesla)"
-  
+
   - pattern_id: "STR_COMP_006"
     pattern_name: "플랫폼 경쟁 (Platform Competition)"
     category: "competition"
-    
+
     characteristics:
       - "네트워크 효과"
       - "Winner-takes-most"
       - "Multi-homing 비용"
-    
+
     competition_types:
       single_homing:
         definition: "사용자가 하나만 선택"
         examples:
           - "iOS vs Android (폰 OS)"
           - "KakaoTalk vs Line (메신저)"
-        
+
         result: "독과점 형성"
-      
+
       multi_homing:
         definition: "사용자가 여러 개 동시 사용"
         examples:
           - "배달앱 (배민, 쿠팡이츠 동시 사용)"
           - "음악 스트리밍 (Spotify, YouTube Music)"
-        
+
         result: "공존 가능"
-    
+
     examples:
       - market: "모바일 OS"
         structure: "Duopoly"
         players:
           - "Android: 72%"
           - "iOS: 27%"
-        
+
         single_homing: true
         switching_cost: "매우 높음"
         winner: "양강 구도"
-      
+
       - market: "결제 플랫폼"
         players:
           - "Visa"
           - "Mastercard"
           - "American Express"
-        
+
         multi_homing: true
         note: "가맹점/소비자 모두 여러 개 사용"
-    
+
     strategic_implications:
       first_mover: "매우 중요 (네트워크 효과)"
       critical_mass: "임계 질량 확보 필수"
       subsidization: "한쪽 보조하여 네트워크 구축"
-  
+
   - pattern_id: "STR_COMP_007"
     pattern_name: "표준 전쟁 (Standards War)"
     category: "competition"
-    
+
     characteristics:
       - "호환되지 않는 표준들의 경쟁"
       - "네트워크 효과"
       - "Lock-in"
-    
+
     examples:
       - war: "VHS vs Betamax"
         winner: "VHS"
         reason: "더 많은 콘텐츠, 저렴한 가격"
-      
+
       - war: "Blu-ray vs HD DVD"
         winner: "Blu-ray"
         reason: "Sony PS3 번들, 스튜디오 지원"
-      
+
       - war: "USB-C 표준화"
         status: "진행 중"
         trend: "통일 방향"
-    
+
     winning_strategies:
       - "빠른 생태계 구축"
       - "킬러 콘텐츠 확보"
       - "가격 경쟁력"
       - "파트너십"
-    
+
     impact: "승자독식, 패자는 시장 퇴출"
-  
+
   - pattern_id: "STR_COMP_008"
     pattern_name: "가격 선도자 (Price Leadership)"
     category: "competition"
-    
+
     characteristics:
       - "1위 기업이 가격 결정"
       - "나머지 기업이 추종"
       - "암묵적 조정"
-    
+
     types:
       dominant_firm:
         description: "압도적 1위가 가격 결정"
         example: "OPEC (석유)"
-      
+
       barometric:
         description: "시장 상황을 잘 읽는 기업이 먼저 조정"
         example: "항공사 성수기 요금"
-    
+
     examples:
       - market: "석유 (OPEC)"
         leader: "사우디아라비아"
         mechanism: "생산량 조절 → 가격 영향"
-      
+
       - market: "철강"
         leader: "포스코 (한국)"
         followers: "중소 철강사들"
-    
+
     benefits:
       - "가격 안정성"
       - "과도한 경쟁 방지"
-    
+
     risks:
       - "담합 의심"
       - "규제 위험"
-  
+
   - pattern_id: "STR_COMP_009"
     pattern_name: "카르텔 (Cartel)"
     category: "competition"
     legality: "대부분 국가에서 불법"
-    
+
     characteristics:
       - "명시적 가격/생산량 담합"
       - "시장 분할 합의"
       - "경쟁 제한"
-    
+
     examples:
       - cartel: "OPEC (석유수출국기구)"
         legal_status: "국가 간 협정으로 합법"
         mechanism: "생산량 쿼터 합의"
         effectiveness: "중간 (이탈자 문제)"
-      
+
       - cartel: "De Beers (다이아몬드)"
         period: "1888-2000년대"
         mechanism: "공급 통제"
         result: "가격 독점"
         current: "규제로 약화"
-    
+
     stability_issues:
       cheating: "몰래 증산하여 더 많은 이익"
       enforcement: "강제 수단 부족"
       new_entrants: "신규 진입자 유혹"
-    
+
     detection_signs:
       - "비정상적 가격 동조화"
       - "시장 분할 패턴"
       - "입찰 담합"
-    
+
     legal_consequences:
       us: "셔먼법 위반 (형사처벌)"
       korea: "공정거래법 위반 (과징금)"
       eu: "경쟁법 위반 (매출의 10%)"
-    
+
     observer_notes: |
       불법이지만 시장 구조 분석 시 의심 패턴 감지 필요.
       공정거래위원회 제재 사례 참고.
-  
+
   - pattern_id: "STR_COMP_010"
     pattern_name: "공동 독점 (Joint Monopoly)"
     category: "competition"
-    
+
     characteristics:
       - "합법적 공동 사업"
       - "보완재 결합"
       - "협력적 독점"
-    
+
     examples:
       - case: "신용카드사 + 가맹점"
         players: "Visa/Mastercard + 상점"
         mechanism: "양면 시장 플랫폼"
         both_benefit: "거래 수수료 분할"
-      
+
       - case: "Intel + Microsoft (Wintel)"
         period: "1990-2000년대"
         mechanism: "PC 생태계 공동 지배"
         result: "PC 시장 독점"
-    
+
     vs_cartel:
       difference: "합법적 협력 vs 불법 담합"
       key: "소비자 이익 증진 여부"
@@ -453,19 +453,19 @@ competition_structures:
 # ========================================
 
 distribution_structures:
-  
+
   - pattern_id: "STR_DIST_001"
     pattern_name: "다단계 유통 (Multi-tier Distribution)"
     category: "distribution"
-    
+
     value_chain: |
       제조사 → 도매상 → 소매상 → 고객
-    
+
     characteristics:
       - "중간 단계 많음"
       - "마진 분산"
       - "정보 비대칭"
-    
+
     examples:
       - market: "전통 가전제품"
         tiers: 3-4단계
@@ -473,222 +473,222 @@ distribution_structures:
         wholesale_margin: "15%"
         retail_margin: "25%"
         total_markup: "100-150%"
-      
+
       - market: "농산물 유통"
         tiers: "농가 → 산지 수집상 → 도매시장 → 소매"
-    
+
     inefficiencies:
       - issue: "중간 마진 과다"
         impact: "소비자 가격 상승"
-      
+
       - issue: "정보 단절"
         impact: "수요 예측 어려움"
-      
+
       - issue: "재고 관리 비효율"
         impact: "물류 비용 증가"
-    
+
     disruption_opportunities:
       - strategy: "D2C (Direct-to-Consumer)"
         examples: ["Tesla", "Warby Parker"]
         benefit: "중간 마진 제거"
-      
+
       - strategy: "플랫폼 중개"
         examples: ["쿠팡", "마켓컬리"]
         benefit: "단계 축소"
-  
+
   - pattern_id: "STR_DIST_002"
     pattern_name: "플랫폼 중개형"
     category: "distribution"
-    
+
     value_chain: |
       판매자 ←→ 플랫폼 ←→ 구매자
-    
+
     characteristics:
       - "양면 시장"
       - "네트워크 효과"
       - "중개 수수료"
-    
+
     examples:
       - market: "배달 플랫폼"
         players: ["배달의민족", "쿠팡이츠"]
         commission: "6-12%"
-      
+
       - market: "전자상거래"
         players: ["Naver Shopping", "Coupang"]
         commission: "5-15%"
-    
+
     inefficiencies:
       - "높은 수수료"
       - "플랫폼 종속"
       - "데이터 독점"
-    
+
     disruption_opportunities:
       - "저수수료 플랫폼"
       - "탈중개화 (Web3)"
-  
+
   - pattern_id: "STR_DIST_003"
     pattern_name: "B2B 직거래"
     category: "distribution"
-    
+
     value_chain: |
       제조사 → 기업 고객 (중간 단계 없음)
-    
+
     characteristics:
       - "대량 거래"
       - "장기 계약"
       - "협상 가격"
-    
+
     examples:
       - market: "산업용 부품"
         buyers: "제조 기업"
         contract: "연간 공급 계약"
-      
+
       - market: "Enterprise SaaS"
         buyers: "대기업"
         sales: "직접 영업"
-    
+
     advantages:
       - "마진 최대화"
       - "고객 관계 직접 관리"
       - "피드백 즉시 반영"
-    
+
     challenges:
       - "영업 비용 높음"
       - "계약 주기 김"
-  
+
   - pattern_id: "STR_DIST_004"
     pattern_name: "D2C (Direct-to-Consumer)"
     category: "distribution"
-    
+
     value_chain: |
       제조사 → 소비자 (소매점 없음)
-    
+
     characteristics:
       - "중간 마진 제거"
       - "데이터 직접 확보"
       - "브랜드 통제"
-    
+
     examples:
       - brand: "Tesla"
         model: "직영 매장 + 온라인"
         vs_traditional: "딜러 마진 15% 절감"
-      
+
       - brand: "Warby Parker (안경)"
         model: "온라인 + 소수 오프라인"
         vs_traditional: "중간 마진 제거로 50% 저렴"
-      
+
       - brand: "Nike (일부)"
         model: "Nike.com + 직영 매장"
         note: "기존 유통 채널과 병행"
-    
+
     advantages:
       - "마진 최대화 (중간 단계 제거)"
       - "고객 데이터 확보"
       - "브랜드 경험 통제"
       - "빠른 피드백"
-    
+
     challenges:
       - "물류 직접 관리"
       - "고객 서비스 부담"
       - "초기 투자 필요"
       - "기존 유통과 갈등"
-    
+
     success_factors:
       - "강력한 브랜드"
       - "효율적 물류"
       - "온라인 역량"
-  
+
   - pattern_id: "STR_DIST_005"
     pattern_name: "O2O (Online to Offline)"
     category: "distribution"
-    
+
     value_chain: |
       온라인 발견/주문 → 오프라인 이행
-    
+
     characteristics:
       - "온라인 편의성 + 오프라인 경험"
       - "옴니채널"
       - "데이터 통합"
-    
+
     examples:
       - model: "배달앱"
         online: "주문"
         offline: "음식점 조리 + 배달"
-      
+
       - model: "쿠팡"
         online: "주문"
         offline: "로켓배송 (풀필먼트)"
-      
+
       - model: "무신사 스탠다드"
         online: "발견"
         offline: "매장 피팅 + 구매"
-    
+
     advantages:
       - "편의성"
       - "재고 가시성"
       - "즉시 배송 가능"
-    
+
     challenges:
       - "오프라인 인프라 투자"
       - "재고 관리 복잡"
-  
+
   - pattern_id: "STR_DIST_006"
     pattern_name: "프랜차이즈"
     category: "distribution"
-    
+
     value_chain: |
       본사 (브랜드/시스템) → 가맹점 → 고객
-    
+
     characteristics:
       - "브랜드 라이선스"
       - "표준화된 시스템"
       - "초기 비용 + 로열티"
-    
+
     examples:
       - brand: "맥도날드"
         franchise_fee: "$45,000"
         royalty: "매출의 4%"
         advertising: "매출의 4%"
         total_investment: "$1-2.3M"
-      
+
       - brand: "7-Eleven"
         model: "편의점 프랜차이즈"
-      
+
       - brand: "Subway"
         franchise_count: "37,000+ 매장"
-    
+
     본사_수익:
       - "가맹비"
       - "로열티 (매출의 3-8%)"
       - "광고비"
       - "원재료 공급 마진"
-    
+
     가맹점_운영:
       - "초기 투자"
       - "인력 관리"
       - "일정 로열티 지급"
-    
+
     advantages:
       - "빠른 확장 (자본 부담 적음)"
       - "지역 지식 활용"
-    
+
     challenges:
       - "품질 통제"
       - "가맹점과 이해 충돌"
-  
+
   - pattern_id: "STR_DIST_007"
     pattern_name: "다단계 판매 (MLM - 합법)"
     category: "distribution"
     legality: "합법 (불법 피라미드와 구분)"
-    
+
     value_chain: |
       제조사 → 판매원 네트워크 → 고객
-    
+
     characteristics:
       - "판매원이 다른 판매원 모집"
       - "다단계 수수료"
       - "직접 판매"
-    
+
     legal_vs_illegal:
       legal_mlm:
         characteristics:
@@ -696,50 +696,50 @@ distribution_structures:
           - "수익의 대부분이 제품 판매에서"
           - "모집 수수료 제한적"
         examples: ["암웨이", "허벌라이프"]
-      
+
       illegal_pyramid:
         characteristics:
           - "모집이 주 수익원"
           - "제품은 명목상"
           - "나중 참여자는 손해"
         legal_action: "형사처벌"
-    
+
     examples:
       - company: "암웨이"
         products: "생활용품, 건강식품"
         model: "판매원 직접 판매 + 하부 조직 수수료"
         legal: true
-      
+
       - company: "허벌라이프"
         products: "건강/영양 제품"
         model: "MLM"
         legal: true
-    
+
     advantages:
       - "유통 비용 낮음"
       - "바이럴 효과"
-    
+
     challenges:
       - "법적 리스크 (피라미드 의심)"
       - "평판 문제"
       - "판매원 유지 어려움"
-  
+
   - pattern_id: "STR_DIST_008"
     pattern_name: "수직 통합 (Vertical Integration)"
     category: "distribution"
-    
+
     concept: |
       가치사슬의 여러 단계를 하나의 기업이 소유/통제
-    
+
     types:
       backward_integration:
         definition: "공급자 방향 통합"
         example: "자동차 회사가 부품 제조사 인수"
-      
+
       forward_integration:
         definition: "고객 방향 통합"
         example: "제조사가 소매점 직영"
-    
+
     examples:
       - company: "Tesla"
         integration:
@@ -747,12 +747,12 @@ distribution_structures:
           - "자동차 제조"
           - "직영 매장"
           - "충전 인프라"
-        
+
         advantages:
           - "마진 최대화"
           - "품질 통제"
           - "고객 경험 통제"
-      
+
       - company: "Apple"
         integration:
           - "반도체 설계 (M1/M2)"
@@ -760,34 +760,34 @@ distribution_structures:
           - "하드웨어 (iPhone)"
           - "서비스 (App Store)"
           - "소매 (Apple Store)"
-        
+
         advantages:
           - "생태계 통제"
           - "차별화"
           - "높은 마진"
-      
+
       - company: "Zara (Inditex)"
         integration:
           - "디자인"
           - "제조"
           - "물류"
           - "직영 매장"
-        
+
         advantages:
           - "빠른 반응 (2주)"
           - "재고 최적화"
-    
+
     advantages:
       - "마진 향상"
       - "공급 안정성"
       - "품질 통제"
       - "차별화"
-    
+
     disadvantages:
       - "자본 집약적"
       - "유연성 감소"
       - "리스크 집중"
-    
+
     when_to_use:
       - "공급 불안정"
       - "차별화 필요"
@@ -798,44 +798,44 @@ distribution_structures:
 # ========================================
 
 pricing_structures:
-  
+
   - pattern_id: "STR_PRICE_001"
     pattern_name: "프리미엄 가격 전략"
     category: "pricing"
-    
+
     characteristics:
       - "높은 가격"
       - "브랜드 가치"
       - "제한적 유통"
-    
+
     examples:
       - brand: "Apple"
         premium: "20-50% vs 경쟁사"
         justification: "브랜드 + 생태계"
-      
+
       - brand: "Starbucks"
         premium: "2-3배 vs 일반 카페"
         justification: "경험 + 브랜드"
-    
+
     conditions_for_success:
       - "강력한 브랜드"
       - "차별화된 가치"
       - "충성 고객층"
-  
+
   - pattern_id: "STR_PRICE_002"
     pattern_name: "가격 차별 (Price Discrimination)"
     category: "pricing"
-    
+
     concept: |
       동일 제품을 고객 그룹, 시간, 수량에 따라 다른 가격에 판매
-    
+
     types:
       first_degree:
         name: "1급 가격차별 (개별 맞춤)"
         definition: "각 고객의 지불 의향에 맞춰 개별 가격"
         example: "B2B 협상 가격, 자동차 딜러"
         difficulty: "매우 어려움 (정보 필요)"
-      
+
       second_degree:
         name: "2급 가격차별 (수량 기반)"
         definition: "구매 수량/사용량에 따라 가격 차등"
@@ -843,7 +843,7 @@ pricing_structures:
           - "대량 할인"
           - "통신 요금제 (데이터 많을수록 단가 낮음)"
           - "전기/수도 누진제"
-      
+
       third_degree:
         name: "3급 가격차별 (그룹 기반)"
         definition: "고객 그룹별 다른 가격"
@@ -851,48 +851,48 @@ pricing_structures:
           - "학생/노인 할인"
           - "지역별 차등 가격"
           - "B2B vs B2C 가격"
-    
+
     real_examples:
       airline:
         mechanism: "시간, 예약 시기, 좌석 등급"
         same_seat_price_range: "10만원 ~ 200만원"
-        
+
         segments:
           - "비즈니스 (급함): 높은 가격"
           - "관광 (유연함): 낮은 가격"
-      
+
       movie_theater:
         mechanism: "시간대, 고객 유형"
         prices:
           - "주중 조조: 7,000원"
           - "주말 저녁: 14,000원"
           - "청소년: 10,000원"
-      
+
       saas:
         mechanism: "사용량, 기업 규모"
         tiers:
           - "개인: $10/month"
           - "팀: $50/user/month"
           - "Enterprise: 협상"
-    
+
     conditions_for_success:
       - "시장 세분화 가능"
       - "재판매 방지 (Arbitrage 차단)"
       - "그룹별 가격 탄력성 차이"
-    
+
     legality:
       legal: "대부분 합법"
       illegal_cases:
         - "인종/성별 차별"
         - "약탈적 가격 (경쟁사 배제 목적)"
-  
+
   - pattern_id: "STR_PRICE_003"
     pattern_name: "동적 가격 (Dynamic Pricing)"
     category: "pricing"
-    
+
     concept: |
       수요/공급 실시간 변화에 따라 가격 자동 조정
-    
+
     mechanism:
       data_inputs:
         - "현재 재고"
@@ -900,194 +900,194 @@ pricing_structures:
         - "경쟁사 가격"
         - "시간대"
         - "날씨"
-      
+
       algorithm: "머신러닝 최적 가격 도출"
-      
+
       adjustment: "실시간 또는 주기적"
-    
+
     examples:
       - industry: "차량 공유 (Uber, Lyft)"
         mechanism: "Surge Pricing"
-        
+
         factors:
           - "수요 (승객 대기 수)"
           - "공급 (드라이버 수)"
           - "시간대 (퇴근 시간)"
           - "날씨 (비/눈)"
-        
+
         price_range: "기본 요금 ~ 3배"
-        
+
         impact:
           positive: "공급 유도"
           negative: "고객 불만"
-      
+
       - industry: "항공"
         mechanism: "Revenue Management"
-        
+
         factors:
           - "예약 시기 (출발일까지 기간)"
           - "좌석 재고"
           - "요일 (주말 vs 주중)"
           - "시즌 (성수기)"
-        
+
         price_range: "최저가 ~ 10배"
-      
+
       - industry: "호텔"
         mechanism: "Yield Management"
         factors:
           - "예약률"
           - "이벤트 (컨벤션, 공휴일)"
           - "시즌"
-        
+
         price_range: "비수기 ~ 3배"
-      
+
       - industry: "이커머스"
         mechanism: "AI 가격 최적화"
         examples: ["Amazon", "쿠팡"]
-        
+
         factors:
           - "재고 수준"
           - "경쟁사 가격"
           - "구매 이력"
           - "시간대"
-    
+
     advantages:
       - "수익 최대화"
       - "수요 조절"
       - "재고 최적화"
-    
+
     challenges:
       - "고객 불만 (불공정 인식)"
       - "알고리즘 복잡"
       - "법적 리스크 (차별 의심)"
-    
+
     ethical_considerations:
       - "투명성"
       - "예측 가능성"
       - "극단적 변동 제한"
-  
+
   - pattern_id: "STR_PRICE_004"
     pattern_name: "Freemium"
     category: "pricing"
-    
+
     concept: |
       기본 기능은 무료, 프리미엄 기능은 유료
-    
+
     structure:
       free_tier:
         purpose: "사용자 획득"
         features: "핵심 기능"
         limitations: "용량, 속도, 기능 제한"
-      
+
       premium_tier:
         purpose: "수익화"
         features: "고급 기능, 제한 해제"
         pricing: "월 구독 또는 일시불"
-    
+
     conversion_funnel:
       step_1: "무료 사용자 획득"
       step_2: "제품 가치 경험"
       step_3: "제한에 부딪힘"
       step_4: "유료 전환"
-    
+
     examples:
       - product: "Spotify"
         free: "광고 포함, 셔플 재생"
         premium: "광고 없음, 오프라인, 음질"
         conversion_rate: "38.6%"
-      
+
       - product: "LinkedIn"
         free: "기본 프로필, 제한적 검색"
         premium: "InMail, 무제한 검색, 분석"
         conversion_rate: "~10%"
-      
+
       - product: "Dropbox"
         free: "2GB"
         premium: "2TB, $9.99/month"
         conversion_rate: "~4%"
-    
+
     key_metrics:
       free_users: "대다수 (60-95%)"
       paying_users: "소수 (5-40%)"
       target_conversion: "> 5%"
-      
+
       unit_economics:
         free_user_cost: "서버, 지원"
         paying_user_revenue: "구독료"
         break_even: "1 paying : 20 free"
-    
+
     success_factors:
       - "무료 티어가 충분히 유용"
       - "유료 티어의 명확한 가치"
       - "자연스러운 업그레이드 경로"
       - "낮은 변동 비용"
-    
+
     when_to_use:
       - "네트워크 효과 있음"
       - "변동 비용 낮음 (SaaS)"
       - "바이럴 가능"
-    
+
     when_not_to_use:
       - "변동 비용 높음 (물리적 제품)"
       - "무료 사용자 비용 감당 불가"
-  
+
   - pattern_id: "STR_PRICE_005"
     pattern_name: "구독 가격"
     category: "pricing"
-    
+
     concept: |
       정기 결제로 지속적 사용 권한 제공
-    
+
     pricing_dimensions:
       time_period:
         monthly: "낮은 진입 장벽"
         annual: "할인 제공 (15-20%)"
-        
+
         example:
           monthly: "$10/month"
           annual: "$100/year (17% 할인)"
-      
+
       user_count:
         individual: "1명"
         team: "5-10명"
         enterprise: "무제한"
-        
+
         pricing:
           individual: "$10/month"
           team: "$50/month (per user $5)"
           enterprise: "협상"
-      
+
       usage_based:
         metered: "사용량만큼 과금"
         examples:
           - "AWS (컴퓨팅 시간)"
           - "Twilio (메시지 발송 수)"
-      
+
       feature_based:
         basic: "기본 기능"
         professional: "고급 기능"
         enterprise: "모든 기능 + 지원"
-    
+
     common_tiers:
       three_tier:
         starter: "$10-20"
         professional: "$50-100"
         enterprise: "$500+"
-      
+
       rationale: "선택 최적화 (중간 유도)"
-    
+
     optimization:
       anchoring: "높은 가격 먼저 보여주기"
       decoy: "중간 티어 유도용 옵션"
       value_metric: "가치와 연동 (사용자 수, 매출 등)"
-    
+
     examples:
       - product: "Netflix"
         tiers:
           basic: "9,500원 (SD, 1화면)"
           standard: "13,500원 (HD, 2화면)"
           premium: "17,000원 (UHD, 4화면)"
-      
+
       - product: "Salesforce"
         tiers:
           essentials: "$25/user/month"
@@ -1100,139 +1100,139 @@ pricing_structures:
 # ========================================
 
 entry_barriers:
-  
+
   - pattern_id: "STR_BARRIER_001"
     pattern_name: "네트워크 효과 장벽"
     category: "entry_barrier"
     barrier_strength: "매우 높음"
-    
+
     mechanism: |
       사용자가 많을수록 가치 증가 → 신규 진입 어려움
-    
+
     examples:
       - market: "SNS"
         incumbent: "Facebook"
         barrier: "30억 사용자 네트워크"
         entry_difficulty: "거의 불가능"
-      
+
       - market: "메신저"
         incumbent: "KakaoTalk"
         barrier: "한국 5,200만명 사용"
         entry_difficulty: "매우 어려움"
-    
+
     overcoming_strategies:
       - "틈새 시장 (예: 직장인 전용)"
       - "기능 차별화 (예: 보안 강화)"
       - "인접 서비스 → 확장"
-  
+
   - pattern_id: "STR_BARRIER_002"
     pattern_name: "규모의 경제 장벽"
     category: "entry_barrier"
     barrier_strength: "높음"
-    
+
     mechanism: |
       대량 생산으로 단위 비용 하락 → 신규 진입자는 비용 열위
-    
+
     characteristics:
       - "생산량 증가 → 단위 비용 감소"
       - "고정비 분산"
       - "구매력 (원재료 대량 구매)"
-    
+
     examples:
       - industry: "반도체 제조"
         incumbent: "TSMC, Samsung"
-        
+
         scale_advantages:
           - "Fab 투자: $20B+"
           - "단위당 생산 비용 1/10"
           - "R&D 비용 분산"
-        
+
         entry_barrier: "초기 투자 $20B+ 필요"
-      
+
       - industry: "자동차"
         incumbent: "현대/기아"
-        
+
         scale_advantages:
           - "연 400만대 생산"
           - "부품 대량 구매로 단가 절감"
           - "플랫폼 공유"
-        
+
         entry_barrier: "소량 생산 시 비용 경쟁력 없음"
-      
+
       - industry: "클라우드 인프라"
         incumbent: "AWS, Azure, GCP"
-        
+
         scale_advantages:
           - "글로벌 데이터센터"
           - "서버 대량 구매"
           - "전력 비용 협상"
-        
+
         entry_barrier: "초기 인프라 투자 막대"
-    
+
     overcoming_strategies:
       - "틈새 시장 (소량 특화)"
       - "아웃소싱 (제조 위탁)"
       - "모듈화 (표준 부품 활용)"
       - "기술 혁신 (새로운 제조 방식)"
-    
+
     disruption_examples:
       - case: "Tesla vs 전통 자동차"
         tesla_approach: "소프트웨어 중심, 단순화"
         result: "소량 생산에도 경쟁력"
-      
+
       - case: "3D 프린팅"
         impact: "소량 맞춤 생산 가능"
         result: "규모의 경제 약화"
-  
+
   - pattern_id: "STR_BARRIER_003"
     pattern_name: "브랜드 충성도 장벽"
     category: "entry_barrier"
     barrier_strength: "중상"
-    
+
     mechanism: |
       강력한 브랜드 → 고객 전환 비용 높음 → 신규 진입 어려움
-    
+
     characteristics:
       - "브랜드 인지도"
       - "고객 신뢰"
       - "전환 비용 (심리적)"
-    
+
     examples:
       - brand: "Coca-Cola"
         age: "137년"
         brand_value: "$74B (2023)"
         loyalty: "평생 소비자"
-        
+
         entry_barrier:
           - "신규 콜라 브랜드는 인지도 제로"
           - "막대한 광고비 필요"
           - "유통 확보 어려움"
-      
+
       - brand: "Nike"
         category: "스포츠웨어"
         brand_value: "$33B"
         loyalty: "Just Do It 슬로건 인식 99%"
-        
+
         switching_cost: "심리적 (브랜드 정체성)"
-      
+
       - brand: "Apple"
         category: "전자제품"
         loyalty_rate: "90%+ (아이폰 사용자)"
-        
+
         lock_in:
           - "생태계 (iCloud, App 구매)"
           - "브랜드 충성도"
           - "사회적 신호"
-    
+
     building_brand_loyalty:
       time: "최소 5-10년"
       investment: "지속적 광고 + 품질"
-      
+
       shortcuts:
         - "유명인 활용"
         - "바이럴 마케팅"
         - "커뮤니티 구축"
-    
+
     overcoming_strategies:
       - "니치 브랜드 (특정 고객층)"
       - "가격 경쟁력"
@@ -1244,230 +1244,230 @@ entry_barriers:
 # ========================================
 
 inefficiency_patterns:
-  
+
   - pattern_id: "STR_INEFF_001"
     pattern_name: "정보 비대칭"
     category: "inefficiency"
-    
+
     mechanism: |
       판매자와 구매자 간 정보 격차 → 비효율적 거래
-    
+
     examples:
       - market: "중고차"
         problem: "품질 정보 부족"
         impact: "Lemon Market (역선택)"
         solution: "인증 서비스 (엔카, KB차차차)"
-      
+
       - market: "부동산"
         problem: "가격 정보 부족"
         impact: "거래 비용 증가"
         solution: "플랫폼 (직방, 다방)"
-    
+
     disruption_opportunities:
       - "정보 투명화 플랫폼"
       - "데이터 기반 평가"
       - "블록체인 인증"
-  
+
   - pattern_id: "STR_INEFF_002"
     pattern_name: "높은 거래 비용"
     category: "inefficiency"
-    
+
     mechanism: |
-      거래를 성사시키는 데 드는 비용이 과다하여 
+      거래를 성사시키는 데 드는 비용이 과다하여
       잠재적 거래 발생 못함
-    
+
     types_of_transaction_costs:
       search_cost:
         definition: "적합한 상대방 찾는 비용"
         examples:
           - "구인/구직 (시간 + 광고비)"
           - "부동산 중개"
-      
+
       information_cost:
         definition: "제품/서비스 정보 수집 비용"
         examples:
           - "제품 비교 (시간)"
           - "전문가 자문 (컨설팅 비용)"
-      
+
       negotiation_cost:
         definition: "계약 협상 비용"
         examples:
           - "변호사 비용"
           - "협상 시간"
-      
+
       enforcement_cost:
         definition: "계약 이행 보장 비용"
         examples:
           - "법적 분쟁 비용"
           - "모니터링 비용"
-    
+
     examples:
       - market: "부동산 거래"
         total_transaction_cost: "7-10% (중개수수료 + 세금 + 법무비용)"
-        
+
         breakdown:
           - "중개수수료: 0.4-0.9%"
           - "취득세: 1-12%"
           - "등기비용: 0.3%"
           - "법무사 비용"
           - "탐색 시간"
-        
+
         inefficiency: "거래 비용이 높아 거래 억제"
-        
+
         solutions:
           - "직방, 다방 (정보 투명화)"
           - "법무 플랫폼"
-      
+
       - market: "구인/구직"
         cost:
           employer: "채용 공고 + 면접 시간"
           employee: "이력서 작성 + 탐색 시간"
-        
+
         inefficiency: "미스매칭"
-        
+
         solutions:
           - "LinkedIn (매칭 플랫폼)"
           - "원티드 (추천 시스템)"
-      
+
       - market: "중고 거래"
         cost:
           - "신뢰 비용 (사기 우려)"
           - "거래 장소 이동"
           - "검수 비용"
-        
+
         solutions:
           - "당근마켓 (지역 기반 신뢰)"
           - "번개장터 (안전결제)"
-    
+
     disruption_opportunities:
       - "플랫폼으로 탐색 비용 절감"
       - "표준 계약으로 협상 비용 절감"
       - "에스크로로 이행 비용 절감"
       - "블록체인으로 신뢰 비용 절감"
-    
+
     coase_theorem: |
       "거래 비용이 0이면 시장이 효율적으로 자원 배분"
       → 거래 비용 낮추기가 혁신 기회
-  
+
   - pattern_id: "STR_INEFF_003"
     pattern_name: "중간 마진 과다 (Excessive Middleman Margins)"
     category: "inefficiency"
-    
+
     mechanism: |
       가치사슬의 중간 단계가 과도한 마진을 가져가
       최종 소비자 가격 상승
-    
+
     examples:
       - market: "농산물 유통"
         chain: "농가 → 산지수집 → 도매시장 → 중도매 → 소매"
-        
+
         price_markup:
           farm_gate: "1,000원"
           wholesale: "2,000원 (2배)"
           retail: "4,000원 (4배)"
-        
+
         middleman_margin: "총 마진의 75%"
-        
+
         inefficiency: "농가는 25%, 중간상이 75%"
-        
+
         solutions:
           - "마켓컬리 (산지 직거래)"
           - "생협 (중간 단계 축소)"
-      
+
       - market: "부동산 중개"
         chain: "집주인 → 중개업소 → 세입자"
-        
+
         commission: "0.4-0.9% (양쪽에서)"
         total: "거래액의 1-2%"
-        
+
         for_transaction: "정보 제공 + 계약서 작성"
-        
+
         value_vs_cost: "서비스 대비 높은 수수료"
-        
+
         solutions:
           - "직방, 다방 (정보 투명화)"
           - "P2P 직거래"
-    
+
     disruption_opportunities:
       - "D2C (Direct-to-Consumer)"
       - "플랫폼 중개 (수수료 낮춤)"
       - "정보 투명화"
       - "블록체인 (중개자 제거)"
-    
+
     examples_by_industry:
       - industry: "안경"
         traditional: "제조 $20 → 소매 $200 (10배)"
         disruptor: "Warby Parker (D2C) $95 (5배)"
-      
+
       - industry: "매트리스"
         traditional: "제조 $300 → 소매 $1,500 (5배)"
         disruptor: "Casper (D2C) $600 (2배)"
-  
+
   - pattern_id: "STR_BARRIER_004"
     pattern_name: "데이터/학습 곡선 장벽"
     category: "entry_barrier"
     barrier_strength: "높음 (증가 중)"
-    
+
     mechanism: |
       데이터 축적 → AI/ML 개선 → 더 나은 서비스
       → 더 많은 데이터 → 선순환
-      
+
       신규 진입자는 데이터 없음 → 불리
-    
+
     characteristics:
       - "데이터가 많을수록 정확도 증가"
       - "네트워크 효과와 유사"
       - "시간이 지날수록 격차 벌어짐"
-    
+
     examples:
       - company: "Google Search"
         barrier: "20년+ 검색 데이터"
-        
+
         data_advantage:
           - "검색 쿼리: 수조 개"
           - "클릭 데이터"
           - "사용자 행동 패턴"
-        
+
         result: "검색 정확도 압도적"
         entry_difficulty: "거의 불가능"
-      
+
       - company: "Tesla Autopilot"
         barrier: "수십억 마일 주행 데이터"
-        
+
         data_advantage:
           - "실제 주행 데이터"
           - "엣지 케이스 학습"
           - "지속적 개선"
-        
+
         vs_competitors: "전통 자동차사는 데이터 부족"
-      
+
       - company: "Amazon (추천)"
         barrier: "25년+ 구매/검색 데이터"
-        
+
         data_advantage:
           - "사용자 행동"
           - "구매 패턴"
           - "리뷰 데이터"
-        
+
         result: "추천 정확도 → 전환율 ↑"
-      
+
       - company: "Netflix (추천)"
         barrier: "시청 데이터"
-        
+
         data_advantage:
           - "무엇을 봤는가"
           - "얼마나 봤는가"
           - "언제 멈췄는가"
-        
+
         result: "75% 시청이 추천에서 발생"
-    
+
     overcoming_strategies:
       - "틈새 시장 (특화 데이터)"
       - "파트너십 (데이터 공유)"
       - "합성 데이터 (Synthetic Data)"
       - "전이 학습 (Transfer Learning)"
       - "데이터 구매"
-    
+
     trend: |
       AI 시대에 가장 강력한 진입 장벽
       - 데이터 = 새로운 석유

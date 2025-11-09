@@ -6,7 +6,7 @@
 # ⚡ TL;DR (AI: 바쁘면 여기만!)
 #
 # UMIS = 28개 도구를 RAG로 로드하는 시스템 (v7.5.0)
-# 
+#
 # 사용법:
 #   1) 쿼리 분석 (agent + keywords)
 #   2) Section 1 (Decision Guide)에서 tool_key 찾기
@@ -22,9 +22,9 @@
 #   3. Agent Summary (Line 220~) ← 역할 (필요시)
 #   4. System Details (Line 410~) ← 구조 (참고용)
 #
-# ⭐ v7.5.0 신규:
+#  v7.5.0 신규:
 #   - 3-Tier 완성 (Tier 1/2/3, 100% 커버리지)
-#   - 12개 비즈니스 지표 템플릿 (23개 모형)
+#   - Estimator/Quantifier 역할 명확화 (MECE)
 #   - 데이터 상속 (재귀 최적화)
 #   - LLM 모드 통합 (Native/External)
 #
@@ -38,21 +38,21 @@ _meta:
   original_size: "6,787줄"
   compressed_size: "850줄"
   context_saving: "87%"
-  
+
   purpose: |
     System RAG의 핵심 INDEX.
     AI가 필요한 도구만 정확히 로드할 수 있도록
     전체 시스템을 압축 요약.
-  
+
   ai_reading_guide: |
     ⚠️ AI: 이 파일을 읽는 것만으로는 부족합니다!
-    
+
     필수 실행 프로세스:
-    1. ✅ 이 파일 읽기 (umis_core.yaml) - INDEX 파악
-    2. ✅ 쿼리 분석 (agent + keywords)
-    3. ⭐ System RAG 실행 (run_terminal_cmd 필수!)
-    4. ✅ 로드된 도구로 작업
-    
+    1.  이 파일 읽기 (umis_core.yaml) - INDEX 파악
+    2.  쿼리 분석 (agent + keywords)
+    3.  System RAG 실행 (run_terminal_cmd 필수!)
+    4.  로드된 도구로 작업
+
     핵심: System RAG 없이는 도구 content 없음!
 
 # ========================================
@@ -60,20 +60,20 @@ _meta:
 # ========================================
 
 quick_start_for_ai:
-  
+
   this_file_purpose:
     what: "UMIS 전체 시스템의 압축된 INDEX (도구 목록)"
     when: "모든 프로젝트 시작 시 첫 번째로 읽기"
     why: "컨텍스트 절약 + 필요한 도구만 로드"
     warning: "이 파일은 INDEX일 뿐! 실제 도구 content는 System RAG로 로드해야 함"
-  
+
   mandatory_execution_process:
-    
+
     step_0_prerequisite:
       check: "System RAG Collection 존재 확인"
       command: "python3 scripts/query_system_rag.py --stats"
       if_fails: "python3 scripts/build_system_knowledge.py (1분)"
-    
+
     step_1_load_index:
       action: "read_file tool 사용"
       file: "umis_core.yaml"
@@ -83,7 +83,7 @@ quick_start_for_ai:
         - "289-469: Decision Guide"
       output: "필요한 tool_key 리스트 식별"
       mandatory: true
-    
+
     step_2_parse_query:
       action: "사용자 쿼리 분석"
       extract:
@@ -91,27 +91,27 @@ quick_start_for_ai:
         - "task_type (패턴 검색, SAM 계산, ...)"
         - "keywords (구독, 시장 규모, ...)"
       refer_to: "Lines 96-109 (agent_selection_flowchart)"
-    
+
     step_3_identify_tools:
       action: "Decision Guide 참조하여 tool_key 선택"
       refer_to: "Lines 289-469 (decision_guide)"
       output: "tool_key 리스트 (예: ['tool:explorer:pattern_search'])"
-    
+
     step_4_execute_system_rag:
-      action: "⭐ run_terminal_cmd tool 사용 (필수!)"
+      action: " run_terminal_cmd tool 사용 (필수!)"
       command_template: "python3 scripts/query_system_rag.py {tool_key}"
-      
+
       examples:
         single: "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
         multiple: |
           python3 scripts/query_system_rag.py tool:observer:market_structure
           python3 scripts/query_system_rag.py tool:explorer:pattern_search
           python3 scripts/query_system_rag.py tool:quantifier:sam_4methods
-      
+
       expected_output: "도구 content (200-800줄/개)"
       mandatory: true
       skip_penalty: "도구 없음 → 작업 실패"
-    
+
     step_5_use_loaded_tools:
       action: "System RAG로 로드한 content 기반 작업"
       context_composition:
@@ -119,52 +119,52 @@ quick_start_for_ai:
         - "System RAG 결과 (200-2,500줄, 도구 content)"
         - "total: 900-3,200줄 (vs 6,102줄 전체)"
       savings: "47-85% 컨텍스트 절약"
-  
+
   real_execution_examples:
-    
+
     example_1_explorer_pattern:
       user_query: "@Explorer, 구독 모델 패턴"
-      
+
       ai_actions:
         action_1_read_index:
           tool: "read_file"
           file: "umis_core.yaml"
           lines: "40-110"
           output: "Agent=explorer, task=pattern_search 파악"
-        
+
         action_2_identify_tool:
           refer: "Line 347 (decision_guide.explorer.key_tools)"
           tool_key: "tool:explorer:pattern_search"
-        
+
         action_3_system_rag:
           tool: "run_terminal_cmd"
           command: "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
           expected: "~400줄 도구 content"
           mandatory: true
-        
+
         action_4_execute:
           use: "로드된 도구 content"
           action: "RAG 패턴 검색 실행"
-      
+
       context_total: "709 + 400 = 1,109줄 (vs 6,102줄, 82% 절약)"
-    
+
     example_2_market_analysis:
       user_query: "음악 스트리밍 시장 분석"
-      
+
       ai_actions:
         action_1_read_index:
           tool: "read_file"
           file: "umis_core.yaml"
           lines: "88-110"
           output: "시장 분석 = Observer → Explorer → Quantifier"
-        
+
         action_2_identify_tools:
           refer: "Lines 296-469 (decision_guide)"
           tool_keys:
             - "tool:observer:market_structure"
             - "tool:explorer:pattern_search"
             - "tool:quantifier:sam_4methods"
-        
+
         action_3_system_rag:
           tool: "run_terminal_cmd (3회 실행)"
           commands:
@@ -173,30 +173,30 @@ quick_start_for_ai:
             - "python3 scripts/query_system_rag.py tool:quantifier:sam_4methods"
           expected: "~1,200줄 (3개 도구)"
           mandatory: true
-        
+
         action_4_execute_workflow:
           step_1: "Observer: 시장 구조 관찰 (로드된 도구 활용)"
           step_2: "Explorer: 기회 발굴 (로드된 도구 + RAG)"
           step_3: "Quantifier: SAM 계산 (로드된 도구)"
-      
+
       context_total: "709 + 1,200 = 1,909줄 (vs 6,102줄, 69% 절약)"
-  
+
   critical_reminder:
     warning: |
       ⚠️ AI: System RAG 실행을 건너뛰지 마세요!
-      
+
       ❌ 잘못된 접근:
         1. umis_core.yaml만 읽기
         2. 바로 작업 시작
         → 도구 content 없음 → 작업 실패
-      
-      ✅ 올바른 접근:
+
+       올바른 접근:
         1. umis_core.yaml 읽기 (INDEX)
         2. tool_key 식별
         3. System RAG 실행 (run_terminal_cmd)
         4. 로드된 도구로 작업
         → 성공!
-  
+
   shortcuts:
     - "도구 목록": "python3 scripts/query_system_rag.py --list"
     - "도구 검색": "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
@@ -212,20 +212,20 @@ quick_start_for_ai:
 
 agent_selection_flowchart:
   # ⚡ 빠른 Agent 선택 (AI: 2초 판단!)
-  
+
   "기회를 찾고 싶다": "Explorer (tool:explorer:pattern_search 우선)"
   "시장 규모를 알고 싶다": "Quantifier (tool:quantifier:sam_4methods)"
   "데이터를 검증하고 싶다": "Validator (tool:validator:data_definition)"
   "시장 구조를 파악하고 싶다": "Observer (tool:observer:market_structure)"
   "진행 상황을 관리하고 싶다": "Guardian (tool:guardian:progress_monitoring)"
-  "값을 추정하고 싶다": "Estimator (tool:estimator:estimate) ⭐ v7.3.1+"
-  
+  "값을 추정하고 싶다": "Estimator (tool:estimator:estimate)  v7.3.1+"
+
   복합_쿼리:
     "시장 분석": "Observer → Explorer → Quantifier (Estimator 협업)"
     "기회 검증": "Explorer → Validator → Quantifier (Estimator 협업)"
     "경쟁 분석": "Observer + Framework:competitive_analysis"
     "Discovery Sprint": "Framework:discovery_sprint + 모든 Agent (6개)"
-  
+
   v7_3_2_policy:
     single_source: "모든 값/데이터 추정은 Estimator만 수행"
     other_agents: "다른 Agent는 Estimator 호출 필수"
@@ -233,78 +233,78 @@ agent_selection_flowchart:
 system_details:
   name: "UMIS v7.5.0"
   tagline: "6-Agent + 3-Tier 완성, 100% 커버리지 달성"
-  
+
   what_it_can_do:
     rag:
       - "360개 검증된 데이터 자동 검색"
       - "패턴 조합 발견 (Knowledge Graph)"
       - "6개 Agent RAG (모든 Agent)"
-    
+
     agents:
-      - "6-Agent 협업 시스템"
-      - "3-Tier 완성 (100% 커버리지)" ⭐
-      - "12개 비즈니스 지표 (23개 모형)" ⭐
+      - "6-Agent 협업 시스템 (역할 MECE)"
+      - "3-Tier 완성 (100% 커버리지)"
+      - "Estimator/Quantifier 분리 (추정 vs 계산)"
       - "완전한 추적성 (ID Namespace)"
       - "재검증 가능 (Excel 함수)"
-      - "Single Source of Truth"
-    
+      - "Single Source of Truth (Estimator)"
+
     automation:
       - "AI 자동 설치 (setup.py)"
       - "Excel 자동 생성 (3개 도구)"
       - "검증 자동화 (Guardian Meta-RAG)"
       - "학습 시스템 (6-16배 빠름)"
-      - "재귀 추정 (Tier 3, v7.4.0+)" ⭐
-      - "LLM 모드 선택 (Native $0 / External)" ⭐
-  
+      - "재귀 추정 (Tier 3, v7.4.0+)" 
+      - "LLM 모드 선택 (Native $0 / External)" 
+
   rag_architecture:
     version: "v3.0 (4-Layer)"
-    
+
     layers:
-      layer_1_canonical: 
+      layer_1_canonical:
         - "Canonical Index (정규화)"
         - "Write 1곳만 (업데이트용)"
         - "재현성 보장"
-      
+
       layer_2_projected:
         - "Projected Index (Agent별 검색용 뷰)"
         - "TTL 24h + On-Demand"
         - "90% 규칙 + 10% LLM 학습"
-      
+
       layer_3_graph:
         - "Knowledge Graph (Neo4j)"
         - "13 노드, 45 관계"
         - "패턴 조합 발견"
-      
+
       layer_4_memory:
         - "Query Memory (순환 감지)"
         - "Goal Memory (목표 정렬)"
         - "RAE Memory (평가 일관성)"
-    
+
     active_collections:
-      explorer: 
+      explorer:
         - "explorer_knowledge_base (354개)"
         - "projected_index (71개)"
-      
+
       quantifier:
         - "calculation_methodologies (30개)"
         - "market_benchmarks (100개)"
-      
+
       validator:
         - "data_sources_registry (50개)"
         - "definition_validation_cases (84개)"
-      
+
       observer:
         - "market_structure_patterns (30개)"
         - "value_chain_benchmarks (50개)"
-      
+
       estimator:
         - "learned_rules (0 → 2,000개 진화)"
         - "canonical_store (정규화)"
         - "estimator (Agent View)"
-      
+
       system:
         - "system_knowledge (28개 도구)"
-    
+
     how_it_works: |
       "@Explorer, 구독 모델"
       → System RAG: tool:explorer:pattern_search 로드
@@ -320,19 +320,19 @@ workflows:
     depth: "매우 상세"
     agents: "모든 Agent 순차 실행"
     deliverables: "15-20개 문서"
-  
+
   rapid_assessment:
     duration: "1-3일"
     depth: "중간"
     agents: "핵심 Agent만"
     deliverables: "3-5개 문서"
-  
+
   quick_insights:
     duration: "1-2시간"
     depth: "빠른 파악"
     agents: "1-2개 Agent"
     deliverables: "1-2개 요약"
-  
+
   discovery_sprint:
     duration: "1-3일"
     condition: "명확도 < 7"
@@ -342,7 +342,7 @@ workflows:
 key_concepts:
   id_namespace:
     why: "완전한 추적성"
-    
+
     prefixes:
       OBS: "Observer 관찰 결과"
       OPP: "Explorer 기회 가설"
@@ -350,22 +350,22 @@ key_concepts:
       SRC: "Validator 데이터 소스"
       ASM: "가정 (Assumption)"
       EST: "추정치"
-    
+
     example: "OPP_20251104_001 → 2025-11-04 첫 번째 기회"
-  
+
   excel_functions:
     why: "재검증 가능성"
-    
+
     approach: |
       모든 계산을 Excel 함수로
       → 누구나 검증 가능
       → 투명성 확보
-    
+
     example: "=ASM_001*ASM_002 (가정 ID로 참조)"
-  
+
   validation_protocol:
     principle: "모든 주장에 근거"
-    
+
     levels:
       직접데이터: "SRC_xxx (출처)"
       추정치: "EST_xxx (추정 논리)"
@@ -376,23 +376,23 @@ key_concepts:
 # ========================================
 
 universal_tools:
-  
+
   guestimation:
     tool_key: "tool:universal:guestimation (Deprecated, use Estimator)"
     agent: "Estimator (v7.3.2+ Single Source)"
     category: "추정 방법론 → Estimator Agent로 통합"
     deprecated_note: "v7.3.2+: 직접 사용 금지, Estimator 호출 필수"
-    
+
     when_to_use:
       - "❌ 더 이상 직접 사용하지 마세요"
-      - "✅ v7.3.2+: estimator.estimate() 호출"
-    
+      - " v7.3.2+: estimator.estimate() 호출"
+
     fermi_4_principles:
       - "모형 (시장 = 고객 × 구매액)"
       - "분해 (1인당 = 교통 + 식비 + 숙박)"
       - "제약 (하루 24h, 1끼 30분)"
       - "자릿수 (500억? 5000억?)"
-    
+
     data_sources_8:
       sources:
         - "1. 프로젝트 데이터"
@@ -404,20 +404,20 @@ universal_tools:
         - "7. Rule of Thumb (RAG)"
         - "8. 시공간 제약 (24h)"
       rag_position: "출처 7의 일부 (12.5%)"
-    
+
     benchmark_check: "4대 기준 (제품, 소비자, 가격, 맥락) → 3개 이상 유사"
-    
+
     examples:
       - "피아노 15% (RAG 검증 후)"
       - "여행 2,500억 (상식+경험)"
       - "자장면 42만 (제약조건)"
       - "전봇대 716만 (Fermi)"
-    
+
     migration:
       from: "tool:universal:guestimation (v7.2.1 이하)"
       to: "tool:estimator:estimate (v7.3.2+)"
       reason: "Single Source of Truth 정책"
-    
+
     detail: "System RAG → tool:estimator:estimate (권장)"
 
 # (Section 2-4는 다음 단계에서 추가)
@@ -425,7 +425,7 @@ universal_tools:
 # (이전 위치에서 이동됨)
 
 decision_guide:
-  
+
   observer:
     name: "Albert (기본)"
     role: "시장 구조 분석"
@@ -433,34 +433,34 @@ decision_guide:
     rag_collections:
       - "market_structure_patterns (30개)"
       - "value_chain_benchmarks (50개)"
-    
+
     what_it_does:
       - "가치사슬 맵핑"
       - "거래 패턴 관찰"
       - "비효율성 발견"
       - "경쟁 구조 분석"
-    
+
     when_to_use:
       - "시장 구조 이해 필요"
       - "가치 흐름 분석"
       - "경쟁 구도 파악"
       - "비효율성 탐색"
-    
+
     key_tools:
       - "tool:observer:market_structure (RAG)"
       - "tool:observer:value_chain (RAG)"
       - "tool:observer:inefficiency_detection"
       - "tool:observer:disruption_opportunity"
-    
+
     deliverables:
       - "market_reality_report.md"
-    
+
     output_to:
       - "Explorer (비효율성 → 기회)"
       - "Quantifier (구조 → 규모 추정)"
-    
+
     detail_module: "modules/agents/observer.yaml (상세 800줄)"
-  
+
   explorer:
     name: "Steve (기본)"
     role: "기회 발굴 (RAG 활용!)"
@@ -468,35 +468,35 @@ decision_guide:
     rag_collections:
       - "explorer_knowledge_base (354개)"
       - "projected_index (71개)"
-    
+
     what_it_does:
       - "RAG 패턴 자동 검색 (31+23개)"
       - "7단계 기회 발굴 프로세스"
       - "가설 생성 (LLM)"
       - "검증 프로토콜"
-    
+
     when_to_use:
       - "기회 발굴"
       - "가설 생성"
       - "패턴 매칭"
       - "혁신 아이디어"
-    
+
     key_tools:
       - "tool:explorer:pattern_search (RAG 우선!)"
       - "tool:explorer:7_step_process"
       - "tool:explorer:validation_protocol"
       - "tool:explorer:hypothesis_generation"
-    
+
     deliverables:
       - "OPP_*.md (기회 가설)"
       - "opportunity_portfolio.md"
-    
+
     output_to:
       - "Quantifier (기회 → 규모)"
       - "Validator (가설 → 검증)"
-    
+
     detail_module: "modules/agents/explorer.yaml (상세 900줄)"
-  
+
   quantifier:
     name: "Bill (기본)"
     role: "정량 분석 (RAG 활용!)"
@@ -504,35 +504,35 @@ decision_guide:
     rag_collections:
       - "calculation_methodologies (30개)"
       - "market_benchmarks (100개)"
-    
+
     what_it_does:
       - "SAM 4가지 방법 계산"
       - "성장률 분석"
       - "벤치마킹"
       - "Excel 자동 생성 (9개 시트)"
-    
+
     when_to_use:
       - "시장 규모 추정"
       - "성장률 분석"
       - "벤치마크 비교"
       - "시나리오 계획"
-    
+
     key_tools:
       - "tool:quantifier:sam_4methods (RAG)"
       - "tool:quantifier:growth_analysis"
       - "tool:quantifier:scenario_planning"
       - "tool:quantifier:benchmark_analysis"
-    
+
     deliverables:
       - "market_sizing.xlsx (Excel 자동 생성)"
       - "growth_forecast.md"
-    
+
     output_to:
       - "Validator (수치 → 검증)"
       - "Guardian (규모 → 평가)"
-    
+
     detail_module: "modules/agents/quantifier.yaml (상세 700줄)"
-  
+
   validator:
     name: "Rachel (기본)"
     role: "데이터 검증 (RAG 활용!)"
@@ -540,35 +540,35 @@ decision_guide:
     rag_collections:
       - "data_sources_registry (50개)"
       - "definition_validation_cases (100개)"
-    
+
     what_it_does:
       - "데이터 정의 검증"
       - "출처 확인"
       - "Gap 분석"
       - "창의적 소싱 (12가지 방법)"
-    
+
     when_to_use:
       - "데이터 정의 불명확"
       - "출처 신뢰도 확인"
       - "산업별 정의 차이"
       - "데이터 부족"
-    
+
     key_tools:
       - "tool:validator:data_definition (RAG)"
       - "tool:validator:creative_sourcing"
       - "tool:validator:gap_analysis"
       - "tool:validator:source_verification"
-    
+
     deliverables:
       - "data_validation_report.md"
       - "source_registry.md"
-    
+
     output_to:
       - "Quantifier (검증 완료 → 계산)"
       - "Guardian (품질 → 승인)"
-    
+
     detail_module: "modules/agents/validator.yaml (상세 600줄)"
-  
+
   guardian:
     name: "Stewart (기본)"
     role: "프로세스 모니터링 + 품질 평가"
@@ -577,119 +577,131 @@ decision_guide:
       - "goal_memory (6개)"
       - "query_memory (17개)"
       - "rae_index (4개)"
-    
+
     what_it_does:
       - "진행 모니터링 (순환 감지)"
       - "목표 정렬 확인"
       - "품질 평가 (3단계)"
       - "최종 승인"
-    
+
     when_to_use:
       - "프로젝트 시작 (목표 설정)"
       - "산출물 완성 (품질 평가)"
       - "진행 중 (순환 감지)"
-    
+
     key_tools:
       - "tool:guardian:progress_monitoring"
       - "tool:guardian:quality_evaluation"
-    
+
     deliverables:
       - "quality_report.md"
       - "project_log.md"
-    
+
     meta_rag:
       query_memory: "같은 주제 3회 반복 → 제안"
       goal_memory: "목표 이탈 감지 → 재정렬"
       rae_memory: "평가 일관성 유지"
       three_stage: "규칙 → 임계값 → LLM"
-    
+
     detail_module: "modules/agents/guardian.yaml (상세 800줄)"
-  
+
   estimator:
     name: "Fermi (기본)"
-    role: "값 추정 및 판단 (v7.3.1+) ⭐"
+    role: "값 추정 및 판단 (v7.3.1+) "
     rag: true
     rag_collections:
       - "learned_rules (0 → 2,000개 진화)"
       - "canonical_store (정규화)"
       - "estimator (Agent View)"
-    
+
     what_it_does:
-      - "3-Tier Architecture (100% 커버리지)" ⭐
-      - "12개 비즈니스 지표 템플릿 (23개 모형)" ⭐
-      - "데이터 상속 (재귀 최적화, v7.5.0)" ⭐
-      - "LLM 모드 통합 (Native/External)" ⭐
+      - "3-Tier Architecture (100% 커버리지)" 
+      - "순수 값 추정 전문 (계산은 Quantifier)" 
+      - "데이터 상속 (재귀 최적화, v7.5.0)" 
+      - "LLM 모드 통합 (Native/External)" 
       - "11개 Source 통합"
       - "학습 시스템 (6-16배)"
       - "추정 근거 완전 투명화"
       - "교차 검증 지원"
-    
+
     when_to_use:
-      - "데이터 부족 시 값 추정"
-      - "비즈니스 지표 (LTV, CAC, Churn, ARPU 등)"
+      - "데이터 부족 시 값 추정 (예: ARPU, Churn, 음식점 수)"
+      - "일반 Fermi 분해 (물리적/수학적)"
       - "복잡한 모형 (재귀 분해 필요)"
       - "추정치 교차 검증"
-    
+
+    what_not_to_use:
+      - "❌ 비즈니스 지표 계산 (LTV, Payback 등) → Quantifier가 담당"
+      - "❌ 데이터 있을 때 계산 → Quantifier 사용"
+      - " 값 추정만 Estimator 사용"
+
     key_tools:
       - "tool:estimator:estimate (기본 추정)"
       - "tool:estimator:cross_validation (교차 검증)"
       - "tool:estimator:learning_system (학습)"
-    
+
     deliverables:
       - "EstimationResult (value + reasoning_detail)"
       - "DecompositionTrace (Tier 3, depth + formula)"
-      - "12개 비즈니스 지표 결과"
-    
+      - "추정 값 (ARPU, Churn, 음식점 수 등)"
+
     single_source_policy:
       principle: "모든 값/데이터 추정은 Estimator만"
       enforcement: "5개 Agent → Estimator 호출"
-    
+
     collaboration_model:
       type: "협업 파트너 (Workflow 독립)"
       frequency:
         - "Quantifier: ★★★★★"
         - "Explorer: ★★★★"
         - "Validator/Observer: ★★★"
-    
+
     three_tier_architecture:
       tier_1:
         speed: "<0.5초"
-        coverage: "45% → 95%"
+        coverage: "정확한 매칭만 (유사도 0.95+)"
+        threshold_change: "v7.5.0: 0.85 → 0.95 강화"
         file: "tier1.py (350줄)"
-      
+
       tier_2:
         speed: "3-8초"
-        coverage: "50% → 5%"
+        coverage: "높은 신뢰도만 (confidence 0.80+)"
+        threshold_change: "v7.5.0: 0.60 → 0.80 강화"
         file: "tier2.py (650줄)"
-      
+        note: "임계값 강화로 Tier 3 활용 증가"
+
       tier_3:
         speed: "10-30초"
-        coverage: "5% → 0.5%"
-        status: "✅ v7.5.0 완성"
+        coverage: "Tier 1/2 실패 시 모두 (핵심!)"
+        status: " v7.5.0 역할 명확화"
         file: "tier3.py (1,463줄)"
-        
-        business_metrics_12:
-          core: "Unit Economics, Market Sizing, LTV, CAC, Conversion, Churn, ARPU, Growth"
-          advanced: "Payback, Rule of 40, NRR, Gross Margin" ⭐
-          total: "12개 지표, 23개 모형"
-          coverage: "90-95% (템플릿만)"
-        
+
+        role_clarification_v7_5_0:
+          focus: "일반 Fermi 분해 (물리적/수학적)"
+          removed: "비즈니스 지표 템플릿 → Quantifier로 이동"
+          examples:
+            - "서울 음식점 수는? (인구 × 밀도)"
+            - "여객기에 탁구공 몇 개? (부피 / 탁구공 부피)"
+            - "한국 커피 시장? (인구 × 소비율 × 가격)"
+          not_handled: "LTV, CAC, Payback 계산 → Quantifier"
+
         features:
           recursion: "재귀 분해 (depth 4)"
-          data_inheritance: "부모 데이터 상속" ⭐
+          data_inheritance: "부모 데이터 상속" 
+          context_propagation: "Context 전달 (재귀 시 구체적 질문)" 
           circular_detection: "순환 감지"
           variable_policy: "Simple 20줄 (6-10개)"
-          llm_mode: "Native $0 / External $0.03" ⭐
-        
+          llm_mode: "Native $0 / External $0.03" 
+
         safety:
           - "Max depth 4"
           - "순환 감지 (Call stack)"
           - "Tier 2 Fallback"
           - "변수 10개 절대 상한"
-      
-      total_coverage: "100%" ⭐
-      failure_rate: "0%" ⭐
-    
+
+      total_coverage: "100%" 
+      failure_rate: "0%" 
+
     detail_module: "umis_rag/agents/estimator/ (14개 파일, 4,188줄)"
 
 # ========================================
@@ -700,18 +712,18 @@ decision_guide:
 # ========================================
 
 agents:
-  
-  # ⭐ AI 사용 가이드:
+
+  #  AI 사용 가이드:
   #   1. 쿼리에서 keywords 추출
   #   2. question_type_mapping에서 매칭
   #   3. 필요한 tool_key 식별
   #   4. System RAG로 검색
-  
+
   question_type_mapping:
-    
+
     market_analysis:
       keywords: ["시장 분석", "산업 분석", "경쟁 구조"]
-      
+
       decision_logic:
         step_1_check_clarity:
           if_low_clarity:
@@ -721,90 +733,90 @@ agents:
               - "tool:observer:market_structure"
               - "tool:explorer:pattern_search"
             agents: "모든 Agent 병렬"
-          
+
           if_high_clarity:
             action: "Structured Analysis"
             load_tools:
               - "tool:observer:market_structure"
               - "tool:explorer:7_step_process"
             agents: "Albert → Steve 순차"
-        
+
         step_2_determine_depth:
           quick: "tool:framework:13_dimensions만"
           standard: "Observer + Explorer"
           comprehensive: "모든 Agent 순차"
-    
+
     opportunity_discovery:
       keywords: ["기회", "아이디어", "혁신", "새로운"]
-      
+
       primary_agent: "explorer"
-      
+
       required_tools:
         - "tool:explorer:pattern_search (RAG 우선!)"
         - "tool:explorer:7_step_process"
-      
+
       optional_tools:
         - "tool:observer:market_structure (맥락)"
         - "tool:quantifier:sam_4methods (규모)"
-      
+
       load_order:
         1: "tool:explorer:pattern_search (RAG)"
         2: "tool:explorer:7_step_process"
         3: "필요 시 observer, quantifier"
-    
+
     market_sizing:
       keywords: ["시장 규모", "SAM", "TAM", "크기"]
-      
+
       primary_agent: "quantifier"
-      
+
       required_tools:
         - "tool:validator:data_definition (먼저!)"
         - "tool:quantifier:sam_4methods"
-      
+
       workflow:
         1: "Validator가 데이터 정의 검증"
         2: "Quantifier가 4가지 방법 계산"
         3: "Convergence ±30% 확인"
-      
+
       deliverable: "market_sizing.xlsx (Excel 자동 생성)"
-    
+
     data_validation:
       keywords: ["검증", "확인", "출처", "정의"]
-      
+
       primary_agent: "validator"
-      
+
       required_tools:
         - "tool:validator:data_definition (RAG)"
         - "tool:validator:source_verification"
-      
+
       optional_tools:
         - "tool:validator:gap_analysis (산업별 차이)"
-    
+
     competitive_analysis:
       keywords: ["경쟁", "경쟁사", "점유율", "경쟁 우위"]
-      
+
       required_tools:
         - "tool:framework:competitive_analysis"
         - "tool:framework:7_powers"
         - "tool:observer:market_structure"
-      
+
       load_order:
         1: "Observer가 구조 파악"
         2: "Framework로 분석"
-    
+
     disruption_strategy:
       keywords: ["파괴", "혁신", "1등 추월", "역전"]
-      
+
       required_tools:
         - "tool:framework:counter_positioning"
         - "tool:observer:inefficiency_detection"
         - "tool:observer:disruption_opportunity"
-      
+
       workflow:
         1: "비효율성 발견"
         2: "Counter-Positioning 전략"
         3: "실행 가능성 검증"
-  
+
   ai_loading_strategy: |
     사용자 쿼리 분석
       ↓
@@ -817,17 +829,17 @@ agents:
     컨텍스트 구성 (필요한 것만)
       ↓
     실행
-    
+
     컨텍스트 예상:
     - 단순 쿼리: umis_core.yaml (50줄) + 도구 1-2개 (400줄) = 450줄
     - 중간 쿼리: umis_core.yaml + 도구 3-5개 (1,200줄) = 1,250줄
     - 복잡 쿼리: umis_core.yaml + 도구 8-10개 (2,800줄) = 2,850줄
-    
+
     vs 원본 (5,508줄):
     - 단순: 92% 절약
     - 중간: 77% 절약
     - 복잡: 48% 절약
-    
+
     평균: 77% 절약 달성!
 
 # ========================================
@@ -838,106 +850,108 @@ agents:
 # ========================================
 
 module_index:
-  
+
   note: |
     umis_core.yaml은 INDEX.
     상세 내용은 System RAG로 로드.
-  
+
   agents:
     observer:
       file: "modules/agents/observer.yaml"
       size: "800줄"
       tools: 4개
       note: "RAG로 로드: tool:observer:*"
-    
+
     explorer:
       file: "modules/agents/explorer.yaml"
       size: "900줄"
       tools: 4개
       rag: true
       note: "RAG로 로드: tool:explorer:*"
-    
+
     quantifier:
       file: "modules/agents/quantifier.yaml"
       size: "700줄"
       tools: 4개
       note: "RAG로 로드: tool:quantifier:*"
-    
+
     validator:
       file: "modules/agents/validator.yaml"
       size: "600줄"
       tools: 4개
       note: "RAG로 로드: tool:validator:*"
-    
+
     guardian:
       file: "modules/agents/guardian.yaml"
       size: "800줄"
       tools: 2개
       note: "RAG로 로드: tool:guardian:*"
-    
+
     estimator:
       file: "umis_rag/agents/estimator/"
       size: "386줄"
       tools: 3개
-      note: "RAG로 로드: tool:estimator:* ⭐ v7.3.1+"
-  
+      note: "RAG로 로드: tool:estimator:*  v7.3.1+"
+
   frameworks:
     market_definition:
       file: "modules/frameworks/market_definition.yaml"
       size: "1,000줄"
       tools: ["13_dimensions", "market_definition"]
-    
+
     seven_powers:
       file: "modules/frameworks/seven_powers.yaml"
       size: "500줄"
       tool: "7_powers"
-    
+
     discovery_sprint:
       file: "modules/frameworks/discovery_sprint.yaml"
       size: "400줄"
       tool: "discovery_sprint"
-    
+
     counter_positioning:
       file: "modules/frameworks/counter_positioning.yaml"
       size: "300줄"
       tool: "counter_positioning"
-  
+
   workflows:
     comprehensive:
       file: "modules/workflows/comprehensive.yaml"
       size: "600줄"
-    
+
     rapid:
       file: "modules/workflows/rapid.yaml"
       size: "400줄"
-    
+
     quick:
       file: "modules/workflows/quick.yaml"
       size: "200줄"
 
 quick_reference:
-  
+
   start_here:
     - "umis_core.yaml (이 파일) - 전체 개요"
     - "System RAG로 필요한 도구만 로드"
     - "상세 내용은 tool_key로 검색"
-  
+
   common_commands:
     - "python scripts/query_system_rag.py --list (도구 목록)"
     - "python scripts/query_system_rag.py tool:explorer:pattern_search"
     - "python scripts/test_system_rag_determinism.py (결정성 테스트)"
-  
+
   for_users:
     - "Cursor: '@Explorer, 구독 모델 패턴'"
-    - "Cursor: '@Fermi, B2B SaaS Churn Rate는?' ⭐ v7.3.1+"
+    - "Cursor: '@Fermi, B2B SaaS Churn Rate는?'  v7.3.1+"
     - "AI가 자동으로 System RAG 활용"
     - "필요한 도구만 로드 → 빠르고 정확"
-  
+
   v7_5_0_updates:
-    - "3-Tier 완성 (100% 커버리지)" ⭐
-    - "12개 비즈니스 지표 (23개 모형)" ⭐
-    - "데이터 상속 (재귀 최적화)" ⭐
-    - "LLM 모드 통합 (Native/External)" ⭐
+    - "3-Tier 완성 (100% 커버리지)" 
+    - "Estimator/Quantifier 역할 분리 (추정 vs 계산)" 
+    - "임계값 강화 (Tier 3 집중)" 
+    - "데이터 상속 (재귀 최적화)" 
+    - "Context 전달 개선 (구체적 질문)" 
+    - "LLM 모드 통합 (Native/External)" 
     - "6-Agent 시스템"
     - "Single Source of Truth"
     - "Reasoning Transparency"

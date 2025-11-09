@@ -1,12 +1,12 @@
 # ========================================
 # Market Reality Report Specification
 # ========================================
-# 
+#
 # Agent: Albert (Observer)
 # Output: market_reality_report.md
 # Format: YAML Frontmatter + Markdown
 # Purpose: 시장 구조 분석의 근거 기반 문서화
-# 
+#
 # ========================================
 
 spec_meta:
@@ -26,46 +26,46 @@ output_file:
 # ========================================
 
 frontmatter_schema:
-  
+
   required_fields:
-    
+
     type:
       fixed_value: "market_reality_report"
-    
+
     market:
       type: "string"
       example: "피아노 시장"
       source: "project_charter"
-    
+
     analysis_date:
       type: "date"
       auto_generate: true
-    
+
     author:
       fixed_value: "observer"  # agent_id
       display_name: "Albert (Observer)"
-    
+
     status:
       type: "enum"
       values: ["draft", "under_review", "validated"]
       default: "draft"
-    
+
     market_structure:
       type: "object"
       required_subfields:
         primary_pattern:
           type: "string"
           example: "B2C 직판 70%, B2B2C 30%"
-        
+
         concentration:
           type: "string"
           example: "경쟁적 (HHI 1200)"
           source: "quantifier_hhi_calculation"
-        
+
         entry_barriers:
           type: "array"
           examples: ["자본", "기술", "규제", "네트워크"]
-    
+
     key_inefficiencies:
       type: "array"
       min_items: 2
@@ -73,13 +73,13 @@ frontmatter_schema:
         - inefficiency: "비효율 설명"
           impact: "정량 영향 (quantifier 계산)"
           opportunity: "기회 시사점 (explorer를 위한)"
-    
+
     validation:
       required_validators:
         - "quantifier"  # Bill
         - "validator"   # Rachel
         - "guardian"    # Stewart
-      
+
       schema:
         quantifier:
           status: "pending/passed/conditional/failed"
@@ -92,7 +92,7 @@ frontmatter_schema:
           comment: "논리 건전성 의견"
         overall:
           status: "pending/passed/conditional/failed"
-  
+
   optional_fields:
     data_sources_count:
       type: "integer"
@@ -104,59 +104,59 @@ frontmatter_schema:
 # ========================================
 
 markdown_sections:
-  
+
   section_1_executive_summary:
     required: true
     heading: "Executive Summary"
     max_length: "5문장"
-    
+
     subsections:
       - structure_summary: "시장 구조 핵심 요약"
       - key_findings: "주요 발견사항"
       - insights_for_explorer: "Explorer에게 전달할 인사이트"
-  
+
   section_2_value_exchange:
     required: true
     heading: "Value Exchange Mapping"
-    
+
     subsections:
       - participants: "거래 참여자 (공급자/수요자/중개자)"
       - structure: "거래 구조 (가치사슬 다이어그램)"
       - flow: "가치 흐름 (거래 규모/빈도)"
-    
+
     evidence_requirements:
       - "모든 주장에 SRC_ID"
       - "마진율은 quantifier 계산 참조"
       - "거래 규모는 quantifier SAM 참조"
-  
+
   section_3_transaction_mechanism:
     required: true
     heading: "Transaction Mechanism Analysis"
-    
+
     content:
       - contract_structure: "단발/반복/장기"
       - pricing: "고정가/변동가/입찰/협상"
       - payment_terms: "선불/후불/분할"
       - observed_patterns: "관찰된 패턴"
-    
+
     evidence_format: "← 근거: SRC_XXX"
-  
+
   section_4_market_structure:
     required: true
     heading: "Market Structure Categorization"
-    
+
     required_analysis:
       - concentration: "시장 집중도 (HHI ← quantifier)"
       - entry_barriers: "진입장벽 유형"
       - competitive_structure: "경쟁 구조"
       - platform_power: "플랫폼/생태계 파워 (해당시)"
-  
+
   section_5_inefficiencies:
     required: true
     heading: "Observed Inefficiencies"
     critical: true
     note: "Explorer 기회 발굴의 핵심 입력"
-    
+
     block_structure:
       format: "numbered_list"
       each_block:
@@ -164,25 +164,25 @@ markdown_sections:
         - quantified_impact: "정량 영향 ← quantifier"
         - structural_cause: "구조적 원인 분석"
         - opportunity_implication: "기회 시사점 (for explorer)"
-      
+
       minimum_blocks: 3
-  
+
   section_6_data_evidence:
     required: true
     heading: "Data Evidence"
     purpose: "모든 주장의 근거 명시"
-    
+
     evidence_registry:
       format: "bullet_list"
       pattern: "주장 ← 근거: SRC_XXX or quantifier 계산"
       validation: "모든 SRC_ID는 validator.source_registry 존재"
-  
+
   section_7_validation_results:
     required: true
     heading: "Validation Results"
     auto_populate: true
     source: "frontmatter.validation"
-    
+
     display:
       - "quantifier 검증: {status} - {comment}"
       - "validator 검증: {status} - {comment}"
@@ -193,24 +193,24 @@ markdown_sections:
 # ========================================
 
 generation_rules:
-  
+
   auto_populate:
     - "analysis_date"
     - "author"
     - "type"
     - "validation.*.status = 'pending'"
     - "data_sources_count"
-  
+
   require_user_input:
     - "market_structure.primary_pattern"
     - "market_structure.concentration"
     - "key_inefficiencies"
-  
+
   cross_reference:
     - "concentration": "quantifier.hhi_calculation"
     - "inefficiencies.impact": "quantifier 분석"
     - "all evidence": "validator.source_registry"
-  
+
   evidence_linking_mandatory:
     pattern: "← (SRC_|quantifier |계산:)"
     enforcement: "모든 팩트 주장에 필수"
@@ -220,17 +220,17 @@ generation_rules:
 # ========================================
 
 validation_rules:
-  
+
   completeness:
     - all_required_sections: true
     - minimum_inefficiencies: 3
     - evidence_for_all_claims: true
-  
+
   evidence_traceability:
     - all_src_ids_exist_in_registry: true
     - quantifier_references_valid: true
     - observation_vs_interpretation_distinguished: true
-  
+
   mandatory_validation:
     - quantifier_passed: "정량적 타당성"
     - validator_passed: "데이터 신뢰성"
@@ -241,15 +241,15 @@ validation_rules:
 # ========================================
 
 integration:
-  
+
   input_from_validator:
     file: "../../validator/data_sources/source_registry.yaml"
     usage: "모든 SRC_ID 검증"
-  
+
   input_from_quantifier:
     file: "../../quantifier/market_sizing/sam_calculation_report.md"
     usage: "HHI, 마진율, SAM 등 정량 데이터"
-  
+
   output_to_explorer:
     file: "이 market_reality_report.md"
     usage: "Explorer의 Market Context 섹션 자동 채움"
@@ -266,21 +266,21 @@ example_frontmatter: |
   analysis_date: "2024-10-31"
   author: "observer"
   status: "validated"
-  
+
   market_structure:
     primary_pattern: "B2C 직판 70%, B2B2C 수의사 30%"
     concentration: "경쟁적 (HHI 1,200)"
     entry_barriers: ["자본", "브랜드", "유통망"]
-  
+
   key_inefficiencies:
     - inefficiency: "높은 초기 구매 부담 (500만원)"
       impact: "잠재 수요 60% 포기"
       opportunity: "구독/렌탈 모델 기회"
-    
+
     - inefficiency: "정기 관리 부재"
       impact: "고객 만족도 하락"
       opportunity: "관리 서비스 번들링"
-  
+
   validation:
     quantifier:
       status: "passed"
@@ -293,7 +293,7 @@ example_frontmatter: |
       comment: "논리적 비약 없음, 근거 충분"
     overall:
       status: "passed"
-  
+
   data_sources_count: 15
   ---
 

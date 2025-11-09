@@ -29,27 +29,33 @@ class EstimatorRAG:
     
     역할:
     -----
-    - 값 추정 및 지능적 판단 (Single Source of Truth)
+    - 값 추정 전문 (Single Source of Truth for Estimation)
+    - 데이터 없을 때 창의적 추정
     - 11개 Source 통합 (Physical, Soft, Value)
     - 학습하는 시스템 (사용할수록 6-16배 빨라짐)
-    - 100% 커버리지 (실패율 0%)
     
-    3-Tier 아키텍처 (v7.5.0 완성):
+    ⚠️  역할 명확화 (v7.5.0):
+    - Estimator: 값 추정만 담당 (예: "B2B SaaS ARPU는?" → 80,000원)
+    - Quantifier: 계산 공식 소유 (예: LTV = ARPU / Churn)
+    - 비즈니스 지표(LTV, CAC 등) 계산은 Quantifier가 담당!
+    
+    3-Tier 아키텍처 (v7.5.0):
     ---------------------------------
-    - Tier 1: Built-in + 학습 규칙 (<0.5초, 커버 45% → 95%)
-    - Tier 2: 11개 Source 수집 + 종합 판단 (3-8초, 커버 50% → 5%)
-    - Tier 3: Fermi Decomposition (10-30초, 커버 5% → 0.5%) ⭐
-      * 12개 비즈니스 지표 템플릿 (23개 모형)
+    - Tier 1: Built-in + 학습 규칙 (<0.5초, 임계값 0.95+)
+    - Tier 2: 11개 Source 수집 + 종합 판단 (3-8초, confidence 0.80+)
+    - Tier 3: 일반 Fermi Decomposition (10-30초) ⭐
+      * 물리적/수학적 분해 (예: 여객기 부피, 음식점 수)
       * 재귀 추정 (max depth 4)
-      * 데이터 상속 (v7.5.0)
+      * 데이터 상속 및 Context 전달
       * 순환 감지
       * LLM 모드 (Native/External)
+      * 비즈니스 지표 템플릿 제거됨 (→ Quantifier)
     
     협업 (모든 Agent):
     ------------------
+    - Quantifier: 필요한 값 요청 (예: "ARPU는?", "Churn은?")
     - Observer: 비율 추정 (가치사슬 마진, 시장 집중도)
     - Explorer: 시장 크기 감 잡기 (Order of Magnitude)
-    - Quantifier: 데이터 부족 시 (전환율, AOV, Frequency)
     - Validator: 추정치 교차 검증
     - Guardian: 프로젝트 리소스 추정
     
@@ -57,16 +63,18 @@ class EstimatorRAG:
         >>> from umis_rag.agents.estimator import EstimatorRAG
         >>> estimator = EstimatorRAG()
         
-        >>> # Tier 1/2 (대부분)
-        >>> result = estimator.estimate("Churn Rate는?", domain="B2B_SaaS")
+        >>> # Tier 1/2 (대부분 - 증거 기반)
+        >>> result = estimator.estimate("B2B SaaS Churn Rate는?", domain="B2B_SaaS")
         >>> print(f"{result.value} (Tier {result.tier})")
         
-        >>> # Tier 3 (비즈니스 지표)
-        >>> result = estimator.estimate("LTV는?")
-        >>> # → 템플릿: ltv, 재귀: arpu + churn, tier: 3
+        >>> # Tier 3 (일반 Fermi 분해)
+        >>> result = estimator.estimate("서울 음식점 수는?")
+        >>> # → Fermi 분해: 인구 × 음식점 밀도
         
-        >>> result = estimator.estimate("Payback Period는?")
-        >>> # → 템플릿: payback, tier: 3
+        >>> # 비즈니스 지표는 Quantifier가 처리 (v7.5.0)
+        >>> from umis_rag.agents.quantifier import get_quantifier_rag
+        >>> quantifier = get_quantifier_rag()
+        >>> ltv = quantifier.calculate_ltv(...)  # Quantifier가 LTV 계산
     """
     
     def __init__(self):
@@ -100,15 +108,22 @@ class EstimatorRAG:
         project_data: Optional[Dict] = None
     ) -> Optional[EstimationResult]:
         """
-        통합 추정 메서드 (v7.5.0 - 100% 커버리지)
+        통합 추정 메서드 (v7.5.0)
         
         자동으로 Tier 1 → 2 → 3 시도
-        - Tier 1: 학습된 규칙 (<0.5초)
-        - Tier 2: 11개 Source 판단 (3-8초)
-        - Tier 3: 재귀 분해 (10-30초, v7.5.0)
+        - Tier 1: 학습된 규칙 (<0.5초, 유사도 0.95+)
+        - Tier 2: 11개 Source 판단 (3-8초, confidence 0.80+)
+        - Tier 3: Fermi 분해 (10-30초, 일반적 분해만)
+        
+        ⚠️  v7.5.0 변경:
+        - 비즈니스 지표(LTV, CAC 등) 템플릿 제거
+        - Quantifier가 비즈니스 지표 계산 담당
+        - Estimator는 순수 값 추정만 수행
         
         Args:
-            question: 질문 (예: "B2B SaaS Churn Rate는?", "LTV는?")
+            question: 질문 (구체적일수록 좋음!)
+                예: "B2B SaaS 한국 시장 ARPU는?" (✅)
+                예: "ARPU는?" (❌ 너무 애매)
             context: Context 객체 (선택)
             domain: 도메인 (예: "B2B_SaaS", "Food_Service")
             region: 지역 (예: "한국", "서울")
@@ -121,20 +136,23 @@ class EstimatorRAG:
         Example:
             >>> estimator = EstimatorRAG()
             
-            >>> # Tier 1/2 (단일 값)
-            >>> result = estimator.estimate("Churn Rate는?", domain="B2B_SaaS")
-            >>> print(f"값: {result.value}, Tier: {result.tier}")
+            >>> # Tier 1/2 (증거 기반 추정)
+            >>> result = estimator.estimate(
+            ...     "B2B SaaS Churn Rate는?",
+            ...     domain="B2B_SaaS",
+            ...     region="한국"
+            ... )
+            >>> print(f"값: {result.value}%, Tier: {result.tier}")
             
-            >>> # Tier 3 (비즈니스 지표, v7.5.0)
-            >>> result = estimator.estimate("LTV는?")
-            >>> # → 템플릿 매칭: ltv
-            >>> # → 모형: ltv = arpu / churn_rate
-            >>> # → 재귀 추정 (depth 1)
-            >>> print(f"값: {result.value}, Depth: {result.decomposition.depth}")
+            >>> # Tier 3 (Fermi 분해)
+            >>> result = estimator.estimate("서울 음식점 수는?")
+            >>> # → Fermi: 인구 × 음식점 밀도
+            >>> # → 재귀 추정으로 하위 변수 채우기
             
-            >>> result = estimator.estimate("Payback Period는?")
-            >>> # → 템플릿: payback
-            >>> # → 모형: payback = cac / (arpu × gross_margin)
+            >>> # Context 명시
+            >>> from umis_rag.agents.estimator.models import Context
+            >>> ctx = Context(domain="B2B_SaaS", region="한국")
+            >>> result = estimator.estimate("ARPU는?", context=ctx)
         """
         # Context 생성
         if context is None:
@@ -171,11 +189,11 @@ class EstimatorRAG:
             return result
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Tier 3: Fermi Decomposition (v7.5.0 완성)
+        # Tier 3: Fermi Decomposition (v7.5.0)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # 12개 비즈니스 지표 템플릿 (23개 모형)
+        # 일반적 Fermi 분해 (물리적/수학적)
         # 재귀 추정 (max depth 4)
-        # 데이터 상속 (v7.5.0)
+        # 데이터 상속 및 Context 전달
         # LLM 모드 (Native/External)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         if self.tier3 is None:
@@ -183,7 +201,7 @@ class EstimatorRAG:
             self.tier3 = Tier3FermiPath()
             logger.info("  ✅ Tier 3 (Fermi Decomposition) 로드")
         
-        logger.info("  🔄 Tier 3 시도 (12개 비즈니스 지표 템플릿)")
+        logger.info("  🔄 Tier 3 시도 (일반 Fermi 분해)")
         result = self.tier3.estimate(question, context, project_data, depth=0)
         
         if result:
