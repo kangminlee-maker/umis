@@ -33,11 +33,13 @@ ENV/
 *.swo
 *~
 .DS_Store
+cursor_global_rules.txt  # Personal Cursor rules
 
 # Environment Variables
 .env
 .env.local
 .env.*.local
+.env.backup_*  # Backup files with sensitive data
 
 # RAG Data
 # data/chroma/ - Git 포함! (즉시 사용, 2.4MB)
@@ -74,6 +76,10 @@ dmypy.json
 # Documentation
 site/
 docs/market_analysis/  # 개인 분석 결과물 제외
+
+# Projects (keep folder structure only, exclude all project content)
+projects/*
+!projects/README.md
 
 # Temporary files
 tmp/

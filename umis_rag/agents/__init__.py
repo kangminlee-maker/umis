@@ -1,13 +1,13 @@
 """
-UMIS Agents Module
+UMIS Agents (v7.5.0)
 
-v7.3.1: 6-Agent 시스템 완성
-- Observer: 구조 분석 (구조 패턴/가치사슬)
-- Explorer: 기회 발굴 (패턴/사례 검색)
-- Quantifier: 정량 분석 (방법론/벤치마크)
-- Validator: 데이터 검증 (소스/정의)
-- Guardian: 품질 관리 (진행/평가)
-- Estimator: 값 추정 및 판단 (11개 Source, 학습) ⭐ NEW
+6-Agent 시스템:
+- Observer, Explorer, Quantifier, Validator: 단일 파일 (295-659줄)
+- Estimator: 모듈화 폴더 (5,200줄, 14개 파일) ← 복잡도 8-17배
+- Guardian: 품질 관리
+
+⚠️ Estimator만 estimator/ 폴더로 분리 (estimator.py는 리다이렉트)
+상세: estimator/README.md
 """
 
 from .explorer import ExplorerRAG, ExplorerAgenticRAG
