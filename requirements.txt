@@ -20,6 +20,9 @@ neo4j>=5.13.0
 click>=8.0.0
 tqdm>=4.65.0
 
+# Production Format (Balanced)
+msgpack>=1.0.0
+
 # Development
 pytest>=7.0.0
 pytest-cov>=4.0.0
