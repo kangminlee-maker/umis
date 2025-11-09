@@ -1,13 +1,13 @@
-# UMIS deliverable_standards - Compatible with v7.0.0
+# UMIS deliverable_standards - v7.5.0
 # ========================================
-# UMIS Deliverable Standards v6.2
+# UMIS Deliverable Standards v7.5.0
 # ========================================
 # 
-# 목적: 에이전트별 산출물 표준 정의 및 재검증 가능성 보장
-# 연계: umis_guidelines_v6.2.yaml SECTION 5 (DATA INTEGRITY SYSTEM)
+# 목적: 6개 에이전트별 산출물 표준 정의 및 재검증 가능성 보장
+# 연계: umis_core.yaml (System RAG Index)
 # 
 # 구조:
-# - Part 1: 에이전트별 산출물 표준
+# - Part 1: 에이전트별 산출물 표준 (6-Agent)
 # - Part 2: 프로젝트 생명주기 관리
 # - Part 3: 재검증 프레임워크
 # - Part 4: 파일 포맷 템플릿
@@ -15,11 +15,19 @@
 # ========================================
 
 _meta:
-  version: "6.2"
-  purpose: "산출물 표준화 및 재검증 가능성 보장"
-  parent_document: "umis_guidelines_v6.2.yaml"
-  integration_point: "SECTION 5: DATA INTEGRITY SYSTEM"
-  release_date: "2024-10-31"
+  version: "7.5.0"
+  purpose: "산출물 표준화 및 재검증 가능성 보장 (6-Agent)"
+  parent_document: "umis_core.yaml"
+  integration_point: "System RAG + 6-Agent Architecture"
+  release_date: "2025-11-08"
+  
+  v7_5_0_updates:
+    - "Estimator (Fermi) Agent 표준 추가"
+    - "Guestimation v3.0 (3-Tier Architecture) 반영"
+    - "12개 비즈니스 지표 템플릿 표준"
+    - "Single Source Policy 반영"
+    - "데이터 상속 및 재귀 분해 표준"
+    - "LLM 모드 통합 (Native/External) 표준"
 
 # ========================================
 # Part 1: 에이전트별 산출물 표준
@@ -27,7 +35,8 @@ _meta:
 # ========================================
 
 agent_deliverable_standards:
-  _description: "각 에이전트가 생성하는 산출물의 구조와 품질 기준"
+  _description: "각 에이전트가 생성하는 산출물의 구조와 품질 기준 (6-Agent)"
+  _note: "v7.5.0 - Estimator (Fermi) Agent 추가, Single Source Policy 적용"
   
   # Rachel (Validator) - 데이터 검증 및 소싱
   rachel_standards:
@@ -302,11 +311,99 @@ agent_deliverable_standards:
             name: "Estimation_Details"
             purpose: "직접 데이터 없는 추정치의 상세 논리 문서화"
             note: "이 시트가 핵심! 모든 추정 논리를 투명하게 공개"
+            v7_5_0_update: "Estimator Agent 통합 (Single Source Policy)"
+            
+            estimator_integration:
+              principle: "v7.5.0부터 모든 추정은 Estimator Agent 호출"
+              workflow:
+                step_1: "Bill이 추정 필요 항목 식별"
+                step_2: "Estimator.estimate(query, context) 호출"
+                step_3: "EstimationResult 수신 (value + reasoning_detail + tier)"
+                step_4: "Estimation_Details 시트에 Estimator 결과 기록"
+                step_5: "Tier 및 추정 근거 명시"
+              
+              source_format: "EST_NNN (Estimator Tier X)"
+              example: "EST_001 (Estimator Tier 2) - 피아노 학원 비중 30%"
+              
+              benefits:
+                - "일관된 추정 논리 (3-Tier Architecture)"
+                - "완전 투명한 근거 (reasoning_detail)"
+                - "재현 가능성 보장"
+                - "학습 효과 (Tier 1 규칙 진화)"
             
             structure:
-              description: "각 추정치마다 하나의 블록으로 상세 설명"
+              description: "각 추정치마다 하나의 블록으로 상세 설명 (Estimator 결과 포함)"
               
-              block_template: |
+              block_template_v7_5_0_estimator: |
+                ============================================
+                EST_ID: EST_001 (Estimator Tier 2)
+                추정 항목: 피아노 학원 비중
+                최종 추정값: 30% ± 5%
+                ============================================
+                
+                [1] 추정 필요 이유
+                - 교육부 통계에는 "전체 음악학원" 수만 있음
+                - 피아노/기타/바이올린 등 세부 구분 없음
+                - 직접 조사 데이터도 없음
+                
+                [2] Estimator 호출 (v7.5.0)
+                - Query: "한국 음악학원 중 피아노 학원 비중은?"
+                - Context: {
+                    market: "한국 음악 교육",
+                    total_academies: 10000,
+                    data_sources: ["SRC_20241031_005", "SRC_20241031_012"]
+                  }
+                - Tier Used: 2 (Context-Aware Judgment)
+                - Execution Time: 3.2초
+                
+                [3] Estimator 추정 근거 (reasoning_detail)
+                Context Analysis:
+                  - 시장: 한국 음악 교육 (전통 + 현대)
+                  - 산업: B2C 교육 서비스
+                  - 주요 악기: 피아노, 기타, 바이올린, 플루트
+                
+                Sources Used:
+                  - SRC_20241031_012 (서울 샘플: 피아노 35%)
+                  - Statistical_pattern (교육 서비스 지역 보정 계수)
+                  - RAG_benchmark (일본 유사 시장: 28%)
+                
+                Judgment Logic:
+                  Step 1: 서울 샘플 35%를 전국 기준으로 보정
+                    - 보정 계수: 0.9 (수도권 vs 전국 소득 차이)
+                    - 보정 결과: 35% × 0.9 = 31.5%
+                  
+                  Step 2: 벤치마크 비교 (일본 28%)
+                    - 문화적 유사성 높음 (피아노 교육 중시)
+                    - 31.5% vs 28% → 합리적 범위
+                  
+                  Step 3: 최종 판단
+                    - 중간값 적용: 30%
+                    - 오차 범위: ± 5% (25-35%)
+                
+                Confidence: Medium (± 5%)
+                
+                [4] 추가 검증 (Bill)
+                - 상한 테스트: 50% 이하 ✓ (피아노가 과반은 비현실)
+                - 하한 테스트: 15% 이상 ✓ (피아노가 주요 악기)
+                - 민감도: 최종 SAM에 30% 영향
+                
+                [5] 대체 접근법 시도 (Bill)
+                - 시도 1: 피아노 학원 협회 문의 → 회원사만 집계
+                - 시도 2: 지역별 전수 조사 → 시간/비용 제약
+                - 결론: Estimator Tier 2가 최선
+                
+                [6] 사용 위치
+                - Assumptions 시트 ASM_002
+                - Method_2_BottomUp 세그먼트 계산
+                
+                [7] 재현 가능성
+                - Estimator 동일 호출 시 동일 결과 보장
+                - Tier 2 논리 투명하게 공개
+                - 모든 Source 추적 가능
+                
+                ============================================
+              
+              block_template_legacy: |
                 ============================================
                 EST_ID: EST_001
                 추정 항목: 피아노 학원 비중
@@ -358,6 +455,8 @@ agent_deliverable_standards:
                 - Method_2_BottomUp 세그먼트 계산
                 
                 ============================================
+                
+                Note: v7.5.0부터는 Estimator Agent 사용 권장 (위 템플릿)
             
             column_structure:
               columns:
@@ -949,6 +1048,328 @@ agent_deliverable_standards:
         - "모든 기회 3명 검증 통과"
         - "실행 로드맵 구체화"
         - "70% 이상 통과율"
+  
+  # Fermi (Estimator) - 값 추정 및 판단 (v7.5.0) ⭐
+  fermi_standards:
+    _id: "fermi_deliverable_standards"
+    _role: "Estimator"
+    _agent_id: "estimator"
+    _core_output: "EstimationResult + DecompositionTrace + 비즈니스 지표 결과"
+    _version: "7.5.0"
+    _architecture: "3-Tier (Tier 1/2/3)"
+    
+    single_source_policy:
+      principle: "모든 값/데이터 추정은 Estimator만 담당 (v7.5.0)"
+      enforcement: "5개 Agent (Rachel/Bill/Albert/Steve/Stewart)가 추정 필요 시 Estimator 호출"
+      exception: "직접 데이터가 있을 때는 불필요"
+      benefit:
+        - "추정 논리 일관성"
+        - "재현성 보장"
+        - "학습 효과 집중"
+        - "검증 단순화"
+    
+    primary_deliverables:
+      
+      estimation_result:
+        description: "추정 결과 및 상세 근거 (모든 Tier 공통)"
+        file_format: "Python Dict / JSON"
+        output_location: "프로그래밍 방식 또는 분석 문서 내 인라인"
+        
+        required_fields:
+          - field: "value"
+            type: "float/int/string"
+            description: "추정된 값"
+            example: "6.0 (% Churn Rate)"
+            mandatory: true
+          
+          - field: "tier"
+            type: "integer"
+            values: [1, 2, 3]
+            description: "사용된 Tier"
+            example: 2
+            mandatory: true
+          
+          - field: "reasoning_detail"
+            type: "string/dict"
+            description: "추정 근거 (완전 투명화)"
+            mandatory: true
+            structure:
+              tier_1:
+                - "matched_rule_id"
+                - "rule_content"
+                - "confidence: 100%"
+              
+              tier_2:
+                - "context_analysis (시장/산업/고객 타입)"
+                - "sources_used (11개 Source 중)"
+                - "judgment_logic (맥락 기반)"
+                - "confidence_range"
+              
+              tier_3:
+                - "decomposition_formula"
+                - "recursive_breakdown (depth)"
+                - "variable_values (데이터 상속)"
+                - "calculation_steps"
+                - "llm_mode (Native/External)"
+          
+          - field: "confidence"
+            type: "string"
+            description: "신뢰도 표현"
+            example: "± 1% (High)"
+            mandatory: true
+          
+          - field: "sources"
+            type: "array"
+            description: "사용된 데이터 출처 (Rachel source_id 또는 Source 타입)"
+            example: ["SRC_20251108_001", "RAG_benchmark", "Statistical_pattern"]
+            mandatory: true
+          
+          - field: "metadata"
+            type: "dict"
+            description: "추가 정보"
+            fields:
+              - "timestamp"
+              - "tier_path (시도 경로: 1→2 또는 1→2→3)"
+              - "execution_time"
+              - "learning_applied (Tier 1 규칙 사용 여부)"
+            mandatory: false
+      
+      decomposition_trace:
+        description: "Tier 3 재귀 분해 추적 (복잡한 비즈니스 지표)"
+        when: "Tier 3 사용 시만"
+        file_format: "Python Dict / 분석 문서 내 상세 섹션"
+        
+        purpose:
+          - "재귀 분해 과정 완전 투명화"
+          - "변수 간 의존성 추적"
+          - "데이터 상속 경로 기록"
+          - "재현 가능성 보장"
+        
+        structure:
+          root_metric:
+            - "name: 지표명 (예: LTV)"
+            - "formula: 수식"
+            - "depth: 재귀 깊이 (최대 4)"
+          
+          decomposition_tree:
+            - "각 변수의 분해 트리"
+            - "부모-자식 관계"
+            - "데이터 상속 표시"
+            - "순환 감지 결과"
+          
+          variable_resolution:
+            - "각 변수 해결 방법 (규칙/추정/데이터/상속)"
+            - "Tier 1/2/3 사용 표시"
+            - "LLM 호출 여부"
+          
+          final_calculation:
+            - "Bottom-up 계산 경로"
+            - "최종 값 도출 과정"
+        
+        example_preview: |
+          {
+            "metric": "LTV",
+            "formula": "ARPU / Churn_Rate",
+            "depth": 2,
+            "decomposition": {
+              "ARPU": {
+                "formula": "MRR / Active_Users",
+                "depth": 1,
+                "MRR": {"value": 50000, "source": "project_data"},
+                "Active_Users": {"value": 1000, "source": "tier2_estimate"}
+              },
+              "Churn_Rate": {
+                "value": 0.06,
+                "tier": 2,
+                "reasoning": "B2B SaaS 맥락 분석"
+              }
+            },
+            "result": {
+              "value": 833.33,
+              "unit": "$",
+              "confidence": "Medium (± 15%)"
+            }
+          }
+      
+      business_metrics_results:
+        description: "12개 비즈니스 지표 템플릿 결과 (v7.5.0)"
+        total_metrics: 12
+        total_models: 23
+        
+        core_metrics:
+          - name: "Unit Economics"
+            models: ["SaaS", "E-commerce", "Marketplace"]
+            output: "margin, CAC, payback"
+          
+          - name: "Market Sizing"
+            models: ["TAM-SAM-SOM", "Bottom-up", "Top-down"]
+            output: "market_size, segments"
+          
+          - name: "LTV (Lifetime Value)"
+            models: ["Subscription", "Transactional", "Hybrid"]
+            output: "ltv, cohort_analysis"
+          
+          - name: "CAC (Customer Acquisition Cost)"
+            models: ["Organic", "Paid", "Blended"]
+            output: "cac, channel_breakdown"
+          
+          - name: "Conversion Funnel"
+            models: ["AARRR", "SaaS Funnel", "E-commerce"]
+            output: "conversion_rates, dropoff_points"
+          
+          - name: "Churn Rate"
+            models: ["Monthly", "Annual", "Cohort-based"]
+            output: "churn_rate, retention_curve"
+          
+          - name: "ARPU (Average Revenue Per User)"
+            models: ["MRR-based", "Transaction-based", "Freemium"]
+            output: "arpu, segment_arpu"
+          
+          - name: "Growth Rate"
+            models: ["YoY", "MoM", "Compound"]
+            output: "growth_rate, projection"
+        
+        advanced_metrics:
+          - name: "Payback Period"
+            models: ["Simple", "Discounted"]
+            output: "months_to_payback"
+          
+          - name: "Rule of 40"
+            models: ["SaaS Standard"]
+            output: "score, growth_margin_split"
+          
+          - name: "NRR (Net Revenue Retention)"
+            models: ["Expansion", "Contraction", "Net"]
+            output: "nrr, expansion_rate"
+          
+          - name: "Gross Margin"
+            models: ["Product", "Service", "Blended"]
+            output: "gross_margin, cogs_breakdown"
+        
+        output_format:
+          inline: "분석 문서 내 통합 (Bill/Steve 문서)"
+          standalone: "별도 파일 (필요시)"
+          reference: "EstimationResult + DecompositionTrace 참조"
+        
+        validation:
+          - "모든 가정 명시 (Assumptions)"
+          - "데이터 출처 링크 (Rachel source_id)"
+          - "재현 가능한 계산 경로"
+          - "Tier 1/2/3 사용 표시"
+      
+      learning_contribution:
+        description: "학습 규칙 기여 (옵션, 사용자 승인 필요)"
+        purpose: "Tier 1 규칙 자동 학습 (사용 ↑ → 속도 ↑)"
+        
+        when:
+          - "Tier 2/3 성공적 추정 완료"
+          - "사용자가 결과 승인"
+          - "재사용 가능성 높음"
+        
+        workflow:
+          step_1: "Estimator가 학습 가능 케이스 감지"
+          step_2: "사용자에게 학습 제안 (옵션)"
+          step_3: "승인 시 learned_rules Collection에 추가"
+          step_4: "다음 동일 질문은 Tier 1으로 즉시 응답 (0.3초)"
+        
+        file_location: "data/tier1_rules/learned.yaml (자동)"
+        format: "YAML rule entry"
+        
+        example: |
+          # Tier 2에서 "SaaS Churn Rate는?" → 6% ± 1% (2초)
+          # 사용자 승인 → Tier 1 규칙 추가
+          # 다음 동일 질문 → Tier 1: 6% (0.3초)
+    
+    deliverable_checklist:
+      mandatory_items:
+        - "[ ] EstimationResult 제공 (value + reasoning_detail + confidence)"
+        - "[ ] Tier 사용 명시 (1/2/3)"
+        - "[ ] 추정 근거 완전 투명화"
+        - "[ ] 데이터 출처 링크 (Rachel source_id 또는 Source 타입)"
+        - "[ ] 재현 가능한 계산 경로"
+      
+      tier_3_specific:
+        - "[ ] DecompositionTrace 제공 (재귀 분해 시)"
+        - "[ ] 변수 분해 트리 명시"
+        - "[ ] 데이터 상속 경로 표시"
+        - "[ ] LLM 모드 표시 (Native/External)"
+        - "[ ] 순환 감지 결과"
+      
+      business_metrics_specific:
+        - "[ ] 12개 지표 중 해당 템플릿 선택"
+        - "[ ] 모형 적용 (23개 중)"
+        - "[ ] 모든 가정 문서화"
+        - "[ ] 민감도 분석 (주요 변수)"
+      
+      validation_requirements:
+        - "[ ] Rachel: 데이터 출처 신뢰성 확인 (필요시)"
+        - "[ ] Bill: 계산 논리 검증 (Quantifier 협업 시)"
+        - "[ ] 재현성 테스트 통과"
+    
+    quality_standards:
+      minimum_requirements:
+        - "추정 근거 명시"
+        - "Tier 표시"
+        - "신뢰도 범위 제공"
+      
+      excellence_criteria:
+        - "완전 투명한 추정 논리 (Tier 2/3)"
+        - "재귀 분해 추적 (Tier 3)"
+        - "데이터 상속 최적화 (Tier 3)"
+        - "학습 기여 (Tier 1 진화)"
+        - "100% 재현 가능"
+    
+    collaboration_protocol:
+      description: "다른 Agent와의 협업 표준 (v7.5.0 Single Source Policy)"
+      
+      when_agents_need_estimation:
+        quantifier_collaboration:
+          scenario: "Bill이 SAM 계산 시 추정치 필요"
+          workflow:
+            - "Bill: Assumptions 시트에서 추정 필요 항목 식별"
+            - "Bill → Estimator 호출: estimate(query, context)"
+            - "Estimator: EstimationResult 반환"
+            - "Bill: Estimation_Details 시트에 Estimator 결과 기록"
+            - "Bill: Source 컬럼에 'EST_NNN (Estimator Tier X)' 기재"
+          
+          example: |
+            ASM_002 | 비율 | 피아노 학원 비중 | 30 | % | 추정치 | EST_001 (Estimator Tier 2) | Medium | 상세: Estimation_Details
+        
+        explorer_collaboration:
+          scenario: "Steve가 기회 가설 검증 시 비즈니스 지표 필요"
+          workflow:
+            - "Steve: 기회 분석 시 LTV, CAC 등 필요"
+            - "Steve → Estimator 호출: business_metric(metric_name, context)"
+            - "Estimator: 12개 지표 템플릿 적용, 결과 반환"
+            - "Steve: OPP_*.md에 결과 통합"
+          
+          example: |
+            ## Economic Viability
+            - **LTV**: $833 (Estimator Tier 3, ± 15%)
+            - **CAC**: $200 (Estimator Tier 2, ± 10%)
+            - **LTV/CAC**: 4.2x ← 근거: Estimator decomposition
+        
+        validator_collaboration:
+          scenario: "Rachel이 정의 Gap 조정 시 비율 추정 필요"
+          workflow:
+            - "Rachel: 원본 정의 ≠ 필요 정의 → 조정 필요"
+            - "Rachel → Estimator 호출: estimate_ratio(context)"
+            - "Estimator: Tier 2 맥락 분석, 비율 추정"
+            - "Rachel: source_registry.yaml에 조정 논리 기록"
+          
+          example: |
+            adjustment_logic: "중고 시장 비중 추정 → Estimator (Tier 2): 20% ± 5%"
+        
+        observer_collaboration:
+          scenario: "Albert가 시장 구조 분석 시 정량 데이터 필요"
+          workflow:
+            - "Albert: 비효율성 정량화 필요"
+            - "Albert → Estimator 호출: estimate(value, market_context)"
+            - "Estimator: 추정 + 근거"
+            - "Albert: market_reality_report.md에 통합"
+          
+          example: |
+            비효율 1: 중개 마진 과다 (30% → Estimator Tier 2, 업계 평균 15%)
 
 # ========================================
 # Part 2: 프로젝트 생명주기 관리
@@ -1318,6 +1739,13 @@ project_lifecycle_management:
             - "[ ] 최소 3개 OPP_*.md 존재"
             - "[ ] 3명 검증 통과"
           
+          estimator_deliverables:
+            - "[ ] EstimationResult 제공 (모든 추정 케이스)"
+            - "[ ] Tier 명시 (1/2/3)"
+            - "[ ] 추정 근거 완전 투명화"
+            - "[ ] 재현 가능성 보장"
+            - "[ ] DecompositionTrace (Tier 3 사용 시)"
+          
           owner_deliverables:
             - "[ ] 최종 의사결정 문서 존재"
             - "[ ] Stewart 검증 통과"
@@ -1426,6 +1854,7 @@ project_lifecycle_management:
               quantifier: "{count}"  # Bill
               observer: "{count}"    # Albert
               explorer: "{count}"    # Steve
+              estimator: "{count}"   # Fermi (v7.5.0)
               total: "{count}"
             
             validation_summary:
@@ -1478,11 +1907,13 @@ project_lifecycle_management:
           - 명확도: {initial}/10 → {final}/10 (+{delta})
           - 품질 등급: {grade}
           
-          📁 산출물:
+          📁 산출물 (6-Agent 시스템):
           - Validator (Rachel): {count}개
           - Quantifier (Bill): {count}개
           - Observer (Albert): {count}개
           - Explorer (Steve): {count}개
+          - Estimator (Fermi): {count}개 추정 ⭐
+          - Guardian (Stewart): 자동 추적
           - Total: {count}개
           
           📦 아카이브:
@@ -1759,6 +2190,103 @@ reproducibility_framework:
             - "모든 근거 source_id 연결"
             - "가정 투명하게 공개"
             - "검증 결과 포함"
+    
+    estimator_audit_trail:
+      description: "추정 과정의 완전한 투명성 및 재현성 (v7.5.0)"
+      
+      required_documentation:
+        
+        estimation_chain:
+          what: "추정 요청 → Tier 선택 → 추정 근거 → 결과까지 추적"
+          format: |
+            추정 질문: {query}
+            │
+            ├─ 컨텍스트 (입력)
+            │  ├─ market: {market_type}
+            │  ├─ industry: {industry}
+            │  └─ data: {available_data}
+            │
+            ├─ Tier Path: {tier_sequence}
+            │  └─ Tier {X} 사용 이유: {rationale}
+            │
+            ├─ Tier 1 (규칙 기반)
+            │  ├─ matched_rule_id: {rule_id}
+            │  ├─ rule_content: {content}
+            │  └─ confidence: 100%
+            │  
+            │  또는
+            │
+            ├─ Tier 2 (맥락 기반)
+            │  ├─ context_analysis: {market/industry/customer_type}
+            │  ├─ sources_used: [{source_1}, {source_2}, ...]
+            │  ├─ judgment_logic: {step_by_step}
+            │  └─ confidence: ± {%}
+            │  
+            │  또는
+            │
+            ├─ Tier 3 (재귀 분해)
+            │  ├─ formula: {decomposition_formula}
+            │  ├─ variables: [{var_1}, {var_2}, ...]
+            │  ├─ recursion_depth: {depth}
+            │  ├─ data_inheritance: {parent → child}
+            │  ├─ llm_mode: {Native / External}
+            │  └─ confidence: ± {%}
+            │
+            └─ 최종 결과
+               ├─ value: {estimated_value}
+               ├─ confidence: {range}
+               ├─ tier: {1/2/3}
+               └─ execution_time: {seconds}
+        
+        reasoning_transparency:
+          requirement: "모든 Tier의 추정 근거 완전 공개"
+          
+          tier_1_transparency:
+            - "매칭된 규칙 ID 명시"
+            - "규칙 내용 전체 공개"
+            - "학습 규칙인 경우 원본 케이스 추적"
+          
+          tier_2_transparency:
+            - "맥락 분석 과정 (시장/산업/고객 분류)"
+            - "사용된 11개 Source 중 어떤 것들"
+            - "각 Source의 기여도"
+            - "판단 논리 단계별 설명"
+            - "오차 범위 산정 근거"
+          
+          tier_3_transparency:
+            - "재귀 분해 전체 트리"
+            - "각 변수 해결 방법 (규칙/추정/데이터/상속)"
+            - "데이터 상속 경로 명시"
+            - "LLM 호출 여부 및 모드"
+            - "Bottom-up 계산 과정"
+            - "순환 감지 결과"
+        
+        reproducibility_guarantee:
+          principle: "동일 입력 → 동일 출력 보장 (Deterministic)"
+          
+          tier_1_reproduction:
+            - "규칙 ID로 규칙 조회"
+            - "규칙 적용 → 동일 결과"
+          
+          tier_2_reproduction:
+            - "동일 컨텍스트 입력"
+            - "동일 Source 사용"
+            - "동일 판단 논리 적용"
+            - "오차 범위 내 재현"
+          
+          tier_3_reproduction:
+            - "동일 공식 사용"
+            - "변수별 해결 방법 동일"
+            - "재귀 깊이 동일"
+            - "LLM Native 모드는 완전 동일, External 모드는 오차 허용"
+        
+        reproducibility_test:
+          question: "다른 사람이 같은 추정을 재현할 수 있는가?"
+          pass_criteria:
+            - "Tier 명시"
+            - "추정 근거 완전 투명"
+            - "모든 입력 데이터 추적 가능"
+            - "재현 절차 명확"
   
   # 2. 계산 재현 프로토콜
   calculation_reproducibility:
@@ -2173,9 +2701,9 @@ file_format_templates:
         
         sheet_1b:
           name: "Estimation_Details"
-          description: "추정치의 상세 논리 (Guesstimation Logic)"
-          structure: "EST_NNN 블록별로 7개 섹션 작성"
-          note: "추정 재현성의 핵심 시트"
+          description: "추정치의 상세 논리 (Estimator v7.5.0 통합)"
+          structure: "EST_NNN 블록별로 Estimator 결과 또는 수동 추정 논리 작성"
+          note: "추정 재현성의 핵심 시트 (v7.5.0: Estimator 우선 사용)"
         
         sheet_2:
           name: "Method_1_TopDown"
@@ -2627,6 +3155,7 @@ file_format_templates:
           bill: 0
           albert: 0
           steve: 0
+          fermi: 0  # v7.5.0 Estimator
           total: 0
         
         validation_summary:
@@ -2758,11 +3287,19 @@ integrated_workflow_example:
         - "9개 시트 작성:"
         - "  1) Assumptions: 직접데이터(SRC_ID) + 추정치(EST_ID) 구분"
         - "  1b) Estimation_Details: 피아노 학원 비중 30% 추정 논리 상세 작성"
+        - "     → v7.5.0: Estimator 호출하여 추정 (Tier 2 사용)"
+        - "     → EstimationResult를 Estimation_Details에 기록"
         - "  2-5) 4가지 Method, 6) Convergence, 7) Scenarios, 8) Validation"
         - "4가지 방법으로 SAM 계산, 모든 계산 함수로 구현"
         - "Convergence: 270억 ± 30억 (±11%)"
         - "PDF 백업 + sam_calculation_report.md 작성"
         - "Validator, Observer에게 검증 요청"
+      
+      estimator_collaboration:  # v7.5.0
+        - "추정 필요 항목: 피아노 학원 비중"
+        - "Estimator.estimate() 호출 → 30% ± 5% (Tier 2, 3.2초)"
+        - "EstimationResult를 EST_001로 Estimation_Details에 기록"
+        - "Source 컬럼: EST_001 (Estimator Tier 2)"
     
     observer_work:  # Albert
       agent_id: "observer"
