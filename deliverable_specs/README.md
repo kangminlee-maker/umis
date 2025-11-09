@@ -1,9 +1,9 @@
 # Deliverable Specifications
 
-**목적**: UMIS v6.2 에이전트별 산출물의 AI 최적화 명세서  
+**목적**: UMIS v7.5.0 6-Agent 산출물의 AI 최적화 명세서  
 **포맷**: 100% YAML (AI 파싱/생성 효율화)  
-**버전**: 1.0  
-**최종 업데이트**: 2024-10-31
+**버전**: 2.0  
+**최종 업데이트**: 2025-11-08
 
 ---
 
@@ -14,11 +14,14 @@ deliverable_specs/
 ├── validator/          # Rachel (Validator)
 │   └── source_registry_spec.yaml
 ├── quantifier/         # Bill (Quantifier)
-│   └── market_sizing_workbook_spec.yaml
+│   ├── market_sizing_workbook_spec.yaml
+│   └── examples/       # Excel 예제 (v7.5.0 이동)
 ├── observer/           # Albert (Observer)
 │   └── market_reality_report_spec.yaml
 ├── explorer/           # Steve (Explorer)
 │   └── opportunity_hypothesis_spec.yaml
+├── estimator/          # Fermi (Estimator) ⭐ v7.5.0 신규
+│   └── (산출물: EstimationResult, 문서 내 인라인)
 └── project/            # 프로젝트 공통
     ├── project_meta_spec.yaml
     └── deliverables_registry_spec.yaml
@@ -102,7 +105,27 @@ Output (사람이 읽음):
 
 ---
 
-### 5. Project 공통
+### 5. Estimator (Fermi) - 값 추정 ⭐ v7.5.0
+
+**산출물**: `EstimationResult` (프로그래밍 방식 또는 문서 내 인라인)
+- **Output**: Python Dict / JSON / 분석 문서 내 통합
+- **핵심 필드**:
+  - `value`: 추정값
+  - `tier`: 사용된 Tier (1/2/3)
+  - `reasoning_detail`: 추정 근거 (완전 투명)
+  - `confidence`: 신뢰도 범위
+  - `sources`: 데이터 출처
+
+**3-Tier Architecture**:
+- Tier 1: 규칙 (<0.5초)
+- Tier 2: 맥락 판단 (3-8초)
+- Tier 3: Fermi 분해 (10-30초, 12개 지표)
+
+**협업**: 모든 Agent가 추정 필요 시 Estimator 호출 (Single Source Policy)
+
+---
+
+### 6. Project 공통
 
 **project_meta_spec.yaml** (261줄)
 - **Output**: `.project_meta.yaml` (숨김 파일)
@@ -130,6 +153,7 @@ Output (사람이 읽음):
 | `quantifier` | Quantifier | Bill | ✅ |
 | `observer` | Observer | Albert | ✅ |
 | `explorer` | Explorer | Steve | ✅ |
+| `estimator` | Estimator | Fermi | ✅ |
 | `guardian` | Guardian | Stewart | ✅ |
 
 ### **폴더 구조**
@@ -263,6 +287,8 @@ generate_portfolio_dashboard(sorted_opps)
 | source_registry_spec.yaml | 162줄 | Validator 데이터 출처 |
 | **Total** | **1,939줄** | **6개 Spec** |
 
+**Note**: Estimator는 프로그래밍 방식 출력 (EstimationResult)으로 별도 Spec 파일 불필요
+
 ---
 
 ## 🚀 사용 가이드
@@ -285,14 +311,14 @@ generate_portfolio_dashboard(sorted_opps)
 
 ## 📖 참조
 
-- **Parent**: `umis_deliverable_standards_v6.2.yaml`
-- **Guidelines**: `umis_guidelines.yaml` SECTION 5
-- **Examples**: `umis_examples_v6.2.yaml`
+- **Parent**: `umis_deliverable_standards.yaml` (v7.5.0)
+- **Core**: `umis_core.yaml` (System RAG Index)
+- **Examples**: `quantifier/examples/excel/` (Excel 템플릿)
 
 ---
 
-**Spec Version**: 1.0  
-**UMIS Version**: 6.2  
-**Release**: 2024-10-31
+**Spec Version**: 2.0  
+**UMIS Version**: 7.5.0 (6-Agent)  
+**Release**: 2025-11-08
 
 
