@@ -446,27 +446,27 @@ class UserFact:
 # ═══════════════════════════════════════════════════════
 
 @dataclass
-class Tier1Config:
-    """Tier 1 설정"""
+class Phase1Config:
+    """Phase 1 (Direct RAG) 설정 (v7.7.0)"""
     enabled: bool = True
     
     # 임계값
-    min_similarity: float = 0.95  # RAG 검색 (v7.5.0: 0.85→0.95 강화, Tier 3 집중)
+    min_similarity: float = 0.95  # RAG 검색 (v7.5.0: 0.85→0.95 강화)
     
-    # Built-in 규칙
-    builtin_rules_count: int = 20
+    # Built-in 규칙 (v7.6.0 제거)
+    builtin_rules_count: int = 0  # Built-in 제거
     
     # 성능
     timeout_seconds: float = 0.5
 
 
 @dataclass
-class Tier2Config:
-    """Tier 2 설정"""
+class Phase3Config:
+    """Phase 3 (Guestimation) 설정 (v7.7.0)"""
     enabled: bool = True
     
     # 임계값
-    min_confidence: float = 0.80  # v7.5.0: 0.60→0.80 강화, Tier 3 집중
+    min_confidence: float = 0.80  # v7.5.0: 0.60→0.80 강화
     min_evidence_count: int = 2
     max_evidence_count: int = 5
     
@@ -481,8 +481,8 @@ class Tier2Config:
 
 
 @dataclass
-class Tier3Config:
-    """Tier 3 설정
+class Phase4Config:
+    """Phase 4 (Fermi Decomposition) 설정 (v7.7.0)
     
     Note:
         LLM 설정(llm_model, llm_temperature, llm_max_tokens)은
@@ -521,4 +521,3 @@ class GuestimationConfig:
     # 로깅
     verbose: bool = False
     log_all_sources: bool = True
-
