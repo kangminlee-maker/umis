@@ -1,5 +1,5 @@
-# UMIS Runtime Configuration v7.6.2
-# Fail-Safe Tier 2: Mode Toggle
+# UMIS Runtime Configuration v7.7.0
+# Fail-Safe 다층 방어: Mode Toggle
 
 # ========================================
 # 실행 모드
@@ -9,7 +9,7 @@ mode: rag_full  # yaml_only / hybrid / rag_full
 
 # yaml_only: YAML 기반만 (RAG 비활성)
 # hybrid: YAML + Vector RAG (안정적)
-# rag_full: YAML + Vector + Graph + Memory + Meta + Estimator (모든 기능, v7.6.2) ⭐
+# rag_full: YAML + Vector + Graph + Memory + Meta + Estimator (모든 기능, v7.7.0) ⭐
 
 # ========================================
 # Layer별 활성화
@@ -20,8 +20,8 @@ layers:
   graph: true       # Knowledge Graph (Hybrid Search, 13 노드, 45 관계)
   memory: true      # Guardian Memory (QueryMemory, GoalMemory)
   meta: true        # Meta-RAG (Guardian, v7.1.0+) ⭐
-  estimator: true   # Estimator 5-Phase (v7.6.2) ⭐ 재설계 완료!
-  validator_search: true  # Validator 확정 데이터 검색 (v7.6.0+) ⭐
+  estimator: true   # Estimator 5-Phase (v7.7.0) ⭐ Native 모드!
+  validator_search: true  # Validator 확정 데이터 검색 (Phase 2, v7.6.0+) ⭐
 
 # ========================================
 # Fail-Safe 설정
@@ -41,11 +41,11 @@ fallback:
   meta_fail: skip  # Meta-RAG 없이 진행
 
   # Estimator 실패 시 (v7.6.2+)
-  estimator_phase4_fail: fallback  # Tier 3 실패 시 Fallback (conf 0.5)
+  estimator_phase4_fail: fallback  # Phase 4 (Fermi) 실패 시 Fallback (conf 0.5)
   estimator_boundary_fail: skip  # Boundary 검증 실패 시 스킵
 
 # ========================================
-# Circuit Breaker (Tier 3)
+# Circuit Breaker (Phase 4 Fermi)
 # ========================================
 
 circuit_breaker:
