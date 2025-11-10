@@ -455,10 +455,10 @@ class Tier3FermiPath:
     
     프로세스:
     ---------
-    Phase 1: 초기 스캔 (가용 데이터 파악, Bottom-up)
-    Phase 2: 모형 생성 (LLM 3-5개 후보, Top-down)
-    Phase 3: 실행 가능성 체크 (재귀 추정으로 퍼즐 맞추기)
-    Phase 4: 모형 실행 (Backtracking으로 재조립)
+    Step 1: 초기 스캔 (가용 데이터 파악, Bottom-up)
+    Step 2: 모형 생성 (LLM 3-5개 후보, Top-down)
+    Step 3: 실행 가능성 체크 (재귀 추정으로 퍼즐 맞추기)
+    Step 4: 모형 실행 (Backtracking으로 재조립)
     
     안전 장치:
     ----------
@@ -556,18 +556,18 @@ class Tier3FermiPath:
         
         try:
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            # Phase 1: 초기 스캔 (데이터 상속 v7.5.0)
+            # Step 1: 초기 스캔 (데이터 상속 v7.5.0)
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            scan_result = self._phase1_scan(question, context, available_data, depth, parent_data)
+            scan_result = self._step1_scan(question, context, available_data, depth, parent_data)
             
             if not scan_result:
-                logger.warning(f"{'  ' * depth}  ❌ Phase 1 실패")
+                logger.warning(f"{'  ' * depth}  ❌ Step 1 실패")
                 return None
             
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            # Phase 2: 모형 생성 + 반복 개선
+            # Step 2: 모형 생성 + 반복 개선
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            candidate_models = self._phase2_generate_models(
+            candidate_models = self._step2_generate_models(
                 question,
                 scan_result['available'],
                 scan_result['unknown'],
@@ -576,26 +576,26 @@ class Tier3FermiPath:
             )
             
             if not candidate_models:
-                logger.warning(f"{'  ' * depth}  ❌ Phase 2 실패 (모형 없음)")
+                logger.warning(f"{'  ' * depth}  ❌ Step 2 실패 (모형 없음)")
                 return None
             
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            # Phase 3: 실행 가능성 체크 (재귀!)
+            # Step 3: 실행 가능성 체크 (재귀!)
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            ranked_models = self._phase3_check_feasibility(
+            ranked_models = self._step3_check_feasibility(
                 candidate_models,
                 context or Context(),
                 depth
             )
             
             if not ranked_models:
-                logger.warning(f"{'  ' * depth}  ❌ Phase 3 실패 (실행 불가능)")
+                logger.warning(f"{'  ' * depth}  ❌ Step 3 실패 (실행 불가능)")
                 return None
             
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            # Phase 4: 최선 모형 실행
+            # Step 4: 최선 모형 실행
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            result = self._phase4_execute(ranked_models[0], depth, context or Context())
+            result = self._step4_execute(ranked_models[0], depth, context or Context())
             
             if result:
                 execution_time = time.time() - start_time
@@ -641,10 +641,10 @@ class Tier3FermiPath:
                 self.call_stack.pop()
     
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    # Phase 1: 초기 스캔 (가용 데이터 파악)
+    # Step 1: 초기 스캔 (가용 데이터 파악)
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     
-    def _phase1_scan(
+    def _step1_scan(
         self,
         question: str,
         context: Optional[Context],
@@ -653,7 +653,7 @@ class Tier3FermiPath:
         parent_data: Optional[Dict] = None
     ) -> Optional[Dict]:
         """
-        Phase 1: 초기 스캔 (Bottom-up) - 확장됨
+        Step 1: 초기 스캔 (Bottom-up) - 확장됨
         
         가용한 데이터 파악 (우선순위 순):
         0. 부모 데이터 상속 (재귀 시)
@@ -672,7 +672,7 @@ class Tier3FermiPath:
         Returns:
             {'available': Dict[str, FermiVariable], 'unknown': []}
         """
-        logger.info(f"{'  ' * depth}  [Phase 1] 초기 스캔 (확장)")
+        logger.info(f"{'  ' * depth}  [Step 1] 초기 스캔 (확장)")
         
         available = {}
         
@@ -763,10 +763,10 @@ class Tier3FermiPath:
         }
     
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    # Phase 2: 모형 생성 (LLM)
+    # Step 2: 모형 생성 (LLM)
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     
-    def _phase2_generate_models(
+    def _step2_generate_models(
         self,
         question: str,
         available: Dict[str, FermiVariable],
@@ -775,7 +775,7 @@ class Tier3FermiPath:
         context: Optional[Context] = None
     ) -> List[FermiModel]:
         """
-        Phase 2: 모형 생성 (Top-down) + 반복 개선
+        Step 2: 모형 생성 (Top-down) + 반복 개선
         
         프로세스:
         2a. LLM 모형 생성
@@ -787,15 +787,15 @@ class Tier3FermiPath:
             available: 가용 변수
             unknown: 미지수 리스트
             depth: 깊이
-            context: 맥락 (Phase 2b용)
+            context: 맥락 (Step 2b용)
         
         Returns:
             3-5개 FermiModel 후보
         """
-        logger.info(f"{'  ' * depth}  [Phase 2] 모형 생성")
+        logger.info(f"{'  ' * depth}  [Step 2] 모형 생성")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Phase 2a: LLM 모형 생성
+        # Step 2a: LLM 모형 생성
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         models = self._generate_default_models(question, available, depth, context)
         
@@ -803,7 +803,7 @@ class Tier3FermiPath:
             return []
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Phase 2b: 변수 재검색 및 개선
+        # Step 2b: 변수 재검색 및 개선
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         if context and depth == 0:  # 최상위만 (비용 절감)
             models = self._phase2b_refine_with_data_search(
@@ -811,7 +811,7 @@ class Tier3FermiPath:
             )
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Phase 2c: 변수 정책 필터링
+        # Step 2c: 변수 정책 필터링
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         filtered_models = []
         for model in models:
@@ -1365,17 +1365,17 @@ models:
             return []
     
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    # Phase 3: 실행 가능성 체크 (재귀 추정)
+    # Step 3: 실행 가능성 체크 (재귀 추정)
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     
-    def _phase3_check_feasibility(
+    def _step3_check_feasibility(
         self,
         models: List[FermiModel],
         context: Context,
         current_depth: int
     ) -> List[RankedModel]:
         """
-        Phase 3: 실행 가능성 체크 + 재귀 추정
+        Step 3: 실행 가능성 체크 + 재귀 추정
         
         각 모형의 Unknown 변수를 재귀 호출로 채우기
         
@@ -1387,7 +1387,7 @@ models:
         Returns:
             점수 순 RankedModel 리스트
         """
-        logger.info(f"{'  ' * current_depth}  [Phase 3] 실행 가능성 체크")
+        logger.info(f"{'  ' * current_depth}  [Step 3] 실행 가능성 체크")
         
         ranked = []
         
@@ -1522,7 +1522,7 @@ models:
         return None
     
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    # Phase 4: 모형 실행 (Backtracking)
+    # Step 4: 모형 실행 (Backtracking)
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     
     def _phase5_boundary_validation(
@@ -1570,14 +1570,14 @@ models:
             from .boundary_validator import BoundaryCheck
             return BoundaryCheck(is_valid=True, reasoning="Boundary 검증 스킵")
     
-    def _phase4_execute(
+    def _step4_execute(
         self,
         ranked_model: RankedModel,
         depth: int,
         context: Context
     ) -> Optional[EstimationResult]:
         """
-        Phase 4: 모형 실행 (Backtracking)
+        Step 4: 모형 실행 (Backtracking)
         
         재귀로 채운 변수들을 backtracking으로 재조립
         
@@ -1589,7 +1589,7 @@ models:
         Returns:
             EstimationResult (decomposition 포함)
         """
-        logger.info(f"{'  ' * depth}  [Phase 4] 모형 실행")
+        logger.info(f"{'  ' * depth}  [Step 4] 모형 실행")
         
         model = ranked_model.model
         
@@ -2006,7 +2006,7 @@ models:
             return 0.0
     
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    # Phase 2b: 반복 개선 (변수 재검색)
+    # Step 2b: 반복 개선 (변수 재검색)
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     
     def _phase2b_refine_with_data_search(
@@ -2017,7 +2017,7 @@ models:
         depth: int
     ) -> List[FermiModel]:
         """
-        Phase 2b: LLM 제안 변수에 대한 데이터 재검색
+        Step 2b: LLM 제안 변수에 대한 데이터 재검색
         
         반복 최대 2회:
         - 1회차: Unknown 변수 검색
