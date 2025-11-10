@@ -1237,7 +1237,8 @@ tools:
 
       ### Phase 4: Fermi Decomposition (v7.7.0 용어 명확화) ⭐
 
-      **구현**: tier3.py (2,500줄)
+      **구현**: phase4_fermi.py (2,500줄) ⭐ v7.7.0 파일명 변경
+      **클래스**: Phase4FermiDecomposition
       **상태**: ✅ 100% 구현 완료
       **내부**: Step 1-4 (스캔 → 생성 → 체크 → 실행)
 
