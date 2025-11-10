@@ -108,8 +108,8 @@ v7_6_2_features:
       phase_0: "10% (Project Data)"
       phase_1: "5% → 40% (Learned, Year 1)"
       phase_2: "85% → 50% (Validator, Year 1)"
-      phase_3: "2-5% (Tier 2)"
-      phase_4: "3% → 1% (Tier 3, Year 1)"
+      phase_3: "2-5% (Guestimation)"
+      phase_4: "3% → 1% (Fermi, Year 1)"
     
     total_coverage: "100%"
     
@@ -122,7 +122,7 @@ v7_6_2_features:
     
     accuracy:
       validator: "100% (0% 오차)"
-      tier_3: "75% (25% 오차, 3배 개선)"
+      phase_4: "75% (25% 오차, 3배 개선)"
       e2e_success: "95%"
     
     validator_features:
@@ -131,11 +131,12 @@ v7_6_2_features:
       - "Relevance 검증"
       - "search_definite_data() 메서드"
     
-    tier3_features:
+    phase4_features:
       - "Fallback 체계 (conf 0.5)"
-      - "Boundary 검증 (Phase 5)"
+      - "Boundary 검증"
       - "개념 타입 일반화 (count, rate, size)"
       - "재귀 추정 (depth 4)"
+      - "Step 1-4 (스캔→생성→체크→실행)"
 
   web_search:
     enabled: true
