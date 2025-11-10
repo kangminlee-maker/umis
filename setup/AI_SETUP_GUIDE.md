@@ -1,8 +1,8 @@
-# UMIS v7.5.0 AI 자동 설치 가이드
+# UMIS v7.6.2 AI 자동 설치 가이드
 
-**버전**: v7.5.0  
-**업데이트**: 2025-11-08  
-**신규**: Estimator Agent (3-Tier), 12개 비즈니스 지표
+**버전**: v7.6.2  
+**업데이트**: 2025-11-10  
+**신규**: Estimator 5-Phase, Validator 우선 검색, Web Search
 **대상**: AI Assistant (Cursor, Claude, GPT)  
 **목적**: 신규 사용자의 UMIS 설치를 AI가 자동으로 수행
 
@@ -327,7 +327,7 @@ pip install -r requirements.txt
 AI가 사용자에게 보고할 때 사용할 템플릿:
 
 ```markdown
-🔄 UMIS v7.5.0 설치 진행 중...
+🔄 UMIS v7.6.2 설치 진행 중...
 
 [단계 1/5] 환경 확인
   ✅ Python 3.11.5
@@ -372,7 +372,7 @@ if not Path("umis.yaml").exists():
 
 # 2. 사용자에게 안내
 print("""
-🚀 UMIS v7.5.0 자동 설치를 시작합니다.
+🚀 UMIS v7.6.2 자동 설치를 시작합니다.
 
 소요 시간: 약 3분
 필요 항목:
