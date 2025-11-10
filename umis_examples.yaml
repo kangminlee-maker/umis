@@ -832,52 +832,38 @@ estimator_examples:
     user: "@Fermi, Unit Economics는?"
 
     estimator_phase4:
-      depth_0:
-        template: "unit_economics"
-        formula: "ratio = ltv / cac"
-        variables: ["ltv", "cac"]
-
-        phase_1_scan:
-          parent_data: null  # depth 0
+      phase_4_process:
+        step_1_scan:
           available: []
           unknown: ["ltv", "cac"]
-
-      depth_1_ltv:
-        question: "LTV는?"
-        template: "ltv"
-        formula: "ltv = arpu / churn_rate"
-
-        phase_1_scan:
-          parent_data: {}  # depth 0 데이터
-          available: []
-          unknown: ["arpu", "churn_rate"]
-
-        depth_2_arpu:
-          question: "ARPU는?"
-          phase3_result: "80,000원"
-
-        depth_2_churn:
-          question: "Churn Rate는?"
-          phase3_result: "0.05"
-
-        result: "1,600,000원"
-
-      depth_1_cac:
-        question: "CAC는?"
-        template: "cac"
-        formula: "cac = marketing_cost / new_customers"
-
-        phase_1_scan:
-          parent_data: {}  # depth 0 데이터 (v7.5.0 상속 준비)
-          available: []
-          unknown: ["marketing_cost", "new_customers"]
-
-        phase3_result: "50,000원"
-
-      backtrack:
-        formula: "ratio = ltv / cac"
-        bindings: {ltv: 1600000, cac: 50000}
-        result: "32 (LTV/CAC = 32, 건강 )"
+          
+        step_2_generate:
+          formula: "ratio = ltv / cac"
+          variables: ["ltv", "cac"]
+          
+        step_3_recursive:
+          depth_1_ltv:
+            question: "LTV는?"
+            phase_0_4_try: "Phase 0-3 없음"
+            phase_4_execute:
+              formula: "ltv = arpu / churn_rate"
+              depth_2_arpu:
+                question: "ARPU는?"
+                phase_3_result: "80,000원 (Guestimation)"
+              depth_2_churn:
+                question: "Churn Rate는?"
+                phase_3_result: "0.05 (Guestimation)"
+            result: "1,600,000원"
+          
+          depth_1_cac:
+            question: "CAC는?"
+            phase_3_result: "50,000원 (Guestimation)"
+        
+        step_4_execute:
+          formula: "ratio = ltv / cac"
+          bindings: {ltv: 1600000, cac: 50000}
+          calculation: "1,600,000 / 50,000 = 32"
+          result: "32 (LTV/CAC, 건강)"
 
     data_inheritance_benefit:
       - "재귀 시 부모의 available 변수 상속 (Step 1)"
@@ -950,10 +936,10 @@ estimator_examples:
 
     key_point: "Native는 비용 $0 권장, External은 자동화 시만"
 
-  # 예시 6: 12개 비즈니스 지표 템플릿 (v7.5.0)
+  # 예시 6: 비즈니스 지표 (v7.5.0 Quantifier로 이동)
   example_6_business_metrics:
-    scenario: "비즈니스 지표 (v7.5.0 Quantifier로 이동)"
-    note: "Estimator는 일반 Fermi 분해만, 비즈니스 지표는 Quantifier"
+    scenario: "비즈니스 지표 계산 (Quantifier 담당)"
+    note: "v7.5.0 역할 분리: Estimator=추정, Quantifier=계산"
 
     지표_목록:
       핵심_8개:
@@ -1010,25 +996,12 @@ estimator_examples:
           모형: "gross_margin = (revenue - cogs) / revenue"
           예시: "(1,000,000 - 300,000) / 1,000,000 = 70%"
 
-    usage:
-      code: |
-        from umis_rag.agents.estimator import EstimatorRAG
-
-        estimator = EstimatorRAG()
-
-        # 자동 템플릿 매칭
-        result = estimator.estimate("Payback Period는?")
-        # → 템플릿: payback
-        # → 재귀 추정: cac, arpu, gross_margin
-        # → Tier 3 결과
-
-      cursor: |
-        @Fermi, Rule of 40은?
-        → 템플릿 매칭: rule_of_40
-        → 재귀: growth_rate, profit_margin
-        → 결과: 45% (건강)
-
-    coverage: "90-95% (템플릿만으로 대부분 해결)"
+    note: |
+      v7.5.0 이후 비즈니스 지표 계산은 Quantifier가 담당
+      Estimator는 값 추정만 수행 (ARPU는?, Churn은?)
+      Quantifier가 공식 계산 (LTV = ARPU / Churn)
+      
+      자세한 내용: data/raw/calculation_methodologies.yaml
 
   # 예시 7: 순환 감지
   example_7_circular_detection:
@@ -1049,7 +1022,7 @@ estimator_examples:
         question: "시장은?"
         circular_detected: "Call stack에 '시장 규모는?' 존재"
         action: "⚠️  순환 감지 → 재귀 중단"
-        alternative: "Tier 2 Fallback 또는 대체 모형"
+        alternative: "Phase 3 Fallback 또는 대체 모형"
 
     안전_장치:
       - "Call stack 추적"
@@ -1106,7 +1079,7 @@ estimator_examples:
       estimator_call:
         question: "B2B SaaS Churn Rate는?"
         context: {domain: "B2B_SaaS"}
-        tier2_result: "6% (confidence: 0.85)"
+        phase_3_result: "6% (confidence: 0.85, Phase 3)"
 
       step_2: "비교"
       comparison:
@@ -1149,9 +1122,9 @@ reference_docs:
     - "config/runtime.yaml: 실행 모드"
 
   estimator:
-    - "TIER3_FINAL_REPORT.md: Tier 3 구현 완료" 
-    - "TIER3_DESIGN_VERIFICATION.md: 설계 검증" 
-    - "LLM_MODE_INTEGRATION_COMPLETE.md: LLM 모드" 
+    - "config/fermi_model_search.yaml: Phase 4 설계 문서"
+    - "umis_rag/agents/estimator/phase4_fermi.py: Phase 4 구현"
+    - "docs/guides/NATIVE_MODE_GUIDE.md: Native 모드 가이드" 
 
   advanced:
     - "dev_docs/guestimation_v3/: Estimator 설계 (20개)"
