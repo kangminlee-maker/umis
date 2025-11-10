@@ -14,19 +14,29 @@ Estimator (Fermi) Agent - 값 추정 및 판단 전문가
 """
 
 from .estimator import EstimatorRAG, get_estimator_rag
-from .tier1 import Tier1FastPath
-from .tier2 import Tier2JudgmentPath
+from .phase1_direct_rag import Phase1DirectRAG
+from .phase3_guestimation import Phase3Guestimation
 from .learning_writer import LearningWriter, UserContribution
 from .models import Context, EstimationResult, Tier1Config, Tier2Config
+
+# v7.7.0: Backward compatibility aliases
+Tier1FastPath = Phase1DirectRAG
+Tier2JudgmentPath = Phase3Guestimation
 
 __all__ = [
     # 주요 인터페이스
     'EstimatorRAG',
     'get_estimator_rag',
     
-    # 상세 접근 (고급 사용)
+    # v7.7.0: Phase 기반 (권장)
+    'Phase1DirectRAG',
+    'Phase3Guestimation',
+    
+    # Backward compatibility (Deprecated)
     'Tier1FastPath',
     'Tier2JudgmentPath',
+    
+    # 기타
     'LearningWriter',
     'UserContribution',
     
