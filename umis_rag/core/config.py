@@ -78,16 +78,20 @@ class Settings(BaseSettings):
     # Web Search Configuration (v7.6.2)
     # ========================================
     # 검색 엔진 선택: "duckduckgo" (무료) or "google" (유료, 고품질)
-    web_search_engine: str = "duckduckgo"
+    # .env: WEB_SEARCH_ENGINE=duckduckgo
+    web_search_engine: str = Field(default="duckduckgo")
     
     # Google Custom Search (선택적)
     # - API 키: https://console.cloud.google.com/apis/credentials
     # - Search Engine ID: https://programmablesearchengine.google.com/
-    google_api_key: str | None = None
-    google_search_engine_id: str | None = None
+    # .env: GOOGLE_API_KEY=your-key
+    # .env: GOOGLE_SEARCH_ENGINE_ID=your-id
+    google_api_key: Optional[str] = Field(default=None)
+    google_search_engine_id: Optional[str] = Field(default=None)
     
     # Web Search 활성화 여부
-    web_search_enabled: bool = True
+    # .env: WEB_SEARCH_ENABLED=true
+    web_search_enabled: bool = Field(default=True)
     
     # ========================================
     # Agent Configuration
