@@ -198,7 +198,7 @@ Cursor Composer (Cmd+I):
 | **quantifier** | Bill | 계산 전문 (31개 방법론) + Excel | market_sizing.xlsx (10 sheets)<br>unit_economics.xlsx (10 sheets)<br>financial_projection.xlsx (11 sheets) | validator, observer |
 | **validator** | Rachel | 데이터 검증 | source_registry.yaml | - (검증자) |
 | **guardian** | Stewart | 프로세스 관리 | .project_meta.yaml, deliverables_registry.yaml | - (메타 관리자) |
-| **estimator** | **Fermi** | **값 추정 전문 (MECE)** | **EstimationResult** (값 + 근거 + tier) | - (협업 파트너) |
+| **estimator** | **Fermi** | **값 추정 전문 (5-Phase)** | **EstimationResult** (값 + 근거 + phase) | - (협업 파트너) |
 
 **핵심**: 
 - **Agent ID 불변** (observer, explorer, quantifier, validator, guardian, **estimator**) → 폴더/파일 경로
@@ -335,11 +335,11 @@ Layer 4: Memory (MEM-*, RAE-*, EST-*)
     - grade: "A"
     - rationale: "구조적 실현성 높음, 근거 충분"
   
-  Estimation Results: Estimator 추정 결과 (v7.3.1+) ⭐
+  Estimation Results: Estimator 추정 결과 (v7.7.0) ⭐
     - estimation_id: "EST-churn-001"
     - value: 0.06, confidence: 0.85
     - reasoning_detail: {...}
-    - tier: 1/2/3
+    - phase: 0/1/2/3/4  # v7.7.0: tier → phase
 ```
 
 ### 3. ID Namespace System (양방향 추적)
@@ -688,10 +688,11 @@ umis/
 │   │   ├── quantifier.py              # Quantifier
 │   │   ├── validator.py               # Validator
 │   │   ├── guardian.py                # Guardian
-│   │   └── estimator/                 # ⭐ Estimator (v7.3.1+)
-│   │       ├── estimator.py           # 통합 인터페이스
-│   │       ├── tier1.py               # Fast Path (<0.5초)
-│   │       ├── tier2.py               # Judgment Path (3-8초)
+│   │   └── estimator/                 # ⭐ Estimator (v7.7.0)
+│   │       ├── estimator.py           # 통합 인터페이스 (5-Phase)
+│   │       ├── phase1_direct_rag.py   # Phase 1 (<0.5초)
+│   │       ├── phase3_guestimation.py # Phase 3 (3-8초)
+│   │       ├── phase4_fermi.py        # Phase 4 (10-30초, Step 1-4)
 │   │       ├── learning_writer.py     # 학습 시스템
 │   │       ├── source_collector.py    # 11개 Source
 │   │       ├── judgment.py            # 판단 엔진
@@ -784,7 +785,7 @@ umis/
 | **config/routing_policy.yaml** | Workflow 정의 | 194줄, v1.1.0 | ⭐ Estimator 협업 |
 | **config/runtime.yaml** | 실행 모드 (hybrid) | 99줄 | Circuit Breaker |
 | **config/fermi_model_search.yaml** | Phase 4 설계 (Step 1-4) | 1,500줄 | ⭐ v2.0 |
-| **umis_rag/agents/estimator/** | Estimator Agent | 13개 파일, 2,800줄 | ⭐ v7.3.1+ |
+| **umis_rag/agents/estimator/** | Estimator Agent | 14개 파일, 5,200줄 | ⭐ v7.7.0 |
 | **umis_rag/guardian/** | Meta-RAG | 7개 파일, 2,401줄 | ⭐ v7.1.0+ |
 
 ---
@@ -1124,7 +1125,8 @@ _env_loaded = _load_environment()
 **클래스**: `EstimatorRAG` (통합 인터페이스)
 
 **v7.7.0 용어 체계**:
-- **Tier**: 구현 파일명만 (tier1.py, tier2.py, tier3.py)
+- **파일명**: phase1_direct_rag.py, phase3_guestimation.py, phase4_fermi.py
+- **클래스명**: Phase1DirectRAG, Phase3Guestimation, Phase4FermiDecomposition
 - **Phase**: Estimator 전체 단계 (0-4)
 - **Step**: Phase 4 (Fermi) 내부 단계 (1-4)
 
@@ -1172,7 +1174,7 @@ result = estimator.estimate("서울 음식점 수는?")
 │   - 학습된 규칙 RAG (0 → 2,000개 진화)     │
 │   - v7.6.0: Built-in 제거 (일관성)        │
 │   - 원칙: 정확한 매칭만                    │
-│   - 파일: tier1.py                         │
+│   - 파일: phase1_direct_rag.py             │
 └──────────────┬──────────────────────────────┘
                │ 유사도 < 0.95
                ▼
@@ -1195,7 +1197,7 @@ result = estimator.estimate("서울 음식점 수는?")
 │      - Value: 값 결정 (5개)               │
 │   3. 증거 평가 및 판단 (4가지 전략)       │
 │   4. 학습 (Phase 1 편입)                  │
-│   - 파일: tier2.py                         │
+│   - 파일: phase3_guestimation.py           │
 └──────────────┬──────────────────────────────┘
                │ confidence < 0.80
                ▼
@@ -1210,7 +1212,7 @@ result = estimator.estimate("서울 음식점 수는?")
 │   - 데이터 상속                            │
 │   - Context 전달 (구체적 질문)            │
 │   - 순환 감지 (Call stack)                │
-│   - 파일: tier3.py (2,500줄)              │
+│   - 파일: phase4_fermi.py (2,500줄)       │
 └─────────────────────────────────────────────┘
 
 총 커버리지: 100%
@@ -1243,11 +1245,11 @@ Quantifier (계산, 31개 방법론):
 - External Mode: 비용 $0.10/요청, OpenAI API (자동화 시)
 
 **파일**: `umis_rag/agents/estimator/` (14개 파일, 5,200줄, v7.7.0)
-- estimator.py (520줄, 5-Phase)
-- tier1.py (320줄, Phase 1)
-- tier2.py (650줄, Phase 3)
-- tier3.py (2,500줄, Phase 4, Step 1-4)
-- models.py (518줄)
+- estimator.py (520줄, 5-Phase 통합)
+- phase1_direct_rag.py (320줄, Phase 1)
+- phase3_guestimation.py (650줄, Phase 3)
+- phase4_fermi.py (2,500줄, Phase 4, Step 1-4)
+- models.py (520줄, Phase1/3/4Config)
 - learning_writer.py (564줄)
 - boundary_validator.py (검증)
 - 기타 7개
@@ -1307,7 +1309,7 @@ Quantifier (계산, 31개 방법론):
 - Phase 4 역할: 일반 Fermi 분해 (물리적/수학적)
 - 예: 음식점 수, 탁구공 개수, 커피 시장
 
-**파일**: `umis_rag/agents/estimator/tier3.py` (2,500줄, Step 1-4)
+**파일**: `umis_rag/agents/estimator/phase4_fermi.py` (2,500줄, Step 1-4)
 
 ---
 
