@@ -1,7 +1,12 @@
 """
 Estimator (Fermi) RAG Agent
 
-6번째 Agent - 값 추정 및 지능적 판단 전문가 (v7.5.0)
+6번째 Agent - 값 추정 및 지능적 판단 전문가 (v7.6.2 재설계)
+
+주요 변경 (v7.6.0 → v7.6.2):
+- v7.6.0: 5-Phase 재설계, Validator 우선 검색, Built-in 제거
+- v7.6.1: 단위 자동 변환, Relevance 검증
+- v7.6.2: Boundary 검증, 하드코딩 제거, Web Search 추가
 """
 
 from typing import Optional, Dict, Any
@@ -25,31 +30,27 @@ from .models import Context, EstimationResult
 
 class EstimatorRAG:
     """
-    Estimator (Fermi) RAG Agent (v7.5.0 완성)
+    Estimator (Fermi) RAG Agent (v7.6.0 재설계)
     
     역할:
     -----
     - 값 추정 전문 (Single Source of Truth for Estimation)
     - 데이터 없을 때 창의적 추정
-    - 11개 Source 통합 (Physical, Soft, Value)
-    - 학습하는 시스템 (사용할수록 6-16배 빨라짐)
+    - Validator 우선 검색 → 없으면 추정
+    - 학습하는 시스템 (사용할수록 빨라짐)
     
-    ⚠️  역할 명확화 (v7.5.0):
+    ⚠️  역할 명확화:
     - Estimator: 값 추정만 담당 (예: "B2B SaaS ARPU는?" → 80,000원)
     - Quantifier: 계산 공식 소유 (예: LTV = ARPU / Churn)
-    - 비즈니스 지표(LTV, CAC 등) 계산은 Quantifier가 담당!
+    - Validator: 확정 데이터 검색 (추정 전 필수!)
     
-    3-Tier 아키텍처 (v7.5.0):
+    4-Phase 아키텍처 (v7.6.0):
     ---------------------------------
-    - Tier 1: Built-in + 학습 규칙 (<0.5초, 임계값 0.95+)
-    - Tier 2: 11개 Source 수집 + 종합 판단 (3-8초, confidence 0.80+)
-    - Tier 3: 일반 Fermi Decomposition (10-30초) ⭐
-      * 물리적/수학적 분해 (예: 여객기 부피, 음식점 수)
-      * 재귀 추정 (max depth 4)
-      * 데이터 상속 및 Context 전달
-      * 순환 감지
-      * LLM 모드 (Native/External)
-      * 비즈니스 지표 템플릿 제거됨 (→ Quantifier)
+    - Phase 0: Project Data (<0.1초, confidence 1.0)
+    - Phase 1: Tier 1 학습 규칙만 (<0.5초, 0.95+) ⭐ Built-in 제거!
+    - Phase 2: Validator 검색 (<1초, confidence 1.0) ⭐ NEW!
+    - Phase 3: Tier 2 추정 (3-8초, confidence 0.80+)
+    - Phase 4: Tier 3 Fermi (10-30초) 💎 가치있는 작업!
     
     협업 (모든 Agent):
     ------------------
@@ -83,7 +84,10 @@ class EstimatorRAG:
         
         # Tier 1: Fast Path
         self.tier1 = Tier1FastPath()
-        logger.info("  ✅ Tier 1 (Built-in + 학습)")
+        logger.info("  ✅ Tier 1 (학습)")
+        
+        # Validator: 확정 데이터 검색 (v7.6.0 추가)
+        self.validator = None  # Lazy 초기화
         
         # Tier 2: Judgment Path (Lazy 초기화)
         self.tier2 = None
@@ -108,17 +112,19 @@ class EstimatorRAG:
         project_data: Optional[Dict] = None
     ) -> Optional[EstimationResult]:
         """
-        통합 추정 메서드 (v7.5.0)
+        통합 추정 메서드 (v7.6.0 재설계)
         
-        자동으로 Tier 1 → 2 → 3 시도
-        - Tier 1: 학습된 규칙 (<0.5초, 유사도 0.95+)
-        - Tier 2: 11개 Source 판단 (3-8초, confidence 0.80+)
-        - Tier 3: Fermi 분해 (10-30초, 일반적 분해만)
+        4-Phase 프로세스:
+        - Phase 0: Project Data (즉시, confidence 1.0)
+        - Phase 1: Tier 1 학습 규칙 (<0.5초, 0.95+) ⭐ Built-in 제거!
+        - Phase 2: Validator 검색 (<1초, 1.0) ⭐ NEW! 확정 데이터 우선
+        - Phase 3: Tier 2 추정 (3-8초, 0.80+)
+        - Phase 4: Tier 3 Fermi (10-30초) 💎 가치있는 작업!
         
-        ⚠️  v7.5.0 변경:
-        - 비즈니스 지표(LTV, CAC 등) 템플릿 제거
-        - Quantifier가 비즈니스 지표 계산 담당
-        - Estimator는 순수 값 추정만 수행
+        ⚠️  v7.6.0 변경:
+        - ❌ Built-in Rules 제거 (일관성 확보)
+        - ⭐ Validator 검색 추가 (Phase 2, 강제)
+        - 💎 Tier 3 가치 인정 (시간/비용 투자 정당화)
         
         Args:
             question: 질문 (구체적일수록 좋음!)
@@ -166,16 +172,38 @@ class EstimatorRAG:
         logger.info(f"[Estimator] 추정: {question}")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Tier 1: Fast Path (Built-in + 학습)
+        # Phase 0: Project Data (v7.6.0)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        if project_data:
+            result = self._check_project_data(question, project_data, context)
+            if result:
+                logger.info(f"  ✅ Phase 0 (Project Data): {result.value}")
+                return result
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Phase 1: Tier 1 (학습 규칙만, v7.6.0)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         result = self.tier1.estimate(question, context)
         
         if result:
-            logger.info(f"  ⚡ Tier 1 성공: {result.value} ({result.execution_time:.2f}초)")
+            logger.info(f"  ⚡ Phase 1 (Tier 1) 성공: {result.value} ({result.execution_time:.2f}초)")
             return result
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Tier 2: Judgment Path (11개 Source)
+        # Phase 2: Validator 검색 (v7.6.0) ⭐
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # 추정하기 전 마지막 확인!
+        # 확정 데이터가 정말 없는지 Validator에게 확인
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        result = self._search_validator(question, context)
+        if result:
+            logger.info(f"  ✅ Phase 2 (Validator) 발견: {result.value} ({result.execution_time:.2f}초)")
+            return result
+        
+        logger.info("  → Validator에도 없음 → 추정 시작")
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Phase 3: Tier 2 (추정 시작, v7.6.0)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         self._ensure_tier2_initialized()
         result = self.tier2.estimate(question, context)
@@ -189,19 +217,18 @@ class EstimatorRAG:
             return result
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Tier 3: Fermi Decomposition (v7.5.0)
+        # Phase 4: Tier 3 (Fermi Decomposition, v7.6.0)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # 일반적 Fermi 분해 (물리적/수학적)
-        # 재귀 추정 (max depth 4)
-        # 데이터 상속 및 Context 전달
-        # LLM 모드 (Native/External)
+        # 💎 가장 가치있는 작업!
+        # 없는 숫자를 만드는 창조적 추정
+        # 시간(10-30초), 비용($0.01-0.05) 투자 정당화됨
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         if self.tier3 is None:
             from .tier3 import Tier3FermiPath
             self.tier3 = Tier3FermiPath()
             logger.info("  ✅ Tier 3 (Fermi Decomposition) 로드")
         
-        logger.info("  🔄 Tier 3 시도 (일반 Fermi 분해)")
+        logger.info("  💎 Phase 4 (Tier 3) 시도: 가치있는 작업!")
         result = self.tier3.estimate(question, context, project_data, depth=0)
         
         if result:
@@ -294,6 +321,142 @@ class EstimatorRAG:
             'avg_confidence': 0.0
         }
     
+    def _check_project_data(
+        self,
+        question: str,
+        project_data: Dict,
+        context: Context
+    ) -> Optional[EstimationResult]:
+        """
+        Phase 0: 프로젝트 확정 데이터 확인 (v7.6.0)
+        
+        프로젝트에서 명시적으로 제공한 데이터 우선 확인
+        
+        Args:
+            question: 질문
+            project_data: 프로젝트 데이터
+            context: 맥락
+        
+        Returns:
+            EstimationResult or None
+        
+        Example:
+            >>> project_data = {
+            ...     "total_users": 10000,
+            ...     "churn_rate": 0.05
+            ... }
+            >>> result = estimator._check_project_data(
+            ...     "이탈률은?", project_data, context
+            ... )
+            >>> # → 0.05 (즉시)
+        """
+        import time
+        start_time = time.time()
+        
+        # 질문에서 키워드 추출
+        question_lower = question.lower()
+        
+        # 키워드 매핑
+        keyword_map = {
+            'churn': ['churn_rate', 'monthly_churn', 'annual_churn'],
+            '이탈': ['churn_rate', 'monthly_churn'],
+            '해지': ['churn_rate'],
+            'arpu': ['arpu', 'average_revenue'],
+            '평균매출': ['arpu', 'average_revenue'],
+            '매출': ['arpu', 'revenue', 'average_revenue'],
+            'user': ['total_users', 'active_users'],
+            '사용자': ['total_users', 'active_users', 'users'],
+            '고객': ['total_users', 'customers'],
+            'ltv': ['ltv', 'lifetime_value'],
+            'cac': ['cac', 'customer_acquisition_cost'],
+            '획득비용': ['cac']
+        }
+        
+        # 매칭 시도
+        for keyword, possible_keys in keyword_map.items():
+            if keyword in question_lower:
+                for key in possible_keys:
+                    if key in project_data:
+                        value = project_data[key]
+                        execution_time = time.time() - start_time
+                        
+                        return EstimationResult(
+                            question=question,
+                            value=value,
+                            confidence=1.0,
+                            tier=0,
+                            context=context,
+                            reasoning=f"프로젝트 확정 데이터: {key}",
+                            reasoning_detail={
+                                'method': 'project_data',
+                                'key': key,
+                                'why_this_method': '프로젝트에서 명시적으로 제공한 확정 값'
+                            },
+                            execution_time=execution_time
+                        )
+        
+        return None
+    
+    def _search_validator(
+        self,
+        question: str,
+        context: Context
+    ) -> Optional[EstimationResult]:
+        """
+        Phase 2: Validator 확정 데이터 검색 (v7.6.0)
+        
+        추정하기 전 확정 데이터 존재 여부 확인
+        
+        Args:
+            question: 질문
+            context: 맥락
+        
+        Returns:
+            EstimationResult(tier=1.5) or None
+        """
+        import time
+        start_time = time.time()
+        
+        # Validator Lazy 초기화
+        if self.validator is None:
+            from umis_rag.agents.validator import get_validator_rag
+            self.validator = get_validator_rag()
+            logger.info("  ✅ Validator 연결")
+        
+        # Validator 검색
+        validator_result = self.validator.search_definite_data(question, context)
+        
+        if validator_result:
+            execution_time = time.time() - start_time
+            
+            return EstimationResult(
+                question=question,
+                value=validator_result['value'],
+                unit=validator_result.get('unit', ''),
+                confidence=1.0,
+                tier=1.5,
+                context=context,
+                reasoning=f"확정 데이터 (Validator): {validator_result['source']}",
+                reasoning_detail={
+                    'method': 'validator_search',
+                    'source': validator_result['source'],
+                    'definition': validator_result.get('definition', ''),
+                    'last_updated': validator_result.get('last_updated', ''),
+                    'reliability': validator_result.get('reliability', 'high'),
+                    'why_this_method': 'Validator가 공식 통계/벤치마크에서 확정 데이터 발견'
+                },
+                logic_steps=[
+                    f"1. Tier 1 학습 규칙 없음",
+                    f"2. Validator 검색 시작",
+                    f"3. 출처: {validator_result['source']}",
+                    f"4. 값: {validator_result['value']}",
+                    f"5. 신뢰도: 1.0 (확정 데이터)"
+                ],
+                execution_time=execution_time
+            )
+        
+        return None
+    
     def _ensure_tier2_initialized(self):
         """Tier 2 Lazy 초기화"""
         if self.tier2 is not None:
@@ -352,4 +515,5 @@ def get_estimator_rag() -> EstimatorRAG:
     if _estimator_rag_instance is None:
         _estimator_rag_instance = EstimatorRAG()
     return _estimator_rag_instance
+
 
