@@ -820,7 +820,7 @@ class ValidatorRAG:
 
 
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    # v7.3.2: Estimator 교차 검증
+    # v7.7.0: Estimator 교차 검증 (5-Phase)
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     
     def validate_estimation(
@@ -830,12 +830,12 @@ class ValidatorRAG:
         context: Optional[Dict] = None
     ) -> Dict[str, Any]:
         """
-        추정값의 합리성 검증 (Estimator 교차 검증)
+        추정값의 합리성 검증 (Estimator 5-Phase 교차 검증)
         
-        원칙:
-        -----
+        원칙 (v7.7.0):
+        -------------
         1. 직접 추정 금지 ❌
-        2. Estimator에게 교차 검증 요청 ✅
+        2. Estimator에게 교차 검증 요청 ✅ (Phase 0→1→2→3→4 자동)
         3. 비교 및 판단
         
         Args:
@@ -847,6 +847,7 @@ class ValidatorRAG:
             {
                 'claimed_value': 0.08,
                 'estimator_value': 0.06,
+                'estimator_phase': 2,  # v7.7.0: Phase 0-4
                 'estimator_confidence': 0.85,
                 'estimator_reasoning': {...},
                 'difference_pct': 0.33,
@@ -867,9 +868,9 @@ class ValidatorRAG:
         # Estimator Lazy 초기화
         if self.estimator is None:
             self.estimator = get_estimator_rag()
-            logger.info("  ✅ Estimator 연결")
+            logger.info("  ✅ Estimator 연결 (5-Phase)")
         
-        # Estimator에게 교차 검증 요청
+        # Estimator에게 교차 검증 요청 (Phase 0→1→2→3→4 자동 시도)
         est_result = self.estimator.estimate(
             question=question,
             domain=context.get('domain') if context else None,
@@ -889,9 +890,9 @@ class ValidatorRAG:
             'claimed_value': claimed_value,
             'estimator_value': est_result.value,
             'estimator_confidence': est_result.confidence,
-            'estimator_tier': est_result.tier,
+            'estimator_phase': est_result.phase,  # v7.7.0: tier → phase
             
-            # v7.3.2: 상세 근거 포함
+            # v7.7.0: 상세 근거 포함
             'estimator_reasoning': est_result.reasoning_detail,
             'estimator_components': est_result.component_estimations,
             'estimator_trace': est_result.estimation_trace,
@@ -923,7 +924,7 @@ class ValidatorRAG:
         
         lines = []
         lines.append(f"주장값: {claimed}")
-        lines.append(f"Estimator 추정: {est_result.value} (신뢰도 {est_result.confidence:.0%})")
+        lines.append(f"Estimator 추정: {est_result.value} (Phase {est_result.phase}, 신뢰도 {est_result.confidence:.0%})")
         lines.append(f"차이: {diff_pct:.0%}")
         lines.append(f"")
         
