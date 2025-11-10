@@ -232,8 +232,8 @@ agent_selection_flowchart:
     other_agents: "다른 Agent는 Estimator 호출 필수"
 
 system_details:
-  name: "UMIS v7.5.0"
-  tagline: "6-Agent + 3-Tier 완성, 100% 커버리지 달성"
+  name: "UMIS v7.7.0"
+  tagline: "6-Agent + 5-Phase Estimator, Native 모드 구현"
 
   what_it_can_do:
     rag:
@@ -243,8 +243,9 @@ system_details:
 
     agents:
       - "6-Agent 협업 시스템 (역할 MECE)"
-      - "3-Tier 완성 (100% 커버리지)"
+      - "5-Phase Estimator (100% 커버리지)"
       - "Estimator/Quantifier 분리 (추정 vs 계산)"
+      - "Native/External 모드 (LLM 선택)"
       - "완전한 추적성 (ID Namespace)"
       - "재검증 가능 (Excel 함수)"
       - "Single Source of Truth (Estimator)"
@@ -608,16 +609,22 @@ decision_guide:
 
   estimator:
     name: "Fermi (기본)"
-    role: "값 추정 및 판단 (v7.6.2 재설계)"
+    role: "값 추정 및 판단 (v7.7.0 용어 명확화)"
     rag: true
     rag_collections:
       - "learned_rules (0 → 2,000개 진화)"
       - "canonical_store (정규화)"
       - "estimator (Agent View)"
 
+    terminology_v7_7_0:
+      tier: "구현 계층 (파일명: tier1.py, tier2.py, tier3.py)"
+      phase: "전체 프로세스 단계 (Phase 0-4)"
+      step: "Fermi 내부 세부 단계 (Step 1-4)"
+      note: "Phase와 Step 분리로 혼란 해결"
+
     what_it_does:
-      - "5-Phase Architecture (v7.6.2)" 
-      - "Validator 우선 검색 (Phase 2, 94.7% 처리)"
+      - "5-Phase Architecture (v7.7.0 용어 명확화)" 
+      - "Validator 우선 검색 (Phase 2, 85% 처리)"
       - "순수 값 추정 전문 (계산은 Quantifier)" 
       - "개념 기반 Boundary 검증 (비정형 사고)"
       - "11개 Source 통합 (Web Search 포함)"
@@ -687,7 +694,7 @@ decision_guide:
         change: "v7.6.2: Web Search 추가"
       
       phase_4:
-        name: "Tier 3 (Fermi)"
+        name: "Fermi Decomposition (Tier 3)"
         speed: "10-30초"
         coverage: "3% (현재), 1% (1년 후)"
         description: "창조적 추정 (가장 가치있는 작업)"
@@ -697,6 +704,39 @@ decision_guide:
           - "재귀 추정 (depth 4)"
           - "Fallback 체계 (conf 0.5)"
         change: "v7.6.2: 정확도 3배 개선 (70% → 25% 오차)"
+        
+        internal_steps_v7_7_0:
+          step_1:
+            name: "초기 스캔"
+            description: "가용 데이터 파악 (Bottom-up)"
+            process:
+              - "부모 데이터 상속 (재귀 시)"
+              - "프로젝트 데이터 확인"
+              - "RAG 검색 (벤치마크)"
+          
+          step_2:
+            name: "모형 생성"
+            description: "3-5개 후보 생성 (Top-down)"
+            process:
+              - "LLM 모형 생성"
+              - "변수 재검색 (최대 2회)"
+              - "변수 정책 필터링"
+          
+          step_3:
+            name: "실행 가능성 체크"
+            description: "재귀 추정으로 퍼즐 맞추기"
+            process:
+              - "Unknown 변수 재귀 호출"
+              - "실행 가능성 점수 계산"
+              - "최선 모형 선택"
+          
+          step_4:
+            name: "모형 실행"
+            description: "Backtracking으로 재조립"
+            process:
+              - "변수 바인딩 확인"
+              - "수식 평가"
+              - "Boundary 검증"
       
       phase_5:
         name: "Boundary 검증"
@@ -960,15 +1000,19 @@ quick_reference:
     - "필요한 도구만 로드 → 빠르고 정확"
 
   v7_5_0_updates:
-    - "3-Tier 완성 (100% 커버리지)" 
+    - "Estimator 완성 (100% 커버리지)" 
     - "Estimator/Quantifier 역할 분리 (추정 vs 계산)" 
-    - "임계값 강화 (Tier 3 집중)" 
+    - "임계값 강화 (Fermi 분해 집중)" 
     - "데이터 상속 (재귀 최적화)" 
-    - "Context 전달 개선 (구체적 질문)" 
-    - "LLM 모드 통합 (Native/External)" 
-    - "6-Agent 시스템"
-    - "Single Source of Truth"
-    - "Reasoning Transparency"
+    - "Context 전달 개선 (구체적 질문)"
+  
+  v7_7_0_updates:
+    - "Native 모드 진짜 구현 (비용 $0)"
+    - "용어 체계 명확화 (Phase + Step)"
+    - "3-Tier 개념 완전 Deprecated"
+    - "Fermi 내부: Step 1-4 (명확성)"
+    - "LLMProvider 클래스 추가"
+    - "Explorer Native/External 분기"
 
 # ========================================
 # END
