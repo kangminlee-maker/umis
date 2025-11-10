@@ -1,7 +1,7 @@
 # UMIS - Universal Market Intelligence System
 
 [![GitHub](https://img.shields.io/badge/GitHub-umis-blue?logo=github)](https://github.com/kangminlee-maker/umis)
-[![Version](https://img.shields.io/badge/version-7.6.2-green)](https://github.com/kangminlee-maker/umis/releases)
+[![Version](https://img.shields.io/badge/version-7.7.0-green)](https://github.com/kangminlee-maker/umis/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 > **"불확실성을 기회로 전환하는 시장 분석 시스템"**
@@ -10,12 +10,14 @@
 
 ## 🎯 UMIS란?
 
-AI 에이전트 6명이 협업하여 시장을 분석하는 **RAG 기반 프레임워크** (v7.6.2)
+AI 에이전트 6명이 협업하여 시장을 분석하는 **RAG 기반 프레임워크** (v7.7.0)
 
 ### 핵심 특징
 - ✅ **6-Agent 협업**: Observer, Explorer, Quantifier, **Validator**, Guardian, **Estimator** 
+- ✅ **Native 모드**: Cursor LLM 직접 사용, 비용 $0 ⭐ v7.7.0
+- ✅ **5-Phase Estimator**: Phase 0-4 + Step 1-4 명확화 ⭐ v7.7.0
 - ✅ **RAG 지식 활용**: 54개 검증된 패턴/사례 자동 검색
-- ✅ **Validator 우선**: 확정 데이터 검색 (94.7% 처리) ⭐ v7.6.0+
+- ✅ **Validator 우선**: 확정 데이터 검색 (85% 처리) ⭐ v7.6.0+
 - ✅ **완전한 추적성**: 모든 결론 → 원본 데이터 역추적
 - ✅ **재검증 가능**: Excel 함수, YAML 스키마
 - ✅ **코딩 불필요**: Cursor Composer만으로 사용
@@ -33,15 +35,28 @@ AI 에이전트 6명이 협업하여 시장을 분석하는 **RAG 기반 프레�
 - ❌ **Built-in 제거**: 답변 일관성 확보 (v7.6.0)
 - 📚 **Learning System**: 사용할수록 빠름 (v7.3.0)
 
-### v7.2.1 주요 기능
-- 🎯 **Fermi Model Search**: 모형 만들기 + 퍼즐 맞추기 (완전 구현!)
-- 🌟 **Multi-Layer Guestimation**: 8개 레이어 자동 시도 (82% 완성)
-- 🎉 **Native Mode**: Cursor LLM 직접 활용 (비용 $0, 최고 품질)
-- 🎉 **자동 환경변수**: `.env` 자동 로드 (코드 간소화)
-- ⭐ **Excel 도구 3개**: Market Sizing, Unit Economics, Financial Projection
-- ⭐ **Guestimation Framework**: Fermi 추정 체계화
-- ⭐ Explorer RAG (31개 비즈니스 모델 + 23개 Disruption 패턴)
-- ⭐ Knowledge Graph (패턴 조합 자동 발견)
+### 이전 버전 주요 기능
+
+**v7.6.2**:
+- Estimator 5-Phase 재설계
+- Validator 우선 검색 (85%)
+- Boundary 검증
+- Web Search 추가
+
+**v7.5.0**:
+- Estimator/Quantifier 분리 (MECE)
+- Single Source of Truth
+- Learning System
+
+**v7.2.0**:
+- Excel 도구 3개
+- Phase 4 (Fermi) 설계
+- Native Mode 초기 구현
+
+**v7.0.0**:
+- 6-Agent 시스템 완성
+- RAG v3.0 (4-Layer)
+- Knowledge Graph
 
 ---
 
@@ -78,15 +93,14 @@ python setup/setup.py
 
 Cursor Composer에서:
 ```
-"@Explorer, 구독 모델 패턴 찾아줘"
-"@Fermi, B2B SaaS Churn은?" (v7.6.2 - 5-Phase)
-"@Validator, 확정 데이터 있나요?" (v7.6.0+)
+"@Explorer, 구독 모델 패턴 찾아줘"  (v7.7.0 - Native 모드)
+"@Fermi, B2B SaaS Churn은?" (v7.7.0 - 5-Phase, Step 1-4)
+"@Validator, 확정 데이터 있나요?" (v7.6.0+ - 85% 처리)
 ```
 
 **상세**: [INSTALL.md](docs/INSTALL.md) 참조
 
-### 2. 사용
-
+**Native 모드 사용**:
 ```
 Cursor Composer (Cmd+I):
 umis.yaml 첨부
@@ -94,7 +108,7 @@ umis.yaml 첨부
 "@Steve, 음악 스트리밍 구독 서비스 시장 분석해줘"
 ```
 
-**완료!** Steve (Explorer)가 RAG로 패턴을 자동 검색합니다.
+**완료!** Steve (Explorer)가 RAG로 패턴을 검색하고, Cursor LLM이 직접 분석합니다. (비용 $0)
 
 ---
 
@@ -121,66 +135,66 @@ explorer: 탐색자
 
 ---
 
-## 🧮 Guestimation 방법론
+## 🧮 Estimator (Fermi) Agent (v7.7.0)
 
-UMIS는 **2가지 추정 방법론**을 제공합니다:
+UMIS는 **5-Phase 추정 시스템**을 제공합니다:
 
-### 1️⃣ UMIS Guestimation (빠른 추정)
+### 5-Phase Architecture
 
-- **속도**: ⚡ 5-30분
-- **정확도**: ±50% (자릿수)
-- **적합**: 초기 탐색, 기회 우선순위
+```
+Phase 0: Literal (프로젝트 데이터, <0.1초)
+  ↓ 없음
+Phase 1: Direct RAG (학습 규칙, <0.5초)
+  ↓ 없음
+Phase 2: Validator (확정 데이터, <1초) ⭐ 85% 처리!
+  ↓ 없음
+Phase 3: Guestimation (11 Sources, 3-8초)
+  ↓ conf < 0.80
+Phase 4: Fermi Decomposition (Step 1-4, 10-30초)
+  ├─ Step 1: 초기 스캔
+  ├─ Step 2: 모형 생성
+  ├─ Step 3: 실행 가능성 체크
+  └─ Step 4: 모형 실행
+```
+
+### 사용 예시
 
 ```bash
-@Explorer guestimate 구독 모델 시장 규모
+# Cursor Composer
+"@Fermi, B2B SaaS Churn Rate는?"
+
+# 자동으로 Phase 0→1→2→3→4 시도
+# Phase 2 (Validator)에서 85% 처리!
+# 비용: $0 (Native 모드)
 ```
 
-**특징**:
-- Fermi 4원칙 (모형, 분해, 제약, 자릿수)
-- 8가지 데이터 출처 활용
-- 빠른 Order of Magnitude 파악
+### v7.7.0 주요 특징
+- ✅ **Native 모드**: Cursor LLM 직접 사용 (비용 $0)
+- ✅ **Phase/Step 명확화**: 혼란 해결
+- ✅ **100% 커버리지**: 실패율 0%
+- ✅ **학습 시스템**: 사용할수록 빠름 (6-16배)
+- ❌ **3-Tier Deprecated**: 5-Phase로 대체
 
-### 2️⃣ Domain-Centric Reasoner (정밀 분석)
+**상세**: [umis_core.yaml](umis_core.yaml) (Line 609-743)
 
-- **속도**: 🔬 1-4시간
-- **정확도**: ±30% (수렴)
-- **적합**: 정밀 분석, 투자 심사, 규제 산업
+---
 
-```bash
-@Quantifier reasoner 시니어 케어 로봇 시장 규모
+## ⚠️ Deprecated (v7.5.0+)
+
+**Guestimation / Domain Reasoner** → **Estimator Agent로 완전 대체**
+
+```
+Before (v7.2.x):
+  - Guestimation (빠른 추정)
+  - Domain Reasoner (정밀 분석)
+
+After (v7.7.0):
+  - Estimator 5-Phase (통합)
+  - Phase 0-4로 모든 경우 처리
+  - 단일 인터페이스
 ```
 
-**특징**:
-- 10가지 신호 우선순위 (s3→s8→s6→s10→s2→...)
-- RAG 중심 (s2 Consensus, s9 Case Analogies, s10 KPI)
-- Should vs Will 분리 (행동경제학)
-- 증거표 + 검증 로그
-
-### 🔄 Hybrid Strategy (권장!)
-
-Guardian이 자동으로 최적 방법론을 선택:
-
-```bash
-@auto 국내 OTT 시장 규모
-```
-
-**전환 트리거**:
-1. **신뢰도 < 50%** → Domain Reasoner
-2. **범위 폭 > ±75%** → Domain Reasoner
-3. **기회 > 1,000억** → Domain Reasoner
-4. **규제 산업** → Domain Reasoner (필수)
-5. **신규 시장** → Domain Reasoner
-
-**플로우**:
-```
-Phase 1: Guestimation (5-30분)
-  ↓
-Guardian 평가
-  ↓
-조건 충족 시 → Phase 2: Domain Reasoner (1-4시간)
-```
-
-**자세한 비교**: [GUESTIMATION_COMPARISON.md](docs/GUESTIMATION_COMPARISON.md)
+**이유**: 역할 중복 제거, 일관성 확보, Single Source of Truth
 
 ---
 
