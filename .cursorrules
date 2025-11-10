@@ -1,13 +1,13 @@
 # ========================================
 # UMIS RAG Cursor Rules - AI Optimized
-# v7.5.0 | Non-coder | Cursor-only
+# v7.6.2 | Non-coder | Cursor-only
 # ========================================
 
 # === PART 1: UMIS 개념 (AI 필수 이해) ===
 
 system:
   name: Universal Market Intelligence System
-  version: 7.5.0
+  version: 7.6.2
   
   agents:
     Observer: {name: Albert, role: market_structure, rag: true}       # v7.1.0+
@@ -15,7 +15,7 @@ system:
     Quantifier: {name: Bill, role: market_sizing, rag: true}         # v7.1.0+
     Validator: {name: Rachel, role: data_verification, rag: true}    # v7.1.0+
     Guardian: {name: Stewart, role: process_monitoring, rag: true}   # v7.1.0+ (Meta-RAG ✅)
-    Estimator: {name: Fermi, role: value_estimation_3tier, rag: true}  # v7.5.0+ (3-Tier ✅)
+    Estimator: {name: Fermi, role: value_estimation_5phase, rag: true}  # v7.6.2+ (5-Phase ✅)
   
   # id: Agent ID (Observer, Explorer, ...)
   # name: Default name (Albert, Steve, ...) → agent_names.yaml로 커스터마이징
@@ -27,7 +27,7 @@ system:
   discovery_sprint: 명확도<7 → 6-Agent 병렬 탐색 (Estimator 협업) → 목표 구체화
   
   rag:
-    active: 6-Agent RAG (v7.5.0+)
+    active: 6-Agent RAG (v7.6.2+)
     architecture: v3.0 (4-Layer: Canonical → Projected → Graph → Memory)
     
     layers:
@@ -62,6 +62,7 @@ system:
         - "learned_rules (0 → 2,000개 진화)"
         - "canonical_store (정규화)"
         - "estimator (Agent View)"
+        - "data_sources_registry (24개, Validator 연계)" # v7.6.2+
       
       system:
         - "system_knowledge (31개 도구)" # ✅ 빌드 완료!
@@ -99,7 +100,7 @@ setup:
   
   messages:
     start: |
-      🚀 UMIS v7.5.0 자동 설치 시작
+      🚀 UMIS v7.6.2 자동 설치 시작
       
       setup/AI_SETUP_GUIDE.md 참조하여 진행합니다.
       소요 시간: 2-3분
@@ -117,7 +118,7 @@ setup:
       
       사용: Cmd+I → @umis.yaml
       "@Explorer, 시장 분석해줘"
-      "@Fermi, LTV는?" ⭐ v7.5.0 신규!
+      "@Fermi, LTV는?" ⭐ v7.6.2 (5-Phase + Web Search!)
 
 ## Agent 이름 커스터마이징
 agent_names:
@@ -281,10 +282,16 @@ system_rag:
     AI가 UMIS 전체 시스템을 빠르게 파악하고
     필요한 도구만 정확히 로드하여 컨텍스트 87% 절약
   
-  v7_5_0_update:
+  v7_6_2_update:
     estimator_tools: 3
     total: 31
-    coverage: "100% (Tier 1/2/3)"
+    coverage: "100% (5-Phase: P0/P1/P2/P3/P4)"
+    new_features:
+      - "Validator 우선 검색 (Phase 2, 85% 처리)"
+      - "Web Search (DuckDuckGo + Google)"
+      - "단위 자동 변환 (갑/년 → 갑/일)"
+      - "Relevance 검증 (GDP 오류 방지)"
+      - "Boundary 검증 (개념 기반)"
 
 # ========================================
 # AI 필수 실행 프로세스 (모든 프로젝트 시작 시!)
@@ -619,7 +626,7 @@ ai_usage_examples:
         # umis_core.yaml 읽기
         read_file("umis_core.yaml", offset=603, limit=90)
         → Estimator 섹션 파악
-        → 3-Tier Architecture
+        → 5-Phase Architecture (v7.6.2)
         → 12개 비즈니스 지표
       
       step_2: |
@@ -639,9 +646,10 @@ ai_usage_examples:
         estimator = EstimatorRAG()
         result = estimator.estimate("SaaS LTV는?")
         
-        # Tier 1 → 2 → 3 자동 시도
-        # Tier 3: 템플릿 ltv, 재귀 추정, Backtracking
-        # 결과: value, tier, decomposition
+        # Phase 0 → 1 → 2 → 3 → 4 자동 시도
+        # Phase 2 우선: Validator 검색 (85% 처리)
+        # Phase 4: Fermi 분해, 재귀 추정, Backtracking
+        # 결과: value, phase, decomposition
     
     context_used: "949 + 500 = 1,449줄 (vs 6,663줄, 78% 절약)"
 
@@ -680,7 +688,7 @@ common_tool_keys:
     - "tool:guardian:quality_evaluation (품질 평가)"
   
   estimator:
-    - "tool:estimator:estimate (값 추정, 3-Tier)" ⭐ v7.5.0
+    - "tool:estimator:estimate (값 추정, 5-Phase)" ⭐ v7.6.2
     - "tool:estimator:cross_validation (교차 검증)"
     - "tool:estimator:learning_system (학습 시스템)"
   

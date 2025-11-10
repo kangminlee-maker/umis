@@ -1,7 +1,7 @@
-# UMIS v7.5.0 시작하기
+# UMIS v7.6.2 시작하기
 
-**버전:** 7.5.0 (6-Agent + 3-Tier 완성, 100% 커버리지)  
-**날짜:** 2025-11-08  
+**버전:** 7.6.2 (6-Agent + 5-Phase 완성, 100% 커버리지)  
+**날짜:** 2025-11-10  
 **대상:** Cursor 사용자
 
 ---
@@ -14,8 +14,8 @@ Cursor Composer (Cmd+I):
 umis.yaml 첨부
 
 "@Steve, 음악 스트리밍 구독 서비스 시장 기회 분석해줘"
-"@Fermi, SaaS LTV는?"  ⭐ 신규!
-"@Fermi, Payback Period는?"  ⭐ 신규!
+"@Fermi, SaaS LTV는?"  ⭐ 5-Phase + Web Search!
+"@Fermi, 한국 인구는?"  ⭐ Validator 우선 검색!
 ```
 
 **끝!** 🎉
@@ -32,12 +32,12 @@ Validator (Rachel) → 데이터 검증 + 교차 검증
 Guardian (Stewart) → 프로세스 감시 (Meta-RAG)
 Estimator (Fermi) → 값 추정 (3-Tier, 12개 지표) ⭐ 신규!
 
-v7.5.0: 모든 Agent 완전 작동!
+v7.6.2: 5-Phase + Web Search 완전 작동!
 ```
 
 ---
 
-## ⭐ v7.5.0 신규 기능
+## ⭐ v7.6.2 신규 기능
 
 ```yaml
 ✅ 3-Tier 완성 (100% 커버리지)
@@ -102,7 +102,7 @@ umis/
 
 ---
 
-## 🚀 사용 흐름 (v7.5.0)
+## 🚀 사용 흐름 (v7.6.2)
 
 ```
 1. Cursor (Cmd+I)
@@ -131,15 +131,15 @@ umis/
 ## 📖 더 알아보기
 
 **시작:**
-- [README.md](../README.md) - UMIS v7.5.0 소개
+- [README.md](../README.md) - UMIS v7.6.2 소개
 - [SETUP.md](SETUP.md) - 초기 설정 (5분)
 
 **가이드:**
 - [UMIS_ARCHITECTURE_BLUEPRINT.md](../UMIS_ARCHITECTURE_BLUEPRINT.md) - 전체 아키텍처
-- [CURRENT_STATUS.md](../CURRENT_STATUS.md) - v7.5.0 현황
+- [CURRENT_STATUS.md](../CURRENT_STATUS.md) - v7.6.2 현황
 
 **Release Notes:**
-- [UMIS_V7.5.0_RELEASE_NOTES.md](../UMIS_V7.5.0_RELEASE_NOTES.md) - v7.5.0 변경사항
+- [CHANGELOG.md](../CHANGELOG.md) - v7.6.2 변경사항
 - [CHANGELOG.md](../CHANGELOG.md) - 전체 버전 이력
 
 ---
