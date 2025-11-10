@@ -1,7 +1,13 @@
 """
-Tier 2: Judgment Path
+Phase 3: Guestimation (v7.7.0)
 
-맥락 파악 → 증거 수집 → 평가 → 종합 판단
+맥락 파악 → 11개 Source 수집 → 평가 → 종합 판단
+
+v7.7.0 파일명 변경:
+-------------------
+- tier2.py → phase3_guestimation.py
+- Tier2JudgmentPath → Phase3Guestimation
+- 용어 명확화
 """
 
 from typing import Optional, List, Dict, Any
@@ -17,17 +23,17 @@ from .judgment import JudgmentSynthesizer
 from .learning_writer import LearningWriter
 
 
-class Tier2JudgmentPath:
+class Phase3Guestimation:
     """
-    Tier 2: Judgment Path
+    Phase 3: Guestimation (v7.7.0)
     
     역할:
     -----
     - 맥락 파악 (LLM)
-    - 모든 Source 수집
+    - 11개 Source 수집
     - 증거 평가
     - 종합 판단
-    - 학습 (Tier 1 편입)
+    - 학습 (Phase 1 편입)
     
     원칙:
     -----
@@ -54,7 +60,7 @@ class Tier2JudgmentPath:
         self.llm_mode = llm_mode
         self.learning_writer = learning_writer
         
-        logger.info("[Tier 2] Judgment Path 초기화")
+        logger.info("[Phase 3] Guestimation 초기화")
         
         # Source Collector
         self.source_collector = SourceCollector(llm_mode=llm_mode)
@@ -62,7 +68,7 @@ class Tier2JudgmentPath:
         # Judgment Synthesizer
         self.synthesizer = JudgmentSynthesizer()
         
-        logger.info(f"  ✅ Tier 2 준비 완료")
+        logger.info(f"  ✅ Phase 3 준비 완료")
         
         if self.learning_writer:
             logger.info(f"  ✅ Learning Writer 연결됨")
@@ -73,16 +79,16 @@ class Tier2JudgmentPath:
         context: Optional[Context] = None
     ) -> Optional[EstimationResult]:
         """
-        Tier 2 추정
+        Phase 3 추정 (Guestimation)
         
         Args:
             question: 질문
-            context: 맥락 (Tier 1에서 전달 or 생성)
+            context: 맥락 (Phase 1에서 전달 or 생성)
         
         Returns:
             EstimationResult or None
         """
-        logger.info(f"[Tier 2] 시작: {question}")
+        logger.info(f"[Phase 3] 시작: {question}")
         start_time = time.time()
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -181,7 +187,7 @@ class Tier2JudgmentPath:
                 value_estimates, judgment
             ),
             
-            decomposition=None  # Tier 3에서 구현
+            decomposition=None  # Phase 4에서 구현
         )
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

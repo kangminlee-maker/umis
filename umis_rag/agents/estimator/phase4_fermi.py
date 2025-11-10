@@ -1,16 +1,17 @@
 """
-Tier 3: Fermi Model Search (Phase 4 구현, v7.7.0)
+Phase 4: Fermi Decomposition (v7.7.0)
 
-재귀 분해 추정 - 논리의 퍼즐 맞추기
+재귀 분해 추정 - 논리의 퍼즐 맞추기 (Step 1-4)
 
 설계: config/fermi_model_search.yaml (1,500줄)
 원리: 가용 데이터(Bottom-up) + 개념 분해(Top-down) 반복
 
-v7.7.0 용어 명확화:
------------------
+v7.7.0 파일명 변경:
+-------------------
+- tier3.py → phase4_fermi.py
+- Tier3FermiPath → Phase4FermiDecomposition
 - Phase 4: Estimator의 Fermi Decomposition
 - Step 1-4: 내부 세부 단계 (스캔 → 생성 → 체크 → 실행)
-- Tier 3: 구현 파일명 (tier3.py)
 
 v7.6.2 주요 개선:
 -----------------
@@ -37,7 +38,7 @@ from umis_rag.agents.estimator.models import (
     Context, EstimationResult, DecompositionTrace,
     ComponentEstimation, Tier3Config
 )
-from umis_rag.agents.estimator.tier2 import Tier2JudgmentPath
+from umis_rag.agents.estimator.phase3_guestimation import Phase3Guestimation
 from umis_rag.utils.logger import logger
 from umis_rag.core.config import settings
 
@@ -77,6 +78,7 @@ import re
 
 # v7.5.0: 비즈니스 지표 템플릿 제거됨
 # Quantifier가 LTV, CAC, ARPU 등의 계산 공식 소유
+# v7.7.0: 파일명 변경 (tier3.py → phase4_fermi.py)
 BUSINESS_METRIC_TEMPLATES_REMOVED = {
     # Unit Economics (우선 - "ltv/cac" 정확 매칭)
     "unit_economics": {
@@ -453,9 +455,9 @@ class SimpleVariablePolicy:
 # Tier 3 메인 클래스
 # ═══════════════════════════════════════════════════════
 
-class Tier3FermiPath:
+class Phase4FermiDecomposition:
     """
-    Tier 3: Fermi Model Search
+    Phase 4: Fermi Decomposition (v7.7.0)
     
     재귀 분해 추정 - 논리의 퍼즐 맞추기
     
@@ -473,8 +475,8 @@ class Tier3FermiPath:
     - 변수 제한: 6개 권장, 10개 절대
     
     Usage:
-        >>> tier3 = Tier3FermiPath()
-        >>> result = tier3.estimate(
+        >>> phase4 = Phase4FermiDecomposition()
+        >>> result = phase4.estimate(
         ...     "음식점 SaaS 시장은?",
         ...     context=Context(domain="Food_Service")
         ... )
@@ -486,8 +488,8 @@ class Tier3FermiPath:
         """초기화"""
         self.config = config or Tier3Config()
         
-        # Tier 2 의존성
-        self.tier2 = Tier2JudgmentPath()
+        # Phase 3 의존성
+        self.phase3 = Phase3Guestimation()
         
         # 재귀 추적
         self.call_stack: List[str] = []
@@ -511,7 +513,7 @@ class Tier3FermiPath:
             logger.info("  ✅ Native Mode (Cursor LLM, 비용 $0)")
             logger.info("     직접 모형 생성: 질문 분석 → 상식 기반 추정 (재귀 최소화)")
         
-        logger.info("[Tier 3] Fermi Model Search 초기화")
+        logger.info("[Phase 4] Fermi Decomposition 초기화")
         logger.info(f"  Max depth: {self.max_depth}")
         logger.info(f"  변수 정책: 권장 6개, 절대 10개")
         logger.info(f"  LLM 모드: {self.llm_mode}")
@@ -539,7 +541,7 @@ class Tier3FermiPath:
         """
         start_time = time.time()
         
-        logger.info(f"\n{'  ' * depth}[Tier 3] Fermi Estimation (depth {depth})")
+        logger.info(f"\n{'  ' * depth}[Phase 4] Fermi Estimation (depth {depth})")
         logger.info(f"{'  ' * depth}  질문: {question}")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -548,9 +550,9 @@ class Tier3FermiPath:
         
         # 1. Max depth 체크
         if depth >= self.max_depth:
-            logger.warning(f"{'  ' * depth}  ⚠️  Max depth {self.max_depth} 도달 → Tier 2 Fallback")
-            # Fallback to Tier 2
-            return self.tier2.estimate(question, context or Context())
+            logger.warning(f"{'  ' * depth}  ⚠️  Max depth {self.max_depth} 도달 → Phase 3 Fallback")
+            # Fallback to Phase 3
+            return self.phase3.estimate(question, context or Context())
         
         # 2. 순환 감지
         if self._detect_circular(question):
@@ -633,12 +635,12 @@ class Tier3FermiPath:
                     result.confidence = result.confidence * boundary_check.confidence
                     logger.info(f"{'  ' * depth}  ⚠️  Soft warning → confidence {original_conf:.2f} → {result.confidence:.2f}")
                 
-                logger.info(f"{'  ' * depth}  ✅ Tier 3 완료: {result.value} ({execution_time:.2f}초)")
+                logger.info(f"{'  ' * depth}  ✅ Phase 4 완료: {result.value} ({execution_time:.2f}초)")
             
             return result
         
         except Exception as e:
-            logger.error(f"{'  ' * depth}  ❌ Tier 3 에러: {e}")
+            logger.error(f"{'  ' * depth}  ❌ Phase 4 에러: {e}")
             return None
         
         finally:
@@ -745,10 +747,10 @@ class Tier3FermiPath:
             logger.info(f"{'  ' * depth}    [Tier 2] Source 조회 중...")
             tier2_data = self._query_tier2_sources(question, context)
             
-            for key, var in tier2_data.items():
+            for key, var in phase3_data.items():
                 if key not in available:  # 프로젝트/RAG 우선
                     available[key] = var
-                    logger.info(f"{'  ' * depth}    [Tier 2] {key} = {var.value} (conf: {var.confidence:.2f})")
+                    logger.info(f"{'  ' * depth}    [Phase 3] {key} = {var.value} (conf: {var.confidence:.2f})")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # Step 4: Context 상수 (우선순위 5)
@@ -1475,15 +1477,15 @@ models:
         
         logger.info(f"{'  ' * depth}      [Recursive] {question}")
         
-        # 1. Tier 2 먼저 시도 (재귀 최소화)
-        tier2_result = self.tier2.estimate(question, context)
+        # 1. Phase 3 먼저 시도 (재귀 최소화)
+        phase3_result = self.phase3.estimate(question, context)
         
-        if tier2_result and tier2_result.confidence >= 0.80:  # v7.5.0: 0.7→0.8 강화
-            logger.info(f"{'  ' * depth}        ✅ Tier 2 성공 (재귀 불필요)")
-            return tier2_result
+        if phase3_result and phase3_result.confidence >= 0.80:  # v7.5.0: 0.7→0.8 강화
+            logger.info(f"{'  ' * depth}        ✅ Phase 3 성공 (재귀 불필요)")
+            return phase3_result
         
-        # 2. Tier 2 실패 → Tier 3 재귀
-        logger.info(f"{'  ' * depth}        🔄 Tier 2 실패 → Fermi 재귀")
+        # 2. Phase 3 실패 → Phase 4 재귀
+        logger.info(f"{'  ' * depth}        🔄 Phase 3 실패 → Fermi 재귀")
         
         # 부모 데이터 준비 (v7.5.0+)
         parent_data_to_pass = {}
@@ -1501,8 +1503,8 @@ models:
         if tier3_result:
             return tier3_result
         
-        # 3. Tier 3 재귀도 실패 → Fallback (v7.6.2)
-        logger.info(f"{'  ' * depth}        🔄 Tier 3 재귀 실패 → Fallback")
+        # 3. Phase 4 재귀도 실패 → Fallback (v7.6.2)
+        logger.info(f"{'  ' * depth}        🔄 Phase 4 재귀 실패 → Fallback")
         
         fallback = self._get_fallback_value(var_name, context)
         
