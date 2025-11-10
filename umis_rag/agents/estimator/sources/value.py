@@ -244,7 +244,7 @@ class WebSearchSource(ValueSourceBase):
             logger.info(f"    {len(extracted_numbers)}개 숫자 추출됨")
             
             # Consensus 확인 (여러 출처에서 유사한 값)
-            consensus = self._find_consensus(extracted_numbers)
+            consensus = self._find_consensus(extracted_numbers, question)
             
             if consensus:
                 logger.info(f"    Consensus: {consensus['value']} (신뢰도: {consensus['confidence']:.2f})")
@@ -335,15 +335,19 @@ class WebSearchSource(ValueSourceBase):
     ) -> str:
         """검색 쿼리 구성"""
         
-        # Context 추가
+        # Context 추가 (중복 방지)
         if context:
             parts = []
             
-            if context.region:
+            # Region이 이미 질문에 포함되어 있지 않으면 추가
+            if context.region and context.region.lower() not in question.lower():
                 parts.append(context.region)
             
+            # Domain도 중복 체크
             if context.domain and context.domain != "General":
-                parts.append(context.domain.replace('_', ' '))
+                domain_text = context.domain.replace('_', ' ')
+                if domain_text.lower() not in question.lower():
+                    parts.append(domain_text)
             
             parts.append(question)
             
@@ -351,9 +355,12 @@ class WebSearchSource(ValueSourceBase):
         else:
             query = question
         
-        # "통계" 또는 "데이터" 추가 (정확도 향상)
-        if '통계' not in query and 'statistics' not in query.lower():
-            query += " 통계"
+        # "statistics" 추가 (영어 쿼리만, 정확도 향상)
+        # 한국어 쿼리에는 추가하지 않음 (영어 검색 엔진에서 혼란)
+        has_korean = any(ord(c) >= 0xAC00 and ord(c) <= 0xD7A3 for c in query)
+        
+        if not has_korean and 'statistics' not in query.lower():
+            query += " statistics"
         
         return query
     
@@ -378,8 +385,11 @@ class WebSearchSource(ValueSourceBase):
             text = f"{title} {body}"
             source = result.get('href', 'unknown')
             
-            # 숫자 패턴 (개선 - 더 유연하게)
+            # 숫자 패턴 (개선 - 영어 단위 약자 추가)
             patterns = [
+                # 영어 단위 약자 (51.7M, 3.5B, 100K) - 최우선!
+                (r'(\d+(?:\.\d+)?)\s*([MBK])\b', 'english_abbreviation'),
+                
                 # 한국어 큰 숫자 (51,740,000명)
                 (r'(\d{1,3}(?:,\d{3})+)', r'([조억만천백십]?[원명개갑점호대%]|명|개|원|조|억|만)'),
                 
@@ -391,9 +401,13 @@ class WebSearchSource(ValueSourceBase):
             ]
             
             for num_pattern, unit_pattern in patterns:
-                # 숫자와 단위를 함께 찾기
-                combined_pattern = num_pattern + r'\s*' + unit_pattern
-                matches = re.findall(combined_pattern, text)
+                # 영어 약자는 특별 처리
+                if unit_pattern == 'english_abbreviation':
+                    matches = re.findall(num_pattern, text, re.IGNORECASE)
+                else:
+                    # 숫자와 단위를 함께 찾기
+                    combined_pattern = num_pattern + r'\s*' + unit_pattern
+                    matches = re.findall(combined_pattern, text)
                 
                 for match in matches:
                     if isinstance(match, tuple) and len(match) >= 2:
@@ -410,8 +424,16 @@ class WebSearchSource(ValueSourceBase):
                         # 숫자 변환
                         value = float(num_str)
                         
+                        # 영어 단위 약자 변환
+                        if unit.upper() == 'M':
+                            value *= 1_000_000
+                        elif unit.upper() == 'B':
+                            value *= 1_000_000_000
+                        elif unit.upper() == 'K':
+                            value *= 1_000
+                        
                         # 한국어 단위 변환
-                        if '조' in unit and '억' not in unit:  # 조 단독
+                        elif '조' in unit and '억' not in unit:  # 조 단독
                             value *= 1_000_000_000_000
                         elif '억' in unit and '조' not in unit:  # 억 단독
                             value *= 100_000_000
@@ -454,8 +476,16 @@ class WebSearchSource(ValueSourceBase):
         
         for item in extracted:
             val = item['value']
-            # ±5% 범위로 중복 체크
-            is_duplicate = any(abs(val - seen) / max(seen, val) < 0.05 for seen in seen_values)
+            # ±5% 범위로 중복 체크 (division by zero 방지)
+            is_duplicate = False
+            for seen in seen_values:
+                if seen == 0 and val == 0:
+                    is_duplicate = True
+                    break
+                max_val = max(abs(seen), abs(val))
+                if max_val > 0 and abs(val - seen) / max_val < 0.05:
+                    is_duplicate = True
+                    break
             
             if not is_duplicate:
                 unique.append(item)
@@ -463,12 +493,13 @@ class WebSearchSource(ValueSourceBase):
         
         return unique
     
-    def _find_consensus(self, extracted_numbers: list) -> Optional[Dict]:
+    def _find_consensus(self, extracted_numbers: list, question: str = "") -> Optional[Dict]:
         """
         Consensus 찾기 (여러 출처에서 유사한 값)
         
         Args:
             extracted_numbers: [{'value': ..., 'source': ...}, ...]
+            question: 질문 (관련성 필터링용)
         
         Returns:
             {
@@ -478,7 +509,30 @@ class WebSearchSource(ValueSourceBase):
                 'sources': [...]
             } or None
         """
+        if len(extracted_numbers) < 1:
+            return None
+        
+        # 관련성 필터링: 값들을 크기별로 그룹화
+        # 예: 인구(51M)와 성장률(2.4%)이 섞이면 분리
+        if len(extracted_numbers) > 1:
+            values = [item['value'] for item in extracted_numbers]
+            max_val = max(values)
+            min_val = min([v for v in values if v > 0], default=0)
+            
+            # 최대값과 최소값의 차이가 1000배 이상이면
+            # 큰 값들만 사용 (인구 같은 절대값 질문으로 추정)
+            if max_val / max(min_val, 0.001) > 1000:
+                extracted_numbers = [item for item in extracted_numbers if item['value'] > max_val / 100]
+        
         if len(extracted_numbers) < 2:
+            # 값이 1개뿐이면 그대로 반환 (신뢰도 낮춤)
+            if len(extracted_numbers) == 1:
+                return {
+                    'value': extracted_numbers[0]['value'],
+                    'confidence': 0.50,  # 낮은 신뢰도
+                    'count': 1,
+                    'sources': [extracted_numbers[0]['source']]
+                }
             return None
         
         # 값들을 그룹화 (±30% 범위 내면 같은 그룹)
