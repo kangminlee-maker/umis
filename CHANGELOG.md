@@ -123,9 +123,9 @@
 
 ### 주요 변경사항
 - ✅ **Estimator/Quantifier 역할 분리** (MECE 달성)
-- ✅ **Tier 1/2 임계값 강화** (0.85→0.95, 0.60→0.80)
+- ✅ **Phase 1/3 임계값 강화** (0.85→0.95, 0.60→0.80)
 - ✅ **Context 전달 개선** (재귀 시 구체적 질문)
-- ✅ **Domain Reasoner 제거** (Estimator Tier 2로 대체)
+- ✅ **Domain Reasoner 제거** (Estimator Phase 3으로 대체)
 - ✅ **비즈니스 지표 템플릿 이동** (Estimator → Quantifier)
 - ✅ **Tool Registry 정리** (31→29개)
 - ✅ **코드 단순화** (3,000줄 감소)
