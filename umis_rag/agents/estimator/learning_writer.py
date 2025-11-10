@@ -350,8 +350,8 @@ class LearningWriter:
             'region': context.region,
             'time_period': context.time_period,
             
-            # 증거
-            'evidence_sources': [est.source_type.value for est in result.value_estimates],
+            # 증거 (Chroma는 metadata에 list 불가 → JSON string)
+            'evidence_sources': json.dumps([est.source_type.value for est in result.value_estimates]),
             'evidence_count': len(result.value_estimates),
             'judgment_strategy': result.judgment_strategy,
             
@@ -377,6 +377,9 @@ class LearningWriter:
         # 사용자 메타데이터 병합
         if user_metadata:
             metadata.update(user_metadata)
+        
+        # Chroma는 metadata에 None 허용 안함 → 제거
+        metadata = {k: v for k, v in metadata.items() if v is not None}
         
         return metadata
     

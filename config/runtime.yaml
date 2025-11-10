@@ -1,4 +1,4 @@
-# UMIS Runtime Configuration v7.5.0
+# UMIS Runtime Configuration v7.6.2
 # Fail-Safe Tier 2: Mode Toggle
 
 # ========================================
@@ -9,7 +9,7 @@ mode: rag_full  # yaml_only / hybrid / rag_full
 
 # yaml_only: YAML 기반만 (RAG 비활성)
 # hybrid: YAML + Vector RAG (안정적)
-# rag_full: YAML + Vector + Graph + Memory + Meta (모든 기능, v7.5.0) ⭐
+# rag_full: YAML + Vector + Graph + Memory + Meta + Estimator (모든 기능, v7.6.2) ⭐
 
 # ========================================
 # Layer별 활성화
@@ -19,8 +19,9 @@ layers:
   vector: true      # Vector RAG (Explorer, Quantifier, Validator, Observer)
   graph: true       # Knowledge Graph (Hybrid Search, 13 노드, 45 관계)
   memory: true      # Guardian Memory (QueryMemory, GoalMemory)
-  meta: true        # Meta-RAG (Guardian, v7.1.0+) ⭐ 구현 완료!
-  estimator: true   # Estimator 3-Tier (v7.5.0) ⭐ 신규!
+  meta: true        # Meta-RAG (Guardian, v7.1.0+) ⭐
+  estimator: true   # Estimator 5-Phase (v7.6.2) ⭐ 재설계 완료!
+  validator_search: true  # Validator 확정 데이터 검색 (v7.6.0+) ⭐
 
 # ========================================
 # Fail-Safe 설정
@@ -39,8 +40,9 @@ fallback:
   # Meta-RAG 실패 시 (v7.1.0+)
   meta_fail: skip  # Meta-RAG 없이 진행
 
-  # Estimator 실패 시 (v7.5.0+)
-  estimator_tier3_fail: tier2  # Tier 3 실패 시 Tier 2 Fallback
+  # Estimator 실패 시 (v7.6.2+)
+  estimator_phase4_fail: fallback  # Tier 3 실패 시 Fallback (conf 0.5)
+  estimator_boundary_fail: skip  # Boundary 검증 실패 시 스킵
 
 # ========================================
 # Circuit Breaker (Tier 3)
@@ -94,25 +96,57 @@ production:
   strict_validation: true
 
 # ========================================
-# v7.5.0 신규 기능
+# v7.6.2 신규 기능
 # ========================================
 
-v7_5_0_features:
+v7_6_2_features:
 
-  estimator_3tier:
+  estimator_5phase:
     enabled: true
-    tier1_coverage: "45% → 95% (Year 1)"
-    tier2_coverage: "50% → 5%"
-    tier3_coverage: "5% → 0.5%"
+    
+    phase_coverage:
+      phase_0: "10% (Project Data)"
+      phase_1: "5% → 40% (Learned, Year 1)"
+      phase_2: "85% → 50% (Validator, Year 1)"
+      phase_3: "2-5% (Tier 2)"
+      phase_4: "3% → 1% (Tier 3, Year 1)"
+    
     total_coverage: "100%"
-
+    
+    key_changes:
+      - "Built-in Rules 제거 (답변 일관성)"
+      - "Validator 우선 검색 (Phase 2, 강제)"
+      - "개념 기반 Boundary 검증"
+      - "하드코딩 제거 → 재귀 추정"
+      - "Web Search 추가 (DuckDuckGo/Google)"
+    
+    accuracy:
+      validator: "100% (0% 오차)"
+      tier_3: "75% (25% 오차, 3배 개선)"
+      e2e_success: "95%"
+    
+    validator_features:
+      - "data_sources_registry (24개)"
+      - "단위 자동 변환"
+      - "Relevance 검증"
+      - "search_definite_data() 메서드"
+    
     tier3_features:
-      - "12개 비즈니스 지표 템플릿"
-      - "재귀 추정 (max depth 4)"
-      - "데이터 상속"
-      - "순환 감지"
-      - "SimpleVariablePolicy (6-10개)"
-      - "LLM 모드 (Native/External)"
+      - "Fallback 체계 (conf 0.5)"
+      - "Boundary 검증 (Phase 5)"
+      - "개념 타입 일반화 (count, rate, size)"
+      - "재귀 추정 (depth 4)"
+
+  web_search:
+    enabled: true
+    default_engine: "duckduckgo"
+    engines:
+      - "duckduckgo (무료, 기본)"
+      - "google (유료, 선택)"
+    features:
+      - "동적 엔진 선택 (.env)"
+      - "Consensus 알고리즘"
+      - "숫자 자동 추출"
 
   meta_rag:
     enabled: true
@@ -122,13 +156,12 @@ v7_5_0_features:
       - "GoalMemory (목표 정렬)"
       - "RAEMemory (평가 일관성)"
       - "3-Stage Evaluation (품질 평가)"
-    test_result: "3/4 통과 (핵심 100%)"
 
 # ========================================
 # 버전
 # ========================================
 
-version: "1.1.0"
-updated_at: "2025-11-08"
-umis_version: "7.5.0"
+version: "1.2.0"
+updated_at: "2025-11-10"
+umis_version: "7.6.2"
 

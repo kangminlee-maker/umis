@@ -75,6 +75,21 @@ class Settings(BaseSettings):
     top_k_results: int = 5
     
     # ========================================
+    # Web Search Configuration (v7.6.2)
+    # ========================================
+    # 검색 엔진 선택: "duckduckgo" (무료) or "google" (유료, 고품질)
+    web_search_engine: str = "duckduckgo"
+    
+    # Google Custom Search (선택적)
+    # - API 키: https://console.cloud.google.com/apis/credentials
+    # - Search Engine ID: https://programmablesearchengine.google.com/
+    google_api_key: str | None = None
+    google_search_engine_id: str | None = None
+    
+    # Web Search 활성화 여부
+    web_search_enabled: bool = True
+    
+    # ========================================
     # Agent Configuration
     # ========================================
     agent_temperature: float = 0.7

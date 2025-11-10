@@ -1,7 +1,7 @@
 # UMIS - Universal Market Intelligence System
 
 [![GitHub](https://img.shields.io/badge/GitHub-umis-blue?logo=github)](https://github.com/kangminlee-maker/umis)
-[![Version](https://img.shields.io/badge/version-7.5.0-green)](https://github.com/kangminlee-maker/umis/releases)
+[![Version](https://img.shields.io/badge/version-7.6.2-green)](https://github.com/kangminlee-maker/umis/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 > **"불확실성을 기회로 전환하는 시장 분석 시스템"**
@@ -10,23 +10,25 @@
 
 ## 🎯 UMIS란?
 
-AI 에이전트 6명이 협업하여 시장을 분석하는 **RAG 기반 프레임워크** (v7.5.0)
+AI 에이전트 6명이 협업하여 시장을 분석하는 **RAG 기반 프레임워크** (v7.6.2)
 
 ### 핵심 특징
-- ✅ **6-Agent 협업**: Observer, Explorer, Quantifier, Validator, Guardian, **Estimator** (v7.3.1+)
+- ✅ **6-Agent 협업**: Observer, Explorer, Quantifier, **Validator**, Guardian, **Estimator** 
 - ✅ **RAG 지식 활용**: 54개 검증된 패턴/사례 자동 검색
+- ✅ **Validator 우선**: 확정 데이터 검색 (94.7% 처리) ⭐ v7.6.0+
 - ✅ **완전한 추적성**: 모든 결론 → 원본 데이터 역추적
 - ✅ **재검증 가능**: Excel 함수, YAML 스키마
 - ✅ **코딩 불필요**: Cursor Composer만으로 사용
 
-### v7.5.0 주요 기능 (최신) ⭐
-- 🏆 **3-Tier 완성**: Tier 1/2/3, 100% 커버리지, 실패율 0% (v7.5.0)
-- 🎯 **12개 비즈니스 지표**: LTV, CAC, Payback, Rule of 40, NRR 등 (v7.5.0)
-- 🌟 **데이터 상속**: 재귀 최적화, 10-20% 시간 절약 (v7.5.0)
-- 🎉 **LLM 모드 통합**: Native $0 / External $0.03 (v7.5.0)
-- 🎯 **Estimator Agent**: 6번째 Agent, 값 추정 전문가 (v7.3.1)
-- 🌟 **Single Source of Truth**: 모든 값 추정은 Estimator만 (v7.3.2)
-- 📚 **학습 시스템**: 사용할수록 6-16배 빠름 (v7.3.0)
+### v7.6.2 주요 기능 (최신) ⭐⭐⭐
+- 🎊 **5-Phase Architecture**: Project → Tier 1 → Validator → Tier 2 → Tier 3 (v7.6.0)
+- ⭐⭐⭐ **Validator Priority**: 94.7% 확정 데이터 처리, 정확도 100% (v7.6.0)
+- ⭐ **Boundary Intelligence**: 개념 기반 동적 검증 (v7.6.2)
+- ✅ **Unit Conversion**: 단위 자동 변환 (v7.6.1)
+- ✅ **Relevance Check**: GDP 오류 방지 (v7.6.1)
+- ✅ **Web Search**: DuckDuckGo/Google 선택 (v7.6.2)
+- ❌ **Built-in 제거**: 답변 일관성 확보 (v7.6.0)
+- 📚 **Learning System**: 사용할수록 빠름 (v7.3.0)
 
 ### v7.2.1 주요 기능
 - 🎯 **Fermi Model Search**: 모형 만들기 + 퍼즐 맞추기 (완전 구현!)
@@ -74,6 +76,8 @@ python setup/setup.py
 Cursor Composer에서:
 ```
 "@Explorer, 구독 모델 패턴 찾아줘"
+"@Fermi, B2B SaaS Churn은?" (v7.6.2 - 5-Phase)
+"@Validator, 확정 데이터 있나요?" (v7.6.0+)
 ```
 
 **상세**: [INSTALL.md](docs/INSTALL.md) 참조

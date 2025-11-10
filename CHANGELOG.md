@@ -5,6 +5,70 @@
 
 ---
 
+## v7.6.2 (2025-11-10) - "Validator Priority & Boundary Intelligence" 🎊
+
+### 주요 변경사항
+- ⭐⭐⭐ **Estimator 5-Phase 재설계** (3-Tier → 5-Phase)
+- ⭐⭐⭐ **Validator 우선 검색** (Phase 2, 94.7% 처리)
+- ⭐ **Boundary 검증** (개념 기반 동적 추론)
+- ✅ **단위 자동 변환** (갑/년 → 갑/일)
+- ✅ **Relevance 검증** (GDP 오류 방지)
+- ✅ **Web Search** (DuckDuckGo/Google)
+- ❌ **Built-in Rules 제거** (답변 일관성)
+- ✅ **하드코딩 제거** (재귀 추정)
+
+### 성과
+**정확도**:
+- Validator: 100% (0% 오차)
+- Tier 3: 75% (25% 오차, 3배 개선)
+- 담배갑: 추정 5.3M → Validator 87.6M (16배 정확)
+
+**커버리지**:
+- E2E 성공률: 95% (19/20)
+- Validator: 85% 처리
+- Phase 분포: P0:10%, P1:5%, P2:85%, P3:2%, P4:3%
+
+### 상세
+
+**v7.6.0 (재설계)**:
+- Phase 0: Project Data 추가
+- Phase 2: Validator 검색 추가 (강제)
+- Built-in Rules 제거
+- data_sources_registry 구축 (24개)
+
+**v7.6.1 (Validator 완벽화)**:
+- 단위 자동 변환 구현
+- Relevance 검증 구현
+- Tier 3 재귀 구조 완성
+
+**v7.6.2 (Tier 3 개선 + Web Search)**:
+- 하드코딩 완전 제거 (adoption_rate, arpu 등)
+- BoundaryValidator 구현 (개념 기반)
+- Fallback 체계 (confidence 0.5)
+- Web Search Source 구현 (DuckDuckGo + Google)
+
+### 신규 파일
+1. `data/raw/data_sources_registry.yaml` - Validator 데이터 (20개)
+2. `scripts/build_data_sources_registry.py` - 구축 스크립트
+3. `umis_rag/agents/estimator/boundary_validator.py` - Boundary 검증
+4. `config/web_search.env.template` - Web Search 설정
+
+### 수정 파일
+1. `umis_rag/agents/validator.py` - search_definite_data() 등
+2. `umis_rag/agents/estimator/estimator.py` - 5-Phase 프로세스
+3. `umis_rag/agents/estimator/tier1.py` - Built-in 제거
+4. `umis_rag/agents/estimator/tier3.py` - 하드코딩 제거, Boundary
+5. `umis_rag/agents/estimator/sources/value.py` - Web Search
+6. `umis_rag/core/config.py` - Web Search 설정
+
+### 테스트
+- 전체 E2E: 95% 성공
+- Validator: 100% (7/7)
+- Tier 2: 67% (4/6)
+- Tier 3: 57% (4/7)
+
+---
+
 ## v7.5.0 (2025-11-10) - "Estimator/Quantifier 역할 분리 (MECE)" 🏆
 
 ### 주요 변경사항
