@@ -521,18 +521,3 @@ class GuestimationConfig:
     # 로깅
     verbose: bool = False
     log_all_sources: bool = True
-
-
-# ═══════════════════════════════════════════════════════
-# Backward Compatibility Aliases (v7.7.0)
-# ═══════════════════════════════════════════════════════
-
-# v7.7.0: Config 클래스명 변경
-# - Tier1Config → Phase1Config
-# - Tier2Config → Phase3Config
-# - Tier3Config → Phase4Config
-
-Tier1Config = Phase1Config  # Deprecated alias
-Tier2Config = Phase3Config  # Deprecated alias
-Tier3Config = Phase4Config  # Deprecated alias
-
