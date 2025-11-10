@@ -10,9 +10,13 @@ Estimator Agent Redirect
 
 from .estimator.estimator import EstimatorRAG, get_estimator_rag
 from .estimator.models import Context, EstimationResult, Tier1Config, Tier2Config
-from .estimator.tier1 import Tier1FastPath
-from .estimator.tier2 import Tier2JudgmentPath
+from .estimator.phase1_direct_rag import Phase1DirectRAG
+from .estimator.phase3_guestimation import Phase3Guestimation
 from .estimator.learning_writer import LearningWriter, UserContribution
+
+# v7.7.0: Backward compatibility
+Tier1FastPath = Phase1DirectRAG
+Tier2JudgmentPath = Phase3Guestimation
 
 __all__ = [
     'EstimatorRAG', 'get_estimator_rag',

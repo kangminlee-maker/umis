@@ -1,7 +1,13 @@
 """
-Tier 1: Fast Path (v7.6.0 재설계)
+Phase 1: Direct RAG (v7.7.0)
 
-학습된 규칙 RAG 검색만 (Built-in 제거)
+학습된 규칙 RAG 검색 (Direct RAG)
+
+v7.7.0 파일명 변경:
+-------------------
+- tier1.py → phase1_direct_rag.py
+- Tier1FastPath → Phase1DirectRAG
+- 용어 명확화 (Tier는 구현 개념, Phase는 사용자 개념)
 
 v7.6.0 변경:
 ------------
@@ -20,9 +26,9 @@ from .models import Context, EstimationResult, Tier1Config, LearnedRule
 from .rag_searcher import EstimatorRAGSearcher
 
 
-class Tier1FastPath:
+class Phase1DirectRAG:
     """
-    Tier 1: Fast Path (v7.6.0 - 학습형만)
+    Phase 1: Direct RAG (v7.7.0 - 학습 규칙 검색)
     
     원칙:
     -----
@@ -51,7 +57,7 @@ class Tier1FastPath:
         """
         self.config = config or Tier1Config()
         
-        logger.info("[Tier 1] Fast Path 초기화")
+        logger.info("[Phase 1] Direct RAG 초기화")
         
         # v7.6.0: Built-in 규칙 제거 (학습형만 사용)
         # 이유: 답변 일관성 확보
@@ -73,7 +79,7 @@ class Tier1FastPath:
         context: Optional[Context] = None
     ) -> Optional[EstimationResult]:
         """
-        Tier 1 추정 시도 (v7.6.0: 학습 규칙만)
+        Phase 1 추정 시도 (v7.7.0: 학습 규칙 Direct RAG)
         
         Args:
             question: 질문
@@ -81,10 +87,10 @@ class Tier1FastPath:
         
         Returns:
             EstimationResult or None
-            - 성공: EstimationResult (tier=1)
-            - 실패: None (Validator로 넘김)
+            - 성공: EstimationResult (phase=1)
+            - 실패: None (Phase 2 Validator로 넘김)
         """
-        logger.info(f"[Tier 1] 시도: {question}")
+        logger.info(f"[Phase 1] 시도: {question}")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # v7.6.0: Built-in 제거, 학습된 규칙 RAG만
@@ -96,9 +102,9 @@ class Tier1FastPath:
             return rag_result
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Step 3: 매칭 없음 → Tier 2로
+        # Step 3: 매칭 없음 → Phase 2로
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        logger.info(f"  → Validator로 넘김 (학습 규칙 없음)")
+        logger.info(f"  → Phase 2 (Validator)로 넘김 (학습 규칙 없음)")
         return None
     
     def _try_rag_search(
@@ -134,7 +140,7 @@ class Tier1FastPath:
         context_match = self._check_context_match(best_rule, context)
         
         if context_match < 0.80:
-            logger.info(f"    맥락 불일치 ({context_match:.2f}) → Tier 2로")
+            logger.info(f"    맥락 불일치 ({context_match:.2f}) → Phase 2로")
             return None
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
