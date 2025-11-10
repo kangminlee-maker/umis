@@ -84,14 +84,11 @@ class Settings(BaseSettings):
     neo4j_database: str = Field(default="neo4j")
     
     # ========================================
-    # RAG Configuration
+    # RAG Configuration (시스템 파라미터 - 코드에서 관리)
     # ========================================
-    # .env: CHUNK_SIZE=800
-    chunk_size: int = Field(default=800)
-    # .env: CHUNK_OVERLAP=100
-    chunk_overlap: int = Field(default=100)
-    # .env: TOP_K_RESULTS=5
-    top_k_results: int = Field(default=5)
+    chunk_size: int = 800
+    chunk_overlap: int = 100
+    top_k_results: int = 5
     
     # ========================================
     # Web Search Configuration (v7.6.2)
@@ -113,28 +110,22 @@ class Settings(BaseSettings):
     web_search_enabled: bool = Field(default=True)
     
     # ========================================
-    # Agent Configuration
+    # Agent Configuration (시스템 파라미터 - 코드에서 관리)
     # ========================================
-    # .env: AGENT_TEMPERATURE=0.7
-    agent_temperature: float = Field(default=0.7)
-    # .env: AGENT_MAX_ITERATIONS=10
-    agent_max_iterations: int = Field(default=10)
-    # .env: AGENT_VERBOSE=true
-    agent_verbose: bool = Field(default=True)
+    agent_temperature: float = 0.7
+    agent_max_iterations: int = 10
+    agent_verbose: bool = True
     
     # Logging
-    # .env: LOG_LEVEL=INFO
+    # .env: LOG_LEVEL=INFO (변경 가능)
     log_level: str = Field(default="INFO")
-    # .env: LOG_FILE=./logs/umis_rag.log
     log_file: Path = Field(
         default_factory=lambda: Path(__file__).parent.parent.parent / "logs" / "umis_rag.log"
     )
     
     # Development
-    # .env: DEV_MODE=true
-    dev_mode: bool = Field(default=True)
-    # .env: CACHE_ENABLED=true
-    cache_enabled: bool = Field(default=True)
+    dev_mode: bool = True
+    cache_enabled: bool = True
     
     # LangSmith (optional)
     # .env: LANGCHAIN_TRACING_V2=false
