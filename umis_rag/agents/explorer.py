@@ -35,6 +35,7 @@ project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from umis_rag.core.config import settings
+from umis_rag.core.llm_provider import LLMProvider
 from umis_rag.utils.logger import logger
 from umis_rag.graph.hybrid_search import HybridSearch, HybridResult
 
@@ -90,15 +91,13 @@ class ExplorerRAG:
         
         self.use_projected = use_projected
         
-        # LLM 초기화 (가설 생성용)
-        self.llm = ChatOpenAI(
-            model=settings.llm_model,
-            temperature=settings.llm_temperature,
-            openai_api_key=settings.openai_api_key
-        )
+        # LLM 초기화 (가설 생성용) - v7.7.0: Native/External 모드 지원
+        self.llm = LLMProvider.create_llm()
+        self.mode = settings.umis_mode
         
         logger.info(f"  ✅ 벡터 스토어: {collection_name}")
         logger.info(f"  ✅ 청크 수: {self.vectorstore._collection.count()}개")
+        logger.info(f"  🎯 UMIS 모드: {self.mode}")
         
         # Hybrid Search 초기화 (선택적)
         self.hybrid_search = None
@@ -377,19 +376,25 @@ class ExplorerRAG:
         observer_observation: str,
         matched_patterns: List[Document],
         success_cases: List[Document]
-    ) -> str:
+    ) -> str | Dict[str, Any]:
         """
-        LLM으로 기회 가설 생성
+        기회 가설 생성 (v7.7.0: Native/External 모드 지원)
         
         개념:
         -----
         RAG의 핵심! 검색된 정보 + LLM의 추론
         
-        프로세스:
-        ---------
-        1. Observer 관찰 + 매칭 패턴 + 성공 사례
-        2. → LLM에게 컨텍스트로 제공
-        3. → LLM이 UMIS Explorer 역할로 가설 생성
+        모드별 동작:
+        -----------
+        Native Mode (umis_mode='native'):
+            - RAG 검색 결과만 준비
+            - Cursor LLM이 직접 분석하도록 결과 반환
+            - 비용: $0
+        
+        External Mode (umis_mode='external'):
+            - RAG 검색 + OpenAI API 호출
+            - 완성된 가설 반환
+            - 비용: ~$0.10/요청
         
         Parameters:
         -----------
@@ -399,31 +404,62 @@ class ExplorerRAG:
         
         Returns:
         --------
-        구조화된 기회 가설 (Markdown)
+        Native 모드: Dict (RAG 결과 + 지시사항)
+        External 모드: str (완성된 가설 Markdown)
         """
-        logger.info("[Explorer] LLM으로 가설 생성 시작")
+        logger.info(f"[Explorer] 가설 생성 시작 (모드: {self.mode})")
         
-        # 컨텍스트 조립
+        # 컨텍스트 조립 (모든 모드 공통)
         context = self._assemble_context(matched_patterns, success_cases)
         
-        # Prompt 구성
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", self._get_explorer_system_prompt()),
-            ("user", self._get_hypothesis_generation_prompt())
-        ])
+        # ========================================
+        # Native 모드: RAG 결과만 반환
+        # ========================================
+        if self.mode == "native":
+            logger.info("  🎯 Native 모드: RAG 결과만 준비 (Cursor LLM이 처리)")
+            
+            return {
+                "mode": "native",
+                "observer_observation": observer_observation,
+                "rag_context": context,
+                "matched_patterns_count": len(matched_patterns),
+                "success_cases_count": len(success_cases),
+                "instruction": (
+                    "위 RAG 검색 결과(rag_context)를 바탕으로 기회 가설을 생성해주세요.\n\n"
+                    "포함할 내용:\n"
+                    "1. Observer 관찰 요약\n"
+                    "2. 매칭된 패턴 분석\n"
+                    "3. 유사 성공 사례 시사점\n"
+                    "4. 기회 가설 3-5개 (구조화)\n"
+                    "5. 각 가설의 검증 방향"
+                ),
+                "next_step": "Cursor Composer/Chat에서 위 instruction을 따라 분석하세요."
+            }
         
-        # LLM 체인 구성
-        chain = prompt | self.llm | StrOutputParser()
-        
-        # 실행
-        logger.info("  ⏳ LLM 추론 중...")
-        hypothesis = chain.invoke({
-            "observer_observation": observer_observation,
-            "context": context
-        })
-        
-        logger.info("  ✅ 가설 생성 완료")
-        return hypothesis
+        # ========================================
+        # External 모드: API 호출
+        # ========================================
+        else:
+            logger.info("  🌐 External 모드: OpenAI API 호출")
+            
+            # Prompt 구성
+            prompt = ChatPromptTemplate.from_messages([
+                ("system", self._get_explorer_system_prompt()),
+                ("user", self._get_hypothesis_generation_prompt())
+            ])
+            
+            # LLM 체인 구성
+            chain = prompt | self.llm | StrOutputParser()
+            
+            # 실행
+            logger.info("  ⏳ LLM 추론 중...")
+            hypothesis = chain.invoke({
+                "observer_observation": observer_observation,
+                "context": context
+            })
+            
+            logger.info("  ✅ 가설 생성 완료")
+            return hypothesis
     
     def _assemble_context(
         self,
