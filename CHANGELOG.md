@@ -5,6 +5,56 @@
 
 ---
 
+## v7.7.0 (2025-11-10) - "Native 모드 진짜 구현 + 용어 체계 명확화" 🎉
+
+### 주요 변경사항
+- 🎊 **Native 모드 진짜 구현** (비용 $0)
+  - Explorer: RAG만 수행 → Cursor LLM이 직접 분석
+  - LLMProvider 클래스 추가
+  - Native/External 모드 실제 분기 처리
+
+- 🔤 **용어 체계 명확화**
+  - Tier: 구현 계층 (파일명만)
+  - Phase: Estimator 전체 단계 (0-4)
+  - Step: Phase 4 (Fermi) 내부 단계 (1-4)
+  - Phase/Step 혼란 완전 해결
+
+- ❌ **3-Tier 개념 완전 Deprecated**
+  - 모든 문서: 3-Tier → 5-Phase
+  - Fermi 내부: Phase → Step
+  - 일관성 확보
+
+### 성과
+**비용 절감**:
+- Native 모드: $0 (100회 분석 기준)
+- External 모드 대비: $10 절감
+
+**명확성 향상**:
+- Phase 4 = Estimator의 Fermi Decomposition
+- Step 4 = Fermi 내부의 모형 실행
+- 혼란 완전 제거
+
+### 신규 파일
+- `umis_rag/core/llm_provider.py` (327줄)
+- `scripts/test_native_mode.py` (169줄)
+- `docs/guides/NATIVE_MODE_GUIDE.md` (368줄)
+
+### 수정 파일
+- `umis_rag/agents/explorer.py` - Native/External 분기
+- `umis_rag/agents/estimator/estimator.py` - 4-Phase → 5-Phase
+- `umis_rag/agents/estimator/tier3.py` - Phase → Step (16곳)
+- `umis_core.yaml` - 용어 체계 전면 개편
+- `umis.yaml` - five_phase_architecture
+- `env.template` - Phase/Step 계층 구조
+- `config/llm_mode.yaml` - v7.7.0 업데이트
+- `VERSION.txt` - 7.7.0
+
+### Breaking Changes
+- ⚠️ `EstimationResult.tier` → `EstimationResult.phase`
+- ⚠️ "3-Tier" 용어 사용 중단 (문서에서 제거)
+
+---
+
 ## v7.6.2 (2025-11-10) - "Validator Priority & Boundary Intelligence" 🎊
 
 ### 주요 변경사항
@@ -20,7 +70,7 @@
 ### 성과
 **정확도**:
 - Validator: 100% (0% 오차)
-- Tier 3: 75% (25% 오차, 3배 개선)
+- Phase 4 (Fermi): 75% (25% 오차, 3배 개선)
 - 담배갑: 추정 5.3M → Validator 87.6M (16배 정확)
 
 **커버리지**:
@@ -39,9 +89,9 @@
 **v7.6.1 (Validator 완벽화)**:
 - 단위 자동 변환 구현
 - Relevance 검증 구현
-- Tier 3 재귀 구조 완성
+- Phase 4 (Fermi) 재귀 구조 완성
 
-**v7.6.2 (Tier 3 개선 + Web Search)**:
+**v7.6.2 (Phase 4 개선 + Web Search)**:
 - 하드코딩 완전 제거 (adoption_rate, arpu 등)
 - BoundaryValidator 구현 (개념 기반)
 - Fallback 체계 (confidence 0.5)
@@ -64,8 +114,8 @@
 ### 테스트
 - 전체 E2E: 95% 성공
 - Validator: 100% (7/7)
-- Tier 2: 67% (4/6)
-- Tier 3: 57% (4/7)
+- Phase 3 (Guestimation): 67% (4/6)
+- Phase 4 (Fermi): 57% (4/7)
 
 ---
 
@@ -117,7 +167,7 @@
 ## v7.4.0 (2025-11-08) - "3-Tier Complete" 🎯
 
 ### 주요 변경사항
-- ✅ Tier 3 Fermi Decomposition 구현 (1,143줄)
+- ✅ Phase 4 (Fermi Decomposition) 구현 (1,143줄)
 - ✅ 8개 비즈니스 지표 템플릿
 - ✅ SimpleVariablePolicy (20줄, KISS)
 - ✅ LLM API 통합
@@ -236,7 +286,7 @@
 ```yaml
 Year 1:
   평균 속도: 0.3초
-  Tier 분포: Tier 1 (95%), Tier 2 (4%), Tier 3 (1%)
+  Phase 분포: Phase 1 (40%), Phase 2 (50%), Phase 3 (8%), Phase 4 (2%)
   비용: $0 (Native Mode)
 ```
 

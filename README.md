@@ -20,10 +20,13 @@ AI 에이전트 6명이 협업하여 시장을 분석하는 **RAG 기반 프레�
 - ✅ **재검증 가능**: Excel 함수, YAML 스키마
 - ✅ **코딩 불필요**: Cursor Composer만으로 사용
 
-### v7.6.2 주요 기능 (최신) ⭐⭐⭐
-- 🎊 **5-Phase Architecture**: Project → Tier 1 → Validator → Tier 2 → Tier 3 (v7.6.0)
-- ⭐⭐⭐ **Validator Priority**: 94.7% 확정 데이터 처리, 정확도 100% (v7.6.0)
+### v7.7.0 주요 기능 (최신) ⭐⭐⭐
+- 🎊 **Native 모드 진짜 구현**: Cursor LLM 직접 사용, 비용 $0 (v7.7.0)
+- 🔤 **용어 체계 명확화**: Phase (전체 0-4) + Step (Fermi 내부 1-4) (v7.7.0)
+- 🎯 **5-Phase Architecture**: Literal → Direct RAG → Validator → Guestimation → Fermi (v7.6.2)
+- ⭐⭐⭐ **Validator Priority**: 85% 확정 데이터 처리, 정확도 100% (v7.6.0)
 - ⭐ **Boundary Intelligence**: 개념 기반 동적 검증 (v7.6.2)
+- ❌ **3-Tier Deprecated**: 5-Phase로 완전 대체 (v7.7.0)
 - ✅ **Unit Conversion**: 단위 자동 변환 (v7.6.1)
 - ✅ **Relevance Check**: GDP 오류 방지 (v7.6.1)
 - ✅ **Web Search**: DuckDuckGo/Google 선택 (v7.6.2)
