@@ -175,14 +175,14 @@ class GuardianMetaRAG:
         """
         추정 결과 기반 방법론 권고 - DEPRECATED (v7.5.0)
         
-        v7.5.0 변경:
-        - Domain Reasoner 제거 (Estimator Tier 2/3로 완전 대체)
-        - 2-Phase 전략 폐지 (Guestimation → Domain Reasoner)
-        - 모든 추정은 Estimator Agent 사용 (Tier 1 → 2 → 3 자동)
+        v7.7.0 업데이트:
+        - Domain Reasoner 제거 (Estimator Phase 3/4로 완전 대체)
+        - 2-Phase 전략 폐지
+        - 모든 추정은 Estimator Agent 사용 (Phase 0 → 1 → 2 → 3 → 4 자동)
         
         현재 동작:
         - 항상 'estimator_sufficient' 반환
-        - Estimator가 Tier 1/2/3 자동 선택
+        - Estimator가 Phase 0-4 자동 선택
         
         Args:
             estimate_result: EstimationResult (사용 안 함)
@@ -196,9 +196,9 @@ class GuardianMetaRAG:
                 guardian.recommend_methodology() → 'domain_reasoner'
                 → quantifier.calculate_sam_with_hybrid()
             
-            After (v7.5.0):
+            After (v7.7.0):
                 estimator.estimate(question, domain, region)
-                → Tier 1 → 2 → 3 자동 시도
+                → Phase 0 → 1 → 2 → 3 → 4 자동 시도
         """
         logger.warning("[Guardian] recommend_methodology() DEPRECATED (v7.5.0)")
         logger.warning("  Domain Reasoner 제거됨")
@@ -216,21 +216,21 @@ class GuardianMetaRAG:
         # v7.5.0: Domain Reasoner 제거됨
         # 모든 트리거 무시하고 Estimator 사용 권고
         
-        logger.info("\n[Guardian] 방법론 권고 (v7.5.0)")
+        logger.info("\n[Guardian] 방법론 권고 (v7.7.0)")
         logger.info("=" * 60)
         logger.info("  ⚠️  Domain Reasoner 제거됨")
-        logger.info("  ✅ Estimator Agent가 Tier 1/2/3 자동 선택")
+        logger.info("  ✅ Estimator Agent가 Phase 0-4 자동 선택")
         logger.info(f"  입력 confidence: {confidence*100:.0f}%")
         
-        # v7.5.0: 항상 Estimator 사용
+        # v7.7.0: 항상 Estimator 사용 (5-Phase)
         return {
             'recommendation': 'estimator_sufficient',
-            'reason': 'v7.5.0: Estimator Tier 1/2/3 완성 (Domain Reasoner 대체)',
+            'reason': 'v7.7.0: Estimator 5-Phase 완성 (Domain Reasoner 대체)',
             'priority': 'low',
             'trigger': 'estimator_auto',
-            'estimated_time': '자동 (Tier 1: <0.5초, Tier 2: 3-8초, Tier 3: 10-30초)',
+            'estimated_time': '자동 (P0:<0.1초, P1:<0.5초, P2:<1초, P3:3-8초, P4:10-30초)',
             'auto_execute': True,
-            'note': 'Estimator가 상황에 따라 Tier 자동 선택'
+            'note': 'Estimator가 상황에 따라 Phase 자동 선택'
         }
     
     def _generate_recommendations(
