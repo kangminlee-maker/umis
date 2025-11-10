@@ -482,7 +482,13 @@ class Tier2Config:
 
 @dataclass
 class Tier3Config:
-    """Tier 3 설정"""
+    """Tier 3 설정
+    
+    Note:
+        LLM 설정(llm_model, llm_temperature, llm_max_tokens)은
+        umis_rag.core.config.settings에서 직접 참조합니다.
+        config/llm_mode.yaml의 설정이 .env를 통해 반영됩니다.
+    """
     enabled: bool = True
     
     # Fermi

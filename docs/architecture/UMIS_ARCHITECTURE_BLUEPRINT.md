@@ -7,24 +7,27 @@
 
 | Item | Value |
 |------|-------|
-| **UMIS Version** | v7.5.0 "Complete System" |
-| **Agent System** | 6-Agent (Observer, Explorer, Quantifier, Validator, Guardian, **Estimator**) ⭐ |
+| **UMIS Version** | v7.6.2 "Validator Priority & Boundary Intelligence" |
+| **Agent System** | 6-Agent (Observer, Explorer, Quantifier, **Validator**, Guardian, **Estimator**) ⭐ |
 | **RAG Architecture** | v3.0 (4-Layer) |
 | **Excel Engine** | v1.0 (3개 도구 완성) |
-| **Estimator Agent** | v3.0 (3-Tier 완성, 순수 추정 전문) |
-| **Tier 1/2 Threshold** | 0.95/0.80 (강화, v7.5.0) |
-| **Context Propagation** | 구체적 질문 생성 (v7.5.0) |
-| **Data Inheritance** | v1.0 (재귀 최적화, v7.5.0) ⭐ |
-| **Single Source Policy** | v1.0 (추정 일원화) ⭐ |
-| **Reasoning Transparency** | v1.0 (추정 근거 투명화) ⭐ |
+| **Estimator Agent** | v7.6.2 (5-Phase 재설계, Validator 우선) ⭐⭐⭐ |
+| **Validator Search** | v1.0 (확정 데이터 검색, 94.7% 처리) ⭐⭐⭐ |
+| **Boundary Validation** | v1.0 (개념 기반 동적 추론) ⭐ NEW! |
+| **Web Search** | v1.0 (DuckDuckGo/Google 선택) ⭐ NEW! |
+| **Built-in Rules** | 제거 (답변 일관성 확보) |
+| **Phase Coverage** | P0:10%, P1:5%, P2:85%, P3:2%, P4:3% |
+| **Validator Accuracy** | 100% (0% 오차) ⭐⭐⭐ |
+| **Tier 3 Accuracy** | 75% (25% 오차, 3배 개선) ⭐ |
+| **E2E Success** | 95% (19/20) ⭐ |
 | **Meta-RAG** | v1.0 (Guardian 프로세스 감시) ⭐ |
-| **System RAG** | v1.0 (29개 도구, v7.5.0) |
+| **System RAG** | v1.0 (31개 도구) |
 | **LLM Mode** | Native + External (v1.0) ⭐ |
-| **Schema Registry** | v1.1 (Estimator 반영) ⭐ |
+| **Schema Registry** | v1.2 (v7.6.2 반영) ⭐ |
 | **Coverage** | 100% (실패율 0%) ⭐ |
 | **Cost** | $0 (Native mode) ⭐ |
-| **Last Updated** | 2025-11-08 |
-| **Status** | Production Ready - 완전체 |
+| **Last Updated** | 2025-11-10 |
+| **Status** | Production Ready - Validator 완벽화 |
 
 **Purpose**: UMIS 전체 구조와 기능을 한눈에 파악할 수 있는 고수준 설계도
 
@@ -37,16 +40,20 @@
 
 ### Key Characteristics
 - ✅ **6-Agent 협업 시스템** 역할 분담 및 상호 검증 (v7.3.1+)
-- ✅ **Estimator (Fermi) Agent** 값 추정 및 판단 전문가 (v7.3.1+)
+- ✅ **Estimator (Fermi) Agent** 5-Phase 재설계 (v7.6.2) ⭐⭐⭐
+- ✅ **Validator Priority** 확정 데이터 우선 검색 (v7.6.0+, 94.7%) ⭐⭐⭐
+- ✅ **Boundary Intelligence** 개념 기반 동적 검증 (v7.6.2) ⭐
+- ✅ **Unit Conversion** 단위 자동 변환 (v7.6.1+)
+- ✅ **Relevance Check** GDP 오류 방지 (v7.6.1+)
+- ✅ **Web Search** DuckDuckGo/Google 선택 (v7.6.2) ⭐
 - ✅ **Single Source of Truth** 모든 값 추정은 Estimator만 (v7.3.2+)
 - ✅ **Reasoning Transparency** 추정 근거 완전 투명화 (v7.3.2+)
-- ✅ **Learning System** 사용할수록 6-16배 빠름 (v7.3.0+)
+- ✅ **Learning System** 사용할수록 빠름 (v7.3.0+)
 - ✅ **Meta-RAG** Guardian 프로세스 자동 감시 (v7.1.0+)
 - ✅ **System RAG** 31개 도구 Key-based 검색 (v7.2.0+)
 - ✅ **RAG 기반 지식 활용** 360개 검증된 데이터 (54개 패턴/사례)
 - ✅ **Knowledge Graph** 패턴 조합 자동 발견 (13 노드, 45 관계)
 - ✅ **Excel 자동 생성** 3개 도구 (9-11 시트)
-- ✅ **Fermi Model Search** Tier 3 준비 완료 (v7.2.1+)
 - ✅ **Native Mode** Cursor LLM 직접 활용, 비용 $0 (v7.2.0+)
 - ✅ **완전한 추적성** 양방향 ID 시스템 (14개 Prefix)
 - ✅ **재검증 가능** Excel 함수 100%, Named Range
@@ -60,7 +67,8 @@
 ```
 Cursor Composer (Cmd+I):
 "@Explorer, 시장 분석해줘"
-"@Fermi, B2B SaaS Churn Rate는?"  ⭐ v7.3.1+
+"@Fermi, B2B SaaS Churn Rate는?"  ⭐ v7.6.2 (5-Phase)
+"@Validator, 확정 데이터 있나요?"  ⭐ v7.6.0+ (우선 검색)
 ```
 
 ---

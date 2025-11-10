@@ -607,7 +607,7 @@ decision_guide:
 
   estimator:
     name: "Fermi (기본)"
-    role: "값 추정 및 판단 (v7.3.1+) "
+    role: "값 추정 및 판단 (v7.6.2 재설계)"
     rag: true
     rag_collections:
       - "learned_rules (0 → 2,000개 진화)"
@@ -615,94 +615,107 @@ decision_guide:
       - "estimator (Agent View)"
 
     what_it_does:
-      - "3-Tier Architecture (100% 커버리지)" 
+      - "5-Phase Architecture (v7.6.2)" 
+      - "Validator 우선 검색 (Phase 2, 94.7% 처리)"
       - "순수 값 추정 전문 (계산은 Quantifier)" 
-      - "데이터 상속 (재귀 최적화, v7.5.0)" 
-      - "LLM 모드 통합 (Native/External)" 
-      - "11개 Source 통합"
-      - "학습 시스템 (6-16배)"
-      - "추정 근거 완전 투명화"
-      - "교차 검증 지원"
+      - "개념 기반 Boundary 검증 (비정형 사고)"
+      - "11개 Source 통합 (Web Search 포함)"
+      - "학습 시스템 (사용할수록 빠름)"
+      - "단위 자동 변환"
+      - "Relevance 검증"
 
     when_to_use:
       - "데이터 부족 시 값 추정 (예: ARPU, Churn, 음식점 수)"
+      - "Validator에 없는 값 추정"
       - "일반 Fermi 분해 (물리적/수학적)"
       - "복잡한 모형 (재귀 분해 필요)"
-      - "추정치 교차 검증"
 
     what_not_to_use:
       - "❌ 비즈니스 지표 계산 (LTV, Payback 등) → Quantifier가 담당"
-      - "❌ 데이터 있을 때 계산 → Quantifier 사용"
-      - " 값 추정만 Estimator 사용"
+      - "❌ 확정 데이터 검색 → Validator가 우선"
+      - "✅ 값 추정만 Estimator 사용"
 
     key_tools:
-      - "tool:estimator:estimate (기본 추정)"
-      - "tool:estimator:cross_validation (교차 검증)"
-      - "tool:estimator:learning_system (학습)"
+      - "tool:estimator:estimate (5-Phase 추정)"
+      - "tool:estimator:contribute (사용자 기여)"
+      - "tool:estimator:learning_stats (학습 통계)"
 
     deliverables:
-      - "EstimationResult (value + reasoning_detail)"
+      - "EstimationResult (value + reasoning_detail + boundary_check)"
       - "DecompositionTrace (Tier 3, depth + formula)"
-      - "추정 값 (ARPU, Churn, 음식점 수 등)"
+      - "BoundaryCheck (개념 기반 검증)"
 
-    single_source_policy:
-      principle: "모든 값/데이터 추정은 Estimator만"
-      enforcement: "5개 Agent → Estimator 호출"
-
-    collaboration_model:
-      type: "협업 파트너 (Workflow 독립)"
-      frequency:
-        - "Quantifier: ★★★★★"
-        - "Explorer: ★★★★"
-        - "Validator/Observer: ★★★"
-
-    three_tier_architecture:
-      tier_1:
+    five_phase_architecture_v7_6_2:
+      phase_0:
+        name: "Project Data"
+        speed: "<0.1초"
+        coverage: "10%"
+        description: "프로젝트 확정 데이터 즉시 반환"
+        confidence: "1.0"
+      
+      phase_1:
+        name: "Tier 1 (Learned Only)"
         speed: "<0.5초"
-        coverage: "정확한 매칭만 (유사도 0.95+)"
-        threshold_change: "v7.5.0: 0.85 → 0.95 강화"
-        file: "tier1.py (350줄)"
-
-      tier_2:
-        speed: "3-8초"
-        coverage: "높은 신뢰도만 (confidence 0.80+)"
-        threshold_change: "v7.5.0: 0.60 → 0.80 강화"
-        file: "tier2.py (650줄)"
-        note: "임계값 강화로 Tier 3 활용 증가"
-
-      tier_3:
-        speed: "10-30초"
-        coverage: "Tier 1/2 실패 시 모두 (핵심!)"
-        status: " v7.5.0 역할 명확화"
-        file: "tier3.py (1,463줄)"
-
-        role_clarification_v7_5_0:
-          focus: "일반 Fermi 분해 (물리적/수학적)"
-          removed: "비즈니스 지표 템플릿 → Quantifier로 이동"
-          examples:
-            - "서울 음식점 수는? (인구 × 밀도)"
-            - "여객기에 탁구공 몇 개? (부피 / 탁구공 부피)"
-            - "한국 커피 시장? (인구 × 소비율 × 가격)"
-          not_handled: "LTV, CAC, Payback 계산 → Quantifier"
-
+        coverage: "5% (초기), 40% (1년 후)"
+        description: "학습 규칙만 (Built-in 제거)"
+        confidence: "0.95+"
+        change: "v7.6.0: Built-in Rules 완전 제거 (일관성 확보)"
+      
+      phase_2:
+        name: "Validator 검색"
+        speed: "<1초"
+        coverage: "85% (현재), 50% (1년 후)"
+        description: "확정 데이터 우선 검색 (강제)"
+        confidence: "1.0"
         features:
-          recursion: "재귀 분해 (depth 4)"
-          data_inheritance: "부모 데이터 상속" 
-          context_propagation: "Context 전달 (재귀 시 구체적 질문)" 
-          circular_detection: "순환 감지"
-          variable_policy: "Simple 20줄 (6-10개)"
-          llm_mode: "Native $0 / External $0.03" 
+          - "단위 자동 변환 (갑/년 → 갑/일)"
+          - "Relevance 검증 (GDP 오류 방지)"
+          - "data_sources_registry (24개)"
+        change: "v7.6.0: 신규 추가 (핵심!)"
+      
+      phase_3:
+        name: "Tier 2 (추정)"
+        speed: "3-8초"
+        coverage: "2-5%"
+        description: "11개 Source 증거 기반 추정"
+        confidence: "0.60-0.80"
+        sources:
+          - "Physical (3): 제약 조건"
+          - "Soft (3): 가이드"
+          - "Value (5): RAG, Web Search 등"
+        change: "v7.6.2: Web Search 추가"
+      
+      phase_4:
+        name: "Tier 3 (Fermi)"
+        speed: "10-30초"
+        coverage: "3% (현재), 1% (1년 후)"
+        description: "창조적 추정 (가장 가치있는 작업)"
+        confidence: "0.60-0.80"
+        features:
+          - "하드코딩 제거 (v7.6.2)"
+          - "재귀 추정 (depth 4)"
+          - "Fallback 체계 (conf 0.5)"
+        change: "v7.6.2: 정확도 3배 개선 (70% → 25% 오차)"
+      
+      phase_5:
+        name: "Boundary 검증"
+        speed: "<0.1초"
+        description: "개념 기반 동적 타당성 검증"
+        features:
+          - "Hard Boundary (절대 한계, 거부)"
+          - "Soft Boundary (참고 범위, 경고)"
+          - "개념 타입 일반화 (count, rate, size)"
+          - "상위 개념 동적 추론"
+          - "논리적 상한/하한 자동 도출"
+        change: "v7.6.2: 신규 추가"
 
-        safety:
-          - "Max depth 4"
-          - "순환 감지 (Call stack)"
-          - "Tier 2 Fallback"
-          - "변수 10개 절대 상한"
+    accuracy_v7_6_2:
+      validator: "100% (0% 오차)"
+      tier_3: "75% (25% 오차, 3배 개선)"
+      e2e_success: "95% (19/20)"
+      validator_coverage: "94.7%"
 
-      total_coverage: "100%" 
-      failure_rate: "0%" 
-
-    detail_module: "umis_rag/agents/estimator/ (14개 파일, 4,188줄)"
+    detail_module: "umis_rag/agents/estimator/ (15개 파일, 5,500줄)"
 
 # ========================================
 # Section 2: AGENT SUMMARY

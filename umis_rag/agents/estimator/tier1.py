@@ -1,7 +1,14 @@
 """
-Tier 1: Fast Path
+Tier 1: Fast Path (v7.6.0 재설계)
 
-Built-in 규칙 + 학습된 규칙 RAG 검색
+학습된 규칙 RAG 검색만 (Built-in 제거)
+
+v7.6.0 변경:
+------------
+- Built-in Rules 완전 제거 (답변 일관성 확보)
+- Learned RAG만 사용
+- threshold 0.95+ (엄격)
+- 처음 추정 시 무조건 통과 (의도됨)
 """
 
 from typing import Optional, List, Dict, Tuple
@@ -15,24 +22,29 @@ from .rag_searcher import EstimatorRAGSearcher
 
 class Tier1FastPath:
     """
-    Tier 1: Fast Path
+    Tier 1: Fast Path (v7.6.0 - 학습형만)
     
     원칙:
     -----
-    - 명백한 케이스만 처리
-    - 확실하지 않으면 Tier 2로
+    - 학습된 규칙만 사용 (답변 일관성)
+    - 확실하지 않으면 Validator로
     - False Negative 허용, False Positive 금지
     
     처리:
     -----
-    1. Built-in 규칙 체크 (패턴 매칭)
-    2. 학습된 규칙 검색 (RAG)
-    3. 매칭 없으면 None (Tier 2로)
+    1. 학습된 규칙 RAG 검색 (threshold 0.95+)
+    2. 매칭 없으면 None (Validator로)
+    
+    변경사항 (v7.6.0):
+    ------------------
+    - ❌ Built-in Rules 제거 (일관성 문제)
+    - ✅ Learned RAG만 사용
+    - ✅ 처음 추정 → 무조건 통과 (의도됨)
     """
     
     def __init__(self, config: Optional[Tier1Config] = None):
         """
-        초기화
+        초기화 (v7.6.0: Built-in 제거)
         
         Args:
             config: Tier 1 설정 (옵션)
@@ -41,28 +53,19 @@ class Tier1FastPath:
         
         logger.info("[Tier 1] Fast Path 초기화")
         
-        # Built-in 규칙 로드
-        self.builtin_rules = self._load_builtin_rules()
-        logger.info(f"  ✅ Built-in 규칙: {len(self.builtin_rules)}개")
+        # v7.6.0: Built-in 규칙 제거 (학습형만 사용)
+        # 이유: 답변 일관성 확보
         
-        # RAG Searcher
+        # RAG Searcher (학습된 규칙만)
         self.rag_searcher = EstimatorRAGSearcher()
-        logger.info(f"  ✅ RAG Searcher 준비")
+        logger.info(f"  ✅ RAG Searcher 준비 (학습형만)")
     
-    def _load_builtin_rules(self) -> List[Dict]:
-        """Built-in 규칙 로드"""
-        
-        rules_path = Path(__file__).parent.parent.parent / "data" / "tier1_rules" / "builtin.yaml"
-        
-        try:
-            with open(rules_path, 'r', encoding='utf-8') as f:
-                data = yaml.safe_load(f)
-            
-            return data.get('rules', [])
-        
-        except Exception as e:
-            logger.warning(f"  ⚠️  Built-in 규칙 로드 실패: {e}")
-            return []
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # v7.6.0: Built-in Rules 제거 (DEPRECATED)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 이유: 답변 일관성 확보 (학습형만 사용)
+    # 대체: Validator 검색 (Phase 2)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     
     def estimate(
         self,
@@ -70,7 +73,7 @@ class Tier1FastPath:
         context: Optional[Context] = None
     ) -> Optional[EstimationResult]:
         """
-        Tier 1 추정 시도
+        Tier 1 추정 시도 (v7.6.0: 학습 규칙만)
         
         Args:
             question: 질문
@@ -79,21 +82,12 @@ class Tier1FastPath:
         Returns:
             EstimationResult or None
             - 성공: EstimationResult (tier=1)
-            - 실패: None (Tier 2로 넘김)
+            - 실패: None (Validator로 넘김)
         """
         logger.info(f"[Tier 1] 시도: {question}")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Step 1: Built-in 규칙 체크
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        builtin_result = self._try_builtin_rules(question)
-        
-        if builtin_result:
-            logger.info(f"  ✅ Built-in 매칭: {builtin_result.reasoning}")
-            return builtin_result
-        
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Step 2: 학습된 규칙 RAG 검색
+        # v7.6.0: Built-in 제거, 학습된 규칙 RAG만
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         rag_result = self._try_rag_search(question, context)
         
@@ -104,61 +98,7 @@ class Tier1FastPath:
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # Step 3: 매칭 없음 → Tier 2로
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        logger.info(f"  → Tier 2로 넘김 (명백한 패턴 없음)")
-        return None
-    
-    def _try_builtin_rules(self, question: str) -> Optional[EstimationResult]:
-        """
-        Built-in 규칙 체크
-        
-        패턴 매칭:
-        - matches 중 하나라도 포함
-        - excludes 하나도 없어야
-        - 모두 만족 → confidence 1.0
-        """
-        question_lower = question.lower()
-        
-        for rule in self.builtin_rules:
-            # 매칭 체크
-            matches = rule.get('matches', [])
-            if not any(m in question_lower for m in matches):
-                continue
-            
-            # 제외 체크
-            excludes = rule.get('excludes', [])
-            if any(e in question_lower for e in excludes):
-                continue
-            
-            # 매칭 성공!
-            logger.info(f"    Built-in 매칭: {rule['rule_id']}")
-            
-            result_data = rule.get('result', {})
-            
-            # EstimationResult 생성
-            result = EstimationResult(
-                question=question,
-                tier=1,
-                
-                value=result_data.get('value'),
-                value_range=result_data.get('range'),
-                unit=result_data.get('unit', ''),
-                
-                confidence=result_data.get('confidence', 1.0),
-                
-                reasoning=f"Built-in 규칙: {rule['rule_id']} ({rule['pattern']})",
-                logic_steps=[
-                    f"Built-in 규칙 매칭: {rule['pattern']}",
-                    f"출처: {result_data.get('source', 'Unknown')}"
-                ]
-            )
-            
-            # 노트 추가
-            if 'notes' in result_data:
-                result.logic_steps.extend([f"참고: {note}" for note in result_data['notes']])
-            
-            return result
-        
-        # 매칭 없음
+        logger.info(f"  → Validator로 넘김 (학습 규칙 없음)")
         return None
     
     def _try_rag_search(
