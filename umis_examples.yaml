@@ -831,7 +831,7 @@ estimator_examples:
 
     user: "@Fermi, Unit Economics는?"
 
-    estimator_tier3:
+    estimator_phase4:
       depth_0:
         template: "unit_economics"
         formula: "ratio = ltv / cac"
@@ -854,11 +854,11 @@ estimator_examples:
 
         depth_2_arpu:
           question: "ARPU는?"
-          tier2_result: "80,000원"
+          phase3_result: "80,000원"
 
         depth_2_churn:
           question: "Churn Rate는?"
-          tier2_result: "0.05"
+          phase3_result: "0.05"
 
         result: "1,600,000원"
 
@@ -952,7 +952,8 @@ estimator_examples:
 
   # 예시 6: 12개 비즈니스 지표 템플릿 (v7.5.0)
   example_6_business_metrics:
-    scenario: "비즈니스 지표 자동 계산 (Tier 3 템플릿)"
+    scenario: "비즈니스 지표 (v7.5.0 Quantifier로 이동)"
+    note: "Estimator는 일반 Fermi 분해만, 비즈니스 지표는 Quantifier"
 
     지표_목록:
       핵심_8개:
