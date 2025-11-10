@@ -1,15 +1,21 @@
 """
-Tier 3: Fermi Model Search (v7.6.2 개선)
+Tier 3: Fermi Model Search (Phase 4 구현, v7.7.0)
 
 재귀 분해 추정 - 논리의 퍼즐 맞추기
 
-설계: config/fermi_model_search.yaml (1,269줄)
+설계: config/fermi_model_search.yaml (1,500줄)
 원리: 가용 데이터(Bottom-up) + 개념 분해(Top-down) 반복
+
+v7.7.0 용어 명확화:
+-----------------
+- Phase 4: Estimator의 Fermi Decomposition
+- Step 1-4: 내부 세부 단계 (스캔 → 생성 → 체크 → 실행)
+- Tier 3: 구현 파일명 (tier3.py)
 
 v7.6.2 주요 개선:
 -----------------
 - 하드코딩 완전 제거 (adoption_rate, arpu 등)
-- Phase 5 Boundary 검증 추가 (개념 기반)
+- Boundary 검증 추가 (개념 기반)
 - Fallback 체계 (confidence 0.5)
 - Native Mode 재귀 추정 강화
 - 정확도 3배 개선 (70% → 25% 오차)
