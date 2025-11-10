@@ -44,13 +44,14 @@ class EstimatorRAG:
     - Quantifier: 계산 공식 소유 (예: LTV = ARPU / Churn)
     - Validator: 확정 데이터 검색 (추정 전 필수!)
     
-    4-Phase 아키텍처 (v7.6.0):
+    5-Phase 아키텍처 (v7.7.0):
     ---------------------------------
-    - Phase 0: Project Data (<0.1초, confidence 1.0)
-    - Phase 1: Tier 1 학습 규칙만 (<0.5초, 0.95+) ⭐ Built-in 제거!
-    - Phase 2: Validator 검색 (<1초, confidence 1.0) ⭐ NEW!
-    - Phase 3: Tier 2 추정 (3-8초, confidence 0.80+)
-    - Phase 4: Tier 3 Fermi (10-30초) 💎 가치있는 작업!
+    - Phase 0: Literal (프로젝트 데이터, <0.1초, confidence 1.0)
+    - Phase 1: Direct RAG (Tier 1 학습 규칙, <0.5초, 0.95+)
+    - Phase 2: Validator (확정 데이터 검색, <1초, 1.0) ⭐ 85% 처리!
+    - Phase 3: Guestimation (Tier 2 추정, 3-8초, 0.80+)
+    - Phase 4: Fermi Decomposition (Tier 3 분해, 10-30초) 💎
+        └─ Step 1-4: 스캔 → 모형 생성 → 체크 → 실행
     
     협업 (모든 Agent):
     ------------------
@@ -114,17 +115,20 @@ class EstimatorRAG:
         """
         통합 추정 메서드 (v7.6.0 재설계)
         
-        4-Phase 프로세스:
-        - Phase 0: Project Data (즉시, confidence 1.0)
-        - Phase 1: Tier 1 학습 규칙 (<0.5초, 0.95+) ⭐ Built-in 제거!
-        - Phase 2: Validator 검색 (<1초, 1.0) ⭐ NEW! 확정 데이터 우선
-        - Phase 3: Tier 2 추정 (3-8초, 0.80+)
-        - Phase 4: Tier 3 Fermi (10-30초) 💎 가치있는 작업!
+        5-Phase 프로세스 (v7.7.0):
+        - Phase 0: Literal (프로젝트 데이터, 즉시, confidence 1.0)
+        - Phase 1: Direct RAG (Tier 1 학습, <0.5초, 0.95+)
+        - Phase 2: Validator (확정 데이터, <1초, 1.0) ⭐ 85% 처리!
+        - Phase 3: Guestimation (Tier 2 추정, 3-8초, 0.80+)
+        - Phase 4: Fermi Decomposition (Tier 3 분해, 10-30초) 💎
+            └─ Step 1: 초기 스캔
+            └─ Step 2: 모형 생성
+            └─ Step 3: 실행 가능성 체크
+            └─ Step 4: 모형 실행 (Backtracking)
         
-        ⚠️  v7.6.0 변경:
-        - ❌ Built-in Rules 제거 (일관성 확보)
-        - ⭐ Validator 검색 추가 (Phase 2, 강제)
-        - 💎 Tier 3 가치 인정 (시간/비용 투자 정당화)
+        ⚠️  v7.7.0 용어 변경:
+        - 3-Tier → 5-Phase (Estimator 전체)
+        - Fermi 내부: Step 1-4 (명확성 향상)
         
         Args:
             question: 질문 (구체적일수록 좋음!)
