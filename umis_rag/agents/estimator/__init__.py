@@ -17,7 +17,11 @@ from .estimator import EstimatorRAG, get_estimator_rag
 from .phase1_direct_rag import Phase1DirectRAG
 from .phase3_guestimation import Phase3Guestimation
 from .learning_writer import LearningWriter, UserContribution
-from .models import Context, EstimationResult, Tier1Config, Tier2Config
+from .models import (
+    Context, EstimationResult,
+    Phase1Config, Phase3Config, Phase4Config,
+    Tier1Config, Tier2Config, Tier3Config  # Deprecated aliases
+)
 
 # v7.7.0: Backward compatibility aliases
 Tier1FastPath = Phase1DirectRAG
@@ -31,10 +35,16 @@ __all__ = [
     # v7.7.0: Phase 기반 (권장)
     'Phase1DirectRAG',
     'Phase3Guestimation',
+    'Phase1Config',
+    'Phase3Config',
+    'Phase4Config',
     
     # Backward compatibility (Deprecated)
     'Tier1FastPath',
     'Tier2JudgmentPath',
+    'Tier1Config',
+    'Tier2Config',
+    'Tier3Config',
     
     # 기타
     'LearningWriter',
@@ -43,6 +53,4 @@ __all__ = [
     # 데이터 모델
     'Context',
     'EstimationResult',
-    'Tier1Config',
-    'Tier2Config',
 ]

@@ -22,7 +22,7 @@ import yaml
 from pathlib import Path
 
 from umis_rag.utils.logger import logger
-from .models import Context, EstimationResult, Tier1Config, LearnedRule
+from .models import Context, EstimationResult, Phase1Config, LearnedRule
 from .rag_searcher import EstimatorRAGSearcher
 
 
@@ -48,14 +48,14 @@ class Phase1DirectRAG:
     - ✅ 처음 추정 → 무조건 통과 (의도됨)
     """
     
-    def __init__(self, config: Optional[Tier1Config] = None):
+    def __init__(self, config: Optional[Phase1Config] = None):
         """
-        초기화 (v7.6.0: Built-in 제거)
+        초기화 (v7.7.0)
         
         Args:
-            config: Tier 1 설정 (옵션)
+            config: Phase 1 설정 (옵션)
         """
-        self.config = config or Tier1Config()
+        self.config = config or Phase1Config()
         
         logger.info("[Phase 1] Direct RAG 초기화")
         
