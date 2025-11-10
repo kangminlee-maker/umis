@@ -176,7 +176,7 @@ class EstimatorRAGSearcher:
             confidence=metadata.get('estimator_confidence', 0.0),
             uncertainty=metadata.get('estimator_uncertainty', 0.3),
             
-            tier_origin=metadata.get('tier_origin', 'unknown'),
+            phase_origin=metadata.get('phase_origin', 'unknown'),  # v7.7.0: tier→phase
             sources=metadata.get('sources', []),
             judgment_strategy=metadata.get('judgment_strategy', ''),
             evidence_count=metadata.get('evidence_count', 0),
