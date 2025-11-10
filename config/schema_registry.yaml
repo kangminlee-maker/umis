@@ -456,7 +456,7 @@ layer_1_projected:
         - guardian_approval: bool
 
       estimator:
-        - estimator_tier: enum[1, 2, 3]
+        - estimator_phase: enum[0, 1, 2, 3, 4]  # v7.7.0: tier → phase
         - estimator_value: float
         - estimator_confidence: float
         - estimator_method: string
@@ -464,6 +464,7 @@ layer_1_projected:
         - estimator_depth: int
         - estimator_formula: string
         - estimator_business_metric: string
+        # Breaking Change v7.7.0: estimator_tier → estimator_phase
 
 # ========================================
 # PART 5: Layer 3 - Knowledge Graph
