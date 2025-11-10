@@ -441,25 +441,25 @@ class ExplorerRAG:
         # ========================================
         else:
             logger.info("  🌐 External 모드: OpenAI API 호출")
-            
-            # Prompt 구성
-            prompt = ChatPromptTemplate.from_messages([
-                ("system", self._get_explorer_system_prompt()),
-                ("user", self._get_hypothesis_generation_prompt())
-            ])
-            
-            # LLM 체인 구성
-            chain = prompt | self.llm | StrOutputParser()
-            
-            # 실행
-            logger.info("  ⏳ LLM 추론 중...")
-            hypothesis = chain.invoke({
-                "observer_observation": observer_observation,
-                "context": context
-            })
-            
-            logger.info("  ✅ 가설 생성 완료")
-            return hypothesis
+        
+        # Prompt 구성
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", self._get_explorer_system_prompt()),
+            ("user", self._get_hypothesis_generation_prompt())
+        ])
+        
+        # LLM 체인 구성
+        chain = prompt | self.llm | StrOutputParser()
+        
+        # 실행
+        logger.info("  ⏳ LLM 추론 중...")
+        hypothesis = chain.invoke({
+            "observer_observation": observer_observation,
+            "context": context
+        })
+        
+        logger.info("  ✅ 가설 생성 완료")
+        return hypothesis
     
     def _assemble_context(
         self,

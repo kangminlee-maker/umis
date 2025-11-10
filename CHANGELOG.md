@@ -14,7 +14,8 @@
   - Native/External 모드 실제 분기 처리
 
 - 🔤 **용어 체계 명확화**
-  - Tier: 구현 계층 (파일명만)
+  - 파일명: phase1/3/4_*.py
+  - 클래스: Phase1DirectRAG, Phase3Guestimation, Phase4FermiDecomposition
   - Phase: Estimator 전체 단계 (0-4)
   - Step: Phase 4 (Fermi) 내부 단계 (1-4)
   - Phase/Step 혼란 완전 해결
