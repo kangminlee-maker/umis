@@ -4481,7 +4481,9 @@ agents:
         method: "project_data 딕셔너리 확인"
 
       phase_1_direct_rag:
-        description: "학습된 규칙 (Tier 1 Fast Path)"
+        description: "학습된 규칙 (Direct RAG)"
+        file: "phase1_direct_rag.py"
+        class: "Phase1DirectRAG"
         speed: "<0.5초"
         coverage: "5% (초기) → 40% (Year 1)"
         sources:
@@ -4505,7 +4507,9 @@ agents:
         change: "v7.6.0: 신규 추가 (핵심!)"
 
       phase_3_guestimation:
-        description: "11개 Source 수집 + 종합 판단 (Tier 2 Judgment Path)"
+        description: "11개 Source 수집 + 종합 판단 (Guestimation)"
+        file: "phase3_guestimation.py"
+        class: "Phase3Guestimation"
         speed: "3-8초"
         coverage: "2-5%"
         confidence: "0.60-0.80"
@@ -4607,7 +4611,7 @@ agents:
           recursion:
             description: "재귀 분해 추정 (논리의 퍼즐)"
             max_depth: 4
-            process: "Unknown 변수 → Tier 2 시도 → 재귀 호출"
+            process: "Unknown 변수 → Phase 3 시도 → 재귀 호출"
             backtracking: "depth 3 → 2 → 1 → 0 재조립"
 
           data_inheritance:
@@ -4912,9 +4916,10 @@ agents:
       class: "EstimatorRAG"
 
       key_files:
-        - "estimator.py (통합 인터페이스)"
-        - "tier1.py (Fast Path)"
-        - "tier2.py (Judgment Path)"
+        - "estimator.py (통합 인터페이스, 5-Phase)"
+        - "phase1_direct_rag.py (Phase 1)"
+        - "phase3_guestimation.py (Phase 3)"
+        - "phase4_fermi.py (Phase 4, Step 1-4)"
         - "learning_writer.py (학습 시스템)"
         - "models.py (데이터 모델)"
 
@@ -4941,15 +4946,15 @@ agents:
 
       files:
         - "estimator.py (520줄) - 통합 인터페이스 (5-Phase)"
-        - "tier1.py (350줄) - Phase 1 구현"
-        - "tier2.py (650줄) - Phase 3 구현"
-        - "tier3.py (2,500줄) - Phase 4 구현 (Step 1-4)"
-        - "models.py (519줄) - 데이터 모델"
+        - "phase1_direct_rag.py (320줄) - Phase 1 구현"
+        - "phase3_guestimation.py (650줄) - Phase 3 구현"
+        - "phase4_fermi.py (2,500줄) - Phase 4 구현 (Step 1-4)"
+        - "models.py (520줄) - 데이터 모델"
         - "learning_writer.py (565줄) - 학습 시스템"
         - "source_collector.py (400줄) - 11개 Source"
         - "sources/ (Physical, Soft, Value)"
 
-      total: "14개 파일, 4,188줄"
+      total: "14개 파일, 5,200줄"
 
 # ========================================
 # SECTION 7: ROLES
@@ -6074,9 +6079,10 @@ implementation_guide:
           not_what: "계산 (Quantifier), 검증 (Validator)"
           mece: "Estimator = 추정, Quantifier = 계산"
           terminology:
+            files: "phase1/3/4_*.py"
+            classes: "Phase1DirectRAG, Phase3Guestimation, Phase4FermiDecomposition"
             phase: "Estimator 전체 단계 (0-4)"
             step: "Phase 4 내부 단계 (1-4)"
-            tier: "구현 파일명만"
 
         five_phase_architecture:
           phase_0:
