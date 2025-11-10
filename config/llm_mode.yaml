@@ -1,10 +1,34 @@
 # ========================================
 # UMIS LLM 모드 설정
-# v7.4.0+
+# v7.7.0+
 # ========================================
 
-version: "7.4.0"
-updated: "2025-11-08"
+version: "7.7.0"
+updated: "2025-11-10"
+
+# ========================================
+# 🎉 v7.7.0 신규 기능
+# ========================================
+#
+# ✅ 진짜 Native 모드 구현 완료!
+#
+# 이전 (v7.4.0):
+#   - Native 모드 "개념만" 존재
+#   - 실제로는 항상 External 동작 (OpenAI API 호출)
+#   - umis_mode 설정 무용지물
+#
+# 현재 (v7.7.0):
+#   - Native 모드 실제 구현 ✅
+#   - Explorer가 umis_mode 설정 반영
+#   - RAG만 수행 → Cursor LLM이 처리
+#   - 비용 $0!
+#
+# 구현 내역:
+#   1. LLMProvider 클래스 추가 (umis_rag/core/llm_provider.py)
+#   2. Explorer 수정 (Native/External 분기)
+#   3. 테스트 스크립트 (scripts/test_native_mode.py)
+#
+# ========================================
 
 # ========================================
 # 용어 정의
@@ -168,34 +192,78 @@ recommendations:
 
 implementation:
 
+  current_status:
+    title: "✅ v7.7.0 구현 완료!"
+    
+    completed:
+      - "LLMProvider 클래스 (umis_rag/core/llm_provider.py)"
+      - "Explorer Native/External 모드 분기"
+      - "테스트 스크립트 (scripts/test_native_mode.py)"
+    
+    how_to_use:
+      step_1:
+        what: ".env 파일에서 모드 설정"
+        native: "UMIS_MODE=native (권장)"
+        external: "UMIS_MODE=external (자동화 필요 시)"
+      
+      step_2:
+        what: "Explorer 사용"
+        code: |
+          from umis_rag.agents.explorer import ExplorerRAG
+          
+          explorer = ExplorerRAG()
+          result = explorer.generate_opportunity_hypothesis(...)
+          
+          # Native 모드: Dict 반환 (RAG 결과 + 지시사항)
+          # External 모드: str 반환 (완성된 가설)
+      
+      step_3:
+        what: "테스트"
+        command: "python scripts/test_native_mode.py"
+    
+    benefits:
+      cost_saving: "$10 → $0 (100회 분석 기준)"
+      quality: "동일 또는 더 우수 (Cursor LLM)"
+      speed: "API 왕복 없음 (빠름)"
+      natural: "Cursor에서 자연스럽게 사용"
+
   immediate_action:
-    title: "즉시 적용 (Native Mode)"
+    title: "🚀 지금 바로 사용하기"
 
-    step_1_remove:
-      what: "External LLM 호출 코드 제거"
-      files:
-        - "scripts/llm_observer_analysis.py"
-        - "scripts/llm_explorer_rag_analysis.py"
-      action: "삭제 또는 주석 처리"
+    step_1_set_mode:
+      what: ".env 파일 수정"
+      action: "UMIS_MODE=native"
+      location: ".env 파일 (프로젝트 루트)"
 
-    step_2_workflow:
-      what: "새로운 워크플로우"
+    step_2_test:
+      what: "테스트 실행"
+      command: "python scripts/test_native_mode.py"
+      expected: |
+        Native 모드 결과:
+        - mode: 'native'
+        - rag_context: RAG 검색 결과
+        - instruction: Cursor LLM 지시사항
+
+    step_3_workflow:
+      what: "실제 사용"
       process: |
-        1. Python: RAG 패턴 검색만
-        2. Cursor: Native LLM이 분석
-        3. 결과: 직접 문서 작성
-
+        1. Python 스크립트: RAG 검색 실행
+        2. 결과 확인: RAG 컨텍스트 + 지시사항
+        3. Cursor Composer: 지시사항 따라 분석
+      
       example: |
-        # Python 스크립트
-        python3 scripts/test_explorer_patterns.py
-
-        # Cursor Composer/Chat
-        "위 패턴으로 국내 SaaS 기회 5개 제시"
-
-    step_3_benefit:
-      cost_saving: "$600 (100개 분석 기준)"
-      quality_improvement: "GPT-4 → Sonnet 4.5 (더 우수)"
-      speed_improvement: "60초 → 5초 (API 없음)"
+        # 1. RAG 검색
+        python scripts/test_native_mode.py
+        
+        # 결과 출력:
+        # {
+        #   'mode': 'native',
+        #   'rag_context': '...패턴 정보...',
+        #   'instruction': '위 패턴으로 가설 생성해주세요'
+        # }
+        
+        # 2. Cursor Composer에서:
+        # "@Explorer 결과를 바탕으로 음악 시장 기회 3개"
 
   future_action:
     title: "향후 (자동화 필요 시)"
