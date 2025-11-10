@@ -385,8 +385,8 @@ class LearnedRule:
     confidence: float = 0.0
     uncertainty: float = 0.3
     
-    # 출처
-    tier_origin: str = ""  # "tier2" | "tier3" | "user_contributed"
+    # 출처 (v7.7.0: tier→phase)
+    phase_origin: str = ""  # "phase3" | "phase4" | "user_contributed"
     sources: List[str] = field(default_factory=list)
     judgment_strategy: str = ""
     evidence_count: int = 0
