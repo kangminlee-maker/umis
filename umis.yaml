@@ -14,7 +14,8 @@
 #
 # UMIS 기능:
 # - 6-Agent 협업 시스템 (역할 MECE)
-# - 3-Tier 추정 (Estimator, 100% 커버리지)
+# - 5-Phase Estimator (100% 커버리지)
+# - Native/External 모드 (LLM 선택)
 # - RAG 기반 패턴/사례 자동 검색 (54개)
 # - Excel 자동 생성 + 완전 추적성
 #
@@ -258,11 +259,11 @@ system_architecture:
 # ========================================
 system:
   name: "Universal Market Intelligence System"
-  version: "7.5.0"
-  release_date: "2025-11-08"
+  version: "7.7.0"
+  release_date: "2025-11-10"
   status: "Stable Release"
   purpose: "RAG 기반 6-Agent 협업 시장 분석 시스템"
-  description: "6-Agent + 3-Tier 완성 + 12개 비즈니스 지표로 100% 커버리지 달성"
+  description: "6-Agent + 5-Phase Estimator + Native 모드로 100% 커버리지 달성 (비용 $0)"
   default_mode: "Discovery Sprint → Comprehensive Study (2-4주) - 별도 언급 없으면 자동 적용"
 
   rag_architecture:
@@ -4441,12 +4442,13 @@ agents:
 
     # ===== 2. CAPABILITIES =====
     core_competencies:
-      - "3-Tier Architecture (Fast → Judgment → Fermi)"
+      - "5-Phase Architecture (Literal → RAG → Validator → Guestimation → Fermi)"
       - "11개 Source 통합 (Physical, Soft, Value)"
       - "Context-Aware 판단 (domain, region, time)"
       - "학습 시스템 (사용할수록 6-16배 빠름)"
       - "추정 근거 완전 투명화 (v7.3.2)"
       - "교차 검증 지원 (Validator 협업)"
+      - "Native/External 모드 (v7.7.0)"
 
     estimation_principles:
       - "증거 기반 판단 (최소 1개 증거 필요)"
@@ -4457,29 +4459,56 @@ agents:
       - "학습 (confidence >= 0.80 → 자동 학습)"
 
     # ===== 3. WORK DOMAIN =====
-    # ===== 3. WORK DOMAIN (3-Tier Architecture) =====
-    three_tier_architecture:
+    # ===== 3. WORK DOMAIN (5-Phase Architecture v7.7.0) =====
+    five_phase_architecture:
 
       overview:
-        total_coverage: "100% (v7.5.0)"
+        total_coverage: "100% (v7.7.0)"
         failure_rate: "0%"
-        tiers: 3
-        implementation: "umis_rag/agents/estimator/ (4,188줄)"
+        phases: 5
+        implementation: "umis_rag/agents/estimator/ (5,200줄)"
+        terminology:
+          phase: "Estimator 전체 프로세스 단계 (0-4)"
+          step: "Phase 4 (Fermi) 내부 세부 단계 (1-4)"
+          tier: "구현 계층 (파일명만)"
 
-      tier_1_fast_path:
-        description: "Built-in 규칙 + 학습된 규칙 (빠른 경로)"
+      phase_0_literal:
+        description: "프로젝트 명시 데이터 (즉시 반환)"
+        speed: "<0.1초"
+        coverage: "10%"
+        confidence: "1.0"
+        when: "프로젝트에서 명시적으로 제공한 데이터"
+        method: "project_data 딕셔너리 확인"
+
+      phase_1_direct_rag:
+        description: "학습된 규칙 (Tier 1 Fast Path)"
         speed: "<0.5초"
-        coverage: "40-50% (초기) → 95% (Year 1)"
+        coverage: "5% (초기) → 40% (Year 1)"
         sources:
-          - "Built-in Rules (초기 20개)"
           - "Learned Rules (0 → 2,000개 진화)"
         when: "이미 학습된 질문"
         method: "정확 매칭 또는 유사도 검색"
+        confidence: "0.95+"
+        change: "v7.6.0: Built-in Rules 제거 (일관성)"
 
-      tier_2_judgment_path:
-        description: "11개 Source 수집 + 종합 판단 (정확한 경로)"
+      phase_2_validator:
+        description: "확정 데이터 검색 (추정 전 마지막 확인)"
+        speed: "<1초"
+        coverage: "85% (현재) → 50% (Year 1)"
+        confidence: "1.0"
+        when: "Validator에 확정 데이터 존재"
+        method: "Validator RAG 검색"
+        features:
+          - "단위 자동 변환 (갑/년 → 갑/일)"
+          - "Relevance 검증 (GDP 오류 방지)"
+          - "data_sources_registry (24개)"
+        change: "v7.6.0: 신규 추가 (핵심!)"
+
+      phase_3_guestimation:
+        description: "11개 Source 수집 + 종합 판단 (Tier 2 Judgment Path)"
         speed: "3-8초"
-        coverage: "50-60%"
+        coverage: "2-5%"
+        confidence: "0.60-0.80"
         sources:
           physical_category:
             - "Source #1: 시공간 절대 제약 (시간/공간)"
@@ -4544,22 +4573,24 @@ agents:
             format: "['Step 1: ...', 'Step 2: ...']"
 
           decomposition:
-            description: "Fermi 분해 추적 (Tier 3용)"
+            description: "Fermi 분해 추적 (Phase 4용)"
             fields:
               - "formula"
               - "variables (각각 EstimationResult)"
               - "depth (분해 깊이)"
 
-      tier_3_fermi_decomposition:
-        description: "일반 Fermi 분해 + 재귀 추정 (v7.5.0 역할 명확화)"
+      phase_4_fermi_decomposition:
+        description: "일반 Fermi 분해 + 재귀 추정 (Tier 3, v7.7.0 용어 명확화)"
         speed: "10-30초"
-        when: "Tier 1/2 실패 (임계값 강화로 더 자주 사용)"
-        status: " v7.5.0 역할 명확화"
-        method: "tier3.py (1,463줄)"
-        implementation: "umis_rag/agents/estimator/tier3.py"
+        coverage: "3% (현재) → 1% (Year 1)"
+        confidence: "0.60-0.80"
+        when: "Phase 1-3 모두 실패"
+        status: "✅ v7.7.0 용어 명확화 완료"
+        implementation: "umis_rag/agents/estimator/tier3.py (2,500줄)"
 
-        v7_5_0_changes:
-          removed: "비즈니스 지표 템플릿 (12개, 23개 모형) → Quantifier로 이동"
+        v7_7_0_changes:
+          terminology: "Phase 4 내부를 Step 1-4로 명확화"
+          removed: "Phase/Step 혼란 제거"
           focus: "일반 Fermi 분해만 (물리적/수학적)"
           reason: "Estimator = 추정, Quantifier = 계산 (MECE)"
 
@@ -4615,30 +4646,32 @@ agents:
             cost: "~$0.03/질문"
             coverage: "100%"
 
-        phase_4:
-          phase_1_scan:
-            description: "가용 데이터 파악 (Bottom-up)"
-            steps:
-              - "부모 데이터 상속 (v7.5.0)"
-              - "프로젝트 데이터 로드"
-              - "맥락 기반 자명한 데이터"
+        internal_steps_v7_7_0:
+          step_1_scan:
+            description: "초기 스캔 - 가용 데이터 파악 (Bottom-up)"
+            process:
+              - "부모 데이터 상속 (재귀 시)"
+              - "프로젝트 데이터 확인"
+              - "RAG 검색 (벤치마크)"
+            output: "{'available': Dict, 'unknown': List}"
 
-          phase_2_generate:
-            description: "모형 생성 (Top-down)"
-            steps:
-              - "비즈니스 지표 템플릿 매칭 (12개)"
-              - "External mode: LLM API 호출"
-              - "변수 정책 필터링"
+          step_2_generate:
+            description: "모형 생성 - 3-5개 후보 (Top-down)"
+            process:
+              - "Step 2a: LLM 모형 생성"
+              - "Step 2b: 변수 재검색 (최대 2회)"
+              - "Step 2c: 변수 정책 필터링"
+            output: "List[FermiModel] (3-5개)"
 
-          phase_3_feasibility:
-            description: "실행 가능성 체크 (재귀)"
-            steps:
-              - "Unknown 변수 → Tier 2 시도"
-              - "Tier 2 실패 → 재귀 호출"
-              - "모형 점수화 (4개 기준)"
+          step_3_feasibility:
+            description: "실행 가능성 체크 (재귀 추정)"
+            process:
+              - "Unknown 변수 재귀 호출"
+              - "실행 가능성 점수 계산"
               - "최선 모형 선택"
+            output: "List[RankedModel] (점수 순)"
 
-          phase_4_execute:
+          step_4_execute:
             description: "모형 실행 (Backtracking)"
             steps:
               - "변수 바인딩"
@@ -4650,7 +4683,7 @@ agents:
         safety:
           max_depth: 4
           circular_detection: "Call stack 추적"
-          tier2_fallback: "depth 4 도달 시"
+          phase_3_fallback: "depth 4 도달 시 Guestimation으로 복귀"
           variable_limit: "10개 절대 상한"
 
     exclusive_responsibilities:
@@ -4682,7 +4715,7 @@ agents:
         output_format:
           value: "추정값"
           confidence: "신뢰도 (0.0-1.0)"
-          tier: "사용한 Tier (1/2/3)"
+          phase: "사용한 Phase (0/1/2/3/4)"
           sources: "증거 출처 리스트"
           reasoning_detail: "상세 판단 근거 (v7.3.2)"
           component_estimations: "개별 요소 추정 (v7.3.2)"
@@ -4708,10 +4741,10 @@ agents:
         description: "사용할수록 빨라지는 학습 시스템"
 
         learning_pipeline:
-          tier_2_execution: "11개 Source 수집 + 판단 (첫 실행)"
+          phase_3_execution: "11개 Source 수집 + 판단 (첫 실행)"
           canonical_storage: "정규화된 형태로 저장"
           projection: "Agent별 View로 자동 투영"
-          tier_1_integration: "학습 규칙으로 자동 통합"
+          phase_1_integration: "학습 규칙으로 자동 통합"
 
         learning_conditions:
           high_confidence:
@@ -4731,8 +4764,8 @@ agents:
           year_1: "95% 커버 (2,000개 규칙)"
 
           speed_improvement:
-            first_run: "3-8초 (Tier 2)"
-            learned_run: "<0.5초 (Tier 1)"
+            first_run: "3-8초 (Phase 3)"
+            learned_run: "<0.5초 (Phase 1)"
             improvement: "6-16배 빠름"
 
     # ===== 4. QUALITY CRITERIA =====
@@ -4805,8 +4838,9 @@ agents:
           region: "한국"
 
         estimator_process:
-          tier_1_check: "학습된 규칙 없음 → Tier 2"
-          tier_2_execution:
+          phase_1_check: "학습된 규칙 없음 → Phase 2"
+          phase_2_validator: "Validator 검색 없음 → Phase 3"
+          phase_3_execution:
             sources_found:
               - "RAG: 6% (3개 사례 평균)"
               - "통계값: 6% (정규분포)"
@@ -4849,7 +4883,7 @@ agents:
           question: "Churn Rate는?"
 
         estimator_independent_estimation:
-          tier_2_result: "6% (confidence: 0.85)"
+          phase_3_result: "6% (confidence: 0.85)"
           reasoning_detail: "위와 동일"
 
         comparison:
@@ -4862,12 +4896,12 @@ agents:
         scenario: "동일 질문 재요청"
 
         first_request:
-          tier: 2
+          phase: 3
           time: "5.2초"
           learning: "confidence 0.85 >= 0.80 → 학습"
 
         second_request:
-          tier: 1
+          phase: 1
           time: "0.3초"
           improvement: "17배 빠름"
           consistency: "동일한 답 (6%)"
@@ -4901,15 +4935,15 @@ agents:
         cursor: "@Fermi, B2B SaaS Churn Rate는?"
 
       collections:
-        - "learned_rules (Tier 1, 0 → 2,000개 진화)"
+        - "learned_rules (Phase 1, 0 → 2,000개 진화)"
         - "canonical_store (정규화)"
         - "estimator (Agent View)"
 
       files:
-        - "estimator.py (296줄) - 통합 인터페이스"
-        - "tier1.py (350줄) - Fast Path"
-        - "tier2.py (650줄) - Judgment Path"
-        - "tier3.py (1,463줄) - Fermi Decomposition (v7.4.0+)"
+        - "estimator.py (520줄) - 통합 인터페이스 (5-Phase)"
+        - "tier1.py (350줄) - Phase 1 구현"
+        - "tier2.py (650줄) - Phase 3 구현"
+        - "tier3.py (2,500줄) - Phase 4 구현 (Step 1-4)"
         - "models.py (519줄) - 데이터 모델"
         - "learning_writer.py (565줄) - 학습 시스템"
         - "source_collector.py (400줄) - 11개 Source"
@@ -6030,27 +6064,47 @@ implementation_guide:
     methodologies:
       estimator_agent:
         name: "Estimator (Fermi) Agent"
-        version: "v7.5.0"
+        version: "v7.7.0"
         tool_key: "tool:estimator:estimate"
         category: "값 추정 (Single Source of Truth)"
-        status: " 완성 (3-Tier, 100% 커버리지)"
+        status: "✅ 완성 (5-Phase, 100% 커버리지, 용어 명확화)"
 
-        role_clarity_v7_5_0:
+        role_clarity_v7_7_0:
           what: "데이터 없을 때 값을 창의적으로 추정"
           not_what: "계산 (Quantifier), 검증 (Validator)"
           mece: "Estimator = 추정, Quantifier = 계산"
+          terminology:
+            phase: "Estimator 전체 단계 (0-4)"
+            step: "Phase 4 내부 단계 (1-4)"
+            tier: "구현 파일명만"
 
-        three_tier_architecture:
-          tier_1:
-            method: "Built-in + 학습 규칙"
-            threshold: "유사도 0.95+ (v7.5.0 강화)"
+        five_phase_architecture:
+          phase_0:
+            name: "Literal (Project Data)"
+            speed: "<0.1초"
+            confidence: "1.0"
+            coverage: "10%"
+
+          phase_1:
+            name: "Direct RAG (Learned Rules)"
+            method: "학습 규칙만"
+            threshold: "유사도 0.95+"
             speed: "<0.5초"
-            coverage: "정확한 매칭만"
+            coverage: "5% (초기) → 40% (Year 1)"
 
-          tier_2:
-            method: "11 Sources 수집 + 종합 판단"
-            threshold: "confidence 0.80+ (v7.5.0 강화)"
+          phase_2:
+            name: "Validator (확정 데이터)"
+            method: "Validator RAG 검색"
+            threshold: "confidence 1.0"
+            speed: "<1초"
+            coverage: "85% (현재) → 50% (Year 1)"
+
+          phase_3:
+            name: "Guestimation (11 Sources)"
+            method: "증거 수집 + 종합 판단"
+            threshold: "confidence 0.80+"
             speed: "3-8초"
+            coverage: "2-5%"
 
             sources_11:
               physical_3:
@@ -6070,9 +6124,17 @@ implementation_guide:
                 - "RAGBenchmark (RAG 벤치마크)"
                 - "StatisticalValue (통계 값)"
 
-          tier_3:
-            method: "일반 Fermi 분해 (재귀, max depth 4)"
+          phase_4:
+            name: "Fermi Decomposition (재귀 분해)"
+            method: "Fermi 분해 (재귀, max depth 4)"
             speed: "10-30초"
+            coverage: "3% (현재) → 1% (Year 1)"
+            
+            internal_steps:
+              step_1: "초기 스캔 (Bottom-up)"
+              step_2: "모형 생성 (Top-down)"
+              step_3: "실행 가능성 체크 (재귀)"
+              step_4: "모형 실행 (Backtracking)"
             focus: "물리적/수학적 분해"
             examples:
               - "서울 음식점 수는? (인구 × 밀도)"
@@ -6102,7 +6164,7 @@ implementation_guide:
             )
             result = estimator.estimate("ARPU는?", context=context)
 
-            # 결과: value, confidence, tier, reasoning_detail
+            # 결과: value, confidence, phase, reasoning_detail
 
           cursor: "@Fermi, B2B SaaS 한국 ARPU는?"
 
