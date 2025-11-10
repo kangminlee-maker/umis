@@ -5,7 +5,7 @@
 
 # ⚡ TL;DR (AI: 바쁘면 여기만!)
 #
-# UMIS = 28개 도구를 RAG로 로드하는 시스템 (v7.5.0)
+# UMIS = 31개 도구를 RAG로 로드하는 시스템 (v7.6.2)
 #
 # 사용법:
 #   1) 쿼리 분석 (agent + keywords)
@@ -13,7 +13,7 @@
 #   3) System RAG 검색 (python scripts/query_system_rag.py {tool_key})
 #   4) 로드된 content 활용
 #
-# 도구: 28개 (E:4, Q:4, V:4, O:4, G:2, Est:3, F:7)
+# 도구: 31개 (E:4, Q:4, V:4, O:4, G:2, Est:3, F:10)
 # 절약: 89% (6,787줄 → 450-2,850줄)
 #
 # AI 읽기 순서:
@@ -22,18 +22,19 @@
 #   3. Agent Summary (Line 220~) ← 역할 (필요시)
 #   4. System Details (Line 410~) ← 구조 (참고용)
 #
-#  v7.5.0 신규:
-#   - 3-Tier 완성 (Tier 1/2/3, 100% 커버리지)
-#   - Estimator/Quantifier 역할 명확화 (MECE)
-#   - 데이터 상속 (재귀 최적화)
-#   - LLM 모드 통합 (Native/External)
+#  v7.6.2 신규:
+#   - 5-Phase 재설계 (Phase 0/1/2/3/4, 100% 커버리지)
+#   - Validator 우선 검색 (Phase 2, 85% 처리)
+#   - Web Search 추가 (DuckDuckGo + Google)
+#   - 단위 자동 변환 & Relevance 검증
+#   - Boundary 검증 (개념 기반)
 #
 # ========================================
 
 _meta:
-  version: "7.5.0"
+  version: "7.6.2"
   created: "2025-11-04"
-  updated: "2025-11-08"
+  updated: "2025-11-10"
   type: "index"
   original_size: "6,787줄"
   compressed_size: "850줄"

@@ -103,10 +103,10 @@ python3 setup/setup.py --check      # 상태 확인
 버전 업데이트 시:
 - [ ] `setup.py` 버전 확인
 - [ ] 모든 가이드의 버전 번호 업데이트
-- [ ] 새로운 의존성 확인 (v7.5.0: openai, pyyaml)
+- [ ] 새로운 의존성 확인 (v7.6.2: openai, pyyaml, duckduckgo-search)
 - [ ] 설치 단계 변경 사항 반영
 
-## 🆕 v7.5.0 변경사항
+## 🆕 v7.6.2 변경사항
 
 ```yaml
 신규 요구사항:
