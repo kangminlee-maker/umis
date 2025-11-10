@@ -36,7 +36,7 @@ sys.path.insert(0, str(project_root))
 
 from umis_rag.agents.estimator.models import (
     Context, EstimationResult, DecompositionTrace,
-    ComponentEstimation, Tier3Config
+    ComponentEstimation, Phase4Config
 )
 from umis_rag.agents.estimator.phase3_guestimation import Phase3Guestimation
 from umis_rag.utils.logger import logger
@@ -484,9 +484,9 @@ class Phase4FermiDecomposition:
         >>> result.value  # 20,160,000,000
     """
     
-    def __init__(self, config: Tier3Config = None):
+    def __init__(self, config: Phase4Config = None):
         """초기화"""
-        self.config = config or Tier3Config()
+        self.config = config or Phase4Config()
         
         # Phase 3 의존성
         self.phase3 = Phase3Guestimation()

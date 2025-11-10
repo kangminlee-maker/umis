@@ -15,7 +15,7 @@ import time
 
 from umis_rag.utils.logger import logger
 from .models import (
-    Context, EstimationResult, Tier2Config, Intent,
+    Context, EstimationResult, Phase3Config, Intent,
     ComponentEstimation, DecompositionTrace
 )
 from .source_collector import SourceCollector
@@ -44,19 +44,19 @@ class Phase3Guestimation:
     
     def __init__(
         self,
-        config: Optional[Tier2Config] = None,
+        config: Optional[Phase3Config] = None,
         llm_mode: str = "native",
         learning_writer: Optional[LearningWriter] = None
     ):
         """
-        초기화
+        초기화 (v7.7.0)
         
         Args:
-            config: Tier 2 설정
+            config: Phase 3 설정
             llm_mode: LLM 모드
             learning_writer: 학습 Writer (옵션)
         """
-        self.config = config or Tier2Config()
+        self.config = config or Phase3Config()
         self.llm_mode = llm_mode
         self.learning_writer = learning_writer
         
