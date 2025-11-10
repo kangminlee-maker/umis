@@ -355,34 +355,37 @@ faq:
       하지만 LLM 호출은 불필요 (Native LLM 사용).
 
   q5:
-    question: "Tier 3 Fermi는 LLM을 어떻게 사용?"
+    question: "Phase 4 (Fermi)는 LLM을 어떻게 사용?"
     answer: |
       모드에 따라 다름:
 
-      Native Mode (기본):
-        - 템플릿 매칭만 사용 (8개 지표, 80-90% 커버)
-        - 템플릿 없으면: Tier 3 중단, Cursor에게 맡김
+      Native Mode (기본, v7.7.0):
+        - Phase 4 (Fermi) 실행
+        - Step 1: 초기 스캔
+        - Step 2: 모형 생성 (Native 모형 사용)
+        - Step 3-4: 재귀 추정 및 실행
         - LLM API 호출 없음 (비용 $0)
 
       External Mode (자동화):
-        - 템플릿 시도 → 실패 시 OpenAI API 호출
+        - Phase 4 실행
+        - Step 2에서 OpenAI API 호출
         - 모형 생성 프롬프트 자동 실행
         - 비용 발생 ($0.03/질문)
 
 # ========================================
-# v7.4.0 신규: Tier 3 정책
+# v7.7.0 업데이트: Phase 4 정책
 # ========================================
 
-tier3_policy:
+phase4_policy:
 
   native_mode:
-    llm_usage: "사용 안 함 (템플릿만)"
-    coverage: "80-90% (8개 지표 템플릿)"
+    llm_usage: "사용 안 함 (Native 모형 사용)"
+    coverage: "일반 Fermi 분해"
     cost: "$0"
 
     behavior:
-      template_match: "템플릿 매칭 성공 → Tier 3 실행"
-      template_fail: "Tier 3 중단 → Cursor Native LLM에게 맡김"
+      step_2_generate: "Native 모형 생성 (담배, 음식점 등)"
+      step_3_4: "재귀 추정 및 Backtracking"
 
     reason: |
       Native LLM (Cursor)이 더 우수하고 비용 $0
@@ -390,12 +393,12 @@ tier3_policy:
 
   external_mode:
     llm_usage: "OpenAI API 사용"
-    coverage: "100% (템플릿 + LLM)"
+    coverage: "100% (Native + LLM)"
     cost: "~$0.03/질문 (GPT-4o)"
 
     behavior:
-      template_match: "템플릿 매칭 성공 → Tier 3 실행"
-      template_fail: "OpenAI API로 모형 생성 → Tier 3 실행"
+      step_2_generate: "Native 시도 → 실패 시 OpenAI API 호출"
+      step_3_4: "재귀 추정 및 Backtracking"
 
     reason: |
       자동화 필요 시 (배치 처리, cron job)
