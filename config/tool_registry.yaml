@@ -1,13 +1,13 @@
 # ========================================
-# UMIS Tool Registry v7.5.0
+# UMIS Tool Registry v7.7.0
 # System RAG: Key-based 정확 검색
 # ========================================
 
-version: '7.5.0'
+version: '7.7.0'
 created: '2025-11-03'
 updated: '2025-11-10'
 total_tools: 29
-changelog: 'v7.5.0: guestimation + domain_reasoner 제거 (Estimator로 대체), 31→29개'
+changelog: 'v7.7.0: Native 모드 구현, 용어 명확화 (5-Phase + Step)'
 
 # ========================================
 # 도구 목록
@@ -1093,13 +1093,14 @@ tools:
   #
   # v7.2.0 이하: Guestimation = 독립 방법론
   # v7.3.0: Estimator Agent로 진화
-  # v7.5.0: Estimator Tier 1/2/3 완성 → Guestimation 완전 대체
+  # v7.5.0: Estimator 5-Phase 완성 → Guestimation 완전 대체
+  # v7.7.0: 용어 명확화 (Phase + Step)
   #
   # 대체:
   #   Before: guestimation.check_comparability()
   #   After:  estimator.estimate(question, context)
   #
-  # Guestimation 8개 출처 → Estimator Tier 2 (11 Sources):
+  # Guestimation 8개 출처 → Estimator Phase 3 (11 Sources):
   #   1. 프로젝트 데이터 → DefiniteDataSource
   #   2. LLM 직접 → LLMEstimationSource
   #   3. 검색 합의 → WebSearchSource + RAGBenchmarkSource
@@ -1123,7 +1124,8 @@ tools:
   #
   # v7.2.0 이하: Domain Reasoner = 독립 방법론
   # v7.3.0+: Estimator Agent로 대체됨
-  # v7.5.0: Estimator Tier 2/3 완성 → Domain Reasoner 완전 대체
+  # v7.5.0: Estimator 5-Phase 완성 → Domain Reasoner 완전 대체
+  # v7.7.0: 용어 명확화
   #
   # 대체 방법:
   #   Before: domain_reasoner.execute(question, domain, geography)
@@ -1134,7 +1136,7 @@ tools:
   #   - data/raw/umis_domain_reasoner_methodology.yaml
   #   - scripts/test_signal*.py
   #
-  # Estimator Tier 2가 10개 신호 중 8개 커버:
+  # Estimator Phase 3 (Guestimation)가 10개 신호 중 8개 커버:
   #   - s1 (LLM) → LLMEstimation
   #   - s2 (RAG) → RAGBenchmark
   #   - s3 (Law) → LegalNorm
@@ -1187,9 +1189,9 @@ tools:
       ## 목적
       데이터 부족 시 값을 추정하고 지능적으로 판단 (Single Source of Truth)
 
-      ## 3-Tier Architecture
+      ## 5-Phase Architecture (v7.7.0)
 
-      ### Tier 1: Fast Path (<0.5초)
+      ### Phase 1: Direct RAG (<0.5초)
       ```python
       from umis_rag.agents.estimator import EstimatorRAG
 
@@ -1199,8 +1201,8 @@ tools:
           domain="B2B_SaaS"
       )
 
-      # 학습된 규칙 있음 → Tier 1
-      # value: 0.06, tier: 1, confidence: 0.85
+      # 학습된 규칙 있음 → Phase 1
+      # value: 0.06, phase: 1, confidence: 0.85
       ```
 
       **커버리지 진화**:
@@ -1208,9 +1210,9 @@ tools:
       - Month 1: 75% (120개)
       - Year 1: 95% (2,000개)
 
-      ### Tier 2: Judgment Path (3-8초)
+      ### Phase 3: Guestimation (3-8초)
       ```python
-      # 학습된 규칙 없음 → Tier 2
+      # Phase 1/2 없음 → Phase 3
       # 11개 Source 수집 + 종합 판단
 
       result = estimator.estimate(
@@ -1233,21 +1235,22 @@ tools:
       - Soft: 법률, 통계, 행동경제학
       - Value: 확정, LLM, 웹, RAG, 통계값
 
-      ### Tier 3: Fermi Decomposition (v7.5.0 완성) ⭐
+      ### Phase 4: Fermi Decomposition (v7.7.0 용어 명확화) ⭐
 
-      **구현**: tier3.py (1,463줄)
+      **구현**: tier3.py (2,500줄)
       **상태**: ✅ 100% 구현 완료
+      **내부**: Step 1-4 (스캔 → 생성 → 체크 → 실행)
 
       ```python
-      # Tier 1/2 실패 → Tier 3 자동 실행
+      # Phase 1/2/3 실패 → Phase 4 자동 실행
       result = estimator.estimate("SaaS LTV는?")
 
-      # Tier 3 동작:
-      # 1. 템플릿 매칭: ltv
-      # 2. 모형: ltv = arpu / churn_rate
-      # 3. 재귀 추정: arpu (depth 1), churn (depth 1)
-      # 4. Backtracking: 결과 계산
-      # → value: 1,600,000원, tier: 3, depth: 1
+      # Phase 4 동작 (Step 1-4):
+      # Step 1: 초기 스캔 (가용 데이터 파악)
+      # Step 2: 모형 생성 (ltv = arpu / churn_rate)
+      # Step 3: 재귀 추정 (arpu, churn_rate)
+      # Step 4: 모형 실행 (Backtracking)
+      # → value: 1,600,000원, phase: 4, depth: 1
       ```
 
       #### 12개 비즈니스 지표 템플릿 (v7.5.0)
@@ -1275,24 +1278,26 @@ tools:
       **총**: 12개 지표, 23개 모형
       **커버리지**: 90-95% (템플릿만)
 
-      #### 재귀 구조 (Phase 1-4)
+      #### Phase 4 재귀 구조 (Step 1-4)
 
-      **Phase 1**: 초기 스캔 (가용 데이터)
-      - 부모 데이터 상속 (v7.5.0) ⭐
-      - 프로젝트 데이터 로드
-
-      **Phase 2**: 모형 생성
-      - 템플릿 매칭 (12개 지표)
-      - LLM API (External mode)
+      **Phase 4 내부 Step 1-4**:
+      
+      **Step 1**: 초기 스캔
+      - 가용 데이터 파악 (Bottom-up)
+      - 부모 데이터 상속
+      
+      **Step 2**: 모형 생성
+      - LLM 모형 생성 (3-5개)
+      - 변수 재검색 (최대 2회)
       - SimpleVariablePolicy 필터링
 
-      **Phase 3**: 실행 가능성
-      - Unknown 변수 → Tier 2 시도
-      - Tier 2 실패 → 재귀 호출
+      **Step 3**: 실행 가능성 체크
+      - Unknown 변수 → Phase 3 시도
+      - Phase 3 실패 → 재귀 호출
       - Max depth: 4
       - 순환 감지 (Call stack)
 
-      **Phase 4**: 모형 실행
+      **Step 4**: 모형 실행
       - Backtracking
       - Confidence 조합 (Geometric Mean)
       - DecompositionTrace 생성
@@ -1367,7 +1372,7 @@ tools:
 
       ## 학습 시스템
 
-      **파이프라인**: Tier 2 → Canonical → Projected → Tier 1
+      **파이프라인**: Phase 3 → Canonical → Projected → Phase 1
 
       **조건**:
       - confidence >= 0.90: 증거 1개 OK
@@ -1507,15 +1512,15 @@ tools:
       ## 학습 파이프라인
 
       ```
-      Tier 2 실행 (첫 실행, 3-8초)
+      Phase 3 실행 (첫 실행, 3-8초)
         ↓
       Canonical Storage (정규화)
         ↓
       Projection (Agent View: estimator)
         ↓
-      Tier 1 Integration (학습 규칙)
+      Phase 1 Integration (학습 규칙)
         ↓
-      재실행 시 Tier 1 (<0.5초, 6-16배 빠름)
+      재실행 시 Phase 1 (<0.5초, 6-16배 빠름)
       ```
 
       ## 학습 조건
@@ -1539,8 +1544,8 @@ tools:
       Year 1:  95% 커버 (2,000개 규칙)
 
       속도:
-        첫 실행: 3-8초 (Tier 2)
-        재실행: <0.5초 (Tier 1)
+        첫 실행: 3-8초 (Phase 3)
+        재실행: <0.5초 (Phase 1)
         개선: 6-16배 빠름
       ```
 
