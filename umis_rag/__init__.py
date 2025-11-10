@@ -5,7 +5,7 @@ Universal Market Intelligence System의 지식 베이스를 위한
 Multi-Agent Retrieval-Augmented Generation 시스템입니다.
 """
 
-__version__ = "0.1.0"
+__version__ = "7.6.2"
 __author__ = "UMIS Team"
 
 # ============================================================================
