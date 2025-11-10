@@ -22,8 +22,8 @@ sys.path.insert(0, str(project_root))
 from umis_rag.core.config import settings
 from umis_rag.utils.logger import logger
 
-from .tier1 import Tier1FastPath
-from .tier2 import Tier2JudgmentPath
+from .phase1_direct_rag import Phase1DirectRAG
+from .phase3_guestimation import Phase3Guestimation
 from .learning_writer import LearningWriter, UserContribution
 from .models import Context, EstimationResult
 
@@ -83,19 +83,19 @@ class EstimatorRAG:
         """Estimator RAG Agent 초기화"""
         logger.info("[Estimator] Fermi Agent 초기화")
         
-        # Tier 1: Fast Path
-        self.tier1 = Tier1FastPath()
-        logger.info("  ✅ Tier 1 (학습)")
+        # Phase 1: Direct RAG
+        self.phase1 = Phase1DirectRAG()
+        logger.info("  ✅ Phase 1 (Direct RAG)")
         
-        # Validator: 확정 데이터 검색 (v7.6.0 추가)
+        # Validator: 확정 데이터 검색 (v7.6.0 추가, Phase 2)
         self.validator = None  # Lazy 초기화
         
-        # Tier 2: Judgment Path (Lazy 초기화)
-        self.tier2 = None
+        # Phase 3: Guestimation (Lazy 초기화)
+        self.phase3 = None
         self.learning_writer = None
         
-        # Tier 3: Fermi Decomposition (v7.5.0 완성)
-        self.tier3 = None  # Lazy 초기화
+        # Phase 4: Fermi Decomposition (Lazy 초기화)
+        self.phase4 = None
         
         # RAG Collections (Lazy)
         self.canonical_store = None
@@ -185,12 +185,12 @@ class EstimatorRAG:
                 return result
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Phase 1: Tier 1 (학습 규칙만, v7.6.0)
+        # Phase 1: Direct RAG (학습 규칙, v7.7.0)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        result = self.tier1.estimate(question, context)
+        result = self.phase1.estimate(question, context)
         
         if result:
-            logger.info(f"  ⚡ Phase 1 (Tier 1) 성공: {result.value} ({result.execution_time:.2f}초)")
+            logger.info(f"  ⚡ Phase 1 (Direct RAG) 성공: {result.value} ({result.execution_time:.2f}초)")
             return result
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -207,43 +207,55 @@ class EstimatorRAG:
         logger.info("  → Validator에도 없음 → 추정 시작")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Phase 3: Tier 2 (추정 시작, v7.6.0)
+        # Phase 3: Guestimation (추정 시작, v7.7.0)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        self._ensure_tier2_initialized()
-        result = self.tier2.estimate(question, context)
+        self._ensure_phase3_initialized()
+        result = self.phase3.estimate(question, context)
         
         if result:
-            logger.info(f"  🧠 Tier 2 완료: {result.value} ({result.execution_time:.2f}초)")
+            logger.info(f"  🧠 Phase 3 완료: {result.value} ({result.execution_time:.2f}초)")
             
             if result.should_learn:
-                logger.info(f"  📚 학습됨 (다음엔 Tier 1로 빠름!)")
+                logger.info(f"  📚 학습됨 (다음엔 Phase 1로 빠름!)")
             
             return result
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Phase 4: Tier 3 (Fermi Decomposition, v7.6.0)
+        # Phase 4: Fermi Decomposition (v7.7.0)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # 💎 가장 가치있는 작업!
         # 없는 숫자를 만드는 창조적 추정
-        # 시간(10-30초), 비용($0.01-0.05) 투자 정당화됨
+        # 시간(10-30초), 비용($0) 투자 정당화됨
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        if self.tier3 is None:
-            from .tier3 import Tier3FermiPath
-            self.tier3 = Tier3FermiPath()
-            logger.info("  ✅ Tier 3 (Fermi Decomposition) 로드")
+        self._ensure_phase4_initialized()
         
-        logger.info("  💎 Phase 4 (Tier 3) 시도: 가치있는 작업!")
-        result = self.tier3.estimate(question, context, project_data, depth=0)
+        logger.info("  💎 Phase 4 시도: 가치있는 작업!")
+        result = self.phase4.estimate(question, context, project_data, depth=0)
         
         if result:
-            logger.info(f"  🧩 Tier 3 완료: {result.value} ({result.execution_time:.2f}초)")
+            logger.info(f"  🧩 Phase 4 완료: {result.value} ({result.execution_time:.2f}초)")
             if result.decomposition:
                 logger.info(f"     모형: {result.decomposition.formula}")
                 logger.info(f"     Depth: {result.decomposition.depth}")
             return result
         
-        logger.warning("  ❌ 모든 Tier 실패")
+        logger.warning("  ❌ 모든 Phase 실패")
         return None
+    
+    def _ensure_phase3_initialized(self):
+        """Phase 3 Lazy 초기화"""
+        if self.phase3 is None:
+            self.phase3 = Phase3Guestimation(
+                learning_writer=self.learning_writer
+            )
+            logger.info("  ✅ Phase 3 (Guestimation) 로드")
+    
+    def _ensure_phase4_initialized(self):
+        """Phase 4 Lazy 초기화"""
+        if self.phase4 is None:
+            from .phase4_fermi import Phase4FermiDecomposition
+            self.phase4 = Phase4FermiDecomposition()
+            logger.info("  ✅ Phase 4 (Fermi Decomposition) 로드")
     
     def contribute(
         self,
@@ -490,11 +502,11 @@ class EstimatorRAG:
                 logger.warning(f"  ⚠️  Learning Writer 초기화 실패: {e}")
                 self.learning_writer = None
         
-        # Tier 2 초기화
-        self.tier2 = Tier2JudgmentPath(
+        # Phase 3 초기화
+        self.phase3 = Phase3Guestimation(
             learning_writer=self.learning_writer
         )
-        logger.info("  ✅ Tier 2 초기화")
+        logger.info("  ✅ Phase 3 초기화")
 
 
 # ================================================================
