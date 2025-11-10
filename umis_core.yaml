@@ -255,7 +255,7 @@ system_details:
       - "Excel 자동 생성 (3개 도구)"
       - "검증 자동화 (Guardian Meta-RAG)"
       - "학습 시스템 (6-16배 빠름)"
-      - "재귀 추정 (Tier 3, v7.4.0+)" 
+      - "재귀 추정 (Phase 4, v7.4.0+)" 
       - "LLM 모드 선택 (Native $0 / External)" 
 
   rag_architecture:
@@ -617,7 +617,8 @@ decision_guide:
       - "estimator (Agent View)"
 
     terminology_v7_7_0:
-      tier: "구현 계층 (파일명: tier1.py, tier2.py, tier3.py)"
+      files: "phase1_direct_rag.py, phase3_guestimation.py, phase4_fermi.py"
+      classes: "Phase1DirectRAG, Phase3Guestimation, Phase4FermiDecomposition"
       phase: "전체 프로세스 단계 (Phase 0-4)"
       step: "Fermi 내부 세부 단계 (Step 1-4)"
       note: "Phase와 Step 분리로 혼란 해결"
@@ -650,7 +651,7 @@ decision_guide:
 
     deliverables:
       - "EstimationResult (value + reasoning_detail + boundary_check)"
-      - "DecompositionTrace (Tier 3, depth + formula)"
+      - "DecompositionTrace (Phase 4, depth + formula)"
       - "BoundaryCheck (개념 기반 검증)"
 
     five_phase_architecture_v7_6_2:
@@ -662,7 +663,7 @@ decision_guide:
         confidence: "1.0"
       
       phase_1:
-        name: "Tier 1 (Learned Only)"
+        name: "Direct RAG (Learned Rules)"
         speed: "<0.5초"
         coverage: "5% (초기), 40% (1년 후)"
         description: "학습 규칙만 (Built-in 제거)"
@@ -682,7 +683,7 @@ decision_guide:
         change: "v7.6.0: 신규 추가 (핵심!)"
       
       phase_3:
-        name: "Tier 2 (추정)"
+        name: "Guestimation (11 Sources)"
         speed: "3-8초"
         coverage: "2-5%"
         description: "11개 Source 증거 기반 추정"
@@ -694,7 +695,7 @@ decision_guide:
         change: "v7.6.2: Web Search 추가"
       
       phase_4:
-        name: "Fermi Decomposition (Tier 3)"
+        name: "Fermi Decomposition (Step 1-4)"
         speed: "10-30초"
         coverage: "3% (현재), 1% (1년 후)"
         description: "창조적 추정 (가장 가치있는 작업)"
@@ -752,7 +753,7 @@ decision_guide:
 
     accuracy_v7_6_2:
       validator: "100% (0% 오차)"
-      tier_3: "75% (25% 오차, 3배 개선)"
+      phase_4: "75% (25% 오차, 3배 개선)"
       e2e_success: "95% (19/20)"
       validator_coverage: "94.7%"
 
@@ -1004,7 +1005,7 @@ quick_reference:
     - "Estimator/Quantifier 역할 분리 (추정 vs 계산)" 
     - "임계값 강화 (Fermi 분해 집중)" 
     - "데이터 상속 (재귀 최적화)" 
-    - "Context 전달 개선 (구체적 질문)"
+    - "Context 전달 개선 (구체적 질문)" 
   
   v7_7_0_updates:
     - "Native 모드 진짜 구현 (비용 $0)"
