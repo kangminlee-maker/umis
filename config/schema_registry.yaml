@@ -1,27 +1,28 @@
 # ========================================
-# UMIS RAG Schema Registry v1.1
+# UMIS RAG Schema Registry v1.2
 # ========================================
 #
-# 날짜: 2025-11-02
-# 버전: 1.1
-# UMIS: 7.5.0
+# 날짜: 2025-11-10
+# 버전: 1.2
+# UMIS: 7.6.2
 # Architecture: v3.0
 # 목적: 모든 RAG Layer 통합 스키마 정의
 #
 # 강화: ID/Lineage, anchor, 근거, 감사성(A)
-# v7.5.0: Estimator agent_specific 필드, Tier 3 완성
+# v7.6.2: Estimator 5-Phase, Validator search, Boundary 검증
 #
 # ========================================
 
 _meta:
-  version: "1.1"
+  version: "1.2"
   architecture_version: "3.0"
-  umis_version: "7.5.0"
+  umis_version: "7.6.2"
   purpose: "모든 RAG Layer 통합 스키마"
   expert_feedback: "반영 완료 (P0 7개)"
-  last_updated: "2025-11-08"
+  last_updated: "2025-11-10"
   v7_3_2_updates: "Estimator Agent 추가 (6-Agent 시스템)"
   v7_5_0_updates: "Estimator agent_specific 필드 추가, Tier 3 완성"
+  v7_6_2_updates: "Estimator 5-Phase 재설계, Validator search, Boundary 검증"
 
 # ========================================
 # PART 1: ID 네임스페이스 (v3.0 P0-1)
