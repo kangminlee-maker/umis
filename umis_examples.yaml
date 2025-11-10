@@ -1,27 +1,28 @@
-# UMIS examples - Compatible with v7.5.0
+# UMIS examples - Compatible with v7.7.0
 # ========================================
-# UMIS v7.5.0 사용 예시
+# UMIS v7.7.0 사용 예시
 # ========================================
 #
-# v7.5.0 주요 특징:
-# - 6-Agent 협업 시스템 (Estimator 추가)
-# - 3-Tier 완성 (100% 커버리지)
-# - 12개 비즈니스 지표 템플릿 (23개 모형)
-# - 데이터 상속 (재귀 최적화)
-# - LLM 모드 통합 (Native/External)
+# v7.7.0 주요 특징:
+# - 6-Agent 협업 시스템
+# - 5-Phase Estimator (100% 커버리지)
+# - Native 모드 진짜 구현 (비용 $0)
+# - Phase/Step 용어 명확화
+# - 파일명 phase 기반 (phase1/3/4_*.py)
+# - Backward compatibility 유지
 # - Explorer RAG (54개 패턴/사례)
 # - Knowledge Graph (13 노드, 45 관계)
 # - Meta-RAG (Guardian 프로세스 감시)
 # - System RAG (31개 도구)
 #
-# 최종 업데이트: 2025-11-08
+# 최종 업데이트: 2025-11-10
 # ========================================
 
 _meta:
-  version: "7.5.0"
-  umis_version: "7.5.0"
-  purpose: "UMIS v7.5.0 실제 사용 예시 (3-Tier + 12개 지표)"
-  last_updated: "2025-11-08"
+  version: "7.7.0"
+  umis_version: "7.7.0"
+  purpose: "UMIS v7.7.0 실제 사용 예시 (5-Phase + Native 모드)"
+  last_updated: "2025-11-10"
 
 # ========================================
 # PART 1: 빠른 시작 예시
@@ -679,20 +680,20 @@ reference_documents:
     - "dev_docs/guides/: 개발 가이드"
 
 # ========================================
-# PART 5: Estimator & Tier 3 예시 (v7.5.0)
+# PART 5: Estimator 5-Phase 예시 (v7.7.0)
 # ========================================
 
 estimator_examples:
-  description: "Estimator (Fermi) Agent 사용 예시 - 3-Tier + 12개 비즈니스 지표"
+  description: "Estimator (Fermi) Agent 사용 예시 - 5-Phase Architecture"
 
-  # 예시 1: Tier 1 (Fast Path)
-  example_1_tier1_fast:
+  # 예시 1: Phase 1 (Direct RAG)
+  example_1_phase1_direct_rag:
     scenario: "학습된 질문 (두 번째 요청)"
 
     first_request:
       user: "@Fermi, B2B SaaS Churn Rate는?"
       estimator_action:
-        tier: 2
+        phase: 3  # Phase 3 (Guestimation)
         time: "5.2초"
         sources: ["statistical", "rag", "soft"]
         result: "6% (confidence: 0.85)"
@@ -701,15 +702,15 @@ estimator_examples:
     second_request:
       user: "@Fermi, B2B SaaS Churn Rate는?"  # 동일 질문
       estimator_action:
-        tier: 1  #  학습된 규칙 사용
+        phase: 1  # ✅ Phase 1 (Direct RAG) - 학습된 규칙 사용
         time: "0.3초"
         improvement: "17배 빠름"
         result: "6% (confidence: 0.85)"  # 동일한 답
 
-    key_point: "사용할수록 빨라짐 (학습 시스템)"
+    key_point: "사용할수록 빨라짐 (Phase 3 → Phase 1 학습)"
 
-  # 예시 2: Tier 2 (Judgment Path)
-  example_2_tier2_judgment:
+  # 예시 2: Phase 2-3 (Validator → Guestimation)
+  example_2_phase2_3:
     scenario: "데이터 부족 시 추정"
 
     user: "@Quantifier, 음식점 SaaS 전환율 필요해"
@@ -722,9 +723,11 @@ estimator_examples:
         question: "음식점 SaaS 전환율은?"
         domain: "Food_Service_SaaS"
 
-      estimator_tier2:
-        action_1: "Tier 1 체크 → 없음"
-        action_2: "Tier 2 실행"
+      estimator_5phase:
+        action_0: "Phase 0 체크 → 프로젝트 데이터 없음"
+        action_1: "Phase 1 체크 → 학습 규칙 없음"
+        action_2: "Phase 2 실행 → Validator 검색"
+        action_3: "Phase 2 없음 → Phase 3 (Guestimation) 실행"
 
         source_collection:
           - "RAG 벤치마크: 카페 SaaS 12% 발견"
@@ -759,22 +762,24 @@ estimator_examples:
 
     key_point: "Quantifier는 계산만, 추정은 Estimator"
 
-  # 예시 3: Tier 3 (Fermi Decomposition) - 비즈니스 지표
-  example_3_tier3_business_metric:
+  # 예시 3: Phase 4 (Fermi Decomposition) - Step 1-4
+  example_3_phase4_fermi:
     scenario: "LTV 추정 (재귀 분해)"
 
     user: "@Fermi, B2B SaaS LTV는?"
 
-    estimator_tier3:
-      step_1_tier1: "학습된 규칙 없음"
-      step_2_tier2: "단일 값 추정 실패 (복잡)"
-      step_3_tier3: "Tier 3 실행"
+    estimator_5phase:
+      phase_0: "프로젝트 데이터 없음"
+      phase_1: "학습 규칙 없음"
+      phase_2: "Validator 없음"
+      phase_3: "단일 값 추정 실패 (복잡)"
+      phase_4: "Fermi Decomposition 실행 (Step 1-4)"
 
-      phase_1_scan:
+      step_1_scan:
         available: []
         unknown: []
 
-      phase_2_template:
+      step_2_generate:
         matched: "ltv"
         models:
           - id: "LTV_001"
@@ -785,21 +790,21 @@ estimator_examples:
             variables: ["arpu", "average_lifetime_months"]
         selected: "LTV_001 (Unknown 2개, 더 간단)"
 
-      phase_3_recursive:
+      step_3_recursive:
         depth_0: "ltv = arpu / churn_rate"
         unknown: ["arpu", "churn_rate"]
 
         depth_1_arpu:
           question: "ARPU는?"
-          tier2_result: "80,000원 (RAG 벤치마크, confidence: 0.85)"
-          no_recursion: "Tier 2 성공"
+          phase3_result: "80,000원 (RAG 벤치마크, confidence: 0.85)"
+          no_recursion: "Phase 3 성공"
 
         depth_1_churn:
           question: "Churn Rate는?"
-          tier2_result: "0.05 (통계 패턴, confidence: 0.80)"
-          no_recursion: "Tier 2 성공"
+          phase3_result: "0.05 (통계 패턴, confidence: 0.80)"
+          no_recursion: "Phase 3 성공"
 
-      phase_4_backtrack:
+      step_4_execute:
         formula: "ltv = arpu / churn_rate"
         bindings:
           arpu: 80000
@@ -810,18 +815,18 @@ estimator_examples:
 
       output:
         value: 1600000
-        tier: 3
+        phase: 4
         decomposition:
           formula: "ltv = arpu / churn_rate"
           depth: 1
           variables:
-            arpu: {value: 80000, confidence: 0.85, tier: 2}
-            churn_rate: {value: 0.05, confidence: 0.80, tier: 2}
+            arpu: {value: 80000, confidence: 0.85, phase: 3}
+            churn_rate: {value: 0.05, confidence: 0.80, phase: 3}
 
-    key_point: "Tier 3가 자동으로 재귀 분해 + Backtracking"
+    key_point: "Phase 4가 자동으로 재귀 분해 + Backtracking (Step 1-4)"
 
-  # 예시 4: Tier 3 - 데이터 상속 (v7.5.0)
-  example_4_tier3_data_inheritance:
+  # 예시 4: Phase 4 - 데이터 상속 (Step 1)
+  example_4_phase4_data_inheritance:
     scenario: "재귀 추정 시 부모 데이터 상속"
 
     user: "@Fermi, Unit Economics는?"
@@ -867,7 +872,7 @@ estimator_examples:
           available: []
           unknown: ["marketing_cost", "new_customers"]
 
-        tier2_result: "50,000원"
+        phase3_result: "50,000원"
 
       backtrack:
         formula: "ratio = ltv / cac"
@@ -875,11 +880,11 @@ estimator_examples:
         result: "32 (LTV/CAC = 32, 건강 )"
 
     data_inheritance_benefit:
-      - "재귀 시 부모의 available 변수 상속"
+      - "재귀 시 부모의 available 변수 상속 (Step 1)"
       - "재계산 불필요 (효율성)"
       - "일관성 보장"
 
-    key_point: "v7.5.0 데이터 상속으로 재귀 최적화"
+    key_point: "Phase 4 (Step 1)에서 데이터 상속으로 재귀 최적화"
 
   # 예시 5: LLM 모드 (Native vs External)
   example_5_llm_mode:
@@ -892,19 +897,20 @@ estimator_examples:
         OPENAI_API_KEY: "sk-... (RAG 임베딩만)"
 
       동작:
-        템플릿_매칭_성공: |
+        phase_0_4_시도: |
           @Fermi, LTV는?
-          → 템플릿: ltv
-          → Tier 3 실행
+          → Phase 0: 프로젝트 데이터 없음
+          → Phase 1: 학습 규칙 없음
+          → Phase 2: Validator 없음
+          → Phase 3: 단일 값 실패
+          → Phase 4: Fermi 실행 (Step 1-4)
           → 비용: $0
 
-        템플릿_매칭_실패: |
-          @Fermi, 신규 시장 잠재력은?
-          → 템플릿: 없음
-          → Tier 3 중단
-          → "Cursor에게 요청하세요"
-          → Cursor Native LLM이 직접 분석
-          → 비용: $0 (Cursor 구독 포함)
+        native_모드_explorer: |
+          @Explorer, 시장 분석
+          → RAG 검색만 수행
+          → Cursor LLM이 직접 분석
+          → 비용: $0 (Native 모드)
 
       장점:
         - "비용: $0"
@@ -920,19 +926,19 @@ estimator_examples:
         OPENAI_API_KEY: "sk-..."
 
       동작:
-        템플릿_매칭_성공: |
+        phase_실행: |
           LTV는?
-          → 템플릿: ltv
-          → Tier 3 실행
+          → Phase 0-3: 없음
+          → Phase 4: Fermi 실행
           → 비용: $0
 
-        템플릿_매칭_실패: |
+        external_모드_api: |
           신규 시장 잠재력은?
-          → 템플릿: 없음
-          → OpenAI API 호출
+          → Phase 0-3: 없음
+          → Phase 4: OpenAI API 호출 (External 모드)
           → 모형 생성 프롬프트
           → 3-5개 모형 생성
-          → Tier 3 실행
+          → Step 1-4 실행
           → 비용: $0.03/질문
 
       장점:

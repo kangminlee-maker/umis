@@ -1,13 +1,13 @@
 # ========================================
 # UMIS RAG Cursor Rules - AI Optimized
-# v7.6.2 | Non-coder | Cursor-only
+# v7.7.0 | Non-coder | Cursor-only
 # ========================================
 
 # === PART 1: UMIS 개념 (AI 필수 이해) ===
 
 system:
   name: Universal Market Intelligence System
-  version: 7.6.2
+  version: 7.7.0
   
   agents:
     Observer: {name: Albert, role: market_structure, rag: true}       # v7.1.0+
@@ -15,7 +15,7 @@ system:
     Quantifier: {name: Bill, role: market_sizing, rag: true}         # v7.1.0+
     Validator: {name: Rachel, role: data_verification, rag: true}    # v7.1.0+
     Guardian: {name: Stewart, role: process_monitoring, rag: true}   # v7.1.0+ (Meta-RAG ✅)
-    Estimator: {name: Fermi, role: value_estimation_5phase, rag: true}  # v7.6.2+ (5-Phase ✅)
+    Estimator: {name: Fermi, role: value_estimation_5phase, rag: true}  # v7.7.0+ (5-Phase + Native 모드 ✅)
   
   # id: Agent ID (Observer, Explorer, ...)
   # name: Default name (Albert, Steve, ...) → agent_names.yaml로 커스터마이징
@@ -27,7 +27,7 @@ system:
   discovery_sprint: 명확도<7 → 6-Agent 병렬 탐색 (Estimator 협업) → 목표 구체화
   
   rag:
-    active: 6-Agent RAG (v7.6.2+)
+    active: 6-Agent RAG (v7.7.0+)
     architecture: v3.0 (4-Layer: Canonical → Projected → Graph → Memory)
     
     layers:
@@ -100,7 +100,7 @@ setup:
   
   messages:
     start: |
-      🚀 UMIS v7.6.2 자동 설치 시작
+      🚀 UMIS v7.7.0 자동 설치 시작
       
       setup/AI_SETUP_GUIDE.md 참조하여 진행합니다.
       소요 시간: 2-3분
@@ -118,7 +118,7 @@ setup:
       
       사용: Cmd+I → @umis.yaml
       "@Explorer, 시장 분석해줘"
-      "@Fermi, LTV는?" ⭐ v7.6.2 (5-Phase + Web Search!)
+      "@Fermi, LTV는?" ⭐ v7.7.0 (5-Phase + Native 모드!)
 
 ## Agent 이름 커스터마이징
 agent_names:
@@ -626,7 +626,7 @@ ai_usage_examples:
         # umis_core.yaml 읽기
         read_file("umis_core.yaml", offset=603, limit=90)
         → Estimator 섹션 파악
-        → 5-Phase Architecture (v7.6.2)
+        → 5-Phase Architecture (v7.7.0: Phase + Step 명확화)
         → 12개 비즈니스 지표
       
       step_2: |
@@ -688,7 +688,7 @@ common_tool_keys:
     - "tool:guardian:quality_evaluation (품질 평가)"
   
   estimator:
-    - "tool:estimator:estimate (값 추정, 5-Phase)" ⭐ v7.6.2
+    - "tool:estimator:estimate (값 추정, 5-Phase)" ⭐ v7.7.0
     - "tool:estimator:cross_validation (교차 검증)"
     - "tool:estimator:learning_system (학습 시스템)"
   

@@ -1,6 +1,6 @@
-# UMIS deliverable_standards - v7.5.0
+# UMIS deliverable_standards - v7.7.0
 # ========================================
-# UMIS Deliverable Standards v7.5.0
+# UMIS Deliverable Standards v7.7.0
 # ========================================
 #
 # 목적: 6개 에이전트별 산출물 표준 정의 및 재검증 가능성 보장
@@ -15,17 +15,24 @@
 # ========================================
 
 _meta:
-  version: "7.5.0"
+  version: "7.7.0"
   purpose: "산출물 표준화 및 재검증 가능성 보장 (6-Agent)"
   parent_document: "umis_core.yaml"
   integration_point: "System RAG + 6-Agent Architecture"
-  release_date: "2025-11-08"
+  release_date: "2025-11-10"
 
+  v7_7_0_updates:
+    - "Native 모드 진짜 구현 (비용 $0)"
+    - "용어 체계 명확화 (Phase + Step)"
+    - "3-Tier → 5-Phase Architecture"
+    - "파일명 phase 기반 변경"
+    - "EstimationResult.tier → .phase"
+  
   v7_5_0_updates:
     - "Estimator (Fermi) Agent 표준 추가"
-    - "Guestimation v3.0 (3-Tier Architecture) 반영"
+    - "5-Phase Architecture 반영"
     - "Estimator/Quantifier 역할 분리 (추정 vs 계산)"
-    - "임계값 강화 (Tier 3 집중)"
+    - "임계값 강화"
     - "Context 전달 개선"
     - "Single Source Policy 반영"
     - "데이터 상속 및 재귀 분해 표준"
@@ -333,17 +340,17 @@ agent_deliverable_standards:
                 quantifier: "계산 (LTV = 80,000 / 0.05 = 1,600,000)"
 
               benefits:
-                - "일관된 추정 논리 (3-Tier Architecture)"
+                - "일관된 추정 논리 (5-Phase Architecture)"
                 - "완전 투명한 근거 (reasoning_detail)"
                 - "재현 가능성 보장"
-                - "학습 효과 (Tier 1 규칙 진화)"
+                - "학습 효과 (Phase 3 → Phase 1 진화)"
 
             structure:
               description: "각 추정치마다 하나의 블록으로 상세 설명 (Estimator 결과 포함)"
 
-              block_template_v7_5_0_estimator: |
+              block_template_v7_7_0_estimator: |
                 ============================================
-                EST_ID: EST_001 (Estimator Tier 2)
+                EST_ID: EST_001 (Estimator Phase 3)
                 추정 항목: 피아노 학원 비중
                 최종 추정값: 30% ± 5%
                 ============================================
@@ -353,14 +360,14 @@ agent_deliverable_standards:
                 - 피아노/기타/바이올린 등 세부 구분 없음
                 - 직접 조사 데이터도 없음
 
-                [2] Estimator 호출 (v7.5.0)
+                [2] Estimator 호출 (v7.7.0)
                 - Query: "한국 음악학원 중 피아노 학원 비중은?"
                 - Context: {
                     market: "한국 음악 교육",
                     total_academies: 10000,
                     data_sources: ["SRC_20241031_005", "SRC_20241031_012"]
                   }
-                - Tier Used: 2 (Context-Aware Judgment)
+                - Phase Used: 3 (Guestimation - 11 Sources)
                 - Execution Time: 3.2초
 
                 [3] Estimator 추정 근거 (reasoning_detail)
@@ -1062,8 +1069,12 @@ agent_deliverable_standards:
     _role: "Estimator"
     _agent_id: "estimator"
     _core_output: "EstimationResult + DecompositionTrace + 비즈니스 지표 결과"
-    _version: "7.5.0"
-    _architecture: "3-Tier (Tier 1/2/3)"
+    _version: "7.7.0"
+    _architecture: "5-Phase (Phase 0-4)"
+    _terminology:
+      phase: "Estimator 전체 단계 (0-4)"
+      step: "Phase 4 (Fermi) 내부 단계 (1-4)"
+      files: "phase1_direct_rag.py, phase3_guestimation.py, phase4_fermi.py"
 
     single_source_policy:
       principle: "모든 값/데이터 추정은 Estimator만 담당 (v7.5.0)"
@@ -1089,31 +1100,39 @@ agent_deliverable_standards:
             example: "6.0 (% Churn Rate)"
             mandatory: true
 
-          - field: "tier"
+          - field: "phase"
             type: "integer"
-            values: [1, 2, 3]
-            description: "사용된 Tier"
+            values: [0, 1, 2, 3, 4]
+            description: "사용된 Phase (v7.7.0: tier→phase)"
             example: 2
             mandatory: true
+            note: "v7.7.0 Breaking Change: tier → phase"
 
           - field: "reasoning_detail"
             type: "string/dict"
             description: "추정 근거 (완전 투명화)"
             mandatory: true
             structure:
-              tier_1:
+              phase_1:
                 - "matched_rule_id"
                 - "rule_content"
                 - "confidence: 100%"
 
-              tier_2:
+              phase_2:
+                - "validator_search_result"
+                - "unit_conversion (if applied)"
+                - "relevance_check"
+                - "confidence: 1.0"
+
+              phase_3:
                 - "context_analysis (시장/산업/고객 타입)"
                 - "sources_used (11개 Source 중)"
                 - "judgment_logic (맥락 기반)"
                 - "confidence_range"
 
-              tier_3:
+              phase_4:
                 - "decomposition_formula"
+                - "step_1_4_trace (스캔→생성→체크→실행)"
                 - "recursive_breakdown (depth)"
                 - "variable_values (데이터 상속)"
                 - "calculation_steps"
@@ -1142,14 +1161,14 @@ agent_deliverable_standards:
             mandatory: false
 
       decomposition_trace:
-        description: "Tier 3 재귀 분해 추적 (복잡한 비즈니스 지표)"
-        when: "Tier 3 사용 시만"
+        description: "Phase 4 (Fermi) 재귀 분해 추적 - Step 1-4"
+        when: "Phase 4 사용 시만"
         file_format: "Python Dict / 분석 문서 내 상세 섹션"
 
         purpose:
-          - "재귀 분해 과정 완전 투명화"
+          - "재귀 분해 과정 완전 투명화 (Step 1-4)"
           - "변수 간 의존성 추적"
-          - "데이터 상속 경로 기록"
+          - "데이터 상속 경로 기록 (Step 1)"
           - "재현 가능성 보장"
 
         structure:
@@ -1166,8 +1185,8 @@ agent_deliverable_standards:
 
           variable_resolution:
             - "각 변수 해결 방법 (규칙/추정/데이터/상속)"
-            - "Tier 1/2/3 사용 표시"
-            - "LLM 호출 여부"
+            - "Phase 0-4 사용 표시"
+            - "LLM 호출 여부 (External 모드)"
 
           final_calculation:
             - "Bottom-up 계산 경로"
