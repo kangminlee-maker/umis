@@ -159,10 +159,26 @@ class UMISIndexBuilder:
         
         # 1. 청크 로드
         console.print("[yellow]Step 1/4: 청크 파일 로딩...[/yellow]")
+        
+        # 성공 패턴
         bm_chunks = self.load_chunks("explorer_business_models.jsonl")
         dp_chunks = self.load_chunks("explorer_disruption_patterns.jsonl")
+        
+        # 실패 패턴
+        if_chunks = self.load_chunks("explorer_incumbent_failures.jsonl")
+        sf_chunks = self.load_chunks("explorer_startup_failures.jsonl")
+        
+        # 확장 사례 (v7.0+)
+        ebc_chunks = self.load_chunks("explorer_extended_business_cases.jsonl")
+        edc_chunks = self.load_chunks("explorer_extended_disruption_cases.jsonl")
+        
+        # 전략 프레임워크 (v7.0+)
+        fw_chunks = self.load_chunks("explorer_strategic_frameworks.jsonl")
+        
+        # 레거시 (하위 호환)
         ec_chunks = self.load_chunks("explorer_extended_cases.jsonl")
-        all_chunks = bm_chunks + dp_chunks + ec_chunks
+        
+        all_chunks = bm_chunks + dp_chunks + if_chunks + sf_chunks + ebc_chunks + edc_chunks + fw_chunks + ec_chunks
         
         if not all_chunks:
             logger.error("청크가 없습니다. 먼저 01_convert_yaml.py를 실행하세요.")
@@ -252,9 +268,16 @@ class UMISIndexBuilder:
         table.add_column("개수", style="magenta")
         
         table.add_row("총 청크 수", str(len(chunks)))
-        table.add_row("Business Model", str(sum(1 for c in chunks if c.get("metadata", {}).get("pattern_type") == "business_model")))
-        table.add_row("Disruption", str(sum(1 for c in chunks if c.get("metadata", {}).get("pattern_type") == "disruption")))
-        table.add_row("Extended Cases", str(sum(1 for c in chunks if c.get("metadata", {}).get("source_file") == "umis_extended_business_cases.yaml")))
+        table.add_row("─────────────", "─────")
+        table.add_row("Business Model (패턴)", str(sum(1 for c in chunks if c.get("metadata", {}).get("pattern_type") == "business_model")))
+        table.add_row("Disruption (패턴)", str(sum(1 for c in chunks if c.get("metadata", {}).get("pattern_type") == "disruption")))
+        table.add_row("Incumbent Failure (실패)", str(sum(1 for c in chunks if c.get("metadata", {}).get("pattern_type") == "incumbent_failure")))
+        table.add_row("Startup Failure (실패)", str(sum(1 for c in chunks if c.get("metadata", {}).get("pattern_type") == "startup_failure")))
+        table.add_row("─────────────", "─────")
+        table.add_row("Business Cases (사례)", str(sum(1 for c in chunks if c.get("metadata", {}).get("pattern_type") == "business_case")))
+        table.add_row("Disruption Cases (사례)", str(sum(1 for c in chunks if c.get("metadata", {}).get("pattern_type") == "disruption_case")))
+        table.add_row("Strategic Frameworks", str(sum(1 for c in chunks if c.get("metadata", {}).get("pattern_type") == "strategic_framework")))
+        table.add_row("Legacy Extended", str(sum(1 for c in chunks if c.get("metadata", {}).get("source_file") == "umis_extended_business_cases.yaml")))
         
         console.print(table)
 

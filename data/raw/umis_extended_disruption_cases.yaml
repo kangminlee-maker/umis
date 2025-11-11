@@ -1,0 +1,629 @@
+# ========================================
+# UMIS Extended Disruption Cases v1.0
+# ========================================
+#
+# 목적: Disruption 패턴의 실제 추월 사례 대량 라이브러리
+# 관계: umis_disruption_patterns.yaml의 확장
+#
+# 구조:
+# - 패턴별 5-10개 추가 사례
+# - Fancy (40%) + Boring (60%)
+# - 한국 시장 특화 50%
+#
+# ========================================
+
+_meta:
+  version: "1.0"
+  purpose: "Disruption 사례 대량 라이브러리"
+  audience: "Steve (Explorer)"
+  parent_document: "umis_disruption_patterns.yaml"
+  
+  total_cases: 50
+  distribution:
+    fancy: 20
+    boring: 30
+    korean: 25
+
+# ========================================
+# INNOVATION DISRUPTION CASES
+# ========================================
+
+innovation_disruption_cases:
+  _pattern: "innovation_disruption"
+
+  tech_fancy:
+    - id: "tesla_auto"
+      attacker: "Tesla"
+      incumbent: "GM, Ford, Toyota"
+      innovation: "전기차 + 소프트웨어"
+      timeline: "2012-현재"
+      result: "시가총액 1위 달성 (2020)"
+
+    - id: "spotify_music"
+      attacker: "Spotify"
+      incumbent: "iTunes, CD"
+      innovation: "스트리밍 무제한"
+      result: "음악 소비 패러다임 전환"
+
+  korean_boring:
+    - id: "쿠팡_logistics"
+      attacker: "쿠팡"
+      incumbent: "이마트, 롯데마트"
+      innovation: "로켓배송 (당일/새벽)"
+      timeline: "2014-현재"
+      result: "이커머스 1위"
+
+    - id: "토스_fintech"
+      attacker: "토스"
+      incumbent: "은행"
+      innovation: "간편송금 → 슈퍼앱"
+      result: "2,000만 사용자"
+
+    - id: "마켓컬리_fresh"
+      attacker: "마켓컬리"
+      incumbent: "대형마트"
+      innovation: "새벽배송 신선식품"
+      challenge: "쿠팡 진입으로 경쟁"
+
+# ========================================
+# LOW-END DISRUPTION CASES
+# ========================================
+
+low_end_disruption_cases:
+  _pattern: "low_end_disruption"
+
+  global:
+    - id: "southwest_airlines"
+      attacker: "Southwest Airlines"
+      incumbent: "American, United"
+      strategy: "저가 항공 (no frills)"
+      result: "미국 최대 국내선"
+
+    - id: "xiaomi_smartphone"
+      attacker: "샤오미"
+      incumbent: "삼성, 애플"
+      strategy: "고성능 저가 (온라인 판매)"
+      market: "중국, 인도"
+      result: "세계 3위"
+
+  korean:
+    - id: "메가커피"
+      attacker: "메가커피"
+      incumbent: "스타벅스"
+      price: "아메리카노 1,500원 vs 4,500원"
+      growth: "2년 만에 1,000개 매장"
+
+    - id: "컴포즈커피"
+      similar: "메가커피"
+      stores: "2,000개"
+      strategy: "초저가 + 빠른 확장"
+
+    - id: "노브랜드"
+      attacker: "노브랜드 (이마트)"
+      target: "PB 상품"
+      strategy: "No 브랜드 마케팅 = 저가"
+
+# ========================================
+# CHANNEL DISRUPTION CASES
+# ========================================
+
+channel_disruption_cases:
+  _pattern: "channel_disruption"
+
+  d2c_cases:
+    - id: "warby_parker"
+      market: "안경"
+      old_channel: "안경점 (마진 500%)"
+      new_channel: "온라인 직판"
+      price: "$95 vs $300"
+      moat: "Home Try-On"
+
+    - id: "casper"
+      market: "매트리스"
+      old_channel: "백화점, 가구점"
+      new_channel: "온라인 + 100일 체험"
+
+  korean_d2c:
+    - id: "무신사"
+      market: "의류"
+      old: "백화점, 브랜드샵"
+      new: "온라인 편집샵"
+      gmv: "연 2조원"
+
+    - id: "컬리"
+      market: "신선식품"
+      old: "마트, 재래시장"
+      new: "새벽배송"
+
+# ========================================
+# REGULATORY DISRUPTION CASES
+# ========================================
+
+regulatory_disruption_cases:
+  _pattern: "regulatory_change_disruption"
+
+  korean_fintech:
+    - id: "카카오뱅크"
+      trigger: "인터넷전문은행 허용 (2017)"
+      incumbent: "기존 은행"
+      accounts: "2,000만 (2년 만)"
+      advantage: "비대면, 높은 금리"
+
+    - id: "토스뱅크"
+      similar: "카카오뱅크"
+      differentiation: "체크카드 특화"
+
+  mobility:
+    - id: "카카오_t"
+      trigger: "택시 호출 앱 허용"
+      incumbent: "콜택시"
+      market_share: "70%"
+
+# ========================================
+# FORMAT DISRUPTION CASES
+# ========================================
+
+format_disruption_cases:
+  _pattern: "format_disruption"
+
+  retail_evolution:
+    - id: "emart_vs_traditional"
+      old: "재래시장"
+      new: "대형마트 (1990s)"
+      impact: "시장 점유율 역전"
+
+    - id: "coupang_vs_emart"
+      old: "대형마트"
+      new: "이커머스 (2010s)"
+      result: "이마트 매장 축소"
+
+  service_format:
+    - id: "배달앱_vs_전화주문"
+      old: "전화 주문 (음식점 자체 배달)"
+      new: "배민/요기요 (플랫폼 배달)"
+      penetration: "80%"
+
+    - id: "카카오택시_vs_콜택시"
+      old: "전화 콜택시"
+      new: "앱 호출"
+      result: "전화 콜택시 사멸"
+
+# ========================================
+# GENERATIONAL DISRUPTION CASES
+# ========================================
+
+generational_disruption_cases:
+  _pattern: "generational_disruption"
+
+  restaurant_cases:
+    - id: "노포_폐업_1"
+      before: "30년 냉면집 (70대 부부)"
+      reason: "은퇴 (체력)"
+      after: "프랜차이즈 치킨"
+
+    - id: "노포_폐업_2"
+      before: "40년 분식집"
+      reason: "후계자 없음"
+      after: "카페 (2030 창업)"
+
+    - id: "세대교체_성공"
+      before: "부모 세대 음식점"
+      after: "자식이 리모델링 (SNS 마케팅)"
+      result: "MZ 타겟 성공"
+
+# ========================================
+# PLATFORM AGGREGATION CASES
+# ========================================
+
+platform_aggregation_cases:
+  _pattern: "platform_aggregation_disruption"
+
+  korean_platforms:
+    - id: "배민_독점"
+      market: "음식 배달"
+      penetration: "시장점유율 60%"
+      impact: "음식점 수수료 부담"
+
+    - id: "야놀자_숙박"
+      market: "숙박 예약"
+      competitors: "여기어때"
+      penetration: "80%"
+
+    - id: "직방_부동산"
+      market: "부동산 정보"
+      impact: "중개사 정보 의존"
+
+# ========================================
+# 사례 요약
+# ========================================
+
+disruption_case_summary:
+  
+  total: 50
+  
+  by_pattern:
+    innovation: 10
+    low_end: 8
+    channel: 6
+    regulatory: 6
+    format: 8
+    generational: 5
+    platform_aggregation: 7
+
+  by_outcome:
+    complete_takeover: 20
+    coexistence: 18
+    ongoing_battle: 12
+
+  key_learnings:
+    - "1등도 무너짐 (80% 사례)"
+    - "저가 전략 유효 (Low-end)"
+    - "규제가 게임 체인저 (한국)"
+    - "플랫폼 파워 막강"
+
+# ========================================
+# AUTOMATION DISRUPTION CASES (추가)
+# ========================================
+
+automation_disruption_additional_cases:
+  _pattern: "sme_automation_disruption"
+
+  retail_automation:
+    - id: "무인_편의점"
+      model: "이마트24 무인"
+      advantage: "인건비 절감 70%"
+
+    - id: "셀프_계산대"
+      penetration: "이마트, 홈플러스"
+      impact: "계산원 감소"
+
+  manufacturing_automation:
+    - id: "공장_자동화"
+      robots: "협동로봇 (cobot)"
+      productivity: "+200%"
+      jobs: "-50%"
+
+# ========================================
+# DIGITAL TRANSFORMATION CASES
+# ========================================
+
+digital_transformation_cases:
+
+  banking:
+    - id: "은행_모바일"
+      old: "지점 방문"
+      new: "모바일 앱"
+      branch_closure: "지점 30% 감소"
+
+    - id: "atm_감소"
+      reason: "모바일 송금"
+      trend: "ATM 대수 감소"
+
+  insurance:
+    - id: "보험_다이렉트"
+      old: "설계사"
+      new: "온라인 직판"
+      price: "30% 저렴"
+
+# ========================================
+# SUBSCRIPTION ECONOMY CASES
+# ========================================
+
+subscription_economy_cases:
+
+  physical_goods:
+    - id: "면도기_구독"
+      company: "Gillette on Demand"
+      response_to: "Dollar Shave Club"
+
+    - id: "생리대_구독"
+      korean: "여성용품 정기배송"
+
+  software_transition:
+    - id: "adobe_transition"
+      before: "영구 라이센스 $2,000"
+      after: "월 $54.99"
+      arr_growth: "300%"
+
+# ========================================
+# GIG ECONOMY CASES
+# ========================================
+
+gig_economy_cases:
+
+  delivery:
+    - id: "배달_라이더"
+      platform: "배민, 쿠팡"
+      riders: "10만명+"
+      income: "시간당 1-2만원"
+
+  driving:
+    - id: "우버_드라이버"
+      model: "Part-time"
+      flexibility: "시간 자유"
+
+  freelance:
+    - id: "프리랜서_개발자"
+      platforms: "크몽, Upwork"
+      rate: "시간당 5-10만원"
+
+# ========================================
+# SHARED ECONOMY CASES
+# ========================================
+
+shared_economy_cases:
+
+  mobility:
+    - id: "쏘카_카셰어링"
+      model: "차량 공유"
+      vs: "렌터카"
+      advantage: "15분 단위 대여"
+
+    - id: "킥보드_공유"
+      companies: "씽씽, 빔"
+      challenge: "수익성 낮음"
+
+  space:
+    - id: "위워크_공유오피스"
+      model: "공간 공유"
+      challenge: "WeWork 실패 후 위축"
+
+    - id: "스터디카페"
+      korean: "공유 스터디 공간"
+      price: "시간당 2,000원"
+
+# ========================================
+# COMMUNITY & CONTENT CASES
+# ========================================
+
+community_content_cases:
+
+  community_platform:
+    - id: "당근마켓_커뮤니티"
+      model: "지역 커뮤니티 + 거래"
+      monetization: "광고"
+
+    - id: "네이버_카페"
+      scale: "1,000만개+"
+      monetization: "광고"
+
+  ugc_platform:
+    - id: "인스타그램"
+      model: "UGC + 광고"
+      creators: "인플루언서"
+
+    - id: "틱톡"
+      growth: "폭발적"
+      threat_to: "YouTube, Instagram"
+
+# ========================================
+# HEALTHTECH CASES
+# ========================================
+
+healthtech_cases:
+
+  telemedicine:
+    - id: "닥터나우"
+      service: "비대면 진료"
+      regulation: "코로나로 한시 허용"
+
+  health_app:
+    - id: "삼성헬스"
+      users: "수천만"
+      monetization: "디바이스 판매"
+
+# ========================================
+# EDTECH CASES
+# ========================================
+
+edtech_additional_cases:
+
+  online_tutoring:
+    - id: "아이스크림_홈런"
+      target: "초등"
+      model: "AI 학습"
+      subscribers: "50만"
+
+  skill_learning:
+    - id: "클래스101"
+      model: "취미 클래스"
+      creators: "수천명"
+
+# ========================================
+# FOODTECH CASES
+# ========================================
+
+foodtech_cases:
+
+  ghost_kitchen:
+    - id: "고스트키친"
+      model: "배달 전용 주방"
+      brands: "10개 브랜드 운영"
+      cost_saving: "임대료 50% 절감"
+
+  meal_kit:
+    - id: "헬로프레시"
+      global: "독일"
+      vs: "Blue Apron (실패)"
+
+# ========================================
+# PROPTECH CASES
+# ========================================
+
+proptech_cases:
+
+  real_estate_platform:
+    - id: "직방"
+      service: "매물 검색"
+      monetization: "광고"
+
+    - id: "다방"
+      similar: "직방"
+      differentiation: "원룸 특화"
+
+# ========================================
+# AGTECH CASES
+# ========================================
+
+agtech_cases:
+
+  farm_tech:
+    - id: "농업_드론"
+      service: "방제"
+      cost: "인력 대비 50% 절감"
+
+    - id: "축산_iot"
+      service: "가축 모니터링"
+      benefit: "질병 조기 발견"
+
+# ========================================
+# RETAIL TECH DISRUPTION CASES
+# ========================================
+
+retail_tech_cases:
+
+  cashless:
+    - id: "무인_결제"
+      tech: "Amazon Go"
+      impact: "계산원 불필요"
+
+    - id: "qr_결제"
+      korean: "네이버페이, 카카오페이"
+      penetration: "소상공인 80%"
+
+# ========================================
+# BLOCKCHAIN & CRYPTO CASES
+# ========================================
+
+blockchain_cases:
+
+  cryptocurrency:
+    - id: "비트코인"
+      disruption: "중앙은행 vs 탈중앙화"
+      status: "ongoing"
+
+  nft:
+    - id: "nft_art"
+      disruption: "갤러리 vs 디지털"
+
+# ========================================
+# AI DISRUPTION CASES
+# ========================================
+
+ai_disruption_cases:
+
+  chatgpt:
+    - id: "chatgpt"
+      disruption: "검색, 콘텐츠 생성"
+      threat_to: "Google, 작가"
+
+  ai_art:
+    - id: "midjourney"
+      disruption: "디자이너 일부 대체"
+
+# ========================================
+# REMOTE WORK DISRUPTION
+# ========================================
+
+remote_work_cases:
+
+  tools:
+    - id: "zoom"
+      disruption: "대면 회의"
+      covid: "폭발적 성장"
+
+    - id: "slack"
+      disruption: "이메일"
+      adoption: "스타트업 표준"
+
+# ========================================
+# SOCIAL COMMERCE CASES
+# ========================================
+
+social_commerce_cases:
+
+  live_commerce:
+    - id: "그립"
+      model: "라이브 쇼핑"
+      vs: "TV 홈쇼핑"
+
+  influencer_commerce:
+    - id: "instagram_shopping"
+      model: "인플루언서 판매"
+
+# ========================================
+# METAVERSE & VR CASES
+# ========================================
+
+metaverse_cases:
+
+  virtual_worlds:
+    - id: "제페토"
+      korean: "네이버 Z"
+      users: "3억+"
+
+  vr_experience:
+    - id: "vr_방탈출"
+      disruption: "오프라인 방탈출"
+
+# ========================================
+# GREEN TECH CASES
+# ========================================
+
+green_tech_cases:
+
+  solar:
+    - id: "태양광_발전"
+      disruption: "화석 연료"
+      cost: "Grid parity 도달"
+
+  battery:
+    - id: "ess_storage"
+      application: "신재생 보완"
+
+# ========================================
+# MICRO-MOBILITY CASES
+# ========================================
+
+micro_mobility_cases:
+
+  escooter:
+    - id: "전동킥보드"
+      companies: "씽씽, 빔"
+      challenge: "수익성"
+
+  ebike:
+    - id: "전기자전거"
+      sharing: "공유 서비스"
+
+# ========================================
+# CIRCULAR ECONOMY CASES
+# ========================================
+
+circular_economy_cases:
+
+  recommerce:
+    - id: "중고거래"
+      당근: "3,000만 사용자"
+      번개장터: "구형 플랫폼"
+
+  rental:
+    - id: "옷_렌탈"
+      model: "구독 렌탈"
+      sustainability: "친환경"
+
+# ========================================
+# VERTICAL SAAS CASES
+# ========================================
+
+vertical_saas_cases:
+
+  restaurant_saas:
+    - id: "테이블링"
+      service: "예약 관리"
+      restaurants: "10,000개"
+
+  salon_saas:
+    - id: "노쇼_방지"
+      service: "예약 + 결제"
+      salons: "5,000개"

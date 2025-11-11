@@ -980,6 +980,1002 @@ references:
     의 흐름으로 설계되었습니다.
 
 # ========================================
+# BORING BUT REAL 비즈니스 모델 (v7.0+)
+# ========================================
+#
+# 주의: 아래 패턴들은 "화려하지 않지만 현실의 대부분"을 차지하는
+#       실제 비즈니스 모델들입니다. Tech/Startup 편향 해소를 위해 추가.
+#
+# ========================================
+
+# ========================================
+# 패턴 8: 제조업 모델 (Manufacturing)
+# ========================================
+
+manufacturing_model:
+  _id: "manufacturing_model"
+  _pattern_type: "production"
+  _note: "가장 오래되고 기본적인 비즈니스 모델"
+
+  concept:
+    name: "제조업 모델"
+    essence: "원자재를 완제품으로 변환하여 판매"
+    core_value: "생산 효율성 + 품질 + 규모의 경제"
+
+  trigger_observations:
+    signals:
+      - "특정 제품 수요는 있으나 공급 부족"
+      - "기존 제품 품질/가격 불만"
+      - "수입 의존도 높음 (국산화 기회)"
+      - "부품/소재 조달 비효율"
+
+  sub_models:
+
+    oem_odm:
+      name: "OEM/ODM (주문자 상표 부착)"
+      essence: "대기업 브랜드 제품을 대신 생산"
+
+      structure:
+        - "대기업이 설계/브랜드 보유"
+        - "중소기업이 생산 담당"
+        - "대량 생산으로 원가 절감"
+
+      revenue_model:
+        pricing: "원가 + 마진 (5-15%)"
+        volume_dependency: "높음 (대량 주문 필수)"
+
+      pros:
+        - "판로 걱정 없음 (B2B 고정 거래)"
+        - "마케팅 비용 제로"
+        - "생산에만 집중 가능"
+
+      cons:
+        - "낮은 마진 (5-15%)"
+        - "구매자 의존도 높음"
+        - "가격 협상력 약함"
+        - "브랜드 자산 없음"
+
+      case_studies:
+        fancy:
+          - company: "Foxconn (폭스콘)"
+            client: "Apple, Sony 등"
+            scale: "매출 $200B+"
+            model: "세계 최대 전자제품 OEM"
+
+          - company: "TSMC (대만)"
+            product: "반도체 파운드리"
+            clients: "Apple, Nvidia, AMD"
+            moat: "최첨단 공정 기술"
+            revenue: "$70B+"
+
+          - company: "Magna (캐나다)"
+            product: "자동차 부품 OEM"
+            clients: "GM, Ford, BMW"
+            revenue: "$40B+"
+
+        boring:
+          - company: "○○전자 (중소 제조사)"
+            product: "삼성 TV 부품"
+            revenue: "연 100억"
+            margin: "8%"
+            dependency: "삼성 의존 90%"
+            risk: "삼성이 거래 중단하면 폐업"
+
+          - company: "△△플라스틱"
+            product: "가전 외장 사출"
+            clients: "LG전자, 삼성전자"
+            revenue: "연 50억"
+            employees: "30명"
+            margin: "10%"
+            challenge: "중국 경쟁 (가격 압박)"
+
+          - company: "××금속"
+            product: "자동차 프레임 부품"
+            client: "현대차 2차 협력사"
+            revenue: "연 80억"
+            margin: "7%"
+            risk: "단가 인하 압박 매년 5%"
+
+          - company: "□□섬유"
+            product: "의류 OEM (유니클로, ZARA)"
+            location: "부산"
+            revenue: "연 200억"
+            challenge: "베트남 공장 이전 압박"
+
+          - company: "◇◇식품"
+            product: "편의점 도시락 OEM"
+            clients: "CU, GS25"
+            daily_production: "1만개"
+            revenue: "연 150억"
+            margin: "12%"
+
+    private_label:
+      name: "자체 브랜드 (Private Label)"
+      essence: "자체 브랜드로 제조 및 판매"
+
+      structure:
+        - "설계, 생산, 마케팅 모두 자체"
+        - "브랜드 자산 축적"
+        - "높은 마진 가능"
+
+      revenue_model:
+        pricing: "시장 가격 결정 (자율)"
+        margin: "30-50% (브랜드 프리미엄)"
+
+      pros:
+        - "높은 마진"
+        - "브랜드 자산"
+        - "가격 결정권"
+
+      cons:
+        - "마케팅 비용 높음"
+        - "재고 리스크"
+        - "브랜드 구축 시간"
+
+      case_studies:
+        korean:
+          - company: "락앤락"
+            product: "밀폐용기"
+            achievement: "해외 진출 성공"
+            revenue: "연 8,000억"
+            moat: "특허 + 브랜드"
+
+          - company: "코웨이"
+            product: "정수기, 공기청정기"
+            model: "렌탈 + 자체 브랜드"
+            revenue: "연 3조원"
+            moat: "AS 네트워크 + 브랜드"
+
+          - company: "아이리버"
+            product: "MP3 플레이어"
+            era: "2000년대 (지금은 몰락)"
+            peak: "세계 시장점유율 2위"
+            lesson: "브랜드 구축 성공 but iPod에 밀림"
+
+          - company: "한샘"
+            product: "주방가구, 인테리어"
+            revenue: "연 2조원"
+            moat: "설치 네트워크 + 브랜드"
+
+          - company: "쿠쿠"
+            product: "전기밥솥"
+            revenue: "연 5,000억"
+            moat: "국내 1위 브랜드"
+
+          - company: "청호나이스"
+            product: "정수기"
+            revenue: "연 7,000억"
+            competition: "코웨이와 양강 구도"
+
+        global:
+          - company: "Dyson"
+            product: "청소기, 헤어드라이어"
+            origin: "영국"
+            moat: "디자인 + 기술 특허"
+
+          - company: "GoPro"
+            product: "액션캠"
+            peak_revenue: "$1.6B (2015)"
+            현재: "스마트폰 경쟁으로 쇠퇴"
+
+# ========================================
+# 패턴 9: 도매/유통 모델 (Wholesale/Distribution)
+# ========================================
+
+wholesale_distribution_model:
+  _id: "wholesale_distribution_model"
+  _pattern_type: "intermediation"
+  _note: "화려하지 않지만 거대한 시장"
+
+  concept:
+    name: "도매/유통 모델"
+    essence: "제조사와 소매점 사이 중간 유통"
+    core_value: "물류 효율성 + 재고 관리 + 대량 구매 협상력"
+
+  trigger_observations:
+    signals:
+      - "소규모 소매점들이 직접 구매 어려움"
+      - "제조사가 전국 배송 부담"
+      - "재고 관리 비효율"
+      - "결제 조건 불리 (현금 거래)"
+
+  opportunity_structure:
+
+    value_proposition:
+      to_manufacturers:
+        - "대량 구매 (한 번에 판로 확보)"
+        - "결제 안정성"
+        - "전국 배송 대행"
+
+      to_retailers:
+        - "소량 구매 가능"
+        - "외상 거래 가능"
+        - "빠른 배송 (지역 거점)"
+
+      to_distributor:
+        - "구매 할인 (대량)"
+        - "판매 마진 (소매가 - 도매가)"
+        - "규모의 경제"
+
+    revenue_model:
+      margin: "5-20% (제품에 따라)"
+      volume: "매우 높음 (회전율 중요)"
+
+      example:
+        purchase_price: "개당 8,000원 (100개 구매)"
+        sell_price: "개당 10,000원 (소매점에)"
+        margin: "2,000원 (25%)"
+        monthly_volume: "10,000개"
+        monthly_profit: "2,000만원"
+
+  critical_success_factors:
+
+    logistics:
+      - "지역별 물류 거점"
+      - "빠른 배송 (익일 배송)"
+      - "재고 관리 시스템"
+
+    relationships:
+      - "제조사와 신뢰 (대량 구매력)"
+      - "소매점과 관계 (외상 신용)"
+      - "양쪽 모두 만족"
+
+    capital:
+      - "재고 자금 필요 (수억-수십억)"
+      - "외상 회수 기간 관리"
+
+  case_studies:
+
+    fancy:
+      - company: "코스트코 (Costco)"
+        model: "도매 + 회원제"
+        revenue: "$240B+"
+        margin: "낮음 (11%) but 회원비로 수익"
+
+    boring:
+      - company: "○○식자재 유통"
+        market: "음식점 식자재"
+        customers: "음식점 300개"
+        revenue: "연 50억"
+        margin: "15%"
+
+        operation:
+          - "새벽 3-5시 배송"
+          - "외상 30일"
+          - "재고 회전율 월 3회"
+
+        risks:
+          - "외상 미회수"
+          - "재고 부패 (식자재)"
+          - "음식점 폐업 시 손실"
+
+# ========================================
+# 패턴 10: 전통 소매 모델 (Traditional Retail)
+# ========================================
+
+traditional_retail_model:
+  _id: "traditional_retail_model"
+  _pattern_type: "retail"
+  _note: "온라인에 밀리지만 여전히 거대한 시장"
+
+  concept:
+    name: "전통 소매 모델"
+    essence: "오프라인 매장에서 소비자에게 직접 판매"
+    core_value: "접근성 + 즉시성 + 경험"
+
+  trigger_observations:
+    signals:
+      - "특정 지역에 해당 제품 매장 없음"
+      - "온라인 구매가 불편한 제품 (신선식품, 긴급 필요)"
+      - "체험이 중요한 제품 (의류, 가구)"
+      - "유동인구 많은 입지 발견"
+
+  sub_models:
+
+    convenience_store:
+      name: "편의점"
+      essence: "24시간 소량 판매"
+
+      economics:
+        revenue_sources:
+          - "제품 판매 마진 (20-30%)"
+          - "담배 (마진 낮지만 유인 효과)"
+          - "도시락/김밥 (마진 높음 40%)"
+
+        cost_structure:
+          - "임대료 (월 200-500만원)"
+          - "인건비 (월 300-400만원)"
+          - "가맹비/로열티 (월 50-100만원)"
+
+        break_even: "일 매출 100-150만원"
+
+      case_study:
+        location: "대학가 편의점"
+        daily_revenue: "150만원"
+        monthly_revenue: "4,500만원"
+        gross_margin: "30% (1,350만원)"
+        costs:
+          rent: "400만원"
+          labor: "300만원"
+          franchise: "80만원"
+          utility: "100만원"
+        net_profit: "470만원/월"
+
+    specialty_store:
+      name: "전문점 (의류, 화장품, 가구 등)"
+
+      advantages_vs_online:
+        - "체험 가능 (입어보기, 발라보기)"
+        - "즉시 구매 (배송 기다림 없음)"
+        - "매장 경험 (분위기)"
+        - "상담/서비스"
+
+      challenges:
+        - "높은 임대료 (프리미엄 상권)"
+        - "재고 리스크"
+        - "온라인 가격 경쟁"
+
+      survival_strategy:
+        - "온라인 없는 브랜드 (독점)"
+        - "체험 중심 (쇼룸화)"
+        - "O2O 결합 (오프라인 체험 → 온라인 구매)"
+
+# ========================================
+# 패턴 11: 자영업 모델 (Small Business)
+# ========================================
+
+small_business_model:
+  _id: "small_business_model"
+  _pattern_type: "owner_operated"
+  _note: "한국 자영업자 550만명 (전체 취업자 20%)"
+
+  concept:
+    name: "자영업 모델"
+    essence: "소규모 자본으로 개인이 직접 운영"
+    reality: "한국에서 가장 흔한 사업 형태"
+
+  sub_models:
+
+    restaurant:
+      name: "음식점"
+      scale: "전국 60만개"
+      failure_rate: "5년 생존율 30%"
+
+      economics:
+        startup_cost:
+          deposit: "5,000만원 (권리금 + 보증금)"
+          interior: "3,000만원"
+          equipment: "2,000만원"
+          total: "1억원"
+
+        monthly:
+          revenue: "3,000만원 (일 100만원)"
+          cogs: "900만원 (30%)"
+          rent: "500만원"
+          labor: "600만원 (직원 2명)"
+          utility: "200만원"
+          other: "200만원"
+          net_profit: "600만원"
+
+        owner_income: "월 600만원 (but 주 70시간 근무)"
+
+      success_factors:
+        - "입지 (유동인구)"
+        - "맛 (재방문율)"
+        - "회전율 (테이블 회전)"
+        - "원가 관리"
+
+      failure_patterns:
+        - "경쟁 과다 (치킨집 4만개)"
+        - "배달 수수료 부담 (15-20%)"
+        - "임대료 상승"
+        - "최저임금 인상"
+
+    cafe:
+      name: "카페"
+      scale: "전국 10만개"
+      trend: "계속 증가 중 (포화)"
+
+      economics:
+        margin:
+          americano: "원가 500원, 판매 4,500원 (마진 89%)"
+          but_reality: "인건비, 임대료 고려 시 순이익 10-15%"
+
+        break_even: "일 매출 50-70만원"
+
+      saturation:
+        - "서울 특정 상권: 100m당 카페 5개"
+        - "경쟁 심화 → 마진 압박"
+        - "차별화 필수 (특화 메뉴, 인테리어)"
+
+# ========================================
+# 패턴 12: B2B 영업 모델 (Business-to-Business Sales)
+# ========================================
+
+b2b_sales_model:
+  _id: "b2b_sales_model"
+  _pattern_type: "enterprise_sales"
+  _note: "B2C보다 덜 화려하지만 더 안정적"
+
+  concept:
+    name: "B2B 영업 모델"
+    essence: "기업을 고객으로 하는 제품/서비스 판매"
+    core_value: "장기 계약 + 높은 LTV + 안정성"
+
+  characteristics:
+
+    vs_b2c:
+      sales_cycle: "길다 (3-12개월)"
+      contract_size: "크다 (수천만-수억)"
+      customer_count: "적다 (10-100개)"
+      churn: "낮다 (<10%/년)"
+      relationship: "중요 (키맨 관리)"
+
+  sub_models:
+
+    enterprise_software:
+      name: "기업용 소프트웨어"
+
+      revenue_model:
+        license: "영구 라이센스 or 연간 구독"
+        maintenance: "연 20% (유지보수)"
+        customization: "별도 프로젝트"
+
+      sales_process:
+        1: "리드 생성 (전시회, 웨비나)"
+        2: "POC (Proof of Concept)"
+        3: "제안서"
+        4: "협상 (3-6개월)"
+        5: "계약"
+        6: "구축 (3-12개월)"
+
+      case_study:
+        company: "○○ ERP 솔루션"
+        customers: "제조사 50개"
+        contract_size: "평균 5,000만원/년"
+        arr: "25억"
+        gross_margin: "70%"
+
+    industrial_supplies:
+      name: "산업재 공급"
+
+      examples:
+        - "공장 소모품 (장갑, 안전화)"
+        - "사무용품 도매"
+        - "기계 부품"
+
+      revenue_model:
+        - "정기 납품 계약"
+        - "마진 10-30%"
+        - "대량 거래"
+
+      success_factors:
+        - "품질 안정성"
+        - "납기 준수"
+        - "가격 경쟁력"
+        - "담당자와 관계"
+
+# ========================================
+# 패턴 13: 전문 서비스 모델 (Professional Services)
+# ========================================
+
+professional_services_model:
+  _id: "professional_services_model"
+  _pattern_type: "expertise_based"
+  _note: "전문성 기반 고마진 서비스"
+
+  concept:
+    name: "전문 서비스 모델"
+    essence: "전문 지식/자격을 시간 또는 프로젝트로 판매"
+    core_value: "전문성 + 신뢰 + 맞춤형 솔루션"
+
+  sub_models:
+
+    법률_회계:
+      examples: ["법무법인", "회계법인", "특허법인"]
+
+      revenue_model:
+        billing: "시간당 요금 or 성공 보수"
+        typical_rate: "변호사 시간당 30-100만원"
+
+      economics:
+        gross_margin: "50-70% (인건비 제외)"
+        leverage: "파트너 1명 : 직원 5-10명"
+
+      case_study:
+        firm: "중소 법무법인"
+        partners: "3명"
+        associates: "10명"
+        revenue: "연 30억"
+        profit_margin: "40%"
+
+    컨설팅:
+      types: ["전략", "IT", "HR", "재무"]
+
+      revenue_model:
+        project_based: "프로젝트당 수천만-수억"
+        retainer: "월 고정 자문료"
+
+      case_study:
+        company: "○○ IT 컨설팅"
+        employees: "20명"
+        avg_project: "5,000만원"
+        projects_year: "30개"
+        revenue: "15억"
+
+# ========================================
+# 패턴 14: 건설 모델 (Construction)
+# ========================================
+
+construction_model:
+  _id: "construction_model"
+  _pattern_type: "project_based"
+  _note: "한국 GDP의 15% 차지하는 거대 산업"
+
+  concept:
+    name: "건설 모델"
+    essence: "설계도대로 건물/인프라 시공"
+    reality: "프로젝트 기반, 현금흐름 관리 중요"
+
+  sub_models:
+
+    종합건설:
+      name: "종합 건설사"
+      license: "종합건설업 면허"
+      projects: ["아파트", "빌딩", "공장"]
+
+      revenue_model:
+        contract: "공사 도급 계약"
+        margin: "5-10% (대형 프로젝트)"
+
+      cash_flow:
+        problem: "선투자 → 기성 청구 → 회수 (6-12개월)"
+        risk: "부도 위험 (현금 부족)"
+
+    전문건설:
+      name: "전문 공종 (전기, 설비, 인테리어 등)"
+
+      revenue_model:
+        subcontract: "종합건설사로부터 하청"
+        margin: "10-20%"
+
+      case_study:
+        company: "○○전기공사"
+        employees: "50명"
+        projects: "빌딩 전기공사"
+        revenue: "연 100억"
+        margin: "12%"
+
+# ========================================
+# 패턴 15: 물류 모델 (Logistics)
+# ========================================
+
+logistics_model:
+  _id: "logistics_model"
+  _pattern_type: "transportation"
+  _note: "이커머스 성장으로 급증하는 수요"
+
+  concept:
+    name: "물류 모델"
+    essence: "화물을 A지점에서 B지점으로 운송"
+    core_value: "속도 + 안정성 + 비용 효율"
+
+  sub_models:
+
+    freight:
+      name: "화물 운송"
+
+      types:
+        - "택배 (소화물)"
+        - "화물차 (대량)"
+        - "특송 (긴급)"
+
+      revenue_model:
+        unit: "건당 또는 중량당"
+        margin: "10-20%"
+
+      economics:
+        fixed_cost: "차량, 창고, 인건비"
+        variable_cost: "유류비, 통행료"
+
+    warehousing:
+      name: "창고 보관"
+
+      revenue_model:
+        - "보관료 (㎡당 월 단위)"
+        - "하역료 (입출고)"
+        - "부가 서비스 (포장, 라벨링)"
+
+      case_study:
+        company: "○○물류센터"
+        area: "3,000㎡"
+        clients: "이커머스 10개"
+        revenue: "월 5,000만원"
+
+# ========================================
+# 패턴 16: 부동산 모델 (Real Estate)
+# ========================================
+
+real_estate_model:
+  _id: "real_estate_model"
+  _pattern_type: "asset_based"
+  _note: "한국인이 가장 선호하는 투자"
+
+  concept:
+    name: "부동산 모델"
+    essence: "부동산을 매입/임대/개발하여 수익"
+
+  sub_models:
+
+    rental:
+      name: "임대 사업"
+
+      types:
+        - "주거용 (아파트, 오피스텔)"
+        - "상업용 (상가, 사무실)"
+
+      revenue_model:
+        - "월세 (안정적 현금흐름)"
+        - "보증금 (레버리지)"
+
+      economics:
+        yield: "연 3-5% (매매가 대비)"
+        leverage: "LTV 40-60% (대출)"
+
+      case_study:
+        owner: "개인 임대 사업자"
+        assets: "상가 3개 (총 30억)"
+        loan: "12억 (40%)"
+        monthly_rent: "월 500만원"
+        annual_yield: "5%"
+
+    development:
+      name: "개발/분양"
+
+      revenue_model:
+        profit: "분양가 - (토지 + 건축 + 금융비용)"
+        typical_margin: "10-30%"
+
+      risk:
+        - "분양 미달"
+        - "공사비 증가"
+        - "금리 상승"
+
+# ========================================
+# 패턴 17: 교육 서비스 모델 (Education Services)
+# ========================================
+
+education_services_model:
+  _id: "education_services_model"
+  _pattern_type: "service"
+  _note: "한국 사교육 시장 26조원"
+
+  concept:
+    name: "교육 서비스 모델"
+    essence: "교육/강의를 제공하고 수강료 수취"
+
+  sub_models:
+
+    academy:
+      name: "학원"
+      scale: "전국 10만개+"
+
+      types:
+        - "입시 학원 (초중고)"
+        - "어학 학원"
+        - "직업 학원 (IT, 요리 등)"
+
+      revenue_model:
+        tuition: "월 수강료 × 학생 수"
+        typical: "학생당 월 20-50만원"
+
+      economics:
+        break_even: "학생 30-50명"
+
+        example:
+          students: "50명"
+          tuition: "월 30만원"
+          revenue: "월 1,500만원"
+          costs:
+            rent: "300만원"
+            teacher: "500만원"
+            admin: "200만원"
+          profit: "500만원"
+
+      challenges:
+        - "학생 모집 (마케팅 비용)"
+        - "강사 의존 (이탈 위험)"
+        - "온라인 강의 경쟁"
+
+    online_education:
+      name: "온라인 교육"
+
+      advantages:
+        - "낮은 고정비"
+        - "무한 확장성"
+        - "높은 마진"
+
+      revenue_model:
+        - "강의 판매 (1회 구매)"
+        - "구독 (월 정액)"
+
+# ========================================
+# 패턴 18: 의료 서비스 모델 (Healthcare Services)
+# ========================================
+
+healthcare_services_model:
+  _id: "healthcare_services_model"
+  _pattern_type: "professional_service"
+  _note: "진입장벽 높지만 안정적"
+
+  concept:
+    name: "의료 서비스 모델"
+    essence: "진료/치료 서비스 제공"
+    regulation: "의료법 규제 (영리 병원 금지)"
+
+  sub_models:
+
+    clinic:
+      name: "개인 의원"
+
+      revenue_sources:
+        - "건강보험 수가 (50-70%)"
+        - "비급여 진료 (30-50%)"
+
+      economics:
+        startup: "5억-10억 (장비, 인테리어)"
+        monthly_revenue: "5,000만-1억"
+        margin: "30-40%"
+
+      specialties:
+        high_margin: ["성형외과", "피부과", "치과"]
+        low_margin: ["내과", "소아과"]
+
+    pharmacy:
+      name: "약국"
+      scale: "전국 23,000개"
+
+      revenue_model:
+        - "처방전 조제 (마진 10-15%)"
+        - "일반의약품 판매 (마진 30-40%)"
+
+      economics:
+        monthly_revenue: "3,000-5,000만원"
+        profit_margin: "20-25%"
+
+# ========================================
+# 패턴 19: 일반 서비스 모델 (Service Provider)
+# ========================================
+
+service_provider_model:
+  _id: "service_provider_model"
+  _pattern_type: "labor_based"
+  _note: "사람의 노동력을 파는 가장 기본적인 모델"
+
+  concept:
+    name: "일반 서비스 모델"
+    essence: "육체 노동/기술 서비스 제공"
+
+  examples:
+
+    cleaning:
+      name: "청소 서비스"
+
+      types:
+        - "가정 청소"
+        - "사무실 청소"
+        - "특수 청소 (외벽, 새집)"
+
+      revenue_model:
+        unit: "시간당 or 건당"
+        rate: "시간당 2-3만원"
+
+      economics:
+        labor_cost: "60-70%"
+        margin: "30-40%"
+
+    repair:
+      name: "수리 서비스"
+
+      types:
+        - "가전 수리"
+        - "배관 수리"
+        - "인테리어 수리"
+
+      revenue_model:
+        - "출장비 (3-5만원)"
+        - "부품비 + 공임"
+
+# ========================================
+# 패턴 20: 농업 모델 (Agriculture)
+# ========================================
+
+agriculture_model:
+  _id: "agriculture_model"
+  _pattern_type: "primary_industry"
+  _note: "1차 산업, 하지만 스마트팜 등 혁신 중"
+
+  concept:
+    name: "농업 모델"
+    essence: "농작물/축산물 생산 및 판매"
+
+  sub_models:
+
+    traditional_farming:
+      name: "전통 농업"
+
+      challenges:
+        - "낮은 수익성"
+        - "기후 리스크"
+        - "중간 유통 마진 (40-60%)"
+        - "고령화"
+
+      revenue_model:
+        - "농협 출하 (도매 시장)"
+        - "마진: 생산비의 10-30%"
+
+    direct_sales:
+      name: "직거래/스마트팜"
+
+      innovations:
+        - "온라인 직판 (마진 증가)"
+        - "스마트팜 (생산성 2-3배)"
+        - "계약 재배 (안정적 판로)"
+
+      case_study:
+        farmer: "○○ 스마트팜"
+        crop: "딸기"
+        yield: "일반 대비 2배"
+        sales_channel: "온라인 직판"
+        margin: "40% (vs 일반 15%)"
+
+# ========================================
+# 패턴 21: 대리점/에이전시 모델 (Agency)
+# ========================================
+
+agency_dealership_model:
+  _id: "agency_dealership_model"
+  _pattern_type: "intermediation"
+  _note: "브랜드 파워를 빌려 장사"
+
+  concept:
+    name: "대리점/에이전시 모델"
+    essence: "브랜드 제품을 지역/채널에서 독점 판매"
+
+  sub_models:
+
+    exclusive_dealership:
+      name: "독점 대리점"
+
+      examples:
+        - "자동차 딜러"
+        - "명품 부티크"
+        - "가전 대리점"
+
+      revenue_model:
+        margin: "판매가의 5-20%"
+        incentive: "판매 목표 달성 시 추가 인센티브"
+
+      pros:
+        - "브랜드 파워 활용"
+        - "독점 판매권"
+        - "본사 마케팅 지원"
+
+      cons:
+        - "판매 목표 압박"
+        - "재고 부담"
+        - "본사 통제"
+
+      case_study:
+        type: "자동차 딜러"
+        brand: "○○자동차"
+        territory: "△△시 독점"
+        sales_year: "연 500대"
+        margin_per_car: "200만원"
+        revenue: "10억"
+        overhead: "6억 (쇼룸, 인건비)"
+        profit: "4억"
+
+    sales_agency:
+      name: "영업 대행"
+
+      model:
+        - "제조사 제품을 대신 영업"
+        - "수수료 기반 (성과급)"
+
+      revenue_model:
+        commission: "판매액의 3-10%"
+
+# ========================================
+# 패턴 22: 금융 서비스 모델 (Financial Services)
+# ========================================
+
+financial_services_model:
+  _id: "financial_services_model"
+  _pattern_type: "intermediation"
+  _note: "진입장벽 높지만 고수익"
+
+  concept:
+    name: "금융 서비스 모델"
+    essence: "자금 중개 또는 리스크 관리"
+    regulation: "금융위 규제, 면허 필요"
+
+  sub_models:
+
+    insurance_agency:
+      name: "보험 대리점"
+
+      revenue_model:
+        commission:
+          first_year: "보험료의 30-60%"
+          renewal: "보험료의 3-5%"
+
+      economics:
+        - "초기: 신규 영업 중심"
+        - "성숙: 갱신 수수료 (안정적)"
+
+      case_study:
+        agent: "보험 설계사"
+        policies: "300건 보유"
+        annual_premium: "5억"
+        commission: "1,500만원/년 (갱신 3%)"
+
+    lending:
+      name: "대부업"
+
+      revenue_model:
+        interest: "법정 최고 금리 20%"
+        margin: "조달 비용 대비 스프레드"
+
+      risk:
+        - "대손 (연체/부도)"
+        - "법적 규제"
+
+# ========================================
+# BORING 패턴 요약
+# ========================================
+
+boring_patterns_summary:
+  
+  total_added: 15
+  
+  categories:
+    production:
+      - manufacturing_model
+    
+    distribution:
+      - wholesale_distribution_model
+      - traditional_retail_model
+    
+    services:
+      - professional_services_model
+      - education_services_model
+      - healthcare_services_model
+      - service_provider_model
+    
+    small_business:
+      - small_business_model
+    
+    b2b:
+      - b2b_sales_model
+      - agency_dealership_model
+    
+    asset_based:
+      - construction_model
+      - real_estate_model
+      - agriculture_model
+    
+    infrastructure:
+      - logistics_model
+      - financial_services_model
+  
+  key_insight:
+    - "Tech/Startup은 비즈니스의 일부일 뿐"
+    - "대부분의 실제 비즈니스는 boring but real"
+    - "Steve가 모든 산업을 포괄하도록 균형 맞춤"
+    - "플랫폼/SaaS만이 기회가 아님"
+
+# ========================================
 # END OF BUSINESS MODEL PATTERNS
 # ========================================
 
