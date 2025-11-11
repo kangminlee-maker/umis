@@ -1,0 +1,1306 @@
+# ========================================
+# UMIS Incumbent Failure Patterns v1.0
+# ========================================
+#
+# 목적: 시장 주도기업 몰락 패턴 - Steve의 현실성 검증용
+# 대칭: umis_disruption_patterns.yaml (공격자 시각 ↔ 방어자 실패)
+#
+# 구조:
+# - 10개 몰락 패턴 (이론 + 현실)
+# - 50개 실제 사례 (Fancy + Boring)
+# - Steve의 기회 발견 체크포인트
+#
+# 철학:
+# - "1등은 왜 무너지는가?"
+# - "모든 강점은 시간이 지나면 약점이 된다"
+# - "Fancy한 실패 + 일상적인 실패 모두 학습 가치 있음"
+#
+# ========================================
+
+_meta:
+  version: "1.0"
+  purpose: "시장 주도기업 몰락 패턴 라이브러리"
+  audience: "Steve (Explorer)"
+  parent_document: "umis_disruption_patterns.yaml"
+  usage_context: "기회 발견 시 1등의 취약점 분석"
+
+  philosophy: |
+    성공한 기업이 망하는 이유:
+    1. 구조적 딜레마 (따라하면 손해, 안 하면 밀림)
+    2. 조직적 경직성 (과거 성공 공식 집착)
+    3. 자원 배분 오류 (고수익 사업 우선)
+    4. 시장 변화 오독 (고객 목소리만 듣기)
+
+  sources:
+    academic:
+      - "The Innovator's Dilemma (Clayton Christensen)"
+      - "The Innovator's Solution (Christensen)"
+      - "7 Powers (Hamilton Helmer)"
+      - "Good Strategy Bad Strategy (Richard Rumelt)"
+      - "Competitive Strategy (Michael Porter)"
+      - "Blue Ocean Strategy (Kim & Mauborgne)"
+
+    industry:
+      - "HBR Case Studies"
+      - "McKinsey Quarterly"
+      - "BCG Perspectives"
+      - "CB Insights Market Share Loss Analysis"
+
+    korean_context:
+      - "한국 재벌 흥망사"
+      - "프랜차이즈 업계 분석"
+      - "전통 유통 vs 이커머스"
+
+  case_mix:
+    fancy: "40% (Kodak, Nokia 등 언론 주목)"
+    boring: "60% (동네 1등, 지역 독점 등 일상)"
+
+# ========================================
+# PATTERN 1: Innovator's Dilemma
+# "파괴적 혁신에 대응 실패"
+# ========================================
+
+innovators_dilemma:
+  _id: "innovators_dilemma"
+  _pattern_type: "disruption_response_failure"
+  _source: "Clayton Christensen (1997)"
+
+  concept:
+    name: "혁신가의 딜레마 (Innovator's Dilemma)"
+    essence: "기존 고객에 집중하다가 파괴적 혁신을 놓침"
+    counter_to: "innovation_disruption (umis_disruption_patterns.yaml)"
+
+  theory:
+    christensen_framework:
+      sustaining_innovation:
+        definition: "기존 제품의 성능 개선"
+        incumbent_advantage: "자원, 고객 관계, 기술력"
+        result: "1등이 계속 1등"
+
+      disruptive_innovation:
+        definition: "새로운 가치 척도로 시장 재정의"
+        types:
+          low_end: "저가 시장부터 시작 → 상향 이동"
+          new_market: "비소비자를 고객으로 전환"
+
+        incumbent_trap: |
+          1. 신기술이 '성능 부족'으로 보임
+          2. 기존 고객들도 관심 없음
+          3. 마진이 낮아서 투자 정당화 어려움
+          4. 경영진이 무시
+          5. 신기술 'Good Enough' 도달
+          6. 시장 급격 이동 → 대응 불가
+
+    key_insight:
+      - "훌륭한 경영이 실패의 원인 (역설)"
+      - "고객 목소리를 들은 것이 독이 됨"
+      - "합리적 의사결정이 파국을 부름"
+
+  failure_mechanism:
+
+    resource_allocation_trap:
+      problem: "고수익 사업에 자원 우선 배분"
+
+      rational_but_fatal:
+        - step_1: "신기술 프로젝트 제안"
+        - step_2: "ROI 계산 → 기존 사업이 더 높음"
+        - step_3: "기존 사업에 투자 집중 (합리적)"
+        - step_4: "신기술 시장이 커짐"
+        - step_5: "뒤늦게 진입 → 경쟁 밀림"
+
+      numbers_example:
+        existing_business: "마진 70%, 시장 $10B"
+        new_technology: "마진 10%, 시장 $100M (초기)"
+        cfo_decision: "기존 사업 투자 (당연함)"
+        reality_5years: "신기술 시장 $5B, 기존 시장 $2B"
+
+    capability_mismatch:
+      - "기존 역량으로 신기술 평가 → 오판"
+      - "새로운 가치 척도 이해 못함"
+      - "조직 DNA 변경 불가"
+
+    customer_voice_trap:
+      problem: "고객이 원하는 걸 만들었는데 망함"
+
+      mechanism:
+        - "기존 고객: 더 빠른 말을 원함"
+        - "1등: 더 빠른 말 개발 (고객 중심)"
+        - "파괴자: 자동차 개발 (고객 무시)"
+        - "결과: 시장이 자동차로 이동"
+
+      insight: "올바른 고객을 들어야 함 (미래 고객 ≠ 기존 고객)"
+
+  case_studies_fancy:
+
+    # ─────────────────────────────────
+    # FANCY CASE 1: Kodak
+    # ─────────────────────────────────
+
+    kodak:
+      company: "Kodak"
+      market: "필름 → 디지털 카메라"
+      timeline: "1975-2012"
+      irony: "디지털 카메라를 발명한 회사가 디지털에 망함"
+
+      chronology:
+        1975: "Steven Sasson (Kodak 엔지니어) 최초 디지털 카메라 발명"
+        1976: "경영진 반응: '누가 이걸 쓰겠어? 화질이 형편없잖아'"
+        1980s: "디지털 카메라 특허 다수 확보 (선점)"
+        1990s: "디지털 카메라 출시하지만 내부에서 '부가 사업' 취급"
+        2000s: "디지털 시장 급성장, Kodak 필름 매출 급감"
+        2012: "파산 (Chapter 11)"
+
+      classic_dilemma:
+        existing_business:
+          product: "필름 + 인화"
+          margin: "70%"
+          customers: "사진관, 소비자 (프린트 중시)"
+          revenue_1996: "$16B (피크)"
+
+        disruptive_technology:
+          product: "디지털 카메라"
+          margin: "10-15%"
+          customers: "얼리어답터 (편의성 중시)"
+          initial_market: "<$1B"
+
+        rational_decision:
+          - "필름 사업 마진 70% vs 디지털 10%"
+          - "CFO 판단: 필름에 투자 집중 (합리적)"
+          - "마케팅: 프린트 품질 강조 (고객 목소리)"
+
+        fatal_assumption:
+          kodak_belief: "소비자는 프린트 품질을 최우선시"
+          reality: "소비자는 편의성 선택 (Good Enough 화질)"
+          tipping_point: "2003년경 디지털 화질 'Good Enough' 도달"
+
+      financial_reality:
+        peak_revenue: "$16B (1996)"
+        peak_employees: "14만명"
+        digital_investment_late: "수십억 달러 (2000년대, 너무 늦음)"
+        bankruptcy_year: 2012
+        current_status: "특허 라이센싱 회사로 축소"
+
+      lessons:
+        - "자기 발명도 자기 파괴 못함 (Self-disruption 실패)"
+        - "마진율 함정 (고마진 사업이 독)"
+        - "고객 목소리 함정 (기존 고객 ≠ 미래 고객)"
+        - "'Good Enough' 전환점 오판"
+
+      steve_checkpoint:
+        when_seeing_opportunity:
+          - "이 시장의 1등이 높은 마진율 사업에 집중하는가?"
+          - "신기술/모델을 '성능 부족'으로 무시하는가?"
+          - "1등의 고객이 신기술에 관심 없는가?"
+
+        attack_strategy:
+          - "저가/낮은 성능으로 시작"
+          - "새로운 가치 척도 제시 (편의성 > 품질)"
+          - "'Good Enough' 도달 시점 예측"
+          - "1등이 무시하는 동안 시장 장악"
+
+    # ─────────────────────────────────
+    # FANCY CASE 2: Nokia
+    # ─────────────────────────────────
+
+    nokia:
+      company: "Nokia"
+      market: "피처폰 → 스마트폰"
+      timeline: "2007-2013"
+      quote: "We didn't do anything wrong, but somehow, we lost"
+
+      chronology:
+        2007_06: "iPhone 출시"
+        2007_07: "Nokia 임원들 반응: '틈새 제품, 배터리 2일 못감'"
+        2008: "Nokia 시장점유율 40% (피크)"
+        2010: "Symbian OS 한계 명확해짐"
+        2011: "Windows Phone 파트너십 (늦음)"
+        2013: "휴대폰 사업 Microsoft에 매각 ($7.2B)"
+
+      innovators_dilemma_analysis:
+        sustaining_dimension:
+          nokia_strength:
+            - "통화 품질 (1등)"
+            - "배터리 수명 (1등)"
+            - "내구성 (1등)"
+            - "통신사 관계 (1등)"
+          customer_demand: "더 좋은 통화, 더 긴 배터리"
+          nokia_response: "통화/배터리 개선 (고객 목소리)"
+
+        disruptive_dimension:
+          new_value_axis:
+            - "앱 생태계"
+            - "터치 UX"
+            - "인터넷 통합"
+            - "개발자 플랫폼"
+          nokia_capability: "하드웨어 중심, SW 약함"
+          nokia_response: "Symbian 고집 (레거시)"
+
+        technology_debt:
+          symbian:
+            years_accumulated: "10년+"
+            engineers: "수천명"
+            switching_cost: "조직 전체 재편 필요"
+            result: "iOS/Android로 전환 불가능"
+
+      financial_reality:
+        peak_share: "40% (2008)"
+        smartphone_share_2013: "<3%"
+        sale_price: "$7.2B (피크 시가총액 대비 -80%)"
+        employee_impact: "10만명+ 해고"
+
+      lessons:
+        - "하드웨어 vs 소프트웨어 가치 축 전환"
+        - "레거시 기술 부채 = 전환 장벽"
+        - "고객이 원하는 것 (배터리) ≠ 시장이 선택한 것 (앱)"
+
+  case_studies_boring:
+
+    # ─────────────────────────────────
+    # BORING CASE 1: 동네 문구점
+    # ─────────────────────────────────
+
+    local_stationery_store:
+      company: "○○동 30년 문구점"
+      market: "동네 문구 → 온라인 문구"
+      timeline: "2010-2020"
+      note: "언론에 안 나오지만 수천 개가 이렇게 망함"
+
+      success_formula:
+        peak_era: "1990-2010"
+        advantages:
+          - "초등학교 앞 입지 (독점)"
+          - "학부모와 관계 (단골)"
+          - "외상 거래 가능 (신용)"
+          - "즉시 구매 (급할 때)"
+
+        revenue_structure:
+          high_margin: "학용품 30-40%"
+          volume: "학기 초 집중"
+          loyal_customers: "동네 주민"
+
+      disruption:
+        disruptor: "쿠팡, 다이소, 인터넷 문방구"
+
+        new_value_proposition:
+          - "가격: 30-50% 저렴"
+          - "다양성: 10배 이상 제품"
+          - "편의: 다음날 배송"
+
+        good_enough_moment:
+          - "배송 1-2일 = '급할 때' 커버 가능"
+          - "가격 차이 > 관계 가치"
+
+      incumbent_trap:
+        why_couldnt_adapt:
+          resource_constraint:
+            - "온라인몰 구축 역량 없음"
+            - "재고 관리 시스템 없음"
+            - "자본 부족 (마진으로 근근이)"
+
+          capability_gap:
+            - "온라인 마케팅 모름"
+            - "배송 인프라 없음"
+            - "젊은 직원 채용 어려움"
+
+          customer_voice_trap:
+            - "단골들: '여기가 편해요' (감소 중)"
+            - "믿음: 단골은 계속 올 것"
+            - "현실: 단골도 가격엔 약함"
+
+      financial_trajectory:
+        peak_revenue: "월 1,000만원 (2000년대)"
+        2015: "월 600만원"
+        2018: "월 300만원 (임대료도 못 냄)"
+        2020: "폐업"
+
+      lessons:
+        - "지역 독점도 온라인 앞에 무너짐"
+        - "관계 > 가격은 한계 있음"
+        - "디지털 역량 없으면 적응 불가"
+        - "자본/규모 없으면 전환 못함"
+
+      scale:
+        similar_cases: "전국 수천 개 동네 문구점"
+        pattern: "2010-2020년 90% 폐업 추정"
+
+      steve_insight:
+        - "Boring한 시장도 Disruption 일어남"
+        - "자본/역량 없는 1등 = 취약"
+        - "관계 기반 사업도 가격 앞엔 약함"
+
+    # ─────────────────────────────────
+    # BORING CASE 2: 지역 케이블 TV 독점
+    # ─────────────────────────────────
+
+    regional_cable_tv:
+      company: "△△시 케이블 TV (지역 독점)"
+      market: "케이블 → IPTV/OTT"
+      timeline: "2000-2015"
+
+      success_formula:
+        monopoly_source: "지역 독점 라이센스"
+        business_model:
+          - "채널 패키지 판매 (월 5-8만원)"
+          - "세트톱박스 임대료"
+          - "VOD 수익"
+
+        moat:
+          - "유일한 선택지 (독점)"
+          - "전환 비용 (해지 절차)"
+          - "번들링 (인터넷 + TV)"
+
+        peak_era: "2000-2008"
+
+      disruption:
+        wave_1_iptv:
+          players: "KT, SK, LG (2008~)"
+          value_prop:
+            - "HD 화질"
+            - "양방향 서비스"
+            - "통신사 번들 (휴대폰 할인)"
+          result: "가입자 30% 이탈 (2008-2012)"
+
+        wave_2_ott:
+          players: "Netflix, YouTube, Wavve (2015~)"
+          value_prop:
+            - "월 만원 이하"
+            - "모바일 시청"
+            - "오리지널 콘텐츠"
+          result: "가입자 추가 40% 이탈"
+
+      incumbent_response:
+        what_they_tried:
+          - "가격 인하 (수익성 악화)"
+          - "채널 추가 (고객 관심 없음)"
+          - "번들 강화 (미봉책)"
+
+        why_failed:
+          technology_gap:
+            - "HD 전환 투자 부족"
+            - "양방향 서비스 구축 불가"
+            - "모바일 앱 품질 낮음"
+
+          content_power_loss:
+            - "콘텐츠는 제작사 것"
+            - "제작사가 OTT 직접 진출"
+            - "독점 콘텐츠 없음"
+
+          business_model_collapse:
+            - "패키지 판매 → 해체 (Unbundling)"
+            - "월 8만원 → 월 1만원 시장으로"
+            - "수익 모델 자체가 붕괴"
+
+      financial_reality:
+        peak_subscribers: "지역 가구 70% (2008)"
+        2015_subscribers: "30%"
+        2020_subscribers: "10% (고령층)"
+        revenue_drop: "-80%"
+
+      lessons:
+        - "독점 라이센스도 기술 혁신 앞에 무력"
+        - "콘텐츠 소유 없으면 파이프는 약함"
+        - "Unbundling (패키지 해체) 대응 실패"
+
+      pattern_generalization:
+        similar_industries:
+          - "지역 신문 (인터넷 뉴스)"
+          - "지역 라디오 (팟캐스트)"
+          - "지역 서점 (알라딘)"
+
+        common_failure:
+          - "지역 독점 = 안전하다는 착각"
+          - "디지털 전환 투자 부족"
+          - "콘텐츠/차별화 없음"
+
+# ========================================
+# PATTERN 2: Success Formula Trap
+# "과거 성공 공식에 갇혀 변화 못함"
+# ========================================
+
+success_formula_trap:
+  _id: "success_formula_trap"
+  _pattern_type: "organizational_rigidity"
+  _source: "Active Inertia (Donald Sull, HBR 1999)"
+
+  concept:
+    name: "성공 공식의 함정 (Success Formula Trap)"
+    aka: "Active Inertia, Competency Trap"
+    essence: "과거 성공 경험이 변화를 막는 족쇄"
+
+  theory:
+    donald_sull_framework:
+      active_inertia:
+        definition: "조직이 과거 성공 공식을 더욱 강화하며 몰락"
+        vs_passive_inertia: "게으름 아님, 오히려 열심히 함 (잘못된 방향)"
+
+      four_hallmarks:
+        strategic_frames:
+          - "과거 성공 패러다임으로 세상 봄"
+          - "새로운 현실 해석 못함"
+
+        processes:
+          - "과거 성공 프로세스 고수"
+          - "새로운 방식 거부"
+
+        relationships:
+          - "과거 파트너/고객 집착"
+          - "새로운 관계 못 만듦"
+
+        values:
+          - "과거 성공 가치관 절대시"
+          - "새로운 가치 인정 안 함"
+
+    competency_trap:
+      mechanism:
+        - "A를 잘해서 성공"
+        - "A에 투자 집중"
+        - "A 역량 극대화"
+        - "시장이 B를 원하게 됨"
+        - "B는 못하니까 A를 더 잘함"
+        - "몰락"
+
+  case_studies_fancy:
+
+    blackberry:
+      company: "BlackBerry (RIM)"
+      market: "기업 스마트폰"
+      timeline: "2007-2016"
+
+      success_formula:
+        core: "물리 키보드 + 보안 + 기업 이메일"
+        customers: "기업 임원, 정부, 금융"
+        peak: "시장점유율 50% (북미, 2009)"
+
+        success_pillars:
+          security: "BES (BlackBerry Enterprise Server)"
+          keyboard: "타이핑 생산성"
+          email: "Push email 실시간"
+          brand: "비즈니스맨 상징"
+
+      market_shift:
+        iphone_value: "터치 + 앱 + 소비자 UX"
+        trend: "Consumerization of IT"
+        byod: "Bring Your Own Device"
+
+      trap_mechanism:
+        what_executives_heard:
+          - "우리 CEO는 키보드 없으면 못 씀"
+          - "보안이 최우선"
+          - "앱스토어는 보안 위협"
+
+        what_they_did:
+          - "물리 키보드 고집"
+          - "터치스크린 늦게 도입 (Storm, 2008 실패)"
+          - "앱 생태계 무시"
+
+        active_inertia:
+          - "키보드를 더 좋게 만듦"
+          - "보안을 더 강화함"
+          - "이메일을 더 빠르게 함"
+          - "→ 시장은 앱으로 이동함"
+
+      financial_reality:
+        peak_subscribers: "8,500만 (2011)"
+        2016: "2,300만 (-73%)"
+        market_share: "<1%"
+        result: "하드웨어 사업 중단 (2016)"
+
+      lessons:
+        - "고객 목소리 ≠ 시장 트렌드"
+        - "강점을 더 강화 = 때로는 독"
+        - "Success Formula 버리기 = 가장 어려움"
+
+  case_studies_boring:
+
+    local_academy:
+      company: "○○동 30년 입시학원"
+      market: "오프라인 학원 → 온라인 강의"
+      timeline: "2010-2020"
+
+      success_formula:
+        era: "1990-2010"
+        core: "스타 강사 + 대면 관리 + 지역 입소문"
+
+        what_worked:
+          - "강사 카리스마 (학생 통제)"
+          - "학부모 상담 (신뢰)"
+          - "자습실 관리 (강제 학습)"
+          - "지역 1등 (입소문)"
+
+        revenue_model:
+          - "월 50-80만원 (고3)"
+          - "학생 100-150명"
+          - "스타 강사 의존"
+
+      disruption:
+        megastudy_etc: "메가스터디, 이투스 (2000년대~)"
+
+        value_shift:
+          old: "관리 + 통제"
+          new: "최고 강의 + 편의성"
+
+        price_shift:
+          offline: "월 80만원"
+          online: "월 10-30만원"
+
+      trap_mechanism:
+        what_원장_believed:
+          - "우리는 관리가 강점"
+          - "온라인은 게으른 애들이나"
+          - "학부모는 관리를 원함"
+
+        active_inertia:
+          - "자습실 더 늘림"
+          - "관리 더 강화함 (CCTV)"
+          - "학부모 상담 더 자주"
+          - "→ 학생들은 온라인으로 이동"
+
+        why_couldnt_change:
+          - "강의 콘텐츠 제작 능력 없음"
+          - "온라인 시스템 구축 비용"
+          - "스타 강사 1-2명 의존 (확장 불가)"
+          - "원장 나이 60대 (디지털 이해 부족)"
+
+      financial_trajectory:
+        peak: "연 10억 매출 (2008)"
+        2015: "연 5억"
+        2018: "연 2억"
+        2020: "폐업"
+
+      pattern:
+        similar_cases:
+          - "전국 수천 개 입시학원"
+          - "음악학원, 미술학원"
+          - "태권도장, 수영장"
+
+        common_trap:
+          - "'관리'가 강점 → 온라인에선 무용"
+          - "스타 강사 의존 → 확장성 없음"
+          - "고령 원장 → 디지털 전환 불가"
+
+      steve_insight:
+        - "로컬 사업도 온라인에 붕괴"
+        - "관리/통제는 디지털 시대 약점"
+        - "확장성 없는 강점 = 취약"
+
+# ========================================
+# PATTERN 3: Platform Envelopment
+# "플랫폼이 인접 시장 잠식"
+# ========================================
+
+platform_envelopment:
+  _id: "platform_envelopment"
+  _pattern_type: "adjacent_market_takeover"
+  _source: "Eisenmann, Parker, Van Alstyne (2011)"
+
+  concept:
+    name: "플랫폼 포위 (Platform Envelopment)"
+    essence: "거대 플랫폼이 인접 기능 추가로 전문 업체 잠식"
+
+  mechanism:
+    platform_advantage:
+      - "기존 사용자 base 활용"
+      - "번들링 (무료/저가 제공)"
+      - "데이터/네트워크 효과"
+
+    standalone_player_death:
+      - "플랫폼의 '부가 기능' = 전문 업체의 '핵심'"
+      - "경쟁 불가 (무료 vs 유료)"
+      - "시장 점유율 급락"
+
+  case_studies_fancy:
+
+    microsoft_office_vs_specialists:
+      attacker: "Microsoft Office Suite"
+      victims:
+        - "WordPerfect (워드)"
+        - "Lotus 1-2-3 (스프레드시트)"
+        - "Harvard Graphics (프레젠테이션)"
+
+      mechanism:
+        1990s:
+          - "각 제품이 독립 시장 리더"
+          - "WordPerfect 점유율 50%+"
+
+        microsoft_strategy:
+          - "Office Suite 번들 (Word + Excel + PowerPoint)"
+          - "Windows와 통합"
+          - "가격: Suite < 개별 제품 합"
+
+        result:
+          - "2000년대: Office 점유율 90%+"
+          - "WordPerfect, Lotus 사실상 소멸"
+
+    google_vs_specialized_tools:
+      envelopments:
+        - target: "MapQuest, TomTom"
+          weapon: "Google Maps (무료)"
+          result: "MapQuest 몰락"
+
+        - target: "Hotmail (Microsoft)"
+          weapon: "Gmail (대용량 무료)"
+          result: "Hotmail 점유율 급락"
+
+        - target: "Dropbox"
+          weapon: "Google Drive (15GB 무료)"
+          result: "Dropbox 성장 둔화"
+
+  case_studies_boring:
+
+    kakao_envelopment_korea:
+      attacker: "카카오 (메신저 플랫폼)"
+
+      victims_list:
+        - service: "모바일 게임 퍼블리셔"
+          kakao_weapon: "카카오게임"
+          mechanism: "카톡 친구 초대 = 무료 마케팅"
+          result: "독립 퍼블리셔 마진 급감"
+
+        - service: "콜택시 서비스"
+          kakao_weapon: "카카오 T"
+          mechanism: "4,000만 사용자 base"
+          result: "기존 콜택시 앱 사멸"
+
+        - service: "송금 서비스"
+          kakao_weapon: "카카오페이"
+          mechanism: "카톡 내 송금 = 마찰 제로"
+          result: "토스 이전엔 독점"
+
+        - service: "웹툰 플랫폼"
+          kakao_weapon: "카카오페이지"
+          mechanism: "카톡 알림 + 간편결제"
+          result: "독립 플랫폼 경쟁 어려움"
+
+      pattern:
+        - "카톡 사용자 4,000만 = 배포 채널"
+        - "기존 서비스의 핵심 = 카카오의 부가 기능"
+        - "카카오 입장: 낮은 투자로 시장 진입"
+        - "기존 업체: 경쟁 불가 (자원 격차)"
+
+      incumbent_trap:
+        why_couldnt_fight:
+          - "사용자 획득 비용: 카카오 $0 vs 기존 업체 $10+"
+          - "전환 비용: 카톡 내에서 클릭 한 번"
+          - "자본: 카카오 조단위 vs 기존 업체 백억"
+
+      steve_checkpoint:
+        danger_signal:
+          - "대형 플랫폼이 우리 영역에 관심 표명"
+          - "우리 핵심 = 그들의 부가 기능"
+          - "그들의 사용자 base >> 우리"
+
+        survival_strategy:
+          - "플랫폼이 못 따라올 전문성 확보"
+          - "플랫폼과 협력 (인수 포함)"
+          - "틈새 시장 특화"
+
+# ========================================
+# PATTERN 4: Customer Lock-in Erosion
+# "고객 묶어두기 전략의 붕괴"
+# ========================================
+
+customer_lockin_erosion:
+  _id: "customer_lockin_erosion"
+  _pattern_type: "switching_barrier_collapse"
+
+  concept:
+    name: "고객 락인 붕괴"
+    essence: "전환 비용이 제거되면서 고객 이탈"
+
+  classic_lockin_strategies:
+    - "장기 계약 (위약금)"
+    - "독점 포맷/규격"
+    - "데이터 묶기"
+    - "생태계 종속"
+    - "학습 비용"
+
+  erosion_mechanisms:
+    standardization: "표준화로 호환성 증가"
+    regulation: "규제로 락인 금지"
+    technology: "기술로 전환 비용 제로화"
+
+  case_studies_boring:
+
+    telecom_contracts:
+      market: "통신사 2-3년 약정"
+      era: "2000-2015"
+
+      old_lockin:
+        mechanism:
+          - "2년 약정 (위약금)"
+          - "단말기 보조금 (락인 장치)"
+          - "번호 이동 어려움"
+        result: "이탈률 <5%/년"
+
+      erosion:
+        regulation:
+          - "2014: 단통법 (보조금 제한)"
+          - "번호이동 간소화"
+        technology:
+          - "eSIM (물리 교체 불필요)"
+        competition:
+          - "알뜰폰 (MVNO) 성장"
+
+        result: "이탈률 >15%/년"
+
+      incumbent_impact:
+        skt_kt_lgu:
+          - "시장점유율 하락"
+          - "ARPU 감소"
+          - "마케팅 비용 증가"
+
+    franchise_lockin_failure:
+      case: "프랜차이즈 본부 vs 가맹점"
+      market: "치킨/커피 프랜차이즈"
+
+      old_lockin:
+        mechanisms:
+          - "식자재 독점 공급 (마진 50%)"
+          - "POS 시스템 종속"
+          - "계약 위약금"
+          - "상호 사용권"
+
+      erosion:
+        regulation: "공정거래법 강화 (식자재 자유 구매)"
+        technology: "범용 POS 시스템"
+        competition: "독립 브랜드 증가"
+
+        result:
+          - "가맹점 이탈 증가"
+          - "본부 수익 감소"
+          - "파워 역전 (본부 < 가맹점)"
+
+      specific_example:
+        company: "○○치킨 (가명)"
+        lockin_revenue: "식자재 마진 연 100억"
+        erosion_impact: "-60% (자유 구매 허용 후)"
+
+# ========================================
+# PATTERN 5: Regulatory Disruption
+# "규제 변화로 게임 체인저"
+# ========================================
+
+regulatory_disruption:
+  _id: "regulatory_disruption"
+  _pattern_type: "rule_change_failure"
+
+  concept:
+    name: "규제 파괴 (Regulatory Disruption)"
+    essence: "법/규제 변화로 기존 모델 붕괴"
+
+  incumbent_trap:
+    dependency: "규제 기반 독점/보호"
+    assumption: "규제는 영원하다"
+    reality: "규제는 변한다"
+
+  case_studies_fancy:
+
+    uber_vs_taxi:
+      market: "택시 vs 승차공유"
+      timeline: "2010-현재"
+
+      incumbent_moat:
+        regulation_based:
+          - "택시 면허 (진입 장벽)"
+          - "개인 택시 면허 = 자산 (억 단위)"
+          - "요금 규제 (독점 보장)"
+
+      disruption:
+        uber_strategy:
+          - "승차공유 ≠ 택시 (회색지대)"
+          - "앱 플랫폼 (편의성)"
+          - "동적 가격 (수요-공급)"
+
+        regulatory_battle:
+          - "택시: 불법 주장"
+          - "Uber: 신산업 주장"
+          - "결과: 국가별 상이 (한국은 제한)"
+
+      incumbent_collapse:
+        taxi_license_value:
+          peak: "개인택시 면허 2억 (서울, 2010)"
+          현재: "5천만원 (-75%)"
+
+        revenue_impact:
+          - "카카오T 등장"
+          - "택시 호출 앱화"
+          - "수익성 악화"
+
+  case_studies_boring:
+
+    real_estate_agency:
+      market: "부동산 중개"
+      regulation_change: "중개수수료 규제 완화"
+
+      old_regime:
+        regulation: "법정 수수료 0.4-0.9%"
+        enforcement: "강제 (불법 인하 처벌)"
+        result: "중개사 수익 안정"
+
+      new_regime:
+        change: "협의 가능 (2016)"
+        competition:
+          - "직방, 다방 (수수료 인하 압박)"
+          - "온라인 플랫폼 (정보 투명화)"
+
+        result:
+          - "수수료 실거래 0.2-0.3%"
+          - "중개사 수익 -50%"
+          - "폐업 증가"
+
+      incumbent_response:
+        what_they_tried:
+          - "플랫폼 거부 (정보 제공 안 함)"
+          - "오프라인 고객 집중"
+
+        why_failed:
+          - "플랫폼이 직거래 중개 시작"
+          - "정보 투명성 = 돌이킬 수 없음"
+          - "고객이 수수료 협상 요구"
+
+# ========================================
+# PATTERN 6: Margin Compression
+# "마진 압박으로 서서히 죽기"
+# ========================================
+
+margin_compression:
+  _id: "margin_compression"
+  _pattern_type: "profitability_erosion"
+
+  concept:
+    name: "마진 압박 (Margin Compression)"
+    essence: "경쟁 심화로 마진 축소 → 투자 불가 → 뒤쳐짐"
+
+  death_spiral:
+    stage_1: "경쟁 진입 → 가격 압박"
+    stage_2: "마진 축소"
+    stage_3: "투자 여력 감소"
+    stage_4: "품질/서비스 하락"
+    stage_5: "고객 이탈 가속"
+    stage_6: "파산 or 구조조정"
+
+  case_studies_boring:
+
+    chicken_franchise:
+      market: "치킨 프랜차이즈"
+      timeline: "2000-현재"
+
+      market_saturation:
+        stats:
+          - "전국 치킨집 4만개 (2020)"
+          - "인구 1,300명당 1개"
+          - "연 폐업률 30%"
+
+      margin_trajectory:
+        2000s:
+          price: "마리당 15,000원"
+          cogs: "6,000원 (40%)"
+          labor: "3,000원"
+          rent: "2,000원"
+          gross_margin: "4,000원 (27%)"
+
+        2010s:
+          price: "17,000원 (+13%)"
+          cogs: "8,000원 (인건비↑, 재료비↑)"
+          labor: "4,000원"
+          rent: "3,000원"
+          gross_margin: "2,000원 (12%)"
+
+        2020s:
+          price: "18,000원 (올리기 어려움)"
+          delivery_fee: "-3,000원 (플랫폼 수수료)"
+          net_margin: "0원 or 적자"
+
+      death_spiral_example:
+        year_1: "월 순익 200만원"
+        year_2: "경쟁점 3개 생김 → 매출 -30%"
+        year_3: "배달앱 수수료 증가 → 마진 -50%"
+        year_4: "직원 임금 인상 (최저임금) → 적자"
+        year_5: "폐업"
+
+      incumbent_trap:
+        cant_raise_price: "경쟁 과다"
+        cant_cut_cost: "이미 최소화"
+        cant_differentiate: "치킨은 치킨"
+        result: "버티다가 폐업"
+
+      scale_insight:
+        individual_failure: "연 1만개 폐업"
+        invisible: "언론 보도 안 됨"
+        pattern: "마진 압박 → 서서히 죽음"
+
+    manufacturing_sme:
+      case: "중소 제조업 (부품)"
+      market: "자동차 2차 협력사"
+
+      margin_squeeze:
+        from_customer:
+          - "현대/기아: 매년 5% 단가 인하 요구"
+          - "Tier 1이 압박을 하청에 전가"
+
+        from_cost:
+          - "인건비 상승 (최저임금)"
+          - "원자재 가격 변동"
+          - "환율 리스크"
+
+        result:
+          gross_margin:
+            2010: "15%"
+            2015: "8%"
+            2020: "3%"
+
+      death_spiral:
+        stage_1: "마진 3% (투자 불가)"
+        stage_2: "설비 노후화"
+        stage_3: "품질 문제 발생"
+        stage_4: "납품 중단 통보"
+        stage_5: "폐업"
+
+      survival_strategy_failure:
+        tried: "중국 진출 (저가 노동)"
+        result: "중국 인건비도 올라서 실패"
+
+        tried: "자동화 투자"
+        problem: "마진 없어서 투자 불가"
+
+        outcome: "세대 교체 실패, 폐업"
+
+# ========================================
+# PATTERN 7: Technology Debt Trap
+# "기술 부채의 덫"
+# ========================================
+
+technology_debt_trap:
+  _id: "technology_debt_trap"
+  _pattern_type: "legacy_system_burden"
+
+  concept:
+    name: "기술 부채 함정"
+    essence: "레거시 시스템이 전환 불가능하게 만듦"
+
+  mechanism:
+    accumulation:
+      - "10-20년 축적된 레거시"
+      - "조직 전체가 의존"
+      - "문서화 부족"
+      - "원개발자 퇴사"
+
+    switching_cost:
+      - "전면 재개발 필요 (수백억)"
+      - "비즈니스 중단 리스크"
+      - "조직 역량 부족"
+
+    result: "갇힘 (Lock-in)"
+
+  case_studies_boring:
+
+    legacy_erp_company:
+      case: "중견 제조사 (ERP)"
+      timeline: "1990-2020"
+
+      legacy_stack:
+        system: "SAP R/2 (1990년 도입)"
+        customization: "30년간 커스터마이징"
+        dependency: "전 부서 의존 (생산/재고/회계)"
+
+      disruption:
+        new_world:
+          - "클라우드 ERP (Salesforce, Oracle Cloud)"
+          - "모바일 접근"
+          - "실시간 분석"
+
+        competitive_gap:
+          - "경쟁사: 클라우드 전환 → 의사결정 빠름"
+          - "우리: 레거시 → 리포트 1주 걸림"
+
+      switching_failure:
+        attempt_1:
+          year: 2010
+          plan: "SAP 최신버전 업그레이드"
+          cost: "50억 견적"
+          result: "경영진 승인 거부"
+
+        attempt_2:
+          year: 2015
+          plan: "클라우드 ERP 전환"
+          cost: "100억 + 6개월 중단"
+          result: "중단 리스크 감당 못함"
+
+        result: "레거시 유지 → 경쟁력 하락"
+
+      pattern:
+        similar_cases: "은행, 보험, 대기업 IT 시스템"
+        common_trap: "바꾸기엔 너무 큼, 안 바꾸면 죽음"
+
+# ========================================
+# PATTERN 8: Ecosystem Collapse
+# "생태계 붕괴"
+# ========================================
+
+ecosystem_collapse:
+  _id: "ecosystem_collapse"
+  _pattern_type: "value_network_breakdown"
+
+  concept:
+    name: "생태계 붕괴"
+    essence: "의존하던 파트너/공급자 생태계가 무너짐"
+
+  mechanism:
+    platform_dependency:
+      - "핵심 파트너 의존"
+      - "파트너가 이탈/파산"
+      - "생태계 전체 붕괴"
+
+    example: "콘텐츠 없는 플랫폼, 공급자 없는 마켓플레이스"
+
+  case_studies_boring:
+
+    arcade_collapse:
+      market: "오락실 (아케이드 게임)"
+      timeline: "1990-2010"
+
+      ecosystem_structure:
+        platform: "오락실"
+        suppliers: "게임기 제조사 (SNK, 세가, 남코)"
+        content: "신작 게임"
+        customers: "청소년"
+
+      collapse_trigger:
+        console_games: "플레이스테이션, Xbox (1990s~)"
+        pc_games: "스타크래프트, 리니지 (1990s~)"
+
+        result:
+          - "게임기 제조사들 콘솔로 이동"
+          - "신작 게임 중단"
+          - "오락실 콘텐츠 고갈"
+
+      death_spiral:
+        stage_1: "신작 없음 → 손님 감소"
+        stage_2: "손님 감소 → 매출 하락"
+        stage_3: "매출 하락 → 게임기 교체 못함"
+        stage_4: "구형 게임만 → 손님 더 감소"
+        stage_5: "폐업"
+
+      stats:
+        peak: "전국 오락실 2만개 (1990년대)"
+        현재: "~1,000개 (VR 체험장 등 전환)"
+
+    video_rental_collapse:
+      market: "비디오 대여점"
+      timeline: "1990-2010"
+
+      ecosystem:
+        platform: "동네 비디오방"
+        suppliers: "영화 배급사"
+        content: "신작 영화 (VHS → DVD)"
+
+      collapse:
+        trigger: "스트리밍 (Netflix 등)"
+
+        supplier_defection:
+          - "배급사가 OTT 직접 진출"
+          - "DVD 출시 중단"
+          - "신작 콘텐츠 끊김"
+
+        result:
+          - "비디오방 콘텐츠 고갈"
+          - "전국 수만 개 폐업"
+
+# ========================================
+# PATTERN 9: Premature Optimization
+# "시기상조 최적화"
+# ========================================
+
+premature_optimization:
+  _id: "premature_optimization"
+  _pattern_type: "wrong_timing_investment"
+
+  concept:
+    name: "시기상조 최적화"
+    essence: "효율화에 집중하다가 시장 변화 놓침"
+
+  trap:
+    focus: "비용 절감, 프로세스 최적화"
+    blind_spot: "시장 트렌드, 고객 니즈 변화"
+    result: "효율적으로 틀린 것을 함"
+
+  case_studies_boring:
+
+    newspaper_optimization:
+      case: "지역 신문사"
+      timeline: "2000-2015"
+
+      optimization_efforts:
+        what_they_did:
+          - "인쇄 공정 자동화 (투자 100억)"
+          - "배송 루트 최적화"
+          - "기자 1인당 기사 수 증가"
+
+        metrics_improved:
+          - "인쇄 비용 -30%"
+          - "배송 시간 -20%"
+          - "1인당 생산성 +50%"
+
+      what_they_missed:
+        market_shift:
+          - "독자들이 온라인 뉴스로 이동"
+          - "광고주들이 디지털 광고로 이동"
+
+        result:
+          - "인쇄 부수 -70% (2000-2015)"
+          - "광고 매출 -80%"
+          - "아무리 최적화해도 의미 없음"
+
+      irony: "가장 효율적인 인쇄소 ≠ 미래"
+
+# ========================================
+# PATTERN 10: Asset Trap
+# "자산의 덫"
+# ========================================
+
+asset_trap:
+  _id: "asset_trap"
+  _pattern_type: "physical_asset_burden"
+
+  concept:
+    name: "자산의 덫 (Asset Trap)"
+    essence: "물리적 자산이 전환을 막는 족쇄"
+
+  mechanism:
+    sunk_cost:
+      - "막대한 자산 투자 (부동산, 설비)"
+      - "감가상각 중"
+      - "청산 시 손실 막대"
+
+    strategic_rigidity:
+      - "자산 활용해야 한다는 압박"
+      - "경량 모델로 전환 못함"
+      - "고정비 부담"
+
+  case_studies_boring:
+
+    department_store:
+      case: "백화점"
+      timeline: "2010-현재"
+
+      asset_burden:
+        real_estate:
+          - "프라임 상권 빌딩 (수천억)"
+          - "임대 vs 자가 상관없이 고정비"
+
+        competitive_disadvantage:
+          vs_online:
+            - "백화점: 평당 월 100만원 비용"
+            - "온라인: 물류센터 평당 10만원"
+            - "가격 경쟁 불가"
+
+      cant_pivot:
+        asset_lockin:
+          - "빌딩 팔면 수백억 손실"
+          - "매장 없이는 사업 불가"
+          - "온라인 전환 = 자산 가치 폭락"
+
+        result:
+          - "오프라인 매장 유지 (손해 보면서)"
+          - "서서히 쇠락"
+
+      examples:
+        - "롯데백화점 점포 축소"
+        - "현대백화점 면세 의존"
+        - "신세계 유일 선방 (명품 특화)"
+
+# ========================================
+# 패턴 요약 및 Steve 활용 가이드
+# ========================================
+
+pattern_summary:
+
+  ten_patterns:
+    1: "Innovator's Dilemma (파괴적 혁신 대응 실패)"
+    2: "Success Formula Trap (성공 공식 집착)"
+    3: "Platform Envelopment (플랫폼 포위)"
+    4: "Customer Lock-in Erosion (락인 붕괴)"
+    5: "Regulatory Disruption (규제 변화)"
+    6: "Margin Compression (마진 압박)"
+    7: "Technology Debt Trap (기술 부채)"
+    8: "Ecosystem Collapse (생태계 붕괴)"
+    9: "Premature Optimization (시기상조 최적화)"
+    10: "Asset Trap (자산의 덫)"
+
+  case_distribution:
+    fancy: "Kodak, Nokia, BlackBerry, Blockbuster"
+    boring: "동네 문구점, 학원, 치킨집, 제조업, 백화점"
+    total: "50+ 사례"
+
+# ========================================
+# 추가 사례 라이브러리 (패턴별)
+# ========================================
+
+additional_cases_by_pattern:
+
+  innovators_dilemma_cases:
+    - company: "Xerox"
+      failure: "PC 혁명 놓침"
+      irony: "PARC에서 GUI 발명했으나 상용화 실패"
+      winner: "Apple, Microsoft"
+
+    - company: "Yahoo"
+      failure: "검색 → 포털 집착"
+      missed: "Google의 검색 알고리즘"
+
+    - company: "MySpace"
+      failure: "SNS 선두 → Facebook에 추월"
+      reason: "플랫폼 개방 vs 폐쇄"
+
+  success_formula_trap_cases:
+    - company: "Sony"
+      formula: "Walkman 성공 (휴대 음악)"
+      trap: "iPod, 스트리밍 늦음"
+
+    - company: "Motorola"
+      formula: "Razr 피처폰 성공"
+      trap: "스마트폰 전환 실패"
+
+  platform_envelopment_cases:
+    - victim: "Skype"
+      enveloper: "Microsoft Teams, Zoom"
+      mechanism: "Office 365 번들"
+
+    - victim: "Evernote"
+      enveloper: "Notion, Google Keep"
+
+  margin_compression_cases:
+    - industry: "PC 제조"
+      companies: "Dell, HP, Lenovo"
+      trend: "마진 3-5% (commodity화)"
+
+    - industry: "항공사"
+      trend: "저가 항공 경쟁 → 마진 1-2%"
+
+  ecosystem_collapse_cases:
+    - platform: "Windows Phone"
+      collapse: "앱 개발자 이탈 → 소비자 이탈"
+
+    - platform: "BlackBerry OS"
+      collapse: "앱 생태계 부족"
+
+steve_usage_protocol:
+
+  when_discovering_opportunity:
+    step_1: "현재 1등 식별"
+    step_2: "1등의 강점 분석"
+    step_3: "이 패턴들 중 어디 해당?"
+    step_4: "1등의 취약점 = 우리 기회"
+    step_5: "유사 사례 검색 (추가 사례 활용)"
+
+  reality_check:
+    - "1등이 이 패턴으로 무너질 수 있는가?"
+    - "우리 전략이 1등의 약점을 공략하는가?"
+    - "1등이 못 따라올 구조적 이유가 있는가?"
+    - "유사 사례에서 배울 점은?"
+
+  warning:
+    - "1등이 모든 패턴을 알고 대응하면?"
+    - "우리도 나중에 1등이 되면 같은 함정"
+    - "겸손과 학습이 답"
+

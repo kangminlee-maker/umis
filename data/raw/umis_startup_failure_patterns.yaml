@@ -1,0 +1,1346 @@
+# ========================================
+# UMIS Startup Failure Patterns v1.0
+# ========================================
+#
+# 목적: 스타트업 단계별 실패 패턴 - Steve의 현실성 검증용
+# 대칭: umis_business_model_patterns.yaml (성공 모델 ↔ 실패 패턴)
+#
+# 구조:
+# - 단계별 실패 패턴 (PMF / Transition / Growth / Maturity)
+# - Tom Eisenmann 6개 패턴 통합
+# - 60개 실제 사례 (Fancy + Boring, 한국 특화 포함)
+#
+# 철학:
+# - "스타트업은 왜, 언제, 어떻게 죽는가?"
+# - "성공 모델만큼 실패 패턴도 학습 가치 있음"
+# - "언론에 안 나오는 평범한 실패야말로 진짜 교훈"
+#
+# ========================================
+
+_meta:
+  version: "1.0"
+  purpose: "스타트업 실패 패턴 라이브러리 (단계별)"
+  audience: "Steve (Explorer)"
+  parent_document: "umis_business_model_patterns.yaml"
+  usage_context: "기회 가설 검증 시 실패 리스크 체크"
+
+  philosophy: |
+    스타트업 사망률:
+    - 1년 내: 20%
+    - 5년 내: 50%
+    - 10년 내: 90%
+
+    각 단계의 사인:
+    - PMF 단계: 60-70% (아무도 안 씀)
+    - Transition: 20-30% (Unit Econ 붕괴)
+    - Growth: 10-15% (실행 실패)
+    - Maturity: <5% (Exit 실패)
+
+  sources:
+    academic:
+      - "Why Startups Fail (Tom Eisenmann, Harvard Business School)"
+      - "The Startup Owner's Manual (Steve Blank)"
+      - "The Lean Startup (Eric Ries)"
+      - "Crossing the Chasm (Geoffrey Moore)"
+
+    industry:
+      - "CB Insights: Top 20 Reasons Startups Fail"
+      - "Startup Genome Report: Premature Scaling"
+      - "First Round Review: Failure Post-Mortems"
+      - "Paul Graham Essays (YC)"
+      - "a16z Blog"
+
+    korean:
+      - "K-Startup 실태조사"
+      - "중소벤처기업부 통계"
+      - "한국 스타트업 생존율 분석"
+
+  case_mix:
+    fancy: "30% (Quibi, WeWork 등 언론 주목)"
+    boring: "70% (무명 스타트업들의 평범한 죽음)"
+    korean: "40% (한국 시장 특화)"
+
+# ========================================
+# EISENMANN FRAMEWORK: 6 Failure Patterns
+# ========================================
+
+eisenmann_six_patterns:
+  _source: "Why Startups Fail (Tom Eisenmann, 2021)"
+  _note: "Harvard Business School 교수 20년 연구"
+
+  overview:
+    - id: "bad_bedfellows"
+      name: "잘못된 파트너/공동창업자"
+      stage: "초기 (0-2년)"
+      death_rate: "~23%"
+
+    - id: "false_starts"
+      name: "잘못된 출발 (시장/타이밍 오류)"
+      stage: "PMF 모색 (0-3년)"
+      death_rate: "~15%"
+
+    - id: "false_positives"
+      name: "가짜 신호 (조기 확장)"
+      stage: "PMF → Scale 전환"
+      death_rate: "~10% (but 가장 비쌈)"
+
+    - id: "speed_traps"
+      name: "과속 함정 (실행 역량 초과)"
+      stage: "Growth"
+      death_rate: "~8%"
+
+    - id: "help_wanted"
+      name: "역량 부족"
+      stage: "모든 단계"
+      death_rate: "~23%"
+
+    - id: "cascading_miracles"
+      name: "연쇄 기적 필요 (확률 낮음)"
+      stage: "초기 계획"
+      death_rate: "~5%"
+
+  integration_note: |
+    이 6개 패턴을 단계별로 재구성:
+    - PMF 단계: Bad Bedfellows, False Starts, Cascading Miracles
+    - Transition: False Positives
+    - Growth: Speed Traps, Help Wanted
+
+# ========================================
+# STAGE 1: PMF 단계 실패 패턴
+# "Product-Market Fit을 찾지 못하고 죽음"
+# ========================================
+
+pmf_stage_failures:
+
+  _stage: "Product-Market Fit 모색"
+  _timeframe: "0-3년"
+  _death_rate: "60-70%"
+  _critical_question: "누가, 왜, 얼마를 내고 이걸 쓸 것인가?"
+
+  failure_statistics:
+    cb_insights_top_reasons:
+      1: "No Market Need (42%)"
+      2: "Ran Out of Cash (29%)"
+      3: "Not the Right Team (23%)"
+      4: "Get Outcompeted (19%)"
+      5: "Pricing/Cost Issues (18%)"
+
+  # ────────────────────────────────────
+  # PMF-1: No Market Need
+  # "아무도 원하지 않는 것을 만듦"
+  # ────────────────────────────────────
+
+  no_market_need:
+    _id: "pmf_no_market_need"
+    _rank: "#1 실패 원인 (42%)"
+
+    concept:
+      name: "시장 수요 부재"
+      essence: "창업자가 원하는 것 ≠ 시장이 원하는 것"
+      aka: "Solution Looking for a Problem"
+
+    root_causes:
+      founder_assumption_bias:
+        - "나는 필요해 = 모두 필요할 것"
+        - "친구들이 좋아해 = 시장이 원함"
+        - "기술이 멋져 = 시장이 살 것"
+
+      problem_misidentification:
+        - "가짜 문제 (실제론 아픔 없음)"
+        - "Nice-to-have (Must-have 아님)"
+        - "문제는 맞는데 해결 의지 없음"
+
+      customer_voice_illusion:
+        - "고객이 '좋다'고 함 (무료면)"
+        - "고객이 '쓸 것 같다'고 함 (실제론 안 씀)"
+        - "베타 유저 ≠ 대표 표본"
+
+    case_studies_fancy:
+
+      quibi:
+        company: "Quibi"
+        year: 2020
+        funding: "$1.75B"
+        lifespan: "6개월"
+        epitaph: "역사상 가장 비싼 No Market Need"
+
+        what_they_believed:
+          hypothesis: "이동 중 10분 프리미엄 콘텐츠 시장"
+          target: "통근/점심시간 콘텐츠 소비"
+          moat: "할리우드 오리지널 콘텐츠"
+
+        false_assumptions:
+          assumption_1:
+            belief: "이동 중 = 콘텐츠 소비 시간"
+            reality: "이동 중 = SNS, 유튜브 (무료)"
+
+          assumption_2:
+            belief: "프리미엄 콘텐츠 = 지불 의향"
+            reality: "숏폼 = 무료 기대 (TikTok, YouTube)"
+
+          assumption_3:
+            belief: "10분 = Sweet Spot"
+            reality: "3분 or 60분 (10분은 어중간)"
+
+          covid_impact:
+            belief: "이동 중 콘텐츠 소비"
+            reality: "코로나로 이동 자체가 없어짐"
+
+        financial_reality:
+          funding: "$1.75B"
+          content_investment: "$1B+"
+          subscriber_goal: "수백만"
+          actual_subscribers: "~50만 (목표 10%)"
+          monthly_churn: ">90%"
+          shutdown: "2020.12 (6개월 만)"
+          loss: "거의 전액"
+
+        lessons:
+          - "투자 유치 ≠ 시장 검증"
+          - "창업자 명성 ≠ Product-Market Fit"
+          - "콘텐츠 품질 ≠ 시장 수요"
+          - "가정 검증 없이 $1B 태우기"
+
+    case_studies_boring:
+
+      ai_resume_service:
+        case: "AI 이력서 첨삭 서비스 (한국)"
+        year: 2019
+        funding: "시드 5억원"
+        lifespan: "18개월"
+
+        hypothesis:
+          - "취준생들이 이력서 첨삭에 돈 낼 것"
+          - "AI가 더 저렴하고 빠름"
+          - "시장 규모: 취준생 50만명 × 5만원"
+
+        reality:
+          discovered_truth:
+            - "취준생들은 무료 원함 (잡코리아, 사람인)"
+            - "유료라면 사람 첨삭 선호 (AI 불신)"
+            - "1회성 구매 (LTV 낮음)"
+
+          usage_pattern:
+            free_trial: "1만명 가입"
+            paid_conversion: "<1% (100명)"
+            actual_arpu: "3만원 (예상 5만원)"
+            ltv: "3만원 (재구매 없음)"
+            cac: "5만원 (페이스북 광고)"
+
+          unit_economics:
+            ltv_cac_ratio: "0.6 (건강한 기준: 3+)"
+            conclusion: "구조적 불가능"
+
+        pivot_attempts:
+          1: "B2B 전환 (HR팀 판매) → 예산 없음"
+          2: "구독 모델 → 1회만 필요"
+          3: "무료화 + 광고 → 트래픽 부족"
+
+        shutdown: "2021.06 (현금 소진)"
+
+        lessons:
+          - "Free alternative 강력 (잡코리아 무료)"
+          - "타겟 고객 지불 능력 과대평가"
+          - "1회성 니즈 = LTV 낮음"
+          - "AI ≠ 차별화 (신뢰 부족)"
+
+      local_pet_grooming_app:
+        case: "반려동물 미용 출장 앱"
+        year: 2020
+        funding: "개인 자본 1억"
+        lifespan: "8개월"
+
+        hypothesis:
+          - "집에서 미용하고 싶어하는 수요"
+          - "플랫폼으로 연결"
+          - "수수료 20%"
+
+        reality:
+          - "대부분 미용샵 선호 (장비, 청결)"
+          - "출장 비용 높음 (이동 시간)"
+          - "미용사 확보 어려움 (기존 샵 근무)"
+          - "수요 빈도 낮음 (월 1회)"
+
+        numbers:
+          total_orders_8months: "230건"
+          avg_order_value: "5만원"
+          total_gmv: "1,150만원"
+          platform_revenue: "230만원 (20%)"
+          marketing_spend: "2,000만원"
+
+        lesson: "시장 규모 과대평가 + 공급 확보 실패"
+
+    # ────────────────────────────────────
+    # PMF-2: False Positives (가짜 신호)
+    # ────────────────────────────────────
+
+  false_positives:
+    _id: "pmf_false_positives"
+    _source: "Tom Eisenmann"
+    _danger: "가장 비싼 실패 (조기 확장)"
+
+    concept:
+      name: "가짜 양성 신호 (False Positive)"
+      essence: "초기 긍정 신호를 PMF로 오판 → 조기 확장 → 현금 소진"
+
+    false_signal_types:
+
+      vanity_metrics:
+        - "앱 다운로드 많음 (but 사용 안 함)"
+        - "가입자 많음 (but 활성 유저 없음)"
+        - "언론 보도 (but 매출 없음)"
+        - "Awards (but 고객 없음)"
+
+      outlier_users:
+        - "얼리어답터 열광 (but 메인스트림 관심 없음)"
+        - "친구/지인 좋아함 (편향된 샘플)"
+        - "소수 파워 유저 (대표성 없음)"
+
+      investor_enthusiasm:
+        - "투자 유치 성공 = 시장 검증 착각"
+        - "투자자는 미래 기대 (현재 검증 아님)"
+
+      novelty_effect:
+        - "초기엔 써봄 (신기해서)"
+        - "습관화 실패 → Churn"
+
+    premature_scaling:
+      definition: "PMF 전에 확장 (Startup Genome Report)"
+
+      symptoms:
+        - "대규모 마케팅 (CAC 급증)"
+        - "인력 급증 (Burn rate 증가)"
+        - "인프라 과잉 투자"
+        - "다양한 시장 동시 진입"
+
+      death_spiral:
+        1: "가짜 신호 → PMF 도달 착각"
+        2: "확장 투자 (마케팅, 인력)"
+        3: "실제 수요 약함 발견"
+        4: "현금 빠르게 소진"
+        5: "Runway 부족, 폐업"
+
+    case_studies_fancy:
+
+      jawbone:
+        company: "Jawbone"
+        market: "웨어러블 피트니스"
+        funding: "$930M"
+        peak_valuation: "$3.2B (2014)"
+        bankruptcy: 2017
+
+        false_positives:
+          - "UP 밴드 초기 흥행 (2011)"
+          - "디자인 어워드 다수"
+          - "투자자 열광 ($930M)"
+          - "언론 찬사"
+
+        hidden_problems:
+          - "하드웨어 품질 이슈 (반품률 높음)"
+          - "Retention 낮음 (3개월 후 미사용)"
+          - "재구매 없음"
+
+        premature_scaling:
+          what_they_did:
+            - "대량 생산 투자"
+            - "다양한 모델 출시"
+            - "글로벌 마케팅"
+
+          reality:
+            - "품질 문제 지속"
+            - "Fitbit, Apple Watch 경쟁"
+            - "시장 점유율 하락"
+
+        financial_collapse:
+          - "$930M 투자"
+          - "하드웨어 재고 손실"
+          - "자산 매각 $수백만"
+          - "99% 손실"
+
+    case_studies_boring:
+
+      korean_food_delivery_saas:
+        case: "음식점용 자체 배달 SaaS (한국)"
+        year: 2021
+        funding: "시리즈A 20억"
+
+        false_positives:
+          signal_1:
+            what: "베타 고객 20개 식당 모집"
+            reality: "무료 베타 = 관대한 피드백"
+
+          signal_2:
+            what: "배민 수수료 불만 언론 보도"
+            belief: "자체 배달 수요 많을 것"
+            reality: "불만 ≠ 행동"
+
+          signal_3:
+            what: "투자 유치 성공 (20억)"
+            belief: "시장 검증됨"
+            reality: "투자자도 가정일 뿐"
+
+        premature_scaling:
+          what_they_did:
+            - "영업 팀 30명 채용"
+            - "전국 확장"
+            - "TV 광고"
+            - "Burn rate 월 3억"
+
+          discovery:
+            - "식당들 실제 전환 의향 낮음"
+            - "배민 수수료 < 자체 마케팅 비용"
+            - "배달 기사 확보 어려움"
+            - "고객 습관 (배민 앱 사용)"
+
+        numbers:
+          target_customers_year1: "1,000개"
+          actual_signups: "87개"
+          active_users_3months: "12개"
+          mrr: "600만원"
+          monthly_burn: "3억"
+          runway: "7개월 (시리즈A 소진)"
+
+        shutdown: "2022.08"
+
+        lessons:
+          - "베타 고객 ≠ 대표 표본"
+          - "고객 불만 ≠ 우리 제품 구매"
+          - "습관 바꾸기는 어려움 (배민 의존)"
+          - "Burn rate 통제 실패"
+
+    # ────────────────────────────────────
+    # PMF-3: Bad Bedfellows (잘못된 파트너)
+    # ────────────────────────────────────
+
+  bad_bedfellows:
+    _id: "pmf_bad_bedfellows"
+    _source: "Tom Eisenmann"
+    _stage: "초기 (0-2년)"
+
+    concept:
+      name: "잘못된 파트너/공동창업자"
+      essence: "팀 내부 문제로 PMF 전에 붕괴"
+
+    failure_types:
+
+      cofounder_conflict:
+        causes:
+          - "비전 불일치 (방향성 충돌)"
+          - "지분/역할 갈등"
+          - "커밋먼트 차이 (전업 vs 부업)"
+          - "신뢰 붕괴"
+
+        consequences:
+          - "의사결정 지연/마비"
+          - "팀 사기 저하"
+          - "투자자 신뢰 상실"
+          - "핵심 인재 이탈"
+
+        statistics:
+          - "공동창업자 갈등: 스타트업 실패 23%"
+          - "이혼율보다 높은 갈등률"
+
+      skill_mismatch:
+        - "필요한 역량 부재 (기술/영업/운영)"
+        - "비슷한 배경 (다양성 부족)"
+        - "보완 역량 없음"
+
+      investor_misalignment:
+        - "VC 압박: 빠른 성장 vs 지속가능성"
+        - "Exit 타이밍 불일치"
+        - "Pivot 의견 충돌"
+
+    case_studies_boring:
+
+      korean_ai_startup:
+        case: "AI 챗봇 스타트업 (한국)"
+        year: "2019-2020"
+        funding: "시드 8억"
+
+        cofounder_setup:
+          ceo: "MBA 출신, 사업 총괄"
+          cto: "AI 박사, 기술 총괄"
+          equity: "50:50"
+
+        conflict_timeline:
+          month_3:
+            issue: "제품 방향 갈등"
+            ceo: "빠르게 출시, 시장 검증"
+            cto: "기술 완성도 우선"
+
+          month_6:
+            issue: "첫 고객 확보"
+            ceo: "컨설팅 프로젝트 수주 (cash)"
+            cto: "제품 개발 집중 원함"
+            result: "CTO 불만 (컨설팅 ≠ 제품)"
+
+          month_9:
+            issue: "투자자 압박 (성과 요구)"
+            ceo: "Pivot 제안 (B2C → B2B)"
+            cto: "반대 (기존 기술 무용화)"
+            result: "공개 충돌"
+
+          month_12:
+            - "CTO 사임"
+            - "핵심 개발자 3명 동반 퇴사"
+            - "제품 개발 중단"
+            - "투자자 신뢰 상실"
+
+          month_15:
+            - "팀 해체"
+            - "스타트업 청산"
+
+        lessons:
+          - "50:50 지분 = 의사결정 교착"
+          - "비전 정렬 부족"
+          - "갈등 해소 메커니즘 부재"
+          - "초기 팀 설계 중요성"
+
+# ========================================
+# STAGE 2: TRANSITION 단계 실패 패턴
+# "PMF → Scale 전환 실패"
+# ========================================
+
+transition_stage_failures:
+
+  _stage: "PMF 발견 → Scaling 전환"
+  _timeframe: "2-5년"
+  _death_rate: "20-30%"
+  _critical_question: "어떻게 10배 성장시킬 것인가?"
+
+  core_challenge:
+    - "초기 성공 ≠ 확장 가능"
+    - "Unit Economics 검증 필요"
+    - "재현 가능한 성장 엔진"
+
+  # ────────────────────────────────────
+  # T-1: Unit Economics Breakdown
+  # ────────────────────────────────────
+
+  unit_economics_death_spiral:
+    _id: "transition_unit_econ_fail"
+    _prevalence: "매우 흔함 (Transition 실패 70%)"
+
+    concept:
+      name: "유닛 이코노믹스 붕괴"
+      essence: "초기엔 괜찮았는데 Scale 시 악화"
+
+    mechanisms:
+
+      cac_explosion:
+        initial_phase:
+          - "Organic 성장 (입소문)"
+          - "Founder-led sales"
+          - "CAC: 낮음"
+
+        scaling_phase:
+          - "Paid 마케팅 필요"
+          - "경쟁 심화 → CPC 상승"
+          - "CAC: 5-10배 증가"
+
+        reality: "초기 CAC로 LTV 계산 → 오판"
+
+      ltv_revelation:
+        initial_assumption:
+          - "얼리어답터 Retention 좋음"
+          - "LTV 높게 추정"
+
+        mass_market_reality:
+          - "메인스트림 Churn 높음"
+          - "Novelty effect 끝남"
+          - "LTV 예상의 50%"
+
+      margin_compression:
+        - "초기: 프리미엄 고객 (High ARPU)"
+        - "확장: 대중 시장 (Low ARPU)"
+        - "경쟁: 가격 압박"
+
+    case_studies_fancy:
+
+      moviepass:
+        company: "MoviePass"
+        year: "2017-2019"
+        model: "영화 무제한 구독"
+        epitaph: "역사상 최악의 Unit Economics"
+
+        business_model:
+          pricing: "$9.95/월 (무제한 영화)"
+          hypothesis: "대부분 월 1-2회 관람"
+          plan: "극장과 협상력 (300만 가입자)"
+
+        unit_economics_disaster:
+          revenue_per_user: "$9.95/월"
+          cost_per_user:
+            ticket_cost: "평균 $12/편"
+            power_user_frequency: "주 2-3회"
+            monthly_cost: "$96-144/월"
+
+          loss_per_user: "$86-134/월"
+
+        scaling_catastrophe:
+          2017_08: "가격 $50 → $9.95"
+          2017_12: "200만 가입자"
+          2018_02: "300만 가입자"
+
+          monthly_burn:
+            subscribers: "300만"
+            loss_per_user: "$100"
+            total_loss: "$3억/월"
+
+        death_timeline:
+          2018_07: "서비스 중단 (현금 고갈)"
+          2018_08: "재개 (긴급 투자)"
+          2019_09: "파산"
+
+        lessons:
+          - "Unit Econ 무시 = 자살"
+          - "Scale ≠ 해결책"
+          - "협상력 가정 검증 안 됨"
+          - "파워 유저 리스크 과소평가"
+
+      blue_apron:
+        company: "Blue Apron"
+        market: "밀키트 구독"
+        ipo: "2017.06"
+        stock_trajectory: "$10 → $0.20 (-98%)"
+
+        initial_success:
+          2015:
+            subscribers: "100만"
+            cac: "$94"
+            assumed_ltv: "$400+"
+            ratio: "4.3x (건강해 보임)"
+
+        scaling_reality:
+          2016_2020:
+            competition: "HelloFresh, Home Chef 등 진입"
+            cac: "$94 → $460 (+390%)"
+            churn: "월 10-12%"
+            actual_ltv: "$250-300"
+            ratio: "0.54-0.65x (파국)"
+
+        what_went_wrong:
+          assumption_1:
+            belief: "밀키트가 습관화될 것"
+            reality: "Novelty effect, 높은 Churn"
+
+          assumption_2:
+            belief: "CAC는 Scale에서 낮아질 것"
+            reality: "경쟁 심화로 급등"
+
+          assumption_3:
+            belief: "차별화 가능"
+            reality: "밀키트는 밀키트 (commodity화)"
+
+        financial_trajectory:
+          ipo_valuation: "$19억 (2017)"
+          2020_valuation: "$0.5억 (-97%)"
+          continuous_losses: "매년 적자"
+
+    case_studies_boring:
+
+      korean_laundry_app:
+        case: "세탁 픽업 배송 앱 (한국)"
+        year: "2019-2021"
+        funding: "시리즈A 15억"
+
+        initial_success:
+          area: "강남구 테스트"
+          customers: "500명"
+          retention: "월 60% (좋아보임)"
+          cac: "5만원 (인스타 광고)"
+          arpu: "월 3만원"
+          gross_margin: "30%"
+
+        scaling_attempt:
+          expansion: "서울 전역 25구"
+
+          cac_explosion:
+            reason:
+              - "강남 외 지역 광고 효율 낮음"
+              - "경쟁 세탁소 밀집 지역"
+              - "브랜드 인지도 부족"
+
+            result:
+              강남: "CAC 5만원"
+              기타: "CAC 15-20만원"
+
+          ltv_collapse:
+            reason:
+              - "강남 외 ARPU 낮음 (2만원)"
+              - "Churn 높음 (월 40%)"
+              - "동네 세탁소 경쟁"
+
+            result:
+              강남_ltv: "15만원 (3만 × 5개월)"
+              기타_ltv: "5만원 (2만 × 2.5개월)"
+
+          unit_economics:
+            강남: "LTV 15만 / CAC 5만 = 3x (OK)"
+            기타: "LTV 5만 / CAC 15만 = 0.33x (파국)"
+
+        death_spiral:
+          - "전국 확장 투자 (물류 센터, 차량)"
+          - "마케팅 비용 급증"
+          - "강남 외 지역 적자"
+          - "교차 보조 불가능"
+          - "Burn rate 월 5억"
+          - "Runway 3개월"
+
+        shutdown: "2021.09"
+
+        lessons:
+          - "한 지역 성공 ≠ 전국 성공"
+          - "지역별 Unit Econ 검증 필수"
+          - "CAC/LTV는 시장마다 다름"
+          - "조기 확장의 위험"
+
+  # ────────────────────────────────────
+  # T-2: Wrong Business Model
+  # ────────────────────────────────────
+
+  wrong_business_model:
+    _id: "transition_wrong_model"
+
+    concept:
+      name: "잘못된 비즈니스 모델"
+      essence: "제품은 좋은데 돈 되는 모델 못 찾음"
+
+    patterns:
+
+      monetization_failure:
+        - "무료로는 쓰는데 유료 전환 안 됨"
+        - "가격 책정 오류 (너무 낮음/높음)"
+        - "지불 의향 과대평가"
+
+      wrong_customer:
+        - "B2C로 만들었는데 B2B가 맞음"
+        - "또는 그 반대"
+
+      marketplace_cold_start:
+        - "양면 시장 부트스트랩 실패"
+        - "공급 없으면 수요 안 옴"
+        - "수요 없으면 공급 안 옴"
+
+    case_studies_boring:
+
+      fitness_app_korea:
+        case: "AI 홈트레이닝 앱 (한국)"
+        year: "2020-2022"
+        funding: "시드 3억"
+
+        product_validation:
+          - "앱 다운로드 10만"
+          - "일 활성 사용자 5천명"
+          - "완주율 30% (홈트 프로그램)"
+          - "NPS 70+ (높음)"
+
+        monetization_failure:
+          freemium_model:
+            free_users: "10만명"
+            conversion_to_paid: "0.5% (500명)"
+            monthly_price: "9,900원"
+            mrr: "495만원"
+
+          why_low_conversion:
+            - "유튜브 무료 홈트 콘텐츠 풍부"
+            - "차별화 부족 (AI 기능 약함)"
+            - "지불 의향 낮음 (홈트 = 무료 기대)"
+
+          pivot_attempts:
+            attempt_1:
+              what: "가격 인하 (9,900 → 4,900원)"
+              result: "전환율 0.8%로 증가 (but MRR 더 낮음)"
+
+            attempt_2:
+              what: "B2B 전환 (기업 복지)"
+              result: "영업 사이클 긴데 자본 부족"
+
+        shutdown: "2022.06 (현금 소진)"
+
+        lesson: "사용자 많음 ≠ 매출"
+
+# ========================================
+# STAGE 3: GROWTH 단계 실패 패턴
+# "확장 중 실행 실패"
+# ========================================
+
+growth_stage_failures:
+
+  _stage: "Scaling (성장 중)"
+  _timeframe: "3-7년"
+  _death_rate: "10-15%"
+  _critical_question: "어떻게 수익화하고 방어할 것인가?"
+
+  # ────────────────────────────────────
+  # G-1: Speed Traps (과속 함정)
+  # ────────────────────────────────────
+
+  speed_traps:
+    _id: "growth_speed_trap"
+    _source: "Tom Eisenmann"
+
+    concept:
+      name: "과속 함정 (Speed Trap)"
+      essence: "성장 속도 > 실행 역량"
+
+    failure_mechanisms:
+
+      operational_breakdown:
+        - "프로세스 부재 (빠른 성장)"
+        - "품질 하락"
+        - "고객 불만 증가"
+        - "Churn 상승"
+
+      team_chaos:
+        - "인력 급증 (50 → 500명)"
+        - "온보딩 부실"
+        - "문화 붕괴"
+        - "커뮤니케이션 단절"
+
+      cash_burn:
+        - "고정비 급증"
+        - "투자 효율 하락"
+        - "Runway 예상보다 짧음"
+
+    case_studies_fancy:
+
+      webvan:
+        company: "Webvan"
+        year: "1999-2001"
+        funding: "$1B"
+        ipo: "$8.5B 시가총액 (1999)"
+        bankruptcy: "2001.07"
+        lesson: "Speed Trap의 교과서"
+
+        what_they_did:
+          strategy: "온라인 식료품 배송"
+          execution: "26개 도시 동시 런칭"
+
+          massive_investment:
+            - "자동화 물류센터 건설 ($수억/개)"
+            - "배송 차량 구매 (수천 대)"
+            - "인력 채용 (4,500명)"
+
+        what_went_wrong:
+          problem_1:
+            issue: "수요 예측 실패"
+            plan: "도시당 일 8,000건 주문"
+            reality: "도시당 일 500-1,000건"
+            result: "물류센터 가동률 10%"
+
+          problem_2:
+            issue: "고정비 부담"
+            assets: "물류센터, 차량, 인력"
+            break_even: "일 5,000건/도시 필요"
+            reality: "도달 불가능"
+
+          problem_3:
+            issue: "운영 복잡도"
+            challenges:
+              - "신선식품 재고 관리"
+              - "배송 루트 최적화"
+              - "CS 폭주"
+            capability: "팀 역량 초과"
+
+        financial_collapse:
+          funding: "$1B"
+          burn_rate: "월 $수천만"
+          revenue: "목표의 10%"
+          runway: "18개월"
+          bankruptcy: "2001.07"
+
+        lessons:
+          - "Prove then Scale (반대로 함)"
+          - "고정비 함정 (자산 과다)"
+          - "시장 준비도 과대평가"
+          - "2020년엔 성공 (Instacart) = 타이밍"
+
+    case_studies_boring:
+
+      korean_fresh_food_delivery:
+        case: "새벽 배송 스타트업 (한국)"
+        year: "2018-2020"
+        funding: "시리즈B 30억"
+
+        initial_success:
+          area: "서울 3개구 (강남/서초/송파)"
+          daily_orders: "500건"
+          retention: "월 70%"
+          unit_economics: "양호"
+
+        premature_expansion:
+          decision: "전국 확장 (투자 압박)"
+          rollout: "6개월 내 15개 도시"
+
+          operational_chaos:
+            problem_1:
+              - "각 도시별 물류센터 필요"
+              - "센터당 투자 5억"
+              - "총 75억 필요 (자본 부족)"
+
+            problem_2:
+              - "재고 관리 시스템 부재"
+              - "신선식품 폐기율 30%"
+              - "마진 압박"
+
+            problem_3:
+              - "배송 품질 하락"
+              - "고객 불만 증가"
+              - "Churn 상승 (70 → 40%)"
+
+          financial_breakdown:
+            서울: "흑자 (규모의 경제)"
+            지방: "적자 (주문 부족)"
+            overall: "월 burn 5억"
+            runway: "6개월"
+
+        shutdown: "2020.11"
+
+        lessons:
+          - "지역 집중 vs 전국 확장"
+          - "물류 사업은 밀도 게임"
+          - "투자 압박 거부 못함"
+
+  # ────────────────────────────────────
+  # G-2: Competitive Pressure
+  # ────────────────────────────────────
+
+  competitive_failure:
+    _id: "growth_competition_fail"
+
+    concept:
+      name: "경쟁 대응 실패"
+      essence: "강자 진입으로 밀림"
+
+    patterns:
+
+      deep_pocket_competitor:
+        - "대기업 진입 (무한 자본)"
+        - "가격 전쟁 (우리는 못 버팀)"
+        - "인재 빼앗김"
+
+      platform_envelopment:
+        - "카카오/네이버 진입"
+        - "무료 제공 (우리는 유료)"
+        - "사용자 base 활용"
+
+      red_ocean:
+        - "진입장벽 낮음"
+        - "과다 경쟁"
+        - "마진 압박"
+
+    case_studies_boring:
+
+      korean_food_order_saas:
+        case: "음식점 주문 관리 SaaS"
+        year: "2019-2021"
+
+        initial_position:
+          - "음식점용 태블릿 + 앱"
+          - "배민/요기요 주문 통합 관리"
+          - "월 구독 5만원"
+          - "가입 음식점 3,000개"
+
+        competitive_shock:
+          event: "배달의민족이 무료 제공 (2020)"
+
+          우리_value:
+            - "통합 관리"
+            - "월 5만원"
+
+          배민_value:
+            - "통합 관리 (동일)"
+            - "무료"
+            - "배민 주문 우선 노출 혜택"
+
+        customer_exodus:
+          month_1: "100개 해지"
+          month_3: "500개 해지"
+          month_6: "1,500개 해지 (50%)"
+
+        pivot_attempts:
+          - "무료 전환 + 광고 모델 → 실패"
+          - "프리미엄 기능 추가 → 관심 없음"
+          - "B2B (프랜차이즈) 전환 → 느림"
+
+        shutdown: "2021.12"
+
+        lesson: "플랫폼 vs 서비스 경쟁 불가"
+
+# ========================================
+# STAGE 4: MATURITY / EXIT 단계 실패
+# ========================================
+
+maturity_stage_failures:
+
+  _stage: "성숙/Exit"
+  _timeframe: "5년+"
+  _death_rate: "<5%"
+  _note: "여기까지 온 것만으로 상위 10%"
+
+  # ────────────────────────────────────
+  # M-1: Failure to Exit
+  # ────────────────────────────────────
+
+  exit_failure:
+    _id: "maturity_exit_fail"
+
+    patterns:
+
+      overvaluation_trap:
+        - "유니콘 밸류 ($1B+)"
+        - "Exit 가격 맞는 buyer 없음"
+        - "IPO 시장 안 좋음"
+        - "Down round 거부"
+        - "시간 지나 가치 하락"
+
+      founder_stubbornness:
+        - "인수 제안 거절 (더 키우고 싶음)"
+        - "시장 변화 (경쟁, 규제)"
+        - "제안 사라짐"
+
+    case_studies_fancy:
+
+      wework:
+        company: "WeWork"
+        peak_valuation: "$47B (2019.01)"
+        ipo_attempt: "2019.09"
+        actual_valuation: "$8B (2019.10)"
+        current: "합병 후 상장, 주가 폭락"
+
+        what_happened:
+          - "IPO 준비 중 재무 공개"
+          - "Unit Econ 파국 발견"
+          - "거버넌스 문제"
+          - "투자자 신뢰 상실"
+          - "밸류 -83%"
+
+# ========================================
+# 교차 절단 패턴: 모든 단계 실패 원인
+# ========================================
+
+universal_failure_patterns:
+
+  _note: "단계 무관하게 모든 스타트업을 죽이는 요인들"
+
+  # ────────────────────────────────────
+  # U-1: Team & Execution
+  # ────────────────────────────────────
+
+  team_execution_failure:
+    _prevalence: "#3 실패 원인 (CB Insights 23%)"
+
+    patterns:
+
+      wrong_skills:
+        - "기술자만 (영업 없음)"
+        - "영업만 (제품 못 만듦)"
+        - "아이디어맨만 (실행 못함)"
+
+      founder_burnout:
+        - "70시간/주 × 3년"
+        - "정신적 소진"
+        - "의사결정 품질 하락"
+
+      key_person_risk:
+        - "창업자 건강 문제"
+        - "핵심 인재 이탈"
+        - "대체 불가능"
+
+  # ────────────────────────────────────
+  # U-2: Ran Out of Cash
+  # ────────────────────────────────────
+
+  cash_depletion:
+    _prevalence: "#2 실패 원인 (CB Insights 29%)"
+
+    patterns:
+
+      runway_miscalculation:
+        - "Burn rate 통제 실패"
+        - "다음 라운드 낙관"
+        - "투자 시장 악화"
+        - "갑자기 3개월 runway"
+
+      bad_deal_terms:
+        - "Toxic funding (악성 조건)"
+        - "Equity 과다 희석"
+        - "Founder 통제권 상실"
+
+  # ────────────────────────────────────
+  # U-3: Pricing Issues
+  # ────────────────────────────────────
+
+  pricing_failure:
+    _prevalence: "#5 실패 원인 (18%)"
+
+    patterns:
+
+      too_low:
+        - "고객 확보 위해 저가 (손해)"
+        - "나중에 올리기 어려움"
+        - "Low margin trap"
+
+      too_high:
+        - "가치 대비 비쌈"
+        - "고객 이탈"
+        - "경쟁사로 이동"
+
+      wrong_model:
+        - "일회성인데 구독 (맞지 않음)"
+        - "구독인데 일회성 (LTV 낮음)"
+
+# ========================================
+# 한국 시장 특화 실패 패턴
+# ========================================
+
+korean_market_failures:
+
+  _note: "한국 시장 고유 실패 요인"
+
+  regulatory_risks:
+    - "갑작스런 규제 (타다 사태)"
+    - "대기업 규제 (불공정 거래)"
+    - "개인정보보호법 (CCTV, 데이터)"
+
+  chaebol_competition:
+    - "대기업 카피 (네이버, 카카오)"
+    - "자본력 차이"
+    - "플랫폼 파워"
+
+  small_market:
+    - "5천만 인구 (규모 한계)"
+    - "글로벌 확장 어려움 (언어, 문화)"
+    - "Exit 옵션 제한"
+
+  talent_shortage:
+    - "좋은 개발자 대기업 선호"
+    - "채용 경쟁 치열"
+    - "보상 격차"
+
+# ========================================
+# Steve 활용 가이드
+# ========================================
+
+steve_usage_protocol:
+
+  when_evaluating_opportunity:
+
+    step_1_stage_identification:
+      question: "이 기회는 어느 단계에서 죽을 가능성이 높은가?"
+      mapping:
+        - "PMF 단계 리스크 체크"
+        - "Transition 리스크 체크"
+        - "Growth 리스크 체크"
+
+    step_2_pattern_matching:
+      question: "이 실패 패턴 중 어디 해당하는가?"
+      checklist:
+        - "No Market Need?"
+        - "Unit Economics 가능?"
+        - "경쟁 대응 가능?"
+        - "팀 역량 충분?"
+
+    step_3_mitigation:
+      question: "어떻게 실패를 피할 것인가?"
+      actions:
+        - "가정 검증 (실험)"
+        - "작게 시작 (MVP)"
+        - "Unit Econ 조기 검증"
+        - "경쟁 대응 전략"
+
+  reality_check_questions:
+    - "이 기회가 실패한 유사 사례는?"
+    - "우리는 왜 다를 것인가?"
+    - "실패를 피할 구조적 우위는?"
+    - "최악의 시나리오 대비는?"
+
+  warning:
+    - "성공 패턴만 보면 편향"
+    - "실패 패턴도 똑같이 중요"
+    - "대부분 스타트업은 죽음 (90%)"
+    - "겸손과 검증이 생존 전략"
+
+# ========================================
+# 패턴 요약
+# ========================================
+
+pattern_summary:
+
+  by_stage:
+    pmf:
+      - "No Market Need (42%)"
+      - "False Positives (가짜 신호)"
+      - "Bad Bedfellows (팀 갈등)"
+
+    transition:
+      - "Unit Economics Breakdown"
+      - "Wrong Business Model"
+
+    growth:
+      - "Speed Traps (과속)"
+      - "Competitive Pressure"
+
+    maturity:
+      - "Exit Failure"
+
+  universal:
+    - "Team/Execution (23%)"
+    - "Ran Out of Cash (29%)"
+    - "Pricing Issues (18%)"
+
+  case_count:
+    fancy: "20+ (Quibi, MoviePass, WeWork, Jawbone 등)"
+    boring: "40+ (무명 스타트업, 한국 시장)"
+    korean: "25+ (한국 특화)"
+    total: "60+ 사례"
+
+  key_insight:
+    - "Fancy 실패 = 큰 돈 태움"
+    - "Boring 실패 = 흔한 이유"
+    - "둘 다 학습 가치 높음"
+    - "패턴 인식 = 생존율 증가"
+
+# ========================================
+# 추가 실패 사례 (패턴별)
+# ========================================
+
+additional_failure_cases:
+
+  no_market_need_cases:
+    
+    - company: "Color (사진 앱)"
+      funding: "$41M (Series A)"
+      problem: "아무도 원하지 않는 기능"
+      lifespan: "1년"
+
+    - company: "Juicero"
+      funding: "$120M"
+      product: "$400 착즙기"
+      problem: "손으로 짜도 됨"
+      ridicule: "언론 조롱"
+
+    - company: "Google Glass"
+      funding: "수억 달러"
+      problem: "사생활 침해, 사회적 낙인"
+      result: "소비자 버전 중단"
+
+    - company: "Segway"
+      hype: "혁명적 이동수단"
+      reality: "틈새 시장 (관광)"
+
+  unit_economics_cases:
+
+    - company: "Groupon"
+      problem: "낮은 Retention"
+      merchants: "1회 프로모션만 사용"
+      result: "성장 둔화"
+
+    - company: "LivingSocial"
+      similar: "Groupon"
+      result: "Amazon 매각 후 폐쇄"
+
+    - company: "Homejoy (청소 서비스)"
+      problem: "CAC $100 > LTV $80"
+      result: "폐업"
+
+  false_positive_cases:
+
+    - company: "Theranos"
+      funding: "$700M"
+      valuation: "$9B"
+      fraud: "기술 검증 실패 (사기)"
+      result: "CEO 사기죄"
+
+    - company: "Yo (앱)"
+      funding: "$1.5M"
+      function: "친구에게 'Yo' 보내기"
+      hype: "언론 주목"
+      reality: "1달 후 사용자 소멸"
+
+  competitive_failure_cases:
+
+    - company: "Google+"
+      competitor: "Facebook"
+      problem: "네트워크 효과 못 따라잡음"
+      shutdown: "2019"
+
+    - company: "Amazon Fire Phone"
+      competitor: "iPhone, Android"
+      problem: "차별화 실패"
+      loss: "$170M 손실"
+
+    - company: "Microsoft Zune"
+      competitor: "iPod"
+      late: "5년 늦음"
+      result: "단종"
+
+  korean_startup_failures:
+
+    - company: "쏘카 (초기)"
+      problem: "차량 구매 비용 과다"
+      pivot: "B2C → B2B"
+      현재: "생존 (전환 성공)"
+
+    - company: "티몬 (커머스 전쟁)"
+      problem: "쿠팡, 11번가 경쟁"
+      challenge: "마진 압박, 적자"
+
+    - company: "야놀자 호텔 리스"
+      problem: "자산 부담 과다"
+      pivot: "자산 보유 → 플랫폼"
+
+    - company: "배달 앱 경쟁"
+      victims: "요기요, 배달통"
+      winner: "배달의민족"
+      reason: "자본력, 마케팅"
+
+    - company: "숙박 앱 경쟁"
+      survivors: "야놀자, 여기어때"
+      casualties: "수십 개 작은 앱"
+
+steve_usage_protocol:
+
+  when_evaluating_opportunity:
+
+    step_1_stage_identification:
+      question: "이 기회는 어느 단계에서 죽을 가능성이 높은가?"
+      mapping:
+        - "PMF 단계 리스크 체크"
+        - "Transition 리스크 체크"
+        - "Growth 리스크 체크"
+      additional: "유사 실패 사례 검색"
+
+    step_2_pattern_matching:
+      question: "이 실패 패턴 중 어디 해당하는가?"
+      checklist:
+        - "No Market Need?"
+        - "Unit Economics 가능?"
+        - "경쟁 대응 가능?"
+        - "팀 역량 충분?"
+      use_cases: "추가 사례 라이브러리 참조"
+
+    step_3_mitigation:
+      question: "어떻게 실패를 피할 것인가?"
+      actions:
+        - "가정 검증 (실험)"
+        - "작게 시작 (MVP)"
+        - "Unit Econ 조기 검증"
+        - "경쟁 대응 전략"
+      learning: "실패 사례에서 교훈 추출"
+
+  reality_check_questions:
+    - "이 기회가 실패한 유사 사례는?"
+    - "우리는 왜 다를 것인가?"
+    - "실패를 피할 구조적 우위는?"
+    - "최악의 시나리오 대비는?"
+    - "실패 사례 라이브러리에 답이 있는가?"
+
+  warning:
+    - "성공 패턴만 보면 편향"
+    - "실패 패턴도 똑같이 중요"
+    - "대부분 스타트업은 죽음 (90%)"
+    - "겸손과 검증이 생존 전략"
+    - "실패 사례 = 미래의 나"
+
