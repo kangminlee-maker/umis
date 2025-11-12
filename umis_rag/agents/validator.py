@@ -943,6 +943,183 @@ class ValidatorRAG:
         return "\n".join(lines)
 
 
+    def search_historical_data(
+        self,
+        market: str,
+        years: range
+    ) -> Dict[str, Any]:
+        """
+        과거 데이터 탐색 및 수집 (v7.8.0 신규)
+        
+        Observer Timeline 분석을 위한 과거 데이터 수집.
+        Estimator 협업으로 누락 데이터 추정.
+        
+        Args:
+            market: 시장 이름
+            years: range(2015, 2026) → 2015-2025
+        
+        Returns:
+            {
+                'market_size_by_year': {year: {value, source, reliability}, ...},
+                'players_by_year': {year: {player: {share, source}, ...}, ...},
+                'events': [Event, ...],
+                'hhi_by_year': {year: hhi, ...},
+                'player_count_by_year': {year: count, ...},
+                'data_quality': {verified_ratio, avg_confidence, ...}
+            }
+        """
+        logger.info(f"[Validator] 과거 데이터 수집: {market} ({years.start}-{years.stop-1})")
+        
+        result = {
+            'market_size_by_year': {},
+            'players_by_year': {},
+            'events': [],
+            'hhi_by_year': {},
+            'player_count_by_year': {},
+            'data_gaps': {'missing_years': [], 'estimator_requests': []}
+        }
+        
+        # Step 1: 공식 통계 검색
+        logger.info("  Step 1: 공식 통계 검색")
+        official_data = self._search_official_statistics(market, years)
+        result['market_size_by_year'].update(official_data.get('market_size', {}))
+        
+        # Step 2: 산업 리포트 검색 (RAG)
+        logger.info("  Step 2: 산업 리포트 검색 (RAG)")
+        industry_data = self._search_industry_reports_rag(market, years)
+        result['market_size_by_year'].update(industry_data.get('market_size', {}))
+        
+        # Step 3: 공시 데이터 (상장사)
+        logger.info("  Step 3: 공시 데이터 검색")
+        public_data = self._search_public_filings(market, years)
+        result['players_by_year'].update(public_data.get('players', {}))
+        
+        # Step 4: 뉴스/사건
+        logger.info("  Step 4: 주요 사건 검색")
+        events = self._search_news_events(market, years)
+        result['events'] = events
+        
+        # Step 5: Gap 식별
+        logger.info("  Step 5: 데이터 Gap 식별")
+        gaps = self._identify_data_gaps(result, years)
+        result['data_gaps'] = gaps
+        
+        # Step 6: Estimator 협업 (Gap 채우기)
+        if gaps['missing_years']:
+            logger.info(f"  Step 6: Estimator 협업 ({len(gaps['missing_years'])}개 누락 연도)")
+            result = self._fill_gaps_with_estimator(result, gaps)
+        
+        # Step 7: 데이터 품질 평가
+        result['data_quality'] = self._assess_data_quality(result, years)
+        
+        logger.info(f"  ✅ 과거 데이터 수집 완료 (품질: {result['data_quality'].get('grade', 'N/A')})")
+        
+        return result
+    
+    def _search_official_statistics(self, market: str, years: range) -> Dict:
+        """공식 통계 검색 (통계청, 한국은행 등)"""
+        # TODO: 실제 API 연동 또는 웹 검색
+        # 현재는 placeholder
+        logger.info("    (구현 예정: 통계청 API)")
+        return {'market_size': {}}
+    
+    def _search_industry_reports_rag(self, market: str, years: range) -> Dict:
+        """산업 리포트 검색 (RAG 활용)"""
+        # data_sources_registry에서 검색
+        if self.source_store:
+            results = self.source_store.similarity_search(
+                f"{market} market size historical data",
+                k=5
+            )
+            logger.info(f"    ✅ RAG: {len(results)}개 소스 발견")
+        
+        # TODO: 실제 리포트에서 데이터 추출
+        return {'market_size': {}}
+    
+    def _search_public_filings(self, market: str, years: range) -> Dict:
+        """공시 데이터 검색 (DART API 등)"""
+        # TODO: DART API 연동
+        logger.info("    (구현 예정: DART API)")
+        return {'players': {}}
+    
+    def _search_news_events(self, market: str, years: range) -> List[Dict]:
+        """뉴스에서 주요 사건 추출"""
+        # TODO: 뉴스 검색 및 사건 추출
+        logger.info("    (구현 예정: 뉴스 검색)")
+        return []
+    
+    def _identify_data_gaps(self, collected_data: Dict, years: range) -> Dict:
+        """데이터 Gap 식별"""
+        gaps = {'missing_years': [], 'estimator_requests': []}
+        
+        # 누락 연도 파악
+        for year in years:
+            if year not in collected_data['market_size_by_year']:
+                gaps['missing_years'].append(year)
+                
+                # Estimator 요청 준비
+                gaps['estimator_requests'].append({
+                    'type': 'market_size_interpolation',
+                    'year': year,
+                    'market': collected_data.get('market'),
+                    'known_data': collected_data['market_size_by_year']
+                })
+        
+        logger.info(f"    Gap: {len(gaps['missing_years'])}개 누락 연도")
+        return gaps
+    
+    def _fill_gaps_with_estimator(self, data: Dict, gaps: Dict) -> Dict:
+        """Estimator 협업으로 Gap 채우기"""
+        try:
+            from umis_rag.agents.estimator import get_estimator_rag
+            estimator = get_estimator_rag()
+            
+            for request in gaps['estimator_requests']:
+                if request['type'] == 'market_size_interpolation':
+                    # 보간 요청
+                    # TODO: Estimator.estimate() 호출
+                    logger.info(f"      Estimator: {request['year']}년 추정 중...")
+                    
+                    # Placeholder
+                    # result = estimator.estimate(...)
+                    # data['market_size_by_year'][request['year']] = result
+        
+        except Exception as e:
+            logger.warning(f"    ⚠️ Estimator 협업 실패: {e}")
+        
+        return data
+    
+    def _assess_data_quality(self, data: Dict, years: range) -> Dict:
+        """데이터 품질 평가"""
+        total_years = len(list(years))
+        verified_years = sum(
+            1 for y, d in data['market_size_by_year'].items()
+            if d.get('reliability') == 'high'
+        )
+        estimated_years = sum(
+            1 for y, d in data['market_size_by_year'].items()
+            if d.get('reliability') == 'estimated'
+        )
+        
+        verified_ratio = verified_years / total_years if total_years > 0 else 0
+        
+        # 등급 판정
+        if verified_ratio >= 0.5:
+            grade = 'A (High)'
+        elif verified_ratio >= 0.3:
+            grade = 'B (Medium)'
+        else:
+            grade = 'C (Low)'
+        
+        return {
+            'total_years': total_years,
+            'verified_years': verified_years,
+            'estimated_years': estimated_years,
+            'verified_ratio': verified_ratio,
+            'grade': grade
+        }
+
+
 # Validator RAG 인스턴스 (싱글톤)
 _validator_rag_instance = None
 

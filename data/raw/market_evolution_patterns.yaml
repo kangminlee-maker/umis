@@ -1,0 +1,1062 @@
+# ========================================
+# Market Evolution Patterns
+# ========================================
+#
+# 목적: 시장 구조 진화 패턴 데이터
+# 버전: 1.0
+# 생성일: 2025-11-12
+# 
+# 사용: Observer.analyze_market_timeline()에서
+#       RAG 검색으로 유사 패턴 매칭
+# ========================================
+
+version: "1.0"
+created: "2025-11-12"
+updated: "2025-11-12"
+total_patterns: 30  # 목표
+current_count: 30  # Week 2에서 skeleton 완성
+
+# ========================================
+# 패턴 목록
+# ========================================
+
+patterns:
+
+  # === 패턴 1: 독점 → 경쟁 → 재편 사이클 ===
+  - pattern_id: evolution_001
+    pattern_name: "독점 → 경쟁 → 재편 사이클"
+    pattern_type: "market_concentration_cycle"
+    
+    description: |
+      규제 완화 또는 기술 보편화로 독점 시장이 경쟁 시장으로 전환.
+      과도한 경쟁 후 M&A를 통해 시장이 재집중되는 사이클.
+      
+      핵심 메커니즘:
+      - Phase 1: 진입 장벽 (규제/자본/기술) → 독점 유지
+      - Phase 2: 장벽 제거 → 신규 진입 폭발 → 경쟁
+      - Phase 3: 수익성 악화 → 구조조정/M&A → 재집중
+    
+    typical_duration: "10-15년"
+    
+    phases:
+      - phase: "독점기"
+        typical_duration: "5-8년"
+        
+        characteristics:
+          market_structure:
+            - "1-2개 지배 기업"
+            - "HHI > 5,000"
+            - "진입 장벽 높음 (규제/자본/기술)"
+            - "신규 진입 거의 없음"
+          
+          economics:
+            - "높은 마진 (영업이익률 25-40%)"
+            - "낮은 혁신 (필요 없음)"
+            - "고객 선택권 제한"
+            - "프리미엄 가격 유지"
+          
+          dynamics:
+            - "가격 경직성 (독점 가격)"
+            - "공급자 우위"
+            - "고객 불만 누적"
+            - "규제 압력 증가"
+        
+        indicators:
+          hhi_range: [5000, 10000]
+          top3_share: "> 80%"
+          new_entry_rate: "< 1개/년"
+          avg_margin: "> 25%"
+          innovation_index: "낮음"
+        
+        customer_sentiment:
+          satisfaction: "낮음 (선택권 없음)"
+          switching_desire: "높음 (대안 있으면)"
+          price_sensitivity: "높음"
+      
+      - phase: "경쟁기"
+        typical_duration: "3-5년"
+        
+        characteristics:
+          market_structure:
+            - "신규 진입 폭발 (연 5-10개)"
+            - "HHI 1,500-3,000 (경쟁 시장)"
+            - "진입 장벽 낮아짐"
+            - "시장 파편화 (Long Tail)"
+          
+          economics:
+            - "마진 압박 (영업이익률 10-20%)"
+            - "혁신 가속 (차별화 필요)"
+            - "가격 경쟁 (저가 경쟁)"
+            - "효율화 압력"
+          
+          dynamics:
+            - "시장 파편화 (다양한 포지셔닝)"
+            - "구매자 우위 전환 (선택권 증가)"
+            - "빠른 진입/퇴출"
+            - "수익성 악화"
+        
+        indicators:
+          hhi_range: [1500, 3000]
+          top3_share: "50-70%"
+          new_entry_rate: "> 5개/년"
+          avg_margin: "10-20%"
+          failure_rate: "높음 (연 30%+ 퇴출)"
+        
+        customer_sentiment:
+          satisfaction: "높음 (선택권 많음)"
+          switching: "잦음 (전환 쉬움)"
+          price_expectation: "하락"
+      
+      - phase: "재편기"
+        typical_duration: "3-5년"
+        
+        characteristics:
+          market_structure:
+            - "M&A 활발 (생존 기업 통합)"
+            - "HHI 재상승 (3,000-5,000)"
+            - "시장 재집중 (3-5강 체제)"
+            - "약소 기업 정리"
+          
+          economics:
+            - "마진 회복 (영업이익률 18-25%)"
+            - "효율화 집중 (규모 경제)"
+            - "규모의 경제 확립"
+            - "수익성 개선"
+          
+          dynamics:
+            - "과점 체제 형성"
+            - "균형점 도달"
+            - "진입 둔화"
+            - "시장 안정화"
+        
+        indicators:
+          hhi_range: [3000, 5000]
+          top3_share: "65-80%"
+          ma_activity: "> 3건/년"
+          avg_margin: "18-25%"
+          market_growth: "둔화 (성숙기)"
+        
+        customer_sentiment:
+          satisfaction: "중간"
+          switching: "감소 (통합으로)"
+          price_stability: "안정"
+        
+        future_outlook:
+          - "새로운 사이클 시작 가능 (기술 혁신 시)"
+          - "또는 성숙기 진입 (성장 정체)"
+    
+    trigger_events:
+      phase_1_to_2:
+        - "규제 완화 (진입 장벽 제거)"
+        - "기술 보편화 (진입 비용 하락)"
+        - "특허 만료"
+      
+      phase_2_to_3:
+        - "과도한 경쟁 (마진 압박)"
+        - "대형 플레이어의 M&A"
+        - "시장 성숙 (성장 둔화)"
+    
+    case_studies:
+      - market: "통신 시장"
+        country: "한국"
+        timeline:
+          phase_1: "1980-1995 (KT 독점)"
+          phase_2: "1996-2010 (SKT, LG 진입)"
+          phase_3: "2011-현재 (3강 체제)"
+        
+        hhi_data:
+          1995: 10000
+          2005: 2800
+          2015: 4200
+        
+        key_events:
+          - year: 1996
+            event: "통신 시장 개방"
+            impact: "경쟁 시작"
+          - year: 2011
+            event: "LTE 투자 경쟁"
+            impact: "시장 재편"
+      
+      - market: "항공 시장"
+        country: "한국"
+        timeline:
+          phase_1: "1970-1985 (KAL 독점)"
+          phase_2: "1986-2010 (AAR, 저가항공 진입)"
+          phase_3: "2011-현재 (재편)"
+        
+        key_events:
+          - year: 1988
+            event: "민간 항공사 진입 허용"
+          - year: 2005
+            event: "저가항공 시대"
+
+  # === 패턴 2: 오프라인 → 플랫폼 전환 ===
+  - pattern_id: evolution_002
+    pattern_name: "오프라인 → 플랫폼 전환"
+    pattern_type: "distribution_model_shift"
+    
+    description: |
+      오프라인 거래 중심에서 플랫폼 기반 거래로 전환.
+      중개 비용 감소, 거래 효율성 증가, 네트워크 효과 발생.
+      
+      핵심 메커니즘:
+      - 정보 비대칭 해소 (가격/품질 투명화)
+      - 거래 비용 감소 (탐색/협상 비용 ↓)
+      - 네트워크 효과 (사용자 ↑ → 가치 ↑)
+    
+    typical_duration: "5-10년"
+    
+    phases:
+      - phase: "오프라인 지배"
+        typical_duration: "기존 시장"
+        
+        characteristics:
+          distribution:
+            - "물리적 매장/중개인 중심"
+            - "대면 거래 필수"
+            - "지역 제한 (물리적 범위)"
+            - "정보 비대칭 심각"
+          
+          economics:
+            - "높은 중개 비용 (20-30%)"
+            - "고정 비용 높음 (매장/인건비)"
+            - "확장 비용 높음"
+          
+          customer_experience:
+            - "탐색 시간 많음"
+            - "비교 어려움"
+            - "거래 불편"
+        
+        indicators:
+          platform_share: "< 5%"
+          offline_share: "> 90%"
+          transaction_efficiency: "낮음"
+      
+      - phase: "플랫폼 도입기"
+        typical_duration: "3-5년"
+        
+        characteristics:
+          distribution:
+            - "온라인 플랫폼 등장"
+            - "Early Adopters 유입"
+            - "오프라인 + 플랫폼 공존"
+          
+          economics:
+            - "중개 비용 하락 (10-15%)"
+            - "변동 비용 모델"
+            - "빠른 확장 가능"
+          
+          customer_experience:
+            - "편의성 증가 (24/7)"
+            - "비교 용이"
+            - "선택권 확대"
+        
+        indicators:
+          platform_share: "15-40%"
+          offline_share: "60-85%"
+          growth_rate: "높음 (연 50%+)"
+        
+        tipping_point:
+          threshold: "플랫폼 점유율 30%"
+          trigger: "네트워크 효과 임계점"
+          acceleration: "이후 급성장"
+      
+      - phase: "플랫폼 지배"
+        typical_duration: "지속"
+        
+        characteristics:
+          distribution:
+            - "플랫폼이 주 채널 (70%+)"
+            - "오프라인은 보조"
+            - "전국/글로벌 범위"
+          
+          economics:
+            - "중개 비용 최적화 (3-7%)"
+            - "규모의 경제 확립"
+            - "네트워크 효과 수익화"
+          
+          customer_experience:
+            - "디폴트 채널"
+            - "높은 편의성"
+            - "데이터 기반 개인화"
+        
+        indicators:
+          platform_share: "> 70%"
+          offline_share: "< 30%"
+          platform_power: "높음 (Take Rate 결정)"
+    
+    trigger_events:
+      phase_1_to_2:
+        - "스마트폰 보급 (임계점 50%)"
+        - "결제 인프라 (간편 결제)"
+        - "배송/이행 인프라 성숙"
+      
+      phase_2_to_3:
+        - "네트워크 효과 임계점 (30% 점유율)"
+        - "고객 습관 형성 (주 1회 이상)"
+        - "오프라인 경쟁력 약화"
+    
+    case_studies:
+      - market: "배달 시장"
+        country: "한국"
+        timeline:
+          phase_1: "2010 이전 (전화 주문 지배)"
+          phase_2: "2010-2015 (배달앱 도입)"
+          phase_3: "2016-현재 (플랫폼 80%)"
+        
+        metrics:
+          platform_share:
+            2010: 0%
+            2015: 30%
+            2020: 80%
+            2025: 85%
+          
+          offline_efficiency:
+            before: "주문당 5분 (전화)"
+            after: "주문당 30초 (앱)"
+        
+        key_events:
+          - year: 2010
+            event: "배달의민족 시작"
+          - year: 2015
+            event: "스마트폰 보급률 50% 돌파"
+          - year: 2019
+            event: "배민-요기요 합병 (과점)"
+      
+      - market: "택시/모빌리티"
+        country: "한국"
+        timeline:
+          phase_1: "2010 이전 (길거리 호출)"
+          phase_2: "2013-2018 (카카오T 도입)"
+          phase_3: "2019-현재 (플랫폼 70%)"
+        
+        metrics:
+          platform_share:
+            2013: 0%
+            2018: 50%
+            2023: 70%
+        
+        key_events:
+          - year: 2015
+            event: "카카오T 본격화"
+          - year: 2018
+            event: "전 택시 플랫폼 연동"
+
+  # === 패턴 3: D2C 전환 ===
+  - pattern_id: evolution_003
+    pattern_name: "유통 중개 → D2C 전환"
+    pattern_type: "disintermediation"
+    
+    description: |
+      다단계 유통 구조에서 제조사 직판(D2C)으로 전환.
+      유통 마진 절감, 고객 직접 관계 구축, 브랜드 통제력 확보.
+      
+      핵심 메커니즘:
+      - 유통 마진 40%+ → 제조사가 회수
+      - 고객 데이터 확보 (CRM, 재구매)
+      - 브랜드 경험 통제
+    
+    typical_duration: "7-12년"
+    
+    phases:
+      - phase: "유통 지배"
+        typical_duration: "기존 구조"
+        
+        characteristics:
+          structure:
+            - "제조 → 도매 → 소매 (3-4단계)"
+            - "유통사가 고객 접점 소유"
+            - "제조사는 B2B만"
+          
+          economics:
+            - "유통 마진 40-50%"
+            - "제조사 마진 낮음 (15-25%)"
+            - "유통사가 가치 획득"
+          
+          control:
+            - "유통사가 가격 결정"
+            - "제조사는 고객 모름"
+            - "브랜드 경험 통제 불가"
+        
+        indicators:
+          d2c_share: "< 10%"
+          distribution_margin: "> 40%"
+          manufacturer_margin: "15-25%"
+      
+      - phase: "D2C 시작기"
+        typical_duration: "3-5년"
+        
+        characteristics:
+          structure:
+            - "제조사 온라인몰 개설"
+            - "유통 + D2C 병행 (하이브리드)"
+            - "유통사와 긴장"
+          
+          economics:
+            - "D2C 마진 높음 (50-60%)"
+            - "유통 마진 하락 (30-40%)"
+            - "채널 갈등 비용"
+          
+          control:
+            - "제조사 가격 일부 통제"
+            - "고객 데이터 일부 확보"
+            - "브랜드 경험 시작"
+        
+        indicators:
+          d2c_share: "20-40%"
+          channel_conflict: "높음"
+          customer_acquisition_cost: "높음 (초기)"
+      
+      - phase: "D2C 중심"
+        typical_duration: "지속"
+        
+        characteristics:
+          structure:
+            - "D2C가 주 채널 (60-80%)"
+            - "유통은 보조 (물류/오프라인)"
+            - "제조사가 주도권"
+          
+          economics:
+            - "D2C 마진 50-70%"
+            - "유통 마진 최소 (20-30%)"
+            - "전체 수익성 개선"
+          
+          control:
+            - "완전한 가격 통제"
+            - "고객 데이터 소유"
+            - "브랜드 경험 완전 통제"
+        
+        indicators:
+          d2c_share: "> 60%"
+          customer_ltv: "증가 (재구매 데이터)"
+          brand_power: "강화"
+    
+    trigger_events:
+      phase_1_to_2:
+        - "e-커머스 인프라 성숙"
+        - "배송 비용 하락"
+        - "디지털 마케팅 효율화"
+      
+      phase_2_to_3:
+        - "D2C 수익성 검증"
+        - "고객 데이터 가치 인식"
+        - "유통 의존도 감소"
+    
+    case_studies:
+      - market: "뷰티 커머스"
+        brand: "국내 D2C 브랜드"
+        timeline:
+          phase_1: "2010 이전 (백화점/로드샵 지배)"
+          phase_2: "2015-2020 (D2C 브랜드 등장)"
+          phase_3: "2020-현재 (D2C 60%)"
+        
+        metrics:
+          d2c_share:
+            2015: 5%
+            2020: 40%
+            2025: 65%
+          
+          margin_improvement:
+            before: "제조사 마진 20%"
+            after: "D2C 마진 60%"
+        
+        success_factors:
+          - "SNS 마케팅 (인플루언서)"
+          - "빠른 배송 (당일/익일)"
+          - "고객 데이터 활용 (재구매)"
+      
+      - market: "가구"
+        brand: "한샘"
+        timeline:
+          phase_1: "2000 이전 (백화점 유통)"
+          phase_2: "2005-2015 (직영점 확대)"
+          phase_3: "2015-현재 (온라인 D2C)"
+        
+        key_events:
+          - year: 2005
+            event: "직영점 전략 시작"
+          - year: 2015
+            event: "온라인몰 본격화"
+
+  # === 패턴 4: 판매 → 구독 모델 전환 ===
+  - pattern_id: evolution_004
+    pattern_name: "판매 → 구독 모델 전환"
+    pattern_type: "revenue_model_shift"
+    
+    description: |
+      일시 판매에서 구독 기반 수익으로 전환.
+      고객 LTV 증가, 예측 가능한 수익 흐름, 관계 기반 비즈니스로 진화.
+      
+      핵심 메커니즘:
+      - 일시 매출 → 반복 매출 (MRR/ARR)
+      - CAC 회수 기간 장기화 but LTV 증가
+      - 고객 관계 지속 (Churn 관리 핵심)
+    
+    typical_duration: "3-7년"
+    
+    phases:
+      - phase: "판매 중심"
+        typical_duration: "기존 모델"
+        
+        characteristics:
+          revenue_model:
+            - "일시 판매 90%+"
+            - "구독/유지보수 < 10%"
+            - "거래 기반 (Transactional)"
+          
+          economics:
+            - "LTV/CAC < 2.0 (낮음)"
+            - "Churn 개념 없음"
+            - "재구매율 낮음 (30% 이하)"
+            - "현금 흐름 불안정"
+          
+          customer_relationship:
+            - "거래 후 관계 종료"
+            - "재구매는 우연"
+            - "고객 데이터 미활용"
+        
+        indicators:
+          subscription_ratio: "< 10%"
+          ltv_cac: "< 2.0"
+          revenue_predictability: "낮음"
+      
+      - phase: "하이브리드기"
+        typical_duration: "2-4년"
+        
+        characteristics:
+          revenue_model:
+            - "판매 50-70%"
+            - "구독 30-50%"
+            - "혼합 모델 실험"
+          
+          economics:
+            - "LTV/CAC 2.0-3.5"
+            - "Churn 5-10%"
+            - "ARR 증가 시작"
+            - "현금 흐름 개선"
+          
+          customer_relationship:
+            - "구독 고객 관리 시작"
+            - "Churn 방지 활동"
+            - "고객 세그먼트 분리"
+        
+        indicators:
+          subscription_ratio: "30-50%"
+          ltv_cac: "2.0-3.5"
+          churn_rate: "5-10%"
+          mrr_growth: "높음 (월 10%+)"
+        
+        challenges:
+          - "기존 고객 전환 저항"
+          - "영업 조직 재편"
+          - "가격 정책 혼란"
+      
+      - phase: "구독 중심"
+        typical_duration: "지속"
+        
+        characteristics:
+          revenue_model:
+            - "구독 70-90%"
+            - "판매 10-30% (보조)"
+            - "완전한 구독 모델"
+          
+          economics:
+            - "LTV/CAC > 3.5 (우수)"
+            - "Churn < 5% (안정)"
+            - "ARR 예측 가능"
+            - "Rule of 40 달성 가능"
+          
+          customer_relationship:
+            - "장기 관계 구축"
+            - "Success Management"
+            - "Expansion Revenue (Upsell)"
+        
+        indicators:
+          subscription_ratio: "> 70%"
+          ltv_cac: "> 3.5"
+          churn_rate: "< 5%"
+          nrr: "> 100% (Net Revenue Retention)"
+    
+    trigger_events:
+      phase_1_to_2:
+        - "CAC 상승 (구독 필요성)"
+        - "고객 요구 (유연성)"
+        - "경쟁사 구독 모델 성공"
+      
+      phase_2_to_3:
+        - "Churn 관리 성공 (< 7%)"
+        - "LTV/CAC > 3.0 검증"
+        - "ARR 예측 가능성 확보"
+    
+    case_studies:
+      - market: "소프트웨어"
+        company: "Adobe"
+        timeline:
+          phase_1: "~2012 (영구 라이선스 $2,600)"
+          phase_2: "2012-2015 (Creative Cloud $50/월)"
+          phase_3: "2015-현재 (구독 중심)"
+        
+        metrics:
+          revenue:
+            2012: "$4.4B (영구)"
+            2015: "$4.8B (전환 중)"
+            2020: "$12.9B (구독)"
+          
+          stock_price:
+            2012: "$30"
+            2020: "$450"
+            roi: "15배 증가"
+          
+          customer_metrics:
+            before_ltv_cac: "1.5"
+            after_ltv_cac: "5.0+"
+            churn: "2-3%"
+        
+        key_events:
+          - year: 2012
+            event: "Creative Cloud 출시"
+            impact: "초기 반발 (영구 선호)"
+          - year: 2015
+            event: "영구 라이선스 중단"
+            impact: "완전 전환 강제"
+          - year: 2018
+            event: "매출 2배 돌파"
+            impact: "구독 모델 성공 입증"
+      
+      - market: "음악"
+        company: "Spotify"
+        timeline:
+          phase_1: "N/A (처음부터 구독)"
+          phase_2: "2008-2012 (유료 전환)"
+          phase_3: "2013-현재 (구독 안정)"
+        
+        metrics:
+          paying_subscribers:
+            2013: "6M"
+            2020: "155M"
+            2024: "220M"
+          
+          churn:
+            early: "8-10%"
+            mature: "4-5%"
+          
+          ltv_cac: "> 4.0"
+
+  # === 패턴 5: 기술 파괴 사이클 ===
+  - pattern_id: evolution_005
+    pattern_name: "기술 파괴 사이클"
+    pattern_type: "technology_disruption"
+    
+    description: |
+      신기술 도입으로 기존 시장 구조가 완전히 재편.
+      레거시 플레이어 몰락, 신규 플레이어 부상.
+      
+      핵심 메커니즘:
+      - 신기술이 10배 better/cheaper/faster
+      - 기존 기업은 레거시 의존 (전환 어려움)
+      - Chasm 돌파 후 급격한 대체
+    
+    typical_duration: "10-20년"
+    
+    phases:
+      - phase: "레거시 지배"
+        typical_duration: "5-10년"
+        
+        characteristics:
+          technology:
+            - "기존 기술 성숙"
+            - "신기술 도입 < 5%"
+            - "Early Adopters만"
+          
+          market:
+            - "기존 기업 지배 (80%+)"
+            - "신기술 기업 니치"
+            - "시장 안정"
+          
+          economics:
+            - "기존 기업 수익성 높음"
+            - "신기술 기업 적자"
+            - "투자 단계"
+        
+        indicators:
+          tech_adoption: "< 5%"
+          incumbent_share: "> 80%"
+          new_entrant_share: "< 5%"
+      
+      - phase: "기술 전환점 (Chasm)"
+        typical_duration: "3-5년"
+        
+        characteristics:
+          technology:
+            - "신기술 16-50% 채택"
+            - "Chasm 돌파 (Geoffrey Moore)"
+            - "주류 시장 진입"
+          
+          market:
+            - "기존 기업 50-80%"
+            - "신기술 기업 20-50%"
+            - "시장 혼란"
+          
+          economics:
+            - "기존 기업 마진 압박"
+            - "신기술 기업 Break-even"
+            - "투자 급증"
+        
+        indicators:
+          tech_adoption: "16-50%"
+          incumbent_share: "50-80%"
+          market_growth: "높음 (신기술 확산)"
+        
+        tipping_point:
+          threshold: "16% 채택률 (Chasm)"
+          trigger: "Pragmatists 전환"
+          acceleration: "주류 시장 급속 채택"
+      
+      - phase: "신기술 지배"
+        typical_duration: "지속"
+        
+        characteristics:
+          technology:
+            - "신기술 > 70% 채택"
+            - "레거시 기술 잔존 (< 30%)"
+            - "신기술이 표준"
+          
+          market:
+            - "신규 기업 지배 (60%+)"
+            - "기존 기업 쇠퇴 or 전환"
+            - "새로운 균형"
+          
+          economics:
+            - "신기술 기업 수익성 확보"
+            - "레거시 기업 퇴출 or 전환"
+            - "시장 재편 완료"
+        
+        indicators:
+          tech_adoption: "> 70%"
+          incumbent_share: "< 40%"
+          new_standard: "신기술"
+    
+    trigger_events:
+      phase_1_to_2:
+        - "신기술 성능 임계점 (10배 개선)"
+        - "가격 하락 (대중화 가능)"
+        - "인프라 성숙 (사용 편의)"
+      
+      phase_2_to_3:
+        - "Chasm 돌파 (16% → 50%)"
+        - "기존 기업 대응 실패"
+        - "생태계 전환 (공급망, 파트너)"
+    
+    case_studies:
+      - market: "사진 산업"
+        technology: "필름 → 디지털"
+        timeline:
+          phase_1: "1990 이전 (필름 지배)"
+          phase_2: "1990-2005 (디지털 전환)"
+          phase_3: "2005-현재 (디지털 지배)"
+        
+        metrics:
+          digital_adoption:
+            1995: "2%"
+            2000: "15%"
+            2005: "60%"
+            2010: "95%"
+          
+          market_share:
+            kodak_peak_1990: "70%"
+            kodak_2012: "파산"
+        
+        key_events:
+          - year: 1975
+            event: "Kodak이 디지털 카메라 발명 (역설!)"
+            impact: "자체 cannibalization 두려워 묻음"
+          - year: 1995
+            event: "디지털 카메라 대중화 시작"
+          - year: 2000
+            event: "Chasm 돌파 (16%)"
+          - year: 2005
+            event: "디지털 지배 (60%)"
+          - year: 2012
+            event: "Kodak 파산"
+        
+        lessons:
+          - "기술 발명 ≠ 채택 (Kodak의 딜레마)"
+          - "Cannibalization 두려움 = 몰락"
+          - "신기술 기업이 승리 (Canon, Nikon 전환)"
+      
+      - market: "전기차"
+        technology: "내연기관 → 전기"
+        timeline:
+          phase_1: "2010 이전 (내연기관 99%)"
+          phase_2: "2012-2020 (전기차 도입, Tesla)"
+          phase_3: "2020-현재 (전환 가속)"
+        
+        metrics:
+          ev_adoption:
+            2012: "0.1%"
+            2020: "4%"
+            2023: "14% (Chasm 임박!)"
+            2030_forecast: "50%+"
+          
+          tesla_market_cap:
+            2012: "$3B"
+            2020: "$600B"
+            2023: "$800B"
+        
+        status: "Phase 2 진행 중 (Chasm 돌파 임박)"
+
+  # === 패턴 6-30: Skeleton (Week 2 작성) ===
+  
+  - pattern_id: evolution_006
+    pattern_name: "프리미엄 → 저가 전환"
+    pattern_type: "price_point_shift"
+    description: "고가 시장에서 저가 시장으로 전환 (Low-End Disruption)"
+    case_studies: ["Southwest Airlines", "Ikea"]
+  
+  - pattern_id: evolution_007
+    pattern_name: "B2B → B2C 전환"
+    pattern_type: "customer_segment_shift"
+    description: "기업 고객에서 일반 소비자로 확대"
+    case_studies: ["Slack", "Notion"]
+  
+  - pattern_id: evolution_008
+    pattern_name: "국내 → 글로벌 확장"
+    pattern_type: "geographic_expansion"
+    description: "국내 시장에서 글로벌로 확장"
+    case_studies: ["BTS", "K-Pop", "웹툰"]
+  
+  - pattern_id: evolution_009
+    pattern_name: "수직 통합 진화"
+    pattern_type: "vertical_integration"
+    description: "가치사슬 단계 통합 (제조 → 유통 → 판매)"
+    case_studies: ["Tesla", "Zara"]
+  
+  - pattern_id: evolution_010
+    pattern_name: "생태계 붕괴 → 재구축"
+    pattern_type: "ecosystem_collapse_rebuild"
+    description: "기존 생태계 붕괴 후 새로운 생태계 형성"
+    case_studies: ["App Store", "Android"]
+  
+  - pattern_id: evolution_011
+    pattern_name: "오프라인 → 온라인 전환"
+    pattern_type: "channel_digitalization"
+    description: "물리적 채널에서 디지털 채널로 완전 전환"
+    case_studies: ["서점 → 교보문고 앱", "은행 → 카카오뱅크"]
+  
+  - pattern_id: evolution_012
+    pattern_name: "광고 → 구독 수익 전환"
+    pattern_type: "monetization_shift"
+    description: "광고 기반에서 구독 기반으로 수익 모델 전환"
+    case_studies: ["YouTube Premium", "Spotify"]
+  
+  - pattern_id: evolution_013
+    pattern_name: "제품 → 서비스화 (Servitization)"
+    pattern_type: "product_to_service"
+    description: "제품 판매에서 서비스 제공으로 전환"
+    case_studies: ["Rolls-Royce (엔진 → Power by the Hour)", "Xerox"]
+  
+  - pattern_id: evolution_014
+    pattern_name: "중앙집중 → 탈중앙화"
+    pattern_type: "decentralization"
+    description: "중앙 통제에서 분산 구조로 전환"
+    case_studies: ["Airbnb", "Uber"]
+  
+  - pattern_id: evolution_015
+    pattern_name: "폐쇄 → 개방 생태계"
+    pattern_type: "ecosystem_opening"
+    description: "폐쇄적 플랫폼에서 개방형으로 전환"
+    case_studies: ["Apple (iOS) vs Android", "API Economy"]
+  
+  - pattern_id: evolution_016
+    pattern_name: "소유 → 접근 경제"
+    pattern_type: "ownership_to_access"
+    description: "소유권에서 사용권/접근권으로 전환"
+    case_studies: ["차량 → 카셰어링", "음악 CD → 스트리밍"]
+  
+  - pattern_id: evolution_017
+    pattern_name: "대량 → 개인화"
+    pattern_type: "mass_to_personalization"
+    description: "대량 생산에서 개인 맞춤으로 전환"
+    case_studies: ["Nike By You", "Stitch Fix"]
+  
+  - pattern_id: evolution_018
+    pattern_name: "하드웨어 → 소프트웨어 중심"
+    pattern_type: "hw_to_sw_shift"
+    description: "하드웨어 판매에서 소프트웨어/데이터 중심으로"
+    case_studies: ["Tesla (OTA 업데이트)", "Apple (Services)"]
+  
+  - pattern_id: evolution_019
+    pattern_name: "일회성 → 반복 수익"
+    pattern_type: "recurring_revenue_shift"
+    description: "일시 판매에서 반복 구매/구독으로"
+    case_studies: ["면도기 → Dollar Shave Club", "Nespresso"]
+  
+  - pattern_id: evolution_020
+    pattern_name: "전문가 → 셀프서비스"
+    pattern_type: "expert_to_self_service"
+    description: "전문가 필요에서 셀프서비스로 민주화"
+    case_studies: ["Turbotax", "Wix"]
+  
+  - pattern_id: evolution_021
+    pattern_name: "자산 소유 → 경량화"
+    pattern_type: "asset_light"
+    description: "자산 소유에서 플랫폼 모델로 (Asset-light)"
+    case_studies: ["Marriott → Airbnb", "렌터카 → Turo"]
+  
+  - pattern_id: evolution_022
+    pattern_name: "지역 → 초국가 플랫폼"
+    pattern_type: "cross_border_platform"
+    description: "지역 기반에서 글로벌 플랫폼으로"
+    case_studies: ["Amazon", "Alibaba"]
+  
+  - pattern_id: evolution_023
+    pattern_name: "Push → Pull 마케팅"
+    pattern_type: "marketing_shift"
+    description: "광고 푸시에서 콘텐츠/커뮤니티 풀로"
+    case_studies: ["Red Bull", "Nike"]
+  
+  - pattern_id: evolution_024
+    pattern_name: "단일 → 멀티사이드"
+    pattern_type: "multi_sided_market"
+    description: "단일 고객에서 양면/다면 시장으로"
+    case_studies: ["신용카드", "배달 플랫폼"]
+  
+  - pattern_id: evolution_025
+    pattern_name: "오프라인 독점 → 온라인 파편화"
+    pattern_type: "digitalization_fragmentation"
+    description: "오프라인 독점이 온라인에서 파편화"
+    case_studies: ["백화점 → 온라인몰", "서점 → 인터넷 서점"]
+  
+  - pattern_id: evolution_026
+    pattern_name: "고정가 → 동적 가격"
+    pattern_type: "dynamic_pricing"
+    description: "고정 가격에서 수요-공급 기반 동적 가격으로"
+    case_studies: ["Uber Surge", "항공권"]
+  
+  - pattern_id: evolution_027
+    pattern_name: "표준화 → 커스터마이징"
+    pattern_type: "customization"
+    description: "표준 제품에서 개인 맞춤 제품으로"
+    case_studies: ["Dell (BTO)", "Mass Customization"]
+  
+  - pattern_id: evolution_028
+    pattern_name: "선형 → 플랫폼 가치사슬"
+    pattern_type: "value_chain_platformization"
+    description: "선형 가치사슬이 플랫폼 생태계로 재편"
+    case_studies: ["음악 산업", "출판 산업"]
+  
+  - pattern_id: evolution_029
+    pattern_name: "제품 판매 → 결과 기반 과금"
+    pattern_type: "outcome_based_pricing"
+    description: "제품 판매에서 결과/성과 기반 과금으로"
+    case_studies: ["Salesforce (Success-based)", "AWS (Usage-based)"]
+  
+  - pattern_id: evolution_030
+    pattern_name: "독점 데이터 → 오픈 데이터"
+    pattern_type: "data_democratization"
+    description: "독점 데이터에서 오픈 데이터/API로"
+    case_studies: ["금융 (오픈뱅킹)", "공공 데이터"]
+
+# ========================================
+# 데이터 수집 계획
+# ========================================
+
+collection_plan:
+  
+  target: 30개 패턴
+  
+  priorities:
+    p0_critical:
+      - "evolution_001: 독점 → 경쟁 → 재편"
+      - "evolution_002: 오프라인 → 플랫폼"
+      - "evolution_003: 유통 → D2C"
+      - "evolution_004: 판매 → 구독"
+      - "evolution_005: 기술 파괴"
+    
+    p1_important:
+      - "프리미엄 → 저가 전환"
+      - "B2B → B2C 전환"
+      - "국내 → 글로벌 확장"
+      - "수직 통합 진화"
+      - "생태계 붕괴 → 재구축"
+    
+    p2_additional:
+      - "20개 더 (산업별 특화)"
+  
+  sources:
+    existing_rag:
+      - "data/raw/umis_incumbent_failures.yaml (timeline 필드 활용)"
+      - "data/raw/umis_disruption_patterns.yaml (timeline 필드 활용)"
+    
+    new_research:
+      - "산업 보고서 (McKinsey, BCG)"
+      - "학술 논문 (Clayton Christensen)"
+      - "기업 사례 연구"
+  
+  schedule:
+    week_5: "30개 패턴 스켈레톤 완성"
+    week_6: "P0 5개 상세 작성"
+    week_7: "P1 10개 상세 작성"
+    week_8: "P2 15개 상세 작성"
+
+# ========================================
+# RAG Collection 구축
+# ========================================
+
+rag_collection:
+  collection_name: "historical_evolution_patterns"
+  embedding_model: "text-embedding-3-large"
+  
+  metadata_fields:
+    - pattern_id
+    - pattern_name
+    - pattern_type
+    - typical_duration
+    - case_study_count
+  
+  search_fields:
+    - pattern_name
+    - description
+    - characteristics (all phases)
+    - case_studies
+  
+  build_command: |
+    python3 scripts/build_rag_collection.py \
+      --source data/raw/market_evolution_patterns.yaml \
+      --collection historical_evolution_patterns \
+      --agent observer
+
+# ========================================
+# 사용 예시
+# ========================================
+
+usage_example: |
+  # Observer가 시장 분석 중
+  observed_data = {
+      'hhi_trend': [(2015, 8000), (2020, 3000), (2025, 4500)],
+      'player_count': [(2015, 2), (2020, 15), (2025, 8)],
+      'events': [
+          {'year': 2015, 'event': '규제 완화'},
+          {'year': 2018, 'event': '신규 진입 폭발'}
+      ]
+  }
+  
+  # RAG 검색으로 유사 패턴 찾기
+  from umis_rag.agents.observer import ObserverRAG
+  observer = ObserverRAG()
+  
+  matched_patterns = observer.search_evolution_pattern(
+      hhi_trend=observed_data['hhi_trend'],
+      events_description="규제 완화 후 신규 진입"
+  )
+  
+  # 결과:
+  # - evolution_001: "독점 → 경쟁 → 재편" (유사도 0.92)
+  # - case_study: "통신 시장" (참조)
+  # 
+  # → 분석에 활용: "이 시장은 재편기 진입 중. 향후 M&A 활발 예상"
+
+# ========================================
+# 문서 끝
+# ========================================
+
