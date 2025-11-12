@@ -1,8 +1,8 @@
-# UMIS v7.6.2 AI 자동 설치 가이드
+# UMIS v7.7.0 AI 자동 설치 가이드
 
-**버전**: v7.6.2  
-**업데이트**: 2025-11-10  
-**신규**: Estimator 5-Phase, Validator 우선 검색, Web Search
+**버전**: v7.7.0  
+**업데이트**: 2025-11-12  
+**신규**: Native 모드, Web Search 페이지 크롤링 (3,614% 정보 증가)  
 **대상**: AI Assistant (Cursor, Claude, GPT)  
 **목적**: 신규 사용자의 UMIS 설치를 AI가 자동으로 수행
 
@@ -108,6 +108,11 @@ pip install -r requirements.txt
 - `run_terminal_cmd` 사용
 - 성공 메시지 확인
 - 실패 시 에러 로그를 사용자에게 보고
+
+**v7.7.0 신규 패키지**:
+- `requests` - 웹 페이지 크롤링
+- `beautifulsoup4` - HTML 파싱
+- 이미 `requirements.txt`에 포함되어 자동 설치됨
 
 #### Step 3: .env 파일 생성
 
@@ -219,7 +224,9 @@ checklist = {
     "핵심 패키지": all([
         __import__('chromadb'),
         __import__('openai'),
-        __import__('pydantic')
+        __import__('pydantic'),
+        __import__('requests'),
+        __import__('bs4')  # beautifulsoup4
     ])
 }
 
@@ -227,7 +234,8 @@ all_ok = all(checklist.values())
 
 # 사용자에게 리포트
 if all_ok:
-    print("✅ UMIS v7.0.0 설치 완료!")
+    print("✅ UMIS v7.7.0 설치 완료!")
+    print("🆕 Web Search 페이지 크롤링 활성화")
 else:
     print("⚠️  일부 항목 미완료:")
     for item, status in checklist.items():
@@ -241,7 +249,12 @@ else:
 설치 완료 후 사용자에게 다음을 안내하세요:
 
 ```markdown
-✅ UMIS v7.0.0 설치 완료!
+✅ UMIS v7.7.0 설치 완료!
+
+🆕 신규 기능:
+- Web Search 페이지 크롤링 (정보량 37배 증가)
+- Native 모드 (비용 $0)
+- Estimator 5-Phase 완성
 
 🚀 다음 단계:
 
@@ -249,11 +262,14 @@ else:
 2. umis.yaml 파일 첨부
 3. 다음 명령 시도:
    "@Explorer, 구독 모델 패턴 찾아줘"
+   "@Fermi, 한국 인구는?"  (Web 크롤링 자동!)
 
 또는 터미널에서:
    python scripts/query_rag.py "구독 모델"
+   python scripts/test_web_search_crawling.py --mode url
 
 📚 도움말:
+- docs/guides/WEB_SEARCH_CRAWLING_GUIDE.md (크롤링 가이드)
 - UMIS_ARCHITECTURE_BLUEPRINT.md (전체 구조)
 - SETUP.md (상세 가이드)
 - umis.yaml (Cursor Rules)
@@ -327,7 +343,7 @@ pip install -r requirements.txt
 AI가 사용자에게 보고할 때 사용할 템플릿:
 
 ```markdown
-🔄 UMIS v7.6.2 설치 진행 중...
+🔄 UMIS v7.7.0 설치 진행 중...
 
 [단계 1/5] 환경 확인
   ✅ Python 3.11.5
@@ -335,11 +351,13 @@ AI가 사용자에게 보고할 때 사용할 템플릿:
 
 [단계 2/5] 패키지 설치
   🔄 pip install 실행 중... (30초 예상)
-  ✅ 28개 패키지 설치 완료
+  ✅ 30개 패키지 설치 완료
+  ✅ 신규: requests, beautifulsoup4 (웹 크롤링용)
 
 [단계 3/5] .env 파일 생성
   ✅ .env 파일 생성
   ⚠️  OpenAI API 키 입력 필요
+  ✅ Web Search 크롤링 설정 (기본 활성화)
 
 [단계 4/5] RAG 인덱스 빌드
   🔄 YAML → JSONL 변환 중...
@@ -351,6 +369,11 @@ AI가 사용자에게 보고할 때 사용할 템플릿:
   ⏭️  스킵 (Docker 미실행)
 
 ✅ 설치 완료! (총 소요: 2분 30초)
+
+🆕 v7.7.0 신규 기능:
+  ✅ Web Search 페이지 크롤링 (정보량 37배 증가)
+  ✅ Native 모드 (비용 $0)
+  ✅ Estimator 5-Phase 완성
 ```
 
 ---

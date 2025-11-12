@@ -1,10 +1,16 @@
 """
-Physical Constraints Sources
+Physical Constraints Sources (v7.8.0 재설계)
 
-절대 한계 (Knock-out Rules)
-- 시공간 법칙
-- 보존 법칙
-- 수학 정의
+개념 기반 상한/하한 (의미 있는 제약만)
+- 개념 타입 추출 (rate, count, income, consumption)
+- 개념별 명백한 상한/하한
+- 너무 넓은 범위는 제공 안 함
+
+v7.8.0 핵심 변경:
+------------------
+- 샘플 데이터 제거 → 개념 기반 접근
+- 의미 있는 제약만 (범위 10,000배 이하)
+- 3개 클래스 통합 고려
 """
 
 from typing import Optional, List, Dict, Any
@@ -29,6 +35,198 @@ class PhysicalConstraintBase:
             List[Boundary]: 해당되는 제약들
         """
         raise NotImplementedError
+
+
+class UnifiedPhysicalConstraintSource:
+    """
+    통합 Physical Constraints (v7.8.0)
+    
+    역할:
+    -----
+    - 개념 기반 상한/하한 도출
+    - 의미 있는 제약만 제공
+    - 너무 넓은 범위 제외
+    
+    개념 타입:
+    ---------
+    - rate: 0.0 ~ 1.0 (항상 의미 있음)
+    - consumption: 0 ~ 인구 × 최대소비
+    - duration: 0 ~ 현실적 최대
+    - count/size/income: 상한 설정 어려움
+    """
+    
+    def collect(self, question: str, context: Optional[Context] = None) -> List[Boundary]:
+        """
+        개념 기반 Boundary 수집
+        
+        프로세스:
+        1. 개념 타입 추출
+        2. 개념별 상한/하한 생성
+        3. 범위 의미성 검증
+        """
+        
+        # Step 1: 개념 타입 추출
+        concept_type = self._extract_concept_type(question)
+        
+        if not concept_type:
+            return []  # 개념 파악 불가
+        
+        # Step 2: 개념별 Boundary 생성
+        boundary = self._create_boundary_for_concept(
+            concept_type=concept_type,
+            question=question,
+            context=context
+        )
+        
+        if not boundary:
+            return []
+        
+        # Step 3: 범위 의미성 검증
+        if self._is_range_too_wide(boundary):
+            logger.info(f"  [Physical] 범위 너무 넓음 → 제공 안 함")
+            return []
+        
+        min_val = boundary.min_value if boundary.min_value else 0
+        max_val = boundary.max_value if boundary.max_value else 0
+        logger.info(f"  [Physical] Boundary: [{min_val:,.0f}, {max_val:,.0f}]")
+        return [boundary]
+    
+    def _extract_concept_type(self, question: str) -> Optional[str]:
+        """
+        개념 타입 추출
+        
+        Returns:
+            "rate"         - 비율 (0-1)
+            "count"        - 개수
+            "size"         - 크기
+            "income"       - 소득
+            "duration"     - 기간
+            "consumption"  - 소비량
+            None           - 파악 불가
+        """
+        
+        # Rate (비율) - 가장 명확
+        rate_keywords = ['률', 'rate', 'churn', '전환', '점유율', '성장률', '%']
+        if any(kw in question.lower() for kw in rate_keywords):
+            return "rate"
+        
+        # Consumption (소비량)
+        consumption_keywords = ['판매량', '소비량', '사용량', '구매량']
+        if any(kw in question.lower() for kw in consumption_keywords):
+            return "consumption"
+        
+        # Duration (기간)
+        duration_keywords = ['ltv', 'lifetime', 'payback', '기간', '개월']
+        if any(kw in question.lower() for kw in duration_keywords):
+            return "duration"
+        
+        # Count (개수)
+        count_keywords = ['수', '개수', '인구', '고객 수', '사용자 수', '명']
+        if any(kw in question.lower() for kw in count_keywords):
+            return "count"
+        
+        # Income (소득)
+        income_keywords = ['arpu', '임금', '소득', '수익']
+        if any(kw in question.lower() for kw in income_keywords):
+            return "income"
+        
+        # Size (크기)
+        size_keywords = ['규모', '면적', '크기', 'tam', 'sam']
+        if any(kw in question.lower() for kw in size_keywords):
+            return "size"
+        
+        return None
+    
+    def _create_boundary_for_concept(
+        self,
+        concept_type: str,
+        question: str,
+        context: Optional[Context]
+    ) -> Optional[Boundary]:
+        """
+        개념별 Boundary 생성
+        
+        원칙: 개념적으로 명백한 상한/하한만
+        """
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Rate (비율): 0.0 ~ 1.0 (항상 의미 있음)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        if concept_type == "rate":
+            return Boundary(
+                source_type=SourceType.PHYSICAL,
+                min_value=0.0,
+                max_value=1.0,
+                confidence=1.0,
+                reasoning="비율의 수학적 범위 (0-100%)"
+            )
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Duration: Payback은 상한 있음
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        if concept_type == "duration":
+            if "payback" in question.lower():
+                return Boundary(
+                    source_type=SourceType.PHYSICAL,
+                    min_value=0.0,
+                    max_value=120.0,  # 10년 (월 단위)
+                    confidence=0.90,
+                    reasoning="Payback > 10년은 비현실적 (비즈니스 지속 어려움)"
+                )
+            
+            return None  # LTV 등은 상한 설정 어려움
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Consumption: 인구 기반 상한 (의미 있는 경우만)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        if concept_type == "consumption":
+            # 담배 판매량 (명확한 케이스)
+            if "담배" in question and context and context.region:
+                if "한국" in context.region or "korea" in context.region.lower():
+                    adult_population = 40_000_000  # 한국 성인 인구
+                    max_per_person = 3  # 갑/일 (헤비 스모커 최대)
+                    
+                    upper = adult_population * max_per_person
+                    
+                    return Boundary(
+                        source_type=SourceType.PHYSICAL,
+                        min_value=0.0,
+                        max_value=upper,
+                        confidence=0.85,
+                        reasoning=f"한국 성인 {adult_population:,}명 × 최대 3갑/일 = {upper:,}갑"
+                    )
+            
+            # 일반 소비량: 인구 기반 추정 어려움
+            return None
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Count, Size, Income: 상한 설정 어려움
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        return None
+    
+    def _is_range_too_wide(self, boundary: Boundary) -> bool:
+        """
+        범위가 너무 넓은지 검증
+        
+        기준: max/min > 10,000 이면 무의미
+        """
+        
+        min_val = boundary.min_value if boundary.min_value else 0
+        max_val = boundary.max_value if boundary.max_value else 0
+        
+        if min_val <= 0:
+            # 하한이 0이면 범위 무한대 → 체크 필요
+            if max_val > 1e15:  # 1000조 이상
+                return True
+            return False  # 0이지만 상한이 합리적이면 OK
+        
+        ratio = max_val / min_val
+        
+        if ratio > 10_000:
+            logger.debug(f"    범위 비율: {ratio:,.0f}배 (너무 넓음)")
+            return True
+        
+        return False
 
 
 class SpacetimeConstraintSource(PhysicalConstraintBase):
