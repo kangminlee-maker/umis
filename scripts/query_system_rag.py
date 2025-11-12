@@ -226,8 +226,13 @@ def main():
     print(f"  Latency: {result['latency_ms']:.2f}ms")
     if 'similarity' in result:
         print(f"  Similarity: {result['similarity']:.3f}")
-    print(f"\n  Content (처음 500자):")
-    print(f"  {result['content'][:500]}...")
+    
+    # 전체 content 출력 (제한 없음)
+    content_lines = result['content'].split('\n')
+    print(f"\n📝 Content ({len(content_lines)} 줄, {len(result['content'])} 문자):")
+    print("=" * 80)
+    print(result['content'])
+    print("=" * 80)
 
 
 if __name__ == "__main__":
