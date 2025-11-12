@@ -4,7 +4,7 @@ Judgment Synthesizer
 증거 종합 판단
 """
 
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional, Tuple, Any
 import statistics
 
 from umis_rag.utils.logger import logger
@@ -15,16 +15,18 @@ from .models import (
     Boundary,
     Intent
 )
+from .sources.soft import LegalNormSource, StatisticalPatternSource, BehavioralInsightSource
 
 
 class JudgmentSynthesizer:
     """
-    증거 종합 판단
+    증거 종합 판단 (v7.8.0)
     
     역할:
     -----
     - 여러 값 추정 평가
     - 맥락 기반 전략 선택
+    - Soft Constraint 검증 (경고)
     - 최종 값 결정
     
     전략:
@@ -35,19 +37,28 @@ class JudgmentSynthesizer:
     - single_best: 최고 증거만
     """
     
+    def __init__(self):
+        """초기화 (v7.8.0: Soft Sources 추가)"""
+        # Soft Constraint Sources (경고 전용)
+        self.legal = LegalNormSource()
+        self.statistical = StatisticalPatternSource()
+        self.behavioral = BehavioralInsightSource()
+    
     def synthesize(
         self,
         value_estimates: List[ValueEstimate],
         context: Context,
+        question: str = "",  # v7.8.0: Soft Constraint 검증용
         soft_guides: Optional[List[SoftGuide]] = None
     ) -> Dict:
         """
-        증거 종합
+        증거 종합 (v7.8.0: Soft Constraint 경고 추가)
         
         Args:
             value_estimates: 값 추정들
             context: 맥락
-            soft_guides: Soft 가이드 (검증용)
+            question: 질문 (v7.8.0: Soft Constraint 검증용)
+            soft_guides: Soft 가이드 (검증용, deprecated)
         
         Returns:
             {
@@ -55,7 +66,8 @@ class JudgmentSynthesizer:
                 'range': tuple,
                 'confidence': float,
                 'strategy': str,
-                'reasoning': str
+                'reasoning': str,
+                'soft_warnings': List[Dict] (v7.8.0: 사용자 확인 필요)
             }
         """
         if not value_estimates:
@@ -94,8 +106,15 @@ class JudgmentSynthesizer:
             result = self._weighted_average_judgment(value_estimates)
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Step 3: Soft Guide 검증 (선택)
+        # Step 3: Soft Constraint 검증 (v7.8.0)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        if result['value'] and question:
+            soft_warnings = self._validate_soft_constraints(value=result['value'], question=question)
+            if soft_warnings:
+                result['soft_warnings'] = soft_warnings
+                logger.warning(f"  ⚠️ Soft Constraint 경고: {len(soft_warnings)}개 (사용자 확인 필요)")
+        
+        # 기존 Soft Guide 검증 (deprecated)
         if soft_guides and result['value']:
             validation = self._validate_with_soft_guides(result['value'], soft_guides)
             result['soft_validation'] = validation
@@ -103,6 +122,39 @@ class JudgmentSynthesizer:
         result['strategy'] = strategy
         
         return result
+    
+    def _validate_soft_constraints(self, value: float, question: str = "") -> List[Dict[str, Any]]:
+        """
+        Soft Constraint 검증 (v7.8.0)
+        
+        모든 Soft Sources를 체크하고 경고 수집
+        
+        Args:
+            value: 추정값
+            question: 질문 (validate에 필요)
+        
+        Returns:
+            경고 리스트 (빈 리스트면 모두 통과)
+        """
+        
+        warnings = []
+        
+        # 1. Legal (법률/규범)
+        legal_warning = self.legal.validate(question, value)
+        if legal_warning:
+            warnings.append(legal_warning)
+        
+        # 2. Statistical (통계 패턴)
+        stat_warning = self.statistical.validate(question, value)
+        if stat_warning:
+            warnings.append(stat_warning)
+        
+        # 3. Behavioral (행동경제학)
+        behav_warning = self.behavioral.validate(question, value)
+        if behav_warning:
+            warnings.append(behav_warning)
+        
+        return warnings
     
     def _select_strategy(
         self,

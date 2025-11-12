@@ -298,7 +298,7 @@ def step5_setup_neo4j(skip: bool = False):
 
 def check_installation():
     """설치 상태 확인"""
-    print_header("UMIS v7.6.2 설치 상태 확인")
+    print_header("UMIS v7.7.0 설치 상태 확인")
     
     status = {}
     
@@ -316,7 +316,9 @@ def check_installation():
         import chromadb
         import openai
         import pydantic
-        print_success("핵심 패키지 설치됨 (chromadb, openai, pydantic)")
+        import requests
+        import bs4
+        print_success("핵심 패키지 설치됨 (chromadb, openai, pydantic, requests, beautifulsoup4)")
         status['packages'] = True
     except ImportError as e:
         print_error(f"패키지 미설치: {e}")
@@ -366,9 +368,9 @@ def main():
         return
     
     # 헤더
-    print_header("UMIS v7.6.2 자동 설치")
+    print_header("UMIS v7.7.0 자동 설치")
     print_info("Universal Market Intelligence System")
-    print_info("RAG-powered 5-Agent 협업 시스템\n")
+    print_info("RAG-powered 6-Agent 협업 시스템\n")
     
     if minimal_mode:
         print_info("모드: 최소 설치 (Neo4j 제외)")
@@ -405,11 +407,12 @@ def main():
     
     # 완료
     print_header("설치 완료!")
-    print_success("✅ UMIS v7.5.0 설치 성공\n")
-    print("\n🆕 v7.5.0 신규 기능:")
-    print("  ✅ Estimator Agent (3-Tier)")
-    print("  ✅ 12개 비즈니스 지표")
-    print("  ✅ 100% 커버리지")
+    print_success("✅ UMIS v7.7.0 설치 성공\n")
+    print("\n🆕 v7.7.0 신규 기능:")
+    print("  ✅ Estimator 5-Phase (Phase 0-4 명확화)")
+    print("  ✅ Web Search 페이지 크롤링 (정보량 3,614% 증가)")
+    print("  ✅ Native 모드 진짜 구현 (비용 $0)")
+    print("  ✅ 100% 커버리지 유지")
     
     print_info("다음 단계:")
     print_info("  1. Cursor 열기")

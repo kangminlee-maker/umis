@@ -11,6 +11,8 @@ Value Sources
 
 from typing import Optional, List, Dict, Any
 import os
+import requests
+from bs4 import BeautifulSoup
 
 from umis_rag.utils.logger import logger
 from ..models import ValueEstimate, SourceType, Context, DistributionType, SoftGuide
@@ -70,8 +72,247 @@ class DefiniteDataSource(ValueSourceBase):
         return keywords
 
 
+class AIAugmentedEstimationSource(ValueSourceBase):
+    """
+    AI 증강 추정 (v7.8.0)
+    
+    역할:
+    -----
+    - LLM + Web 통합 (기존 LLMEstimationSource + WebSearchSource)
+    - LLM 지식 우선 → 불확실하면 웹 검색
+    - Native: instruction 반환 (AI가 실행)
+    - External: API 호출 (자동 실행)
+    - confidence 0.55-0.90
+    
+    통합 이유:
+    ----------
+    - LLM과 Web 모두 "외부에서 값 가져오기"
+    - 웹 검색은 LLM이 불확실할 때 보조 수단
+    - Native 모드에서 LLM Source 활용도 0% 문제 해결
+    """
+    
+    def __init__(self, llm_mode: str = "native"):
+        self.llm_mode = llm_mode
+        
+        from umis_rag.core.config import settings
+        self.web_search_enabled = settings.web_search_enabled
+    
+    def collect(self, question: str, context: Optional[Context] = None) -> List[ValueEstimate]:
+        """AI 증강 추정"""
+        
+        if self.llm_mode == "skip":
+            return []
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Native 모드: instruction 반환
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        if self.llm_mode == "native":
+            logger.info(f"  [AI+Web] Native 모드: instruction 생성")
+            
+            instruction = self._build_native_instruction(question, context)
+            
+            # ValueEstimate로 반환 (특수 타입: instruction 포함)
+            return [ValueEstimate(
+                source_type=SourceType.AI_AUGMENTED,
+                value=0.0,  # AI가 계산
+                confidence=0.0,  # AI가 결정
+                reasoning="AI가 추정 (필요시 웹 검색 수행)",
+                source_detail="native_mode_instruction",
+                raw_data={"instruction": instruction, "mode": "native"}
+            )]
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # External 모드: API 호출 (TODO)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        else:
+            logger.info(f"  [AI+Web] External 모드 (TODO: API 호출)")
+            # TODO: LangChain + Tavily/SerpAPI
+            return []
+    
+    def _build_native_instruction(
+        self, 
+        question: str, 
+        context: Optional[Context]
+    ) -> str:
+        """
+        Native 모드 instruction 생성
+        
+        AI에게 제공할 상세한 로직
+        """
+        
+        # Context 정보
+        domain_info = f"도메인: {context.domain}" if context and context.domain else ""
+        region_info = f"지역: {context.region}" if context and context.region else ""
+        time_info = f"시점: {context.time_period}" if context and context.time_period else ""
+        
+        context_block = "\n".join([info for info in [domain_info, region_info, time_info] if info])
+        
+        instruction = f"""# AI Augmented Estimation
+
+**질문**: {question}
+{context_block}
+
+---
+
+## 📋 임무
+
+값을 추정하세요. 다음 프로세스를 따르세요:
+
+### Step 1: 지식 기반 추정 (우선)
+
+먼저 **당신의 지식**(학습 데이터)으로 답변을 시도하세요.
+
+**자가 평가**:
+- 확신도 **≥ 80%**: 즉시 값 반환 (Step 2 스킵) ✅
+- 확신도 **< 80%**: Step 2로 진행 (웹 검색 필요)
+
+**반환 형식** (확신도 ≥ 80%):
+```json
+{{
+    "value": 추정값,
+    "confidence": 0.80,
+    "reasoning": "지식 기반 추정 (출처: ...)",
+    "web_searched": false
+}}
+```
+
+---
+
+### Step 2: 웹 검색 수행 (확신도 < 80%인 경우만)
+
+구글 또는 네이버에서 검색을 수행하세요.
+
+**검색어 구성**:
+```
+기본: "{question}"
+"""
+        
+        if context:
+            if context.region:
+                instruction += f'\n지역 추가: "{context.region} {question}"'
+            if context.time_period:
+                instruction += f'\n시점 추가: "{question} {context.time_period}"'
+        
+        instruction += """
+통계/데이터 키워드 추가: "statistics", "data", "통계"
+```
+
+**검색 범위**:
+- 상위 **5-10개** 결과 확인
+- 신뢰 출처 우선 (정부, 통계청, 위키피디아, 학술 논문)
+
+---
+
+### Step 3: 숫자 추출 및 변환
+
+각 검색 결과에서 **관련 숫자**를 찾으세요.
+
+**단위 변환 규칙**:
+```
+영어 약자:
+  51.7M → 51,700,000
+  2.3B → 2,300,000,000
+  850K → 850,000
+
+한국어 단위:
+  5170만 → 51,700,000
+  2조 3000억 → 2,300,000,000,000
+  85만 → 850,000
+
+비율:
+  5.2% → 0.052
+  6-8% → 0.07 (중간값)
+```
+
+**관련성 필터링**:
+- 질문과 관련 있는 숫자만 추출
+- 예: "인구" 질문에 "GDP" 숫자는 제외
+
+---
+
+### Step 4: Consensus 계산
+
+추출된 숫자들의 **합의값**을 계산하세요.
+
+**이상치 제거**:
+1. 모든 숫자의 **중앙값(median)** 계산
+2. 중앙값의 **±50% 범위** 벗어난 값 제거
+3. 남은 숫자들의 **평균** 계산
+
+**예시**:
+```
+추출: [51.7M, 51.5M, 52.1M, 120M, 51.8M]
+      ↓
+중앙값: 51.8M
+±50% 범위: [25.9M, 77.7M]
+      ↓
+이상치: 120M (범위 벗어남) → 제거
+      ↓
+최종 평균: (51.7 + 51.5 + 52.1 + 51.8) / 4 = 51.775M
+```
+
+**Confidence 규칙**:
+```
+일치 출처 개수에 따라:
+- 5개 이상: 0.80
+- 4개: 0.75
+- 3개: 0.70
+- 2개: 0.65
+- 1개만: 0.55
+
+신뢰 출처 보너스:
+- 정부/통계청: +0.05
+- 최신 데이터(2024): +0.03
+```
+
+---
+
+### Step 5: 결과 반환
+
+다음 JSON 형식으로 반환하세요:
+
+```json
+{{
+    "value": 51775000,
+    "confidence": 0.75,
+    "reasoning": "웹 검색 4개 출처 평균 (Wikipedia 51.7M, 통계청 51.5M, 네이버 52.1M, CIA 51.8M). 이상치 1개(120M) 제거.",
+    "sources_count": 4,
+    "source_detail": "Google 검색",
+    "web_searched": true,
+    "extracted_numbers": [
+        {{"value": 51700000, "source": "Wikipedia"}},
+        {{"value": 51500000, "source": "통계청"}},
+        {{"value": 52100000, "source": "네이버"}},
+        {{"value": 51800000, "source": "CIA"}}
+    ]
+}}
+```
+
+---
+
+## ✅ 체크리스트
+
+- [ ] Step 1: 지식 기반 추정 (확신도 평가)
+- [ ] Step 2: 웹 검색 (필요시만)
+- [ ] Step 3: 숫자 추출 및 단위 변환
+- [ ] Step 4: Consensus 계산 (이상치 제거)
+- [ ] Step 5: 결과 반환 (JSON 형식)
+
+**중요**: 
+- 웹 검색은 **선택적** (LLM이 불확실할 때만)
+- 확실하면 지식만으로 답변 (빠름, $0)
+- 불확실할 때만 웹 검색 (느림, but 정확)
+"""
+        
+        return instruction
+
+
 class LLMEstimationSource(ValueSourceBase):
     """
+    ⚠️ DEPRECATED (v7.8.0)
+    
+    → AIAugmentedEstimationSource로 통합됨
+    
     LLM 추정
     
     역할:
@@ -83,9 +324,10 @@ class LLMEstimationSource(ValueSourceBase):
     
     def __init__(self, llm_mode: str = "native"):
         self.llm_mode = llm_mode
+        logger.warning("⚠️ LLMEstimationSource는 deprecated. AIAugmentedEstimationSource 사용 권장")
     
     def collect(self, question: str, context: Optional[Context] = None) -> List[ValueEstimate]:
-        """LLM 추정"""
+        """LLM 추정 (deprecated)"""
         
         if self.llm_mode == "skip":
             return []
@@ -96,7 +338,7 @@ class LLMEstimationSource(ValueSourceBase):
         
         # TODO: 실제 LLM 호출
         # 현재는 스킵
-        logger.info(f"  [LLM] 스킵 (Native Mode는 interactive 필요)")
+        logger.info(f"  [LLM] 스킵 (deprecated → AIAugmented 사용)")
         
         return []
     
@@ -108,6 +350,10 @@ class LLMEstimationSource(ValueSourceBase):
 
 class WebSearchSource(ValueSourceBase):
     """
+    ⚠️ DEPRECATED (v7.8.0)
+    
+    → AIAugmentedEstimationSource로 통합됨
+    
     웹 검색 (v7.6.2)
     
     역할:
@@ -120,8 +366,10 @@ class WebSearchSource(ValueSourceBase):
     구현:
     -----
     - DuckDuckGo (무료, API 키 불필요)
-    - 숫자 추출 + 단위 파싱
-    - 3-5개 결과 조합
+    - Google Custom Search (유료, 고품질)
+    - 페이지 크롤링 (v7.7.0)
+    
+    v7.8.0: AIAugmentedEstimationSource 사용 권장
     """
     
     def __init__(self):
@@ -134,11 +382,15 @@ class WebSearchSource(ValueSourceBase):
           WEB_SEARCH_ENGINE=google
           GOOGLE_API_KEY=your-key
           GOOGLE_SEARCH_ENGINE_ID=your-id
+          WEB_SEARCH_FETCH_FULL_PAGE=true (페이지 크롤링, v7.7.0+)
         """
         from umis_rag.core.config import settings
         
         self.enabled = settings.web_search_enabled
         self.engine = settings.web_search_engine.lower()
+        self.fetch_full_page = settings.web_search_fetch_full_page
+        self.max_chars = settings.web_search_max_chars
+        self.timeout = settings.web_search_timeout
         
         # 검색 엔진별 초기화
         if self.engine == "google":
@@ -152,7 +404,8 @@ class WebSearchSource(ValueSourceBase):
             from duckduckgo_search import DDGS
             self.ddgs = DDGS()
             self.has_search = True
-            logger.info("  [Web] DuckDuckGo 준비 (무료)")
+            fetch_status = "크롤링 활성화" if self.fetch_full_page else "snippet만"
+            logger.info(f"  [Web] DuckDuckGo 준비 (무료, {fetch_status})")
         except ImportError:
             logger.warning("  [Web] duckduckgo-search 패키지 없음 (pip install ddgs)")
             self.has_search = False
@@ -178,7 +431,8 @@ class WebSearchSource(ValueSourceBase):
             self.google_engine_id = settings.google_search_engine_id
             self.has_search = True
             
-            logger.info("  [Web] Google Custom Search 준비 (유료, 고품질)")
+            fetch_status = "크롤링 활성화" if self.fetch_full_page else "snippet만"
+            logger.info(f"  [Web] Google Custom Search 준비 (유료, 고품질, {fetch_status})")
         
         except ImportError:
             logger.warning("  [Web] google-api-python-client 패키지 없음")
@@ -265,10 +519,62 @@ class WebSearchSource(ValueSourceBase):
             logger.warning(f"  [Web] 검색 실패: {e}")
             return []
     
+    def _fetch_page_content(self, url: str) -> Optional[str]:
+        """
+        웹 페이지 크롤링 (v7.7.0+)
+
+        Args:
+            url: 크롤링할 URL
+
+        Returns:
+            페이지 텍스트 (최대 max_chars), 실패 시 None
+        """
+        try:
+            # User-Agent 헤더 (일부 사이트는 봇 차단)
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+
+            # 페이지 가져오기 (타임아웃 적용)
+            response = requests.get(url, headers=headers, timeout=self.timeout)
+            response.raise_for_status()
+
+            # BeautifulSoup으로 파싱
+            soup = BeautifulSoup(response.content, 'html.parser')
+
+            # 불필요한 태그 제거 (스크립트, 스타일, 네비게이션 등)
+            for tag in soup(['script', 'style', 'nav', 'header', 'footer', 'aside', 'iframe']):
+                tag.decompose()
+
+            # 텍스트 추출
+            text = soup.get_text(separator=' ', strip=True)
+
+            # 공백 정리
+            text = ' '.join(text.split())
+
+            # 최대 문자 수 제한
+            if len(text) > self.max_chars:
+                text = text[:self.max_chars]
+
+            logger.debug(f"    크롤링 성공: {url[:50]}... ({len(text)}자)")
+            return text
+
+        except requests.Timeout:
+            logger.debug(f"    타임아웃: {url[:50]}...")
+            return None
+
+        except requests.RequestException as e:
+            logger.debug(f"    요청 실패: {url[:50]}... ({e})")
+            return None
+
+        except Exception as e:
+            logger.debug(f"    파싱 실패: {url[:50]}... ({e})")
+            return None
+
     def _search_duckduckgo(self, query: str) -> list:
         """
         DuckDuckGo 검색 실행
-        
+
         Returns:
             [{'title': str, 'body': str, 'href': str}, ...]
         """
@@ -277,8 +583,34 @@ class WebSearchSource(ValueSourceBase):
                 keywords=query,
                 max_results=5
             )
-            return results if results else []
-        
+
+            if not results:
+                return []
+
+            # 페이지 크롤링 활성화된 경우
+            if self.fetch_full_page:
+                logger.info(f"    페이지 크롤링 시작 ({len(results)}개)")
+
+                enriched_results = []
+                for result in results:
+                    url = result.get('href', '')
+
+                    if url:
+                        # 페이지 크롤링 시도
+                        full_content = self._fetch_page_content(url)
+
+                        if full_content:
+                            # 크롤링 성공: snippet 대신 전체 내용 사용
+                            result['body'] = full_content
+                        # 크롤링 실패: 기존 snippet 유지
+
+                    enriched_results.append(result)
+
+                return enriched_results
+            else:
+                # snippet만 사용
+                return results
+
         except Exception as e:
             logger.warning(f"    DuckDuckGo 검색 실패: {e}")
             return []
@@ -286,7 +618,7 @@ class WebSearchSource(ValueSourceBase):
     def _search_google(self, query: str) -> list:
         """
         Google Custom Search 실행
-        
+
         Returns:
             [{'title': str, 'body': str, 'href': str}, ...]
             (DuckDuckGo와 동일한 형식으로 변환)
@@ -297,20 +629,46 @@ class WebSearchSource(ValueSourceBase):
                 cx=self.google_engine_id,
                 num=5
             ).execute()
-            
+
             items = response.get('items', [])
-            
+
             # DuckDuckGo 형식으로 변환
             results = []
             for item in items:
-                results.append({
+                result = {
                     'title': item.get('title', ''),
                     'body': item.get('snippet', ''),
                     'href': item.get('link', '')
-                })
-            
-            return results
-        
+                }
+                results.append(result)
+
+            # 페이지 크롤링 활성화된 경우
+            if self.fetch_full_page and results:
+                logger.info(f"    페이지 크롤링 시작 ({len(results)}개)")
+
+                enriched_results = []
+                for result in results:
+                    url = result.get('href', '')
+
+                    if url:
+                        # 페이지 크롤링 시도
+                        full_content = self._fetch_page_content(url)
+
+                        if full_content:
+                            # 크롤링 성공: snippet 대신 전체 내용 사용
+                            result['body'] = full_content
+                            logger.debug(f"    ✓ {url[:40]}... → {len(full_content)}자")
+                        else:
+                            # 크롤링 실패: snippet 유지
+                            logger.debug(f"    ✗ {url[:40]}... → snippet 유지")
+
+                    enriched_results.append(result)
+
+                return enriched_results
+            else:
+                # snippet만 사용
+                return results
+
         except Exception as e:
             logger.warning(f"    Google 검색 실패: {e}")
             return []

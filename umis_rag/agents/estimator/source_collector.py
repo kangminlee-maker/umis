@@ -19,9 +19,10 @@ from .models import (
 )
 
 from .sources.physical import (
-    SpacetimeConstraintSource,
-    ConservationLawSource,
-    MathematicalDefinitionSource
+    UnifiedPhysicalConstraintSource,  # v7.8.0: 신규
+    SpacetimeConstraintSource,  # deprecated
+    ConservationLawSource,  # deprecated
+    MathematicalDefinitionSource  # deprecated
 )
 
 from .sources.soft import (
@@ -32,8 +33,9 @@ from .sources.soft import (
 
 from .sources.value import (
     DefiniteDataSource,
-    LLMEstimationSource,
-    WebSearchSource,
+    AIAugmentedEstimationSource,
+    LLMEstimationSource,  # deprecated
+    WebSearchSource,  # deprecated
     RAGBenchmarkSource,
     StatisticalValueSource
 )
@@ -41,13 +43,18 @@ from .sources.value import (
 
 class SourceCollector:
     """
-    Source 수집기
+    Source 수집기 (v7.8.0 재설계)
     
     역할:
     -----
-    - 11개 Source 통합 관리
+    - 핵심 Source 통합 관리
     - 맥락 기반 선택적 수집
     - 병렬 수집 지원
+    
+    v7.8.0 변경:
+    -------------
+    - 11개 → 10개 Source (LLM + Web 통합)
+    - AIAugmentedEstimationSource 신규 추가
     
     사용:
     ----
@@ -62,26 +69,33 @@ class SourceCollector:
         Args:
             llm_mode: LLM 모드 ("native" | "external" | "skip")
         """
-        logger.info("[Source Collector] 초기화")
+        logger.info("[Source Collector] 초기화 (v7.8.0)")
         
-        # Physical (3개)
-        self.spacetime = SpacetimeConstraintSource()
-        self.conservation = ConservationLawSource()
-        self.mathematical = MathematicalDefinitionSource()
+        # Physical (1개) ⭐ v7.8.0: 통합
+        self.physical = UnifiedPhysicalConstraintSource()
         
         # Soft (3개)
         self.legal = LegalNormSource()
         self.statistical_pattern = StatisticalPatternSource()
         self.behavioral = BehavioralInsightSource()
         
-        # Value (5개)
+        # Value (4개) ⭐ v7.8.0: LLM + Web 통합
         self.definite_data = DefiniteDataSource()
-        self.llm = LLMEstimationSource(llm_mode)
-        self.web = WebSearchSource()
+        self.ai_augmented = AIAugmentedEstimationSource(llm_mode)  # ⭐ 신규
         self.rag = RAGBenchmarkSource()
         self.statistical_value = StatisticalValueSource()
         
-        logger.info(f"  ✅ 11개 Source 준비 완료")
+        # Deprecated (하위 호환)
+        self.spacetime = SpacetimeConstraintSource()  # deprecated
+        self.conservation = ConservationLawSource()  # deprecated
+        self.mathematical = MathematicalDefinitionSource()  # deprecated
+        self.llm = LLMEstimationSource(llm_mode)  # deprecated
+        self.web = WebSearchSource()  # deprecated
+        
+        logger.info(f"  ✅ 8개 핵심 Source 준비 완료 (v7.8.0)")
+        logger.info(f"  🆕 Physical 통합 (개념 기반)")
+        logger.info(f"  🆕 AIAugmented (LLM+Web 통합)")
+
     
     def collect_all(
         self,
@@ -144,20 +158,10 @@ class SourceCollector:
         question: str,
         context: Optional[Context]
     ) -> List[Boundary]:
-        """Physical Constraints 수집 (모두)"""
+        """Physical Constraints 수집 (v7.8.0: 통합)"""
         
-        boundaries = []
-        
-        # 시공간
-        boundaries.extend(self.spacetime.collect(question, context))
-        
-        # 보존
-        boundaries.extend(self.conservation.collect(question, context))
-        
-        # 수학
-        boundaries.extend(self.mathematical.collect(question, context))
-        
-        return boundaries
+        # v7.8.0: UnifiedPhysicalConstraintSource 사용
+        return self.physical.collect(question, context)
     
     def _collect_soft(
         self,
@@ -185,23 +189,20 @@ class SourceCollector:
         question: str,
         context: Optional[Context]
     ) -> List[ValueEstimate]:
-        """Value Sources 순차 수집"""
+        """Value Sources 순차 수집 (v7.8.0)"""
         
         estimates = []
         
         # 1. 확정 데이터 (항상)
         estimates.extend(self.definite_data.collect(question, context))
         
-        # 2. LLM (간단한 질문)
-        estimates.extend(self.llm.collect(question, context))
+        # 2. AI 증강 추정 (v7.8.0: LLM + Web 통합) ⭐
+        estimates.extend(self.ai_augmented.collect(question, context))
         
-        # 3. 웹 검색 (TODO)
-        estimates.extend(self.web.collect(question, context))
-        
-        # 4. RAG 벤치마크
+        # 3. RAG 벤치마크
         estimates.extend(self.rag.collect(question, context))
         
-        # 5. 통계값 (다른 것 없을 때만) ⭐
+        # 4. 통계값 (다른 것 없을 때만) ⭐
         if len(estimates) == 0:
             # Soft Guides 먼저 수집
             soft_guides = self._collect_soft(question, context)
