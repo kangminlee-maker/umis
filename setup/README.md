@@ -103,21 +103,27 @@ python3 setup/setup.py --check      # 상태 확인
 버전 업데이트 시:
 - [ ] `setup.py` 버전 확인
 - [ ] 모든 가이드의 버전 번호 업데이트
-- [ ] 새로운 의존성 확인 (v7.6.2: openai, pyyaml, duckduckgo-search)
+- [ ] 새로운 의존성 확인 (v7.7.0: requests, beautifulsoup4)
 - [ ] 설치 단계 변경 사항 반영
+- [ ] env.template 신규 환경변수 추가
 
-## 🆕 v7.6.2 변경사항
+## 🆕 v7.7.0 변경사항
 
 ```yaml
 신규 요구사항:
-  ✅ openai (Tier 3 LLM, External mode)
-  ✅ pyyaml (Tier 3 모형 파싱)
+  ✅ requests (웹 페이지 크롤링)
+  ✅ beautifulsoup4 (HTML 파싱)
+
+신규 환경변수 (.env):
+  ✅ WEB_SEARCH_FETCH_FULL_PAGE (크롤링 활성화)
+  ✅ WEB_SEARCH_MAX_CHARS (최대 문자 수)
+  ✅ WEB_SEARCH_TIMEOUT (타임아웃)
 
 신규 기능:
-  ✅ Estimator Agent (3-Tier)
-  ✅ 12개 비즈니스 지표
-  ✅ Meta-RAG (Guardian)
-  ✅ 100% 커버리지
+  ✅ Web Search 페이지 크롤링 (정보량 3,614% 증가)
+  ✅ Native 모드 진짜 구현 (비용 $0)
+  ✅ Estimator 5-Phase 명확화
+  ✅ 100% 커버리지 유지
 
 설치 변경: 없음 (하위 호환)
 ```

@@ -1,7 +1,7 @@
-# UMIS v7.6.2 환경변수 설정 가이드
+# UMIS v7.7.0 환경변수 설정 가이드
 
-**버전**: v7.6.2  
-**업데이트**: 2025-11-10
+**버전**: v7.7.0  
+**업데이트**: 2025-11-12
 
 ---
 
@@ -234,6 +234,43 @@ NEO4J_URI=bolt://your-server:7687
 NEO4J_USER=your-username
 NEO4J_PASSWORD=your-password
 ```
+
+### Web Search 크롤링 설정 (v7.7.0+)
+
+**목적:** Google/DuckDuckGo 검색 결과의 전체 페이지 크롤링
+
+**기본값:**
+```bash
+# 페이지 크롤링 활성화 (권장)
+WEB_SEARCH_FETCH_FULL_PAGE=true
+
+# 페이지당 최대 추출 문자 수
+WEB_SEARCH_MAX_CHARS=5000
+
+# 크롤링 타임아웃 (초)
+WEB_SEARCH_TIMEOUT=10
+```
+
+**성능:**
+- Snippet 모드: ~111자/페이지
+- 크롤링 모드: ~4,108자/페이지 (37배 증가)
+- 숫자 추출: 4개 → 41개 (10배 증가)
+
+**설정 예시:**
+```bash
+# .env 파일에 추가
+
+# 크롤링 비활성화 (빠른 응답 필요 시)
+WEB_SEARCH_FETCH_FULL_PAGE=false
+
+# 더 많은 정보 필요 시
+WEB_SEARCH_MAX_CHARS=10000
+
+# 느린 네트워크 환경
+WEB_SEARCH_TIMEOUT=15
+```
+
+**자세한 가이드:** `docs/guides/WEB_SEARCH_CRAWLING_GUIDE.md`
 
 ---
 

@@ -131,12 +131,13 @@ class Phase3Guestimation:
         # 현재는 스킵
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Step 5: 종합 판단
+        # Step 5: 종합 판단 (v7.8.0: question 전달)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         judgment = self.synthesizer.synthesize(
             value_estimates,
             context,
-            soft_guides
+            question=question,  # v7.8.0: Soft Constraint 검증용
+            soft_guides=soft_guides
         )
         
         if not judgment['value']:
@@ -148,6 +149,22 @@ class Phase3Guestimation:
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         elapsed = time.time() - start_time
         
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Step 6: Soft Warnings 처리 (v7.8.0)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        soft_warnings = judgment.get('soft_warnings', [])
+        
+        if soft_warnings:
+            logger.warning(f"\n⚠️⚠️⚠️ Soft Constraint 경고 {len(soft_warnings)}개 ⚠️⚠️⚠️\n")
+            
+            for i, warning in enumerate(soft_warnings, 1):
+                logger.warning(f"\n[경고 {i}]")
+                logger.warning(warning['message'])
+                logger.warning(f"심각도: {warning['severity']}")
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Step 7: 결과 생성
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         result = EstimationResult(
             question=question,
             phase=3,
@@ -169,6 +186,8 @@ class Phase3Guestimation:
             
             conflicts_detected=conflicts,
             conflicts_resolved=(len(conflicts) == 0),
+            
+            soft_warnings=soft_warnings,  # v7.8.0: 사용자 확인 필요
             
             execution_time=elapsed,
             

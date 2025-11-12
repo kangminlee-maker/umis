@@ -25,6 +25,14 @@
   - Fermi 내부: Phase → Step
   - 일관성 확보
 
+- 🌐 **Web Search 페이지 크롤링 기능 추가** (2025-11-12)
+  - Google/DuckDuckGo 검색 결과의 실제 페이지 크롤링
+  - BeautifulSoup 기반 텍스트 추출
+  - 정보량 3,614% 증가 (553자 → 20,538자)
+  - 숫자 추출 10배 이상 증가 (4개 → 41개)
+  - 자동 fallback (크롤링 실패 시 snippet 사용)
+  - 설정 가능: `WEB_SEARCH_FETCH_FULL_PAGE`, `WEB_SEARCH_MAX_CHARS`, `WEB_SEARCH_TIMEOUT`
+
 ### 성과
 **비용 절감**:
 - Native 모드: $0 (100회 분석 기준)
@@ -39,15 +47,22 @@
 - `umis_rag/core/llm_provider.py` (327줄)
 - `scripts/test_native_mode.py` (169줄)
 - `docs/guides/NATIVE_MODE_GUIDE.md` (368줄)
+- `scripts/test_web_search_crawling.py` (128줄) - 크롤링 테스트
+- `scripts/compare_snippet_vs_crawling.py` (135줄) - 성능 비교
+- `docs/guides/WEB_SEARCH_CRAWLING_GUIDE.md` (400줄) - 크롤링 가이드
 
 ### 수정 파일
 - `umis_rag/agents/explorer.py` - Native/External 분기
 - `umis_rag/agents/estimator/estimator.py` - 4-Phase → 5-Phase
 - `umis_rag/agents/estimator/tier3.py` - Phase → Step (16곳)
+- `umis_rag/agents/estimator/sources/value.py` - 페이지 크롤링 기능 추가
+- `umis_rag/agents/estimator/models.py` - Tier → Phase 마이그레이션
+- `umis_rag/core/config.py` - 크롤링 설정 추가
 - `umis_core.yaml` - 용어 체계 전면 개편
 - `umis.yaml` - five_phase_architecture
-- `env.template` - Phase/Step 계층 구조
+- `env.template` - Phase/Step 계층 구조, 크롤링 설정
 - `config/llm_mode.yaml` - v7.7.0 업데이트
+- `requirements.txt` - requests, beautifulsoup4 추가
 - `VERSION.txt` - 7.7.0
 
 ### Breaking Changes
