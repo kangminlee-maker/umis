@@ -89,3 +89,9 @@ data/neo4j/
 data/chroma/*.bin
 data/chroma/*.sqlite3
 *.tar.gz
+
+# System RAG 백업 파일들
+config/tool_registry_backup_*.yaml
+config/tool_registry_incomplete.yaml
+umis_core_backup.yaml
+
