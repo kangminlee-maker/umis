@@ -23,7 +23,7 @@ RAG Collections:
 - market_benchmarks: 시장 벤치마크 (100개)
 """
 
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 from pathlib import Path
 
 from langchain_openai import OpenAIEmbeddings
@@ -348,6 +348,207 @@ class QuantifierRAG:
             logger.warning("  ❌ 추정 실패")
         
         return result
+
+
+    def analyze_growth_with_timeline(
+        self,
+        market: str,
+        historical_data: List[tuple[int, float]]
+    ) -> Dict[str, Any]:
+        """
+        시계열 성장 분석 (v7.8.0 신규)
+        
+        Observer Timeline 분석을 위한 성장률 분석.
+        변곡점 자동 감지, 추세 분해, 미래 예측 포함.
+        
+        Args:
+            market: 시장 이름
+            historical_data: [(year, market_size), ...]
+                예: [(2015, 500), (2020, 1200), (2025, 2500)]
+        
+        Returns:
+            {
+                'trend': [(year, size), ...],
+                'cagr': float,
+                'yoy': [(year, rate), ...],
+                'inflection_points': [...],
+                'forecast': {year: {size, confidence}, ...}
+            }
+        """
+        logger.info(f"[Quantifier] 시계열 성장 분석: {market}")
+        
+        if len(historical_data) < 2:
+            logger.warning("  ⚠️ 데이터 부족 (최소 2년 필요)")
+            return {}
+        
+        # Step 1: CAGR 계산
+        cagr = self._calculate_cagr_from_timeline(historical_data)
+        logger.info(f"  CAGR: {cagr:.1%}")
+        
+        # Step 2: YoY 성장률 계산
+        yoy_rates = self._calculate_yoy_rates(historical_data)
+        logger.info(f"  YoY: {len(yoy_rates)}개 연도")
+        
+        # Step 3: 변곡점 감지 (2차 미분)
+        inflections = self._detect_inflection_points_math(yoy_rates)
+        logger.info(f"  변곡점: {len(inflections)}개")
+        
+        # Step 4: 추세 분해 (선택)
+        trend_components = self._decompose_trend_simple(historical_data)
+        
+        # Step 5: 미래 예측 (3-5년)
+        forecast = self._forecast_simple(historical_data, cagr)
+        
+        logger.info("  ✅ 성장 분석 완료")
+        
+        return {
+            'trend': historical_data,
+            'cagr': cagr,
+            'yoy': yoy_rates,
+            'inflection_points': inflections,
+            'trend_components': trend_components,
+            'forecast': forecast
+        }
+    
+    def _calculate_cagr_from_timeline(
+        self,
+        data: List[tuple[int, float]]
+    ) -> float:
+        """CAGR 계산"""
+        if len(data) < 2:
+            return 0.0
+        
+        start_year, start_value = data[0]
+        end_year, end_value = data[-1]
+        
+        years = end_year - start_year
+        
+        if start_value <= 0 or years <= 0:
+            return 0.0
+        
+        cagr = (end_value / start_value) ** (1 / years) - 1
+        return cagr
+    
+    def _calculate_yoy_rates(
+        self,
+        data: List[tuple[int, float]]
+    ) -> List[tuple[int, float]]:
+        """YoY 성장률 계산"""
+        yoy = []
+        
+        for i in range(1, len(data)):
+            prev_year, prev_value = data[i-1]
+            curr_year, curr_value = data[i]
+            
+            if prev_value > 0:
+                rate = (curr_value - prev_value) / prev_value
+                yoy.append((curr_year, rate))
+        
+        return yoy
+    
+    def _detect_inflection_points_math(
+        self,
+        yoy_data: List[tuple[int, float]]
+    ) -> List[Dict]:
+        """
+        변곡점 감지 (2차 미분)
+        
+        기준:
+        - YoY 변화율 계산 (1차 미분)
+        - YoY의 변화율 계산 (2차 미분)
+        - 급변 시점 (±30% 이상) 감지
+        """
+        inflections = []
+        
+        if len(yoy_data) < 2:
+            return inflections
+        
+        # 2차 미분 (YoY의 변화율)
+        for i in range(1, len(yoy_data)):
+            prev_year, prev_rate = yoy_data[i-1]
+            curr_year, curr_rate = yoy_data[i]
+            
+            # 성장률 변화 (2차 미분)
+            rate_change = curr_rate - prev_rate
+            
+            # 급변 감지 (±30%p 이상)
+            if abs(rate_change) >= 0.30:
+                inflection = {
+                    'year': curr_year,
+                    'type': 'acceleration' if rate_change > 0 else 'deceleration',
+                    'yoy_before': prev_rate,
+                    'yoy_after': curr_rate,
+                    'second_derivative': rate_change,
+                    'significance': 'high' if abs(rate_change) >= 0.50 else 'medium'
+                }
+                inflections.append(inflection)
+        
+        return inflections
+    
+    def _decompose_trend_simple(
+        self,
+        data: List[tuple[int, float]]
+    ) -> Dict:
+        """
+        추세 분해 (간단 버전)
+        
+        - Trend: 이동 평균
+        - Residual: 실제 - 추세
+        """
+        if len(data) < 5:
+            return {}
+        
+        # 3년 이동 평균으로 추세 추출
+        trend = []
+        window = 3
+        
+        for i in range(len(data) - window + 1):
+            window_data = data[i:i+window]
+            avg_year = window_data[1][0]  # 중간 연도
+            avg_value = sum(d[1] for d in window_data) / window
+            trend.append((avg_year, avg_value))
+        
+        return {
+            'trend': trend,
+            'method': 'moving_average_3y'
+        }
+    
+    def _forecast_simple(
+        self,
+        data: List[tuple[int, float]],
+        cagr: float
+    ) -> Dict:
+        """
+        간단한 미래 예측 (CAGR 기반)
+        
+        Returns:
+            {
+                year_1: {size, confidence},
+                year_3: {size, confidence},
+                year_5: {size, confidence}
+            }
+        """
+        if not data:
+            return {}
+        
+        last_year, last_value = data[-1]
+        
+        forecast = {}
+        
+        for future_years in [1, 3, 5]:
+            forecast_year = last_year + future_years
+            forecast_size = last_value * ((1 + cagr) ** future_years)
+            
+            # 신뢰도: 멀수록 낮음
+            confidence = max(0.5, 0.9 - (future_years * 0.1))
+            
+            forecast[f'year_{future_years}'] = {
+                'year': forecast_year,
+                'size': forecast_size,
+                'confidence': confidence
+            }
+        
+        return forecast
 
 
 # Quantifier RAG 인스턴스 (싱글톤)
