@@ -69,9 +69,9 @@ import re
 # v7.5.0 변경:
 # - 비즈니스 지표 계산 공식은 Quantifier로 이동
 # - Estimator는 순수 값 추정만 담당
-# - Tier 3는 일반적 Fermi 분해에 집중
+# - Phase 4는 일반적 Fermi 분해에 집중
 #
-# 이전 위치: tier3.py BUSINESS_METRIC_TEMPLATES
+# 이전 위치: phase4_fermi.py BUSINESS_METRIC_TEMPLATES
 # 신규 위치: data/raw/calculation_methodologies.yaml (Quantifier)
 #
 # ═══════════════════════════════════════════════════════
@@ -305,7 +305,7 @@ BUSINESS_METRIC_TEMPLATES_REMOVED = {
 
 
 # ═══════════════════════════════════════════════════════
-# 데이터 모델 (Tier 3 전용)
+# 데이터 모델 (Phase 4 전용)
 # ═══════════════════════════════════════════════════════
 
 @dataclass
@@ -452,7 +452,7 @@ class SimpleVariablePolicy:
 
 
 # ═══════════════════════════════════════════════════════
-# Tier 3 메인 클래스
+# Phase 4 메인 클래스
 # ═══════════════════════════════════════════════════════
 
 class Phase4FermiDecomposition:
@@ -667,7 +667,7 @@ class Phase4FermiDecomposition:
         0. 부모 데이터 상속 (재귀 시)
         1. 프로젝트 데이터 (최우선)
         2. RAG 검색 (벤치마크, 업계 평균)
-        3. Tier 2 Source (통계, 명확한 값)
+        3. Phase 3 Source (통계, 명확한 값)
         4. Context 상수 (물리/통계 상수)
         
         Args:
@@ -741,11 +741,11 @@ class Phase4FermiDecomposition:
                     logger.info(f"{'  ' * depth}    [RAG] {key} = {var.value} (conf: {var.confidence:.2f})")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Step 3: Tier 2 Source (우선순위 4, 최상위만)
+        # Step 3: Phase 3 Source (우선순위 4, 최상위만)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         if depth == 0 and context:
-            logger.info(f"{'  ' * depth}    [Tier 2] Source 조회 중...")
-            tier2_data = self._query_tier2_sources(question, context)
+            logger.info(f"{'  ' * depth}    [Phase 3] Source 조회 중...")
+            phase3_data = self._query_phase3_sources(question, context)
             
             for key, var in phase3_data.items():
                 if key not in available:  # 프로젝트/RAG 우선
@@ -877,8 +877,8 @@ class Phase4FermiDecomposition:
             if native_models:
                 return native_models
         
-        # 3. Fallback: Tier 2로 위임
-        logger.info(f"{'  ' * depth}    Fallback → Tier 2 위임")
+        # 3. Fallback: Phase 3으로 위임
+        logger.info(f"{'  ' * depth}    Fallback → Phase 3 위임")
         return []
     
     def _generate_native_models(
@@ -1461,8 +1461,8 @@ models:
         """
         변수 추정 (재귀)
         
-        1. Tier 2 먼저 시도 (빠름, 재귀 피함)
-        2. Tier 2 실패 → Tier 3 재귀 호출
+        1. Phase 3 먼저 시도 (빠름, 재귀 피함)
+        2. Phase 3 실패 → Phase 4 재귀 호출
         
         Args:
             var_name: 변수 이름
@@ -1516,7 +1516,7 @@ models:
                 value=fallback['value'],
                 unit=fallback.get('unit', ''),
                 confidence=0.50,  # 낮은 신뢰도
-                tier=3,
+                phase=4,
                 context=context,
                 reasoning=f"Fallback 추정: {fallback['reasoning']}",
                 reasoning_detail={
@@ -1663,7 +1663,7 @@ models:
             question=context.domain if context and context.domain else "unknown",
             value=result_value,
             confidence=combined_confidence,
-            tier=3,
+            phase=4,
             context=context,
             reasoning=f"Fermi 분해: {model.description}",
             reasoning_detail={
@@ -1672,7 +1672,7 @@ models:
                 'formula': model.formula,
                 'depth': depth,
                 'selection_reason': getattr(model, 'selection_reason', ''),
-                'why_this_method': f'Tier 1/2 실패, 재귀 분해 (depth {depth})',
+                'why_this_method': f'Phase 1/2/3 실패, 재귀 분해 (depth {depth})',
                 'variables': {
                     name: {
                         'value': var.value,
@@ -2097,7 +2097,7 @@ models:
         
         순서:
         1. RAG 검색
-        2. Tier 2 Source
+        2. Phase 3 Source
         3. Context 상수
         
         Args:
@@ -2113,8 +2113,8 @@ models:
         if result:
             return result
         
-        # 2. Tier 2 Source
-        result = self._query_tier2_for_variable(var_name, context)
+        # 2. Phase 3 Source
+        result = self._query_phase3_for_variable(var_name, context)
         if result:
             return result
         
@@ -2204,13 +2204,13 @@ models:
         
         return results
     
-    def _query_tier2_sources(
+    def _query_phase3_sources(
         self,
         question: str,
         context: Context
     ) -> Dict[str, FermiVariable]:
         """
-        Tier 2 Source에서 데이터 조회
+        Phase 3 Source에서 데이터 조회
         
         Args:
             question: 질문
@@ -2222,25 +2222,25 @@ models:
         results = {}
         
         try:
-            # Tier 2로 직접 추정 시도 (신뢰도 높은 것만)
-            tier2_result = self.tier2.estimate(question, context)
+            # Phase 3으로 직접 추정 시도 (신뢰도 높은 것만)
+            phase3_result = self.phase3.estimate(question, context)
             
-            if tier2_result and tier2_result.confidence >= 0.80:
+            if phase3_result and phase3_result.confidence >= 0.80:
                 # 질문에서 변수명 추출 시도
                 var_name = self._extract_var_name_from_question(question)
                 
                 if var_name:
                     results[var_name] = FermiVariable(
                         name=var_name,
-                        value=tier2_result.value,
+                        value=phase3_result.value,
                         available=True,
-                        source=f"tier2_{tier2_result.sources[0] if tier2_result.sources else 'unknown'}",
-                        confidence=tier2_result.confidence,
-                        description=tier2_result.reasoning_detail.get('method', '')
+                        source=f"phase3_{phase3_result.sources[0] if phase3_result.sources else 'unknown'}",
+                        confidence=phase3_result.confidence,
+                        description=phase3_result.reasoning_detail.get('method', '')
                     )
         
         except Exception as e:
-            logger.warning(f"    ⚠️  Tier 2 조회 실패: {e}")
+            logger.warning(f"    ⚠️  Phase 3 조회 실패: {e}")
         
         return results
     
@@ -2389,13 +2389,13 @@ models:
         
         return var_lower
     
-    def _query_tier2_for_variable(
+    def _query_phase3_for_variable(
         self,
         var_name: str,
         context: Context
     ) -> Optional[FermiVariable]:
         """
-        특정 변수에 대한 Tier 2 Source 조회
+        특정 변수에 대한 Phase 3 Source 조회
         
         Args:
             var_name: 변수명
@@ -2408,21 +2408,21 @@ models:
             # 변수명을 질문으로 변환
             question = self._build_contextualized_question(var_name, context)
             
-            # Tier 2 조회
-            tier2_result = self.tier2.estimate(question, context)
+            # Phase 3 조회
+            phase3_result = self.phase3.estimate(question, context)
             
-            if tier2_result and tier2_result.confidence >= 0.75:
+            if phase3_result and phase3_result.confidence >= 0.75:
                 return FermiVariable(
                     name=var_name,
-                    value=tier2_result.value,
+                    value=phase3_result.value,
                     available=True,
-                    source=f"tier2_{tier2_result.sources[0] if tier2_result.sources else 'source'}",
-                    confidence=tier2_result.confidence,
-                    description=tier2_result.reasoning_detail.get('method', '')
+                    source=f"phase3_{phase3_result.sources[0] if phase3_result.sources else 'source'}",
+                    confidence=phase3_result.confidence,
+                    description=phase3_result.reasoning_detail.get('method', '')
                 )
         
         except Exception as e:
-            logger.debug(f"Tier 2 조회 실패 ({var_name}): {e}")
+            logger.debug(f"Phase 3 조회 실패 ({var_name}): {e}")
         
         return None
     

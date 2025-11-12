@@ -252,11 +252,11 @@ class EstimationResult:
     unit: str = ""
     
     # 메타 정보
-    tier: int = 0  # 1, 2, 3
+    phase: int = 0  # 0, 1, 2, 3, 4
     confidence: float = 0.0
     uncertainty: float = 0.3
     
-    # Tier 2 전용
+    # Phase 3 전용
     context: Optional[Context] = None
     
     # 수집된 Source들
@@ -273,7 +273,7 @@ class EstimationResult:
     conflicts_detected: List[Dict] = field(default_factory=list)
     conflicts_resolved: bool = True
     
-    # Tier 3 (Fermi)
+    # Phase 4 (Fermi)
     fermi_model: Optional[Any] = None
     variable_results: Dict[str, 'EstimationResult'] = field(default_factory=dict)
     
@@ -298,7 +298,7 @@ class EstimationResult:
     #   'evidence_breakdown': [...]
     # }
     
-    # Decomposition 추적 (Tier 3용, 선택)
+    # Decomposition 추적 (Phase 4용, 선택)
     decomposition: Optional['DecompositionTrace'] = None
     
     # 개별 요소 추정 논리
@@ -341,7 +341,7 @@ class ComponentEstimation:
 @dataclass
 class DecompositionTrace:
     """
-    Decomposition 추적 (v7.3.2 - Tier 3용)
+    Decomposition 추적 (v7.3.2 - Phase 4용)
     
     Fermi처럼 분해한 경우의 이력
     예: ARPU = 월결제액 / 활성사용자
@@ -365,7 +365,7 @@ class DecompositionTrace:
 
 @dataclass
 class LearnedRule:
-    """학습된 규칙 (Tier 1 편입용)"""
+    """학습된 규칙 (Phase 1 편입용)"""
     
     rule_id: str
     
@@ -501,11 +501,11 @@ class Phase4Config:
 
 @dataclass
 class GuestimationConfig:
-    """전체 시스템 설정"""
-    
-    tier1: Tier1Config = field(default_factory=Tier1Config)
-    tier2: Tier2Config = field(default_factory=Tier2Config)
-    tier3: Tier3Config = field(default_factory=Tier3Config)
+    """전체 시스템 설정 (v7.7.0: Tier → Phase)"""
+
+    phase1: Phase1Config = field(default_factory=Phase1Config)
+    phase3: Phase3Config = field(default_factory=Phase3Config)
+    phase4: Phase4Config = field(default_factory=Phase4Config)
     
     # LLM 모드
     llm_mode: str = "native"  # "native" | "external" | "skip"

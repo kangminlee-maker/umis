@@ -150,7 +150,7 @@ class Phase3Guestimation:
         
         result = EstimationResult(
             question=question,
-            tier=2,
+            phase=3,
             
             value=judgment['value'],
             value_range=judgment.get('range'),

@@ -1,6 +1,6 @@
 """
 Guestimation v3.0 - Learning Writer
-Tier 2/3 결과를 Canonical Index에 저장하여 학습하는 시스템 구현
+Phase 3/4 결과를 Canonical Index에 저장하여 학습하는 시스템 구현
 """
 
 from typing import Optional, Dict, Any, List
@@ -23,7 +23,7 @@ class LearningWriter:
     학습된 규칙을 Canonical Index에 저장
     
     역할:
-    1. Tier 2/3 결과 → LearnedRule 변환
+    1. Phase 3/4 결과 → LearnedRule 변환
     2. Canonical Index에 저장 (chunk_type="learned_rule")
     3. Projection 트리거 (자동)
     
@@ -69,7 +69,7 @@ class LearningWriter:
         
         Args:
             question: 원본 질문
-            result: Tier 2/3 판단 결과
+            result: Phase 3/4 판단 결과
             context: 맥락 (domain, region, time 등)
             metadata: 추가 메타데이터
         
