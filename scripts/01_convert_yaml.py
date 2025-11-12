@@ -94,13 +94,31 @@ class UMISYAMLConverter:
         
         # 7개 패턴 ID
         pattern_ids = [
+            # Fancy (Tech/Startup) 패턴
             "platform_business_model",
             "subscription_model",
             "franchise_model",
             "direct_to_consumer_model",
             "advertising_model",
             "licensing_model",
-            "freemium_model"
+            "freemium_model",
+            
+            # Boring but Real 패턴 (v7.0+)
+            "manufacturing_model",
+            "wholesale_distribution_model",
+            "traditional_retail_model",
+            "small_business_model",
+            "b2b_sales_model",
+            "professional_services_model",
+            "construction_model",
+            "logistics_model",
+            "real_estate_model",
+            "education_services_model",
+            "healthcare_services_model",
+            "service_provider_model",
+            "agriculture_model",
+            "agency_dealership_model",
+            "financial_services_model"
         ]
         
         for pattern_id in track(pattern_ids, description="패턴 처리 중..."):
@@ -370,11 +388,24 @@ class UMISYAMLConverter:
         
         # 5개 Disruption 패턴
         pattern_ids = [
+            # Fancy (Tech) Disruption 패턴
             "innovation_disruption",
             "low_end_disruption",
             "channel_disruption",
             "experience_disruption",
-            "continuous_innovation_disruption"
+            "continuous_innovation_disruption",
+            "hybrid_disruption",
+            
+            # Boring but Real Disruption 패턴 (v7.0+)
+            "regulatory_change_disruption",
+            "format_disruption",
+            "generational_disruption",
+            "import_substitution_disruption",
+            "franchising_disruption",
+            "payment_disruption",
+            "platform_aggregation_disruption",
+            "sme_automation_disruption",
+            "sustainability_disruption"
         ]
         
         for pattern_id in track(pattern_ids, description="Disruption 패턴 처리 중..."):
@@ -662,6 +693,55 @@ class UMISYAMLConverter:
         
         return keywords[:10]  # 최대 10개
     
+    def convert_generic_patterns_for_explorer(
+        self,
+        filename: str,
+        pattern_type: str
+    ) -> List[Dict[str, Any]]:
+        """
+        범용 패턴 파일을 Explorer 관점으로 청킹
+        
+        Args:
+            filename: YAML 파일명
+            pattern_type: 패턴 타입 (incumbent_failure, startup_failure 등)
+        
+        Returns:
+            청크 리스트
+        """
+        logger.info(f"📋 {filename} → Explorer 청크 변환 시작")
+        
+        data = self.load_yaml(filename)
+        chunks = []
+        
+        # 모든 최상위 섹션을 순회
+        for key, value in data.items():
+            # 메타데이터 섹션 건너뛰기
+            if key.startswith('_'):
+                continue
+            
+            # 섹션이 딕셔너리인 경우
+            if isinstance(value, dict):
+                # 섹션 전체를 하나의 청크로
+                chunk_content = f"# {key}\n\n"
+                chunk_content += yaml.dump(value, allow_unicode=True, default_flow_style=False, sort_keys=False)
+                
+                chunks.append({
+                    "content": chunk_content,
+                    "metadata": {
+                        "chunk_id": f"{pattern_type}_{key}",
+                        "chunk_type": "failure_pattern",
+                        "agent": "explorer",
+                        "pattern_id": key,
+                        "pattern_type": pattern_type,
+                        "section": "pattern",
+                        "source_file": filename,
+                        "token_count": len(chunk_content.split())
+                    }
+                })
+        
+        logger.info(f"  ✅ 총 {len(chunks)}개 청크 생성")
+        return chunks
+    
     def save_chunks(self, chunks: List[Dict[str, Any]], filename: str) -> None:
         """
         청크를 JSON Lines 형식으로 저장
@@ -712,8 +792,63 @@ def main():
     explorer_dp_chunks = converter.convert_disruption_patterns_for_explorer()
     converter.save_chunks(explorer_dp_chunks, "explorer_disruption_patterns.jsonl")
     
-    # TODO: Phase 3: Observer 관점 청크 (향후)
-    # TODO: Phase 4: Quantifier 관점 청크 (향후)
+    # Phase 3: Incumbent Failure 패턴 → Explorer 청크
+    console.print("\n[yellow]⚠️  Phase 3: 주도기업 실패 패턴 변환[/yellow]")
+    try:
+        incumbent_failure_chunks = converter.convert_generic_patterns_for_explorer(
+            "umis_incumbent_failure_patterns.yaml",
+            "incumbent_failure"
+        )
+        converter.save_chunks(incumbent_failure_chunks, "explorer_incumbent_failures.jsonl")
+    except Exception as e:
+        console.print(f"[red]⚠️  Incumbent failure 패턴 변환 실패: {e}[/red]")
+    
+    # Phase 4: Startup Failure 패턴 → Explorer 청크
+    console.print("\n[yellow]💀 Phase 4: 스타트업 실패 패턴 변환[/yellow]")
+    try:
+        startup_failure_chunks = converter.convert_generic_patterns_for_explorer(
+            "umis_startup_failure_patterns.yaml",
+            "startup_failure"
+        )
+        converter.save_chunks(startup_failure_chunks, "explorer_startup_failures.jsonl")
+    except Exception as e:
+        console.print(f"[red]⚠️  Startup failure 패턴 변환 실패: {e}[/red]")
+    
+    # Phase 5: Extended Business Cases → Explorer 청크
+    console.print("\n[yellow]📚 Phase 5: 비즈니스 사례 확장 변환[/yellow]")
+    try:
+        extended_biz_chunks = converter.convert_generic_patterns_for_explorer(
+            "umis_extended_business_cases.yaml",
+            "business_case"
+        )
+        converter.save_chunks(extended_biz_chunks, "explorer_extended_business_cases.jsonl")
+    except Exception as e:
+        console.print(f"[red]⚠️  Extended business cases 변환 실패: {e}[/red]")
+    
+    # Phase 6: Extended Disruption Cases → Explorer 청크
+    console.print("\n[yellow]🔥 Phase 6: Disruption 사례 확장 변환[/yellow]")
+    try:
+        extended_dis_chunks = converter.convert_generic_patterns_for_explorer(
+            "umis_extended_disruption_cases.yaml",
+            "disruption_case"
+        )
+        converter.save_chunks(extended_dis_chunks, "explorer_extended_disruption_cases.jsonl")
+    except Exception as e:
+        console.print(f"[red]⚠️  Extended disruption cases 변환 실패: {e}[/red]")
+    
+    # Phase 7: Strategic Frameworks → Explorer 청크
+    console.print("\n[yellow]🎯 Phase 7: 전략 프레임워크 변환[/yellow]")
+    try:
+        framework_chunks = converter.convert_generic_patterns_for_explorer(
+            "umis_strategic_frameworks.yaml",
+            "strategic_framework"
+        )
+        converter.save_chunks(framework_chunks, "explorer_strategic_frameworks.jsonl")
+    except Exception as e:
+        console.print(f"[red]⚠️  Strategic frameworks 변환 실패: {e}[/red]")
+    
+    # TODO: Phase 8: Observer 관점 청크 (향후)
+    # TODO: Phase 9: Quantifier 관점 청크 (향후)
     
     console.print("\n[bold green]✅ 변환 완료![/bold green]\n")
     console.print(f"출력 디렉토리: {converter.chunks_dir}")

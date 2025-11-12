@@ -1,0 +1,904 @@
+# ========================================
+# UMIS Pattern-Case Matching Table v1.0
+# ========================================
+#
+# 목적: 패턴별 성공-실패 사례 명시적 매칭 및 Cross-Industry 인사이트
+# 철학: "산업은 다르지만 패턴은 같다"
+#
+# 구조:
+# - 37개 패턴별 매칭
+# - 성공 5개 + 실패 5개 (산업 다양화!)
+# - Cross-Industry Contrast Analysis
+# - Actionable Framework (산업 무관)
+#
+# ========================================
+
+_meta:
+  version: "1.0"
+  purpose: "패턴-사례 Cross-Industry 매칭"
+  philosophy: "Pattern-Centric, Not Industry-Centric"
+  
+  core_insight: |
+    기회 발견의 인사이트는 동일 산업에서만 나오지 않는다.
+    
+    예:
+    - 치킨집 마진 압박 = PC제조 마진 압박 (패턴 동일)
+    - Netflix 개인화 → 교육 플랫폼 적용 (Cross-Industry)
+    - 코웨이 정기 방문 → SaaS CSM 적용
+    
+    Steve는 산업 경계를 넘어 패턴을 학습한다.
+  
+  total_patterns: 37
+  total_cases: 370
+  target_matching_rate: "100% (모든 패턴 양쪽 커버)"
+
+# ========================================
+# SUBSCRIPTION MODEL MATCHING
+# ========================================
+
+subscription_model_matching:
+  _pattern_id: "subscription_model"
+  _pattern_file: "umis_business_model_patterns.yaml"
+  
+  pattern_essence:
+    core: "소유 → 이용 전환, LTV 극대화"
+    mechanics: "반복 과금, 습관화, Churn 관리"
+    universal: "산업 무관, 어디서나 작동 가능"
+  
+  # ═══════════════════════════════════
+  # Success Cases (Cross-Industry)
+  # ═══════════════════════════════════
+  
+  success_cases:
+    
+    - id: "netflix_media"
+      company: "Netflix"
+      industry: "영상 스트리밍"
+      
+      metrics:
+        subscribers: "2억+ (글로벌)"
+        churn: "2%/월 (업계 최저)"
+        arpu: "$11.5/월"
+        ltv: "$600+ (50개월)"
+        cac: "~$50"
+        ltv_cac_ratio: "12x"
+      
+      success_factors:
+        primary: "오리지널 콘텐츠 ($17B/년)"
+        secondary: "개인화 알고리즘"
+        tertiary: "글로벌 확장 (230개국)"
+      
+      how_subscription_works:
+        habit: "저녁 루틴 (시간 고정)"
+        value: "무제한 심리 (실제 <무제한)"
+        lock_in: "추천 데이터 축적"
+      
+      transferable_to_other_industries:
+        - to_education: "개인화 학습 경로"
+        - to_fitness: "루틴 설계 (고정 시간)"
+        - to_any: "첫 달 Activation이 생사"
+    
+    - id: "adobe_software"
+      company: "Adobe Creative Cloud"
+      industry: "디자인 소프트웨어"
+      
+      metrics:
+        arr: "$16B+"
+        customers: "2,600만"
+        transition_year: 2013
+        before_revenue: "$4B (2012, 영구)"
+        after_revenue: "$16B (2023, 구독)"
+      
+      success_factors:
+        primary: "Lock-in (작업 파일 클라우드)"
+        secondary: "Forcing function (신기능 클라우드만)"
+        tertiary: "기존 고객 base"
+      
+      how_subscription_works:
+        habit: "작업 자체가 습관 (매일)"
+        value: "매월 업데이트"
+        lock_in: "파일 + 학습 비용"
+      
+      transferable_to_other_industries:
+        - to_physical: "물리 제품도 서비스 결합 시 가능"
+        - to_b2b: "Lock-in 설계 중요"
+        - to_any: "전환 시 Forcing function 필요"
+    
+    - id: "coway_rental"
+      company: "코웨이"
+      industry: "가전 렌탈 (정수기, 공기청정기)"
+      region: "한국"
+      
+      metrics:
+        arr: "3조원"
+        customers: "700만 가구"
+        churn: "낮음 (~5%)"
+        cac: "~80만원 (코디)"
+        ltv: "500만원+ (5년+)"
+      
+      success_factors:
+        primary: "AS 네트워크 (코디 8,000명)"
+        secondary: "정기 방문 (필터 교체)"
+        tertiary: "관계 구축 (코디-고객)"
+      
+      how_subscription_works:
+        habit: "정기 방문 (요일 고정)"
+        value: "깨끗한 물/공기 (건강)"
+        lock_in: "사람 관계 (코디)"
+      
+      transferable_to_other_industries:  # 🔥
+        - to_saas: "정기 체크인 → CSM (Customer Success)"
+        - to_service: "관계 = 디지털 못 따라잡는 Moat"
+        - to_any: "물리 제품도 서비스 결합으로 구독화"
+    
+    - id: "hellofresh_food"
+      company: "HelloFresh"
+      industry: "밀키트 구독"
+      region: "독일, 유럽"
+      
+      metrics:
+        subscribers: "700만 (글로벌)"
+        churn: "6%/월"
+        cac: "~$50"
+        ltv: "$400+"
+      
+      success_factors:
+        primary: "지역 집중 (밀도)"
+        secondary: "유기농 차별화"
+        tertiary: "Organic 50%+"
+      
+      how_subscription_works:
+        habit: "월/목 고정 배송 (루틴)"
+        value: "편의 + 건강"
+        differentiation: "유기농, 지역 특산"
+      
+      transferable_to_other_industries:
+        - to_any_subscription: "지역 밀도 > 전국 확장"
+        - to_marketplace: "Organic 50% 원칙"
+        - to_food: "차별화 필수 (commodity 회피)"
+    
+    - id: "spotify_music"
+      company: "Spotify"
+      industry: "음악 스트리밍"
+      
+      metrics:
+        users: "5억+ (Free 60%, Premium 40%)"
+        churn: "5%/월"
+        arpu: "$5 (Freemium)"
+      
+      success_factors:
+        primary: "Freemium (무료→유료 전환)"
+        secondary: "개인화 플레이리스트"
+        tertiary: "소셜 기능 (공유)"
+      
+      transferable_to_other_industries:
+        - to_any: "Freemium = CAC 낮춤"
+        - to_content: "개인화가 차별화"
+        - to_social: "공유 = Viral"
+  
+  # ═══════════════════════════════════
+  # Failure Cases (Cross-Industry)
+  # ═══════════════════════════════════
+  
+  failure_cases:
+    
+    - id: "moviepass_entertainment"
+      company: "MoviePass"
+      industry: "영화 무제한 구독"
+      
+      failure_metrics:
+        funding: "$1.75B"
+        peak_subscribers: "300만"
+        pricing: "$9.95/월"
+        cost_per_user: "$38/월"
+        monthly_burn: "$3억"
+        lifespan: "18개월 → 파산"
+      
+      failure_breakdown:
+        assumption: "월 1-2회 관람"
+        reality: "파워유저 주 2-3회 (Top 10%가 50% 사용)"
+        unit_loss: "$28/명/월"
+        total_loss: "$8,400만/월 (300만명)"
+        
+        response_attempts:
+          - "가격 인상 시도 → 가입자 이탈"
+          - "제한 추가 → 반발"
+          - "협상 시도 → 극장 거부"
+        
+        death: "현금 소진, 파산"
+      
+      why_subscription_failed:
+        root_cause: "Unit Economics 무시"
+        specific:
+          - "가격 < 비용 (구조적 불가능)"
+          - "파워유저 리스크 과소평가"
+          - "협상력 가정 검증 안 됨"
+      
+      transferable_warnings:  # 🔥 어디서나 적용
+        - to_any_unlimited: "무제한은 위험, 상한 설정 필수"
+        - to_pricing: "Top 10% 사용량 고려"
+        - to_assumptions: "협상력은 검증이지 가정 아님"
+        - universal: "Unit Econ은 속일 수 없음"
+    
+    - id: "blue_apron_food"
+      company: "Blue Apron"
+      industry: "밀키트 구독"
+      region: "미국"
+      
+      failure_metrics:
+        ipo: "$10/주 (2017.06)"
+        current: "$0.20 (-98%)"
+        cac_2015: "$94"
+        cac_2020: "$460"
+        churn: "10-12%/월"
+        ltv: "$250-300"
+        ltv_cac: "0.54x (파국)"
+      
+      failure_breakdown:
+        assumption_1: "밀키트가 습관화될 것"
+        reality_1: "Novelty effect, Churn 12%"
+        
+        assumption_2: "CAC는 Scale에서 낮아질 것"
+        reality_2: "경쟁 심화로 $94 → $460"
+        
+        assumption_3: "차별화 가능"
+        reality_3: "밀키트는 commodity"
+        
+        death_spiral:
+          1: "차별화 없음 → Churn 높음"
+          2: "Churn 높음 → 더 많은 마케팅"
+          3: "경쟁 심화 → CAC 폭발"
+          4: "CAC >LTV → 손실"
+          5: "주가 폭락, 계속 적자"
+      
+      why_subscription_failed:
+        root_cause: "차별화 부족 + 전국 확장"
+        specific:
+          - "밀키트 commodity화"
+          - "전국 확장 → CAC 통제 불가"
+          - "습관화 실패 (매주는 귀찮음)"
+      
+      transferable_warnings:  # 🔥
+        - to_any_subscription: "차별화 or 네트워크 효과 필수"
+        - to_local_service: "밀도 > 확장"
+        - to_food: "습관 = 편의성 × 맛"
+        - universal: "commodity = 가격 경쟁 = 죽음"
+    
+    - id: "quibi_media"
+      company: "Quibi"
+      industry: "숏폼 비디오 구독"
+      
+      failure_metrics:
+        funding: "$1.75B"
+        subscriber_goal: "수백만"
+        actual_subscribers: "~50만 (10%)"
+        lifespan: "6개월"
+        loss: "거의 전액"
+      
+      failure_breakdown:
+        assumption: "이동 중 10분 프리미엄 콘텐츠 수요"
+        reality:
+          - "이동 중 = SNS, YouTube (무료)"
+          - "10분 = 어중간 (3분 or 60분)"
+          - "모바일 only = 제한적"
+        
+        covid_impact: "이동 자체가 없어짐"
+      
+      why_subscription_failed:
+        root_cause: "No Market Need + 제한적"
+        specific:
+          - "Niche 너무 작음 (이동 중 only)"
+          - "무료 대안 강력 (TikTok, YouTube)"
+          - "콘텐츠만으론 부족"
+      
+      transferable_warnings:
+        - to_any: "Niche = 작은 시장, Broad > Niche"
+        - to_mobile: "플랫폼 제약 = 성장 제약"
+        - universal: "투자 유치 ≠ 시장 검증"
+    
+    - id: "birchbox_beauty"
+      company: "Birchbox"
+      industry: "뷰티 샘플 박스"
+      
+      failure_metrics:
+        peak: "100만 가입자"
+        exit: "인수 매각 (Valuation 하락)"
+        churn: "높음 (~15%)"
+      
+      failure_breakdown:
+        assumption: "샘플 체험 → 정품 구매"
+        reality: "샘플만 받고 구매 안 함"
+        
+        root_cause: "Novelty effect"
+        pattern: "첫 달 재미 → 3개월 후 지루"
+      
+      transferable_warnings:
+        - to_subscription: "Novelty ≠ Habit"
+        - to_discovery: "체험 모델 한계"
+        - universal: "첫 3개월이 진실을 말함"
+    
+    - id: "korean_mealkit_various"
+      company: "프레시지, 쿡킷 등"
+      industry: "밀키트 구독"
+      region: "한국"
+      
+      failure_pattern:
+        outcome: "대부분 폐업 또는 축소"
+        common_cause:
+          - "차별화 부족 (다 비슷)"
+          - "CAC 통제 실패"
+          - "Churn 높음 (8-12%)"
+      
+      transferable_warnings:
+        - to_korea: "한국 시장 특수성 (작음, 경쟁 빠름)"
+        - to_food: "음식은 차별화 어려움"
+        - universal: "Local 밀도가 생존 열쇠"
+  
+  # ═══════════════════════════════════
+  # Cross-Industry Contrast Analysis
+  # ═══════════════════════════════════
+  
+  cross_industry_contrast:
+    
+    universal_success_pattern:
+      
+      dimension_1_habit_formation:
+        
+        success_evidence_across_industries:
+          - "Netflix: 저녁 루틴 (시간)"
+          - "Spotify: 출퇴근 루틴 (상황)"
+          - "코웨이: 정기 방문 (요일)"
+          - "Adobe: 작업 자체 (매일)"
+        
+        failure_evidence_across_industries:
+          - "Blue Apron: 매주는 귀찮음"
+          - "Birchbox: 샘플 지루함"
+          - "밀키트들: 습관 안 됨"
+        
+        universal_insight:
+          pattern: "루틴에 끼워 넣기 or Lock-in"
+          examples:
+            - "시간 고정 (저녁)"
+            - "상황 고정 (출퇴근)"
+            - "물리 Lock-in (코디, 파일)"
+          
+          failure_pattern: "Novelty effect (처음만)"
+          
+          actionable: |
+            어느 산업이든:
+            - 기존 루틴에 끼우기
+            - 또는 Lock-in 설계
+            - 첫 3개월이 진실
+      
+      dimension_2_cac_economics:
+        
+        success_pattern_across_industries:
+          - "Netflix: $50 (Organic 입소문)"
+          - "Adobe: $200 (Freemium 전환)"
+          - "코웨이: 80만원 (코디 추천)"
+          - "HelloFresh: $50 (밀도)"
+          - "공통점: Organic >40%"
+        
+        failure_pattern_across_industries:
+          - "Blue Apron: $460 (Paid 100%)"
+          - "MoviePass: 무한대 (통제 불가)"
+          - "공통점: Paid 의존"
+        
+        universal_insight:
+          ratio: "Organic 비율이 생사를 가름"
+          
+          success_formula: |
+            Organic >50% = CAC 안정
+            Paid 100% = CAC 폭발 위험
+          
+          why_universal:
+            - "경쟁 심화는 어디서나"
+            - "Paid 비용은 계속 오름"
+            - "Organic만이 방어"
+          
+          actionable: |
+            산업 무관 목표:
+            - Organic >50%
+            - CAC < LTV/3
+            - 3채널 분산 (1개 의존 금지)
+      
+      dimension_3_differentiation:
+        
+        success_with_diff:
+          - "Netflix: 오리지널 콘텐츠"
+          - "Spotify: 개인화"
+          - "Adobe: Ecosystem"
+          - "HelloFresh: 유기농"
+          - "코웨이: AS 네트워크"
+        
+        failure_without_diff:
+          - "Blue Apron: commodity"
+          - "밀키트들: 다 비슷"
+          - "Birchbox: 샘플은 샘플"
+        
+        universal_rule: |
+          차별화 없으면:
+            → commodity
+            → 가격 경쟁
+            → 마진 압박
+            → Churn 증가
+            → 죽음
+          
+          차별화 방법 (산업 무관):
+            - 10x 우월성
+            - Lock-in (전환 비용)
+            - 네트워크 효과
+            - 브랜드
+        
+        actionable:
+          question: "대체 불가능한 이유를 한 문장으로?"
+          pass: "명확히 답변 가능"
+          fail: "음... 그냥 좋아요"
+    
+    what_works_everywhere:
+      - "Habit (루틴 or Lock-in)"
+      - "CAC Control (Organic >50%)"
+      - "Differentiation (10x or 네트워크)"
+      - "이 3가지는 산업 무관, 보편적 법칙"
+    
+    what_kills_everywhere:
+      - "Novelty effect (습관 안 됨)"
+      - "CAC 폭발 (Paid 100%)"
+      - "Commodity (차별화 없음)"
+      - "이것도 산업 무관, 보편적 실패"
+  
+  # ═══════════════════════════════════
+  # Actionable Framework
+  # ═══════════════════════════════════
+  
+  steve_application_guide:
+    
+    when_steve_sees_subscription_opportunity:
+      
+      step_1_pattern_match:
+        trigger: "CAC 높음, 반복 사용"
+        pattern: "Subscription 매칭"
+      
+      step_2_load_this_matching:
+        load: "success 5개 + failure 5개"
+        note: "산업 다양함에 주목!"
+      
+      step_3_cross_industry_learning:
+        question: "다른 산업 사례에서 배울 점은?"
+        
+        examples:
+          if_saas:
+            - "Netflix 개인화 → 우리도 개인화"
+            - "코웨어 정기 방문 → CSM 설계"
+          
+          if_food:
+            - "HelloFresh 밀도 → 우리도 밀도"
+            - "Blue Apron 실패 → 전국 확장 금지"
+          
+          if_physical:
+            - "코웨이 서비스 결합 → 우리도 AS"
+            - "Adobe Lock-in → 물리적 Lock-in 설계"
+      
+      step_4_contrast_analysis:
+        load: "Cross-Industry Contrast"
+        extract:
+          - "Habit 설계 방법은?"
+          - "CAC 목표는?"
+          - "차별화 방법은?"
+      
+      step_5_validation_design:
+        universal_checklist:
+          - "[ ] Churn <7% (3개월 코호트)"
+          - "[ ] CAC <LTV/3 (3채널)"
+          - "[ ] 차별화 명확 (NPS >50)"
+        
+        industry_specific_add:
+          - "산업 특수성 추가"
+      
+      step_6_generate_hypothesis:
+        format: |
+          "30대 맞벌이 한식 밀키트 주2회 구독
+           
+           성공 근거 (Cross-Industry):
+             - HelloFresh 밀도 모델
+             - 코웨이 정기 방문 루틴
+             - Netflix 개인화 (레시피 추천)
+           
+           실패 회피 (Cross-Industry):
+             - Blue Apron 교훈: 강남 3구만
+             - MoviePass 교훈: 주 3회 상한
+             - 치킨집 교훈: 차별화 (한식)
+           
+           검증 (Universal):
+             - Churn <7% (100명 3개월)
+             - CAC <8만원 (Organic 50%)
+             - NPS >50 (차별화)"
+    
+    red_flags_any_industry:
+      abort_if:
+        - "Churn >10% (Blue Apron)"
+        - "CAC >LTV/2 (MoviePass)"
+        - "차별화 못 찾음 (commodity)"
+        - "습관화 메커니즘 없음"
+      
+      warning_signs:
+        - "사용 빈도 낮음 (<월 1회)"
+        - "Paid 의존 >70%"
+        - "경쟁자 쉽게 모방"
+
+# ========================================
+# PLATFORM MODEL MATCHING
+# ========================================
+
+platform_model_matching:
+  _pattern_id: "platform_business_model"
+  _pattern_file: "umis_business_model_patterns.yaml"
+  
+  pattern_essence:
+    core: "양면/다면 시장 중개, 네트워크 효과"
+    mechanics: "공급-수요 매칭, 거래 수수료"
+    universal: "음식, 숙박, 교통, 채용... 어디서나 작동"
+  
+  # ═══════════════════════════════════
+  # Success Cases (산업 초월!)
+  # ═══════════════════════════════════
+  
+  success_cases:
+    
+    - id: "baemindelivery_food"
+      company: "배달의민족"
+      industry: "음식 배달"
+      region: "한국"
+      
+      metrics:
+        market_share: "60%"
+        restaurants: "30만+"
+        orders_month: "1억건"
+        revenue: "연 1조+ (수수료)"
+      
+      platform_dynamics:
+        supply: "음식점"
+        demand: "소비자"
+        value_to_supply: "고객 접근, 배달 대행"
+        value_to_demand: "선택권, 편의성"
+        take_rate: "6-12% (음식점) + 배달비 (소비자)"
+      
+      success_factors:
+        primary: "선점 (2010 시작)"
+        secondary: "자본력 (우아한형제들 → 딜리버리히어로)"
+        tertiary: "브랜드 (배민 = 배달)"
+      
+      transferable_insights:  # 🔥
+        - to_any_platform: "선점 효과 막강 (6년 선발)"
+        - to_korea: "자본력 = 생존 (마케팅 전쟁)"
+        - to_marketplace: "공급 먼저 (음식점 30만)"
+    
+    - id: "airbnb_accommodation"
+      company: "Airbnb"
+      industry: "숙박 공유"
+      
+      metrics:
+        listings: "700만+ (글로벌)"
+        gmv: "$64B"
+        take_rate: "3% (호스트) + 14% (게스트)"
+      
+      platform_dynamics:
+        supply: "호스트 (빈방)"
+        demand: "여행자"
+        chicken_egg: "공급 먼저 (사진 작가 고용)"
+      
+      success_factors:
+        primary: "리뷰 시스템 (신뢰)"
+        secondary: "가격 (호텔 대비 -30%)"
+        tertiary: "독특한 경험 (현지인 집)"
+      
+      transferable_insights:
+        - to_trust: "리뷰 = 양면 시장 신뢰 해결"
+        - to_any: "Cold start = 공급 or 수요 선택"
+        - universal: "신뢰 문제 해결이 핵심"
+    
+    - id: "uber_transportation"
+      company: "Uber"
+      industry: "승차 공유"
+      
+      metrics:
+        drivers: "수백만"
+        riders: "억 단위"
+        take_rate: "25% (높음)"
+      
+      success_factors:
+        primary: "편의성 (앱 호출)"
+        secondary: "동적 가격 (수요-공급)"
+        tertiary: "규제 회색지대 활용"
+      
+      transferable_insights:
+        - to_pricing: "동적 가격 = 수급 조절"
+        - to_regulation: "회색지대 전략"
+        - universal: "편의성이 가격 이김"
+    
+    - id: "linkedin_professional"
+      company: "LinkedIn"
+      industry: "전문가 네트워킹"
+      
+      platform_dynamics:
+        supply: "구직자, 전문가"
+        demand: "채용 기업"
+        network_effect: "Strong (Same-side)"
+      
+      success_factors:
+        primary: "전문가 네트워크 효과"
+        secondary: "프리미엄 구독 (양쪽)"
+        tertiary: "B2B 매출 (채용)"
+      
+      transferable_insights:
+        - to_network: "Same-side 효과도 강력"
+        - to_monetization: "양쪽 과금 가능"
+        - universal: "네트워크가 Moat"
+    
+    - id: "danggeun_local"
+      company: "당근마켓"
+      industry: "지역 중고거래"
+      region: "한국"
+      
+      metrics:
+        users: "3,000만"
+        revenue: "광고 (수수료 무료)"
+      
+      success_factors:
+        primary: "지역 기반 (동네)"
+        secondary: "수수료 무료 (차별화)"
+        tertiary: "커뮤니티 (신뢰)"
+      
+      transferable_insights:
+        - to_local: "지역 = 네트워크 효과 증폭"
+        - to_trust: "동네 = 신뢰 높음"
+        - universal: "무료도 수익화 가능 (광고)"
+  
+  # ═══════════════════════════════════
+  # Failure Cases (산업 다양!)
+  # ═══════════════════════════════════
+  
+  failure_cases:
+    
+    - id: "google_plus_social"
+      company: "Google+"
+      industry: "소셜 네트워크"
+      
+      failure_metrics:
+        investment: "수억 달러"
+        peak_users: "~1억 (활성 10%)"
+        shutdown: "2019"
+      
+      failure_breakdown:
+        competitor: "Facebook (10억 사용자)"
+        problem: "네트워크 효과 못 따라잡음"
+        
+        why_platform_failed:
+          - "Facebook 선점 (6년 선발)"
+          - "친구들이 이미 Facebook에"
+          - "전환 이유 없음"
+        
+        google_attempts:
+          - "Gmail 강제 가입 → 반발"
+          - "YouTube 통합 → 실패"
+          - "포기"
+      
+      transferable_warnings:  # 🔥
+        - to_platform: "선점 효과 = 극복 거의 불가"
+        - to_network: "네트워크 늦으면 게임 끝"
+        - universal: "2등 플랫폼은 매우 어려움"
+    
+    - id: "friendster_social"
+      company: "Friendster"
+      industry: "소셜 네트워크"
+      
+      failure_breakdown:
+        peak: "SNS 선구자 (2002)"
+        overtaken: "MySpace → Facebook"
+        
+        why_failed:
+          - "기술 부채 (느린 로딩)"
+          - "경영진 교체 혼란"
+          - "경쟁 대응 실패"
+      
+      transferable_warnings:
+        - to_tech: "기술 부채 = 경쟁력 상실"
+        - to_platform: "속도가 생명"
+        - universal: "선발도 망할 수 있음"
+    
+    - id: "korean_o2o_various"
+      company: "배달통, 부릉, 기타 O2O"
+      industry: "다양 (배달, 퀵서비스...)"
+      region: "한국"
+      
+      failure_pattern:
+        outcome: "대부분 폐업 또는 인수 합병"
+        winner: "배달의민족, 쿠팡"
+        
+        why_failed:
+          - "자본력 부족"
+          - "마케팅 전쟁 못 버팀"
+          - "배민 선점 효과"
+      
+      transferable_warnings:
+        - to_korea: "자본력 = 생존 (마케팅 소진)"
+        - to_platform: "1등 자리 거의 독식"
+        - universal: "자본 없으면 선점 못 이김"
+    
+    - id: "vine_shortform"
+      company: "Vine"
+      industry: "숏폼 비디오"
+      
+      failure_breakdown:
+        peak: "2013 인기"
+        shutdown: "2017 (Twitter)"
+        overtaken: "TikTok, Instagram Reels"
+        
+        why_failed:
+          - "크리에이터 이탈 (수익화 부족)"
+          - "플랫폼 투자 부족"
+          - "경쟁 (Instagram) 대응 실패"
+      
+      transferable_warnings:
+        - to_platform: "공급자 수익화 필수"
+        - to_content: "크리에이터 = 자산, 이탈 = 죽음"
+        - universal: "Ecosystem 붕괴 = 플랫폼 붕괴"
+    
+    - id: "meerkat_livestream"
+      company: "Meerkat"
+      industry: "라이브 스트리밍"
+      
+      failure_breakdown:
+        launch: "2015 SXSW 인기"
+        death: "2016 서비스 종료"
+        killed_by: "Periscope (Twitter), Facebook Live"
+        
+        why_failed:
+          - "Twitter가 API 차단"
+          - "대형 플랫폼 Envelopment"
+          - "독립 플랫폼 생존 불가"
+      
+      transferable_warnings:
+        - to_platform: "대형 플랫폼 Envelopment 위험"
+        - to_dependency: "타사 API 의존 = 리스크"
+        - universal: "독립 vs 플랫폼 내 서비스 선택"
+  
+  # ═══════════════════════════════════
+  # Cross-Industry Contrast
+  # ═══════════════════════════════════
+  
+  universal_platform_patterns:
+    
+    what_makes_platform_work:
+      
+      network_effect_criticalmass:
+        
+        success_across_industries:
+          - "배민: 음식점 30만 (공급 임계)"
+          - "Airbnb: 리뷰 축적 (신뢰 임계)"
+          - "LinkedIn: 전문가 5억 (네트워크)"
+        
+        failure_across_industries:
+          - "Google+: 사용자 부족"
+          - "O2O들: 밀도 못 채움"
+        
+        universal_insight: |
+          임계 질량 필수:
+            - 공급 X명, 수요 Y명
+            - X × Y > 임계값
+            - 산업마다 다르지만 필요성은 같음
+      
+      chicken_egg_solution:
+        
+        patterns_across_industries:
+          - "배민: 공급 먼저 (음식점)"
+          - "Airbnb: 공급 먼저 (사진 작가)"
+          - "Uber: 수요 먼저 (승객 보조금)"
+        
+        universal_rule: |
+          산업별로 다름:
+            - 공급 먼저 or 수요 먼저
+            - 하지만 선택은 필수
+            - 양쪽 동시는 불가능
+      
+      trust_mechanism:
+        
+        solutions_across_industries:
+          - "Airbnb: 리뷰 시스템"
+          - "배민: 리뷰 + 배민커넥트"
+          - "당근마켓: 동네 + 매너온도"
+        
+        universal: "신뢰 = 플랫폼 생명"
+    
+    what_kills_platform:
+      
+      late_mover_disadvantage:
+        evidence:
+          - "Google+: Facebook 6년 늦음 → 실패"
+          - "O2O들: 배민 5년 늦음 → 실패"
+        
+        universal: |
+          선점 효과 극복 거의 불가능
+          예외: 10x 우월성 (TikTok vs Instagram)
+      
+      ecosystem_collapse:
+        evidence:
+          - "Vine: 크리에이터 이탈"
+          - "Friendster: 사용자 이탈 (느림)"
+        
+        universal: "한쪽 이탈 → 다른쪽 이탈 → 붕괴"
+      
+      platform_envelopment:
+        evidence:
+          - "Meerkat: Twitter가 차단"
+          - "한국 O2O: 배민/카카오 무료화"
+        
+        universal: "대형 플랫폼이 무료 제공 = 경쟁 불가"
+  
+  # ═══════════════════════════════════
+  # Steve Application Guide
+  # ═══════════════════════════════════
+  
+  steve_application_guide:
+    
+    cross_industry_validation:
+      
+      question_1_network_effect:
+        ask: "어느 산업에서든: 네트워크 효과 작동하나?"
+        
+        test_across_industries:
+          - "음식: 음식점 많을수록 소비자 가치 증가 ✅"
+          - "숙박: 숙소 많을수록 선택권 증가 ✅"
+          - "의료: 의사 많을수록? → Yes, 하지만 규제"
+          - "제조 B2B: 공급사 많을수록? → Yes"
+        
+        universal_check:
+          - "공급 증가 → 수요 가치 증가?"
+          - "수요 증가 → 공급 가치 증가?"
+          - "둘 다 Yes = 플랫폼 가능"
+      
+      question_2_chicken_egg:
+        ask: "공급 먼저? 수요 먼저?"
+        
+        patterns_observed:
+          supply_first:
+            - "배민, Airbnb (공급)"
+            - "Why? 공급이 차별화 (콘텐츠)"
+          
+          demand_first:
+            - "Uber (승객 보조금)"
+            - "Why? 수요가 공급 끌어당김"
+        
+        decision_rule: |
+          어느 쪽이 희소한가?
+          어느 쪽이 더 확보하기 어려운가?
+          → 그쪽 먼저
+      
+      question_3_trust:
+        ask: "신뢰 문제를 어떻게 해결?"
+        
+        cross_industry_solutions:
+          - "리뷰 시스템 (Airbnb, 배민)"
+          - "인증 (LinkedIn)"
+          - "지역 (당근마켓)"
+          - "보험/보증 (플랫폼 제공)"
+        
+        choose_by_industry:
+          high_risk: "숙박, 교통 → 리뷰 + 보험"
+          low_risk: "중고거래 → 지역만도 OK"
+    
+    red_flags_any_industry:
+      - "선발 플랫폼 있고 강력함 (배민, Facebook)"
+      - "네트워크 효과 임계 못 채울 것 같음"
+      - "신뢰 문제 해결 방법 없음"
+      - "대형 플랫폼 Envelopment 위험"
+    
+    success_if:
+      - "선점 or 10x 차별화"
+      - "네트워크 임계 도달 가능"
+      - "신뢰 메커니즘 설계"
+      - "Envelopment 방어 (전문성 or 니치)"
+
+# [SECTION MARKER: 계속 추가]
+# Franchise, Margin Compression, Manufacturing OEM...
+
