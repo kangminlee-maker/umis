@@ -47,10 +47,10 @@ class EstimatorRAG:
     5-Phase 아키텍처 (v7.7.0):
     ---------------------------------
     - Phase 0: Literal (프로젝트 데이터, <0.1초, confidence 1.0)
-    - Phase 1: Direct RAG (Tier 1 학습 규칙, <0.5초, 0.95+)
+    - Phase 1: Direct RAG (학습 규칙, <0.5초, 0.95+)
     - Phase 2: Validator (확정 데이터 검색, <1초, 1.0) ⭐ 85% 처리!
-    - Phase 3: Guestimation (Tier 2 추정, 3-8초, 0.80+)
-    - Phase 4: Fermi Decomposition (Tier 3 분해, 10-30초) 💎
+    - Phase 3: Guestimation (추정, 3-8초, 0.80+)
+    - Phase 4: Fermi Decomposition (분해, 10-30초) 💎
         └─ Step 1-4: 스캔 → 모형 생성 → 체크 → 실행
     
     협업 (모든 Agent):
@@ -65,11 +65,11 @@ class EstimatorRAG:
         >>> from umis_rag.agents.estimator import EstimatorRAG
         >>> estimator = EstimatorRAG()
         
-        >>> # Tier 1/2 (대부분 - 증거 기반)
+        >>> # Phase 1-3 (대부분 - 증거 기반)
         >>> result = estimator.estimate("B2B SaaS Churn Rate는?", domain="B2B_SaaS")
-        >>> print(f"{result.value} (Tier {result.tier})")
+        >>> print(f"{result.value} (Phase {result.phase})")
         
-        >>> # Tier 3 (일반 Fermi 분해)
+        >>> # Phase 4 (Fermi 분해)
         >>> result = estimator.estimate("서울 음식점 수는?")
         >>> # → Fermi 분해: 인구 × 음식점 밀도
         
@@ -117,10 +117,10 @@ class EstimatorRAG:
         
         5-Phase 프로세스 (v7.7.0):
         - Phase 0: Literal (프로젝트 데이터, 즉시, confidence 1.0)
-        - Phase 1: Direct RAG (Tier 1 학습, <0.5초, 0.95+)
+        - Phase 1: Direct RAG (학습, <0.5초, 0.95+)
         - Phase 2: Validator (확정 데이터, <1초, 1.0) ⭐ 85% 처리!
-        - Phase 3: Guestimation (Tier 2 추정, 3-8초, 0.80+)
-        - Phase 4: Fermi Decomposition (Tier 3 분해, 10-30초) 💎
+        - Phase 3: Guestimation (추정, 3-8초, 0.80+)
+        - Phase 4: Fermi Decomposition (분해, 10-30초) 💎
             └─ Step 1: 초기 스캔
             └─ Step 2: 모형 생성
             └─ Step 3: 실행 가능성 체크
@@ -146,15 +146,15 @@ class EstimatorRAG:
         Example:
             >>> estimator = EstimatorRAG()
             
-            >>> # Tier 1/2 (증거 기반 추정)
+            >>> # Phase 1-3 (증거 기반 추정)
             >>> result = estimator.estimate(
             ...     "B2B SaaS Churn Rate는?",
             ...     domain="B2B_SaaS",
             ...     region="한국"
             ... )
-            >>> print(f"값: {result.value}%, Tier: {result.tier}")
+            >>> print(f"값: {result.value}%, Phase: {result.phase}")
             
-            >>> # Tier 3 (Fermi 분해)
+            >>> # Phase 4 (Fermi 분해)
             >>> result = estimator.estimate("서울 음식점 수는?")
             >>> # → Fermi: 인구 × 음식점 밀도
             >>> # → 재귀 추정으로 하위 변수 채우기
@@ -290,7 +290,7 @@ class EstimatorRAG:
             ... )
             >>> # 즉시 사용 가능!
             >>> result = estimator.estimate("우리 회사 직원 수는?")
-            >>> # → Tier 1에서 즉시 리턴 (<0.5초)
+            >>> # → Phase 1에서 즉시 리턴 (<0.5초)
         """
         self._ensure_tier2_initialized()
         
@@ -400,7 +400,7 @@ class EstimatorRAG:
                             question=question,
                             value=value,
                             confidence=1.0,
-                            tier=0,
+                            phase=0,
                             context=context,
                             reasoning=f"프로젝트 확정 데이터: {key}",
                             reasoning_detail={
@@ -428,7 +428,7 @@ class EstimatorRAG:
             context: 맥락
         
         Returns:
-            EstimationResult(tier=1.5) or None
+            EstimationResult(phase=2) or None
         """
         import time
         start_time = time.time()
@@ -450,7 +450,7 @@ class EstimatorRAG:
                 value=validator_result['value'],
                 unit=validator_result.get('unit', ''),
                 confidence=1.0,
-                tier=1.5,
+                phase=2,
                 context=context,
                 reasoning=f"확정 데이터 (Validator): {validator_result['source']}",
                 reasoning_detail={
@@ -462,7 +462,7 @@ class EstimatorRAG:
                     'why_this_method': 'Validator가 공식 통계/벤치마크에서 확정 데이터 발견'
                 },
                 logic_steps=[
-                    f"1. Tier 1 학습 규칙 없음",
+                    f"1. Phase 1 학습 규칙 없음",
                     f"2. Validator 검색 시작",
                     f"3. 출처: {validator_result['source']}",
                     f"4. 값: {validator_result['value']}",
@@ -474,8 +474,8 @@ class EstimatorRAG:
         return None
     
     def _ensure_tier2_initialized(self):
-        """Tier 2 Lazy 초기화"""
-        if self.tier2 is not None:
+        """Phase 3 Lazy 초기화 (호환성 유지)"""
+        if self.phase3 is not None:
             return
         
         # Learning Writer 초기화
