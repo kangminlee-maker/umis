@@ -154,7 +154,7 @@ class Phase1DirectRAG:
         # EstimationResult 생성
         result = EstimationResult(
             question=question,
-            tier=1,
+            phase=1,
             
             value=adjusted_value or best_rule.value,
             value_range=best_rule.value_range,
