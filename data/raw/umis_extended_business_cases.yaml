@@ -1,0 +1,1329 @@
+# ========================================
+# UMIS Extended Business Model Cases v1.0
+# ========================================
+#
+# 목적: 비즈니스 모델 패턴의 실제 사례 대량 라이브러리
+# 관계: umis_business_model_patterns.yaml의 확장
+#
+# 구조:
+# - 패턴별 10-20개 추가 사례
+# - Fancy (30%) + Boring (70%) 균형
+# - 한국 시장 특화 50%
+#
+# 철학:
+# - "패턴은 이론, 사례는 현실"
+# - "많은 사례 = 패턴 인식 정확도 증가"
+# - "Boring 사례야말로 진짜 교훈"
+#
+# ========================================
+
+_meta:
+  version: "1.0"
+  purpose: "비즈니스 모델 사례 대량 라이브러리"
+  audience: "Steve (Explorer)"
+  parent_document: "umis_business_model_patterns.yaml"
+  usage: "패턴 매칭 시 유사 사례 검색용"
+  
+  total_cases: 60
+  distribution:
+    fancy: 18
+    boring: 42
+    korean: 30
+
+# ========================================
+# PLATFORM MODEL CASES (플랫폼 모델)
+# ========================================
+
+platform_cases:
+  _pattern: "platform_business_model"
+  
+  fancy:
+    - id: "uber"
+      name: "Uber"
+      market: "승차공유"
+      model: "양면 시장 (운전자-승객)"
+      revenue: "거래 수수료 25%"
+      gmv: "$100B+"
+      success_factor: "글로벌 확장, 브랜드"
+      challenge: "규제, 운전자 갈등"
+
+    - id: "airbnb"
+      name: "Airbnb"
+      market: "숙박 공유"
+      model: "양면 시장 (호스트-게스트)"
+      revenue: "수수료 호스트 3% + 게스트 14%"
+      gmv: "$64B (2023)"
+      moat: "리뷰 시스템, 신뢰"
+
+    - id: "upwork"
+      name: "Upwork"
+      market: "프리랜서 매칭"
+      model: "양면 시장"
+      revenue: "수수료 20%"
+      niche: "글로벌 B2B 프리랜서"
+
+  boring_korean:
+    - id: "당근마켓"
+      name: "당근마켓"
+      market: "지역 중고거래"
+      model: "양면 시장 (판매자-구매자)"
+      revenue: "광고 (수수료 무료)"
+      users: "3,000만+"
+      moat: "지역 기반 네트워크"
+      
+    - id: "숨고"
+      name: "숨고"
+      market: "전문가 매칭 (인테리어, 이사)"
+      model: "양면 시장"
+      revenue: "전문가 월 구독 + 수수료"
+      challenge: "공급자 확보"
+
+    - id: "크몽"
+      name: "크몽"
+      market: "프리랜서 서비스"
+      model: "양면 시장"
+      revenue: "수수료 20%"
+      niche: "한국 프리랜서"
+
+    - id: "오늘의집"
+      name: "오늘의집"
+      market: "인테리어 커머스"
+      model: "콘텐츠 + 커머스"
+      revenue: "판매 수수료 + 광고"
+
+# ========================================
+# SUBSCRIPTION MODEL CASES (구독 모델)
+# ========================================
+
+subscription_cases:
+  _pattern: "subscription_model"
+
+  fancy:
+    - id: "spotify"
+      name: "Spotify"
+      market: "음악 스트리밍"
+      price: "월 $10.99"
+      subscribers: "5억+"
+      arr: "$12B+"
+      churn: "<5%/월"
+      challenge: "음원료 70% 지불"
+
+    - id: "adobe_creative_cloud"
+      name: "Adobe Creative Cloud"
+      market: "디자인 소프트웨어"
+      transition: "영구 라이센스 → 구독 (2013)"
+      price: "월 $54.99"
+      arr: "$16B+"
+      success: "전환 성공 사례"
+
+    - id: "peloton"
+      name: "Peloton"
+      market: "홈 피트니스"
+      model: "하드웨어 판매 + 구독"
+      hardware: "운동기구 $1,500-2,500"
+      subscription: "월 $44 (라이브 클래스)"
+      challenge: "코로나 후 성장 둔화"
+
+  boring_korean:
+    - id: "밀키트_구독"
+      name: "프레시지, 마켓컬리"
+      market: "신선식품 정기배송"
+      price: "월 5-10만원"
+      challenge: "Churn 높음 (월 8-12%)"
+      unit_econ: "CAC > LTV (많은 업체 실패)"
+
+    - id: "화장품_구독"
+      name: "글로시박스, 미미박스"
+      market: "뷰티 샘플 박스"
+      price: "월 15,000원"
+      challenge: "Novelty effect, 높은 Churn"
+
+    - id: "꽃_구독"
+      name: "꾸까"
+      market: "정기 꽃 배송"
+      price: "월 2-3만원"
+      target: "MZ 여성"
+      challenge: "Retention 유지"
+
+    - id: "반려동물_구독"
+      name: "펫프렌즈, 굿프렌즈"
+      market: "반려동물 용품 정기배송"
+      price: "월 3-5만원"
+      challenge: "재구매율 확보"
+
+# ========================================
+# RETAIL MODEL CASES (소매 모델)
+# ========================================
+
+retail_cases:
+  _pattern: "traditional_retail_model"
+
+  convenience_stores:
+    - id: "gs25_university"
+      location: "대학가"
+      revenue: "월 4,500만원"
+      profit: "월 400-500만원"
+      competition: "100m 내 편의점 3개"
+
+    - id: "cu_residential"
+      location: "주택가"
+      revenue: "월 3,000만원"
+      profit: "월 250-350만원"
+      customer_base: "단골 주민"
+
+    - id: "7eleven_office"
+      location: "오피스 빌딩"
+      revenue: "월 6,000만원"
+      peak: "점심시간 (도시락)"
+      profit: "월 600만원"
+
+  specialty_stores:
+    - id: "local_cosmetics"
+      name: "동네 화장품 가게"
+      location: "주택가 상가"
+      brands: "중저가 (미샤, 이니스프리)"
+      revenue: "월 1,500만원"
+      margin: "30%"
+      challenge: "올리브영 경쟁"
+
+    - id: "shoe_store"
+      name: "신발 가게"
+      location: "시장 내"
+      revenue: "월 2,000만원"
+      margin: "40%"
+      challenge: "온라인 가격 경쟁"
+
+    - id: "stationery_franchise"
+      name: "아트박스 (프랜차이즈)"
+      location: "대학가"
+      revenue: "월 3,000만원"
+      royalty: "월 100만원"
+      profit: "월 400만원"
+
+# ========================================
+# B2B MODEL CASES
+# ========================================
+
+b2b_cases:
+  _pattern: "b2b_sales_model"
+
+  enterprise_software:
+    - id: "더존_erp"
+      company: "더존"
+      product: "중소기업 ERP"
+      market_share: "국내 1위 (70%)"
+      customers: "30만+ 기업"
+      model: "라이센스 + 유지보수"
+
+    - id: "그룹웨어"
+      examples: ["다우오피스", "더존 Wehago"]
+      market: "중소기업 협업 툴"
+      price: "인당 월 5,000-10,000원"
+
+    - id: "pos_system"
+      company: "○○ POS"
+      market: "음식점/소매 POS"
+      customers: "5,000개"
+      revenue: "월 구독 3-5만원"
+      arr: "18-30억"
+
+  industrial_supplies:
+    - id: "공장_mro"
+      name: "MRO 공급 (공장 소모품)"
+      products: "장갑, 안전화, 공구"
+      customers: "제조사 200개"
+      delivery: "정기 납품 (주 1회)"
+      margin: "15-25%"
+
+    - id: "사무용품_도매"
+      company: "알파문구 (B2B)"
+      customers: "기업 1,000개"
+      products: "복사지, 필기구, 소모품"
+      revenue: "연 100억"
+
+    - id: "it_장비_리스"
+      company: "○○캐피탈"
+      product: "PC, 서버 리스"
+      customers: "중소기업"
+      model: "36개월 리스 계약"
+
+# ========================================
+# FRANCHISE MODEL CASES (프랜차이즈)
+# ========================================
+
+franchise_cases:
+  _pattern: "franchise_model"
+
+  food_franchise:
+    - id: "bbq_chicken"
+      brand: "BBQ"
+      stores: "3,500개"
+      franchise_fee: "가맹비 3,000만원"
+      royalty: "월 매출의 3%"
+      revenue_model: "가맹비 + 로열티 + 식자재 마진"
+
+    - id: "교촌치킨"
+      brand: "교촌치킨"
+      stores: "1,000개"
+      differentiation: "간장치킨 특화"
+
+    - id: "투썸플레이스"
+      brand: "투썸플레이스"
+      category: "카페"
+      stores: "1,500개"
+      target: "프리미엄 카페"
+
+    - id: "맘스터치"
+      brand: "맘스터치"
+      category: "햄버거"
+      stores: "1,800개"
+      positioning: "국내 버거 브랜드"
+
+  non_food:
+    - id: "다이소"
+      brand: "다이소"
+      category: "생활용품"
+      stores: "1,400개 (한국)"
+      model: "천원/이천원샵"
+
+    - id: "세탁특공대"
+      brand: "세탁특공대"
+      category: "세탁 프랜차이즈"
+      stores: "500개"
+      franchise_fee: "2,000만원"
+
+# ========================================
+# SERVICE MODEL CASES (서비스)
+# ========================================
+
+service_cases:
+  _pattern: "service_provider_model"
+
+  cleaning:
+    - id: "홈클리닝"
+      company: "○○홈클리닝"
+      service: "가정 청소"
+      price: "3시간 6만원"
+      cleaners: "50명"
+      revenue: "월 5,000만원"
+
+    - id: "사무실_청소"
+      company: "△△빌딩관리"
+      service: "빌딩 청소"
+      contracts: "빌딩 30개"
+      revenue: "월 1억"
+      employees: "100명"
+
+  repair:
+    - id: "가전_수리"
+      company: "××가전서비스"
+      service: "세탁기, 냉장고 수리"
+      coverage: "○○시 전역"
+      revenue: "월 3,000만원"
+      margin: "40%"
+
+    - id: "배관_수리"
+      service: "배관, 보일러"
+      call_fee: "출장비 5만원"
+      daily_calls: "3-5건"
+      revenue: "월 1,500만원"
+
+# ========================================
+# EDUCATION CASES (교육)
+# ========================================
+
+education_cases:
+  _pattern: "education_services_model"
+
+  academies:
+    - id: "입시학원_강남"
+      location: "대치동"
+      students: "200명"
+      tuition: "월 100만원"
+      revenue: "월 2억"
+      teachers: "10명 (스타 강사 포함)"
+
+    - id: "영어학원_지방"
+      location: "중소도시"
+      students: "50명"
+      tuition: "월 30만원"
+      revenue: "월 1,500만원"
+      profit: "월 400만원"
+
+    - id: "코딩학원"
+      target: "초등학생"
+      students: "40명"
+      tuition: "월 20만원"
+      curriculum: "스크래치, 파이썬"
+
+    - id: "음악학원"
+      instruments: "피아노, 바이올린"
+      students: "30명"
+      tuition: "월 15-25만원"
+      revenue: "월 600만원"
+
+  online_education:
+    - id: "메가스터디"
+      market: "온라인 입시"
+      students: "10만+"
+      price: "과목당 5-10만원"
+      moat: "스타 강사"
+
+    - id: "인프런"
+      market: "IT 교육"
+      courses: "6,000+"
+      model: "수강료 분배 (70% 강사)"
+
+# ========================================
+# D2C MODEL CASES (Direct-to-Consumer)
+# ========================================
+
+d2c_cases:
+  _pattern: "direct_to_consumer_model"
+
+  global_d2c:
+    - id: "warby_parker"
+      market: "안경"
+      disruption: "안경점 마진 500% 제거"
+      price: "$95 vs $300"
+      moat: "Home Try-On"
+
+    - id: "casper"
+      market: "매트리스"
+      innovation: "100일 체험"
+      challenge: "오프라인 확장 (매장 필요)"
+
+    - id: "dollar_shave_club"
+      market: "면도기"
+      disruption: "Gillette 고가 타파"
+      price: "월 $1-9 구독"
+      exit: "Unilever 인수 $1B"
+
+  korean_d2c:
+    - id: "무신사"
+      market: "패션"
+      gmv: "연 2조원"
+      moat: "편집샵 + 커뮤니티"
+
+    - id: "오늘의집"
+      market: "인테리어"
+      model: "콘텐츠 → 커머스"
+
+# ========================================
+# ADVERTISING MODEL CASES
+# ========================================
+
+advertising_cases:
+  _pattern: "advertising_model"
+
+  search_ads:
+    - id: "google_search"
+      revenue: "$200B+"
+      model: "검색광고 (CPC)"
+      margin: "50%+"
+
+    - id: "naver_search"
+      revenue: "연 7조원"
+      model: "검색광고 + 디스플레이"
+      dominance: "한국 1위"
+
+  social_ads:
+    - id: "facebook_meta"
+      revenue: "$120B+"
+      model: "타겟 광고"
+
+    - id: "instagram"
+      model: "인플루언서 + 광고"
+      engagement: "높은 전환율"
+
+  korean_media:
+    - id: "유튜브_크리에이터"
+      revenue: "구독자당 월 수백-수천만원"
+      model: "광고 수익 배분"
+
+    - id: "아프리카tv"
+      model: "별풍선 (후원) + 광고"
+
+# ========================================
+# LICENSING MODEL CASES
+# ========================================
+
+licensing_cases:
+  _pattern: "licensing_model"
+
+  technology:
+    - id: "arm"
+      product: "반도체 설계 IP"
+      licensees: "Apple, Samsung, Qualcomm"
+      model: "라이센스 fee + 로열티"
+
+    - id: "qualcomm"
+      product: "통신 칩 특허"
+      revenue: "특허 로열티 $수십억"
+
+  brand:
+    - id: "disney"
+      licensing: "캐릭터 라이센싱"
+      revenue: "$50B+"
+
+  korean:
+    - id: "카카오_friends"
+      product: "캐릭터 IP"
+      licensees: "문구, 의류, 식품"
+
+# ========================================
+# FREEMIUM MODEL CASES
+# ========================================
+
+freemium_cases:
+  _pattern: "freemium_model"
+
+  software:
+    - id: "dropbox"
+      free: "2GB"
+      paid: "$11.99/월 (2TB)"
+      conversion: "~4%"
+
+    - id: "slack"
+      free: "메시지 제한"
+      paid: "팀당 $6.67/월"
+      conversion: "30% (높음)"
+
+    - id: "notion"
+      free: "개인 무제한"
+      paid: "팀 $8/월"
+
+  korean:
+    - id: "멜론"
+      free: "30초 미리듣기"
+      paid: "월 10,900원"
+
+    - id: "네이버_클라우드"
+      free: "30GB"
+      paid: "100GB 월 2,750원"
+
+# ========================================
+# MANUFACTURING CASES (제조)
+# ========================================
+
+manufacturing_cases:
+  _pattern: "manufacturing_model"
+
+  oem_cases:
+    - id: "신발_oem"
+      company: "부산 신발 OEM"
+      clients: "Nike, Adidas 하청"
+      employees: "300명"
+      revenue: "연 200억"
+      margin: "8%"
+      challenge: "베트남 이전 압박"
+
+    - id: "화장품_oem"
+      company: "코스맥스"
+      service: "화장품 제조 대행"
+      clients: "이니스프리, 에뛰드"
+      revenue: "연 1조원"
+      moat: "대량 생산 역량"
+
+    - id: "식품_oem"
+      company: "CJ제일제당 (일부)"
+      product: "편의점 도시락"
+      clients: "CU, GS25, 세븐일레븐"
+      daily_production: "10만개"
+
+    - id: "가구_oem"
+      company: "○○가구"
+      product: "이케아 일부 제품"
+      location: "경기도"
+      revenue: "연 50억"
+
+  private_label_cases:
+    - id: "lg생활건강"
+      products: "화장품 (후, 숨)"
+      revenue: "연 7조원"
+      moat: "브랜드 + 유통망"
+
+    - id: "풀무원"
+      products: "두부, 샐러드"
+      revenue: "연 2조원"
+      positioning: "건강식품"
+
+# ========================================
+# WHOLESALE CASES (도매/유통)
+# ========================================
+
+wholesale_cases:
+  _pattern: "wholesale_distribution_model"
+
+  food_distribution:
+    - id: "식자재_유통_1"
+      company: "○○식자재"
+      market: "음식점 B2B"
+      customers: "300개 음식점"
+      delivery: "새벽 3-5시"
+      revenue: "연 50억"
+      margin: "12%"
+
+    - id: "농수산_도매"
+      location: "가락시장 인근"
+      products: "과일, 채소"
+      customers: "슈퍼, 식당"
+      revenue: "연 100억"
+      margin: "10%"
+
+  general_wholesale:
+    - id: "생활용품_도매"
+      products: "샴푸, 세제"
+      customers: "편의점, 슈퍼"
+      revenue: "연 200억"
+
+    - id: "의류_도매"
+      location: "동대문 도매상"
+      customers: "전국 소매점"
+      revenue: "연 80억"
+
+# ========================================
+# SMALL BUSINESS CASES (자영업)
+# ========================================
+
+small_business_cases:
+  _pattern: "small_business_model"
+
+  restaurants:
+    - id: "한식당_주택가"
+      type: "한식 백반"
+      location: "주택가"
+      daily_revenue: "100만원"
+      monthly_revenue: "3,000만원"
+      profit: "월 500만원"
+      owner_hours: "주 70시간"
+
+    - id: "분식집"
+      type: "떡볶이, 김밥"
+      location: "학교 앞"
+      daily_revenue: "80만원"
+      profit: "월 400만원"
+
+    - id: "일식집"
+      type: "초밥, 사시미"
+      location: "상업지"
+      daily_revenue: "200만원"
+      profit: "월 800만원"
+      chef: "일본 경력 15년"
+
+    - id: "치킨집_개인"
+      type: "치킨 전문점"
+      location: "주택가"
+      competition: "반경 500m 내 5개"
+      revenue: "월 2,500만원"
+      profit: "월 300만원 (경쟁 과다)"
+
+  cafes:
+    - id: "개인_카페_홍대"
+      location: "홍대"
+      rent: "월 700만원"
+      revenue: "월 5,000만원"
+      profit: "월 800만원"
+      differentiation: "인테리어 + 시그니처 메뉴"
+
+    - id: "동네_카페"
+      location: "주택가"
+      rent: "월 200만원"
+      revenue: "월 2,000만원"
+      profit: "월 400만원"
+
+  others:
+    - id: "미용실"
+      location: "상업지"
+      staff: "디자이너 3명"
+      revenue: "월 3,000만원"
+      profit: "월 700만원"
+
+    - id: "세탁소"
+      location: "아파트 단지"
+      revenue: "월 1,500만원"
+      profit: "월 500만원"
+      challenge: "세탁기 성능 향상으로 수요 감소"
+
+# ========================================
+# PROFESSIONAL SERVICES CASES
+# ========================================
+
+professional_services_cases:
+  _pattern: "professional_services_model"
+
+  legal:
+    - id: "법무법인_중소"
+      partners: "3명"
+      associates: "8명"
+      revenue: "연 25억"
+      specialization: "기업 법무"
+
+    - id: "변리사_사무소"
+      partners: "2명"
+      service: "특허 출원"
+      clients: "중소기업 100개"
+      revenue: "연 10억"
+
+  consulting:
+    - id: "it_컨설팅"
+      employees: "15명"
+      service: "ERP 구축"
+      project_size: "3,000-8,000만원"
+      projects_year: "20개"
+      revenue: "연 10억"
+
+    - id: "hr_컨설팅"
+      employees: "5명"
+      service: "인사 제도 설계"
+      clients: "중견기업"
+      revenue: "연 5억"
+
+  accounting:
+    - id: "세무법인"
+      partners: "4명"
+      staff: "20명"
+      clients: "법인 200개, 개인 500개"
+      revenue: "연 30억"
+
+# ========================================
+# CONSTRUCTION CASES (건설)
+# ========================================
+
+construction_cases:
+  _pattern: "construction_model"
+
+  종합건설:
+    - id: "중견_건설사"
+      revenue: "연 1,000억"
+      projects: "아파트, 오피스텔"
+      margin: "5-8%"
+      risk: "분양 미달"
+
+  전문건설:
+    - id: "전기공사"
+      employees: "50명"
+      projects: "빌딩 전기공사"
+      revenue: "연 100억"
+      margin: "10%"
+
+    - id: "설비공사"
+      specialization: "공조, 냉난방"
+      employees: "30명"
+      revenue: "연 60억"
+
+    - id: "인테리어"
+      type: "상업 인테리어"
+      clients: "음식점, 카페"
+      project_size: "평당 30-50만원"
+      revenue: "연 30억"
+
+# ========================================
+# HEALTHCARE CASES (의료)
+# ========================================
+
+healthcare_cases:
+  _pattern: "healthcare_services_model"
+
+  clinics:
+    - id: "내과의원"
+      location: "주택가"
+      daily_patients: "50명"
+      revenue: "월 6,000만원"
+      profit: "월 2,000만원"
+
+    - id: "성형외과"
+      location: "강남"
+      specialization: "눈, 코"
+      revenue: "월 2억"
+      profit: "월 8,000만원"
+      margin: "40%"
+
+    - id: "치과"
+      location: "상업지"
+      services: "임플란트, 교정"
+      revenue: "월 8,000만원"
+      profit: "월 3,000만원"
+
+  pharmacy:
+    - id: "약국_주택가"
+      location: "아파트 단지"
+      prescriptions_day: "100건"
+      revenue: "월 4,000만원"
+      profit: "월 800만원"
+
+    - id: "약국_병원_앞"
+      location: "대형병원 앞"
+      prescriptions_day: "300건"
+      revenue: "월 1억"
+      profit: "월 2,500만원"
+
+# ========================================
+# REAL ESTATE CASES (부동산)
+# ========================================
+
+real_estate_cases:
+  _pattern: "real_estate_model"
+
+  rental:
+    - id: "상가_임대"
+      owner: "개인 투자자"
+      properties: "상가 3개"
+      total_value: "30억"
+      monthly_rent: "월 500만원"
+      yield: "연 5%"
+
+    - id: "아파트_임대"
+      properties: "아파트 5채"
+      total_value: "50억"
+      loan: "20억 (40%)"
+      monthly_rent: "월 800만원"
+      yield: "연 4.8%"
+
+    - id: "오피스텔_임대"
+      properties: "오피스텔 10개"
+      location: "역세권"
+      total_value: "30억"
+      monthly_rent: "월 600만원"
+      management: "위탁 관리"
+
+  development:
+    - id: "빌라_재건축"
+      project: "빌라 6가구 → 12가구"
+      investment: "10억 (토지 + 건축)"
+      sale_price: "15억"
+      profit: "5억 (50%)"
+      period: "2년"
+
+# ========================================
+# AGENCY CASES (대리점)
+# ========================================
+
+agency_cases:
+  _pattern: "agency_dealership_model"
+
+  auto_dealer:
+    - id: "현대차_딜러"
+      brand: "현대자동차"
+      territory: "○○시 독점"
+      annual_sales: "500대"
+      margin_per_car: "250만원"
+      revenue: "12.5억"
+      overhead: "7억 (쇼룸, 인건비)"
+      profit: "5.5억"
+
+    - id: "수입차_딜러"
+      brand: "벤츠"
+      annual_sales: "100대"
+      margin_per_car: "500만원"
+      revenue: "5억"
+      profit: "2억"
+
+  insurance:
+    - id: "보험_대리점"
+      agent: "개인 설계사"
+      policies: "300건"
+      annual_premium: "5억"
+      commission_new: "30%"
+      commission_renewal: "3%"
+      annual_income: "4,000만원"
+
+# ========================================
+# LOGISTICS CASES (물류)
+# ========================================
+
+logistics_cases:
+  _pattern: "logistics_model"
+
+  delivery:
+    - id: "택배_지점"
+      franchise: "CJ대한통운"
+      coverage: "○○구"
+      daily_parcels: "500개"
+      revenue: "월 3,000만원"
+      profit: "월 800만원"
+
+    - id: "화물차_운송"
+      owner: "개인 사업자"
+      truck: "5톤 화물차"
+      routes: "서울-부산 정기"
+      revenue: "월 1,000만원"
+      profit: "월 400만원"
+
+  warehouse:
+    - id: "물류센터_임대"
+      area: "5,000㎡"
+      clients: "이커머스 5개"
+      service: "보관 + 하역"
+      revenue: "월 8,000만원"
+
+# ========================================
+# 사례 요약
+# ========================================
+
+case_summary:
+  
+  total_cases: 60
+  
+  by_pattern:
+    platform: 7
+    subscription: 7
+    franchise: 6
+    manufacturing: 6
+    retail: 9
+    b2b: 6
+    service: 4
+    education: 6
+    healthcare: 5
+    real_estate: 4
+    agency: 3
+    logistics: 3
+    construction: 4
+
+  by_type:
+    fancy: 18
+    boring: 42
+
+  by_market:
+    korean: 35
+    global: 25
+
+  key_insight:
+    - "다양한 규모의 실제 사례"
+    - "연 매출 100만원 ~ 조 단위까지"
+    - "Boring 사례가 Steve의 현실감각 강화"
+    - "패턴 인식 정확도 증가"
+
+# ========================================
+# FINANCIAL SERVICES CASES (추가)
+# ========================================
+
+financial_services_additional_cases:
+  _pattern: "financial_services_model"
+
+  insurance:
+    - id: "보험설계사_개인"
+      policies: "500건"
+      annual_premium: "10억"
+      commission: "연 3,000만원"
+
+    - id: "ga_법인"
+      agents: "50명"
+      revenue: "연 30억"
+
+  securities:
+    - id: "증권_pb"
+      clients: "100명"
+      aum: "300억"
+      fee: "연 3억 (1%)"
+
+# ========================================
+# AGRICULTURE ADDITIONAL CASES
+# ========================================
+
+agriculture_additional_cases:
+  _pattern: "agriculture_model"
+
+  smart_farm:
+    - id: "스마트팜_딸기"
+      area: "1,000평"
+      yield: "일반 대비 3배"
+      revenue: "연 5억"
+
+    - id: "스마트팜_토마토"
+      technology: "수경재배"
+      export: "일본"
+
+  traditional:
+    - id: "쌀농사"
+      area: "5,000평"
+      yield: "8톤"
+      revenue: "연 1,500만원"
+      challenge: "낮은 수익성"
+
+# ========================================
+# MEDIA & ENTERTAINMENT CASES
+# ========================================
+
+media_entertainment_cases:
+
+  content_creation:
+    - id: "유튜버_키즈"
+      subscribers: "100만"
+      views_month: "1,000만"
+      revenue: "월 2,000만원"
+
+    - id: "유튜버_요리"
+      subscribers: "50만"
+      monetization: "광고 + 협찬"
+      revenue: "월 500만원"
+
+  streaming:
+    - id: "넷플릭스_한국"
+      subscribers: "1,000만"
+      price: "월 13,500원"
+      content: "한국 오리지널"
+
+# ========================================
+# BEAUTY & WELLNESS CASES
+# ========================================
+
+beauty_wellness_cases:
+
+  beauty_salon:
+    - id: "네일샵"
+      location: "강남"
+      revenue: "월 2,000만원"
+      profit: "월 600만원"
+
+    - id: "피부관리실"
+      members: "200명"
+      revenue: "월 3,000만원"
+
+  fitness:
+    - id: "필라테스_스튜디오"
+      members: "100명"
+      price: "월 15만원"
+      revenue: "월 1,500만원"
+
+    - id: "헬스장"
+      members: "500명"
+      price: "월 8만원"
+      revenue: "월 4,000만원"
+
+# ========================================
+# AUTOMOTIVE AFTERMARKET CASES
+# ========================================
+
+automotive_cases:
+
+  repair:
+    - id: "자동차_정비소"
+      daily_cars: "5대"
+      avg_ticket: "30만원"
+      revenue: "월 4,500만원"
+
+    - id: "타이어_전문점"
+      franchise: "금호타이어"
+      revenue: "월 3,000만원"
+
+  car_wash:
+    - id: "세차장"
+      type: "자동 세차"
+      cars_day: "50대"
+      price: "15,000원"
+      revenue: "월 2,250만원"
+
+# ========================================
+# PET INDUSTRY CASES
+# ========================================
+
+pet_industry_cases:
+
+  pet_shop:
+    - id: "반려동물_용품점"
+      location: "주택가"
+      revenue: "월 2,000만원"
+      margin: "30%"
+
+  pet_services:
+    - id: "애견미용"
+      daily_dogs: "3-5마리"
+      price: "5-10만원"
+      revenue: "월 1,000만원"
+
+    - id: "애견호텔"
+      capacity: "20마리"
+      price: "일 3만원"
+      revenue: "월 1,500만원"
+
+# ========================================
+# HOSPITALITY CASES
+# ========================================
+
+hospitality_cases:
+
+  hotels:
+    - id: "비즈니스_호텔"
+      rooms: "50개"
+      occupancy: "70%"
+      price: "일 10만원"
+      revenue: "월 1억"
+
+    - id: "모텔"
+      rooms: "30개"
+      occupancy: "60%"
+      price: "일 5만원"
+      revenue: "월 2,700만원"
+
+  guest_house:
+    - id: "게스트하우스"
+      location: "제주"
+      beds: "20개"
+      price: "일 3만원"
+      revenue: "월 1,000만원 (시즌별 차이)"
+
+# ========================================
+# ENTERTAINMENT & LEISURE CASES
+# ========================================
+
+entertainment_cases:
+
+  arcade:
+    - id: "pc방"
+      seats: "50석"
+      price: "시간당 1,000원"
+      revenue: "월 2,000만원"
+      challenge: "감소 추세"
+
+  sports:
+    - id: "볼링장"
+      lanes: "20개"
+      revenue: "월 3,000만원"
+
+    - id: "당구장"
+      tables: "15개"
+      revenue: "월 1,500만원"
+
+# ========================================
+# CHILDCARE & EDUCATION CASES
+# ========================================
+
+childcare_cases:
+
+  daycare:
+    - id: "어린이집"
+      capacity: "50명"
+      fee: "월 30-50만원"
+      revenue: "월 2,000만원"
+      regulation: "정부 지원금"
+
+  after_school:
+    - id: "태권도장"
+      students: "80명"
+      fee: "월 10만원"
+      revenue: "월 800만원"
+
+# ========================================
+# TRANSPORTATION CASES
+# ========================================
+
+transportation_cases:
+
+  taxi:
+    - id: "개인택시"
+      daily_revenue: "20만원"
+      monthly_revenue: "600만원"
+      expenses: "유류, 보험 300만원"
+      profit: "월 300만원"
+
+  truck:
+    - id: "화물차_개인"
+      truck: "5톤"
+      routes: "정기 노선"
+      revenue: "월 1,000만원"
+
+# ========================================
+# MAINTENANCE & REPAIR CASES
+# ========================================
+
+maintenance_cases:
+
+  appliance_repair:
+    - id: "가전_as센터"
+      brands: "LG, 삼성 위탁"
+      calls_day: "5-7건"
+      revenue: "월 3,000만원"
+
+  facility_management:
+    - id: "빌딩_관리"
+      buildings: "5개"
+      revenue: "월 5,000만원"
+      employees: "10명"
+
+# ========================================
+# SECURITY SERVICES CASES
+# ========================================
+
+security_cases:
+
+  security_company:
+    - id: "경비_용역"
+      sites: "빌딩 10개"
+      guards: "30명"
+      revenue: "월 1억"
+      margin: "15%"
+
+# ========================================
+# PRINTING & SIGNAGE CASES
+# ========================================
+
+printing_cases:
+
+  print_shop:
+    - id: "인쇄소"
+      services: "명함, 전단"
+      clients: "중소기업"
+      revenue: "월 2,000만원"
+
+  signage:
+    - id: "간판_제작"
+      projects_month: "10개"
+      avg_project: "300만원"
+      revenue: "월 3,000만원"
+
+# ========================================
+# EVENTS & WEDDING CASES
+# ========================================
+
+events_wedding_cases:
+
+  wedding_hall:
+    - id: "웨딩홀"
+      capacity: "300명"
+      bookings_month: "8건"
+      price: "평균 1,500만원"
+      revenue: "월 1.2억"
+
+  event_planning:
+    - id: "이벤트_대행"
+      services: "기업 행사"
+      projects_month: "5건"
+      revenue: "월 5,000만원"
+
+# ========================================
+# FUNERAL SERVICES CASES
+# ========================================
+
+funeral_cases:
+
+  funeral_home:
+    - id: "장례식장"
+      halls: "5개"
+      funerals_month: "30건"
+      revenue: "월 1.5억"
+
+# ========================================
+# TRAVEL & TOUR CASES
+# ========================================
+
+travel_cases:
+
+  travel_agency:
+    - id: "여행사"
+      packages: "해외 패키지"
+      customers_month: "50명"
+      commission: "15%"
+      revenue: "월 3,000만원"
+
+  tour_guide:
+    - id: "투어_가이드"
+      specialty: "제주 투어"
+      groups_month: "20개"
+      revenue: "월 1,000만원"
+
+# ========================================
+# PHOTOGRAPHY & VIDEO CASES
+# ========================================
+
+photography_cases:
+
+  wedding_photo:
+    - id: "웨딩_스튜디오"
+      shoots_month: "15건"
+      price: "평균 200만원"
+      revenue: "월 3,000만원"
+
+  commercial_photo:
+    - id: "제품_촬영"
+      clients: "쇼핑몰, 브랜드"
+      revenue: "월 2,000만원"
+
+# ========================================
+# MOVING & STORAGE CASES
+# ========================================
+
+moving_cases:
+
+  moving_company:
+    - id: "이사_업체"
+      moves_month: "30건"
+      price: "평균 80만원"
+      revenue: "월 2,400만원"
+
+  storage:
+    - id: "창고_보관"
+      area: "500㎡"
+      clients: "개인, 기업"
+      revenue: "월 1,500만원"
+
+# ========================================
+# RECYCLING & WASTE CASES
+# ========================================
+
+recycling_cases:
+
+  waste_collection:
+    - id: "폐기물_수거"
+      clients: "음식점 100개"
+      revenue: "월 3,000만원"
+
+  recycling:
+    - id: "재활용_업체"
+      materials: "종이, 플라스틱"
+      revenue: "월 5,000만원"
+
+# ========================================
+# PARKING & CAR RENTAL CASES
+# ========================================
+
+parking_cases:
+
+  parking_lot:
+    - id: "주차장_운영"
+      spaces: "100면"
+      location: "강남"
+      price: "시간당 5,000원"
+      revenue: "월 8,000만원"
+
+  car_rental:
+    - id: "렌터카"
+      fleet: "차량 50대"
+      daily_rate: "일 5만원"
+      utilization: "70%"
+      revenue: "월 5,250만원"
+
+# ========================================
+# OFFICE SUPPLIES & FURNITURE CASES
+# ========================================
+
+office_cases:
+
+  furniture:
+    - id: "사무가구_제조"
+      products: "책상, 의자"
+      clients: "B2B"
+      revenue: "연 50억"
+
+  supplies:
+    - id: "사무용품_도매"
+      clients: "기업 500개"
+      delivery: "정기 배송"
+      revenue: "연 30억"
+
+# ========================================
+# VENDING & UNMANNED CASES
+# ========================================
+
+vending_cases:
+
+  vending_machine:
+    - id: "자판기_운영"
+      machines: "50대"
+      locations: "지하철역, 빌딩"
+      revenue: "월 1,500만원"
+
+  unmanned_store:
+    - id: "무인_아이스크림"
+      stores: "10개"
+      revenue: "월 2,000만원"

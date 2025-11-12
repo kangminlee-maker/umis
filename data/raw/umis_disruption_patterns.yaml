@@ -1907,6 +1907,601 @@ references:
     - "영원한 1등은 없다"
 
 # ========================================
+# BORING BUT REAL DISRUPTION PATTERNS (v7.0+)
+# ========================================
+#
+# 주의: 아래 패턴들은 화려한 테크 디스럽션이 아닌,
+#       일상적이지만 실제로 시장을 재편하는 현실의 파괴 패턴들
+#
+# ========================================
+
+# ========================================
+# Pattern 7: Regulatory Change Disruption
+# "규제 변화로 시장 재편"
+# ========================================
+
+regulatory_change_disruption:
+  _id: "regulatory_change_disruption"
+  _pattern_type: "external_shock"
+  _note: "정부 한 번 결정으로 시장 판도 바뀜"
+
+  concept:
+    name: "규제 변화 파괴"
+    essence: "법/규제 변화가 기존 질서를 무너뜨림"
+    reality: "한국처럼 규제 강한 시장에서 특히 중요"
+
+  disruption_mechanism:
+
+    new_regulation_enables:
+      pattern: "규제 완화 → 신규 진입 가능"
+      
+      examples:
+        - trigger: "인터넷전문은행 허용 (2015)"
+          incumbent: "기존 은행"
+          disruptor: "카카오뱅크, 토스뱅크"
+          result: "모바일 뱅킹 대중화"
+
+        - trigger: "통신판매 중개업 등장"
+          incumbent: "오프라인 유통"
+          disruptor: "이커머스 플랫폼"
+          result: "유통 구조 재편"
+
+    regulation_tightens:
+      pattern: "규제 강화 → 기존 모델 불가능"
+      
+      examples:
+        - trigger: "타다 금지 (2020)"
+          victim: "차량공유 서비스"
+          beneficiary: "택시 업계"
+
+        - trigger: "배달 수수료 규제"
+          impact: "플랫폼 수익성 악화"
+
+  case_studies_boring:
+
+    convenience_store_alcohol:
+      market: "편의점 주류 판매"
+      timeline: "2000년대"
+
+      before_regulation:
+        - "슈퍼마켓, 구멍가게 독점"
+        - "밤 10시면 주류 구매 불가"
+
+      regulatory_change:
+        year: "2002"
+        change: "편의점 주류 판매 허용"
+
+      disruption:
+        incumbent_impact:
+          - "동네 슈퍼 매출 급감"
+          - "전국 수만 개 폐업"
+
+        new_winner:
+          - "편의점 매출 20% 증가"
+          - "24시간 주류 구매 가능"
+          - "편의점 경쟁력 강화"
+
+    online_pharmacy:
+      market: "일반의약품 판매"
+      timeline: "2012"
+
+      before:
+        - "약국만 의약품 판매 가능"
+        - "지역 약국 독점"
+
+      regulatory_change:
+        year: "2012"
+        change: "온라인 일반의약품 판매 허용"
+
+      disruption:
+        new_entrants: "쿠팡, 11번가, G마켓"
+        incumbent_resistance: "약사회 반발"
+        compromise: "제한적 허용"
+
+# ========================================
+# Pattern 8: Format Disruption
+# "유통/서비스 포맷 변화"
+# ========================================
+
+format_disruption:
+  _id: "format_disruption"
+  _pattern_type: "business_format_shift"
+  _note: "사업 형태 자체가 바뀌면서 판도 재편"
+
+  concept:
+    name: "포맷 파괴"
+    essence: "새로운 사업 형태 등장으로 기존 형태 도태"
+
+  disruption_waves:
+
+    retail_evolution:
+      wave_1:
+        era: "1970-1990"
+        format: "전통시장 → 백화점"
+        
+        disruption:
+          old: "재래시장 (노점, 개인상점)"
+          new: "백화점 (프리미엄, 에어컨)"
+          value: "쾌적함, 브랜드"
+
+      wave_2:
+        era: "1990-2010"
+        format: "백화점 → 대형마트"
+        
+        disruption:
+          old: "백화점 (고가, 중심가)"
+          new: "대형마트 (저가, 대량구매)"
+          value: "가격, 편의성"
+          victims: "동네 슈퍼, 재래시장"
+
+      wave_3:
+        era: "2010-현재"
+        format: "대형마트 → 이커머스"
+        
+        disruption:
+          old: "대형마트 (주말 쇼핑)"
+          new: "쿠팡 (당일배송)"
+          value: "배송, 가격"
+          
+        incumbent_response:
+          - "이마트몰 런칭 (늦음)"
+          - "오프라인 매장 축소"
+
+  case_studies_boring:
+
+    coffee_shop_evolution:
+      market: "커피 시장"
+
+      wave_1:
+        era: "1990년대"
+        format: "다방 (전통)"
+        
+        characteristics:
+          - "아저씨들 담배 피우며 커피"
+          - "1잔 1,000원"
+          - "믹스 커피"
+
+      wave_2:
+        era: "2000년대"
+        format: "스타벅스 (프리미엄 카페)"
+        
+        disruption:
+          - "젊은 층 타겟"
+          - "공간 + 경험"
+          - "4,000원 (4배 비쌈)"
+          
+        result: "다방 90% 소멸"
+
+      wave_3:
+        era: "2010년대"
+        format: "저가 프랜차이즈 (메가커피, 컴포즈)"
+        
+        disruption:
+          - "1,500-2,000원"
+          - "테이크아웃 중심"
+          - "스타벅스 고객 일부 이탈"
+
+# ========================================
+# Pattern 9: Generational Disruption
+# "세대 교체 파괴"
+# ========================================
+
+generational_disruption:
+  _id: "generational_disruption"
+  _pattern_type: "demographic_shift"
+  _note: "노포 vs 프랜차이즈의 전쟁"
+
+  concept:
+    name: "세대 교체 파괴"
+    essence: "고령 사업자 은퇴 → 프랜차이즈 진입"
+
+  disruption_mechanism:
+
+    lifecycle:
+      stage_1:
+        era: "1990-2010"
+        owner: "1세대 창업 (40-60대)"
+        format: "개인 사업 (노하우)"
+        moat: "손맛, 단골"
+
+      stage_2:
+        era: "2010-2020"
+        trend: "고령화 (60-80대)"
+        problem:
+          - "체력 한계"
+          - "디지털 못 따라감"
+          - "후계자 없음 (자식들 안 함)"
+
+      stage_3:
+        era: "2020-현재"
+        outcome: "폐업 → 프랜차이즈 입점"
+        
+        format_shift:
+          before: "○○네 분식 (30년)"
+          after: "김가네 김밥 (프랜차이즈)"
+
+  case_studies_boring:
+
+    local_restaurant:
+      location: "주택가 골목"
+      
+      before:
+        owner: "1세대 (70대 부부)"
+        business: "30년 중국집"
+        strength: "단골 고객"
+        revenue: "월 1,000만원"
+
+      crisis:
+        - "체력 한계 (주 70시간)"
+        - "배달앱 적응 못함"
+        - "자식들 계승 거부"
+
+      transition:
+        closure: "폐업"
+        building: "프랜차이즈 입점"
+        new_format: "맘스터치 (햄버거)"
+
+      market_impact:
+        individual: "개인 음식점 감소"
+        macro: "프랜차이즈 점유율 증가"
+        statistics: "전국 음식점 60만개 중 30% 프랜차이즈"
+
+# ========================================
+# Pattern 10: Import Substitution Disruption
+# "국산화 파괴"
+# ========================================
+
+import_substitution_disruption:
+  _id: "import_substitution_disruption"
+  _pattern_type: "localization"
+  _note: "Made in Korea로 수입품 대체"
+
+  concept:
+    name: "수입 대체 파괴"
+    essence: "국산 제품이 수입품 시장 잠식"
+
+  disruption_drivers:
+    - "기술 축적 (초기엔 못 만듦)"
+    - "가격 경쟁력 (인건비 차이)"
+    - "품질 향상 (나중엔 동등)"
+    - "A/S 편의성"
+
+  case_studies:
+
+    automobile:
+      market: "자동차"
+      timeline: "1970-2000"
+
+      initial_state:
+        era: "1970년대"
+        market_share: "수입차 90%"
+        perception: "국산차 = 저품질"
+
+      disruption:
+        1980s: "현대차 포니 (저가)"
+        1990s: "중형차 진입"
+        2000s: "품질 개선"
+        
+        result:
+          domestic_share: "수입차 15% (2020)"
+          export: "연 300만대 수출"
+
+    cosmetics:
+      market: "화장품"
+      timeline: "2000-2020"
+
+      before:
+        dominance: "외제 화장품 (샤넬, 에스티로더)"
+        korean: "저가 이미지"
+
+      k_beauty_rise:
+        trigger: "한류 (K-pop)"
+        innovation: "BB크림, 쿠션 팩트"
+        
+        brands:
+          - "아모레퍼시픽"
+          - "LG생활건강"
+
+        result:
+          - "중국 수출 폭증"
+          - "국내 프리미엄화"
+
+# ========================================
+# Pattern 11: Franchising Disruption
+# "프랜차이즈화 파괴"
+# ========================================
+
+franchising_disruption:
+  _id: "franchising_disruption"
+  _pattern_type: "standardization"
+  _note: "개인 사업 → 시스템화"
+
+  concept:
+    name: "프랜차이즈화 파괴"
+    essence: "시스템이 노하우를 이김"
+
+  franchise_advantages:
+    - "브랜드 인지도"
+    - "본사 마케팅 지원"
+    - "표준화된 맛/품질"
+    - "공급망 효율"
+
+  individual_weakness:
+    - "브랜드 없음"
+    - "마케팅 비용 부담"
+    - "품질 일관성 부족"
+    - "재료 비싸게 구매"
+
+  case_studies_boring:
+
+    chicken_market:
+      total_stores: "4만개"
+      franchise_ratio: "80%"
+
+      timeline:
+        1990s: "개인 치킨집 90%"
+        2000s: "교촌, BBQ 성장"
+        2010s: "개인 치킨집 20%로 축소"
+
+      competitive_gap:
+        franchise:
+          - "브랜드 (광고)"
+          - "배달앱 입점"
+          - "식자재 저가"
+          - "메뉴 개발"
+
+        individual:
+          - "브랜드 없음"
+          - "입소문만 의존"
+          - "식자재 비쌈"
+          - "메뉴 한정"
+
+      result: "개인 치킨집 생존율 5년 10%"
+
+# ========================================
+# Pattern 12: Payment Disruption
+# "결제 수단 변화"
+# ========================================
+
+payment_disruption:
+  _id: "payment_disruption"
+  _pattern_type: "infrastructure_shift"
+  _note: "현금 → 카드 → 간편결제"
+
+  evolution:
+
+    wave_1:
+      era: "1990년대"
+      method: "현금 → 신용카드"
+      
+      incumbent_impact:
+        victims: "현금 선호 소상공인"
+        cost: "카드 수수료 2-3%"
+        resistance: "초기 거부 많음"
+
+      forcing_function:
+        - "소득공제 정책"
+        - "현금영수증 의무화"
+
+    wave_2:
+      era: "2010년대"
+      method: "카드 → 간편결제"
+      
+      disruptors:
+        - "카카오페이"
+        - "네이버페이"
+        - "토스"
+
+      value_proposition:
+        - "카드번호 입력 불필요"
+        - "즉시 송금"
+        - "할인 혜택"
+
+      incumbent_response:
+        cards: "앱카드 출시 (늦음)"
+        banks: "은행 앱 개선"
+
+  case_study:
+
+    taxi_payment:
+      before:
+        era: "2010년 이전"
+        method: "현금 90%"
+        problem:
+          - "거스름돈 문제"
+          - "택시기사 탈세"
+
+      transition:
+        2010s: "카드 의무화"
+        2015: "카카오페이 등장"
+        2020: "현금 사용 5%"
+
+      market_change:
+        - "택시 매출 투명화"
+        - "카카오 T 성장"
+        - "승차거부 감소"
+
+# ========================================
+# Pattern 13: Platform Aggregation
+# "플랫폼 집중화"
+# ========================================
+
+platform_aggregation_disruption:
+  _id: "platform_aggregation_disruption"
+  _pattern_type: "winner_takes_all"
+  _note: "배달, 택시, 숙박 모두 플랫폼으로"
+
+  concept:
+    name: "플랫폼 집중화"
+    essence: "모든 거래가 몇 개 플랫폼으로 모임"
+
+  disruption_pattern:
+
+    before:
+      - "식당: 전화 주문"
+      - "택시: 길거리 잡기"
+      - "숙박: 전화 예약"
+
+    after:
+      - "식당: 배민/요기요 (80%)"
+      - "택시: 카카오 T (70%)"
+      - "숙박: 야놀자/여기어때"
+
+  power_shift:
+
+    from: "공급자 (식당, 택시)"
+    to: "플랫폼"
+
+    consequences:
+      supply_side:
+        - "수수료 부담 (15-20%)"
+        - "협상력 상실"
+        - "플랫폼 의존"
+
+      platform:
+        - "데이터 독점"
+        - "가격 결정력"
+        - "시장 지배"
+
+  case_study_boring:
+
+    food_delivery:
+      market: "음식 배달"
+
+      before_platform:
+        era: "2010년 이전"
+        method: "전화 주문"
+        delivery: "식당 자체"
+
+      platform_era:
+        2010: "배달의민족 시작"
+        2015: "스마트폰 보급"
+        2020: "플랫폼 의존 80%"
+
+      restaurant_impact:
+        positive:
+          - "주문 증가"
+          - "배달 대행"
+
+        negative:
+          - "수수료 15-20%"
+          - "수익성 악화"
+          - "플랫폼 없으면 장사 안 됨"
+
+# ========================================
+# Pattern 14: SME Automation
+# "중소기업 자동화"
+# ========================================
+
+sme_automation_disruption:
+  _id: "sme_automation_disruption"
+  _pattern_type: "technology_adoption"
+  _note: "로봇, AI가 중소기업 일자리 대체"
+
+  concept:
+    name: "중소기업 자동화 파괴"
+    essence: "사람이 하던 일을 기계가 대체"
+
+  disruption_cases:
+
+    kiosk_disruption:
+      market: "패스트푸드, 카페"
+      
+      before:
+        labor: "직원 2-3명"
+        cost: "인건비 월 600만원"
+
+      after:
+        kiosk: "무인 키오스크"
+        labor: "직원 1명"
+        cost: "인건비 월 200만원 + 키오스크"
+
+      impact:
+        - "알바 일자리 감소"
+        - "인건비 절감 50%"
+        - "최저임금 인상 대응"
+
+    warehouse_automation:
+      market: "물류창고"
+
+      manual_era:
+        workers: "100명"
+        productivity: "하루 1,000건"
+
+      automated:
+        robots: "쿠팡 로봇 (2020~)"
+        workers: "30명 (감독)"
+        productivity: "하루 5,000건"
+
+# ========================================
+# Pattern 15: ESG & Sustainability Disruption
+# "친환경 전환 파괴"
+# ========================================
+
+sustainability_disruption:
+  _id: "sustainability_disruption"
+  _pattern_type: "value_shift"
+  _note: "친환경이 경쟁력이 됨"
+
+  concept:
+    name: "지속가능성 파괴"
+    essence: "친환경 기업이 기존 기업 대체"
+
+  disruption_drivers:
+    - "MZ세대 소비 가치"
+    - "ESG 투자 확대"
+    - "정부 규제 강화"
+    - "탄소중립 압박"
+
+  case_studies:
+
+    electric_vehicle:
+      market: "자동차"
+      
+      incumbent: "내연기관 (100년 역사)"
+      disruptor: "전기차 (테슬라, 현대)"
+      
+      forcing_function:
+        - "2035 내연기관 판매 금지 (유럽)"
+        - "탄소세"
+        - "충전 인프라"
+
+    alternative_protein:
+      market: "식품"
+      
+      incumbent: "축산업"
+      disruptor: "대체육 (비욘드미트)"
+      
+      value_shift:
+        - "환경 (메탄 배출)"
+        - "동물 복지"
+        - "MZ 선호"
+
+# ========================================
+# BORING DISRUPTION 요약
+# ========================================
+
+boring_disruption_summary:
+
+  total_added: 9
+
+  categories:
+    regulatory: "규제 변화"
+    format: "사업 형태 변화"
+    demographic: "세대 교체"
+    localization: "국산화"
+    standardization: "프랜차이즈화"
+    infrastructure: "결제/플랫폼"
+    automation: "자동화"
+    sustainability: "친환경"
+
+  key_insight:
+    - "Disruption은 Tech만의 전유물이 아님"
+    - "일상적 변화도 시장을 재편함"
+    - "규제, 세대, 인프라 모두 파괴 요인"
+    - "Steve가 모든 유형의 변화를 포착하도록"
+
+# ========================================
 # END OF DISRUPTION PATTERNS
 # ========================================
 
