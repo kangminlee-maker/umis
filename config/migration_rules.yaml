@@ -1,0 +1,184 @@
+# ========================================
+# umis.yaml → System RAG 변환 규칙
+# ========================================
+
+version: 1.0
+created: '2025-11-12'
+purpose: umis.yaml을 System RAG로 자동 변환하는 규칙 정의
+
+# ========================================
+# 변환 규칙
+# ========================================
+
+conversion_rules:
+  
+  # System 섹션 처리
+  system_sections:
+    description: "umis.yaml 최상위 섹션을 tool:system:* 도구로 변환"
+    
+    prefix: "system:"
+    category: "complete_context"
+    priority: "high"
+    
+    sections:
+      - system_architecture
+      - system
+      - adaptive_intelligence_system
+      - proactive_monitoring
+      - support_validation_system
+      - data_integrity_system
+      - agents  # 전체 Agent 리스트
+      - roles
+      - implementation_guide
+    
+    tool_key_format: "tool:system:{section_name}"
+    tool_id_format: "system:{section_name}"
+  
+  # Agent 개별 처리
+  agent_sections:
+    description: "agents 리스트의 각 Agent를 tool:{agent}:complete 도구로 변환"
+    
+    source: "agents list"
+    id_field: "id"
+    
+    tool_key_format: "tool:{agent_id}:complete"
+    tool_id_format: "{agent_id}:complete"
+    
+    category: "complete_context"
+    priority: "high"
+    
+    agents:
+      - Observer
+      - Explorer
+      - Quantifier
+      - Validator
+      - Guardian
+      - Estimator
+  
+  # 제외 섹션
+  excluded_sections:
+    description: "RAG에 포함하지 않을 섹션 (메타데이터 등)"
+    
+    sections:
+      - _meta  # 메타데이터
+      - version  # 버전 (registry에서 관리)
+      - changelog  # 변경 이력 (registry에서 관리)
+
+# ========================================
+# 검증 규칙
+# ========================================
+
+validation:
+  
+  required_sections:
+    description: "umis.yaml에 반드시 있어야 할 섹션"
+    sections:
+      - system_architecture
+      - agents
+      - implementation_guide
+  
+  required_agents:
+    description: "agents 리스트에 반드시 있어야 할 Agent"
+    agents:
+      - Observer
+      - Explorer
+      - Quantifier
+      - Validator
+  
+  tool_count:
+    min: 10
+    max: 100
+    description: "생성되는 도구 수 범위"
+  
+  tool_size:
+    min: 100
+    max: 100000  # 100KB
+    description: "각 도구 Content 크기 범위 (bytes)"
+
+# ========================================
+# 백업 규칙
+# ========================================
+
+backup:
+  enabled: true
+  directory: config/backups
+  
+  filename_format: "tool_registry_{timestamp}.yaml"
+  timestamp_format: "%Y%m%d_%H%M%S"
+  
+  retention:
+    days: 30
+    max_files: 50
+    description: "30일 또는 50개 초과 시 오래된 백업 삭제"
+  
+  auto_cleanup: false  # 자동 삭제 (추후 구현)
+
+# ========================================
+# RAG 재구축 설정
+# ========================================
+
+rag_rebuild:
+  script: scripts/build_system_knowledge.py
+  collection: system_knowledge
+  
+  verify_after_build: true
+  verification_script: scripts/query_system_rag.py
+  verification_args: ['--stats']
+
+# ========================================
+# 출력 형식
+# ========================================
+
+output_format:
+  
+  tool_content_template: |
+    # {section_type}: {section_name} (0% Loss from umis.yaml)
+    
+    ## 📋 출처
+    umis.yaml - {section_name} 섹션 전체 (Auto-Sync)
+    
+    ## 📖 전체 내용 (YAML)
+    
+    아래는 umis.yaml의 {section_name} 섹션을 0% 손실로 그대로 복사한 것입니다.
+    
+    ```yaml
+    {yaml_content}
+    ```
+    
+    ---
+    
+    ⚠️  이 도구는 자동 생성됩니다.
+       수정하려면 umis.yaml을 편집하고 sync_umis_to_rag.py를 실행하세요.
+  
+  registry_header: |
+    # ========================================
+    # ⚠️  이 파일은 자동 생성됩니다!
+    # 
+    # 편집 금지! 대신 umis.yaml을 수정하세요.
+    # 
+    # 동기화 방법:
+    #   python3 scripts/sync_umis_to_rag.py
+    # 
+    # 마지막 동기화: {timestamp}
+    # ========================================
+
+# ========================================
+# 에러 처리
+# ========================================
+
+error_handling:
+  
+  on_validation_fail:
+    action: "rollback"
+    message: "검증 실패. 이전 상태로 롤백합니다."
+  
+  on_rag_build_fail:
+    action: "rollback"
+    message: "RAG 구축 실패. 이전 상태로 롤백합니다."
+  
+  rollback_script: scripts/rollback_rag.py
+
+# ========================================
+# 문서 끝
+# ========================================
+
