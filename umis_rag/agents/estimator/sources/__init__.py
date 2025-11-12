@@ -1,13 +1,14 @@
 """
-Guestimation Sources
+Guestimation Sources (v7.8.0 재설계)
 
-11개 Source 수집 로직
+11개 → 10개 Source (LLM + Web 통합)
 """
 
 from .physical import (
-    SpacetimeConstraintSource,
-    ConservationLawSource,
-    MathematicalDefinitionSource
+    UnifiedPhysicalConstraintSource,  # v7.8.0: 신규 통합
+    SpacetimeConstraintSource,  # deprecated
+    ConservationLawSource,  # deprecated
+    MathematicalDefinitionSource  # deprecated
 )
 
 from .soft import (
@@ -18,17 +19,19 @@ from .soft import (
 
 from .value import (
     DefiniteDataSource,
-    LLMEstimationSource,
-    WebSearchSource,
+    AIAugmentedEstimationSource,  # v7.8.0: 신규
+    LLMEstimationSource,  # deprecated
+    WebSearchSource,  # deprecated
     RAGBenchmarkSource,
     StatisticalValueSource
 )
 
 __all__ = [
     # Physical
-    'SpacetimeConstraintSource',
-    'ConservationLawSource',
-    'MathematicalDefinitionSource',
+    'UnifiedPhysicalConstraintSource',  # v7.8.0: 신규 통합
+    'SpacetimeConstraintSource',  # deprecated
+    'ConservationLawSource',  # deprecated
+    'MathematicalDefinitionSource',  # deprecated
     
     # Soft
     'LegalNormSource',
@@ -37,8 +40,9 @@ __all__ = [
     
     # Value
     'DefiniteDataSource',
-    'LLMEstimationSource',
-    'WebSearchSource',
+    'AIAugmentedEstimationSource',  # v7.8.0: 신규
+    'LLMEstimationSource',  # deprecated
+    'WebSearchSource',  # deprecated
     'RAGBenchmarkSource',
     'StatisticalValueSource',
 ]

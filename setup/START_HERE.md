@@ -1,7 +1,7 @@
-# UMIS v7.6.2 시작하기
+# UMIS v7.7.0 시작하기
 
-**버전:** 7.6.2 (6-Agent + 5-Phase 완성, 100% 커버리지)  
-**날짜:** 2025-11-10  
+**버전:** 7.7.0 (6-Agent + 5-Phase + Web 크롤링, 100% 커버리지)  
+**날짜:** 2025-11-12  
 **대상:** Cursor 사용자
 
 ---
@@ -37,21 +37,24 @@ v7.6.2: 5-Phase + Web Search 완전 작동!
 
 ---
 
-## ⭐ v7.6.2 신규 기능
+## ⭐ v7.7.0 신규 기능
 
 ```yaml
-✅ 3-Tier 완성 (100% 커버리지)
-   - Tier 1: Fast (<0.5초)
-   - Tier 2: Judgment (3-8초)
-   - Tier 3: Fermi (10-30초)
+✅ Web Search 페이지 크롤링 (v7.7.0)
+   - 정보량: 553자 → 20,538자 (3,614% 증가)
+   - 숫자 추출: 4개 → 41개 (10배 증가)
+   - 자동 fallback (실패 시 snippet 사용)
 
-✅ 12개 비즈니스 지표 자동 계산
-   - LTV, CAC, Churn, ARPU
-   - Payback, Rule of 40, NRR 등
+✅ Native 모드 진짜 구현
+   - Explorer: RAG만 → Cursor LLM 분석
+   - 비용 $0 (API 호출 없음)
 
-✅ 실패율 0% (모든 질문 답변 가능)
+✅ 5-Phase 명확화 (Phase 0-4)
+   - Phase: Estimator 전체 단계
+   - Step: Phase 4 내부 단계
+   - 혼란 완전 제거
 
-✅ 비용 $0 (Native mode)
+✅ 100% 커버리지 유지
 ```
 
 ---

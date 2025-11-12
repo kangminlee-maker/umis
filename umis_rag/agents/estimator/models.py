@@ -22,21 +22,24 @@ class SourceCategory(Enum):
 
 
 class SourceType(Enum):
-    """Source Type (11개)"""
-    # Physical (3개)
-    SPACETIME = "spacetime"
-    CONSERVATION = "conservation"
-    MATHEMATICAL = "mathematical"
+    """Source Type (v7.8.0: 11개 → 10개 통합)"""
+    # Physical (3개 → 1개 통합 예정)
+    PHYSICAL = "physical"  # v7.8.0: 통합
+    SPACETIME = "spacetime"  # deprecated
+    CONSERVATION = "conservation"  # deprecated
+    MATHEMATICAL = "mathematical"  # deprecated
     
-    # Soft (3개)
-    LEGAL = "legal"
-    STATISTICAL = "statistical"
-    BEHAVIORAL = "behavioral"
+    # Soft (3개 → 1개 통합 예정)
+    SOFT = "soft"  # v7.8.0: 통합
+    LEGAL = "legal"  # deprecated
+    STATISTICAL = "statistical"  # deprecated
+    BEHAVIORAL = "behavioral"  # deprecated
     
-    # Value (5개)
+    # Value (5개 → 4개)
     DEFINITE_DATA = "definite_data"
-    LLM_ESTIMATION = "llm_estimation"
-    WEB_SEARCH = "web_search"
+    AI_AUGMENTED = "ai_augmented"  # v7.8.0: LLM + Web 통합
+    LLM_ESTIMATION = "llm_estimation"  # deprecated (→ AI_AUGMENTED)
+    WEB_SEARCH = "web_search"  # deprecated (→ AI_AUGMENTED)
     RAG_BENCHMARK = "rag_benchmark"
     STATISTICAL_VALUE = "statistical_value"
 
@@ -272,6 +275,9 @@ class EstimationResult:
     # 충돌 처리
     conflicts_detected: List[Dict] = field(default_factory=list)
     conflicts_resolved: bool = True
+    
+    # Soft Constraint 경고 (v7.8.0)
+    soft_warnings: List[Dict[str, Any]] = field(default_factory=list)
     
     # Phase 4 (Fermi)
     fermi_model: Optional[Any] = None
