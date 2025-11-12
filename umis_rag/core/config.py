@@ -108,6 +108,20 @@ class Settings(BaseSettings):
     # Web Search 활성화 여부
     # .env: WEB_SEARCH_ENABLED=true
     web_search_enabled: bool = Field(default=True)
+
+    # 전체 페이지 크롤링 여부 (v7.7.0+)
+    # true: 검색 결과 URL을 방문해서 실제 페이지 내용 크롤링 (정확도 향상)
+    # false: snippet만 사용 (빠르지만 정보 제한적)
+    # .env: WEB_SEARCH_FETCH_FULL_PAGE=true
+    web_search_fetch_full_page: bool = Field(default=True)
+
+    # 페이지당 최대 추출 문자 수 (기본 5000자)
+    # .env: WEB_SEARCH_MAX_CHARS=5000
+    web_search_max_chars: int = Field(default=5000)
+
+    # 페이지 크롤링 타임아웃 (초)
+    # .env: WEB_SEARCH_TIMEOUT=10
+    web_search_timeout: int = Field(default=10)
     
     # ========================================
     # Agent Configuration (시스템 파라미터 - 코드에서 관리)

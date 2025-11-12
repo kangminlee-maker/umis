@@ -1,10 +1,16 @@
 """
-Soft Constraints Sources
+Soft Constraints Sources (v7.8.0 재설계)
 
-범위 제시, 검증, 통찰
-- 법률/규범
-- 통계 패턴  
-- 행동경제학
+Knock-out Gate: 명백한 위반 감지
+- 법률/규범: 70% 규칙 (명백한 위반)
+- 통계 패턴: 자연법칙 (p5-p95)
+- 행동경제학: 인간본능 범위
+
+v7.8.0 핵심 변경:
+------------------
+- "Soft"이지만 실제로는 명백한 제약
+- 준수율 계산 불필요 (추가 데이터 없음)
+- 임계값 기반 간단한 Knock-out
 """
 
 from typing import Optional, List, Dict, Any
@@ -20,71 +26,237 @@ class SoftConstraintBase:
     def collect(self, question: str, context: Optional[Context] = None) -> List[SoftGuide]:
         """제약 수집"""
         raise NotImplementedError
+    
+    def validate(self, question: str, estimated_value: float) -> Optional[Dict[str, Any]]:
+        """
+        Soft Constraint 검증 (v7.8.0)
+        
+        Soft는 자동 Knock-out 아님 → 경고 + 사용자 확인
+        
+        Args:
+            question: 질문
+            estimated_value: 추정값
+        
+        Returns:
+            None: 통과 ✅
+            Dict: 경고 정보 ⚠️ (사용자 확인 필요)
+                {
+                    'warning': True,
+                    'message': '경고 메시지',
+                    'severity': 'high' | 'medium' | 'low',
+                    'user_confirmation_needed': True
+                }
+        """
+        raise NotImplementedError
 
 
 class LegalNormSource(SoftConstraintBase):
     """
-    법률/규범
+    법률/규범 (v7.8.0 재설계)
     
     역할:
     -----
-    - range 제시 (base + exceptions)
-    - 예: 최저임금 [9860, 15000]
+    - Knock-out Gate: 명백한 위반 감지
+    - 70% 규칙 (최저의 70% 미만 or 최대의 130% 초과)
+    
+    원칙:
+    -----
+    - 법률은 대부분 지킴 (사회 유지 조건)
+    - 70% 미만 = 명백히 비현실적
+    - 준수율 계산 불필요 (추가 데이터 없음)
     """
     
     def __init__(self):
-        # 주요 법률 상수 (Built-in과 다르게 range 제공)
+        # 법률 규범 DB (Knock-out 임계값)
         self.legal_norms = {
             '최저임금': {
-                'base_value': 9860,
-                'typical_range': (9860, 15000),
-                'exceptions': [
-                    {'condition': '수습', 'multiplier': 0.90}
-                ],
-                'confidence': 0.90
+                'legal_value': 9860,
+                'direction': 'minimum',  # 최소값 제약
+                'tolerance': 0.70,  # 70% 미만이면 knock-out
+                'reasoning': '최저임금의 70% 미만은 명백한 위반 (사회 유지 불가)'
+            },
+            '시급': {
+                'legal_value': 9860,
+                'direction': 'minimum',
+                'tolerance': 0.70,
+                'reasoning': '최저임금의 70% 미만은 명백한 위반'
             },
             '주당근로': {
-                'base_value': 52,
-                'typical_range': (40, 52),
-                'note': '기본 40 + 연장 12',
-                'confidence': 0.95
+                'legal_value': 52,
+                'direction': 'maximum',  # 최대값 제약
+                'tolerance': 1.30,  # 130% 초과면 knock-out
+                'reasoning': '법정 최대의 130% 초과는 명백한 위반'
+            },
+            '근로시간': {
+                'legal_value': 52,
+                'direction': 'maximum',
+                'tolerance': 1.30,
+                'reasoning': '주당 근로시간 법정 최대의 130% 초과는 비현실적'
             }
         }
     
     def collect(self, question: str, context: Optional[Context] = None) -> List[SoftGuide]:
-        """법률 규범 수집"""
+        """법률 규범 수집 (정보 제공용, deprecated)"""
         
-        guides = []
+        # v7.8.0: collect는 거의 사용 안 됨
+        # validate() 메서드 사용 권장
+        return []
+    
+    def validate(self, question: str, estimated_value: float) -> Optional[Dict[str, Any]]:
+        """
+        Soft Constraint 검증 (경고 + 사용자 확인)
+        
+        Args:
+            question: 질문
+            estimated_value: 추정값
+        
+        Returns:
+            None: 통과 ✅
+            Dict: 경고 정보 ⚠️
+        """
         
         # 키워드 매칭
         for norm_key, norm_data in self.legal_norms.items():
             if norm_key in question:
-                guide = SoftGuide(
-                    source_type=SourceType.LEGAL,
-                    suggested_range=norm_data['typical_range'],
-                    typical_value=norm_data['base_value'],
-                    exceptions=norm_data.get('exceptions', []),
-                    confidence=norm_data['confidence'],
-                    reasoning=f"법률 규범: {norm_key}"
-                )
-                guides.append(guide)
+                
+                # 최소값 제약 (예: 최저임금)
+                if norm_data.get('direction') == 'minimum':
+                    threshold = norm_data['legal_value'] * norm_data['tolerance']
+                    
+                    if estimated_value < threshold:
+                        violation_pct = (threshold - estimated_value) / threshold * 100
+                        
+                        return {
+                            'warning': True,
+                            'severity': 'high',  # 법률 위반은 high
+                            'message': (
+                                f"⚠️ 법률 제약 위반 가능성\n"
+                                f"  추정값: {estimated_value:,.0f}원\n"
+                                f"  임계값: {threshold:,.0f}원 (최저 {norm_data['legal_value']:,}원 × {norm_data['tolerance']})\n"
+                                f"  차이: -{violation_pct:.0f}%\n\n"
+                                f"📋 근거: {norm_data['reasoning']}\n\n"
+                                f"⚠️ 이 추정값을 사용하시겠습니까?\n"
+                                f"   - 예외 상황 (지하경제, 특수 케이스)일 수 있음\n"
+                                f"   - 또는 추정 오류일 수 있음"
+                            ),
+                            'threshold': threshold,
+                            'legal_value': norm_data['legal_value'],
+                            'user_confirmation_needed': True
+                        }
+                
+                # 최대값 제약 (예: 최대 근로시간)
+                elif norm_data.get('direction') == 'maximum':
+                    threshold = norm_data['legal_value'] * norm_data['tolerance']
+                    
+                    if estimated_value > threshold:
+                        violation_pct = (estimated_value - threshold) / threshold * 100
+                        
+                        return {
+                            'warning': True,
+                            'severity': 'high',
+                            'message': (
+                                f"⚠️ 법률 제약 위반 가능성\n"
+                                f"  추정값: {estimated_value:,.0f}시간\n"
+                                f"  임계값: {threshold:,.0f}시간 (최대 {norm_data['legal_value']:,}시간 × {norm_data['tolerance']})\n"
+                                f"  차이: +{violation_pct:.0f}%\n\n"
+                                f"📋 근거: {norm_data['reasoning']}\n\n"
+                                f"⚠️ 이 추정값을 사용하시겠습니까?\n"
+                                f"   - 예외 상황일 수 있음\n"
+                                f"   - 또는 추정 오류일 수 있음"
+                            ),
+                            'threshold': threshold,
+                            'legal_value': norm_data['legal_value'],
+                            'user_confirmation_needed': True
+                        }
         
-        return guides
+        return None  # 통과 ✅
 
 
 class StatisticalPatternSource(SoftConstraintBase):
     """
-    통계 패턴
+    통계 패턴 (v7.8.0 재설계)
     
     역할:
     -----
-    - 분포 정보 제공
-    - 분포 타입별 다른 처리
-    - Soft + Value 겸용 (조건부)
+    - Knock-out Gate: 자연법칙 범위 (p5-p95)
+    - 예: 흡연율 5-60%, 이탈률 0-50%
+    
+    원칙:
+    -----
+    - 통계 패턴은 자연법칙 수준
+    - p5-p95 범위 벗어남 = 명백히 비현실적
     """
     
+    def __init__(self):
+        # 통계 패턴 DB (자연 범위)
+        self.statistical_ranges = {
+            '흡연율': {
+                'natural_range': (0.05, 0.60),  # 5-60%
+                'reasoning': '성인 흡연율의 자연 범위 (세계 통계 p5-p95)'
+            },
+            '이탈률': {
+                'natural_range': (0.00, 0.50),  # 0-50%
+                'reasoning': '비즈니스 이탈률의 자연 범위 (50% 초과는 비정상)'
+            },
+            'churn': {
+                'natural_range': (0.00, 0.50),
+                'reasoning': 'Churn rate 50% 초과는 비즈니스 지속 불가능'
+            }
+        }
+    
     def collect(self, question: str, context: Optional[Context] = None) -> List[SoftGuide]:
-        """통계 패턴 수집"""
+        """통계 패턴 수집 (deprecated)"""
+        
+        # v7.8.0: validate() 사용 권장
+        return []
+    
+    def validate(self, question: str, estimated_value: float) -> Optional[Dict[str, Any]]:
+        """
+        Soft Constraint 검증 (경고 + 사용자 확인)
+        
+        Args:
+            question: 질문
+            estimated_value: 추정값
+        
+        Returns:
+            None: 통과 ✅
+            Dict: 경고 정보 ⚠️
+        """
+        
+        # 키워드 매칭
+        for pattern_key, pattern_data in self.statistical_ranges.items():
+            if pattern_key in question.lower():
+                
+                lower, upper = pattern_data['natural_range']
+                
+                if estimated_value < lower or estimated_value > upper:
+                    
+                    severity = 'high' if (estimated_value < lower * 0.5 or estimated_value > upper * 1.5) else 'medium'
+                    
+                    return {
+                        'warning': True,
+                        'severity': severity,
+                        'message': (
+                            f"⚠️ 통계 패턴 이상치 감지\n"
+                            f"  추정값: {estimated_value:.3f}\n"
+                            f"  자연 범위: [{lower}, {upper}] (p5-p95)\n\n"
+                            f"📋 근거: {pattern_data['reasoning']}\n\n"
+                            f"⚠️ 이 추정값을 사용하시겠습니까?\n"
+                            f"   - 특수한 상황일 수 있음\n"
+                            f"   - 또는 추정 오류일 수 있음"
+                        ),
+                        'natural_range': (lower, upper),
+                        'user_confirmation_needed': True
+                    }
+        
+        return None  # 통과 ✅
+   
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 이하 기존 코드 (샘플 구현, deprecated)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    
+    def _collect_deprecated(self, question: str, context: Optional[Context] = None) -> List[SoftGuide]:
+        """통계 패턴 수집 (deprecated)"""
         
         guides = []
         
@@ -152,35 +324,89 @@ class StatisticalPatternSource(SoftConstraintBase):
 
 class BehavioralInsightSource(SoftConstraintBase):
     """
-    행동경제학 통찰
+    행동경제학 (v7.8.0 재설계)
     
     역할:
     -----
-    - 정성적 통찰만
-    - 정량화 포기
-    - 해석 보조
+    - Knock-out Gate: 인간본능 범위
+    - 예: 전환율 0.5-30%, 가격 민감도 0.3-2.5
+    
+    원칙:
+    -----
+    - 인간 행동은 일정 범위 내
+    - 범위 벗어남 = 명백히 비현실적
     """
     
     def __init__(self):
-        # 주요 행동경제학 패턴
-        self.patterns = {
-            'loss_aversion': {
-                'insight': '손실은 이득의 약 2배 크게 느껴짐',
-                'implication': '가격 인상 시 이탈 증가, 할인 시 유입 증가',
-                'quantitative_hint': {'direction': 'asymmetric', 'ratio': 2.0}
+        # 행동경제학 패턴 DB (자연 범위)
+        self.behavioral_ranges = {
+            '전환율': {
+                'natural_range': (0.005, 0.30),  # 0.5-30%
+                'reasoning': '전환율 30% 초과는 비현실적 (인간 행동 한계)'
             },
-            'hyperbolic_discounting': {
-                'insight': '먼 미래보다 가까운 미래를 과대평가',
-                'implication': '장기 구독보다 단기 선호',
+            'conversion': {
+                'natural_range': (0.005, 0.30),
+                'reasoning': 'Conversion rate > 30%는 극히 드뭄'
             },
-            'power_law': {
-                'insight': '20%가 80%를 차지 (파레토 법칙)',
-                'implication': '상위 고객에 집중',
+            '가격민감도': {
+                'natural_range': (0.3, 2.5),
+                'reasoning': '가격 탄력성의 일반적 범위'
             }
         }
     
     def collect(self, question: str, context: Optional[Context] = None) -> List[SoftGuide]:
-        """행동경제학 통찰 수집"""
+        """행동경제학 패턴 수집 (deprecated)"""
+        
+        # v7.8.0: validate() 사용 권장
+        return []
+    
+    def validate(self, question: str, estimated_value: float) -> Optional[Dict[str, Any]]:
+        """
+        Soft Constraint 검증 (경고 + 사용자 확인)
+        
+        Args:
+            question: 질문
+            estimated_value: 추정값
+        
+        Returns:
+            None: 통과 ✅
+            Dict: 경고 정보 ⚠️
+        """
+        
+        # 키워드 매칭
+        for pattern_key, pattern_data in self.behavioral_ranges.items():
+            if pattern_key in question.lower():
+                
+                lower, upper = pattern_data['natural_range']
+                
+                if estimated_value < lower or estimated_value > upper:
+                    
+                    severity = 'medium'  # 행동경제학은 medium
+                    
+                    return {
+                        'warning': True,
+                        'severity': severity,
+                        'message': (
+                            f"⚠️ 행동 패턴 이상치 감지\n"
+                            f"  추정값: {estimated_value:.3f}\n"
+                            f"  인간본능 범위: [{lower}, {upper}]\n\n"
+                            f"📋 근거: {pattern_data['reasoning']}\n\n"
+                            f"⚠️ 이 추정값을 사용하시겠습니까?\n"
+                            f"   - 혁신적 비즈니스 모델일 수 있음\n"
+                            f"   - 또는 추정 오류일 수 있음"
+                        ),
+                        'natural_range': (lower, upper),
+                        'user_confirmation_needed': True
+                    }
+        
+        return None  # 통과 ✅
+    
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 이하 기존 코드 (deprecated)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    
+    def _collect_deprecated(self, question: str, context: Optional[Context] = None) -> List[SoftGuide]:
+        """행동경제학 통찰 수집 (deprecated)"""
         
         guides = []
         

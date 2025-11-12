@@ -1,7 +1,7 @@
-# UMIS v7.6.2 초기 설정
+# UMIS v7.7.0 초기 설정
 
-**버전**: v7.6.2 (6-Agent + 5-Phase 완성)  
-**업데이트**: 2025-11-10
+**버전**: v7.7.0 (6-Agent + 5-Phase + Web 크롤링)  
+**업데이트**: 2025-11-12
 
 **대상:** 처음 사용하는 사용자  
 **소요:** 5분
@@ -64,6 +64,16 @@ OPENAI_API_KEY=your-api-key-here
 - https://platform.openai.com/api-keys
 - Sign up → Create API Key
 - 복사 → .env에 붙여넣기
+
+**v7.7.0 신규 설정 (선택):**
+```bash
+# Web Search 페이지 크롤링 (기본 활성화)
+WEB_SEARCH_FETCH_FULL_PAGE=true
+WEB_SEARCH_MAX_CHARS=5000
+WEB_SEARCH_TIMEOUT=10
+```
+
+**자세한 가이드:** `docs/guides/WEB_SEARCH_CRAWLING_GUIDE.md`
 
 ---
 
