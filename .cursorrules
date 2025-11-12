@@ -276,22 +276,27 @@ guardian_meta_rag:
 system_rag:
   enabled: true
   collection: "system_knowledge"
-  total_tools: 31
+  total_tools: 44  # v7.7.0: 15개 Complete + 29개 Task
   
   purpose: |
     AI가 UMIS 전체 시스템을 빠르게 파악하고
-    필요한 도구만 정확히 로드하여 컨텍스트 87% 절약
+    필요한 도구만 정확히 로드하여 컨텍스트 73-96% 절약
   
-  v7_6_2_update:
-    estimator_tools: 3
-    total: 31
-    coverage: "100% (5-Phase: P0/P1/P2/P3/P4)"
-    new_features:
-      - "Validator 우선 검색 (Phase 2, 85% 처리)"
-      - "Web Search (DuckDuckGo + Google)"
-      - "단위 자동 변환 (갑/년 → 갑/일)"
-      - "Relevance 검증 (GDP 오류 방지)"
-      - "Boundary 검증 (개념 기반)"
+  v7_7_0_structure:
+    tier_1_system: "9개 (umis.yaml 시스템 섹션, 0% 손실)"
+    tier_2_complete: "6개 (Agent 전체 컨텍스트, 권장!)"
+    tier_3_task: "29개 (세분화, 빠른 조회)"
+    
+    key_changes:
+      - "umis.yaml 100% RAG 마이그레이션 (0% 손실)"
+      - "Complete 도구 = umis.yaml 섹션 전체"
+      - "실제 작업 = Complete 사용 (umis.yaml 참조 불필요!)"
+      - "자동화 파이프라인 (sync_umis_to_rag.py)"
+    
+    usage_principle:
+      - "⭐ 실제 작업: Tier 2 (Complete) 사용!"
+      - "빠른 조회: Tier 3 (Task) 사용"
+      - "시스템 이해: Tier 1 (System) 사용"
 
 # ========================================
 # AI 필수 실행 프로세스 (모든 프로젝트 시작 시!)
@@ -308,92 +313,91 @@ ai_mandatory_process:
   # ===== STEP 1: umis_core.yaml 로드 (필수!) =====
   step_1_load_index:
     action: "read_file tool 사용"
-      file: "umis_core.yaml"
-    reason: "UMIS 전체 개요 파악 (709줄, INDEX)"
+    file: "umis_core.yaml"
+    reason: "3-Tier 구조 파악 및 도구 선택 (INDEX)"
     
     what_to_read:
       critical:
-        - "Lines 40-87: Quick Start (AI 사용법)"
-        - "Lines 88-110: Agent Selection (어떤 Agent?)"
-        - "Lines 289-469: Decision Guide (어떤 도구?)"
+        - "ai_guide: 의도 → Tier 매핑"
+        - "tools: 44개 도구 목록 (3-Tier)"
+        - "usage_patterns: 사용 패턴 4개"
       
       optional:
-        - "Lines 477-686: Agent Summary (상세)"
+        - "key_principles: 핵심 원칙"
     
     key_takeaways:
-      - "28개 도구 tool_key 형식"
-      - "Agent별 주요 도구"
-      - "Workflow 순서"
+      - "44개 도구 (System:9, Complete:6, Task:29)"
+      - "⭐ 실제 작업 = Complete 사용!"
+      - "Complete = umis.yaml 참조 불필요"
     
     mandatory: true
     skip_condition: "none (항상 실행)"
   
-  # ===== STEP 2: 쿼리 분석 =====
-    step_2_parse_query:
-    action: "사용자 요청에서 필요한 Agent + 도구 파악"
+  # ===== STEP 2: 쿼리 분석 + Tier 선택 =====
+  step_2_parse_query_and_select_tier:
+    action: "사용자 의도 파악 → 적절한 Tier 선택"
     
-    parsing_rules:
+    intent_detection:
+      system_understanding:
+        keywords: ["시스템 구조", "워크플로우", "협업 방식"]
+        tier: "Tier 1 (System)"
+        tools: ["tool:system:system_architecture", "tool:system:implementation_guide"]
       
-      agent_detection:
-        - "@Explorer" → agent=explorer
-        - "@Quantifier" → agent=quantifier
-        - "@Validator" → agent=validator
-        - "@Observer" → agent=observer
-        - "@Guardian" → agent=guardian
-        - "@Fermi" → agent=estimator
-        - "@Estimator" → agent=estimator
-        - "시장 분석" → observer+explorer+quantifier (estimator 협업)
-        - "기회 발굴" → explorer (estimator 협업)
-        - "SAM 계산" → quantifier+validator (estimator 협업)
-        - "값 추정" → estimator
-        - "LTV|CAC|Churn" → estimator
+      agent_work:
+        keywords: ["@Observer", "@Explorer", "시장 분석", "기회 발굴"]
+        tier: "Tier 2 (Complete) ⭐ 권장!"
+        tools: ["tool:observer:complete", "tool:explorer:complete"]
+        note: "실제 작업 = 항상 Complete!"
       
-      tool_key_mapping:
-        explorer:
-          "패턴": "tool:explorer:pattern_search"
-          "기회": "tool:explorer:7_step_process"
-          "검증": "tool:explorer:validation_protocol"
-          "가설": "tool:explorer:hypothesis_generation"
+      quick_check:
+        keywords: ["방법만", "개념만", "빠르게"]
+        tier: "Tier 3 (Task)"
+        tools: ["tool:observer:market_structure", "tool:quantifier:sam_4methods"]
+    
+    agent_detection:
+      - "@Observer" → tool:observer:complete (Complete!)
+      - "@Explorer" → tool:explorer:complete (Complete!)
+      - "@Quantifier" → tool:quantifier:complete (Complete!)
+      - "@Validator" → tool:validator:complete (Complete!)
+      - "@Guardian" → tool:guardian:complete (Complete!)
+      - "@Fermi|@Estimator" → tool:estimator:complete (Complete!)
+      
+      - "시장 분석" → observer+explorer+quantifier complete
+      - "기회 발굴" → explorer complete
+      - "SAM 계산" → quantifier complete
+      - "값 추정" → estimator complete
+      
+      tool_selection_v7_7_0:
+        default_strategy: "실제 작업 = Complete, 빠른 조회 = Task"
         
-        quantifier:
-          "SAM|시장 규모": "tool:quantifier:sam_4methods"
-          "성장": "tool:quantifier:growth_analysis"
-          "시나리오": "tool:quantifier:scenario_planning"
-          "벤치마크": "tool:quantifier:benchmark_analysis"
+        complete_tools:
+          observer: "tool:observer:complete ⭐ (실제 작업 권장)"
+          explorer: "tool:explorer:complete ⭐ (실제 작업 권장)"
+          quantifier: "tool:quantifier:complete ⭐ (실제 작업 권장)"
+          validator: "tool:validator:complete ⭐ (실제 작업 권장)"
+          guardian: "tool:guardian:complete ⭐ (실제 작업 권장)"
+          estimator: "tool:estimator:complete ⭐ (실제 작업 권장)"
         
-        validator:
-          "정의": "tool:validator:data_definition"
-          "출처": "tool:validator:source_verification"
-          "소싱": "tool:validator:creative_sourcing"
-          "Gap": "tool:validator:gap_analysis"
+        task_tools:
+          explorer:
+            "패턴만": "tool:explorer:pattern_search"
+            "7단계만": "tool:explorer:7_step_process"
+          
+          quantifier:
+            "SAM만": "tool:quantifier:sam_4methods"
+            "성장만": "tool:quantifier:growth_analysis"
+          
+          observer:
+            "구조만": "tool:observer:market_structure"
+            "가치사슬만": "tool:observer:value_chain"
+          
+          validator:
+            "정의만": "tool:validator:data_definition"
         
-        observer:
-          "구조": "tool:observer:market_structure"
-          "가치사슬": "tool:observer:value_chain"
-          "비효율": "tool:observer:inefficiency_detection"
-          "파괴": "tool:observer:disruption_opportunity"
-        
-        guardian:
-          "진행": "tool:guardian:progress_monitoring"
-          "품질": "tool:guardian:quality_evaluation"
-        
-        estimator:
-          "추정": "tool:estimator:estimate"
-          "LTV|CAC|Churn|ARPU": "tool:estimator:estimate"
-          "Payback|Rule of 40|NRR": "tool:estimator:estimate"
-          "교차검증": "tool:estimator:cross_validation"
-          "학습": "tool:estimator:learning_system"
-        
-        framework:
-          "시장 정의": "tool:framework:13_dimensions"
-          "Discovery": "tool:framework:discovery_sprint"
-          "7 Powers": "tool:framework:7_powers"
-          "경쟁": "tool:framework:competitive_analysis"
-        
-        universal:
-          "guestimate|추정": "tool:universal:guestimation"
-          "reasoner|정밀": "tool:universal:domain_reasoner_10_signals"
-          "hybrid|auto": "tool:universal:hybrid_strategy"
+        system_tools:
+          "시스템 구조": "tool:system:system_architecture"
+          "구현 가이드": "tool:system:implementation_guide"
+          "모든 Agent": "tool:system:agents (16,578 토큰, 주의!)"
   
   # ===== STEP 3: System RAG 검색 (필수!) =====
   step_3_execute_system_rag:
@@ -403,25 +407,31 @@ ai_mandatory_process:
     
     execution_examples:
       
-      example_1_single_tool:
+      example_1_single_agent:
         query: "@Explorer, 구독 모델 패턴"
-        tool_key: "tool:explorer:pattern_search"
-        command: "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
-        expected_output: "도구 content (~400줄)"
-        context_total: "709 (umis_core) + 400 (도구) = 1,109줄"
+        tool_key: "tool:explorer:complete"
+        tier: "Tier 2 (Complete)"
+        command: "python3 scripts/query_system_rag.py tool:explorer:complete"
+        expected_output: "Explorer 전체 컨텍스트 (~460줄, 14,237자)"
+        context_total: "~200줄 (umis_core) + ~460줄 (complete) = ~660줄 (~15,000 토큰)"
+        savings: "96%"
+        note: "umis.yaml 참조 불필요!"
       
-      example_2_multiple_tools:
+      example_2_market_analysis:
         query: "음악 스트리밍 시장 분석"
+        tier: "Tier 2 (Complete)"
         tool_keys:
-          - "tool:observer:market_structure"
-          - "tool:explorer:pattern_search"
-          - "tool:quantifier:sam_4methods"
+          - "tool:observer:complete"
+          - "tool:explorer:complete"
+          - "tool:quantifier:complete"
         commands:
-          - "python3 scripts/query_system_rag.py tool:observer:market_structure"
-          - "python3 scripts/query_system_rag.py tool:explorer:pattern_search"
-          - "python3 scripts/query_system_rag.py tool:quantifier:sam_4methods"
-        expected_output: "3개 도구 content (~1,200줄)"
-        context_total: "709 + 1,200 = 1,909줄 (vs 6,102줄, 69% 절약)"
+          - "python3 scripts/query_system_rag.py tool:observer:complete"
+          - "python3 scripts/query_system_rag.py tool:explorer:complete"
+          - "python3 scripts/query_system_rag.py tool:quantifier:complete"
+        expected_output: "3개 Agent 전체 컨텍스트"
+        context_total: "~200줄 + ~1,000줄 = ~1,200줄 (~12,000 토큰)"
+        savings: "70%"
+        note: "3개 Agent 모두 전체 작업 방식으로 완벽한 협업!"
       
       example_3_workflow:
         query: "피아노 구독 서비스 Discovery Sprint"
