@@ -1,0 +1,29 @@
+account_count: 12
+company: 이마트
+parsing_method: standard_account_matching
+quality_validation:
+  confidence: 0.6
+  dart_total_billion: 38818.40607746
+  difference_ratio: 0.9679143921459669
+  grade: C
+  matched_count: 12
+  matched_total_billion: 76391.3
+  unknown_ratio: 0
+  unmatched_count: 22
+  validation_date: '2025-11-13'
+rcept_no: '20240320001504'
+standard_accounts:
+  감가상각비: 1085052.0
+  광고선전비: 290481.0
+  기타_수선비: 96917.0
+  기타_여비교통비: 26998.0
+  무형자산상각비: 215474.0
+  복리후생비: 408041.0
+  세금과공과금: 318604.0
+  수도광열비: 254884.0
+  지급수수료: 1977654.0
+  지급임차료: 266279.0
+  직원급여: 2555545.0
+  판매촉진비: 143201.0
+unit: 백만원
+year: 2023

@@ -1,0 +1,38 @@
+company: CJ ENM
+year: 2024
+rcept_no: '20250319000884'
+unit: 천원
+parsing_method: optimized_pipeline_v2
+sga_details_million:
+  급여: 153371688.0
+  퇴직급여: 21799401.0
+  복리후생비: 42173086.0
+  임차료: 7900945.0
+  감가상각비: 27577773.0
+  무형자산상각비: 28517365.0
+  지급수수료: 275698899.0
+  광고선전비: 432677424.0
+  판매촉진비: 4777116.0
+  회의비: 9439145.0
+  교육훈련비: 1781521.0
+  수도광열비: 2421719.0
+  세금과공과: 10572886.0
+  여비교통비: 2926633.0
+  통신비: 11036042.0
+  수선비: 4895393.0
+  조사연구비: 4300975.0
+  대외업무활동비: 7058134.0
+  기타: 7496084.0
+quality_validation:
+  grade: A
+  confidence: 0.95
+  dart_total_billion: 11089.34179112
+  parsed_total_billion: 10564.22229
+  difference_ratio: -0.047353531977930303
+  unknown_ratio: 0.047353531977930303
+  used_llm: false
+  validation_date: '2025-11-14'
+section_info:
+  section_num: 29
+  selection_method: amount_based
+  amount_diff_ratio: 0.047353531977930303
