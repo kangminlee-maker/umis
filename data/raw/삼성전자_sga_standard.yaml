@@ -1,0 +1,25 @@
+account_count: 8
+company: 삼성전자
+parsing_method: standard_account_matching
+quality_validation:
+  confidence: 0.8
+  dart_total_billion: 378768.35
+  difference_ratio: -0.0963182905857893
+  grade: B
+  matched_count: 7
+  matched_total_billion: 342286.03
+  unknown_ratio: 0.0963182905857893
+  unmatched_count: 5
+  validation_date: '2025-11-13'
+rcept_no: '20240312000736'
+standard_accounts:
+  감가상각비: 1574757.0
+  광고선전비: 6112951.0
+  기타(미상): 3648232.0
+  무형자산상각비: 664346.0
+  운반비: 3214301.0
+  지급수수료: 7457896.0
+  직원급여: 8093703.0
+  판매촉진비: 7110649.0
+unit: 백만원
+year: 2023

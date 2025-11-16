@@ -1,0 +1,99 @@
+version: 1.0_economics
+created: '2025-11-13'
+status: complete_with_classification
+company_info:
+  company_name: CJ ENM
+  industry: 엔터/미디어
+  region: 한국
+  year: 2023
+financial_statement_info:
+  year: 2023
+  report_type: 사업보고서
+  rcept_no: '20240318000857'
+  fs_type: 개별재무제표 (OFS)
+  fs_div: OFS
+income_statement:
+  key_accounts_billion:
+    revenue: 26395.6
+    cogs: 14218.7
+    gross_profit: 12176.9
+    sga_total: 10590.5
+    operating_profit: 1593.2
+  ratios:
+    cogs_ratio: 0.5387
+    gross_margin: 0.4613
+    sga_ratio: 0.4012
+    operating_margin: 0.0604
+sga_details:
+  total_billion: 44596.6
+  count: 31
+  unit_original: 천원
+  details_billion:
+    컨텐츠제작비: 9523.7
+    무형자산상각비: 8991.1
+    지급수수료: 5528.0
+    급여: 5450.5
+    광고선전비: 4625.1
+    매입 등: 3144.1
+    기타: 2297.8
+    복리후생비: 1060.9
+    감가상각비: 774.7
+    운반비: 714.2
+    퇴직급여: 497.2
+    세금과공과: 354.5
+    임차료: 322.3
+    전송망경비: 249.8
+    대외업무활동비: 143.2
+    회의비: 110.4
+    통신비: 105.1
+    유지보수료: 101.2
+    판매촉진비: 99.4
+    조사연구비: 89.8
+    여비교통비: 89.1
+    수선비: 73.2
+    수도광열비: 53.9
+    교육훈련비: 49.2
+    소모품비: 49.1
+    포장재료비: 37.6
+    차량유지비: 25.3
+    보험료: 21.2
+    도서인쇄비: 7.6
+    행사비: 5.0
+    대손상각비(대손충당금환입): 2.5
+cost_classification:
+  variable_costs_billion:
+    광고선전비: 4625.1
+    운반비: 714.2
+  semi_variable_costs_billion:
+    지급수수료: 5528.0
+  fixed_costs_billion:
+    컨텐츠제작비: 9523.7
+    무형자산상각비: 8991.1
+    급여: 5450.5
+    매입 등: 3144.1
+    기타: 2297.8
+    복리후생비: 1060.9
+    감가상각비: 774.7
+    퇴직급여: 497.2
+    세금과공과: 354.5
+    임차료: 322.3
+  totals:
+    variable: 5339.3
+    semi_variable: 5528.0
+    fixed: 33729.3
+unit_economics:
+  gross_profit_billion: 12176.9
+  gross_margin: 0.4613
+  variable_sga_billion: 10867.2
+  variable_sga_ratio: 0.4117
+  contribution_margin_billion: 1309.6
+  contribution_margin_ratio: 0.0496
+  fixed_sga_billion: 33729.3
+  fixed_sga_ratio: 1.2778
+  operating_profit_billion: 1593.2
+  operating_margin: 0.0604
+  analysis:
+    cm_vs_om: 공헌이익 5.0% > 영업이익 6.0%
+    variable_intensity: 0.9504
+    business_model: 엔터/미디어
+    health: weak

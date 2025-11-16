@@ -1,0 +1,27 @@
+company: SK하이닉스
+year: 2024
+rcept_no: '20250319000665'
+unit: 백만원
+parsing_method: hybrid_v1_rule_numbers_llm_decision
+sga_details_million:
+  급여: 739436.0
+  퇴직급여: 32529.0
+  복리후생비: 136436.0
+  지급수수료: 370123.0
+  감가상각비: 191902.0
+  무형자산상각비: 218967.0
+  광고선전비: 104634.0
+  기타: 271606.0
+  경상개발비: 4054563.0
+hybrid_analysis:
+  total_extracted: 15
+  llm_include_count: 9
+  llm_exclude_count: 5
+  final_count: 9
+  llm_reasoning: 소계 위 8개 일반 SG&A + 소계 아래 경상개발비(비용화 R&D) 포함. 총지출액과 자산화는 계산 과정이므로 제외.
+  llm_confidence: 0.95
+quality_validation:
+  dart_total_billion: 62486.6
+  parsed_total_billion: 61201.96
+  difference_ratio: -0.020558647774082756
+  validation_date: '2025-11-14'

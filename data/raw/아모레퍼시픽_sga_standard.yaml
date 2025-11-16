@@ -1,0 +1,24 @@
+account_count: 7
+company: 아모레퍼시픽
+parsing_method: standard_account_matching
+quality_validation:
+  confidence: 0.6
+  dart_total_billion: 14930.42784135
+  difference_ratio: 0.5601589082053918
+  grade: C
+  matched_count: 7
+  matched_total_billion: 23293.84
+  unknown_ratio: 0
+  unmatched_count: 24
+  validation_date: '2025-11-13'
+rcept_no: '20240307000545'
+standard_accounts:
+  감가상각비: 208433.0
+  광고선전비: 502436.0
+  복리후생비: 101311.0
+  세금과공과금: 24044.0
+  운반비: 103141.0
+  지급수수료: 913552.0
+  직원급여: 476467.0
+unit: 백만원
+year: 2023
