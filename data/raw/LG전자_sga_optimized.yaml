@@ -1,0 +1,32 @@
+company: LG전자
+year: 2024
+rcept_no: '20250317001029'
+unit: 백만원
+parsing_method: optimized_pipeline_v2
+sga_details_million:
+  급여: 1786446.0
+  퇴직급여: 179259.0
+  복리후생비: 336199.0
+  운반비: 892061.0
+  지급임차료: 34652.0
+  지급수수료: 2292579.0
+  감가상각비: 170887.0
+  무형자산상각비: 115546.0
+  광고선전비: 849698.0
+  판매촉진비: 156288.0
+  서비스활동비: 324401.0
+  대손상각비: 7886.0
+  기타: 339071.0
+quality_validation:
+  grade: A
+  confidence: 0.95
+  dart_total_billion: 78437.8
+  parsed_total_billion: 74849.73
+  difference_ratio: -0.045744143767418345
+  unknown_ratio: 0.045744143767418345
+  used_llm: false
+  validation_date: '2025-11-14'
+section_info:
+  section_num: 28
+  standard_account_count: 10
+  score: 60

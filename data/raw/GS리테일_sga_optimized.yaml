@@ -1,0 +1,44 @@
+company: GS리테일
+year: 2024
+rcept_no: '20250312000991'
+unit: 백만원
+parsing_method: optimized_pipeline_v2
+sga_details_million:
+  급여및상여: 398668.0
+  퇴직급여: 28990.0
+  복리후생비: 69340.0
+  교육훈련비: 5833.0
+  회의비: 3017.0
+  여비교통비: 12646.0
+  통신비: 3640.0
+  수도광열비: 19814.0
+  보험료: 4374.0
+  세금과공과: 38753.0
+  지급임차료: 34926.0
+  광고선전비: 97233.0
+  판매촉진비: 68646.0
+  장치장식비: 7961.0
+  감가상각비: 202134.0
+  투자부동산감가상각비: 433.0
+  사용권자산감가상각비: 252722.0
+  무형자산상각비: 33309.0
+  수선비: 21542.0
+  포장비: 1413.0
+  소모품비: 11031.0
+  접대비: 2307.0
+  전산수수료: 44079.0
+  인건비성수수료: 39675.0
+  지급수수료 등: 1057366.0
+quality_validation:
+  grade: A
+  confidence: 0.95
+  dart_total_billion: 25639.94201529
+  parsed_total_billion: 24598.52
+  difference_ratio: -0.04061717513514505
+  unknown_ratio: 0.04061717513514505
+  used_llm: false
+  validation_date: '2025-11-14'
+section_info:
+  section_num: 28
+  standard_account_count: 24
+  score: 120

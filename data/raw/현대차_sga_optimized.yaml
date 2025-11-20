@@ -1,0 +1,34 @@
+company: 현대차
+year: 2024
+rcept_no: '20250319001001'
+unit: 백만원
+parsing_method: optimized_pipeline_v2
+sga_details_million:
+  단기종업원급여: 94658.0
+  기타장기종업원급여: 251.0
+  퇴직급여: 6599.0
+  복리후생비: 20156.0
+  전산운용비: 7646.0
+  임차료: 5053.0
+  지급수수료: 8036.0
+  접대비: 4878.0
+  광고선전비: 2013.0
+  감가상각비: 10556.0
+  연수비: 583.0
+  무형자산상각비: 5935.0
+  세금과공과금: 6069.0
+  통신비: 6180.0
+  기타: 7825.0
+quality_validation:
+  grade: C
+  confidence: 0.6
+  dart_total_billion: 2087.56
+  parsed_total_billion: 1864.38
+  difference_ratio: -0.10690950200233758
+  unknown_ratio: 0.10690950200233758
+  used_llm: false
+  validation_date: '2025-11-14'
+section_info:
+  section_num: 31
+  selection_method: amount_based
+  amount_diff_ratio: 0.10690950200233758

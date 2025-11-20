@@ -1,0 +1,36 @@
+company: SK하이닉스
+year: 2024
+rcept_no: '20250319000665'
+unit: 백만원
+parsing_method: llm_structure_v1
+sga_details_million:
+  급여: 1257824.0
+  퇴직급여: 41440.0
+  복리후생비: 234562.0
+  지급수수료: 773853.0
+  운반보관비: 54473.0
+  세금과공과: 100974.0
+  광고선전비: 123462.0
+  소모품비: 112233.0
+  판매촉진비: 216473.0
+  품질관리비: 48465.0
+  기타: 401099.0
+  경상개발비: 4436341.0
+llm_analysis:
+  structure_analysis: 소계 위 11개 일반 SG&A 항목 + 소계 아래 경상개발비(계산됨) = 총 12개 실제 SG&A. 경상개발비는
+    총지출액 - 자산화로 계산되며, 비용화된 R&D이므로 SG&A 포함.
+  confidence: 0.95
+  reasoning: 구조 분석 결과, 소계 위 항목들과 소계 아래 경상개발비를 포함하는 것이 타당. 경상개발비는 R&D 비용화 항목으로 SG&A에
+    포함되는 것이 회계 원칙에 부합.
+  excluded_items:
+  - name: 소계
+    reason: 합계 항목
+  - name: 개발비 자산화
+    reason: 무형자산 (비용 아님)
+  - name: 연구개발비 총지출액
+    reason: 총액 (세부 아님)
+quality_validation:
+  dart_total_billion: 62486.6
+  parsed_total_billion: 78011.99
+  difference_ratio: 0.24845950971888384
+  validation_date: '2025-11-14'
