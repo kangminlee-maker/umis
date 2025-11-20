@@ -1,0 +1,805 @@
+# ========================================
+# Strategy Playbook Deliverable Specification
+# ========================================
+# Agent: Explorer
+# Purpose: 검증된 기회 → 실행 가능한 전략 Playbook
+# Version: v7.10.0 (Gap #3)
+# Created: 2025-11-12
+
+spec_meta:
+  spec_version: "1.0"
+  agent_id: "explorer"
+  agent_role: "Explorer"
+  deliverable_type: "strategy_playbook"
+  created: "2025-11-12"
+  version: "7.10.0"
+  status: "production"
+
+deliverable_info:
+  name: "Strategy Playbook (전략 실행서)"
+  description: |
+    검증된 기회를 실행 가능한 전략으로 변환
+    
+    포함 내용:
+    - GTM (Go-to-Market) Strategy
+    - Product Roadmap (RICE 우선순위)
+    - Resource Plan (팀, 예산, 채용)
+    - Execution Milestones (3/6/12개월)
+    - Risk Register (리스크 + 대응 계획)
+  
+  purpose: |
+    Q14 (어떻게 뚫어야하는데?) → 95%+
+    Q15 (뭘 해야하는데?) → 80%+
+    
+    팀에 즉시 공유 가능한 구체적 실행 계획
+  
+  when_to_create: |
+    - 7-Step 기회 검증 완료 후
+    - Observer 시장 분석 완료 후
+    - Quantifier SAM 계산 완료 후
+    - 실행 단계로 전환 준비 시
+  
+  key_outputs:
+    - "strategy_playbook.md (상세 전략서)"
+    - "strategy_playbook.xlsx (실행 계획표)"
+
+# ========================================
+# 입력 요구사항
+# ========================================
+
+input_requirements:
+  
+  required_inputs:
+    validated_opportunity:
+      source: "Explorer 7-Step 완료"
+      fields:
+        - opportunity_id: "OPP_XXX"
+        - title: "기회 제목"
+        - value_proposition: "가치 제안"
+        - target_customer: "타겟 고객"
+        - core_features: "핵심 기능 리스트"
+        - revenue_model: "수익 모델"
+        - unit_economics: "단위 경제성"
+      
+    market_context:
+      source: "Observer 시장 분석"
+      fields:
+        - market_structure: "시장 구조"
+        - inefficiencies: "비효율성 리스트"
+        - competitors: "경쟁자 정보"
+        - value_chain: "가치사슬"
+      
+    quantified_market:
+      source: "Quantifier SAM 계산"
+      fields:
+        - sam: "SAM (억원)"
+        - target_share: "목표 점유율 (%)"
+        - unit_economics: "단위 경제성 검증"
+        - growth_rate: "시장 성장률"
+  
+  optional_inputs:
+    estimator_metrics:
+      source: "Estimator 지표 추정"
+      fields:
+        - ltv: "고객 생애 가치"
+        - cac: "고객 획득 비용"
+        - churn: "이탈률"
+        - arpu: "사용자당 매출"
+
+# ========================================
+# 출력 파일 구조
+# ========================================
+
+output_files:
+  
+  markdown:
+    filename: "strategy_playbook.md"
+    location: "projects/{project_name}/02_analysis/explorer/"
+    sections: 7
+    
+    frontmatter:
+      deliverable_type: "strategy_playbook"
+      agent: "Explorer"
+      created_at: "{timestamp}"
+      opportunity_id: "{opportunity_id}"
+      project_name: "{project_name}"
+      version: "1.0"
+  
+  excel:
+    filename: "strategy_playbook.xlsx"
+    location: "projects/{project_name}/02_analysis/explorer/"
+    sheets: 6
+    
+    sheet_structure:
+      - name: "Executive Summary"
+        columns: ["항목", "내용"]
+      
+      - name: "GTM Strategy"
+        columns: ["영역", "전략", "세부 내용", "담당", "예산", "타이밍"]
+      
+      - name: "Product Roadmap"
+        columns: ["Feature", "Description", "RICE Score", "Reach", "Impact", "Confidence", "Effort", "Priority", "Timeline"]
+      
+      - name: "Resource Plan"
+        columns: ["역할", "인원", "타이밍", "월 급여", "비고"]
+      
+      - name: "Milestones"
+        columns: ["Milestone", "타이밍", "Metric", "목표값", "Key Activities", "Success Criteria", "Status"]
+      
+      - name: "Risk Register"
+        columns: ["Risk ID", "Risk", "Probability", "Impact", "Severity", "Mitigation", "Contingency", "Owner", "Status"]
+
+# ========================================
+# Markdown 섹션 상세
+# ========================================
+
+markdown_sections:
+  
+  section_1_executive_summary:
+    title: "Executive Summary"
+    order: 1
+    
+    content:
+      opportunity_overview:
+        - 기회 제목
+        - 가치 제안 (1-2문장)
+        - 타겟 고객
+        - SAM 및 목표 점유율
+      
+      strategy_overview:
+        - GTM 전략 요약 (1-2문장)
+        - 핵심 차별화 요소
+        - 예상 투자 규모
+        - 목표 달성 시점
+      
+      key_milestones:
+        - 3개월: MVP 런칭
+        - 6개월: PMF 검증
+        - 12개월: 스케일업 준비
+  
+  section_2_gtm_strategy:
+    title: "Go-to-Market Strategy"
+    order: 2
+    
+    subsections:
+      customer_acquisition:
+        title: "고객 획득 전략"
+        content:
+          - 타겟 세그먼트 정의
+          - 세그먼트 크기 추정
+          - 획득 채널 (우선순위별)
+          - 채널별 CAC 추정
+          - Acquisition Funnel
+          - Target CAC
+      
+      distribution:
+        title: "유통 전략"
+        content:
+          - Primary channel
+          - Channel mix
+          - Partnership 전략
+          - 파트너 유형 및 조건
+      
+      pricing:
+        title: "가격 전략"
+        content:
+          - Pricing model
+          - Price point
+          - Pricing strategy
+          - 경쟁사 비교
+          - Value-based rationale
+      
+      marketing_approach:
+        title: "마케팅 접근법"
+        content:
+          - Positioning
+          - Key message
+          - Content strategy
+          - 예산 배분
+  
+  section_3_product_roadmap:
+    title: "Product Roadmap"
+    order: 3
+    
+    content:
+      mvp:
+        title: "MVP (3개월)"
+        description: "Must-have 핵심 기능"
+        features_count: 3
+        rice_scoring: true
+      
+      phase_2:
+        title: "Phase 2 (6개월)"
+        description: "확장 기능"
+        features_count: 4
+        rice_scoring: true
+      
+      phase_3:
+        title: "Phase 3 (12개월)"
+        description: "성숙 기능"
+        features_count: "나머지"
+        rice_scoring: true
+    
+    rice_framework:
+      reach: "영향 받는 고객 수 (월간)"
+      impact: "고객 가치 (Massive=3, High=2, Medium=1, Low=0.5)"
+      confidence: "확신도 (%, 100=확실, 50=불확실)"
+      effort: "개발 공수 (person-months)"
+      formula: "(Reach × Impact × Confidence) / Effort"
+  
+  section_4_resource_plan:
+    title: "Resource Plan"
+    order: 4
+    
+    subsections:
+      team_structure:
+        title: "팀 구조"
+        phases:
+          month_3:
+            - "CEO/Founder: 1명"
+            - "개발: 2명"
+            - "디자인: 1명"
+            - "마케팅: 1명"
+            - "총: 5명"
+          
+          month_6:
+            - "개발: 4명 (+2)"
+            - "마케팅/영업: 3명 (+2)"
+            - "CS: 1명 (+1)"
+            - "총: 9명"
+          
+          month_12:
+            - "개발: 8명"
+            - "마케팅/영업: 6명"
+            - "CS/운영: 3명"
+            - "데이터/분석: 2명"
+            - "총: 20명"
+      
+      budget:
+        title: "예산 계획"
+        categories:
+          - 인건비
+          - 마케팅
+          - 인프라/서버
+          - 사무실/운영
+          - 기타
+        
+        by_phase:
+          month_3: "총 예산"
+          month_6: "총 예산"
+          month_12: "총 예산"
+      
+      key_hires:
+        title: "핵심 채용"
+        priority_roles:
+          - "CTO/Tech Lead (Month 1)"
+          - "Product Manager (Month 3)"
+          - "Sales Lead (Month 6)"
+          - "Marketing Lead (Month 6)"
+          - "Customer Success Lead (Month 9)"
+  
+  section_5_execution_milestones:
+    title: "Execution Milestones"
+    order: 5
+    
+    milestone_3_months:
+      milestone: "MVP 런칭"
+      metrics:
+        customers: "목표 고객 수"
+        mrr: "월 반복 매출"
+        churn: "이탈률 목표"
+      
+      key_activities:
+        - "MVP 개발 완료"
+        - "Beta 테스트 (50명)"
+        - "첫 100명 고객 확보"
+      
+      success_criteria:
+        - "Product-Market Fit 초기 검증"
+        - "Churn < 10%"
+        - "NPS > 40"
+    
+    milestone_6_months:
+      milestone: "PMF 검증"
+      metrics:
+        customers: "목표 고객 수"
+        mrr: "월 반복 매출"
+        churn: "이탈률 목표"
+      
+      key_activities:
+        - "Phase 2 기능 출시"
+        - "파트너십 3개 확보"
+        - "500명 돌파"
+      
+      success_criteria:
+        - "PMF 확정 (재구매 > 60%)"
+        - "LTV/CAC > 2.0"
+        - "Churn < 7%"
+    
+    milestone_12_months:
+      milestone: "스케일업 준비"
+      metrics:
+        customers: "목표 고객 수"
+        arr: "연 반복 매출"
+        churn: "이탈률 목표"
+      
+      key_activities:
+        - "Phase 3 기능 출시"
+        - "시리즈 A 투자 유치"
+        - "팀 확장 (20명)"
+      
+      success_criteria:
+        - "ARR 목표 달성"
+        - "Rule of 40 > 40%"
+        - "시장 점유율 1%"
+  
+  section_6_risk_mitigation:
+    title: "Risk Mitigation"
+    order: 6
+    
+    subsections:
+      key_risks:
+        title: "주요 리스크"
+        risk_template:
+          risk_id: "RISK_XXX"
+          risk: "리스크 설명"
+          probability: "high/medium/low"
+          impact: "high/medium/low"
+          severity: "critical/high/medium/low"
+          mitigation: "대응 계획 리스트"
+          contingency: "비상 계획"
+        
+        example_risks:
+          - "경쟁사 가격 인하"
+          - "Churn Rate 목표 미달성"
+          - "파트너십 확보 지연"
+          - "핵심 인력 이탈"
+      
+      critical_assumptions:
+        title: "핵심 가정"
+        assumption_template:
+          assumption_id: "ASM_XXX"
+          assumption: "가정 내용"
+          basis: "근거"
+          test_method: "검증 방법"
+          success_criteria: "성공 기준"
+        
+        example_assumptions:
+          - "Churn Rate 5% 유지"
+          - "가격 수용성"
+          - "채널 전환율"
+          - "파트너십 성사율"
+      
+      contingency_plans:
+        title: "비상 계획"
+        by_scenario:
+          - "PMF 지연 → Pivot 방향"
+          - "자금 부족 → 비용 절감 계획"
+          - "경쟁 심화 → 차별화 강화"
+  
+  section_7_appendix:
+    title: "Appendix"
+    order: 7
+    
+    content:
+      - 상세 재무 모델
+      - 시장 분석 요약 (Observer)
+      - 기회 검증 요약 (Explorer 7-Step)
+      - SAM 계산 상세 (Quantifier)
+      - 핵심 지표 추정 (Estimator)
+
+# ========================================
+# Excel 시트 상세
+# ========================================
+
+excel_sheets:
+  
+  sheet_1_executive_summary:
+    name: "Executive Summary"
+    description: "전략 개요 및 핵심 정보"
+    
+    structure:
+      - section: "기회 개요"
+        rows:
+          - ["항목", "내용"]
+          - ["기회 제목", "{opportunity_title}"]
+          - ["가치 제안", "{value_proposition}"]
+          - ["타겟 고객", "{target_customer}"]
+          - ["SAM", "{sam}억원"]
+          - ["목표 점유율", "{target_share}%"]
+      
+      - section: "전략 개요"
+        rows:
+          - ["GTM 전략", "{gtm_summary}"]
+          - ["핵심 차별화", "{differentiation}"]
+          - ["예상 투자", "{investment}억원"]
+          - ["목표 시점", "{timeline}"]
+      
+      - section: "핵심 Milestone"
+        rows:
+          - ["시점", "Milestone", "Metric"]
+          - ["3개월", "MVP 런칭", "MRR {mrr_3m}"]
+          - ["6개월", "PMF 검증", "MRR {mrr_6m}"]
+          - ["12개월", "스케일업", "ARR {arr_12m}"]
+  
+  sheet_2_gtm_strategy:
+    name: "GTM Strategy"
+    description: "Go-to-Market 전략 상세"
+    
+    columns:
+      - 영역
+      - 전략
+      - 세부 내용
+      - 담당
+      - 예산
+      - 타이밍
+    
+    rows_structure:
+      customer_acquisition:
+        - 영역: "고객 획득"
+        - 전략: "Direct Sales"
+        - 세부: "초기 고객 밀착, 피드백 수집"
+        - 담당: "CEO + 영업 1명"
+        - 예산: "월 500만원"
+        - 타이밍: "Month 1-6"
+      
+      distribution:
+        - 영역: "유통"
+        - 전략: "Direct Online"
+        - 세부: "웹사이트 + 앱"
+      
+      pricing:
+        - 영역: "가격"
+        - 전략: "Value-based"
+        - 세부: "월 12만원 (경쟁사 대비 -20%)"
+      
+      marketing:
+        - 영역: "마케팅"
+        - 전략: "Content Marketing"
+        - 세부: "블로그, YouTube, SNS"
+  
+  sheet_3_product_roadmap:
+    name: "Product Roadmap"
+    description: "제품 기능 우선순위 (RICE)"
+    
+    columns:
+      - Feature
+      - Description
+      - Reach
+      - Impact
+      - Confidence
+      - Effort
+      - RICE Score
+      - Priority
+      - Timeline
+    
+    example_rows:
+      - feature: "사용자 가입/로그인"
+        reach: 1000
+        impact: 3
+        confidence: 100
+        effort: 0.5
+        rice_score: 6000
+        priority: 1
+        timeline: "MVP"
+      
+      - feature: "결제 시스템"
+        reach: 1000
+        impact: 3
+        confidence: 100
+        effort: 1.0
+        rice_score: 3000
+        priority: 2
+        timeline: "MVP"
+  
+  sheet_4_resource_plan:
+    name: "Resource Plan"
+    description: "팀 구조 및 예산"
+    
+    team_section:
+      columns: ["역할", "Month 3", "Month 6", "Month 12", "월 급여", "비고"]
+      rows:
+        - ["CEO/Founder", "1명", "1명", "1명", "-", ""]
+        - ["개발", "2명", "4명", "8명", "600만원", ""]
+        - ["디자인", "1명", "1명", "2명", "500만원", ""]
+        - ["마케팅/영업", "1명", "3명", "6명", "550만원", ""]
+    
+    budget_section:
+      columns: ["항목", "Month 3", "Month 6", "Month 12"]
+      rows:
+        - ["인건비", "{인건비_3m}", "{인건비_6m}", "{인건비_12m}"]
+        - ["마케팅", "{마케팅_3m}", "{마케팅_6m}", "{마케팅_12m}"]
+        - ["인프라", "{인프라_3m}", "{인프라_6m}", "{인프라_12m}"]
+        - ["운영비", "{운영_3m}", "{운영_6m}", "{운영_12m}"]
+        - ["총 예산", "{총_3m}", "{총_6m}", "{총_12m}"]
+  
+  sheet_5_milestones:
+    name: "Milestones"
+    description: "3/6/12개월 실행 계획"
+    
+    columns:
+      - Milestone
+      - 타이밍
+      - Metric
+      - 목표값
+      - Key Activities
+      - Success Criteria
+      - Status
+    
+    rows:
+      - ["MVP 런칭", "Month 3", "MRR", "1,000만원", "개발 완료, Beta 50명", "Churn < 10%", "In Progress"]
+      - ["PMF 검증", "Month 6", "MRR", "5,000만원", "Phase 2 출시", "LTV/CAC > 2.0", "Planned"]
+      - ["스케일업", "Month 12", "ARR", "10억원", "시리즈 A", "Rule of 40 > 40%", "Planned"]
+  
+  sheet_6_risk_register:
+    name: "Risk Register"
+    description: "리스크 관리"
+    
+    columns:
+      - Risk ID
+      - Risk
+      - Probability
+      - Impact
+      - Severity
+      - Mitigation
+      - Contingency
+      - Owner
+      - Status
+    
+    example_rows:
+      - risk_id: "RISK_001"
+        risk: "경쟁사 가격 인하"
+        probability: "High"
+        impact: "High"
+        severity: "Critical"
+        mitigation: "차별화 강화, 전환 비용 구축"
+        contingency: "가격 10% 추가 인하 가능"
+        owner: "CEO"
+        status: "Monitoring"
+
+# ========================================
+# 메서드 설계
+# ========================================
+
+method_design:
+  
+  generate_strategy_playbook:
+    description: "전체 Playbook 생성"
+    inputs:
+      - validated_opportunity
+      - market_context
+      - quantified_market
+    
+    outputs:
+      - gtm_strategy
+      - product_roadmap
+      - resource_plan
+      - execution_milestones
+      - risk_mitigation
+      - markdown_path
+      - excel_path
+    
+    steps:
+      1: "GTM Strategy 설계"
+      2: "Product Roadmap 생성 (RICE)"
+      3: "Resource Plan 계획"
+      4: "Milestones 설정"
+      5: "Risk 평가 및 대응"
+      6: "Markdown 생성"
+      7: "Excel 생성"
+  
+  design_gtm_strategy:
+    description: "GTM 전략 설계"
+    
+    outputs:
+      customer_acquisition:
+        - target_segment
+        - segment_size
+        - channels (우선순위)
+        - cac_estimates
+        - funnel
+      
+      distribution:
+        - primary_channel
+        - channel_mix
+        - partnerships
+      
+      pricing:
+        - pricing_model
+        - price_point
+        - competitor_comparison
+      
+      marketing:
+        - positioning
+        - key_message
+        - content_strategy
+        - budget_allocation
+  
+  prioritize_features:
+    description: "Feature 우선순위 (RICE)"
+    
+    rice_calculation:
+      formula: "(Reach × Impact × Confidence) / Effort"
+      
+      reach:
+        definition: "월간 영향 받는 고객 수"
+        example: "1,000명"
+      
+      impact:
+        scale:
+          massive: 3
+          high: 2
+          medium: 1
+          low: 0.5
+      
+      confidence:
+        scale: "0-100%"
+        example: "80% = 확신하지만 불확실성 있음"
+      
+      effort:
+        unit: "person-months"
+        example: "2.0 = 1명이 2개월"
+    
+    output:
+      mvp: "Top 3 features"
+      phase_2: "Next 4 features"
+      phase_3: "Remaining features"
+  
+  set_milestones:
+    description: "3/6/12개월 Milestone 설정"
+    
+    calculation_logic:
+      month_3:
+        customers: "SAM * target_share * 0.01"
+        mrr: "customers * arpu * 0.7"
+        note: "초기 저조한 전환 고려"
+      
+      month_6:
+        customers: "month_3 * 5"
+        mrr: "month_3_mrr * 5"
+        note: "네트워크 효과 시작"
+      
+      month_12:
+        customers: "month_6 * 6"
+        arr: "month_6_mrr * 12 * 1.5"
+        note: "가속 성장"
+  
+  assess_risks:
+    description: "리스크 평가 및 대응"
+    
+    risk_identification:
+      - "시장 리스크 (경쟁, 수요)"
+      - "실행 리스크 (팀, 제품)"
+      - "재무 리스크 (자금, 수익성)"
+      - "규제 리스크"
+    
+    severity_matrix:
+      critical: "probability=high AND impact=high"
+      high: "probability=high OR impact=high"
+      medium: "probability=medium OR impact=medium"
+      low: "probability=low AND impact=low"
+
+# ========================================
+# 데이터 검증
+# ========================================
+
+data_validation:
+  
+  required_fields_check:
+    - validated_opportunity.title: "필수"
+    - validated_opportunity.value_proposition: "필수"
+    - market_context.market_structure: "필수"
+    - quantified_market.sam: "필수"
+  
+  data_quality_check:
+    - SAM > 0: "양수"
+    - target_share: "0-100%"
+    - unit_economics.ltv > 0: "양수"
+    - unit_economics.cac > 0: "양수"
+  
+  completeness_check:
+    minimum_viable:
+      - "기회 정보: 100%"
+      - "시장 정보: 80%+"
+      - "재무 정보: 60%+"
+    
+    if_incomplete:
+      - "경고 메시지 출력"
+      - "Estimator로 Gap 채우기"
+      - "계속 진행 (Best effort)"
+
+# ========================================
+# 사용 예시
+# ========================================
+
+usage_example:
+  
+  scenario: "피아노 구독 서비스"
+  
+  input:
+    validated_opportunity:
+      opportunity_id: "OPP_PIANO_001"
+      title: "피아노 구독 서비스"
+      value_proposition: "초기 부담 없이 피아노 시작"
+      target_customer: "피아노 입문자 (20-40대)"
+      revenue_model: "월 구독"
+      unit_economics:
+        arpu: 120000
+        cac: 180000
+        churn: 0.05
+        ltv: 2400000
+    
+    market_context:
+      market_structure: "과점 (3개 업체 60%)"
+      inefficiencies: ["높은 초기 비용", "해지 어려움"]
+      competitors: ["A사", "B사", "C사"]
+    
+    quantified_market:
+      sam: 1300  # 억원
+      target_share: 0.05
+      target_revenue: 65  # 억원
+  
+  output:
+    gtm_strategy:
+      customer_acquisition:
+        channels:
+          - "Direct Sales (초기)"
+          - "Digital Marketing (확장)"
+          - "Partnership (피아노 학원)"
+      
+      pricing:
+        price_point: "월 12만원"
+        competitor_comparison: "-20% (경쟁사 대비)"
+    
+    product_roadmap:
+      mvp:
+        - "사용자 가입/결제"
+        - "피아노 선택/배송"
+        - "기본 관리 대시보드"
+      
+      phase_2:
+        - "레슨 매칭"
+        - "악보 라이브러리"
+        - "연습 트래킹"
+    
+    milestones:
+      month_3: "100명, MRR 1,000만원"
+      month_6: "500명, MRR 5,000만원"
+      month_12: "3,000명, ARR 30억원"
+    
+    files:
+      - "strategy_playbook.md"
+      - "strategy_playbook.xlsx"
+
+# ========================================
+# 품질 기준
+# ========================================
+
+quality_standards:
+  
+  completeness:
+    gtm_strategy: "4개 영역 모두 포함"
+    product_roadmap: "MVP + 2 Phases"
+    resource_plan: "팀 + 예산 + 채용"
+    milestones: "3/6/12개월"
+    risks: "5개+ 리스크"
+  
+  specificity:
+    metrics: "구체적 숫자"
+    timelines: "명확한 일정"
+    responsibilities: "담당자 지정"
+    budgets: "예산 명시"
+  
+  actionability:
+    immediate_next_steps: "명확"
+    success_criteria: "측정 가능"
+    contingency_plans: "준비됨"
+
+# ========================================
+# END
+# ========================================
+
+
+
+
+

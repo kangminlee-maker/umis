@@ -1,0 +1,108 @@
+{
+  "timestamp": "2025-11-13T18:02:49.269329",
+  "total": 11,
+  "success_count": 7,
+  "failed_count": 4,
+  "success_rate": 0.6363636363636364,
+  "results": [
+    {
+      "company": "BGF리테일",
+      "year": 2023,
+      "success": true,
+      "method": "rules",
+      "item_count": 55,
+      "elapsed_time": 1.52,
+      "error": null
+    },
+    {
+      "company": "이마트",
+      "year": 2023,
+      "success": true,
+      "method": "llm",
+      "item_count": 13,
+      "elapsed_time": 4.98,
+      "error": null
+    },
+    {
+      "company": "삼성전자",
+      "year": 2023,
+      "success": false,
+      "method": "failed",
+      "item_count": 0,
+      "elapsed_time": 3.45,
+      "error": null
+    },
+    {
+      "company": "LG전자",
+      "year": 2023,
+      "success": true,
+      "method": "rules",
+      "item_count": 61,
+      "elapsed_time": 2.68,
+      "error": null
+    },
+    {
+      "company": "GS리테일",
+      "year": 2023,
+      "success": true,
+      "method": "rules",
+      "item_count": 75,
+      "elapsed_time": 1.57,
+      "error": null
+    },
+    {
+      "company": "유한양행",
+      "year": 2023,
+      "success": true,
+      "method": "rules",
+      "item_count": 75,
+      "elapsed_time": 2.85,
+      "error": null
+    },
+    {
+      "company": "아모레퍼시픽",
+      "year": 2023,
+      "success": true,
+      "method": "rules",
+      "item_count": 69,
+      "elapsed_time": 2.58,
+      "error": null
+    },
+    {
+      "company": "LG생활건강",
+      "year": 2023,
+      "success": false,
+      "method": "failed",
+      "item_count": 0,
+      "elapsed_time": 5.84,
+      "error": null
+    },
+    {
+      "company": "CJ ENM",
+      "year": 2023,
+      "success": false,
+      "method": "failed",
+      "item_count": 0,
+      "elapsed_time": 5.47,
+      "error": null
+    },
+    {
+      "company": "SK하이닉스",
+      "year": 2023,
+      "success": false,
+      "method": "failed",
+      "item_count": 0,
+      "elapsed_time": 5.46,
+      "error": null
+    },
+    {
+      "company": "하이브",
+      "year": 2024,
+      "success": true,
+      "method": "rules",
+      "item_count": 56,
+      "elapsed_time": 1.5,
+      "error": null
+    }
+  ]
+}

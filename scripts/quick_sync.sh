@@ -65,3 +65,7 @@ echo "다음 단계:"
 echo "  python3 scripts/query_system_rag.py tool:observer:complete"
 echo ""
 
+
+
+
+

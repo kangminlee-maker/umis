@@ -1,0 +1,112 @@
+version: 1.0_economics
+created: '2025-11-13'
+status: complete_with_classification
+company_info:
+  company_name: 유한양행
+  industry: 제약제조
+  region: 한국
+  year: 2023
+financial_statement_info:
+  year: 2023
+  report_type: 사업보고서
+  rcept_no: '20240307000960'
+  fs_type: 개별재무제표 (OFS)
+  fs_div: OFS
+income_statement:
+  key_accounts_billion:
+    revenue: 18090.8
+    cogs: 12869.2
+    gross_profit: 5221.7
+    sga_total: 3523.2
+    operating_profit: 572.1
+  ratios:
+    cogs_ratio: 0.7114
+    gross_margin: 0.2886
+    sga_ratio: 0.1948
+    operating_margin: 0.0316
+sga_details:
+  total_billion: 4584.1
+  count: 44
+  unit_original: 천원
+  details_billion:
+    광고선전비: 976.4
+    급료와임금: 763.6
+    제수당: 651.6
+    이용료및수수료: 379.9
+    운반비: 219.1
+    기타(세율차이 등): 136.5
+    공제감면세액: 131.3
+    판매촉진비: 125.3
+    여비교통비: 120.6
+    퇴직급여: 113.4
+    기부금: 103.6
+    보험료: 92.6
+    현금및현금성자산: 88.4
+    복리후생비: 87.9
+    세금과공과: 86.9
+    감가상각비: 59.5
+    기타(기초차이등): 55.6
+    비일시적차이: 48.1
+    경상판매비: 45.5
+    장기투자자산: 26.9
+    교육훈련비: 24.6
+    무형자산상각비: 23.7
+    외화환산손실: 20.7
+    잡손실: 19.7
+    수도광열비: 19.4
+    소모품비: 16.6
+    단기투자자산: 15.0
+    리스변경손실: 14.9
+    잡이익: 14.8
+    대손상각비: 13.3
+    회의비: 12.4
+    포장비: 10.9
+    접대비: 10.7
+    사용권자산감가상각비: 8.8
+    통신비: 8.5
+    수선비: 8.5
+    잡비: 5.8
+    리스변경이익: 5.5
+    차량유지비: 5.1
+    기타외화환산이익: 4.3
+    단기금융상품: 4.2
+    기타외화환산손실: 1.6
+    주식보상비용: 1.5
+    외화환산이익: 1.4
+cost_classification:
+  variable_costs_billion:
+    광고선전비: 976.4
+    운반비: 219.1
+    판매촉진비: 125.3
+  semi_variable_costs_billion: {}
+  fixed_costs_billion:
+    급료와임금: 763.6
+    제수당: 651.6
+    이용료및수수료: 379.9
+    기타(세율차이 등): 136.5
+    공제감면세액: 131.3
+    여비교통비: 120.6
+    퇴직급여: 113.4
+    기부금: 103.6
+    보험료: 92.6
+    현금및현금성자산: 88.4
+  totals:
+    variable: 1320.8
+    semi_variable: 0
+    fixed: 3263.4
+unit_economics:
+  gross_profit_billion: 5221.7
+  gross_margin: 0.2886
+  variable_sga_billion: 1320.8
+  variable_sga_ratio: 0.073
+  contribution_margin_billion: 3900.9
+  contribution_margin_ratio: 0.2156
+  fixed_sga_billion: 3263.4
+  fixed_sga_ratio: 0.1804
+  operating_profit_billion: 572.1
+  operating_margin: 0.0316
+  analysis:
+    cm_vs_om: 공헌이익 21.6% > 영업이익 3.2%
+    variable_intensity: 0.7844
+    business_model: 제약제조
+    health: healthy

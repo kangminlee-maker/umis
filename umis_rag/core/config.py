@@ -42,12 +42,42 @@ class Settings(BaseSettings):
     # .env: EMBEDDING_DIMENSION=3072
     embedding_dimension: int = Field(default=3072)  # large는 3072 차원
     
-    # Chat API (대화/생성용)
-    # - gpt-4-turbo-preview: $10/1M 토큰 (최신, 빠름)
-    # - gpt-4: $30/1M 토큰 (안정적)
-    # - gpt-3.5-turbo: $0.5/1M 토큰 (저렴)
+    # ========================================
+    # LLM 최적화 전략 (v7.7.0+)
+    # ========================================
+    # Phase별 최적 모델 자동 선택
+    # 기반: UMIS_LLM_OPTIMIZATION_FINAL.md
+    # 효과: 98% 비용 절감 ($15 → $0.30/1,000회)
+    #
+    # Phase 0-2 (45%): gpt-4.1-nano ($0.000033/작업)
+    #   - Literal, Inferred, Formula
+    #   - 100% 정확도, 1.02초
+    #
+    # Phase 3 (48%): gpt-4o-mini ($0.000121/작업)
+    #   - Guestimation (템플릿 있음/없음)
+    #   - 100% 정확도, 4.61초
+    #
+    # Phase 4 (7%): o1-mini ($0.0033/작업)
+    #   - Fermi Decomposition
+    #   - 90-95% 정확도, 5-15초
+    # ========================================
+
+    # Legacy 설정 (하위 호환성)
     # .env: LLM_MODEL=gpt-4-turbo-preview
     llm_model: str = Field(default="gpt-4-turbo-preview")
+
+    # Phase별 최적 모델 (v7.7.0+)
+    # .env: LLM_MODEL_PHASE0_2=gpt-4.1-nano
+    llm_model_phase0_2: str = Field(default="gpt-4.1-nano")
+    # .env: LLM_MODEL_PHASE3=gpt-4o-mini
+    llm_model_phase3: str = Field(default="gpt-4o-mini")
+    # .env: LLM_MODEL_PHASE4=o1-mini
+    llm_model_phase4: str = Field(default="o1-mini")
+
+    # 모델 자동 선택 활성화
+    # .env: USE_PHASE_BASED_ROUTING=true
+    use_phase_based_routing: bool = Field(default=True)
+
     # .env: LLM_TEMPERATURE=0.7
     llm_temperature: float = Field(default=0.7)
     # .env: LLM_MAX_TOKENS=4096
@@ -151,6 +181,19 @@ class Settings(BaseSettings):
     
     # UMIS 전역 설정 (v7.2.1+)
     umis_mode: str = Field(default="native")  # native / external
+    
+    # ========================================
+    # 한국 공공 데이터 API (v7.9.0)
+    # ========================================
+    # DART 전자공시 API
+    # 발급: https://opendart.fss.or.kr → 인증키 신청/관리
+    # .env: DART_API_KEY=your-key
+    dart_api_key: Optional[str] = Field(default=None)
+    
+    # KOSIS 통계청 API
+    # 발급: https://kosis.kr/openapi/index/index.jsp
+    # .env: KOSIS_API_KEY=your-key
+    kosis_api_key: Optional[str] = Field(default=None)
     
     # API Keys (선택)
     serpapi_key: Optional[str] = Field(default=None)

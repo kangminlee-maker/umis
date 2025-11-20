@@ -1,0 +1,17 @@
+company_name: 삼성전자
+corp_code: 00126380
+fs_type: OFS
+key_accounts_billion:
+  cogs: 1520614.7
+  gross_profit: 569907.7
+  operating_profit: 123610.3
+  revenue: 2090522.4
+  sga_total: 446297.3
+ratios:
+  cogs_ratio: 0.7274
+  gross_margin: 0.2726
+  operating_margin: 0.0591
+  sga_ratio: 0.2135
+sga_details_count: 0
+sga_details_million: {}
+year: 2024

@@ -1,0 +1,35 @@
+company: LG화학
+year: 2024
+rcept_no: '20250314000996'
+unit: 백만원
+parsing_method: optimized_pipeline_v2
+sga_details_million:
+  구        분: 2023.0
+  급여: 567474.0
+  퇴직급여(주석 16): 30905.0
+  복리후생비: 95497.0
+  여비교통비: 27494.0
+  수도광열비: 50303.0
+  포장비: 4098.0
+  사용료: 89451.0
+  수수료: 704893.0
+  감가상각비 (주석 11, 36): 144467.0
+  광고선전비: 22006.0
+  운반비: 514554.0
+  교육훈련비: 26280.0
+  무형자산상각비(주석 12): 158499.0
+  견본비: 12309.0
+  경상개발비: 220948.0
+quality_validation:
+  grade: C
+  confidence: 0.6
+  dart_total_billion: 30126.4
+  parsed_total_billion: 26712.01
+  difference_ratio: -0.11333547984492016
+  unknown_ratio: 0.11333547984492016
+  used_llm: false
+  validation_date: '2025-11-14'
+section_info:
+  section_num: 22
+  selection_method: amount_based
+  amount_diff_ratio: 0.0

@@ -1,0 +1,92 @@
+version: 1.0_economics
+created: '2025-11-13'
+status: complete_with_classification
+company_info:
+  company_name: SK하이닉스
+  industry: 반도체제조
+  region: 한국
+  year: 2023
+financial_statement_info:
+  year: 2023
+  report_type: 사업보고서
+  rcept_no: '20240319000684'
+  fs_type: 개별재무제표 (OFS)
+  fs_div: OFS
+income_statement:
+  key_accounts_billion:
+    revenue: 276400.0
+    cogs: 271928.8
+    gross_profit: 4471.2
+    sga_total: 51192.4
+    operating_profit: -46721.2
+  ratios:
+    cogs_ratio: 0.9838
+    gross_margin: 0.0162
+    sga_ratio: 0.1852
+    operating_margin: -0.169
+sga_details:
+  total_billion: 650597.5
+  count: 26
+  unit_original: 백만원
+  details_billion:
+    감가상각비 등: 141352.9
+    원재료, 저장품 및 소모품 사용: 111509.8
+    종업원급여: 78544.8
+    제품 및 재공품의 변동: 58835.7
+    연구개발비 총지출액, 판관비: 48035.0
+    경상개발비: 44745.5
+    지급수수료: 41066.1
+    동력 및 수도광열비: 22267.2
+    외환차이: 22223.7
+    외주가공비: 16761.2
+    수선비: 15800.6
+    기타영업비용: 13163.4
+    급여: 10793.9
+    무형자산상각비: 4145.5
+    '대체: 개발비자산화 등': 3508.8
+    개발비 자산화: 3289.5
+    품질관리비: 2725.5
+    감가상각비: 2648.4
+    복리후생비: 2376.4
+    판매촉진비: 1727.2
+    소모품비: 1570.1
+    광고선전비: 1134.0
+    세금과공과: 1020.4
+    운반보관비: 586.9
+    퇴직급여: 443.4
+    기타: 321.6
+cost_classification:
+  variable_costs_billion: {}
+  semi_variable_costs_billion:
+    지급수수료: 41066.1
+  fixed_costs_billion:
+    감가상각비 등: 141352.9
+    원재료, 저장품 및 소모품 사용: 111509.8
+    종업원급여: 78544.8
+    제품 및 재공품의 변동: 58835.7
+    연구개발비 총지출액, 판관비: 48035.0
+    경상개발비: 44745.5
+    동력 및 수도광열비: 22267.2
+    외환차이: 22223.7
+    외주가공비: 16761.2
+    수선비: 15800.6
+  totals:
+    variable: 0
+    semi_variable: 41066.1
+    fixed: 609531.4
+unit_economics:
+  gross_profit_billion: 4471.2
+  gross_margin: 0.0162
+  variable_sga_billion: 41066.1
+  variable_sga_ratio: 0.1486
+  contribution_margin_billion: -36594.9
+  contribution_margin_ratio: -0.1324
+  fixed_sga_billion: 609531.4
+  fixed_sga_ratio: 2.2053
+  operating_profit_billion: -46721.2
+  operating_margin: -0.169
+  analysis:
+    cm_vs_om: 공헌이익 -13.2% > 영업이익 -16.9%
+    variable_intensity: 1.1324
+    business_model: 반도체제조
+    health: weak

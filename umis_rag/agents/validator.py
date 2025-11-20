@@ -80,6 +80,10 @@ class ValidatorRAG:
         # v7.3.2: Estimator 연결 (교차 검증용)
         self.estimator = None  # Lazy 초기화
         
+        # v7.9.0: API 데이터 소스 (DART, KOSIS)
+        self.dart_api_key = settings.dart_api_key
+        self.kosis_api_key = settings.kosis_api_key
+        
         # Embeddings
         self.embeddings = OpenAIEmbeddings(
             model=settings.embedding_model,
@@ -941,6 +945,379 @@ class ValidatorRAG:
             lines.append(f"Estimator 추정 재검토 필요")
         
         return "\n".join(lines)
+
+
+    def search_historical_data(
+        self,
+        market: str,
+        years: range
+    ) -> Dict[str, Any]:
+        """
+        과거 데이터 탐색 및 수집 (v7.8.0 신규)
+        
+        Observer Timeline 분석을 위한 과거 데이터 수집.
+        Estimator 협업으로 누락 데이터 추정.
+        
+        Args:
+            market: 시장 이름
+            years: range(2015, 2026) → 2015-2025
+        
+        Returns:
+            {
+                'market_size_by_year': {year: {value, source, reliability}, ...},
+                'players_by_year': {year: {player: {share, source}, ...}, ...},
+                'events': [Event, ...],
+                'hhi_by_year': {year: hhi, ...},
+                'player_count_by_year': {year: count, ...},
+                'data_quality': {verified_ratio, avg_confidence, ...}
+            }
+        """
+        logger.info(f"[Validator] 과거 데이터 수집: {market} ({years.start}-{years.stop-1})")
+        
+        result = {
+            'market_size_by_year': {},
+            'players_by_year': {},
+            'events': [],
+            'hhi_by_year': {},
+            'player_count_by_year': {},
+            'data_gaps': {'missing_years': [], 'estimator_requests': []}
+        }
+        
+        # Step 1: 공식 통계 검색
+        logger.info("  Step 1: 공식 통계 검색")
+        official_data = self._search_official_statistics(market, years)
+        result['market_size_by_year'].update(official_data.get('market_size', {}))
+        
+        # Step 2: 산업 리포트 검색 (RAG)
+        logger.info("  Step 2: 산업 리포트 검색 (RAG)")
+        industry_data = self._search_industry_reports_rag(market, years)
+        result['market_size_by_year'].update(industry_data.get('market_size', {}))
+        
+        # Step 3: 공시 데이터 (상장사)
+        logger.info("  Step 3: 공시 데이터 검색")
+        public_data = self._search_public_filings(market, years)
+        result['players_by_year'].update(public_data.get('players', {}))
+        
+        # Step 4: 뉴스/사건
+        logger.info("  Step 4: 주요 사건 검색")
+        events = self._search_news_events(market, years)
+        result['events'] = events
+        
+        # Step 5: Gap 식별
+        logger.info("  Step 5: 데이터 Gap 식별")
+        gaps = self._identify_data_gaps(result, years)
+        result['data_gaps'] = gaps
+        
+        # Step 6: Estimator 협업 (Gap 채우기)
+        if gaps['missing_years']:
+            logger.info(f"  Step 6: Estimator 협업 ({len(gaps['missing_years'])}개 누락 연도)")
+            result = self._fill_gaps_with_estimator(result, gaps)
+        
+        # Step 7: 데이터 품질 평가
+        result['data_quality'] = self._assess_data_quality(result, years)
+        
+        logger.info(f"  ✅ 과거 데이터 수집 완료 (품질: {result['data_quality'].get('grade', 'N/A')})")
+        
+        return result
+    
+    def _search_official_statistics(self, market: str, years: range) -> Dict:
+        """공식 통계 검색 (통계청, 한국은행 등)"""
+        # TODO: 실제 API 연동 또는 웹 검색
+        # 현재는 placeholder
+        logger.info("    (구현 예정: 통계청 API)")
+        return {'market_size': {}}
+    
+    def _search_industry_reports_rag(self, market: str, years: range) -> Dict:
+        """산업 리포트 검색 (RAG 활용)"""
+        # data_sources_registry에서 검색
+        if self.source_store:
+            results = self.source_store.similarity_search(
+                f"{market} market size historical data",
+                k=5
+            )
+            logger.info(f"    ✅ RAG: {len(results)}개 소스 발견")
+        
+        # TODO: 실제 리포트에서 데이터 추출
+        return {'market_size': {}}
+    
+    def _search_public_filings(self, market: str, years: range) -> Dict:
+        """공시 데이터 검색 (DART API 등)"""
+        # TODO: DART API 연동
+        logger.info("    (구현 예정: DART API)")
+        return {'players': {}}
+    
+    def _search_news_events(self, market: str, years: range) -> List[Dict]:
+        """뉴스에서 주요 사건 추출"""
+        # TODO: 뉴스 검색 및 사건 추출
+        logger.info("    (구현 예정: 뉴스 검색)")
+        return []
+    
+    def _identify_data_gaps(self, collected_data: Dict, years: range) -> Dict:
+        """데이터 Gap 식별"""
+        gaps = {'missing_years': [], 'estimator_requests': []}
+        
+        # 누락 연도 파악
+        for year in years:
+            if year not in collected_data['market_size_by_year']:
+                gaps['missing_years'].append(year)
+                
+                # Estimator 요청 준비
+                gaps['estimator_requests'].append({
+                    'type': 'market_size_interpolation',
+                    'year': year,
+                    'market': collected_data.get('market'),
+                    'known_data': collected_data['market_size_by_year']
+                })
+        
+        logger.info(f"    Gap: {len(gaps['missing_years'])}개 누락 연도")
+        return gaps
+    
+    def _fill_gaps_with_estimator(self, data: Dict, gaps: Dict) -> Dict:
+        """Estimator 협업으로 Gap 채우기"""
+        try:
+            from umis_rag.agents.estimator import get_estimator_rag
+            estimator = get_estimator_rag()
+            
+            for request in gaps['estimator_requests']:
+                if request['type'] == 'market_size_interpolation':
+                    # 보간 요청
+                    # TODO: Estimator.estimate() 호출
+                    logger.info(f"      Estimator: {request['year']}년 추정 중...")
+                    
+                    # Placeholder
+                    # result = estimator.estimate(...)
+                    # data['market_size_by_year'][request['year']] = result
+        
+        except Exception as e:
+            logger.warning(f"    ⚠️ Estimator 협업 실패: {e}")
+        
+        return data
+    
+    def _assess_data_quality(self, data: Dict, years: range) -> Dict:
+        """데이터 품질 평가"""
+        total_years = len(list(years))
+        verified_years = sum(
+            1 for y, d in data['market_size_by_year'].items()
+            if d.get('reliability') == 'high'
+        )
+        estimated_years = sum(
+            1 for y, d in data['market_size_by_year'].items()
+            if d.get('reliability') == 'estimated'
+        )
+        
+        verified_ratio = verified_years / total_years if total_years > 0 else 0
+        
+        # 등급 판정
+        if verified_ratio >= 0.5:
+            grade = 'A (High)'
+        elif verified_ratio >= 0.3:
+            grade = 'B (Medium)'
+        else:
+            grade = 'C (Low)'
+        
+        return {
+            'total_years': total_years,
+            'verified_years': verified_years,
+            'estimated_years': estimated_years,
+            'verified_ratio': verified_ratio,
+            'grade': grade
+        }
+    
+    # ========================================
+    # API 기반 데이터 검색 (v7.9.0)
+    # ========================================
+    
+    def search_dart_company_financials(
+        self,
+        company_name: str,
+        year: int = 2024
+    ) -> Optional[Dict]:
+        """
+        DART API로 상장사 재무제표 검색 (v7.9.0)
+        
+        Args:
+            company_name: 회사명 (예: "스타벅스코리아")
+            year: 사업연도
+        
+        Returns:
+            {
+                'value': 0.148,
+                'unit': 'ratio',
+                'source': 'DART 2024년 사업보고서',
+                'reliability': 'verified',
+                'company': '스타벅스코리아'
+            } or None
+        """
+        
+        if not self.dart_api_key or self.dart_api_key == 'your-dart-api-key-here':
+            logger.warning("[Validator] DART API Key 없음 (.env 설정 필요)")
+            return None
+        
+        logger.info(f"[Validator] DART API 검색: {company_name} ({year})")
+        
+        try:
+            from umis_rag.utils.dart_api import DARTClient
+            
+            client = DARTClient(self.dart_api_key)
+            
+            # Step 1: 기업 코드
+            corp_code = client.get_corp_code(company_name)
+            
+            if not corp_code:
+                logger.warning(f"  {company_name} 찾을 수 없음")
+                return None
+            
+            logger.info(f"  ✓ corp_code: {corp_code}")
+            
+            # Step 2: 재무제표 조회 (개별재무제표 우선!)
+            financials = client.get_financials(corp_code, year, fs_div='OFS')
+            
+            if not financials:
+                logger.warning(f"  개별재무제표(OFS) 없음, 연결(CFS) 시도...")
+                financials = client.get_financials(corp_code, year, fs_div='CFS')
+                fs_div_used = 'CFS'
+            else:
+                fs_div_used = 'OFS'
+            
+            if not financials:
+                logger.warning(f"  재무제표 없음")
+                return None
+            
+            # Step 3: 주요 계정 추출
+            revenue = 0
+            operating_profit = 0
+            cost_of_sales = 0
+            sga = 0
+            
+            for item in financials:
+                account = item.get('account_nm', '')
+                amount_str = item.get('thstrm_amount', '0')
+                
+                try:
+                    amount = float(amount_str.replace(',', ''))
+                except:
+                    amount = 0
+                
+                if '매출액' in account and '매출원가' not in account:
+                    revenue = amount
+                elif '매출원가' in account:
+                    cost_of_sales = amount
+                elif '판매비' in account or '관리비' in account:
+                    sga = amount
+                elif '영업이익' in account:
+                    operating_profit = amount
+            
+            if revenue > 0:
+                opm = operating_profit / revenue
+                gross_margin = (revenue - cost_of_sales) / revenue if cost_of_sales > 0 else 0
+                
+                logger.info(f"  ✓ {company_name} 재무 ({fs_div_used}, 억원):")
+                logger.info(f"    매출액: {revenue/100_000_000:,.0f}")
+                logger.info(f"    영업이익률: {opm:.1%}")
+                logger.info(f"    매출총이익률: {gross_margin:.1%}")
+                
+                return {
+                    'value': round(opm, 4),
+                    'unit': 'ratio',
+                    'source': f'DART {year}년 사업보고서 ({fs_div_used})',
+                    'reliability': 'verified',
+                    'data_type': 'actual',
+                    'company': company_name,
+                    'year': year,
+                    'fs_div': fs_div_used,
+                    'revenue_billion': round(revenue / 100000000, 1),
+                    'cost_of_sales_billion': round(cost_of_sales / 100000000, 1),
+                    'sga_billion': round(sga / 100000000, 1),
+                    'operating_profit_billion': round(operating_profit / 100000000, 1),
+                    'gross_margin': round(gross_margin, 4),
+                    'operating_margin': round(opm, 4),
+                    'verification_url': f'https://dart.fss.or.kr/dsaf001/main.do'
+                }
+            
+            return None
+            
+        except Exception as e:
+            logger.error(f"  DART API 오류: {e}")
+            return None
+    
+    def search_kosis_industry_average(
+        self,
+        industry_name: str,
+        ksic_code: str = None
+    ) -> Optional[Dict]:
+        """
+        KOSIS API로 산업 평균 마진율 검색 (v7.9.0)
+        
+        Args:
+            industry_name: 산업명 (예: "음식점업")
+            ksic_code: KSIC 코드 (예: "56")
+        
+        Returns:
+            {
+                'value': 0.089,
+                'unit': 'ratio',
+                'source': '통계청 기업경영분석 2024',
+                'reliability': 'verified',
+                'sample_size': 15234
+            } or None
+        """
+        
+        # ⚠️ KOSIS API는 구조가 복잡하여 수동 수집 권장
+        logger.info(f"[Validator] KOSIS 검색: {industry_name}")
+        
+        if not self.kosis_api_key or self.kosis_api_key == 'your-kosis-api-key-here':
+            logger.warning("[Validator] KOSIS API Key 없음")
+            logger.info("  대안: https://kosis.kr 수동 확인")
+            return None
+        
+        logger.warning("[Validator] KOSIS API 파싱 로직 구현 필요")
+        logger.info("  현재: 수동 수집 권장 (kosis.kr)")
+        
+        # TODO: KOSIS API 파싱 로직 구현
+        # 현재는 수동 수집된 데이터 사용 권장
+        
+        return None
+    
+    def search_api_sources(
+        self,
+        query: str,
+        company_name: str = None,
+        industry: str = None
+    ) -> Optional[Dict]:
+        """
+        API 데이터 소스 통합 검색 (v7.9.0)
+        
+        DART와 KOSIS를 자동으로 검색하여 확정 데이터 반환
+        
+        Args:
+            query: 검색 질문
+            company_name: 회사명 (DART 검색용)
+            industry: 산업명 (KOSIS 검색용)
+        
+        Returns:
+            검색 결과 또는 None
+        """
+        
+        logger.info(f"[Validator] API 통합 검색: {query}")
+        
+        # DART 검색 (회사명 있을 때)
+        if company_name:
+            logger.info(f"  DART 검색 시도: {company_name}")
+            result = self.search_dart_company_financials(company_name)
+            if result:
+                logger.info(f"  ✓ DART에서 발견!")
+                return result
+        
+        # KOSIS 검색 (산업명 있을 때)
+        if industry:
+            logger.info(f"  KOSIS 검색 시도: {industry}")
+            result = self.search_kosis_industry_average(industry)
+            if result:
+                logger.info(f"  ✓ KOSIS에서 발견!")
+                return result
+        
+        logger.info("  API 소스에서 찾지 못함")
+        return None
 
 
 # Validator RAG 인스턴스 (싱글톤)

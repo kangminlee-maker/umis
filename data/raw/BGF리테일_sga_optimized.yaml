@@ -1,0 +1,39 @@
+company: BGF리테일
+year: 2023
+rcept_no: '20240327000690'
+unit: 천원
+parsing_method: optimized_pipeline_v2
+sga_details_million:
+  급여: 2224912.0
+  상여금: 207595.0
+  퇴직급여: 377384.0
+  복리후생비: 418677.0
+  여비교통비: 193632.0
+  접대비: 107267.0
+  통신비: 23137.0
+  세금과공과: 252053.0
+  지급임차료: 142844.0
+  보험료: 146840.0
+  차량유지비: 35012.0
+  운반비: 83542.0
+  전력비: 180760.0
+  소모품비: 45913.0
+  감가상각비: 187571.0
+  무형자산상각비: 389830.0
+  대손상각비(환입): 54686.0
+  지급수수료: 581036.0
+  판매보증비: 88430.0
+  기타: 102504.0
+quality_validation:
+  grade: D
+  confidence: 0.4
+  dart_total_billion: 12495.29986197
+  parsed_total_billion: 58.43625
+  difference_ratio: -0.9953233415247718
+  unknown_ratio: 0.9953233415247718
+  used_llm: false
+  validation_date: '2025-11-14'
+section_info:
+  section_num: 28
+  selection_method: amount_based
+  amount_diff_ratio: 0.9953233415247718
