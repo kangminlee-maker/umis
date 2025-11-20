@@ -19,6 +19,7 @@ from dataclasses import dataclass
 
 from umis_rag.utils.logger import logger
 from umis_rag.core.config import settings
+from umis_rag.core.model_router import select_model
 
 # LLM
 try:
@@ -661,8 +662,10 @@ class BoundaryValidator:
         prompt = self._build_boundary_prompt(question, value, unit, context, formula)
         
         try:
+            # Phase 4 최적 모델 사용 (Boundary Validation은 Phase 4의 일부)
+            model = select_model(4)  # Phase 4 → o1-mini
             response = self.llm_client.chat.completions.create(
-                model=settings.llm_model,
+                model=model,
                 temperature=0.1,  # 낮은 temperature (객관적 판단)
                 messages=[
                     {

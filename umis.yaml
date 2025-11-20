@@ -3752,6 +3752,96 @@ agents:
             2. 월 1회 기준: ×0.4 = 390만
             최종: 390만명 (±15%)
 
+    # ===== API INTEGRATIONS (v1.0.0, 2025-11-13) =====
+    api_integrations:
+      dart_api:
+        description: "DART 전자공시 API 범용 접근"
+        version: "1.0.0"
+        verified: true
+        verification_date: "2025-11-13"
+        verified_companies: 11
+        verified_items: 537
+        
+        core_capabilities:
+          get_corp_code:
+            description: "기업 코드 조회 (상장사 우선)"
+            input: "회사명"
+            output: "corp_code (8자리)"
+            features:
+              - "정확한 이름 매칭 우선"
+              - "부분 매칭 시 상장사 우선 (stock_code 체크)"
+              - "29개 '하이브' 중 올바른 회사 자동 선택"
+          
+          get_financials:
+            description: "재무제표 조회 (개별/연결 선택 가능)"
+            input: "corp_code, year, fs_div='OFS'"
+            output: "재무제표 데이터"
+            features:
+              - "개별재무제표(OFS) 우선 권장"
+              - "연결재무제표(CFS)는 복합 비즈니스"
+              - "주요 계정: 매출액, 매출원가, 영업이익 등"
+          
+          get_report_list:
+            description: "공시 목록 조회"
+            input: "corp_code, year, report_type"
+            output: "rcept_no 목록"
+            features:
+              - "900 오류 재시도 (3회, 2초 대기)"
+              - "[기재정정] > 원본 > [첨부정정] 우선순위"
+              - "사업보고서, 분기보고서 등"
+          
+          download_document:
+            description: "사업보고서 원문 다운로드"
+            input: "rcept_no, reprt_code='11011'"
+            output: "XML 원문"
+            features:
+              - "ZIP 압축 자동 해제"
+              - "reprt_code 필수 (11011=사업보고서)"
+        
+        improvements_from_validation:
+          error_handling:
+            - "900 오류: 재시도 로직 (3회)"
+            - "014 오류: reprt_code 필수, [첨부정정] 우회"
+            - "013 오류: 상장사 corp_code 우선"
+          
+          accuracy:
+            - "개별재무제표(OFS) 우선 (Unit Economics 파악)"
+            - "당기 데이터 자동 감지"
+            - "상장사 우선 매칭"
+          
+          robustness:
+            - "P 태그 없는 구조 대응"
+            - "다양한 섹션명 대응"
+            - "ZIP 압축 처리"
+        
+        utility_module: "umis_rag.utils.dart_api.DARTClient"
+        validator_method: "ValidatorRAG.search_dart_company_financials()"
+        
+        usage_example: |
+          # Validator가 DART 사용
+          from umis_rag.agents.validator import get_validator_rag
+          
+          validator = get_validator_rag()
+          result = validator.search_dart_company_financials(
+              company_name="삼성전자",
+              year=2023,
+              data_type='financials'  # or 'document', 'all'
+          )
+          
+          # 또는 직접 유틸리티 사용
+          from umis_rag.utils.dart_api import DARTClient
+          
+          client = DARTClient(api_key)
+          corp_code = client.get_corp_code("삼성전자")
+          financials = client.get_financials(corp_code, 2023, fs_div='OFS')
+        
+        common_use_cases:
+          - "상장사 매출액/영업이익 확인"
+          - "재무비율 계산 (마진율, 성장률)"
+          - "산업 벤치마크 수집"
+          - "데이터 정의 검증 (사업보고서 주석)"
+          - "시계열 데이터 수집 (과거 5년)"
+    
     extended_frameworks:
       data_sourcing_strategy:
         description: "필요한 데이터를 체계적으로 찾고 수집"
@@ -3759,7 +3849,7 @@ agents:
           tier_1_official:
             - "정부 통계 (통계청, 한국은행, 부처별)"
             - "국제기구 (OECD, World Bank, UN)"
-            - "거래소 공시 자료"
+            - "DART 전자공시 (상장사 재무/공시) ⭐ v1.0.0"
             - "업계 협회 공식 자료"
           tier_2_commercial:
             - "시장조사기관 (가트너, IDC, 유로모니터)"

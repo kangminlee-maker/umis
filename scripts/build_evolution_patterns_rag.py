@@ -157,3 +157,7 @@ def build_evolution_patterns_collection():
 if __name__ == "__main__":
     build_evolution_patterns_collection()
 
+
+
+
+

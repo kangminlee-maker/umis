@@ -2,11 +2,174 @@
 # Validator가 확정 데이터 검색에 사용하는 공식 통계 및 벤치마크
 
 meta:
-  version: "1.0.0"
+  version: "1.1.0"
   created: "2025-11-10"
-  description: "확정 데이터 출처 및 값"
-  total_sources: 50
+  updated: "2025-11-12"
+  description: "확정 데이터 출처 및 값 (v1.1: DART/KOSIS API 추가)"
+  total_sources: 52
   agent: "validator"
+  
+  api_sources:
+    dart_api:
+      enabled: true
+      description: "DART 전자공시 API (상장사 재무제표)"
+      env_key: "DART_API_KEY"
+      url: "https://opendart.fss.or.kr/api"
+    
+    kosis_api:
+      enabled: true
+      description: "KOSIS 통계청 API (산업별 통계)"
+      env_key: "KOSIS_API_KEY"
+      url: "https://kosis.kr/openapi"
+
+# ========================================
+# 카테고리 0: API 기반 데이터 소스 (v1.1 신규)
+# ========================================
+
+api_data_sources:
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # DART 전자공시 API
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  
+  dart_financials:
+    source_id: "API-DART-001"
+    source_name: "DART 전자공시시스템 API"
+    category: "상장사 재무제표"
+    version: "1.0.0"
+    verification_date: "2025-11-13"
+    verified_companies: 11
+    verified_items: 537
+    
+    api_info:
+      endpoint: "https://opendart.fss.or.kr/api"
+      authentication: "API Key (DART_API_KEY)"
+      rate_limit: "1 request/second"
+      cost: "무료"
+      
+    verified_features:
+      - "상장사 우선 매칭 (stock_code 체크)"
+      - "900 오류 재시도 (3회)"
+      - "개별재무제표(OFS) 우선"
+      - "ZIP 압축 자동 해제"
+      
+    core_endpoints:
+      corpCode: "기업 코드 조회"
+      fnlttSinglAcntAll: "재무제표"
+      list: "공시 목록"
+      document: "원문 (ZIP)"
+    
+    utility_module: "umis_rag.utils.dart_api.DARTClient"
+    
+    data_available:
+      - "상장사 2,000개+ 재무제표"
+      - "매출액, 매출원가, 영업이익"
+      - "매출총이익률, 영업이익률 계산 가능"
+      - "연결/개별 재무제표"
+      - "사업보고서, 분기보고서"
+    
+    usage:
+      script: "scripts/collect_dart_financials.py"
+      method: "자동 수집"
+      output: "data/raw/dart_collected_benchmarks.yaml"
+    
+    example_companies:
+      - "스타벅스코리아 (커피)"
+      - "BGF리테일 (편의점 CU)"
+      - "GS리테일 (편의점 GS25)"
+      - "이마트 (대형마트)"
+      - "아모레퍼시픽 (화장품)"
+    
+    metadata:
+      reliability: "verified"
+      data_type: "actual"
+      update_frequency: "분기별/연간"
+      api_key_required: true
+      api_key_source: "https://opendart.fss.or.kr"
+    
+    validator_integration:
+      search_method: "search_dart_company_financials"
+      query_examples:
+        - "스타벅스코리아 영업이익률은?"
+        - "BGF리테일 마진은?"
+        - "이마트 수익성은?"
+      
+      response_format:
+        value: "0.148 (14.8%)"
+        source: "DART 2024년 사업보고서"
+        reliability: "verified"
+        verification_url: "https://dart.fss.or.kr/..."
+    
+    notes: |
+      - 100% 실제 데이터
+      - API Key 필수 (.env 설정)
+      - 상장사만 가능
+      - 비상장 기업은 불가
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # KOSIS 통계청 API
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  
+  kosis_industry_statistics:
+    source_id: "API-KOSIS-001"
+    source_name: "KOSIS 통계청 기업경영분석 API"
+    category: "산업별 재무비율 통계"
+    
+    api_info:
+      endpoint: "https://kosis.kr/openapi"
+      authentication: "API Key (KOSIS_API_KEY)"
+      approval_time: "1-2일"
+      cost: "무료"
+    
+    data_available:
+      - "산업별 평균 마진율 (KSIC 기준)"
+      - "매출총이익률, 영업이익률"
+      - "50,000개+ 기업 통계"
+      - "제조, 도소매, 서비스업 등 전 산업"
+    
+    usage:
+      script: "scripts/collect_kosis_statistics.py"
+      method: "API 또는 수동 수집"
+      output: "data/raw/kosis_collected_benchmarks.yaml"
+    
+    key_industries:
+      - "음식점업 (KSIC 56)"
+      - "소매업 (KSIC 47)"
+      - "미용업 (KSIC 96)"
+      - "보건업 (KSIC 86)"
+      - "교육서비스업 (KSIC 85)"
+      - "스포츠/오락업 (KSIC 91)"
+      - "제조업 (KSIC 10-33)"
+      - "건설업 (KSIC 41-42)"
+      - "숙박업 (KSIC 55)"
+    
+    metadata:
+      reliability: "verified"
+      data_type: "statistical_average"
+      sample_size: "50,000+ 기업/산업"
+      update_frequency: "연 1회"
+      api_key_required: true
+      api_key_source: "https://kosis.kr/openapi"
+    
+    validator_integration:
+      search_method: "search_kosis_industry_average"
+      query_examples:
+        - "음식점업 평균 영업이익률은?"
+        - "소매업 마진은?"
+        - "미용업 수익성은?"
+      
+      response_format:
+        value: "0.089 (8.9%)"
+        source: "통계청 기업경영분석 2024, KSIC 56 (음식점업)"
+        sample_size: "15,234개 기업"
+        reliability: "verified"
+        verification_url: "https://kosis.kr/..."
+    
+    notes: |
+      - 공식 통계 (신뢰도 100%)
+      - 산업 평균 (개별 기업 아님)
+      - API Key 필요 (승인 1-2일)
+      - 수동 수집도 가능 (kosis.kr)
 
 # ========================================
 # 카테고리 1: 공식 통계 (정부/공공기관)

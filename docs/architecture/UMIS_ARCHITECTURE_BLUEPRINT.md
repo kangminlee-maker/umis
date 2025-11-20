@@ -28,8 +28,10 @@
 | **Terminology** | Phase (전체 0-4) + Step (Fermi 1-4) ⭐ NEW! |
 | **Coverage** | 100% (실패율 0%) ⭐ |
 | **Cost** | $0 (Native mode) ⭐ |
-| **Last Updated** | 2025-11-10 |
-| **Status** | Production Ready - Native 모드 완성 |
+| **Last Updated** | 2025-11-13 |
+| **Validator DART API** | v1.0.0 (11개 기업, 537개 항목 검증) ⭐ NEW! |
+| **SG&A Parser** | v1.0.0 (진화형 2-Tier 시스템) ⭐ NEW! |
+| **Status** | Production Ready - Native 모드 + DART 통합 완성 |
 
 **Purpose**: UMIS 전체 구조와 기능을 한눈에 파악할 수 있는 고수준 설계도
 
@@ -196,7 +198,7 @@ Cursor Composer (Cmd+I):
 | **observer** | Albert | 시장 구조 분석 | market_reality_report.md | quantifier, validator, guardian |
 | **explorer** | Steve | 기회 발굴 (RAG) | OPP_*.md | observer, quantifier, validator |
 | **quantifier** | Bill | 계산 전문 (31개 방법론) + Excel | market_sizing.xlsx (10 sheets)<br>unit_economics.xlsx (10 sheets)<br>financial_projection.xlsx (11 sheets) | validator, observer |
-| **validator** | Rachel | 데이터 검증 | source_registry.yaml | - (검증자) |
+| **validator** | Rachel | 데이터 검증 + DART API ⭐ v1.0.0 | source_registry.yaml<br>DART 재무/공시 데이터 | - (검증자) |
 | **guardian** | Stewart | 프로세스 관리 | .project_meta.yaml, deliverables_registry.yaml | - (메타 관리자) |
 | **estimator** | **Fermi** | **값 추정 전문 (5-Phase)** | **EstimationResult** (값 + 근거 + phase) | - (협업 파트너) |
 
@@ -640,7 +642,7 @@ umis/
 ├── umis_examples.yaml                 # 사용 예시
 ├── VERSION.txt                        # v7.3.2 ⭐
 │
-├── config/                            # 설정 파일 (12개) ⭐
+├── config/                            # 설정 파일 (13개) ⭐
 │   ├── agent_names.yaml               # Agent 이름 (6-Agent)
 │   ├── tool_registry.yaml             # System RAG 도구 (31개) ⭐
 │   ├── schema_registry.yaml           # RAG 스키마 (v1.1) ⭐
@@ -649,6 +651,7 @@ umis/
 │   ├── runtime.yaml                   # 실행 모드
 │   ├── pattern_relationships.yaml     # Knowledge Graph (45 관계)
 │   ├── fermi_model_search.yaml        # Phase 4 설계 (1,500줄) ⭐
+│   ├── learned_sga_patterns.yaml      # SG&A 학습 패턴 ⭐ v1.0.0 (2025-11-13)
 │   └── ...                            # 기타 설정 파일
 │
 ├── deliverable_specs/                 # 산출물 스펙 (6개 YAML, AI 최적화)
@@ -729,11 +732,12 @@ umis/
 │   │       ├── unit_economics/        # 10 시트
 │   │       └── financial_projection/  # 11 시트
 │   │
-│   └── utils/                         # 유틸리티 (3개 파일)
+│   └── utils/                         # 유틸리티 (4개 파일)
 │       ├── logger.py                  # 로깅
+│       ├── dart_api.py                # DART API 클라이언트 ⭐ v1.0.0 (2025-11-13)
 │       └── guestimation.py            # Legacy (Deprecated)
 │
-├── scripts/                           # 실행 스크립트 (75개 파일)
+├── scripts/                           # 실행 스크립트 (100개 파일)
 │   ├── 01_convert_yaml.py             # YAML → JSONL 변환
 │   ├── 02_build_index.py              # RAG 인덱스 빌드
 │   ├── build_canonical_index.py       # Canonical 빌드
@@ -741,6 +745,15 @@ umis/
 │   ├── build_knowledge_graph.py       # Graph 빌드
 │   ├── build_system_knowledge.py      # System RAG 빌드 ⭐
 │   ├── query_system_rag.py            # System RAG 검색 ⭐
+│   ├── sync_umis_to_rag.py            # umis.yaml → RAG 동기화 ⭐
+│   │
+│   ├── parse_sga_final.py             # SG&A 진화형 파서 ⭐ v1.0.0 (2025-11-13)
+│   ├── parse_sga_smart_signals.py     # 스마트 시그널 파서 ⭐ v1.0.0
+│   ├── parse_sga_with_zip.py          # 규칙 기반 파서 ⭐ v1.0.0
+│   ├── classify_variable_fixed_costs.py  # 변동비/고정비 분류 ⭐
+│   ├── calculate_contribution_margin.py  # 공헌이익 계산 ⭐
+│   ├── summarize_sga_results.py       # SG&A 요약
+│   │
 │   ├── test_*.py                      # 테스트 스크립트 (26개)
 │   └── ...
 │
@@ -797,6 +810,15 @@ umis/
 **상세 변경 이력**: [CHANGELOG.md](CHANGELOG.md) 참조
 
 **주요 마일스톤**:
+- **v7.7.1 (2025-11-13)**: ⭐ Validator DART 통합 + SG&A 파서
+  - Validator DART API v1.0.0 완성 (umis_rag/utils/dart_api.py)
+  - 11개 기업, 537개 SG&A 항목 검증 완료
+  - 2-Tier 진화형 파서 (규칙 + 스마트 시그널 + 자동 학습)
+  - 변동비/고정비 분류 + 공헌이익 계산
+  - OFS 우선, 900 오류 재시도, 상장사 우선 매칭
+  - 급여 클러스터 패턴, 고/저 신뢰 시그널
+  - learned_sga_patterns.yaml (학습 저장소)
+
 - **v7.7.0 (2025-11-10)**: 🎉
   - Native 모드 진짜 구현 (LLMProvider 클래스)
   - Explorer Native/External 분기 처리
@@ -1369,7 +1391,7 @@ result.estimation_trace = [...]       # 과정 추적
 ---
 
 **Document Owner**: AI Team
-**Last Reviewed**: 2025-11-10 (v7.5.0 반영)
+**Last Reviewed**: 2025-11-13 (Validator DART API v1.0.0 + SG&A Parser v1.0.0 반영)
 **Next Review**: 버전 업데이트 시
 
 ---

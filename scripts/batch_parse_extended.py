@@ -200,3 +200,6 @@ for g in ['A', 'B', 'C', 'D']:
 print(f"\n총 {len(results)}개 기업 처리 완료")
 print(f"A+B등급: {grades.get('A', 0) + grades.get('B', 0)}개")
 
+
+
+

@@ -42,6 +42,135 @@ from parse_sga_standard_accounts import (
 client_dart = DARTClient(os.getenv('DART_API_KEY'))
 
 
+def parse_company_optimized(corp_name: str, rcept_no: str) -> Dict:
+    """
+    통합 파이프라인용 wrapper 함수
+    
+    Args:
+        corp_name: 기업명
+        rcept_no: 사업보고서 접수번호
+    
+    Returns:
+        {
+            'success': bool,
+            'corp_name': str,
+            'total': float (억원),
+            'items': {...},
+            'grade': 'A'|'B'|'C'|'D',
+            'method': 'xml_optimized',
+            'dart_ofs': float,
+            'error_rate': float
+        }
+    """
+    
+    try:
+        # XML 다운로드
+        xml_path = client_dart.download_document(rcept_no)
+        
+        if not xml_path:
+            return {
+                'success': False,
+                'corp_name': corp_name,
+                'error': 'XML 다운로드 실패'
+            }
+        
+        # XML 로드
+        with open(xml_path, 'r', encoding='utf-8') as f:
+            xml_content = f.read()
+        
+        # DART OFS 조회
+        corp_code = client_dart.get_corp_code(corp_name)
+        
+        if not corp_code:
+            return {
+                'success': False,
+                'corp_name': corp_name,
+                'error': 'corp_code 없음'
+            }
+        
+        dart_result = client_dart.get_financials(corp_code, 2024, fs_div='OFS')
+        
+        if not dart_result or (isinstance(dart_result, dict) and 'error' in dart_result):
+            return {
+                'success': False,
+                'corp_name': corp_name,
+                'error': 'DART OFS 조회 실패'
+            }
+        
+        # 판매비와관리비 찾기
+        dart_ofs = None
+        
+        for item in dart_result:
+            account_nm = item.get('account_nm', '')
+            
+            if '판매비' in account_nm and '관리비' in account_nm:
+                amount_str = item.get('thstrm_amount', '0')
+                amount_won = int(amount_str.replace(',', ''))
+                dart_ofs = amount_won / 100_000_000  # 원 → 억원
+                break
+        
+        if not dart_ofs:
+            return {
+                'success': False,
+                'corp_name': corp_name,
+                'error': '판매비와관리비 항목 없음'
+            }
+        
+        # OFS 섹션 찾기
+        section_data = find_ofs_section_by_amount(xml_content, dart_ofs, tolerance=0.01)
+        
+        if not section_data:
+            return {
+                'success': False,
+                'corp_name': corp_name,
+                'error': 'OFS 섹션을 찾을 수 없습니다'
+            }
+        
+        # 테이블 파싱
+        items, unit = parse_section_with_regex(section_data['section_text'])
+        
+        # 억원 변환
+        total_eokwon = sum(items.values())
+        
+        if unit == '백만원':
+            total_eokwon = total_eokwon / 100
+        elif unit == '천원':
+            total_eokwon = total_eokwon / 100_000
+        
+        # 오차율 계산
+        error_rate = abs(total_eokwon - dart_ofs) / dart_ofs * 100
+        
+        # 등급 판정
+        if error_rate <= 5.0:
+            grade = 'A'
+        elif error_rate <= 10.0:
+            grade = 'B'
+        elif error_rate <= 20.0:
+            grade = 'C'
+        else:
+            grade = 'D'
+        
+        return {
+            'success': True,
+            'corp_name': corp_name,
+            'total': total_eokwon,
+            'items': items,
+            'unit': unit,
+            'grade': grade,
+            'method': 'xml_optimized',
+            'dart_ofs': dart_ofs,
+            'error_rate': error_rate,
+            'rcept_no': rcept_no
+        }
+    
+    except Exception as e:
+        return {
+            'success': False,
+            'corp_name': corp_name,
+            'error': str(e)
+        }
+
+
 def find_ofs_section_by_amount(
     xml: str, 
     dart_ofs_total: float,
