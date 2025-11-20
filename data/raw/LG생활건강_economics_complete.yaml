@@ -1,0 +1,88 @@
+version: 1.0_economics
+created: '2025-11-13'
+status: complete_with_classification
+company_info:
+  company_name: LG생활건강
+  industry: 화장품제조
+  region: 한국
+  year: 2023
+financial_statement_info:
+  year: 2023
+  report_type: 사업보고서
+  rcept_no: '20240318000511'
+  fs_type: 개별재무제표 (OFS)
+  fs_div: OFS
+income_statement:
+  key_accounts_billion:
+    revenue: 35002.1
+    cogs: 17133.9
+    gross_profit: 17868.2
+    sga_total: 15697.0
+    operating_profit: 2171.2
+  ratios:
+    cogs_ratio: 0.4895
+    gross_margin: 0.5105
+    sga_ratio: 0.4485
+    operating_margin: 0.062
+sga_details:
+  total_billion: 34162.4
+  count: 20
+  unit_original: 백만원
+  details_billion:
+    지급수수료: 13820.6
+    급여및상여: 6126.4
+    광고선전비: 4832.8
+    운반비: 2855.4
+    감가상각비: 1339.5
+    복리후생비: 1168.4
+    기타판매비와관리비: 985.7
+    기부금: 849.0
+    세금과공과: 432.5
+    퇴직급여: 399.9
+    무형자산상각비: 384.1
+    소모품비: 230.8
+    경상개발비: 229.1
+    기타: 174.9
+    수선비: 141.5
+    임차료: 94.3
+    외화환산손실: 43.2
+    외화환산이익: 25.4
+    연구비: 24.4
+    대손상각비(대손충당금환입): 4.3
+cost_classification:
+  variable_costs_billion:
+    광고선전비: 4832.8
+    운반비: 2855.4
+  semi_variable_costs_billion:
+    지급수수료: 13820.6
+  fixed_costs_billion:
+    급여및상여: 6126.4
+    감가상각비: 1339.5
+    복리후생비: 1168.4
+    기타판매비와관리비: 985.7
+    기부금: 849.0
+    세금과공과: 432.5
+    퇴직급여: 399.9
+    무형자산상각비: 384.1
+    소모품비: 230.8
+    경상개발비: 229.1
+  totals:
+    variable: 7688.2
+    semi_variable: 13820.6
+    fixed: 12653.6
+unit_economics:
+  gross_profit_billion: 17868.2
+  gross_margin: 0.5105
+  variable_sga_billion: 21508.8
+  variable_sga_ratio: 0.6145
+  contribution_margin_billion: -3640.6
+  contribution_margin_ratio: -0.104
+  fixed_sga_billion: 12653.6
+  fixed_sga_ratio: 0.3615
+  operating_profit_billion: 2171.2
+  operating_margin: 0.062
+  analysis:
+    cm_vs_om: 공헌이익 -10.4% > 영업이익 6.2%
+    variable_intensity: 1.104
+    business_model: 화장품제조
+    health: weak

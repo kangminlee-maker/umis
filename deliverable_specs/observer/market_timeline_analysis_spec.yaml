@@ -1,0 +1,404 @@
+# ========================================
+# Market Timeline Analysis Specification
+# ========================================
+#
+# Agent: Albert (Observer)
+# Output: market_timeline_analysis.md
+# Format: YAML Frontmatter + Markdown
+# Purpose: 시장의 역사적 변화를 시계열로 추적 및 분석
+#
+# v7.8.0 신규 Deliverable
+# ========================================
+
+spec_meta:
+  spec_version: "1.0"
+  agent_id: "observer"
+  agent_role: "Observer"
+  agent_name: "Albert"
+  output_format: "yaml_frontmatter_markdown"
+  deliverable_type: "market_timeline_analysis"
+  created: "2025-11-12"
+  version: "7.8.0"
+
+output_file:
+  filename: "market_timeline_analysis.md"
+  location: "02_analysis/observer/"
+
+# ========================================
+# YAML Frontmatter Schema
+# ========================================
+
+frontmatter_schema:
+
+  required_fields:
+
+    type:
+      fixed_value: "market_timeline_analysis"
+
+    market:
+      type: "string"
+      example: "음악 스트리밍 시장"
+      source: "project_charter"
+
+    analysis_period:
+      type: "object"
+      required_subfields:
+        start_year:
+          type: "integer"
+          example: 2015
+        end_year:
+          type: "integer"
+          example: 2025
+        duration_years:
+          type: "integer"
+          auto_calculate: "end_year - start_year"
+
+    analysis_date:
+      type: "date"
+      auto_generate: true
+
+    author:
+      fixed_value: "observer"
+      display_name: "Albert (Observer)"
+
+    status:
+      type: "enum"
+      values: ["draft", "under_review", "validated"]
+      default: "draft"
+
+    key_findings:
+      type: "object"
+      required_subfields:
+        inflection_points_count:
+          type: "integer"
+          description: "발견된 변곡점 수"
+        
+        structural_evolution_pattern:
+          type: "string"
+          example: "독점 → 경쟁 → 재편"
+        
+        major_events_count:
+          type: "integer"
+          description: "주요 사건 수"
+
+    validation:
+      required_validators:
+        - "quantifier"
+        - "validator"
+        - "guardian"
+      
+      schema:
+        quantifier:
+          status: "pending/passed/conditional/failed"
+          comment: "시계열 데이터 타당성"
+        validator:
+          status: "pending/passed/conditional/failed"
+          comment: "데이터 출처 신뢰성"
+        guardian:
+          status: "pending/passed/conditional/failed"
+          comment: "논리 건전성"
+        overall:
+          status: "pending/passed/conditional/failed"
+
+  optional_fields:
+    data_sources_count:
+      type: "integer"
+      auto_calculate: true
+
+# ========================================
+# Markdown Sections
+# ========================================
+
+markdown_sections:
+
+  section_1_executive_summary:
+    required: true
+    heading: "Executive Summary"
+    max_length: "7문장"
+
+    subsections:
+      - period_summary: "분석 기간 요약 (X년)"
+      - key_changes: "주요 변화 3가지"
+      - inflection_points: "변곡점 및 영향"
+      - future_implications: "미래 시사점"
+
+  section_2_market_size_evolution:
+    required: true
+    heading: "Market Size Evolution"
+
+    subsections:
+      yearly_trend_table:
+        format: "markdown_table"
+        columns:
+          - "연도"
+          - "시장 규모"
+          - "YoY 성장률"
+          - "주요 사건"
+        min_rows: "duration_years"
+        source: "quantifier 연계"
+      
+      growth_rate_analysis:
+        content:
+          - "CAGR 계산 (전체 기간)"
+          - "성장률 변화 추이"
+          - "성장 가속/둔화 구간"
+      
+      inflection_points_detail:
+        format: "numbered_list"
+        each_point:
+          - year: "연도"
+          - growth_before: "변곡 전 성장률"
+          - growth_after: "변곡 후 성장률"
+          - trigger: "촉발 사건"
+          - impact: "영향 분석"
+      
+      visualization:
+        type: "mermaid_line_chart"
+        data: "market_size_trend"
+        auto_generate: true
+
+  section_3_player_dynamics:
+    required: true
+    heading: "Player Dynamics"
+
+    subsections:
+      market_share_evolution:
+        format: "table"
+        rows: "Top 5 players"
+        columns: "연도별 점유율"
+        visualization: "mermaid_stacked_bar"
+      
+      entry_exit_analysis:
+        content:
+          - "진입 플레이어 (연도, 이유)"
+          - "퇴출 플레이어 (연도, 원인)"
+          - "생존율 분석"
+      
+      strategy_shifts:
+        format: "timeline"
+        track_changes:
+          - "비즈니스 모델 전환"
+          - "포지셔닝 변화"
+          - "M&A 활동"
+
+  section_4_structural_evolution:
+    required: true
+    heading: "Structural Evolution"
+
+    subsections:
+      hhi_trend:
+        data: "연도별 HHI"
+        pattern_matching: "RAG historical_evolution_patterns"
+        interpretation: "구조 진화 패턴 분류"
+      
+      value_chain_changes:
+        timeline:
+          - "2015: 오프라인 중심"
+          - "2020: 플랫폼 등장"
+          - "2025: D2C 확대"
+      
+      business_model_evolution:
+        changes:
+          - "수익 모델 변화 (판매 → 구독)"
+          - "거래 메커니즘 진화"
+
+  section_5_key_events_timeline:
+    required: true
+    heading: "Key Events Timeline"
+    critical: true
+
+    visualization:
+      type: "mermaid_gantt"
+      auto_generate: true
+      sections:
+        - "플레이어 (진입/퇴출)"
+        - "규제 (변경 사항)"
+        - "기술 (도입/성숙)"
+        - "M&A (인수/합병)"
+    
+    event_list:
+      format: "chronological"
+      each_event:
+        - year: "연도"
+        - event: "사건 설명"
+        - category: "player/regulation/technology/ma"
+        - impact: "high/medium/low"
+        - consequence: "영향 분석"
+        - source: "SRC_XXX"
+
+  section_6_pattern_analysis:
+    required: true
+    heading: "Evolution Pattern Analysis"
+
+    pattern_matching:
+      rag_search: "historical_evolution_patterns"
+      matched_pattern:
+        - pattern_id: "evolution_XXX"
+        - similarity: "0.XX"
+        - description: "패턴 설명"
+      
+      phase_classification:
+        current_phase: "재편기/성장기/성숙기"
+        evidence: "HHI, 성장률, 플레이어 수"
+
+  section_7_future_implications:
+    required: true
+    heading: "Future Implications"
+
+    predictions:
+      - next_inflection_point:
+          estimated_year: "연도 예측"
+          rationale: "근거"
+      
+      - growth_forecast:
+          year_1: "예상 규모 (신뢰도)"
+          year_3: "예상 규모 (신뢰도)"
+      
+      - structural_changes:
+          expected: "예상 구조 변화"
+
+  section_8_data_evidence:
+    required: true
+    heading: "Data Evidence"
+    
+    evidence_registry:
+      format: "bullet_list"
+      pattern: "주장 ← 근거: SRC_XXX"
+      validation: "모든 SRC_ID는 validator.source_registry 존재"
+
+  section_9_validation_results:
+    required: true
+    heading: "Validation Results"
+    auto_populate: true
+    source: "frontmatter.validation"
+
+# ========================================
+# Generation Rules
+# ========================================
+
+generation_rules:
+
+  auto_populate:
+    - "analysis_date"
+    - "author"
+    - "type"
+    - "analysis_period.duration_years"
+    - "key_findings.inflection_points_count"
+    - "key_findings.major_events_count"
+    - "validation.*.status = 'pending'"
+
+  require_user_input:
+    - "market"
+    - "analysis_period.start_year"
+    - "analysis_period.end_year"
+
+  cross_reference:
+    - "market_size_trend": "quantifier.historical_sam"
+    - "player_share": "quantifier + estimator"
+    - "all evidence": "validator.source_registry"
+
+  visualization_auto_generate:
+    - "mermaid_gantt_timeline"
+    - "mermaid_line_chart_growth"
+    - "mermaid_stacked_bar_share"
+
+# ========================================
+# Validation Rules
+# ========================================
+
+validation_rules:
+
+  completeness:
+    - all_required_sections: true
+    - minimum_events: 5
+    - minimum_inflection_points: 1
+    - evidence_for_all_claims: true
+
+  data_quality:
+    - all_src_ids_exist: true
+    - inflection_points_validated: "quantifier"
+    - pattern_matched: "RAG historical_evolution_patterns"
+
+  timeline_consistency:
+    - chronological_order: true
+    - no_date_gaps: "major events"
+    - event_impact_quantified: "where possible"
+
+# ========================================
+# Integration
+# ========================================
+
+integration:
+
+  input_from_quantifier:
+    required:
+      - "historical_sam_data (연도별 시장 규모)"
+      - "growth_rate_analysis (CAGR, YoY)"
+      - "inflection_point_detection (변곡점)"
+    
+    method: "quantifier.analyze_growth_with_timeline()"
+
+  input_from_validator:
+    required:
+      - "historical_data_sources (과거 데이터 출처)"
+      - "data_reliability_by_year (연도별 신뢰도)"
+    
+    method: "validator 협업"
+
+  input_from_explorer:
+    optional:
+      - "pattern_timeline (RAG 패턴 사례)"
+      - "disruption_cases (실패/성공 사례 timeline)"
+    
+    method: "explorer.search_patterns_with_timeline()"
+
+  output_to_explorer:
+    file: "이 market_timeline_analysis.md"
+    usage: "Explorer의 기회 발굴 시 과거 패턴 참조"
+    extract: ["inflection_points", "structural_evolution", "future_implications"]
+
+# ========================================
+# Example Frontmatter
+# ========================================
+
+example_frontmatter: |
+  ---
+  type: "market_timeline_analysis"
+  market: "음악 스트리밍 시장"
+  analysis_period:
+    start_year: 2015
+    end_year: 2025
+    duration_years: 10
+  analysis_date: "2025-11-12"
+  author: "observer"
+  status: "validated"
+
+  key_findings:
+    inflection_points_count: 2
+    structural_evolution_pattern: "독점 → 경쟁 → 재편"
+    major_events_count: 8
+
+  validation:
+    quantifier:
+      status: "passed"
+      comment: "시계열 데이터 수학적으로 타당함"
+    validator:
+      status: "passed"
+      comment: "모든 SRC_ID 검증 완료, 연도별 신뢰도 양호"
+    guardian:
+      status: "passed"
+      comment: "논리적 비약 없음, 패턴 매칭 적절"
+    overall:
+      status: "passed"
+
+  data_sources_count: 25
+  ---
+
+# ========================================
+# 문서 끝
+# ========================================
+
+
+
+
+

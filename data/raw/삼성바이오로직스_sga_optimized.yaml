@@ -1,0 +1,19 @@
+company: 삼성바이오로직스
+year: 2024
+rcept_no: '20250306000580'
+unit: 원
+parsing_method: optimized_pipeline_v2
+sga_details_million: {}
+quality_validation:
+  grade: D
+  confidence: 0.4
+  dart_total_billion: 3915.73724162
+  parsed_total_billion: 0.0
+  difference_ratio: -1.0
+  unknown_ratio: 1.0
+  used_llm: false
+  validation_date: '2025-11-14'
+section_info:
+  section_num: 0
+  selection_method: standard_accounts
+  amount_diff_ratio: 0

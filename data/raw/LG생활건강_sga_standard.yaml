@@ -1,0 +1,28 @@
+account_count: 11
+company: LG생활건강
+parsing_method: standard_account_matching
+quality_validation:
+  confidence: 0.6
+  dart_total_billion: 15697.03823342
+  difference_ratio: 1.0275347187624089
+  grade: C
+  matched_count: 11
+  matched_total_billion: 31826.29
+  unknown_ratio: 0
+  unmatched_count: 5
+  validation_date: '2025-11-13'
+rcept_no: '20240318000511'
+standard_accounts:
+  감가상각비: 133945.0
+  광고선전비: 483279.0
+  기타_소모품비: 23079.0
+  기타_수선비: 14149.0
+  무형자산상각비: 38409.0
+  복리후생비: 116842.0
+  세금과공과금: 43252.0
+  운반비: 285540.0
+  지급수수료: 1382060.0
+  지급임차료: 9435.0
+  직원급여: 652639.0
+unit: 백만원
+year: 2023

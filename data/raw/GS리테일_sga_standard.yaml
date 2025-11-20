@@ -1,0 +1,38 @@
+account_count: 21
+company: GS리테일
+parsing_method: standard_account_matching
+quality_validation:
+  confidence: 0.6
+  dart_total_billion: 24598.51579944
+  difference_ratio: 0.4692280743549076
+  grade: C
+  matched_count: 21
+  matched_total_billion: 36140.83
+  unknown_ratio: 0
+  unmatched_count: 5
+  validation_date: '2025-11-13'
+rcept_no: '20240313001562'
+standard_accounts:
+  광고선전비: 266509.0
+  기타_교육훈련비: 5087.0
+  기타_소모품비: 11791.0
+  기타_수선비: 19000.0
+  기타_여비교통비: 11972.0
+  기타_장치장식비: 8104.0
+  기타_통신비: 3489.0
+  기타_포장비: 1636.0
+  무형자산상각비: 37144.0
+  보험료: 3839.0
+  복리후생비: 69075.0
+  사용권자산상각비: 238291.0
+  세금과공과금: 34926.0
+  수도광열비: 17419.0
+  유형자산감가상각비: 749381.0
+  접대비: 3165.0
+  지급수수료: 1115171.0
+  지급임차료: 25379.0
+  직원급여: 924622.0
+  투자부동산감가상각비: 300.0
+  판매촉진비: 67783.0
+unit: 백만원
+year: 2023

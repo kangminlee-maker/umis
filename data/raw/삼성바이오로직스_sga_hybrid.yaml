@@ -1,0 +1,26 @@
+company: 삼성바이오로직스
+year: 2024
+rcept_no: '20250306000580'
+unit: 원
+parsing_method: hybrid_v1_rule_numbers_llm_decision
+sga_details_million:
+  급여: 135213874206.0
+  퇴직급여: 12516633999.0
+  복리후생비: 43807052257.0
+  감가상각비: 32565912398.0
+  지급수수료: 261336859900.0
+  광고선전비: 17042394278.0
+  경상개발비: 144648961156.0
+  기타판매비와관리비: 39556683055.0
+hybrid_analysis:
+  total_extracted: 21
+  llm_include_count: 8
+  llm_exclude_count: 5
+  final_count: 8
+  llm_reasoning: 소계 위 8개 일반 SG&A + 소계 아래 경상개발비(비용화 R&D) 포함. 총지출액과 자산화는 계산 과정이므로 제외.
+  llm_confidence: 0.95
+quality_validation:
+  dart_total_billion: 3915.73724162
+  parsed_total_billion: 6866.88371249
+  difference_ratio: 0.7536630495791555
+  validation_date: '2025-11-14'

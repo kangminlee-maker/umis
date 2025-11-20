@@ -41,6 +41,7 @@ from umis_rag.agents.estimator.models import (
 from umis_rag.agents.estimator.phase3_guestimation import Phase3Guestimation
 from umis_rag.utils.logger import logger
 from umis_rag.core.config import settings
+from umis_rag.core.model_router import select_model
 
 # LLM API
 try:
@@ -1205,9 +1206,10 @@ class Phase4FermiDecomposition:
         prompt = self._build_llm_prompt(question, available)
         
         try:
-            # OpenAI API 호출 (settings에서 LLM 설정 사용)
+            # OpenAI API 호출 (Phase 4 최적 모델 사용)
+            model = select_model(4)  # Phase 4 → o1-mini
             response = self.llm_client.chat.completions.create(
-                model=settings.llm_model,
+                model=model,
                 temperature=settings.llm_temperature,
                 messages=[
                     {
