@@ -9,6 +9,7 @@ PyYAML>=6.0.0
 
 # OpenAI & Embeddings
 openai>=1.0.0
+anthropic>=0.40.0
 
 # Vector DB
 chromadb>=0.4.0
