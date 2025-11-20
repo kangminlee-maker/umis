@@ -1,0 +1,67 @@
+version: '2.0'
+created: '2025-11-12'
+source: DART OpenAPI + OpenDartReader (완전 데이터)
+total_benchmarks: 1
+reliability: verified
+data_type: actual_with_notes
+data_quality:
+  financial_statements: 연간 감사 (계절성 제외)
+  reprt_code: 11011 (사업보고서)
+  fs_div: CFS (연결재무제표)
+  notes_included: true
+  sga_detail_level: high
+collection_info:
+  method: OpenDartReader library
+  library: https://github.com/FinanceData/OpenDartReader
+  date: '2025-11-12 22:15:20'
+benchmarks:
+- benchmark_id: KR_DART_편의점_BGF리테일_FULL_001
+  industry: 편의점
+  sub_category: CU
+  business_model: 상장사
+  region: 한국
+  key_accounts_billion:
+    revenue: 81317.0
+    cogs: 66407.7
+    gross_profit: 14909.3
+    sga_total: 12495.3
+    operating_profit: 2413.9
+  sga_details_billion:
+    급여: 155.4
+    대손상각비: 2.1
+  ratios:
+    cogs_ratio: 0.8167
+    gross_margin: 0.1833
+    sga_ratio: 0.1537
+    operating_margin: 0.0297
+  data_source:
+    type: verified
+    method: OpenDartReader + DART API
+    company: BGF리테일
+    year: 2023
+    report_type: 사업보고서 (연간 감사)
+    reprt_code: '11011'
+    financial_statement: OFS (개별재무제표)
+    seasonal_adjustment: N/A (연간 데이터)
+    fs_div_explanation: 개별/별도 재무제표 (자회사 제외, 단일 비즈니스)
+    collection_date: '2025-11-12'
+    verification_url: https://dart.fss.or.kr
+    notes_included: true
+    sga_detail_count: 2
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2023
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- BGF리테일 2023년 재무제표\n- 재무제표 유형: OFS (개별재무제표)\n\
+    - 사업보고서 (11011) - 연간 감사 재무제표\n- 계절성 제외됨 (분기/반기 아님)\n\n수집 데이터:\n- 주요 계정: 5개 (매출,\
+    \ 원가, 총이익, SG&A, 영업이익)\n- SG&A 세부: 2개 (급여, 광고비, 임차료 등)\n- 총 계정 과목: 140개\n\n⚠️\
+    \ 재무제표 유형 주의:\n- OFS (개별): 자회사 제외, 단일 비즈니스 economics 파악 가능 ✅\n- CFS (연결): 자회사\
+    \ 포함, 복합 비즈니스 → economics 파악 어려움 ⚠️\n\n⚠️ 변동비/고정비 분류:\n- 매출원가: 항상 변동비\n- SG&A\
+    \ 세부: 비즈니스 특성에 따라 Observer가 분류\n  \n  예) 편의점 (BGF리테일):\n    - 임차료: 입지 중요 → 변동비\
+    \ 가능\n    - 광고비: 브랜드 구축 → 준변동비\n    - 인건비: 점주 (고정비), 알바 (준변동비)\n  \n  예) 온라인 플랫폼:\n\
+    \    - 광고비: 고객 모집 → 변동비\n    - 서버비: 사용량 비례 → 변동비\n    - 인건비: 개발자 → 고정비\n  \n \
+    \ 예) 과거 보험회사:\n    - 인건비 (영업사원): 매출 비례 → 변동비\n  \n  예) 현재 보험회사:\n    - 인건비: 고정비\n\
+    \    - 광고비: 온라인 모집 → 변동비\n\n공헌이익 (Contribution Margin):\n- Observer가 비즈니스 특성 분석\
+    \ 필요\n- CM = Gross Profit - (SG&A 중 변동비)\n- 회사마다 다름 (BGF ≠ GS, 직접 비교 불가)\n- 영업이익보다\
+    \ 공헌이익이 비즈니스 본질 더 잘 보여줌\n\n고정비:\n- 회사별로 천차만별 (운영 효율, 투자 전략)\n- 직접 비교 무의미\n\n제외\
+    \ 항목:\n- 영업외손익: 분석 제외\n- 당기순이익: 산업 분석에 무의미\n"

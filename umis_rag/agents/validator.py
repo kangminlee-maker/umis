@@ -80,6 +80,10 @@ class ValidatorRAG:
         # v7.3.2: Estimator 연결 (교차 검증용)
         self.estimator = None  # Lazy 초기화
         
+        # v7.9.0: API 데이터 소스 (DART, KOSIS)
+        self.dart_api_key = settings.dart_api_key
+        self.kosis_api_key = settings.kosis_api_key
+        
         # Embeddings
         self.embeddings = OpenAIEmbeddings(
             model=settings.embedding_model,
@@ -1118,6 +1122,202 @@ class ValidatorRAG:
             'verified_ratio': verified_ratio,
             'grade': grade
         }
+    
+    # ========================================
+    # API 기반 데이터 검색 (v7.9.0)
+    # ========================================
+    
+    def search_dart_company_financials(
+        self,
+        company_name: str,
+        year: int = 2024
+    ) -> Optional[Dict]:
+        """
+        DART API로 상장사 재무제표 검색 (v7.9.0)
+        
+        Args:
+            company_name: 회사명 (예: "스타벅스코리아")
+            year: 사업연도
+        
+        Returns:
+            {
+                'value': 0.148,
+                'unit': 'ratio',
+                'source': 'DART 2024년 사업보고서',
+                'reliability': 'verified',
+                'company': '스타벅스코리아'
+            } or None
+        """
+        
+        if not self.dart_api_key or self.dart_api_key == 'your-dart-api-key-here':
+            logger.warning("[Validator] DART API Key 없음 (.env 설정 필요)")
+            return None
+        
+        logger.info(f"[Validator] DART API 검색: {company_name} ({year})")
+        
+        try:
+            from umis_rag.utils.dart_api import DARTClient
+            
+            client = DARTClient(self.dart_api_key)
+            
+            # Step 1: 기업 코드
+            corp_code = client.get_corp_code(company_name)
+            
+            if not corp_code:
+                logger.warning(f"  {company_name} 찾을 수 없음")
+                return None
+            
+            logger.info(f"  ✓ corp_code: {corp_code}")
+            
+            # Step 2: 재무제표 조회 (개별재무제표 우선!)
+            financials = client.get_financials(corp_code, year, fs_div='OFS')
+            
+            if not financials:
+                logger.warning(f"  개별재무제표(OFS) 없음, 연결(CFS) 시도...")
+                financials = client.get_financials(corp_code, year, fs_div='CFS')
+                fs_div_used = 'CFS'
+            else:
+                fs_div_used = 'OFS'
+            
+            if not financials:
+                logger.warning(f"  재무제표 없음")
+                return None
+            
+            # Step 3: 주요 계정 추출
+            revenue = 0
+            operating_profit = 0
+            cost_of_sales = 0
+            sga = 0
+            
+            for item in financials:
+                account = item.get('account_nm', '')
+                amount_str = item.get('thstrm_amount', '0')
+                
+                try:
+                    amount = float(amount_str.replace(',', ''))
+                except:
+                    amount = 0
+                
+                if '매출액' in account and '매출원가' not in account:
+                    revenue = amount
+                elif '매출원가' in account:
+                    cost_of_sales = amount
+                elif '판매비' in account or '관리비' in account:
+                    sga = amount
+                elif '영업이익' in account:
+                    operating_profit = amount
+            
+            if revenue > 0:
+                opm = operating_profit / revenue
+                gross_margin = (revenue - cost_of_sales) / revenue if cost_of_sales > 0 else 0
+                
+                logger.info(f"  ✓ {company_name} 재무 ({fs_div_used}, 억원):")
+                logger.info(f"    매출액: {revenue/100_000_000:,.0f}")
+                logger.info(f"    영업이익률: {opm:.1%}")
+                logger.info(f"    매출총이익률: {gross_margin:.1%}")
+                
+                return {
+                    'value': round(opm, 4),
+                    'unit': 'ratio',
+                    'source': f'DART {year}년 사업보고서 ({fs_div_used})',
+                    'reliability': 'verified',
+                    'data_type': 'actual',
+                    'company': company_name,
+                    'year': year,
+                    'fs_div': fs_div_used,
+                    'revenue_billion': round(revenue / 100000000, 1),
+                    'cost_of_sales_billion': round(cost_of_sales / 100000000, 1),
+                    'sga_billion': round(sga / 100000000, 1),
+                    'operating_profit_billion': round(operating_profit / 100000000, 1),
+                    'gross_margin': round(gross_margin, 4),
+                    'operating_margin': round(opm, 4),
+                    'verification_url': f'https://dart.fss.or.kr/dsaf001/main.do'
+                }
+            
+            return None
+            
+        except Exception as e:
+            logger.error(f"  DART API 오류: {e}")
+            return None
+    
+    def search_kosis_industry_average(
+        self,
+        industry_name: str,
+        ksic_code: str = None
+    ) -> Optional[Dict]:
+        """
+        KOSIS API로 산업 평균 마진율 검색 (v7.9.0)
+        
+        Args:
+            industry_name: 산업명 (예: "음식점업")
+            ksic_code: KSIC 코드 (예: "56")
+        
+        Returns:
+            {
+                'value': 0.089,
+                'unit': 'ratio',
+                'source': '통계청 기업경영분석 2024',
+                'reliability': 'verified',
+                'sample_size': 15234
+            } or None
+        """
+        
+        # ⚠️ KOSIS API는 구조가 복잡하여 수동 수집 권장
+        logger.info(f"[Validator] KOSIS 검색: {industry_name}")
+        
+        if not self.kosis_api_key or self.kosis_api_key == 'your-kosis-api-key-here':
+            logger.warning("[Validator] KOSIS API Key 없음")
+            logger.info("  대안: https://kosis.kr 수동 확인")
+            return None
+        
+        logger.warning("[Validator] KOSIS API 파싱 로직 구현 필요")
+        logger.info("  현재: 수동 수집 권장 (kosis.kr)")
+        
+        # TODO: KOSIS API 파싱 로직 구현
+        # 현재는 수동 수집된 데이터 사용 권장
+        
+        return None
+    
+    def search_api_sources(
+        self,
+        query: str,
+        company_name: str = None,
+        industry: str = None
+    ) -> Optional[Dict]:
+        """
+        API 데이터 소스 통합 검색 (v7.9.0)
+        
+        DART와 KOSIS를 자동으로 검색하여 확정 데이터 반환
+        
+        Args:
+            query: 검색 질문
+            company_name: 회사명 (DART 검색용)
+            industry: 산업명 (KOSIS 검색용)
+        
+        Returns:
+            검색 결과 또는 None
+        """
+        
+        logger.info(f"[Validator] API 통합 검색: {query}")
+        
+        # DART 검색 (회사명 있을 때)
+        if company_name:
+            logger.info(f"  DART 검색 시도: {company_name}")
+            result = self.search_dart_company_financials(company_name)
+            if result:
+                logger.info(f"  ✓ DART에서 발견!")
+                return result
+        
+        # KOSIS 검색 (산업명 있을 때)
+        if industry:
+            logger.info(f"  KOSIS 검색 시도: {industry}")
+            result = self.search_kosis_industry_average(industry)
+            if result:
+                logger.info(f"  ✓ KOSIS에서 발견!")
+                return result
+        
+        logger.info("  API 소스에서 찾지 못함")
+        return None
 
 
 # Validator RAG 인스턴스 (싱글톤)

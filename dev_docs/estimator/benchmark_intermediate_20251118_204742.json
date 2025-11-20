@@ -1,0 +1,135 @@
+[
+  {
+    "model": "gpt-5-nano",
+    "scenario_id": "SC-001",
+    "scenario_name": "Phase 0 (Literal - 확정 데이터 조회)",
+    "phase": 0,
+    "complexity": "very_simple",
+    "response": {
+      "value": 200000,
+      "unit": "원",
+      "confidence": 1.0
+    },
+    "expected": "200,000원",
+    "tokens": {
+      "input": 123,
+      "output": 478,
+      "total": 601
+    },
+    "cost": 0.00019735,
+    "elapsed_seconds": 5.28,
+    "user_evaluation": {
+      "quality_score": null,
+      "auto_mode": true
+    },
+    "timestamp": "2025-11-18T20:46:56.323716",
+    "success": true
+  },
+  {
+    "model": "gpt-5-nano",
+    "scenario_id": "SC-002",
+    "scenario_name": "Phase 2 (공식 계산)",
+    "phase": 2,
+    "complexity": "simple",
+    "response": {
+      "value": 1600000,
+      "unit": "원",
+      "formula": "ARPU / Churn_Rate",
+      "confidence": 1.0
+    },
+    "expected": "1,600,000원",
+    "tokens": {
+      "input": 109,
+      "output": 491,
+      "total": 600
+    },
+    "cost": 0.00020185,
+    "elapsed_seconds": 4.7,
+    "user_evaluation": {
+      "quality_score": null,
+      "auto_mode": true
+    },
+    "timestamp": "2025-11-18T20:47:01.028599",
+    "success": true
+  },
+  {
+    "model": "gpt-5-nano",
+    "scenario_id": "SC-003",
+    "scenario_name": "Phase 3 (템플릿 있음 - 벤치마크 조정)",
+    "phase": 3,
+    "complexity": "medium",
+    "response": {
+      "value": 252000,
+      "unit": "원",
+      "confidence": 0.7,
+      "reasoning": "글로벌 B2B SaaS ARPU $100에 한국 GDP 대비 약 60%를 적용하고, B2B가 B2C의 약 3배라는 가정으로 조정한 뒤 환율 1 USD = 1,400 KRW로 환산하여 약 252,000원으로 추정."
+    },
+    "expected": "150,000-250,000원 (±30%)",
+    "tokens": {
+      "input": 180,
+      "output": 4649,
+      "total": 4829
+    },
+    "cost": 0.0018686000000000002,
+    "elapsed_seconds": 40.32,
+    "user_evaluation": {
+      "quality_score": null,
+      "auto_mode": true
+    },
+    "timestamp": "2025-11-18T20:47:41.350556",
+    "success": true
+  },
+  {
+    "model": "gpt-4.1-nano",
+    "scenario_id": "SC-001",
+    "scenario_name": "Phase 0 (Literal - 확정 데이터 조회)",
+    "phase": 0,
+    "complexity": "very_simple",
+    "response": {
+      "value": 200000,
+      "unit": "원",
+      "confidence": 1.0
+    },
+    "expected": "200,000원",
+    "tokens": {
+      "input": 124,
+      "output": 21,
+      "total": 145
+    },
+    "cost": 2.08e-05,
+    "elapsed_seconds": 0.64,
+    "user_evaluation": {
+      "quality_score": null,
+      "auto_mode": true
+    },
+    "timestamp": "2025-11-18T20:47:41.991474",
+    "success": true
+  },
+  {
+    "model": "gpt-4.1-nano",
+    "scenario_id": "SC-002",
+    "scenario_name": "Phase 2 (공식 계산)",
+    "phase": 2,
+    "complexity": "simple",
+    "response": {
+      "value": 1600000.0,
+      "unit": "원",
+      "formula": "ARPU / Churn_Rate",
+      "confidence": 1.0
+    },
+    "expected": "1,600,000원",
+    "tokens": {
+      "input": 110,
+      "output": 36,
+      "total": 146
+    },
+    "cost": 2.54e-05,
+    "elapsed_seconds": 0.82,
+    "user_evaluation": {
+      "quality_score": null,
+      "auto_mode": true
+    },
+    "timestamp": "2025-11-18T20:47:42.808543",
+    "success": true
+  }
+]

@@ -90,6 +90,9 @@ class EstimatorRAG:
         # Validator: 확정 데이터 검색 (v7.6.0 추가, Phase 2)
         self.validator = None  # Lazy 초기화
         
+        # Phase 2 Enhanced: 컨텍스트 기반 검색 (v7.9.0 추가)
+        self.phase2_enhanced = None  # Lazy 초기화
+        
         # Phase 3: Guestimation (Lazy 초기화)
         self.phase3 = None
         self.learning_writer = None
@@ -419,9 +422,14 @@ class EstimatorRAG:
         context: Context
     ) -> Optional[EstimationResult]:
         """
-        Phase 2: Validator 확정 데이터 검색 (v7.6.0)
+        Phase 2: Validator 확정 데이터 검색 (v7.9.0 Enhanced)
         
         추정하기 전 확정 데이터 존재 여부 확인
+        
+        v7.9.0 개선:
+        - Phase 2 Enhanced (컨텍스트 기반) 우선 시도
+        - 100개 벤치마크 활용
+        - 산업/규모/모델별 조정
         
         Args:
             question: 질문
@@ -439,6 +447,49 @@ class EstimatorRAG:
             self.validator = get_validator_rag()
             logger.info("  ✅ Validator 연결")
         
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Phase 2 Enhanced 시도 (v7.9.0)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Context에 산업 정보가 있으면 Enhanced 사용
+        if context and context.project_data:
+            context_dict = context.project_data
+            
+            # 필수 정보 확인 (industry)
+            if 'industry' in context_dict:
+                # Phase2Enhanced Lazy 초기화
+                if self.phase2_enhanced is None:
+                    try:
+                        from .phase2_validator_search_enhanced import Phase2ValidatorSearchEnhanced
+                        self.phase2_enhanced = Phase2ValidatorSearchEnhanced(
+                            validator_rag=self.validator
+                        )
+                        # Benchmark store 초기화
+                        self.phase2_enhanced.initialize_benchmark_store()
+                        logger.info("  ✅ Phase 2 Enhanced 초기화")
+                    except Exception as e:
+                        logger.warning(f"  Phase 2 Enhanced 초기화 실패: {e}")
+                        self.phase2_enhanced = None
+                
+                # Phase2Enhanced 검색 시도
+                if self.phase2_enhanced:
+                    try:
+                        enhanced_result = self.phase2_enhanced.search_with_context(
+                            query=question,
+                            context=context_dict
+                        )
+                        
+                        if enhanced_result and enhanced_result.confidence >= 0.75:
+                            execution_time = time.time() - start_time
+                            enhanced_result.execution_time = execution_time
+                            logger.info(f"  ✅ Phase 2 Enhanced 성공: {enhanced_result.value:.1%} (Confidence: {enhanced_result.confidence:.2f})")
+                            return enhanced_result
+                        
+                    except Exception as e:
+                        logger.warning(f"  Phase 2 Enhanced 오류: {e}")
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Phase 2 Basic (기존)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # Validator 검색
         validator_result = self.validator.search_definite_data(question, context)
         

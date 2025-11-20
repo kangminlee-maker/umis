@@ -1,0 +1,1182 @@
+version: '2.0'
+created: '2025-11-12'
+source: DART OpenAPI 자동 수집
+total_benchmarks: 14
+reliability: verified
+data_type: actual
+collection_info:
+  api: DART OpenAPI
+  method: 자동 수집
+  date: '2025-11-12 21:44:32'
+benchmarks:
+- benchmark_id: KR_DART_편의점_BGF리테일_001
+  industry: 편의점
+  sub_category: CU
+  business_model: 프랜차이즈
+  region: 한국
+  key_accounts_billion:
+    revenue: 86987.6
+    cogs: 70730.4
+    gross_profit: 16257.2
+    sga: 13739.9
+    operating_profit: 2516.4
+  sga_details_billion:
+    급여: -56.9
+  ratios_reference:
+    cogs_ratio: 0.8131
+    gross_margin: 0.1869
+    sga_ratio: 0.158
+    operating_margin: 0.0289
+  all_accounts_count: 142
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: BGF리테일
+    corp_code: '01263022'
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: BGF리테일
+
+      - 고유번호: 01263022
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 86,987.6
+
+      - 매출원가 (변동비): 70,730.4 (81.3%)
+
+      - 매출총이익: 16,257.2 (18.7%)
+
+      - 판매비와관리비: 13,739.9 (15.8%)
+
+      - 영업이익: 2,516.4 (2.9%)
+
+
+      SG&A 세부 항목: [''급여'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- BGF리테일 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_편의점_GS리테일_001
+  industry: 편의점
+  sub_category: GS25
+  business_model: 프랜차이즈
+  region: 한국
+  key_accounts_billion:
+    revenue: 116269.2
+    cogs: 87400.4
+    gross_profit: 28868.8
+    sga: 26250.2
+    operating_profit: -301.3
+  sga_details_billion:
+    급여: 0.0
+  ratios_reference:
+    cogs_ratio: 0.7517
+    gross_margin: 0.2483
+    sga_ratio: 0.2258
+    operating_margin: -0.0026
+  all_accounts_count: 270
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: GS리테일
+    corp_code: '00140177'
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: GS리테일
+
+      - 고유번호: 00140177
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 116,269.2
+
+      - 매출원가 (변동비): 87,400.4 (75.2%)
+
+      - 매출총이익: 28,868.8 (24.8%)
+
+      - 판매비와관리비: 26,250.2 (22.6%)
+
+      - 영업이익: -301.3 (-0.3%)
+
+
+      SG&A 세부 항목: [''급여'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- GS리테일 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_대형마트_이마트_001
+  industry: 대형마트
+  sub_category: 할인점
+  business_model: 직접 운영
+  region: 한국
+  key_accounts_billion:
+    revenue: 290209.0
+    cogs: 199797.6
+    gross_profit: 90411.4
+    sga: 89940.4
+    operating_profit: 471.0
+  sga_details_billion:
+    급여: -2.5
+  ratios_reference:
+    cogs_ratio: 0.6885
+    gross_margin: 0.3115
+    sga_ratio: 0.3099
+    operating_margin: 0.0016
+  all_accounts_count: 232
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: 이마트
+    corp_code: 00872984
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: 이마트
+
+      - 고유번호: 00872984
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 290,209.0
+
+      - 매출원가 (변동비): 199,797.6 (68.8%)
+
+      - 매출총이익: 90,411.4 (31.1%)
+
+      - 판매비와관리비: 89,940.4 (31.0%)
+
+      - 영업이익: 471.0 (0.2%)
+
+
+      SG&A 세부 항목: [''급여'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- 이마트 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_백화점/마트_롯데쇼핑_001
+  industry: 백화점/마트
+  sub_category: 복합
+  business_model: 직접 운영
+  region: 한국
+  key_accounts_billion:
+    revenue: 0.0
+    cogs: 72513.6
+    gross_profit: 67352.2
+    sga: 62493.4
+    operating_profit: 4731.1
+  sga_details_billion:
+    급여: -30.4
+  ratios_reference:
+    cogs_ratio: 0
+    gross_margin: 0
+    sga_ratio: 0
+    operating_margin: 0
+  all_accounts_count: 322
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: 롯데쇼핑
+    corp_code: '00120526'
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: 롯데쇼핑
+
+      - 고유번호: 00120526
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 0.0
+
+      - 매출원가 (변동비): 72,513.6 (0.0%)
+
+      - 매출총이익: 67,352.2 (0.0%)
+
+      - 판매비와관리비: 62,493.4 (0.0%)
+
+      - 영업이익: 4,731.1 (0.0%)
+
+
+      SG&A 세부 항목: [''급여'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- 롯데쇼핑 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_전자제조_삼성전자_001
+  industry: 전자제조
+  sub_category: 종합 전자
+  business_model: 제조
+  region: 한국
+  key_accounts_billion:
+    revenue: 3008709.0
+    cogs: 1865622.7
+    gross_profit: 1143086.4
+    sga: 815826.7
+    operating_profit: 327259.6
+  sga_details_billion:
+    급여: -7660.8
+  ratios_reference:
+    cogs_ratio: 0.6201
+    gross_margin: 0.3799
+    sga_ratio: 0.2712
+    operating_margin: 0.1088
+  all_accounts_count: 213
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: 삼성전자
+    corp_code: 00126380
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: 삼성전자
+
+      - 고유번호: 00126380
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 3,008,709.0
+
+      - 매출원가 (변동비): 1,865,622.7 (62.0%)
+
+      - 매출총이익: 1,143,086.4 (38.0%)
+
+      - 판매비와관리비: 815,826.7 (27.1%)
+
+      - 영업이익: 327,259.6 (10.9%)
+
+
+      SG&A 세부 항목: [''급여'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- 삼성전자 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_전자제조_LG전자_001
+  industry: 전자제조
+  sub_category: 가전
+  business_model: 제조
+  region: 한국
+  key_accounts_billion:
+    revenue: 877281.8
+    cogs: 663489.5
+    gross_profit: 213792.3
+    sga: 179595.6
+    operating_profit: 34196.8
+  sga_details_billion:
+    급여: 746.8
+  ratios_reference:
+    cogs_ratio: 0.7563
+    gross_margin: 0.2437
+    sga_ratio: 0.2047
+    operating_margin: 0.039
+  all_accounts_count: 203
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: LG전자
+    corp_code: '00401731'
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: LG전자
+
+      - 고유번호: 00401731
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 877,281.8
+
+      - 매출원가 (변동비): 663,489.5 (75.6%)
+
+      - 매출총이익: 213,792.3 (24.4%)
+
+      - 판매비와관리비: 179,595.6 (20.5%)
+
+      - 영업이익: 34,196.8 (3.9%)
+
+
+      SG&A 세부 항목: [''급여'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- LG전자 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_제약_유한양행_001
+  industry: 제약
+  sub_category: 의약품
+  business_model: 제조
+  region: 한국
+  key_accounts_billion:
+    revenue: 20677.9
+    cogs: 13784.1
+    gross_profit: 6893.9
+    sga: 4097.5
+    operating_profit: 548.8
+  sga_details_billion:
+    급여: -60.2
+    퇴직급여: 225.7
+    감가상각비: 8.8
+    무형자산상각비: 180.0
+  ratios_reference:
+    cogs_ratio: 0.6666
+    gross_margin: 0.3334
+    sga_ratio: 0.1982
+    operating_margin: 0.0265
+  all_accounts_count: 366
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: 유한양행
+    corp_code: 00145109
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: 유한양행
+
+      - 고유번호: 00145109
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 20,677.9
+
+      - 매출원가 (변동비): 13,784.1 (66.7%)
+
+      - 매출총이익: 6,893.9 (33.3%)
+
+      - 판매비와관리비: 4,097.5 (19.8%)
+
+      - 영업이익: 548.8 (2.6%)
+
+
+      SG&A 세부 항목: [''급여'', ''퇴직급여'', ''감가상각비'', ''무형자산상각비'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- 유한양행 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_화장품_아모레퍼시픽_001
+  industry: 화장품
+  sub_category: 화장품 제조
+  business_model: 제조 + 유통
+  region: 한국
+  key_accounts_billion:
+    revenue: 38851.1
+    cogs: 11383.8
+    gross_profit: 27467.3
+    sga: 25262.5
+    operating_profit: 2204.8
+  sga_details_billion:
+    급여: 0.0
+  ratios_reference:
+    cogs_ratio: 0.293
+    gross_margin: 0.707
+    sga_ratio: 0.6502
+    operating_margin: 0.0568
+  all_accounts_count: 256
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: 아모레퍼시픽
+    corp_code: 00583424
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: 아모레퍼시픽
+
+      - 고유번호: 00583424
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 38,851.1
+
+      - 매출원가 (변동비): 11,383.8 (29.3%)
+
+      - 매출총이익: 27,467.3 (70.7%)
+
+      - 판매비와관리비: 25,262.5 (65.0%)
+
+      - 영업이익: 2,204.8 (5.7%)
+
+
+      SG&A 세부 항목: [''급여'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- 아모레퍼시픽 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_화장품_LG생활건강_001
+  industry: 화장품
+  sub_category: 화장품 + 생활용품
+  business_model: 제조
+  region: 한국
+  key_accounts_billion:
+    revenue: 68119.2
+    cogs: 32510.9
+    gross_profit: 35608.3
+    sga: 31017.9
+    operating_profit: 4590.5
+  sga_details_billion:
+    급여: 0.0
+    퇴직급여: 53.6
+    무형자산상각비: 343.4
+    감가상각비: 2212.7
+  ratios_reference:
+    cogs_ratio: 0.4773
+    gross_margin: 0.5227
+    sga_ratio: 0.4553
+    operating_margin: 0.0674
+  all_accounts_count: 244
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: LG생활건강
+    corp_code: '00356370'
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: LG생활건강
+
+      - 고유번호: 00356370
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 68,119.2
+
+      - 매출원가 (변동비): 32,510.9 (47.7%)
+
+      - 매출총이익: 35,608.3 (52.3%)
+
+      - 판매비와관리비: 31,017.9 (45.5%)
+
+      - 영업이익: 4,590.5 (6.7%)
+
+
+      SG&A 세부 항목: [''급여'', ''퇴직급여'', ''무형자산상각비'', ''감가상각비'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- LG생활건강 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_엔터테인먼트_하이브_001
+  industry: 엔터테인먼트
+  sub_category: 음악/콘텐츠
+  business_model: 복합
+  region: 한국
+  key_accounts_billion:
+    revenue: 22556.5
+    cogs: 12958.4
+    gross_profit: 9598.1
+    sga: 7757.6
+    operating_profit: 1840.5
+  sga_details_billion:
+    급여: 0.0
+  ratios_reference:
+    cogs_ratio: 0.5745
+    gross_margin: 0.4255
+    sga_ratio: 0.3439
+    operating_margin: 0.0816
+  all_accounts_count: 264
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: 하이브
+    corp_code: '01204056'
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: 하이브
+
+      - 고유번호: 01204056
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 22,556.5
+
+      - 매출원가 (변동비): 12,958.4 (57.5%)
+
+      - 매출총이익: 9,598.1 (42.5%)
+
+      - 판매비와관리비: 7,757.6 (34.4%)
+
+      - 영업이익: 1,840.5 (8.2%)
+
+
+      SG&A 세부 항목: [''급여'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- 하이브 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_미디어_CJ ENM_001
+  industry: 미디어
+  sub_category: 방송/콘텐츠
+  business_model: 제작 + 플랫폼
+  region: 한국
+  key_accounts_billion:
+    revenue: 52313.6
+    cogs: 35201.7
+    gross_profit: 17111.9
+    sga: 15946.1
+    operating_profit: 1044.8
+  sga_details_billion:
+    급여: -82.2
+  ratios_reference:
+    cogs_ratio: 0.6729
+    gross_margin: 0.3271
+    sga_ratio: 0.3048
+    operating_margin: 0.02
+  all_accounts_count: 230
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: CJ ENM
+    corp_code: '00265324'
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: CJ ENM
+
+      - 고유번호: 00265324
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 52,313.6
+
+      - 매출원가 (변동비): 35,201.7 (67.3%)
+
+      - 매출총이익: 17,111.9 (32.7%)
+
+      - 판매비와관리비: 15,946.1 (30.5%)
+
+      - 영업이익: 1,044.8 (2.0%)
+
+
+      SG&A 세부 항목: [''급여'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- CJ ENM 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_게임_넷마블_001
+  industry: 게임
+  sub_category: 모바일 게임
+  business_model: 개발 + 퍼블리싱
+  region: 한국
+  key_accounts_billion:
+    revenue: 0.0
+    cogs: 0.0
+    gross_profit: 0.0
+    sga: 0.0
+    operating_profit: 2156.3
+  sga_details_billion:
+    급여: 0.0
+  ratios_reference:
+    cogs_ratio: 0
+    gross_margin: 0
+    sga_ratio: 0
+    operating_margin: 0
+  all_accounts_count: 291
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: 넷마블
+    corp_code: 00904672
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: 넷마블
+
+      - 고유번호: 00904672
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 0.0
+
+      - 매출원가 (변동비): 0.0 (0.0%)
+
+      - 매출총이익: 0.0 (0.0%)
+
+      - 판매비와관리비: 0.0 (0.0%)
+
+      - 영업이익: 2,156.3 (0.0%)
+
+
+      SG&A 세부 항목: [''급여'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- 넷마블 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_게임_엔씨소프트_001
+  industry: 게임
+  sub_category: 온라인 게임
+  business_model: 개발 + 서비스
+  region: 한국
+  key_accounts_billion:
+    revenue: 0.0
+    cogs: 0.0
+    gross_profit: 0.0
+    sga: 0.0
+    operating_profit: -1092.2
+  sga_details_billion:
+    급여: 0.0
+    무형자산상각비: 33.1
+    감가상각비: 1058.7
+  ratios_reference:
+    cogs_ratio: 0
+    gross_margin: 0
+    sga_ratio: 0
+    operating_margin: 0
+  all_accounts_count: 302
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: 엔씨소프트
+    corp_code: '00261443'
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: 엔씨소프트
+
+      - 고유번호: 00261443
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 0.0
+
+      - 매출원가 (변동비): 0.0 (0.0%)
+
+      - 매출총이익: 0.0 (0.0%)
+
+      - 판매비와관리비: 0.0 (0.0%)
+
+      - 영업이익: -1,092.2 (0.0%)
+
+
+      SG&A 세부 항목: [''급여'', ''무형자산상각비'', ''감가상각비'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- 엔씨소프트 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
+- benchmark_id: KR_DART_플랫폼_카카오_001
+  industry: 플랫폼
+  sub_category: 인터넷 플랫폼
+  business_model: 플랫폼
+  region: 한국
+  key_accounts_billion:
+    revenue: 0.0
+    cogs: 0.0
+    gross_profit: 0.0
+    sga: 0.0
+    operating_profit: 4602.1
+  sga_details_billion:
+    퇴직급여: 467.5
+    급여: -188.1
+  ratios_reference:
+    cogs_ratio: 0
+    gross_margin: 0
+    sga_ratio: 0
+    operating_margin: 0
+  all_accounts_count: 231
+  data_source:
+    type: verified
+    source: DART 전자공시시스템
+    company: 카카오
+    corp_code: 00258801
+    report: 2024년 사업보고서
+    report_type: 연결재무제표
+    verification: '
+
+      DART 전자공시시스템 실제 데이터 (모든 계정 포함)
+
+
+      기업 정보:
+
+      - 기업: 카카오
+
+      - 고유번호: 00258801
+
+      - 연도: 2024년
+
+
+      주요 계정 (억원):
+
+      - 매출액: 0.0
+
+      - 매출원가 (변동비): 0.0 (0.0%)
+
+      - 매출총이익: 0.0 (0.0%)
+
+      - 판매비와관리비: 0.0 (0.0%)
+
+      - 영업이익: 4,602.1 (0.0%)
+
+
+      SG&A 세부 항목: [''퇴직급여'', ''급여'']
+
+
+      ⚠️ 중요:
+
+      - 매출원가는 항상 변동비
+
+      - SG&A는 변동비 + 고정비 혼합 → Observer가 비즈니스 특성 분석 후 분류
+
+      - 공헌이익 = Gross Profit - (SG&A 중 변동비) → 비즈니스별로 다름
+
+      - 영업이익은 고정비 포함 → 참고만
+
+      '
+    dart_url: https://dart.fss.or.kr/dsaf001/main.do?rcpNo=조회필요
+    collection_date: '2025-11-12'
+    collection_method: DART OpenAPI 자동 수집
+  reliability: verified
+  data_type: actual
+  sample_size: 1
+  year: 2024
+  notes: "\n- DART 공시 자료 (100% 실제 데이터)\n- 카카오 2024년 연결재무제표\n- 검증 가능: dart.fss.or.kr에서\
+    \ 직접 확인\n\n⚠️ 데이터 해석 주의사항:\n1. 단일 사업 vs 복합 사업:\n   - 이 기업의 주요 사업 비중 확인 필요\n  \
+    \ - 복합 사업인 경우 개별 사업부 구분 어려움\n\n2. 변동비 vs 고정비:\n   - 매출원가: 항상 변동비\n   - SG&A: 비즈니스\
+    \ 특성에 따라 다름\n   - 예: 광고비 → 온라인 비즈니스는 변동비\n   - 예: 임차료 → 오프라인 유통은 변동비 (입지 중요)\n\
+    \   - 예: 인건비 → 과거 보험 영업은 변동비, 현재는 고정비\n\n3. 공헌이익 계산:\n   - Observer가 비즈니스 특성 분석\
+    \ 필요\n   - Contribution Margin = Gross Profit - (SG&A 중 변동비)\n   - 영업이익보다 공헌이익이\
+    \ 비즈니스 본질 더 잘 보여줌\n\n4. 고정비는 회사별로 천차만별:\n   - 운영 효율성, 투자 전략에 따라 다름\n   - 직접 비교\
+    \ 어려움\n\n5. 영업외손익: 분석에서 제외\n6. 당기순이익: 산업 분석에 무의미\n\n→ 모든 계정 데이터를 있는 그대로 저장\n→\
+    \ Observer가 비즈니스 특성 분석 후 재분류\n"
