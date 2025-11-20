@@ -1,0 +1,2876 @@
+# ========================================
+# UMIS Deliverable Standards v6.2
+# ========================================
+# 
+# 목적: 에이전트별 산출물 표준 정의 및 재검증 가능성 보장
+# 연계: umis_guidelines_v6.2.yaml SECTION 5 (DATA INTEGRITY SYSTEM)
+# 
+# 구조:
+# - Part 1: 에이전트별 산출물 표준
+# - Part 2: 프로젝트 생명주기 관리
+# - Part 3: 재검증 프레임워크
+# - Part 4: 파일 포맷 템플릿
+# 
+# ========================================
+
+_meta:
+  version: "6.2"
+  purpose: "산출물 표준화 및 재검증 가능성 보장"
+  parent_document: "umis_guidelines_v6.2.yaml"
+  integration_point: "SECTION 5: DATA INTEGRITY SYSTEM"
+  release_date: "2024-10-31"
+
+# ========================================
+# Part 1: 에이전트별 산출물 표준
+# @id: agent_deliverable_standards
+# ========================================
+
+agent_deliverable_standards:
+  _description: "각 에이전트가 생성하는 산출물의 구조와 품질 기준"
+  
+  # Rachel (Validator) - 데이터 검증 및 소싱
+  rachel_standards:
+    _id: "rachel_deliverable_standards"
+    _role: "Validator"
+    _core_output: "검증된 데이터 + 신뢰도 평가 + Source Registry"
+    
+    primary_deliverables:
+      
+      source_registry:
+        description: "수집한 모든 데이터의 출처 및 검증 기록"
+        file_format: "YAML"
+        file_name: "source_registry.yaml"
+        location: "02_analysis/validator/data_sources/"
+        
+        required_fields:
+          - field: "source_id"
+            type: "string"
+            format: "SRC_YYYYMMDD_NNN"
+            example: "SRC_20241031_001"
+            mandatory: true
+          
+          - field: "data_point"
+            type: "string"
+            description: "데이터 항목 설명"
+            example: "한국 피아노 시장 규모"
+            mandatory: true
+          
+          - field: "original_value"
+            type: "string/number"
+            description: "원본 데이터 값 (변경하지 않음)"
+            example: "1,500억원"
+            mandatory: true
+          
+          - field: "source_name"
+            type: "string"
+            description: "출처 기관/문서명"
+            example: "한국문화예술위원회 2023 악기시장 보고서"
+            mandatory: true
+          
+          - field: "source_url"
+            type: "string/url"
+            description: "원본 URL 또는 파일 경로"
+            example: "https://www.arko.or.kr/report/2023/music_market.pdf"
+            mandatory: true
+          
+          - field: "access_date"
+            type: "date"
+            format: "YYYY-MM-DD"
+            example: "2024-10-31"
+            mandatory: true
+          
+          - field: "data_creation_date"
+            type: "date"
+            description: "데이터 생성/발행 날짜"
+            example: "2023-12-31"
+            mandatory: false
+          
+          - field: "collection_method"
+            type: "enum"
+            values: ["API", "크롤링", "구매", "직접조사", "공개자료", "인터뷰"]
+            example: "공개자료"
+            mandatory: true
+          
+          - field: "original_definition"
+            type: "string"
+            description: "데이터의 원본 정의 (매우 중요)"
+            example: "악기 시장 = 신품 판매만, 중고/렌탈 제외"
+            mandatory: true
+          
+          - field: "needed_definition"
+            type: "string"
+            description: "우리가 필요한 정의"
+            example: "피아노 판매 시장 = 신품 + 중고 포함"
+            mandatory: true
+          
+          - field: "definition_gap"
+            type: "string"
+            description: "정의 차이 분석"
+            example: "중고 시장 미포함 → 과소 추정 가능성"
+            mandatory: true
+          
+          - field: "adjustment_applied"
+            type: "boolean"
+            description: "조정 여부"
+            mandatory: true
+          
+          - field: "adjustment_logic"
+            type: "string"
+            description: "조정 방법과 논리 (조정한 경우)"
+            example: "업계 추정 중고 비중 20% 적용 → 1,500억 × 1.2 = 1,800억"
+            mandatory: false
+          
+          - field: "adjusted_value"
+            type: "string/number"
+            description: "조정된 값"
+            example: "1,800억원"
+            mandatory: false
+          
+          - field: "reliability_score"
+            type: "integer"
+            range: "0-100"
+            description: "Rachel의 신뢰도 평가"
+            criteria:
+              - "90-100: 정부 통계, 감사받은 재무제표"
+              - "70-89: 민간 조사, 표본조사"
+              - "50-69: 추정 포함, 오래된 자료"
+              - "0-49: 출처 불명, 신뢰 불가"
+            example: 85
+            mandatory: true
+          
+          - field: "verification_notes"
+            type: "string"
+            description: "검증 과정의 특이사항"
+            example: "조사방법론 섹션에서 표본 크기 1,000명 확인"
+            mandatory: false
+          
+          - field: "update_cycle"
+            type: "string"
+            description: "데이터 갱신 주기"
+            example: "연 1회 (매년 12월)"
+            mandatory: false
+          
+          - field: "used_by"
+            type: "array"
+            description: "이 데이터를 사용한 에이전트/분석"
+            example: ["bill_sam_calculation", "albert_market_structure"]
+            mandatory: false
+        
+        example_entry: |
+          - source_id: "SRC_20241031_001"
+            data_point: "한국 피아노 시장 규모"
+            original_value: "1,500억원"
+            source_name: "한국문화예술위원회 2023 악기시장 보고서"
+            source_url: "https://www.arko.or.kr/report/2023/music_market.pdf"
+            access_date: "2024-10-31"
+            data_creation_date: "2023-12-31"
+            collection_method: "공개자료"
+            original_definition: "악기 시장 신품 판매, 렌탈/중고 제외, 2023년 기준"
+            needed_definition: "피아노 판매 시장 (신품+중고 포함)"
+            definition_gap: "중고 시장 미포함, 전체 악기 중 피아노 비중 불명확"
+            adjustment_applied: true
+            adjustment_logic: "1) 악기 중 피아노 비중 15% 적용 = 225억, 2) 중고 시장 20% 추가 = 270억"
+            adjusted_value: "270억원"
+            reliability_score: 75
+            verification_notes: "피아노 비중은 업계 인터뷰 기반 추정, 중고 비중은 유사 시장 참고"
+            update_cycle: "연 1회 (12월)"
+            used_by: ["bill_piano_market_sam", "albert_piano_value_chain"]
+      
+      data_verification_report:
+        description: "데이터 검증 결과 종합 보고서"
+        file_format: "Markdown"
+        file_name: "data_verification_report.md"
+        location: "02_analysis/validator/"
+        
+        required_sections:
+          - section: "Executive Summary"
+            content: "검증 완료 데이터 개수, 전체 신뢰도, 주요 이슈"
+          
+          - section: "Data Sources Overview"
+            content: "출처별 데이터 건수 및 신뢰도 분포"
+          
+          - section: "High-Risk Data Points"
+            content: "신뢰도 70% 미만 데이터 목록 및 대응 방안"
+          
+          - section: "Definition Gaps"
+            content: "정의 불일치가 큰 데이터 및 조정 내역"
+          
+          - section: "Alternative Sources"
+            content: "추가 확보 가능한 데이터 소스"
+          
+          - section: "Validation Checklist"
+            content: "검증 완료 체크리스트"
+        
+        quality_metrics:
+          - "전체 데이터 포인트 개수"
+          - "평균 신뢰도 점수"
+          - "정의 일치율 (%)"
+          - "조정 필요 데이터 비율"
+      
+      creative_search_log:
+        description: "창의적 키워드 확장 검색 기록"
+        file_format: "Markdown"
+        file_name: "creative_search_log.md"
+        location: "02_analysis/validator/search_logs/"
+        
+        content_structure:
+          - search_target: "찾고자 하는 정보"
+          - conventional_keywords: "일반적 검색어"
+          - expanded_keywords: "확장된 검색어 (초보자/중급자/전문가)"
+          - unexpected_findings: "예상치 못한 발견"
+          - insights: "검색 과정의 인사이트"
+    
+    deliverable_checklist:
+      mandatory_items:
+        - "[ ] source_registry.yaml 작성 완료"
+        - "[ ] 모든 데이터 포인트에 source_id 부여"
+        - "[ ] 신뢰도 점수 모두 평가 완료"
+        - "[ ] 정의 Gap 분석 완료"
+        - "[ ] 조정 논리 투명하게 문서화"
+        - "[ ] data_verification_report.md 작성"
+      
+      optional_items:
+        - "[ ] creative_search_log.md 작성 (창의적 소싱 수행 시)"
+        - "[ ] 대체 데이터 소스 목록 작성"
+    
+    quality_standards:
+      minimum_requirements:
+        - "평균 신뢰도 점수 ≥ 70%"
+        - "정의 Gap 분석률 100%"
+        - "모든 데이터 출처 명시"
+      
+      excellence_criteria:
+        - "평균 신뢰도 점수 ≥ 85%"
+        - "조정 논리 모두 문서화"
+        - "대체 소스 제시율 ≥ 50%"
+
+    
+  # Bill (Quantifier) - 정량 분석 및 계산
+  bill_standards:
+    _id: "bill_deliverable_standards"
+    _role: "Quantifier"
+    _core_output: "SAM 계산서 + 검증 가능한 계산 과정 + 시나리오 분석"
+    
+    primary_deliverables:
+      
+      market_sizing_workbook:
+        description: "SAM 계산의 모든 과정을 함수로 구현한 Excel 워크북"
+        file_format: "XLSX (Excel with formulas)"
+        file_name: "market_sizing_[market_name].xlsx"
+        location: "02_analysis/quantifier/market_sizing/"
+        
+        total_sheets: "9개 시트 (Estimation_Details 추가)"
+        
+        required_sheets:
+          
+          sheet_1_assumptions:
+            name: "Assumptions"
+            purpose: "모든 가정과 전제 조건 명시"
+            columns:
+              - "ID": "가정 식별자 (ASM_001)"
+              - "Category": "카테고리 (인구/가격/빈도/비율)"
+              - "Description": "가정 설명"
+              - "Value": "값"
+              - "Unit": "단위"
+              - "Data_Type": "직접데이터 / 추정치"
+              - "Source": "근거 (Rachel source_id 참조 또는 EST_001)"
+              - "Confidence": "확신도 (High/Medium/Low)"
+              - "Notes": "간단 설명"
+            
+            data_type_guide:
+              direct_data:
+                when: "Rachel이 찾은 직접 데이터가 있을 때"
+                source_format: "SRC_YYYYMMDD_NNN"
+                example: "SRC_20241031_005"
+              
+              estimation:
+                when: "직접 데이터 없어 추정 필요할 때"
+                source_format: "EST_NNN (Estimation_Details 시트 참조)"
+                example: "EST_001"
+                requirement: "반드시 Estimation_Details 시트에 상세 논리 작성"
+            
+            example_rows: |
+              # 직접 데이터 예시
+              ASM_001 | 인구 | 전체 음악학원 수 | 10,000 | 개 | 직접데이터 | SRC_20241031_005 | High | 교육부 공식 통계
+              
+              # 추정치 예시
+              ASM_002 | 비율 | 피아노 학원 비중 | 30 | % | 추정치 | EST_001 | Medium | 상세 논리는 EST_001 참조
+              ASM_003 | 인구 | 한국 피아노 학원 수 | 3,000 | 개 | 추정치 | EST_002 | Medium | EST_002 참조 (ASM_001 × ASM_002)
+          
+          sheet_1b_estimation_details:
+            name: "Estimation_Details"
+            purpose: "직접 데이터 없는 추정치의 상세 논리 문서화"
+            note: "이 시트가 핵심! 모든 추정 논리를 투명하게 공개"
+            
+            structure:
+              description: "각 추정치마다 하나의 블록으로 상세 설명"
+              
+              block_template: |
+                ============================================
+                EST_ID: EST_001
+                추정 항목: 피아노 학원 비중
+                최종 추정값: 30%
+                ============================================
+                
+                [1] 추정 필요 이유
+                - 교육부 통계에는 "전체 음악학원" 수만 있음
+                - 피아노/기타/바이올린 등 세부 구분 없음
+                - 직접 조사 데이터도 없음
+                
+                [2] 사용한 데이터
+                - 데이터 A: 전체 음악학원 10,000개 ← SRC_20241031_005
+                - 데이터 B: 서울 샘플 조사 피아노 학원 35% ← SRC_20241031_012
+                - 데이터 C: 온라인 검색량 피아노:기타 = 40:30 ← SRC_20241031_020
+                
+                [3] 추정 논리 (단계별)
+                Step 1: 서울 샘플 35%를 전국 기준으로 보정
+                  - 서울은 피아노 선호도 높음 (소득 수준)
+                  - 보정 계수: 0.9 (전국 평균이 10% 낮다고 가정)
+                  - 보정 결과: 35% × 0.9 = 31.5%
+                
+                Step 2: 온라인 검색량으로 교차 검증
+                  - 피아노 검색 비중: 40/(40+30+20+10) = 40%
+                  - Step 1 결과 31.5%와 비교 → 비슷한 범위
+                
+                Step 3: 최종 추정
+                  - 두 방법 평균: (31.5% + 40%) / 2 = 35.75%
+                  - 보수적 적용: 30% (하향 조정)
+                  - 근거: 검색량은 관심도이지 실제 학원 수와 차이 있음
+                
+                [4] 신뢰도 평가
+                - 확신도: Medium (직접 데이터 아님)
+                - 예상 오차: ±10%p (20-40% 범위)
+                - 민감도: 최종 SAM에 30% 영향
+                
+                [5] 검증 방법
+                - 상한 테스트: 50% 이하 (피아노가 과반은 비현실)
+                - 하한 테스트: 15% 이상 (피아노가 주요 악기)
+                - 벤치마크: 일본 피아노 학원 비중 28% (유사)
+                
+                [6] 대체 접근법 시도
+                - 시도 1: 피아노 학원 협회 문의 → 회원사만 집계
+                - 시도 2: 지역별 전수 조사 → 시간/비용 제약
+                - 결론: 현재 추정이 최선
+                
+                [7] 사용 위치
+                - Assumptions 시트 ASM_002
+                - Method_2_BottomUp 세그먼트 계산
+                
+                ============================================
+            
+            column_structure:
+              columns:
+                - "EST_ID": "추정 식별자 (EST_001)"
+                - "Item": "추정 항목"
+                - "Final_Value": "최종 추정값"
+                - "Used_In": "사용 위치 (ASM_002)"
+                - "Confidence": "확신도"
+                - "Error_Range": "예상 오차"
+              
+              detailed_documentation:
+                location: "각 행 아래 또는 우측 영역"
+                content: "위 블록 템플릿 내용을 구조화해서 작성"
+            
+            critical_requirements:
+              mandatory_elements:
+                - "[ ] 사용한 모든 데이터의 SRC_ID 명시"
+                - "[ ] 단계별 계산 과정 투명 공개"
+                - "[ ] 보정/조정의 근거 설명"
+                - "[ ] 상한/하한 테스트 수행"
+                - "[ ] 대체 접근법 시도 기록"
+              
+              quality_criteria:
+                excellent: "제3자가 추정 논리만 보고 재현 가능"
+                good: "추정 근거가 명확하고 합리적"
+                acceptable: "최소한의 논리 설명 있음"
+                poor: "추정 논리 불명확 → 재작성 필요"
+            
+            integration_with_assumptions:
+              workflow:
+                step_1: "추정 필요 항목 발견"
+                step_2: "Estimation_Details에 EST_NNN으로 상세 논리 작성"
+                step_3: "Assumptions 시트 Source 컬럼에 EST_NNN 기재"
+                step_4: "Notes에 '상세: Estimation_Details 참조' 추가"
+              
+              cross_reference_example: |
+                [Assumptions 시트]
+                ASM_002 | 비율 | 피아노 학원 비중 | 30 | % | 추정치 | EST_001 | Medium | 상세: Estimation_Details § EST_001
+                
+                [Estimation_Details 시트]
+                EST_001 블록에 위의 7개 섹션 상세 작성
+          
+          sheet_2_method_1_top_down:
+            name: "Method_1_TopDown"
+            purpose: "TAM → SAM 하향식 계산 (다단계 narrowing 지원)"
+            
+            structure_flexible:
+              description: "축소 단계는 시장 특성에 따라 2-5단계 가능"
+              
+              column_structure:
+                column_a_tam:
+                  - "A1: TAM 정의"
+                  - "A2: TAM 값 (=Assumptions!B5)"
+                  - "A3: 출처 (셀 코멘트로 SRC_ID)"
+                
+                column_b_narrowing_1:
+                  - "B1: 축소 차원 1 (예: 지역)"
+                  - "B2: 축소 비율 (=Assumptions!B8)"
+                  - "B3: 중간값 1 (=A2*B2)"
+                  - "B4: 출처 (셀 코멘트)"
+                
+                column_c_narrowing_2:
+                  - "C1: 축소 차원 2 (예: 산업)"
+                  - "C2: 축소 비율 (=Assumptions!B9)"
+                  - "C3: 중간값 2 (=B3*C2)"
+                  - "C4: 출처 (셀 코멘트)"
+                
+                column_d_narrowing_3:
+                  - "D1: 축소 차원 3 (예: 고객군)"
+                  - "D2: 축소 비율 (=Assumptions!B10)"
+                  - "D3: 중간값 3 (=C3*D2)"
+                  - "D4: 출처 (셀 코멘트)"
+                
+                additional_columns:
+                  - "필요시 E, F, G 컬럼으로 확장 가능"
+                  - "마지막 컬럼이 최종 SAM"
+                
+                final_sam_column:
+                  - "최종열: SAM 결과"
+                  - "최종열+1: 신뢰구간 (±%)"
+                  - "최종열+2: 산출 논리 요약"
+            
+            example_multi_step:
+              scenario: "한국 클라우드 ERP 시장"
+              steps:
+                step_1_tam:
+                  - "A: 글로벌 ERP 시장 $50B"
+                step_2_geographic:
+                  - "B: 한국 비중 1.8% = $900M"
+                  - "근거: 한국 GDP/글로벌 GDP 비율"
+                step_3_deployment:
+                  - "C: 클라우드 비중 40% = $360M"
+                  - "근거: Gartner 클라우드 전환율"
+                step_4_segment:
+                  - "D: 중견기업 이상 60% = $216M"
+                  - "근거: 기업 규모별 ERP 도입률"
+                final_sam:
+                  - "SAM: $216M ± 20%"
+            
+            layout_guide:
+              row_1: "각 단계 명칭 (축소 차원)"
+              row_2: "축소 비율/계수"
+              row_3: "계산 결과 (=이전*비율)"
+              row_4: "출처 및 근거 (셀 코멘트)"
+              row_5_blank: "구분선"
+              row_6_onwards: "상세 설명 (필요시)"
+            
+            validation_area:
+              location: "시트 하단 또는 별도 영역"
+              checks:
+                - "논리적 상한: TAM > 각 단계 > SAM"
+                - "논리적 하한: SAM > 알려진 최소값"
+                - "단계별 비율 합리성: 각 비율 0-100%"
+                - "최종 타당성: =IF(AND(상한, 하한, 비율), '✅', '❌')"
+          
+          sheet_3_method_2_bottom_up:
+            name: "Method_2_BottomUp"
+            purpose: "구성 요소 적산 계산"
+            structure:
+              components:
+                - "세그먼트별 계산"
+                - "각 세그먼트 = 수량 × 빈도 × 단가"
+                - "전체 합계"
+              
+              formula_examples:
+                - "B2B: =고객수 * 도입률 * 라이선스비 * 갱신율"
+                - "B2C: =고객수 * 구매빈도 * 객단가 * 12"
+            
+            cross_reference: "모든 입력값은 Assumptions 시트 참조"
+          
+          sheet_4_method_3_proxy:
+            name: "Method_3_Proxy"
+            purpose: "유사 시장 비교 검증"
+            structure:
+              benchmark_market:
+                - "벤치마크 시장 선택"
+                - "벤치마크 값"
+                - "조정 계수들"
+              
+              adjustments:
+                - "경제 규모 차이 (GDP 비율)"
+                - "문화적 차이"
+                - "인프라 차이"
+              
+              final_estimate: "조정된 추정값"
+          
+          sheet_5_method_4_competitor:
+            name: "Method_4_CompetitorRevenue"
+            purpose: "경쟁사 매출 기반 역산"
+            structure:
+              competitor_analysis:
+                columns:
+                  - "기업명"
+                  - "전체 매출"
+                  - "출처 (공시/IR)"
+                  - "경쟁 영역 비중 (%)"
+                  - "추정 논리"
+                  - "경쟁 영역 매출"
+              
+              market_calculation:
+                - "Top N 경쟁 매출 합계"
+                - "시장 점유율 (추정)"
+                - "역산 SAM (=합계/점유율)"
+            
+            traceability:
+              - "비중 추정시 반드시 추정 논리 기재"
+              - "사업보고서 페이지 번호 명시"
+              - "간접 증거 사용시 출처 명시"
+          
+          sheet_6_convergence:
+            name: "Convergence_Analysis"
+            purpose: "4가지 방법 결과 비교 및 수렴"
+            structure:
+              comparison_table:
+                - "Method 1 결과"
+                - "Method 2 결과"
+                - "Method 3 결과"
+                - "Method 4 결과"
+                - "평균값"
+                - "표준편차"
+                - "변동계수 (CV%)"
+              
+              convergence_check:
+                - "최대값 / 최소값 비율"
+                - "±30% 이내? (TRUE/FALSE)"
+                - "이상치 판단"
+              
+              final_sam:
+                - "선택 방법 (중간값/가중평균)"
+                - "최종 SAM"
+                - "신뢰구간"
+          
+          sheet_7_scenarios:
+            name: "Scenarios"
+            purpose: "시나리오별 분석"
+            structure:
+              - "Best Case (낙관적)"
+              - "Base Case (기본)"
+              - "Worst Case (비관적)"
+              - "민감도 분석"
+          
+          sheet_8_validation:
+            name: "Validation_Log"
+            purpose: "검증 이력"
+            content:
+              - "Rachel 데이터 검증 결과"
+              - "Albert 구조 부합성 확인"
+              - "수렴도 분석 결과"
+              - "최종 승인 일자"
+        
+        formatting_standards:
+          cell_comments:
+            - "모든 입력 셀: 출처 명시"
+            - "모든 가정 셀: 근거 설명"
+            - "핵심 계산 셀: 공식 설명"
+          
+          color_coding:
+            input_cells: "연한 노란색 (사용자 입력)"
+            assumption_cells: "연한 파란색 (가정)"
+            calculation_cells: "흰색 (자동 계산)"
+            result_cells: "연한 녹색 (최종 결과)"
+            warning_cells: "연한 빨간색 (검증 필요)"
+          
+          cell_protection:
+            - "계산 셀은 보호"
+            - "입력 셀만 편집 가능"
+            - "시트 보호 비밀번호: 없음 (협업 용이)"
+        
+        backup_requirement:
+          pdf_export:
+            - "계산 완료 후 PDF로도 저장"
+            - "파일명: market_sizing_[market_name]_YYYYMMDD.pdf"
+            - "용도: 함수 없이도 검증 가능"
+      
+      sam_calculation_report:
+        description: "SAM 계산 결과 요약 보고서"
+        file_format: "Markdown"
+        file_name: "sam_calculation_report.md"
+        location: "02_analysis/quantifier/market_sizing/"
+        
+        required_sections:
+          - section: "Executive Summary"
+            content:
+              - "최종 SAM 값 및 신뢰구간"
+              - "4가지 방법 수렴 결과"
+              - "주요 가정 요약"
+          
+          - section: "Method 1: Top-Down"
+            content:
+              - "계산 로직"
+              - "주요 가정"
+              - "결과값"
+              - "신뢰도 평가"
+          
+          - section: "Method 2: Bottom-Up"
+            content: "(상동)"
+          
+          - section: "Method 3: Proxy Validation"
+            content: "(상동)"
+          
+          - section: "Method 4: Competitor Revenue"
+            content:
+              - "분석 대상 기업 목록"
+              - "매출 추출 논리"
+              - "역산 과정"
+          
+          - section: "Convergence Analysis"
+            content:
+              - "4가지 방법 비교 테이블"
+              - "수렴도 평가 (±30% 여부)"
+              - "최종 SAM 선택 논리"
+          
+          - section: "Sensitivity Analysis"
+            content:
+              - "핵심 변수 민감도"
+              - "시나리오별 결과"
+          
+          - section: "Data Quality Assessment"
+            content:
+              - "사용된 데이터의 신뢰도"
+              - "Rachel 검증 결과 참조"
+          
+          - section: "Validation Results"
+            content:
+              - "Rachel 데이터 검증 ✅/⚠️"
+              - "Albert 구조 부합성 ✅/⚠️"
+              - "최종 승인 상태"
+    
+    deliverable_checklist:
+      mandatory_items:
+        - "[ ] market_sizing_[name].xlsx 작성 (9개 시트)"
+        - "[ ] Estimation_Details 시트: 모든 추정치 상세 논리 작성"
+        - "[ ] Assumptions 시트: Data_Type 컬럼 작성 (직접데이터/추정치)"
+        - "[ ] 추정치는 EST_NNN으로 Estimation_Details 참조"
+        - "[ ] 모든 계산 셀 함수화 완료"
+        - "[ ] 4가지 방법 모두 적용"
+        - "[ ] ±30% 수렴 확인"
+        - "[ ] 셀 코멘트로 출처/논리 명시"
+        - "[ ] PDF 백업 생성"
+        - "[ ] sam_calculation_report.md 작성"
+      
+      validation_requirements:
+        - "[ ] Rachel source_registry와 연동"
+        - "[ ] Albert 구조 분석 부합성 확인"
+        - "[ ] 2명 검증 통과"
+    
+    quality_standards:
+      minimum_requirements:
+        - "4가지 방법 중 최소 3개 적용"
+        - "수렴도 ±50% 이내"
+        - "모든 가정 문서화"
+      
+      excellence_criteria:
+        - "4가지 방법 모두 적용"
+        - "수렴도 ±30% 이내"
+        - "Excel 함수 100%"
+        - "추정 논리 모두 명시"
+    
+  # Albert (Observer) - 시장 구조 분석
+  albert_standards:
+    _id: "albert_deliverable_standards"
+    _role: "Observer"
+    _core_output: "Market Reality Report + 구조 분석 + 검증된 관찰"
+    
+    primary_deliverables:
+      
+      market_reality_report:
+        description: "시장 구조에 대한 종합 관찰 및 해석 보고서"
+        file_format: "Markdown"
+        file_name: "market_reality_report.md"
+        location: "02_analysis/observer/"
+        
+        required_sections:
+          
+          - section: "Executive Summary"
+            content:
+              - "시장 구조 핵심 요약 (3-5문장)"
+              - "주요 발견사항"
+              - "Steve에게 전달할 핵심 인사이트"
+          
+          - section: "Value Exchange Mapping"
+            subsections:
+              - "거래 참여자 (누가)"
+              - "거래 구조 (어떻게)"
+              - "가치 흐름 (얼마)"
+              - "거래 빈도/패턴"
+            required_elements:
+              - "가치사슬 다이어그램 (텍스트 또는 이미지)"
+              - "각 단계별 마진/수수료 (Bill 계산 참조)"
+              - "근거 데이터 (Rachel source_id 참조)"
+          
+          - section: "Transaction Mechanism Analysis"
+            content:
+              - "계약 구조 (단발/반복/장기)"
+              - "가격 결정 방식 (고정/변동/입찰)"
+              - "결제 조건 (선불/후불/분할)"
+              - "관찰된 패턴"
+          
+          - section: "Market Structure Categorization"
+            content:
+              - "시장 집중도 (독과점/경쟁)"
+              - "진입장벽 유형"
+              - "경쟁 구조"
+              - "플랫폼/생태계 파워 (있는 경우)"
+          
+          - section: "Observed Inefficiencies"
+            content:
+              - "비효율적 패턴 목록"
+              - "각 비효율의 정량적 영향 (Bill 협업)"
+              - "구조적 원인 분석"
+          
+          - section: "Data Evidence"
+            content:
+              - "모든 주장의 근거 데이터"
+              - "Rachel source_registry 참조 (source_id)"
+              - "관찰 vs 해석 구분 명시"
+          
+          - section: "Validation Results"
+            content:
+              - "Bill 정량적 타당성 검증 ✅/⚠️"
+              - "Rachel 데이터 신뢰성 검증 ✅/⚠️"
+              - "Stewart 논리 건전성 검증 ✅/⚠️"
+              - "검증 의견 요약"
+        
+        evidence_linking:
+          principle: "모든 사실적 주장에는 근거 필요"
+          format: "[주장] ← 근거: [SRC_YYYYMMDD_NNN]"
+          example: "피아노 시장은 B2C 직판 70% 구조 ← 근거: SRC_20241031_012"
+      
+      structure_observation_documents:
+        description: "개별 주제별 상세 관찰 문서"
+        file_format: "Markdown"
+        file_name: "[topic]_observation.md"
+        location: "02_analysis/observer/structure_observations/"
+        
+        template_structure:
+          - "관찰 대상"
+          - "관찰된 사실 (데이터)"
+          - "구조적 해석"
+          - "근거 데이터 링크"
+          - "추가 검증 필요 사항"
+    
+    deliverable_checklist:
+      mandatory_items:
+        - "[ ] market_reality_report.md 작성"
+        - "[ ] 모든 주장에 근거 데이터 링크"
+        - "[ ] Rachel source_id 참조 명시"
+        - "[ ] 가치사슬 맵 작성"
+        - "[ ] 비효율성 목록 정량화 (Bill 협업)"
+        - "[ ] 3명 검증 (Bill, Rachel, Stewart) 통과"
+      
+      validation_requirements:
+        - "[ ] Bill: 정량적 타당성"
+        - "[ ] Rachel: 데이터 신뢰성"
+        - "[ ] Stewart: 논리 건전성"
+    
+    quality_standards:
+      minimum_requirements:
+        - "모든 사실에 출처 명시"
+        - "관찰 vs 해석 구분"
+        - "정량 데이터 Bill 검증"
+      
+      excellence_criteria:
+        - "100% 근거 기반"
+        - "재현 가능한 분석"
+        - "다차원적 구조 해석"
+    
+  # Steve (Explorer) - 기회 발굴
+  steve_standards:
+    _id: "steve_deliverable_standards"
+    _role: "Explorer"
+    _core_output: "Opportunity Portfolio + 검증된 가설 + 실행 로드맵"
+    
+    primary_deliverables:
+      
+      opportunity_portfolio:
+        description: "발굴된 기회들의 종합 포트폴리오"
+        file_format: "Markdown + YAML"
+        file_name: "opportunity_portfolio.md"
+        location: "02_analysis/explorer/"
+        
+        required_sections:
+          
+          - section: "Executive Summary"
+            content:
+              - "총 기회 개수 및 우선순위"
+              - "Top 3 기회 요약"
+              - "포트폴리오 구성 (Quick Wins/Strategic/Moonshots)"
+          
+          - section: "Multi-Dimensional Analysis Summary"
+            content:
+              - "7 Powers 분석 결과"
+              - "사업모델 패턴 매칭"
+              - "Counter-Positioning 기회"
+              - "융합 기회 (Cross-dimensional)"
+          
+          - section: "Validated Opportunities"
+            structure: "각 기회별 개별 문서 참조"
+            reference: "opportunity_hypotheses/OPP_[id].md"
+          
+          - section: "Prioritization Matrix"
+            content:
+              - "기회별 점수 (시장 규모/실현성/방어력/타이밍/차별성)"
+              - "우선순위 순위"
+              - "선정 논리"
+          
+          - section: "Validation Summary"
+            content:
+              - "Albert 구조적 실현성 검증 결과"
+              - "Bill 경제적 타당성 검증 결과"
+              - "Rachel 근거 신뢰성 검증 결과"
+      
+      opportunity_hypothesis_document:
+        description: "개별 기회 가설 상세 문서"
+        file_format: "Markdown"
+        file_name: "OPP_[YYYYMMDD]_[NNN]_[short_name].md"
+        location: "02_analysis/explorer/opportunity_hypotheses/"
+        
+        file_naming_convention:
+          format: "OPP_YYYYMMDD_NNN_[short_name].md"
+          examples:
+            - "OPP_20241031_001_piano_subscription.md"
+            - "OPP_20241031_002_d2c_platform.md"
+        
+        required_sections:
+          
+          - section: "Hypothesis Statement"
+            content:
+              - "기회 한 줄 정의"
+              - "타겟 고객"
+              - "해결하는 문제"
+              - "제안하는 솔루션"
+          
+          - section: "Market Context"
+            content:
+              - "Albert의 구조 분석 요약"
+              - "시장 비효율성/Gap"
+              - "현재 대안의 한계"
+          
+          - section: "Opportunity Analysis"
+            subsections:
+              - framework: "7 Powers"
+                content: "해당되는 Power 분석"
+              - framework: "Business Model Pattern"
+                content: "적용 가능한 패턴 (umis_business_model_patterns 참조)"
+              - framework: "Counter-Positioning"
+                content: "1등 추월 가능성 (해당시)"
+          
+          - section: "Supporting Evidence"
+            required_format: |
+              각 주장마다 근거 명시:
+              - 주장: [구체적 주장]
+                근거: [SRC_ID 또는 분석 참조]
+                신뢰도: [Rachel 평가]
+            
+            examples:
+              - "주장: 피아노 구독 수요 월 5만원 수용 가능"
+              - "근거: SRC_20241031_015 (유사 서비스 성공 사례)"
+              - "신뢰도: 80% (Rachel 검증)"
+          
+          - section: "Validation Results"
+            content:
+              albert_validation:
+                - "구조적 실현 가능성 의견"
+                - "통과 여부 ✅/⚠️/❌"
+              
+              bill_validation:
+                - "경제적 타당성 의견"
+                - "통과 여부 ✅/⚠️/❌"
+              
+              rachel_validation:
+                - "근거 데이터 신뢰성 의견"
+                - "통과 여부 ✅/⚠️/❌"
+              
+              final_status:
+                - "전체 검증 결과"
+                - "조건부 승인 조건 (있는 경우)"
+          
+          - section: "Implementation Roadmap"
+            content:
+              - "실행 단계 (Phase 1-3)"
+              - "필요 자원"
+              - "예상 타임라인"
+              - "주요 마일스톤"
+          
+          - section: "Assumptions & Risks"
+            content:
+              - "핵심 가정 목록"
+              - "주요 리스크"
+              - "완화 방안"
+      
+      multi_dimensional_analysis_log:
+        description: "7단계 프로세스의 상세 분석 기록"
+        file_format: "Markdown"
+        file_name: "multi_dimensional_analysis.md"
+        location: "02_analysis/explorer/process_logs/"
+        
+        content:
+          - "Phase 1: 초기 기회 스캔 (9개 이상)"
+          - "Phase 2: 다차원 분석 (7 Powers + 패턴 + Counter)"
+          - "Phase 3: 융합 기회 발굴"
+          - "Phase 4: 현실성 검증"
+          - "Phase 5: 우선순위화"
+          - "Phase 6: 검증 준비"
+          - "Phase 7: 최종 문서화"
+    
+    deliverable_checklist:
+      mandatory_items:
+        - "[ ] opportunity_portfolio.md 작성"
+        - "[ ] 각 기회별 OPP_*.md 작성"
+        - "[ ] 모든 가설에 근거 데이터 링크"
+        - "[ ] Albert 구조 분석 참조"
+        - "[ ] 7단계 프로세스 완료"
+        - "[ ] 3명 검증 (Albert, Bill, Rachel) 통과"
+      
+      validation_requirements:
+        - "[ ] Albert: 구조적 실현 가능성"
+        - "[ ] Bill: 경제적 타당성"
+        - "[ ] Rachel: 근거 신뢰성"
+    
+    quality_standards:
+      minimum_requirements:
+        - "최소 5개 기회 발굴"
+        - "각 기회 검증 프로토콜 실행"
+        - "우선순위 논리 명확"
+      
+      excellence_criteria:
+        - "7-10개 기회 포트폴리오"
+        - "모든 기회 3명 검증 통과"
+        - "실행 로드맵 구체화"
+        - "70% 이상 통과율"
+
+# ========================================
+# Part 2: 프로젝트 생명주기 관리
+# @id: project_lifecycle_management
+# ========================================
+
+project_lifecycle_management:
+  _description: "프로젝트 시작부터 종료까지의 표준 프로토콜"
+  _integration: "SECTION 5 project_structure와 연동"
+  
+  core_principle: "모든 프로젝트는 명확한 시작과 종료가 있어야 한다"
+  
+  # 1. 프로젝트 시작 프로토콜
+  project_initiation:
+    
+    primary_method: "자동 감지 (기본값)"
+    optional_method: "[PROJECT_START] Call Sign (파워 유저용)"
+    
+    automatic_detection:
+      description: "사용자 부담 최소화 - 첫 질문만으로 자동 감지"
+      
+      trigger: "UMIS 관련 첫 시장 분석 질문 수신"
+      
+      detection_patterns:
+        - "~시장 분석해줘"
+        - "~기회가 있을까?"
+        - "~시장 진입 검토"
+        - "구체적 시장명 + 분석 의도"
+      
+      stewart_smart_response:
+        
+        step_1_detection_notification:
+          message: |
+            💡 시장 분석 프로젝트로 감지되었습니다.
+            
+            데이터 무결성 및 재검증을 위해 구조화된 폴더 생성을 권장합니다.
+        
+        step_2_options_presentation:
+          message: |
+            📁 프로젝트 저장 방식:
+            
+            **A. 신규 프로젝트 폴더 (권장)**
+               · 위치: projects/YYYYMMDD_[프로젝트명]/
+               · 제안명: {자동 생성}
+               · 장점: 완전한 구조, 재검증 용이
+            
+            **B. 기존 프로젝트에 통합**
+               · 기존: {목록 표시}
+               · 장점: 연관 분석 통합
+            
+            **C. 폴더 없이 진행 (비추천)**
+               · 경고: 산출물 미저장, 재검증 불가
+            
+            선택: (A/B/C 또는 엔터=A)
+        
+        step_3a_naming_for_new:
+          condition: "옵션 A 선택"
+          
+          auto_name_generation:
+            input: "사용자 질문 분석"
+            extract: "핵심 키워드 2-3개"
+            format: "YYYYMMDD_[keyword1]_[keyword2]_[keyword3]"
+            
+            examples:
+              - input: "피아노 구독 서비스 시장이 궁금해"
+                output: "20241031_piano_subscription_market"
+              
+              - input: "전기차 충전 인프라 한국 시장 분석"
+                output: "20241031_ev_charging_korea"
+              
+              - input: "온라인 교육 플랫폼 기회 있을까?"
+                output: "20241031_edtech_platform_opportunity"
+          
+          confirmation:
+            message: |
+              📝 프로젝트명: {suggested_name}
+              
+              확인: (엔터=확정 / 수정 입력)
+        
+        step_3b_selection_for_existing:
+          condition: "옵션 B 선택"
+          
+          message: |
+            📂 기존 프로젝트:
+            1. 20241015_ev_charging
+            2. 20241020_edtech_platform
+            
+            선택: (번호 또는 새 이름)
+        
+        step_3c_warning_for_none:
+          condition: "옵션 C 선택"
+          
+          message: |
+            ⚠️ 폴더 없이 진행합니다.
+            
+            **제약사항**:
+            - 산출물이 저장되지 않음
+            - 재검증 불가능
+            - 아카이빙 불가
+            
+            정말 진행하시겠습니까? (Y/N)
+        
+        step_4_initialization:
+          action: "선택에 따라 초기화 실행"
+    
+    stewart_auto_actions:
+      description: "프로젝트 시작 신호 감지 시 자동 실행"
+      
+      step_1_project_naming:
+        prompt_user: "프로젝트 이름을 입력해주세요 (예: 피아노_구독_서비스_시장)"
+        format: "YYYYMMDD_[project_name]"
+        example: "20241031_piano_subscription_market"
+      
+      step_2_folder_creation:
+        root_folder: "projects/YYYYMMDD_[project_name]/"
+        
+        auto_create_structure:
+          - "00_overview/"
+          - "01_discovery/"
+          - "01_discovery/parallel_discoveries/"
+          - "01_discovery/checkpoints/"
+          - "02_analysis/"
+          - "02_analysis/validator/data_sources/"       # Rachel
+          - "02_analysis/validator/search_logs/"
+          - "02_analysis/quantifier/market_sizing/"    # Bill
+          - "02_analysis/quantifier/scenarios/"
+          - "02_analysis/observer/structure_observations/"  # Albert
+          - "02_analysis/observer/flow_patterns/"
+          - "02_analysis/explorer/opportunity_hypotheses/"  # Steve
+          - "02_analysis/explorer/validation_results/"
+          - "02_analysis/explorer/process_logs/"
+          - "03_insights/"
+          - "03_insights/supporting_data/"
+          - "99_decisions/"
+          - "99_decisions/rationale/"
+      
+      step_3_initialize_files:
+        
+        project_meta:
+          file: "00_overview/.project_meta.yaml"
+          content_template: |
+            project_id: "{UUID}"
+            project_name: "{name}"
+            start_date: "{YYYY-MM-DD}"
+            start_time: "{HH:MM:SS}"
+            owner: "{사용자 이름}"
+            
+            status: "active"
+            phase: "discovery_sprint"
+            
+            clarity:
+              initial_score: "{score}/10"
+              current_score: "{score}/10"
+              evolution_log: []
+            
+            discovery_sprint:
+              type: "fast_track / full_sprint"
+              start_date: "{date}"
+              target_completion: "{date}"
+            
+            agents_involved: ["stewart"]
+            
+            milestones: []
+            
+            metadata:
+              created_by: "Stewart (Guardian)"
+              last_updated: "{timestamp}"
+              version: "1.0"
+        
+        project_charter:
+          file: "00_overview/project_charter.md"
+          content_template: |
+            # 프로젝트 Charter
+            
+            ## 기본 정보
+            - **프로젝트명**: {name}
+            - **시작일**: {YYYY-MM-DD}
+            - **Owner**: {name}
+            - **초기 명확도**: {score}/10
+            
+            ## 프로젝트 목적
+            - **Primary Purpose**: {12 universal purposes 중 선택}
+            - **배경**: {왜 이 프로젝트를 시작하는가}
+            - **성공 기준**: {무엇이 달성되면 성공인가}
+            
+            ## 초기 Scope
+            - **What**: {무엇을 분석하는가}
+            - **Where**: {어떤 지역/범위}
+            - **Who**: {누구를 대상으로}
+            
+            ## 제약 조건
+            - **시간**: {기한}
+            - **리소스**: {가용 리소스}
+            - **기타**: {특별 고려사항}
+            
+            ## Discovery Sprint 계획
+            - **유형**: Fast Track / Full Sprint
+            - **예상 기간**: {days}
+            - **목표**: {명확도 목표}
+        
+        progress_tracker:
+          file: "00_overview/progress_tracker.md"
+          content_template: |
+            # Progress Tracker
+            
+            ## 전체 진행률
+            ░░░░░░░░░░ 0%
+            
+            ## 완료된 작업
+            - [ ] 없음
+            
+            ## 현재 진행 중
+            - [x] 프로젝트 초기화
+            - [ ] Discovery Sprint
+            
+            ## 다음 예정 작업
+            - Discovery Sprint Phase 1
+            
+            ## 주요 발견사항 (누적)
+            - 없음
+            
+            ---
+            *Last Updated: {timestamp} by Stewart*
+        
+        readme:
+          file: "README.md"
+          content_template: |
+            # {Project Name}
+            
+            > UMIS v6.2 Market Analysis Project
+            
+            ## 프로젝트 개요
+            - **시작일**: {YYYY-MM-DD}
+            - **상태**: 🟢 Active
+            - **단계**: Discovery Sprint
+            
+            ## 디렉토리 구조
+            ```
+            .
+            ├── 00_overview/          # 프로젝트 개요
+            ├── 01_discovery/         # Discovery Sprint
+            ├── 02_analysis/          # 본격 분석
+            │   ├── validator/        # 데이터 검증 (Rachel)
+            │   ├── quantifier/       # 정량 분석 (Bill)
+            │   ├── observer/         # 구조 분석 (Albert)
+            │   └── explorer/         # 기회 발굴 (Steve)
+            ├── 03_insights/          # 핵심 발견
+            └── 99_decisions/         # 의사결정 기록
+            ```
+            
+            ## 에이전트별 산출물
+            - **Validator** (Rachel): source_registry.yaml, data_verification_report.md
+            - **Quantifier** (Bill): market_sizing_*.xlsx, sam_calculation_report.md
+            - **Observer** (Albert): market_reality_report.md
+            - **Explorer** (Steve): opportunity_portfolio.md, OPP_*.md
+            
+            ## 참고 문서
+            - [Project Charter](00_overview/project_charter.md)
+            - [Progress Tracker](00_overview/progress_tracker.md)
+      
+      step_4_confirmation:
+        message_to_user: |
+          ✅ 프로젝트 초기화 완료
+          
+          📁 프로젝트 폴더: projects/{folder_name}/
+          📋 Project Charter: 00_overview/project_charter.md
+          
+          다음 단계: Discovery Sprint 시작
+          예상 소요: {duration}
+          
+          계속 진행하시겠습니까?
+  
+  # 2. 프로젝트 실행 중 관리
+  project_execution:
+    
+    real_time_tracking:
+      
+      progress_tracker_update:
+        trigger: "각 작업 완료시마다"
+        file: "00_overview/progress_tracker.md"
+        
+        auto_update_content:
+          - "진행률 바 업데이트"
+          - "완료 작업 체크 표시"
+          - "현재 작업 업데이트"
+          - "주요 발견사항 추가"
+          - "타임스탬프 갱신"
+      
+      deliverables_registry:
+        file: "00_overview/deliverables_registry.yaml"
+        purpose: "생성된 모든 산출물 추적"
+        
+        auto_registration:
+          trigger: "에이전트가 파일 생성/완료시"
+          
+          entry_format:
+            - deliverable_id: "DEL_YYYYMMDD_NNN"
+            - agent_id: "validator / quantifier / observer / explorer"
+            - agent_name: "Rachel / Bill / Albert / Steve"  # display only
+            - file_path: "상대 경로"
+            - file_type: "yaml / xlsx / md / pdf"
+            - created_date: "YYYY-MM-DD"
+            - status: "draft / completed / validated"
+            - validation_status:
+                required_validators: ["list"]
+                completed_validators: ["list"]
+                passed: "true / false / partial"
+          
+          example_entry: |
+            - deliverable_id: "DEL_20241031_001"
+              agent_id: "validator"
+              agent_name: "Rachel (Validator)"
+              file_path: "02_analysis/validator/data_sources/source_registry.yaml"
+              file_type: "yaml"
+              created_date: "2024-10-31"
+              status: "completed"
+              validation_status:
+                required_validators: []
+                completed_validators: []
+                passed: true
+      
+      meta_update:
+        file: "00_overview/.project_meta.yaml"
+        update_frequency: "주요 이벤트마다"
+        
+        tracked_changes:
+          - "phase 변경 (discovery → analysis → decision)"
+          - "clarity_score 업데이트"
+          - "agents_involved 추가"
+          - "milestones 기록"
+  
+  # 3. 프로젝트 종료 프로토콜
+  project_closure:
+    
+    call_sign: "[PROJECT_END]"
+    trigger_methods:
+      - "Owner 명시적 종료 선언"
+      - "Owner 최종 의사결정 완료 + Stewart 검증 통과"
+      - "프로젝트 목표 달성 확인"
+    
+    stewart_final_actions:
+      
+      step_1_completeness_check:
+        description: "모든 필수 산출물 확인"
+        
+        checklist:
+          rachel_deliverables:
+            - "[ ] source_registry.yaml 존재"
+            - "[ ] data_verification_report.md 존재"
+            - "[ ] 평균 신뢰도 ≥ 70%"
+          
+          bill_deliverables:
+            - "[ ] market_sizing_*.xlsx 존재"
+            - "[ ] 9개 시트 모두 작성 (Estimation_Details 포함)"
+            - "[ ] 추정치 논리 모두 문서화"
+            - "[ ] PDF 백업 존재"
+            - "[ ] sam_calculation_report.md 존재"
+            - "[ ] 4가지 방법 ±30% 수렴"
+          
+          albert_deliverables:
+            - "[ ] market_reality_report.md 존재"
+            - "[ ] 3명 검증 통과"
+            - "[ ] 모든 주장에 근거 링크"
+          
+          steve_deliverables:
+            - "[ ] opportunity_portfolio.md 존재"
+            - "[ ] 최소 3개 OPP_*.md 존재"
+            - "[ ] 3명 검증 통과"
+          
+          owner_deliverables:
+            - "[ ] 최종 의사결정 문서 존재"
+            - "[ ] Stewart 검증 통과"
+        
+        handling_incomplete:
+          if_missing_critical:
+            action: "⚠️ 프로젝트 종료 보류"
+            message: "필수 산출물 누락: {list}"
+            recommendation: "완료 후 재시도"
+          
+          if_missing_optional:
+            action: "✅ 종료 가능, 권장사항 제시"
+            message: "선택 산출물 누락: {list}"
+            recommendation: "사후 보완 가능"
+      
+      step_2_quality_assessment:
+        description: "전체 산출물 품질 평가"
+        
+        quality_scorecard:
+          file: "00_overview/final_quality_scorecard.md"
+          
+          metrics:
+            - metric: "데이터 신뢰도"
+              score: "{Rachel 평가}"
+              grade: "A/B/C/D"
+            
+            - metric: "계산 정확성"
+              score: "{Bill 수렴도}"
+              grade: "A/B/C/D"
+            
+            - metric: "분석 완결성"
+              score: "{산출물 완료율}"
+              grade: "A/B/C/D"
+            
+            - metric: "검증 통과율"
+              score: "{검증 통과 비율}"
+              grade: "A/B/C/D"
+          
+          overall_grade: "A (90%+) / B (70-89%) / C (50-69%) / D (<50%)"
+      
+      step_3_project_summary:
+        description: "프로젝트 종합 요약 생성"
+        
+        executive_summary:
+          file: "00_overview/executive_summary.md"
+          
+          required_sections:
+            - section: "Project Overview"
+              content:
+                - "프로젝트명 및 기간"
+                - "초기 → 최종 명확도"
+                - "참여 에이전트"
+            
+            - section: "Key Findings"
+              content:
+                - "핵심 발견사항 5-10개"
+                - "예상과 달랐던 점"
+                - "중요 인사이트"
+            
+            - section: "Major Decisions"
+              content:
+                - "주요 의사결정 목록"
+                - "피벗 이력"
+                - "최종 결정"
+            
+            - section: "Deliverables Summary"
+              content:
+                - "에이전트별 주요 산출물"
+                - "품질 등급"
+                - "검증 상태"
+            
+            - section: "Next Steps"
+              content:
+                - "실행 권고사항"
+                - "추가 분석 필요 영역"
+                - "모니터링 포인트"
+      
+      step_4_archiving:
+        description: "프로젝트 최종 아카이빙"
+        
+        final_snapshot:
+          action: "전체 프로젝트 폴더 스냅샷"
+          location: "archive/YYYYMMDD_[project_name]_final/"
+          
+          included_content:
+            - "모든 산출물"
+            - "원본 데이터"
+            - "계산 파일 (xlsx + pdf)"
+            - "모든 문서"
+            - "검증 기록"
+        
+        meta_finalization:
+          file: "00_overview/.project_meta.yaml"
+          
+          final_updates:
+            status: "active → archived"
+            end_date: "{YYYY-MM-DD}"
+            end_time: "{HH:MM:SS}"
+            total_duration: "{days}일"
+            
+            final_clarity_score: "{score}/10"
+            clarity_improvement: "+{delta}"
+            
+            deliverables_count:
+              validator: "{count}"   # Rachel
+              quantifier: "{count}"  # Bill
+              observer: "{count}"    # Albert
+              explorer: "{count}"    # Steve
+              total: "{count}"
+            
+            validation_summary:
+              total_validations: "{count}"
+              passed: "{count}"
+              partial: "{count}"
+              failed: "{count}"
+            
+            quality_grade: "A / B / C / D"
+        
+        archive_package:
+          file: "archive/YYYYMMDD_[project_name]_archive.zip"
+          compression: "zip format"
+          
+          include:
+            - "모든 프로젝트 파일"
+            - "executive_summary.md"
+            - "deliverables_registry.yaml"
+            - ".project_meta.yaml"
+          
+          exclude:
+            - "임시 파일"
+            - "중복 백업"
+      
+      step_5_index_update:
+        description: "전체 프로젝트 인덱스 업데이트"
+        
+        global_index:
+          file: "projects/project_index.yaml"
+          
+          entry_format:
+            - project_id: "{UUID}"
+              project_name: "{name}"
+              folder: "YYYYMMDD_[name]"
+              start_date: "{date}"
+              end_date: "{date}"
+              duration: "{days}일"
+              status: "archived"
+              clarity_evolution: "{initial} → {final}"
+              quality_grade: "A/B/C/D"
+              key_findings: ["{finding_1}", "{finding_2}", "{finding_3}"]
+              final_decision: "{요약}"
+      
+      step_6_completion_message:
+        message_to_user: |
+          ✅ 프로젝트 종료 완료
+          
+          📊 프로젝트 요약:
+          - 기간: {start} ~ {end} ({duration}일)
+          - 명확도: {initial}/10 → {final}/10 (+{delta})
+          - 품질 등급: {grade}
+          
+          📁 산출물:
+          - Validator (Rachel): {count}개
+          - Quantifier (Bill): {count}개
+          - Observer (Albert): {count}개
+          - Explorer (Steve): {count}개
+          - Total: {count}개
+          
+          📦 아카이브:
+          - 위치: archive/{folder_name}/
+          - 압축 파일: {archive_file}
+          
+          📋 Executive Summary: 00_overview/executive_summary.md
+          
+          프로젝트가 성공적으로 종료되었습니다.
+  
+  # 4. 사후 정리 작업 (Optional)
+  post_project_cleanup:
+    
+    call_sign: "[PROJECT_CLEANUP]"
+    when: "프로젝트 종료 후 추가 정리 필요시"
+    
+    cleanup_options:
+      
+      option_1_documentation_enhancement:
+        description: "문서 품질 향상"
+        activities:
+          - "누락된 근거 추가"
+          - "계산 과정 상세화"
+          - "요약문 개선"
+          - "다이어그램 추가"
+      
+      option_2_validation_補완:
+        description: "검증 보완"
+        activities:
+          - "미검증 항목 검증"
+          - "조건부 승인 항목 재검토"
+          - "추가 데이터 수집"
+      
+      option_3_format_standardization:
+        description: "포맷 표준화"
+        activities:
+          - "파일명 통일"
+          - "메타데이터 보완"
+          - "템플릿 적용"
+          - "인덱스 재생성"
+      
+      option_4_archive_optimization:
+        description: "아카이브 최적화"
+        activities:
+          - "중복 파일 제거"
+          - "압축 최적화"
+          - "검색 인덱스 생성"
+          - "장기 보관 형식 변환"
+
+# ========================================
+# Part 3: 재검증 프레임워크
+# @id: reproducibility_framework
+# ========================================
+
+reproducibility_framework:
+  _description: "모든 분석과 계산의 재검증 가능성 보장"
+  _principle: "제3자가 같은 결과를 재현할 수 있어야 한다"
+  
+  core_requirements:
+    traceability: "모든 결론은 원본 데이터까지 추적 가능"
+    transparency: "모든 추정은 논리와 근거 명시"
+    reproducibility: "같은 입력 → 같은 출력 보장"
+    auditability: "외부 검증자가 검토 가능"
+  
+  # 1. 에이전트별 재검증 표준
+  agent_audit_trails:
+    
+    rachel_audit_trail:
+      description: "데이터 수집 및 검증의 완전한 추적"
+      
+      required_documentation:
+        
+        source_chain:
+          what: "원본 → 조정까지 전체 체인"
+          format: |
+            데이터: {이름}
+            │
+            ├─ 원본 출처: {source_name}
+            │  ├─ URL: {url}
+            │  ├─ 접근일: {date}
+            │  └─ 원본 정의: {definition}
+            │
+            ├─ 정의 Gap: {차이}
+            │  └─ 영향: {과대/과소 추정}
+            │
+            ├─ 조정 과정:
+            │  ├─ 논리: {logic}
+            │  ├─ 계산: {formula}
+            │  └─ 결과: {adjusted_value}
+            │
+            └─ 신뢰도: {score}/100
+        
+        verification_workflow:
+          file: "02_analysis/validator/verification_workflow.md"
+          
+          content:
+            - "데이터 발견 과정"
+            - "정의 확인 방법"
+            - "조정 결정 근거"
+            - "대체 소스 탐색 기록"
+        
+        reproducibility_test:
+          question: "다른 사람이 같은 출처를 찾을 수 있는가?"
+          pass_criteria:
+            - "URL/문서명 명시"
+            - "접근 방법 설명"
+            - "조정 공식 명시"
+    
+    bill_audit_trail:
+      description: "계산 과정의 완전한 재현 가능성"
+      
+      required_documentation:
+        
+        calculation_chain:
+          what: "가정 → 계산 → 결과까지 추적"
+          format: |
+            SAM 계산: {시장명}
+            │
+            ├─ Assumptions (가정)
+            │  ├─ ASM_001: {값} ← Rachel: SRC_XXX
+            │  ├─ ASM_002: {값} ← Rachel: SRC_YYY
+            │  └─ ASM_003: {값} ← 추정 논리: {logic}
+            │
+            ├─ Method 1: Top-Down
+            │  ├─ 단계 1: TAM = {formula}
+            │  ├─ 단계 2: SAM = {formula}
+            │  └─ 결과: {value}
+            │
+            ├─ Method 2-4: (유사 구조)
+            │
+            └─ Convergence: {final_SAM} ± {range}
+        
+        excel_audit_trail:
+          requirements:
+            - "모든 입력 셀: 셀 코멘트에 출처 (Rachel source_id)"
+            - "모든 계산 셀: 함수 사용 (하드코딩 금지)"
+            - "모든 가정 셀: 코멘트에 근거 논리"
+            - "Assumptions 시트: 모든 전제 명시"
+          
+          traceability_example: |
+            Cell B5: 3,000 (피아노 학원 수)
+            Comment: "출처: SRC_20241031_005 (교육부 학원 통계)
+                     추정 논리: 전체 음악학원 10,000개 × 피아노 비중 30%"
+        
+        formula_documentation:
+          requirement: "복잡한 계산은 별도 설명 시트"
+          
+          example:
+            sheet: "Calculations_Explained"
+            content: |
+              ## Method 2 Bottom-Up 공식 설명
+              
+              ### 세그먼트 1: 가정용 신규 구매
+              ```
+              = (신규 가구 수) × (구매율) × (평균 가격)
+              = 20,000가구 × 15% × 300만원
+              = 900억원
+              
+              근거:
+              - 신규 가구 수: 통계청 (SRC_XXX)
+              - 구매율 15%: 업계 인터뷰 추정
+              - 평균 가격: 시장 조사 (SRC_YYY)
+              ```
+        
+        reproducibility_test:
+          question: "다른 사람이 Excel 파일만으로 계산을 재현할 수 있는가?"
+          pass_criteria:
+            - "모든 셀 함수화"
+            - "입력값 출처 명시"
+            - "계산 로직 설명"
+            - "가정 투명하게 공개"
+    
+    albert_audit_trail:
+      description: "구조 분석의 근거 기반 검증"
+      
+      required_documentation:
+        
+        observation_chain:
+          what: "관찰 → 해석까지 논리적 연결"
+          format: |
+            주장: {구조적 해석}
+            │
+            ├─ 관찰된 사실:
+            │  ├─ 사실 1: {fact} ← 근거: SRC_XXX
+            │  ├─ 사실 2: {fact} ← 근거: SRC_YYY
+            │  └─ 사실 3: {fact} ← 계산: Bill 분석 참조
+            │
+            ├─ 해석 논리:
+            │  ├─ 추론 1: {reasoning}
+            │  ├─ 추론 2: {reasoning}
+            │  └─ 결론: {interpretation}
+            │
+            └─ 검증:
+               ├─ Bill: {의견}
+               ├─ Rachel: {의견}
+               └─ Stewart: {의견}
+        
+        evidence_linking_standard:
+          principle: "모든 팩트 주장에는 source_id 또는 계산 참조"
+          
+          acceptable_formats:
+            - "← 근거: SRC_20241031_001"
+            - "← 계산: Bill Method 2 참조"
+            - "← 관찰: Albert flow_patterns/payment.md"
+          
+          unacceptable:
+            - '"업계에서는 일반적으로..." (출처 없음)'
+            - '"추정하건대..." (근거 없음)'
+            - '"약 30% 정도..." (계산 없음)'
+        
+        reproducibility_test:
+          question: "다른 분석가가 같은 데이터로 같은 해석에 도달할 수 있는가?"
+          pass_criteria:
+            - "모든 사실에 출처"
+            - "추론 논리 명시"
+            - "해석 vs 관찰 구분"
+    
+    steve_audit_trail:
+      description: "기회 가설의 근거 기반 검증"
+      
+      required_documentation:
+        
+        hypothesis_chain:
+          what: "가설 → 근거 → 검증까지 추적"
+          format: |
+            기회 가설: {hypothesis}
+            │
+            ├─ 시장 Context (Albert 분석)
+            │  ├─ 비효율성: {inefficiency} ← Albert 보고서
+            │  └─ 구조적 Gap: {gap} ← Albert 보고서
+            │
+            ├─ 근거 데이터
+            │  ├─ 데이터 1: {data} ← SRC_XXX (신뢰도: 85%)
+            │  ├─ 데이터 2: {data} ← SRC_YYY (신뢰도: 90%)
+            │  └─ 벤치마크: {case} ← SRC_ZZZ (신뢰도: 80%)
+            │
+            ├─ 분석 프레임워크
+            │  ├─ 7 Powers: {해당 power}
+            │  ├─ 사업모델: {패턴}
+            │  └─ Counter-Positioning: {점수}/10
+            │
+            ├─ 경제성 검증 (Bill)
+            │  ├─ SAM: {value}
+            │  ├─ ROI: {ratio}
+            │  └─ 통과: ✅/⚠️/❌
+            │
+            └─ 최종 검증
+               ├─ Albert: ✅/⚠️/❌
+               ├─ Bill: ✅/⚠️/❌
+               └─ Rachel: ✅/⚠️/❌
+        
+        assumption_documentation:
+          requirement: "모든 가정 명시적으로 기록"
+          
+          format:
+            file: "각 OPP_*.md의 Assumptions 섹션"
+            content: |
+              ## 핵심 가정
+              
+              1. **시장 수용성**: 타겟 고객 30%가 월 5만원 지불 의향
+                 - 근거: SRC_XXX (유사 서비스 설문)
+                 - 신뢰도: 75%
+                 - 리스크: 실제 전환율 더 낮을 수 있음
+              
+              2. **경쟁 대응**: 1등 기업이 2년간 대응 못함
+                 - 근거: Counter-Positioning 분석
+                 - 점수: 8/10
+                 - 리스크: 예상보다 빠른 대응 가능성
+        
+        reproducibility_test:
+          question: "다른 전략가가 같은 가설을 도출할 수 있는가?"
+          pass_criteria:
+            - "Albert 분석 명시적 참조"
+            - "모든 근거 source_id 연결"
+            - "가정 투명하게 공개"
+            - "검증 결과 포함"
+  
+  # 2. 계산 재현 프로토콜
+  calculation_reproducibility:
+    
+    excel_verification_protocol:
+      description: "Excel 계산의 완전한 재현 가능성"
+      
+      level_1_input_verification:
+        check: "모든 입력값 추적 가능한가?"
+        method:
+          - "Assumptions 시트의 각 행 확인"
+          - "Source 컬럼의 Rachel source_id 확인"
+          - "해당 source_id가 source_registry.yaml에 존재하는지 확인"
+        
+        pass_criteria: "100% 입력값에 출처 있음"
+      
+      level_2_formula_verification:
+        check: "모든 계산이 함수로 구현되었는가?"
+        method:
+          - "각 계산 셀 선택"
+          - "수식 입력줄에서 =로 시작하는지 확인"
+          - "하드코딩된 숫자 없는지 확인"
+        
+        pass_criteria: "95% 이상 함수 (일부 상수는 허용)"
+      
+      level_3_logic_verification:
+        check: "계산 논리가 타당한가?"
+        method:
+          - "단계별 계산 흐름 추적"
+          - "논리적 상한/하한 테스트 확인"
+          - "Convergence 분석 결과 검토"
+        
+        pass_criteria: "논리적 오류 없음, ±30% 수렴"
+      
+      level_4_end_to_end_test:
+        check: "전체 계산 재현 가능한가?"
+        method:
+          - "Assumptions 입력값만 변경"
+          - "모든 계산이 자동 업데이트되는지 확인"
+          - "최종 SAM 값이 올바르게 계산되는지 확인"
+        
+        pass_criteria: "완전 자동 재계산 가능"
+    
+    estimation_logic_documentation:
+      description: "추정값의 논리 투명화"
+      
+      when_estimation_needed:
+        - "직접 데이터 없을 때"
+        - "비중/비율 추정 필요시"
+        - "미래 값 예측시"
+      
+      documentation_standard:
+        format: |
+          ## 추정 항목: {이름}
+          
+          ### 추정 필요 이유
+          - 직접 데이터가 없는 이유: {설명}
+          - 시도한 대안: {시도 내역}
+          
+          ### 추정 논리
+          1. 접근법: {방법론}
+          2. 사용 데이터:
+             - 데이터 A: {값} ← SRC_XXX
+             - 데이터 B: {값} ← SRC_YYY
+          3. 계산 과정:
+             - Step 1: {계산}
+             - Step 2: {계산}
+             - Result: {값}
+          
+          ### 신뢰도 평가
+          - 확신도: High / Medium / Low
+          - 예상 오차 범위: ±{%}
+          - 민감도: {영향도}
+          
+          ### 검증 방법
+          - 상한 테스트: {값} < {상한}
+          - 하한 테스트: {값} > {하한}
+          - 벤치마크: {유사 사례 비교}
+        
+        example:
+          item: "삼익악기 피아노 사업부 매출 비중"
+          documentation: |
+            ## 추정 항목: 삼익악기 피아노 사업부 매출 비중
+            
+            ### 추정 필요 이유
+            - 사업보고서에 세부 사업부별 매출 공개 안 함
+            - "기타 사업 30%"만 명시, 악기 내 세부 미공개
+            
+            ### 추정 논리
+            1. 접근법: 간접 증거 기반 추정
+            2. 사용 데이터:
+               - 전체 매출: 1,000억 ← SRC_20241031_010 (공시)
+               - 기타 사업: 30% ← SRC_20241031_010 (공시)
+               - 홈페이지 제품 구성: 피아노 40% ← SRC_20241031_011 (관찰)
+            3. 계산 과정:
+               - Step 1: 악기 사업 = 1,000억 × 70% = 700억
+               - Step 2: 피아노 = 700억 × 40% = 280억
+               - Result: 280억원
+            
+            ### 신뢰도 평가
+            - 확신도: Medium
+            - 예상 오차 범위: ±15%
+            - 민감도: SAM 계산에 20% 영향
+            
+            ### 검증 방법
+            - 상한: 전체 매출 1,000억 > 280억 ✓
+            - 하한: 업계 최소 점유율 기준 > 280억 ✓
+            - 벤치마크: 영창악기 비중 60% (더 집중) → 합리적
+  
+  # 3. 검증 체크리스트 시스템
+  verification_checklist_system:
+    
+    per_deliverable_checklist:
+      description: "각 산출물의 재검증 체크리스트"
+      
+      rachel_source_registry_checklist:
+        file: "02_analysis/validator/data_sources/CHECKLIST.md"
+        
+        items:
+          data_completeness:
+            - "[ ] 모든 사용 데이터가 registry에 등록됨"
+            - "[ ] source_id 중복 없음"
+            - "[ ] 필수 필드 모두 채워짐"
+          
+          definition_verification:
+            - "[ ] 모든 데이터의 original_definition 확인"
+            - "[ ] needed_definition 명확히 정의"
+            - "[ ] definition_gap 분석 완료"
+          
+          traceability:
+            - "[ ] 모든 source_url 접근 가능"
+            - "[ ] 조정 논리 명시"
+            - "[ ] 신뢰도 평가 완료"
+      
+      bill_calculation_checklist:
+        file: "02_analysis/quantifier/market_sizing/CHECKLIST.md"
+        
+        items:
+          formula_completeness:
+            - "[ ] 모든 계산이 Excel 함수로 구현"
+            - "[ ] 하드코딩 값 없음 (상수 제외)"
+            - "[ ] 순환 참조 오류 없음"
+          
+          assumption_documentation:
+            - "[ ] Assumptions 시트 모든 행 작성"
+            - "[ ] 각 가정의 출처 명시 (Rachel source_id)"
+            - "[ ] 추정값은 추정 논리 기재"
+          
+          convergence_verification:
+            - "[ ] 4가지 방법 모두 적용"
+            - "[ ] Convergence 시트 작성"
+            - "[ ] ±30% 이내 수렴 or 사유 설명"
+          
+          backup:
+            - "[ ] PDF 백업 생성"
+            - "[ ] 파일명 규칙 준수"
+      
+      albert_report_checklist:
+        file: "02_analysis/observer/CHECKLIST.md"
+        
+        items:
+          evidence_linking:
+            - "[ ] 모든 팩트 주장에 근거 링크"
+            - "[ ] Rachel source_id 또는 Bill 계산 참조"
+            - "[ ] 관찰 vs 해석 명확히 구분"
+          
+          structure_documentation:
+            - "[ ] 가치사슬 맵 작성"
+            - "[ ] 거래 패턴 기술"
+            - "[ ] 비효율성 정량화 (Bill 협업)"
+          
+          validation:
+            - "[ ] Bill 정량 타당성 검증 통과"
+            - "[ ] Rachel 데이터 신뢰성 검증 통과"
+            - "[ ] Stewart 논리 건전성 검증 통과"
+      
+      steve_hypothesis_checklist:
+        file: "02_analysis/explorer/opportunity_hypotheses/CHECKLIST.md"
+        
+        items:
+          hypothesis_structure:
+            - "[ ] 각 기회별 OPP_*.md 작성"
+            - "[ ] 필수 섹션 모두 포함"
+            - "[ ] 파일명 규칙 준수"
+          
+          evidence_support:
+            - "[ ] 모든 주장에 근거 명시"
+            - "[ ] Albert 구조 분석 참조"
+            - "[ ] Rachel source_id 연결"
+            - "[ ] Bill 경제성 계산 참조"
+          
+          validation:
+            - "[ ] Albert 구조적 실현성 검증 통과"
+            - "[ ] Bill 경제적 타당성 검증 통과"
+            - "[ ] Rachel 근거 신뢰성 검증 통과"
+    
+    project_level_checklist:
+      description: "프로젝트 전체의 재검증 체크리스트"
+      file: "00_overview/PROJECT_VERIFICATION_CHECKLIST.md"
+      
+      sections:
+        
+        data_integrity:
+          - "[ ] 모든 원본 데이터 보존"
+          - "[ ] source_registry.yaml 완성"
+          - "[ ] 평균 신뢰도 ≥ 70%"
+          - "[ ] 정의 Gap 100% 분석"
+        
+        calculation_integrity:
+          - "[ ] Excel 파일 함수화 100%"
+          - "[ ] 4가지 방법 ±30% 수렴"
+          - "[ ] 모든 가정 문서화"
+          - "[ ] PDF 백업 존재"
+        
+        analysis_integrity:
+          - "[ ] 모든 주장에 근거"
+          - "[ ] 에이전트 간 참조 일관성"
+          - "[ ] 검증 프로토콜 통과"
+        
+        traceability:
+          - "[ ] 결론 → 데이터 역추적 가능"
+          - "[ ] 모든 추정 논리 명시"
+          - "[ ] 검증 체인 완결"
+  
+  # 4. 외부 검증자 가이드
+  external_auditor_guide:
+    description: "제3자가 프로젝트를 검증하는 방법"
+    
+    verification_sequence:
+      
+      step_1_overview_review:
+        files_to_check:
+          - "README.md: 프로젝트 개요 파악"
+          - ".project_meta.yaml: 기본 정보 확인"
+          - "executive_summary.md: 결과 요약 이해"
+      
+      step_2_data_audit:
+        files_to_check:
+          - "source_registry.yaml: 모든 데이터 출처 확인"
+          - "data_verification_report.md: 신뢰도 평가 검토"
+        
+        verification_actions:
+          - "무작위 10개 source 샘플링"
+          - "URL 접근 가능 여부 확인"
+          - "정의 Gap 분석 타당성 검토"
+          - "신뢰도 점수 재평가"
+      
+      step_3_calculation_audit:
+        files_to_check:
+          - "market_sizing_*.xlsx: 계산 과정 검토"
+          - "sam_calculation_report.md: 논리 확인"
+        
+        verification_actions:
+          - "Assumptions 시트 모든 가정 확인"
+          - "각 Method 시트의 함수 검토"
+          - "수렴도 재계산"
+          - "민감도 분석 재현"
+      
+      step_4_analysis_audit:
+        files_to_check:
+          - "market_reality_report.md: Albert 분석"
+          - "opportunity_portfolio.md: Steve 분석"
+        
+        verification_actions:
+          - "주장-근거 연결 확인"
+          - "source_id 역추적"
+          - "논리적 비약 체크"
+          - "검증 결과 재확인"
+      
+      step_5_validation_audit:
+        files_to_check:
+          - "각 문서의 Validation Results 섹션"
+          - "deliverables_registry.yaml"
+        
+        verification_actions:
+          - "필수 검증 모두 실행됐는지 확인"
+          - "검증 의견의 구체성 평가"
+          - "조건부 승인의 조건 추적"
+    
+    audit_report_template:
+      file: "external_audit_report.md"
+      
+      sections:
+        - "검증 범위 및 방법"
+        - "데이터 감사 결과"
+        - "계산 감사 결과"
+        - "분석 감사 결과"
+        - "발견된 이슈"
+        - "권고사항"
+        - "전체 신뢰도 평가"
+
+# ========================================
+# Part 4: 파일 포맷 템플릿 가이드
+# @id: file_format_templates
+# ========================================
+
+file_format_templates:
+  _description: "실제 사용할 파일 포맷과 템플릿 명세"
+  _note: "실제 템플릿 파일은 templates/ 폴더에 위치"
+  
+  template_library_structure:
+    location: "templates/"
+    
+    folders:
+      - "templates/rachel/      # Rachel 산출물 템플릿"
+      - "templates/bill/        # Bill 산출물 템플릿"
+      - "templates/albert/      # Albert 산출물 템플릿"
+      - "templates/steve/       # Steve 산출물 템플릿"
+      - "templates/project/     # 프로젝트 공통 템플릿"
+  
+  # 1. Rachel 템플릿
+  rachel_templates:
+    
+    source_registry_template:
+      file: "templates/rachel/source_registry_template.yaml"
+      description: "데이터 출처 등록 템플릿"
+      
+      content_preview: |
+        # Source Registry Template
+        # 사용법: 각 데이터 수집시마다 아래 형식으로 추가
+        
+        sources:
+          - source_id: "SRC_YYYYMMDD_001"
+            data_point: "[데이터 항목 설명]"
+            original_value: "[원본 값]"
+            source_name: "[출처 기관/문서명]"
+            source_url: "[URL 또는 파일 경로]"
+            access_date: "YYYY-MM-DD"
+            data_creation_date: "YYYY-MM-DD"
+            collection_method: "[API/크롤링/구매/직접조사/공개자료/인터뷰]"
+            original_definition: "[원본 정의 - 매우 중요]"
+            needed_definition: "[필요한 정의]"
+            definition_gap: "[차이 분석]"
+            adjustment_applied: true/false
+            adjustment_logic: "[조정 논리]"
+            adjusted_value: "[조정된 값]"
+            reliability_score: 0-100
+            verification_notes: "[검증 특이사항]"
+            update_cycle: "[갱신 주기]"
+            used_by: ["[사용처1]", "[사용처2]"]
+    
+    data_verification_report_template:
+      file: "templates/rachel/data_verification_report_template.md"
+      description: "데이터 검증 보고서 템플릿"
+      
+      content_preview: |
+        # Data Verification Report
+        
+        **프로젝트**: {project_name}  
+        **작성일**: {YYYY-MM-DD}  
+        **작성자**: Rachel (Validator)
+        
+        ## Executive Summary
+        
+        - **총 데이터 포인트**: {count}개
+        - **평균 신뢰도**: {score}/100
+        - **정의 일치율**: {percentage}%
+        - **주요 이슈**: {요약}
+        
+        ## Data Sources Overview
+        
+        | 출처 유형 | 개수 | 평균 신뢰도 |
+        |----------|------|-------------|
+        | 정부 통계 | {n} | {score} |
+        | 민간 조사 | {n} | {score} |
+        | 추정치 | {n} | {score} |
+        
+        ## High-Risk Data Points
+        
+        ### 신뢰도 < 70% 데이터
+        
+        1. **{데이터명}** (신뢰도: {score})
+           - 출처: {source}
+           - 이슈: {문제점}
+           - 대응: {방안}
+        
+        ## Definition Gaps
+        
+        ### 정의 불일치 데이터
+        
+        1. **{데이터명}**
+           - 원본 정의: {정의}
+           - 필요 정의: {정의}
+           - Gap: {차이}
+           - 조정: {방법}
+        
+        ## Alternative Sources
+        
+        - {추가 확보 가능한 소스들}
+        
+        ## Validation Checklist
+        
+        - [x] 모든 데이터 source_registry 등록
+        - [x] 신뢰도 평가 완료
+        - [ ] 추가 데이터 수집 필요
+  
+  # 2. Bill 템플릿
+  bill_templates:
+    
+    market_sizing_workbook_template:
+      file: "templates/bill/market_sizing_template.xlsx"
+      description: "SAM 계산 Excel 템플릿 (9개 시트)"
+      
+      sheet_specifications:
+        
+        sheet_1:
+          name: "Assumptions"
+          headers: ["ID", "Category", "Description", "Value", "Unit", "Data_Type", "Source", "Confidence", "Notes"]
+          sample_rows: |
+            ASM_001 | 인구 | 타겟 고객 수 | [값] | 명 | 직접데이터 | SRC_XXX | High | [설명]
+            ASM_002 | 비율 | 추정 비율 | [값] | % | 추정치 | EST_001 | Medium | 상세: Estimation_Details
+        
+        sheet_1b:
+          name: "Estimation_Details"
+          description: "추정치의 상세 논리 (Guesstimation Logic)"
+          structure: "EST_NNN 블록별로 7개 섹션 작성"
+          note: "추정 재현성의 핵심 시트"
+        
+        sheet_2:
+          name: "Method_1_TopDown"
+          structure: "TAM → 지역 축소 → 세그먼트 축소 → SAM"
+          formula_guide: "각 단계 = 이전 단계 × 비율"
+        
+        sheet_3:
+          name: "Method_2_BottomUp"
+          structure: "세그먼트별 적산 → 합계"
+          formula_guide: "세그먼트 = 수량 × 빈도 × 단가"
+        
+        sheet_4:
+          name: "Method_3_Proxy"
+          structure: "벤치마크 → 조정 → 추정"
+          formula_guide: "벤치마크 × 조정계수들"
+        
+        sheet_5:
+          name: "Method_4_CompetitorRevenue"
+          structure: "Top N 기업 → 경쟁 영역 추출 → 역산"
+          columns: ["기업명", "전체매출", "출처", "비중%", "추정논리", "경쟁매출"]
+        
+        sheet_6:
+          name: "Convergence_Analysis"
+          structure: "4가지 결과 비교 → 수렴 분석 → 최종 SAM"
+          formulas:
+            - "평균 = AVERAGE(Method1:Method4)"
+            - "표준편차 = STDEV(Method1:Method4)"
+            - "변동계수 = 표준편차/평균"
+        
+        sheet_7:
+          name: "Scenarios"
+          structure: "Best/Base/Worst Case 시나리오"
+          
+        sheet_8:
+          name: "Validation_Log"
+          structure: "검증 이력 기록"
+      
+      formatting_guide:
+        file: "templates/bill/excel_formatting_guide.md"
+        content:
+          - "색상 코딩 규칙"
+          - "셀 코멘트 작성법"
+          - "시트 보호 설정"
+          - "PDF 내보내기 방법"
+    
+    sam_report_template:
+      file: "templates/bill/sam_calculation_report_template.md"
+      
+      content_preview: |
+        # SAM Calculation Report
+        
+        **시장**: {market_name}  
+        **계산일**: {YYYY-MM-DD}  
+        **계산자**: Bill (Quantifier)
+        
+        ## Executive Summary
+        
+        - **최종 SAM**: {value} ± {range}
+        - **수렴도**: ±{percentage}%
+        - **신뢰도**: {grade}
+        
+        ## Method 1: Top-Down
+        
+        ### 계산 로직
+        TAM → {단계1} → {단계2} → SAM
+        
+        ### 결과
+        - SAM: {value}
+        - 근거: [Excel Method_1_TopDown 시트 참조]
+        
+        ## Method 2-4: (유사 구조)
+        
+        ## Convergence Analysis
+        
+        | Method | 결과 | 차이% |
+        |--------|------|-------|
+        | Top-Down | {value} | - |
+        | Bottom-Up | {value} | {%} |
+        | Proxy | {value} | {%} |
+        | Competitor | {value} | {%} |
+        | **평균** | **{value}** | - |
+        
+        **수렴 판정**: ✅ ±30% 이내 / ⚠️ ±50% 이내 / ❌ 수렴 실패
+        
+        ## Validation Results
+        
+        - **Rachel 검증**: ✅ 데이터 정의 및 신뢰성 확인
+        - **Albert 검증**: ✅ 시장 구조 부합성 확인
+  
+  # 3. Albert 템플릿
+  albert_templates:
+    
+    market_reality_report_template:
+      file: "templates/albert/market_reality_report_template.md"
+      
+      content_preview: |
+        # Market Reality Report
+        
+        **시장**: {market_name}  
+        **분석일**: {YYYY-MM-DD}  
+        **분석자**: Albert (Observer)
+        
+        ## Executive Summary
+        
+        {3-5문장 핵심 요약}
+        
+        **Steve에게 전달**:
+        - 비효율성 1: {설명}
+        - 비효율성 2: {설명}
+        - 기회 영역: {설명}
+        
+        ## Value Exchange Mapping
+        
+        ### 거래 참여자
+        - 공급자: {누구} ← 근거: SRC_XXX
+        - 수요자: {누구} ← 근거: SRC_YYY
+        - 중개자: {누구} (있는 경우)
+        
+        ### 거래 구조
+        ```
+        [가치사슬 다이어그램]
+        공급자 → (마진 X%) → 중개 → (마진 Y%) → 최종고객
+        ```
+        ← 근거: Bill 마진율 계산 참조
+        
+        ### 거래 패턴
+        - 빈도: {일/주/월/년}
+        - 규모: 평균 {금액}
+        ← 근거: SRC_ZZZ
+        
+        ## Transaction Mechanism Analysis
+        
+        - **계약 구조**: {단발/반복/장기}
+        - **가격 결정**: {고정가/변동가/입찰}
+        - **결제 조건**: {선불/후불/분할}
+        
+        ## Market Structure Categorization
+        
+        - **집중도**: {독과점/경쟁} ← 근거: Bill HHI 계산
+        - **진입장벽**: {자본/기술/규제/네트워크}
+        - **경쟁 구조**: {설명}
+        
+        ## Observed Inefficiencies
+        
+        1. **비효율 1**: {설명}
+           - 정량 영향: {금액/시간} ← Bill 계산
+           - 구조적 원인: {분석}
+           - 기회 시사점: {Steve를 위한 인사이트}
+        
+        ## Data Evidence
+        
+        모든 주장의 근거:
+        - 주장 A ← SRC_001
+        - 주장 B ← Bill 계산
+        - 주장 C ← SRC_002
+        
+        ## Validation Results
+        
+        - **Bill 검증**: ✅/⚠️/❌ - {의견}
+        - **Rachel 검증**: ✅/⚠️/❌ - {의견}
+        - **Stewart 검증**: ✅/⚠️/❌ - {의견}
+    
+    structure_observation_template:
+      file: "templates/albert/structure_observation_template.md"
+      
+      content_preview: |
+        # Structure Observation: {Topic}
+        
+        **관찰 대상**: {무엇을 관찰했는가}  
+        **관찰 일자**: {YYYY-MM-DD}
+        
+        ## 관찰된 사실
+        
+        1. **사실 1**: {관찰 내용}
+           - 근거: SRC_XXX
+           - 수치: {정량 데이터}
+        
+        ## 구조적 해석
+        
+        {패턴 해석}
+        
+        ## 근거 데이터
+        
+        - [SRC_001]: {요약}
+        - [SRC_002]: {요약}
+        
+        ## 추가 검증 필요
+        
+        - [ ] {항목}
+  
+  # 4. Steve 템플릿
+  steve_templates:
+    
+    opportunity_portfolio_template:
+      file: "templates/steve/opportunity_portfolio_template.md"
+      
+      content_preview: |
+        # Opportunity Portfolio
+        
+        **프로젝트**: {project_name}  
+        **작성일**: {YYYY-MM-DD}  
+        **작성자**: Steve (Explorer)
+        
+        ## Executive Summary
+        
+        - **총 기회**: {count}개
+        - **검증 통과**: {count}개
+        - **Top 3 우선순위**: {OPP_001, OPP_002, OPP_003}
+        
+        ## Portfolio Composition
+        
+        - **Quick Wins** (6개월 내): {count}개
+        - **Strategic Bets** (1-2년): {count}개
+        - **Moonshots** (3년+): {count}개
+        
+        ## Multi-Dimensional Analysis Summary
+        
+        ### 7 Powers 분석
+        - Scale Economics: {count}개 기회
+        - Network Effects: {count}개 기회
+        - Switching Costs: {count}개 기회
+        - (계속...)
+        
+        ### 사업모델 패턴
+        - Platform: {count}개
+        - Subscription: {count}개
+        - D2C: {count}개
+        - (계속...)
+        
+        ### Counter-Positioning
+        - 1등 추월 기회: {count}개
+        - 평균 CP 점수: {score}/10
+        
+        ## Validated Opportunities
+        
+        1. **OPP_001**: {기회명} ✅
+           - [상세 문서](opportunity_hypotheses/OPP_001.md)
+           - 우선순위: 1위
+        
+        ## Prioritization Matrix
+        
+        | ID | 기회명 | 규모 | 실현성 | 방어력 | 타이밍 | 총점 | 순위 |
+        |----|--------|------|--------|--------|--------|------|------|
+        | OPP_001 | {name} | 8 | 7 | 9 | 8 | 8.1 | 1 |
+        
+        ## Validation Summary
+        
+        - **검증 통과**: {count}/{total}
+        - **Albert 의견**: {요약}
+        - **Bill 의견**: {요약}
+        - **Rachel 의견**: {요약}
+    
+    opportunity_hypothesis_template:
+      file: "templates/steve/opportunity_hypothesis_template.md"
+      
+      content_preview: |
+        # Opportunity Hypothesis: {기회명}
+        
+        **ID**: OPP_YYYYMMDD_NNN  
+        **작성일**: {YYYY-MM-DD}  
+        **상태**: Draft / Validated / Approved / Rejected
+        
+        ## Hypothesis Statement
+        
+        - **기회 정의**: {한 줄 요약}
+        - **타겟 고객**: {누구}
+        - **문제**: {해결하는 문제}
+        - **솔루션**: {제안하는 방법}
+        
+        ## Market Context
+        
+        ### Albert 구조 분석 요약
+        - {핵심 포인트} ← [market_reality_report.md] 참조
+        
+        ### 시장 비효율성
+        - {비효율 1} ← Albert 보고서
+        - {비효율 2} ← Albert 보고서
+        
+        ### 현재 대안의 한계
+        - {한계점들}
+        
+        ## Opportunity Analysis
+        
+        ### 7 Powers 분석
+        - **해당 Power**: {Scale/Network/Switching/Brand/Resource/Process/Counter}
+        - **점수**: {score}/10
+        - **분석**: {설명}
+        
+        ### Business Model Pattern
+        - **패턴**: {Platform/Subscription/Franchise/D2C/Ad/License/Freemium}
+        - **참조**: umis_business_model_patterns_v6.2.yaml § {section}
+        - **적용 논리**: {설명}
+        
+        ### Counter-Positioning (해당시)
+        - **1등 약점**: {설명}
+        - **우리 전략**: {설명}
+        - **1등이 따라하면**: {딜레마}
+        - **CP 점수**: {score}/10
+        
+        ## Supporting Evidence
+        
+        ### 주장 1: {주장}
+        - **근거**: SRC_XXX ← Rachel registry
+        - **신뢰도**: {score}% (Rachel 평가)
+        - **내용**: {요약}
+        
+        ### 주장 2: {주장}
+        - **근거**: Bill SAM 계산 Method 2
+        - **값**: {value}
+        
+        ## Validation Results
+        
+        ### Albert 검증 (구조적 실현 가능성)
+        - **의견**: {구체적 피드백}
+        - **통과**: ✅ / ⚠️ (조건부) / ❌
+        - **조건**: {조건부인 경우}
+        
+        ### Bill 검증 (경제적 타당성)
+        - **SAM**: {value}
+        - **ROI**: {ratio}
+        - **통과**: ✅ / ⚠️ / ❌
+        - **의견**: {피드백}
+        
+        ### Rachel 검증 (근거 신뢰성)
+        - **평균 신뢰도**: {score}%
+        - **통과**: ✅ / ⚠️ / ❌
+        - **의견**: {피드백}
+        
+        ### 최종 상태
+        - **전체 검증**: ✅ 통과 / ⚠️ 조건부 / ❌ 재작업
+        - **조건**: {조건부인 경우}
+        
+        ## Implementation Roadmap
+        
+        ### Phase 1: MVP (3개월)
+        - {마일스톤들}
+        
+        ### Phase 2: Scale (6개월)
+        - {마일스톤들}
+        
+        ### Phase 3: Expansion (12개월)
+        - {마일스톤들}
+        
+        ## Assumptions & Risks
+        
+        ### 핵심 가정
+        
+        1. **가정 1**: {설명}
+           - 근거: {source}
+           - 신뢰도: {%}
+           - 리스크: {만약 틀리면}
+        
+        ### 주요 리스크
+        
+        1. **리스크 1**: {설명}
+           - 확률: High/Medium/Low
+           - 영향: High/Medium/Low
+           - 완화 방안: {대응책}
+  
+  # 5. 프로젝트 공통 템플릿
+  project_templates:
+    
+    project_charter_template:
+      file: "templates/project/project_charter_template.md"
+      
+      content_preview: |
+        # 프로젝트 Charter
+        
+        ## 기본 정보
+        - **프로젝트명**: {name}
+        - **프로젝트 ID**: {UUID}
+        - **시작일**: {YYYY-MM-DD}
+        - **Owner**: {name}
+        - **초기 명확도**: {score}/10
+        
+        ## 프로젝트 목적
+        
+        ### Primary Purpose
+        {12 universal purposes 중 선택}
+        
+        ### 배경
+        {왜 이 프로젝트를 시작하는가}
+        
+        ### 성공 기준
+        {무엇이 달성되면 성공인가}
+        
+        ## 초기 Scope
+        
+        - **What**: {무엇을 분석}
+        - **Where**: {지역/범위}
+        - **Who**: {대상 고객}
+        
+        ## 제약 조건
+        
+        - **시간**: {기한}
+        - **리소스**: {가용 리소스}
+        - **기타**: {특별 고려사항}
+        
+        ## Discovery Sprint 계획
+        
+        - **유형**: Fast Track / Full Sprint
+        - **예상 기간**: {days}일
+        - **목표 명확도**: {score}/10
+    
+    project_meta_template:
+      file: "templates/project/project_meta_template.yaml"
+      
+      content_preview: |
+        # Project Metadata Template
+        
+        project_id: "{UUID}"
+        project_name: "{name}"
+        
+        timeline:
+          start_date: "YYYY-MM-DD"
+          start_time: "HH:MM:SS"
+          end_date: null
+          end_time: null
+          total_duration: null
+        
+        owner: "{사용자 이름}"
+        
+        status: "active"  # active / paused / archived
+        phase: "discovery_sprint"  # discovery_sprint / analysis / decision
+        
+        clarity:
+          initial_score: 0
+          current_score: 0
+          evolution_log:
+            - date: "YYYY-MM-DD"
+              score: 0
+              reason: "{변화 이유}"
+        
+        discovery_sprint:
+          type: null  # fast_track / full_sprint
+          start_date: null
+          target_completion: null
+          completed: false
+        
+        agents_involved: ["stewart"]
+        
+        milestones:
+          - milestone: "{이름}"
+            date: "YYYY-MM-DD"
+            status: "completed / pending"
+        
+        deliverables_count:
+          rachel: 0
+          bill: 0
+          albert: 0
+          steve: 0
+          total: 0
+        
+        validation_summary:
+          total_validations: 0
+          passed: 0
+          partial: 0
+          failed: 0
+        
+        quality_metrics:
+          data_reliability: null
+          calculation_accuracy: null
+          analysis_completeness: null
+          validation_pass_rate: null
+          overall_grade: null  # A / B / C / D
+        
+        metadata:
+          created_by: "Stewart (Guardian)"
+          created_at: "YYYY-MM-DD HH:MM:SS"
+          last_updated: "YYYY-MM-DD HH:MM:SS"
+          version: "1.0"
+    
+    readme_template:
+      file: "templates/project/README_template.md"
+      description: "프로젝트 README 템플릿 (이미 위에 정의됨)"
+    
+    deliverables_registry_template:
+      file: "templates/project/deliverables_registry_template.yaml"
+      
+      content_preview: |
+        # Deliverables Registry
+        # 모든 산출물 자동 등록
+        
+        deliverables:
+          - deliverable_id: "DEL_YYYYMMDD_001"
+            agent: "rachel"
+            file_path: "02_analysis/validator/data_sources/source_registry.yaml"
+            file_type: "yaml"
+            created_date: "YYYY-MM-DD"
+            status: "draft / completed / validated"
+            validation_status:
+              required_validators: []
+              completed_validators: []
+              passed: true
+  
+  # 6. 템플릿 사용 가이드
+  template_usage_guide:
+    
+    for_stewart:
+      description: "Stewart가 프로젝트 초기화 시 사용"
+      
+      initialization_sequence:
+        1: "프로젝트 폴더 구조 생성"
+        2: "templates/project/* 복사 → 00_overview/"
+        3: "템플릿 변수 치환 ({name} → 실제값)"
+        4: "초기 파일 생성 완료"
+    
+    for_agents:
+      description: "각 에이전트가 산출물 작성 시 사용"
+      
+      rachel_usage:
+        - "templates/rachel/source_registry_template.yaml 복사"
+        - "데이터 수집마다 entry 추가"
+        - "완료 후 data_verification_report 템플릿 사용"
+      
+      bill_usage:
+        - "templates/bill/market_sizing_template.xlsx 복사"
+        - "시장명으로 파일명 변경"
+        - "8개 시트 순차 작성"
+        - "완료 후 PDF + 보고서 템플릿 사용"
+      
+      albert_usage:
+        - "templates/albert/market_reality_report_template.md 복사"
+        - "각 섹션 채우기"
+        - "모든 주장에 근거 링크"
+      
+      steve_usage:
+        - "각 기회마다 opportunity_hypothesis_template.md 복사"
+        - "OPP_*.md 파일명으로 저장"
+        - "모든 섹션 작성 및 검증 받기"
+  
+  # 7. 품질 보증
+  template_quality_assurance:
+    
+    template_validation:
+      - "모든 템플릿은 실제 프로젝트에서 검증됨"
+      - "필수 섹션 누락 시 자동 플래깅"
+      - "버전 관리 (templates/version_history.md)"
+    
+    template_evolution:
+      - "프로젝트 피드백 반영"
+      - "Best Practice 지속 업데이트"
+      - "Stewart가 템플릿 개선 제안"
+
+# ========================================
+# 통합 워크플로우 예시
+# ========================================
+
+integrated_workflow_example:
+  _description: "실제 프로젝트에서 모든 표준이 어떻게 작동하는지 예시"
+  
+  scenario: "피아노 구독 서비스 시장 분석"
+  
+  phase_1_project_start:
+    owner_action: "[PROJECT_START] 피아노 구독 서비스 시장 분석 프로젝트 시작"
+    
+    stewart_response:
+      - "✅ 프로젝트 폴더 생성: projects/20241031_piano_subscription/"
+      - "📁 구조 생성 완료 (00~99 폴더)"
+      - "📄 초기 파일 생성:"
+      - "   - .project_meta.yaml"
+      - "   - project_charter.md"
+      - "   - progress_tracker.md"
+      - "   - README.md"
+      - "다음: Discovery Sprint 시작하시겠습니까?"
+  
+  phase_2_discovery_and_analysis:
+    validator_work:  # Rachel
+      agent_id: "validator"
+      tasks:
+        - "데이터 수집하며 source_registry.yaml 작성"
+        - "각 데이터마다 SRC_20241031_001부터 순차 등록"
+        - "완료: data_verification_report.md 작성"
+        - "deliverables_registry.yaml에 자동 등록"
+    
+    quantifier_work:  # Bill
+      agent_id: "quantifier"
+      tasks:
+        - "market_sizing_piano_subscription.xlsx 작성"
+        - "9개 시트 작성:"
+        - "  1) Assumptions: 직접데이터(SRC_ID) + 추정치(EST_ID) 구분"
+        - "  1b) Estimation_Details: 피아노 학원 비중 30% 추정 논리 상세 작성"
+        - "  2-5) 4가지 Method, 6) Convergence, 7) Scenarios, 8) Validation"
+        - "4가지 방법으로 SAM 계산, 모든 계산 함수로 구현"
+        - "Convergence: 270억 ± 30억 (±11%)"
+        - "PDF 백업 + sam_calculation_report.md 작성"
+        - "Validator, Observer에게 검증 요청"
+    
+    observer_work:  # Albert
+      agent_id: "observer"
+      tasks:
+        - "market_reality_report.md 작성"
+        - "모든 주장에 SRC_ID 또는 Quantifier 계산 참조"
+        - "가치사슬 맵 포함"
+        - "Quantifier, Validator, Guardian에게 검증 요청"
+    
+    explorer_work:  # Steve
+      agent_id: "explorer"
+      tasks:
+        - "opportunity_portfolio.md 작성"
+        - "OPP_20241031_001_piano_subscription.md 등 3개 작성"
+        - "각 가설마다 Observer/Validator/Quantifier 근거 링크"
+        - "Observer, Quantifier, Validator에게 검증 요청"
+  
+  phase_3_validation:
+    automatic_triggers:
+      - "Observer 최종 결론 → Quantifier, Validator, Guardian 검증"
+      - "Quantifier SAM 완료 → Validator, Observer 검증"
+      - "Explorer 가설 제시 → Observer, Quantifier, Validator 검증"
+    
+    validation_results:
+      - "모든 검증 통과 ✅"
+      - "deliverables_registry.yaml 자동 업데이트"
+  
+  phase_4_project_end:
+    owner_action: "[PROJECT_END] 프로젝트 종료"
+    
+    stewart_response:
+      - "📋 완결성 체크: ✅ 모든 필수 산출물 존재"
+      - "📊 품질 평가: A등급 (92%)"
+      - "📝 executive_summary.md 생성"
+      - "📦 아카이브 생성: archive/20241031_piano_subscription_final/"
+      - "🗂️ project_index.yaml 업데이트"
+      - "✅ 프로젝트 종료 완료"
+
+# ========================================
+# 부록: Call Sign 빠른 참조 (선택사항)
+# ========================================
+
+call_sign_reference:
+  _description: "프로젝트 생명주기 신호 빠른 참조 (파워 유저용)"
+  _note: "기본 동작은 자동 감지 - Call Sign 없이도 작동"
+  
+  default_user_experience:
+    for_beginners:
+      step_1: '질문: "피아노 구독 서비스 시장 분석해줘"'
+      step_2: "Stewart: 💡 프로젝트 감지 → 폴더 옵션 제시"
+      step_3: "사용자: A 선택 (또는 엔터)"
+      step_4: "Stewart: 📝 프로젝트명 제안"
+      step_5: "사용자: 엔터 (확정)"
+      step_6: "Stewart: ✅ 폴더 생성 완료 → Discovery Sprint 시작"
+      
+      note: "Call Sign 몰라도 OK!"
+    
+    for_power_users:
+      step_1: '[PROJECT_START] 피아노 구독 서비스 시장 분석'
+      step_2: "Stewart: ✅ 폴더 생성 완료 → 즉시 시작"
+      
+      note: "대화 단계 생략"
+  
+  signals:
+    
+    project_start:
+      call_sign: "[PROJECT_START]"
+      type: "선택사항 (파워 유저)"
+      alternative: "자동 감지가 기본"
+      usage: "빠른 시작 원할 때"
+      format: "[PROJECT_START] {프로젝트명}"
+      example: "[PROJECT_START] 전기차 충전 인프라 시장 분석"
+      stewart_action: "자동 초기화 프로토콜 실행"
+      benefit: "옵션 선택 생략, 즉시 폴더 생성"
+    
+    project_end:
+      call_sign: "[PROJECT_END]"
+      type: "선택사항"
+      alternative: "최종 의사결정 완료시 자동 감지 및 제안"
+      usage: "명시적 종료 원할 때"
+      example: "[PROJECT_END]"
+      stewart_action: "종료 프로토콜 실행"
+    
+    project_cleanup:
+      call_sign: "[PROJECT_CLEANUP]"
+      type: "선택사항"
+      usage: "종료 후 추가 정리 필요시"
+      example: "[PROJECT_CLEANUP] 문서 품질 향상"
+      stewart_action: "정리 옵션 제시"
+    
+    deliverable_complete:
+      call_sign: "[DELIVERABLE_COMPLETE]"
+      type: "내부 자동 (사용자 불필요)"
+      usage: "에이전트가 산출물 완료시 자동 발행"
+      format: "[DELIVERABLE_COMPLETE] {agent_id} {filename}"
+      example: "[DELIVERABLE_COMPLETE] validator source_registry.yaml"
+      stewart_action: "deliverables_registry.yaml 자동 등록"
+      user_note: "사용자가 명시할 필요 없음 - 에이전트 내부 처리"
+    
+    validation_request:
+      call_sign: "[VALIDATION_REQUEST]"
+      type: "대부분 자동 (수동도 가능)"
+      automatic: "4개 필수 체크포인트 자동 트리거"
+      manual: "추가 검증 필요시만 사용"
+      format: "[VALIDATION_REQUEST] {agent_id} {deliverable}"
+      example: "[VALIDATION_REQUEST] observer market_reality_report.md"
+      stewart_action: "필수 검증자에게 알림"
+
+# ========================================
+# END OF DELIVERABLE STANDARDS
+# ========================================
+
