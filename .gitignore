@@ -95,3 +95,4 @@ config/tool_registry_backup_*.yaml
 config/tool_registry_incomplete.yaml
 umis_core_backup.yaml
 
+archive/v*.x/
