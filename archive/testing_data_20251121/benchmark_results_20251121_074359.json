@@ -1,0 +1,1519 @@
+{
+  "metadata": {
+    "timestamp": "2025-11-21T07:43:59.883911",
+    "total_tests": 48,
+    "success_count": 24,
+    "pricing_date": "2025-11-20"
+  },
+  "results": [
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase0_literal",
+      "scenario_name": "Phase 0 (Literal Lookup)",
+      "phase": 0,
+      "category": "simple",
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0,
+        "source": "literal"
+      },
+      "expected": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "has_models": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 70
+      },
+      "tokens": {
+        "input": 131,
+        "output": 33,
+        "total": 164
+      },
+      "cost": 3.9e-05,
+      "elapsed_seconds": 1.91,
+      "timestamp": "2025-11-21T07:41:28.730466",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase0_literal",
+      "scenario_name": "Phase 0 (Literal Lookup)",
+      "phase": 0,
+      "category": "simple",
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0,
+        "source": "literal"
+      },
+      "expected": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "has_models": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 70
+      },
+      "tokens": {
+        "input": 131,
+        "output": 33,
+        "total": 164
+      },
+      "cost": 0.000658,
+      "elapsed_seconds": 1.61,
+      "timestamp": "2025-11-21T07:41:31.348167",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1-mini",
+      "scenario_id": "phase0_literal",
+      "scenario_name": "Phase 0 (Literal Lookup)",
+      "phase": 0,
+      "error": "Error code: 404 - {'error': {'message': 'The model `o1-mini` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}",
+      "elapsed_seconds": 0.76,
+      "timestamp": "2025-11-21T07:41:33.112792",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "scenario_id": "phase0_literal",
+      "scenario_name": "Phase 0 (Literal Lookup)",
+      "phase": 0,
+      "category": "simple",
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0,
+        "source": "literal"
+      },
+      "expected": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "has_models": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 70
+      },
+      "tokens": {
+        "input": 189,
+        "output": 41,
+        "total": 230
+      },
+      "cost": 0.000315,
+      "elapsed_seconds": 1.14,
+      "timestamp": "2025-11-21T07:41:35.256153",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.5",
+      "scenario_id": "phase0_literal",
+      "scenario_name": "Phase 0 (Literal Lookup)",
+      "phase": 0,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-5-sonnet-20241022'}, 'request_id': 'req_011CVKwuss8ZPcxeYP7nhYKk'}",
+      "elapsed_seconds": 0.31,
+      "timestamp": "2025-11-21T07:41:36.564328",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-3",
+      "scenario_id": "phase0_literal",
+      "scenario_name": "Phase 0 (Literal Lookup)",
+      "phase": 0,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-opus-20240229'}, 'request_id': 'req_011CVKwuyUUQaqjpimvVHc2J'}",
+      "elapsed_seconds": 0.23,
+      "timestamp": "2025-11-21T07:41:37.794172",
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase1_direct_rag",
+      "scenario_name": "Phase 1 (Direct RAG)",
+      "phase": 1,
+      "category": "simple",
+      "response": {
+        "value": 33000,
+        "unit": "원",
+        "confidence": 1.0,
+        "source": "rag"
+      },
+      "expected": {
+        "value": 33000,
+        "unit": "원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "has_models": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 70
+      },
+      "tokens": {
+        "input": 140,
+        "output": 33,
+        "total": 173
+      },
+      "cost": 4.1e-05,
+      "elapsed_seconds": 1.03,
+      "timestamp": "2025-11-21T07:41:39.826655",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase1_direct_rag",
+      "scenario_name": "Phase 1 (Direct RAG)",
+      "phase": 1,
+      "category": "simple",
+      "response": {
+        "value": 33000,
+        "unit": "원",
+        "confidence": 1.0,
+        "source": "rag"
+      },
+      "expected": {
+        "value": 33000,
+        "unit": "원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "has_models": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 70
+      },
+      "tokens": {
+        "input": 140,
+        "output": 33,
+        "total": 173
+      },
+      "cost": 0.00068,
+      "elapsed_seconds": 1.85,
+      "timestamp": "2025-11-21T07:41:42.684079",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1-mini",
+      "scenario_id": "phase1_direct_rag",
+      "scenario_name": "Phase 1 (Direct RAG)",
+      "phase": 1,
+      "error": "Error code: 404 - {'error': {'message': 'The model `o1-mini` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}",
+      "elapsed_seconds": 0.56,
+      "timestamp": "2025-11-21T07:41:44.247965",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "scenario_id": "phase1_direct_rag",
+      "scenario_name": "Phase 1 (Direct RAG)",
+      "phase": 1,
+      "category": "simple",
+      "response": {
+        "value": 33000,
+        "unit": "원",
+        "confidence": 1.0,
+        "source": "rag"
+      },
+      "expected": {
+        "value": 33000,
+        "unit": "원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "has_models": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 70
+      },
+      "tokens": {
+        "input": 198,
+        "output": 42,
+        "total": 240
+      },
+      "cost": 0.000326,
+      "elapsed_seconds": 1.21,
+      "timestamp": "2025-11-21T07:41:46.465784",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.5",
+      "scenario_id": "phase1_direct_rag",
+      "scenario_name": "Phase 1 (Direct RAG)",
+      "phase": 1,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-5-sonnet-20241022'}, 'request_id': 'req_011CVKwvhpB3ihB6cK94Voxe'}",
+      "elapsed_seconds": 0.25,
+      "timestamp": "2025-11-21T07:41:47.717658",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-3",
+      "scenario_id": "phase1_direct_rag",
+      "scenario_name": "Phase 1 (Direct RAG)",
+      "phase": 1,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-opus-20240229'}, 'request_id': 'req_011CVKwvoHaVXcnG7bBAQEqb'}",
+      "elapsed_seconds": 0.27,
+      "timestamp": "2025-11-21T07:41:48.985199",
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase2_validator_search",
+      "scenario_name": "Phase 2 (Validator Search + Calculation)",
+      "phase": 2,
+      "category": "simple",
+      "response": {
+        "value": 1600000,
+        "unit": "원",
+        "formula": "ARPU/Churn",
+        "confidence": 1.0
+      },
+      "expected": {
+        "value": 1600000,
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "has_models": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 70
+      },
+      "tokens": {
+        "input": 121,
+        "output": 38,
+        "total": 159
+      },
+      "cost": 4.1e-05,
+      "elapsed_seconds": 1.82,
+      "timestamp": "2025-11-21T07:41:51.801500",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase2_validator_search",
+      "scenario_name": "Phase 2 (Validator Search + Calculation)",
+      "phase": 2,
+      "category": "simple",
+      "response": {
+        "value": 1600000,
+        "unit": "원",
+        "formula": "ARPU/Churn",
+        "confidence": 1.0
+      },
+      "expected": {
+        "value": 1600000,
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "has_models": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 70
+      },
+      "tokens": {
+        "input": 121,
+        "output": 38,
+        "total": 159
+      },
+      "cost": 0.000682,
+      "elapsed_seconds": 1.02,
+      "timestamp": "2025-11-21T07:41:53.825402",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1-mini",
+      "scenario_id": "phase2_validator_search",
+      "scenario_name": "Phase 2 (Validator Search + Calculation)",
+      "phase": 2,
+      "error": "Error code: 404 - {'error': {'message': 'The model `o1-mini` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}",
+      "elapsed_seconds": 0.3,
+      "timestamp": "2025-11-21T07:41:55.130017",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "scenario_id": "phase2_validator_search",
+      "scenario_name": "Phase 2 (Validator Search + Calculation)",
+      "phase": 2,
+      "category": "simple",
+      "response": {
+        "raw_response": "{\n    \"value\": 1600000,\n    \"unit\": \"원\",\n    \"formula\": \"ARPU/Churn\",\n    \"confidence\": 1.0,\n    \"calculation_steps\": {\n        \"ARPU\": 80000,\n        \"Churn_Rate\": 0.05,\n        \"LTV\": 80000 / 0.05\n    },\n    \"interpretation\": \"고객의 생애 가치는 160만원으로 추정됩니다.\"\n}",
+        "parse_error": true
+      },
+      "expected": {
+        "value": 1600000,
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "has_models": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 163,
+        "output": 129,
+        "total": 292
+      },
+      "cost": 0.000646,
+      "elapsed_seconds": 2.35,
+      "timestamp": "2025-11-21T07:41:58.485009",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.5",
+      "scenario_id": "phase2_validator_search",
+      "scenario_name": "Phase 2 (Validator Search + Calculation)",
+      "phase": 2,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-5-sonnet-20241022'}, 'request_id': 'req_011CVKwwbCLFujdy75PdNYme'}",
+      "elapsed_seconds": 0.23,
+      "timestamp": "2025-11-21T07:41:59.719403",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-3",
+      "scenario_id": "phase2_validator_search",
+      "scenario_name": "Phase 2 (Validator Search + Calculation)",
+      "phase": 2,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-opus-20240229'}, 'request_id': 'req_011CVKwwgaHbqod5rWkxg7Cm'}",
+      "elapsed_seconds": 0.34,
+      "timestamp": "2025-11-21T07:42:01.062716",
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3 (Guestimation - Template)",
+      "phase": 3,
+      "category": "medium",
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 0.85,
+        "reasoning": "글로벌 B2B SaaS ARPU를 한국 경제 상황에 맞춰 조정한 결과입니다.",
+        "models": [
+          "model1"
+        ]
+      },
+      "expected": {
+        "value_range": [
+          150000,
+          250000
+        ],
+        "confidence_min": 0.7
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 216,
+        "output": 62,
+        "total": 278
+      },
+      "cost": 7e-05,
+      "elapsed_seconds": 2.28,
+      "timestamp": "2025-11-21T07:42:04.350330",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3 (Guestimation - Template)",
+      "phase": 3,
+      "category": "medium",
+      "response": {
+        "value": 234000,
+        "unit": "원",
+        "confidence": 0.8,
+        "reasoning": "글로벌 B2B SaaS ARPU를 한국의 GDP 대비 조정하고 B2B premium을 적용한 후 환율을 반영하여 추정함.",
+        "models": [
+          "global_adjustment",
+          "B2B_premium",
+          "currency_conversion"
+        ]
+      },
+      "expected": {
+        "value_range": [
+          150000,
+          250000
+        ],
+        "confidence_min": 0.7
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 216,
+        "output": 87,
+        "total": 303
+      },
+      "cost": 0.00141,
+      "elapsed_seconds": 1.85,
+      "timestamp": "2025-11-21T07:42:07.204978",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1-mini",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3 (Guestimation - Template)",
+      "phase": 3,
+      "error": "Error code: 404 - {'error': {'message': 'The model `o1-mini` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}",
+      "elapsed_seconds": 0.19,
+      "timestamp": "2025-11-21T07:42:08.404115",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3 (Guestimation - Template)",
+      "phase": 3,
+      "category": "medium",
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 0.75,
+        "reasoning": "한국 시장의 GDP 수준과 B2B SaaS 프리미엄 특성을 고려한 합리적인 ARPU 추정치",
+        "models": [
+          "GDP per capita 조정",
+          "B2B premium 적용",
+          "환율 반영"
+        ]
+      },
+      "expected": {
+        "value_range": [
+          150000,
+          250000
+        ],
+        "confidence_min": 0.7
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 293,
+        "output": 125,
+        "total": 418
+      },
+      "cost": 0.000734,
+      "elapsed_seconds": 2.71,
+      "timestamp": "2025-11-21T07:42:12.112454",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.5",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3 (Guestimation - Template)",
+      "phase": 3,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-5-sonnet-20241022'}, 'request_id': 'req_011CVKwxbUUdtebkBGzKDmGX'}",
+      "elapsed_seconds": 0.23,
+      "timestamp": "2025-11-21T07:42:13.346567",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-3",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3 (Guestimation - Template)",
+      "phase": 3,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-opus-20240229'}, 'request_id': 'req_011CVKwxhCXA9XjXwBZNEqDW'}",
+      "elapsed_seconds": 0.37,
+      "timestamp": "2025-11-21T07:42:14.716976",
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3 (Guestimation - No Template)",
+      "phase": 3,
+      "category": "medium",
+      "response": {
+        "value": 25000,
+        "unit": "원",
+        "confidence": 0.75,
+        "reasoning": "직장인 30-40대의 소비 성향과 경쟁사 가격을 고려할 때, 적정한 월 구독료는 25,000원으로 추정됩니다. 클래스101과 탈잉의 평균 가격을 반영하였으며, 다양한 콘텐츠를 제공하는 점을 감안했습니다.",
+        "models": [
+          "market_average",
+          "competitor_analysis"
+        ]
+      },
+      "expected": {
+        "value_range": [
+          10000,
+          50000
+        ],
+        "confidence_min": 0.6
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 150,
+        "output": 111,
+        "total": 261
+      },
+      "cost": 8.9e-05,
+      "elapsed_seconds": 2.95,
+      "timestamp": "2025-11-21T07:42:18.676348",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3 (Guestimation - No Template)",
+      "phase": 3,
+      "category": "medium",
+      "response": {
+        "value": 35000,
+        "unit": "원",
+        "confidence": 0.8,
+        "reasoning": "한국의 온라인 성인 취미 교육 플랫폼의 월 구독료는 경쟁사인 클래스101과 탈잉의 가격대를 참고하여 추정되었습니다. 이들 플랫폼은 주로 30-40대 직장인을 대상으로 하며, 악기, 미술, 요리와 같은 다양한 콘텐츠를 제공합니다. 클래스101의 경우, 개별 클래스당 가격이 5만원에서 10만원 사이이며, 탈잉은 시간당 2만원에서 5만원 사이입니다. 월 구독료로 전환할 경우, 평균적으로 3-4개의 클래스를 수강할 수 있는 가격대인 3만5천원이 적절하다고 판단됩니다.",
+        "models": [
+          "competitive_pricing_analysis",
+          "target_audience_willingness_to_pay"
+        ]
+      },
+      "expected": {
+        "value_range": [
+          10000,
+          50000
+        ],
+        "confidence_min": 0.6
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 150,
+        "output": 195,
+        "total": 345
+      },
+      "cost": 0.002325,
+      "elapsed_seconds": 4.94,
+      "timestamp": "2025-11-21T07:42:24.622512",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1-mini",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3 (Guestimation - No Template)",
+      "phase": 3,
+      "error": "Error code: 404 - {'error': {'message': 'The model `o1-mini` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}",
+      "elapsed_seconds": 0.19,
+      "timestamp": "2025-11-21T07:42:25.820459",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3 (Guestimation - No Template)",
+      "phase": 3,
+      "category": "medium",
+      "response": {
+        "value": 29900,
+        "unit": "원",
+        "confidence": 0.85,
+        "reasoning": "타겟 연령대의 구매력과 경쟁사 가격 벤치마킹 결과",
+        "models": [
+          "기본형 월 29,900원 - 2-3개 클래스 수강 가능",
+          "프리미엄형 월 49,900원 - 무제한 클래스 수강",
+          "개인 맞춤형 월 39,900원 - 1:1 멘토링 포함"
+        ],
+        "competitorComparison": {
+          "클래스101": "25,000-35,000원",
+          "탈잉": "20,000-45,000원"
+        },
+        "targetMarketInsights": {
+          "averageDisposableIncome": "높음",
+          "learningMotivation": "자기계발 욕구 강함"
+        }
+      },
+      "expected": {
+        "value_range": [
+          10000,
+          50000
+        ],
+        "confidence_min": 0.6
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 221,
+        "output": 274,
+        "total": 495
+      },
+      "cost": 0.001273,
+      "elapsed_seconds": 4.94,
+      "timestamp": "2025-11-21T07:42:31.765329",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.5",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3 (Guestimation - No Template)",
+      "phase": 3,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-5-sonnet-20241022'}, 'request_id': 'req_011CVKwz3Ugy23HZBeWcMQrC'}",
+      "elapsed_seconds": 0.24,
+      "timestamp": "2025-11-21T07:42:33.008296",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-3",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3 (Guestimation - No Template)",
+      "phase": 3,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-opus-20240229'}, 'request_id': 'req_011CVKwz8nvVLZMRLfB1o5m2'}",
+      "elapsed_seconds": 0.22,
+      "timestamp": "2025-11-21T07:42:34.236713",
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase4_simple_fermi",
+      "scenario_name": "Phase 4 (Simple Fermi Decomposition)",
+      "phase": 4,
+      "category": "complex",
+      "response": {
+        "value": 5000,
+        "unit": "개",
+        "confidence": 0.7,
+        "decomposition": {
+          "서울 인구": 10000000,
+          "가구당 피아노 학원 수": 0.5,
+          "가구 수": 2500000
+        },
+        "models": [
+          "인구 기반 모델",
+          "가구 기반 모델"
+        ],
+        "reasoning": "서울의 인구를 약 1천만 명으로 추정하고, 평균 가구 수를 250만으로 계산했습니다. 각 가구당 피아노 학원 수를 0.5로 가정하여 전체 피아노 학원 수를 추정했습니다. 결과는 합리적이며, 피아노 학원 수가 많을 것으로 예상됩니다."
+      },
+      "expected": {
+        "value_range": [
+          1500,
+          4000
+        ],
+        "confidence_min": 0.6
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 85
+      },
+      "tokens": {
+        "input": 143,
+        "output": 179,
+        "total": 322
+      },
+      "cost": 0.000129,
+      "elapsed_seconds": 3.99,
+      "timestamp": "2025-11-21T07:42:39.224816",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase4_simple_fermi",
+      "scenario_name": "Phase 4 (Simple Fermi Decomposition)",
+      "phase": 4,
+      "category": "complex",
+      "response": {
+        "value": 500,
+        "unit": "개",
+        "confidence": 0.6,
+        "decomposition": {
+          "population": 10000000,
+          "piano_students_ratio": 0.01,
+          "students_per_academy": 200
+        },
+        "models": [
+          "population * piano_students_ratio / students_per_academy"
+        ],
+        "reasoning": "서울의 인구는 약 1,000만 명으로 추정됩니다. 피아노를 배우는 학생의 비율을 1%로 가정하면 약 10만 명의 학생이 피아노를 배우고 있습니다. 평균적으로 한 피아노 학원에 200명의 학생이 다닌다고 가정하면, 서울에는 약 500개의 피아노 학원이 있을 것으로 추정됩니다. 이 추정치는 여러 가정에 기반하고 있으며, 실제 수치는 다를 수 있습니다."
+      },
+      "expected": {
+        "value_range": [
+          1500,
+          4000
+        ],
+        "confidence_min": 0.6
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 85
+      },
+      "tokens": {
+        "input": 143,
+        "output": 201,
+        "total": 344
+      },
+      "cost": 0.002368,
+      "elapsed_seconds": 2.74,
+      "timestamp": "2025-11-21T07:42:42.969287",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1-mini",
+      "scenario_id": "phase4_simple_fermi",
+      "scenario_name": "Phase 4 (Simple Fermi Decomposition)",
+      "phase": 4,
+      "error": "Error code: 404 - {'error': {'message': 'The model `o1-mini` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}",
+      "elapsed_seconds": 0.2,
+      "timestamp": "2025-11-21T07:42:44.174617",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "scenario_id": "phase4_simple_fermi",
+      "scenario_name": "Phase 4 (Simple Fermi Decomposition)",
+      "phase": 4,
+      "category": "complex",
+      "response": {
+        "value": 1200,
+        "unit": "개",
+        "confidence": 0.7,
+        "decomposition": {
+          "total_seoul_population": 9500000,
+          "piano_learning_age_group_percentage": 0.15,
+          "potential_learners_per_1000_people": 50,
+          "avg_students_per_academy": 20
+        },
+        "models": [
+          "population_based_estimation",
+          "demographic_segmentation"
+        ],
+        "reasoning": "서울 인구 중 피아노 학습 연령대(5-18세)의 비율을 고려하여 추정, 1000명당 약 50명의 잠재적 학습자가 있다고 가정",
+        "calculation_steps": [
+          "9,500,000 * 0.15 = 1,425,000 (잠재적 학습 인구)",
+          "1,425,000 / 20 = 1,200 (학원 수)"
+        ]
+      },
+      "expected": {
+        "value_range": [
+          1500,
+          4000
+        ],
+        "confidence_min": 0.6
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 85
+      },
+      "tokens": {
+        "input": 205,
+        "output": 276,
+        "total": 481
+      },
+      "cost": 0.001268,
+      "elapsed_seconds": 5.4,
+      "timestamp": "2025-11-21T07:42:50.579544",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.5",
+      "scenario_id": "phase4_simple_fermi",
+      "scenario_name": "Phase 4 (Simple Fermi Decomposition)",
+      "phase": 4,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-5-sonnet-20241022'}, 'request_id': 'req_011CVKx1Ruqiq2PEriiSfXiP'}",
+      "elapsed_seconds": 0.25,
+      "timestamp": "2025-11-21T07:42:51.832139",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-3",
+      "scenario_id": "phase4_simple_fermi",
+      "scenario_name": "Phase 4 (Simple Fermi Decomposition)",
+      "phase": 4,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-opus-20240229'}, 'request_id': 'req_011CVKx1XFZfKvMo48ga2ZQ5'}",
+      "elapsed_seconds": 0.28,
+      "timestamp": "2025-11-21T07:42:53.112391",
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase4_complex_fermi",
+      "scenario_name": "Phase 4 (Complex Fermi - Multi-layer)",
+      "phase": 4,
+      "category": "very_complex",
+      "response": {
+        "value": 12000000,
+        "unit": "원",
+        "confidence": 0.75,
+        "decomposition": {
+          "number_of_learners": {
+            "value": 500000,
+            "unit": "명",
+            "confidence": 0.7,
+            "reasoning": "한국의 성인 인구 중 피아노 학습자를 추정하기 위해, 전체 성인 인구의 1%를 피아노 학습자로 가정."
+          },
+          "monthly_tuition": {
+            "value": 300000,
+            "unit": "원",
+            "confidence": 0.8,
+            "reasoning": "서울 및 대도시의 평균 학원비를 기준으로 설정."
+          },
+          "annual_material_cost": {
+            "value": 50000,
+            "unit": "원",
+            "confidence": 0.85,
+            "reasoning": "교재비는 연간 평균으로 설정."
+          },
+          "instrument_cost_ratio": {
+            "value": 0.1,
+            "unit": "비율",
+            "confidence": 0.6,
+            "reasoning": "학습자 중 10%가 매년 악기를 구매하거나 렌탈한다고 가정."
+          },
+          "other_costs": {
+            "value": 100000,
+            "unit": "원",
+            "confidence": 0.65,
+            "reasoning": "조율 및 액세서리 비용을 포함한 기타 비용."
+          }
+        },
+        "models": [
+          {
+            "model_name": "Basic Model",
+            "annual_spending": {
+              "tuition": 18000000,
+              "materials": 25000000,
+              "instrument": 5000000,
+              "other": 5000000,
+              "total": 12000000
+            }
+          },
+          {
+            "model_name": "Conservative Model",
+            "annual_spending": {
+              "tuition": 15000000,
+              "materials": 20000000,
+              "instrument": 3000000,
+              "other": 3000000,
+              "total": 10000000
+            }
+          }
+        ],
+        "recursive_estimates": {
+          "total_spending_per_learner": {
+            "tuition": 3600000,
+            "materials": 50000,
+            "instrument": 300000,
+            "other": 100000,
+            "total": 4000000
+          },
+          "total_spending": {
+            "value": 2000000000,
+            "unit": "원",
+            "confidence": 0.7
+          }
+        },
+        "reasoning_detail": "한국의 성인 피아노 학습자 수를 500,000명으로 추정하고, 월 평균 학원비를 300,000원으로 설정했습니다. 연간 교재비는 50,000원, 악기 구매/렌탈 비율은 10%로 가정했습니다. 기타 비용은 100,000원으로 설정하여, 이를 바탕으로 총 지출액을 계산했습니다. 다양한 모델을 통해 보수적인 추정과 기본 모델을 비교했습니다."
+      },
+      "expected": {
+        "value_range": [
+          50000000000,
+          500000000000
+        ],
+        "confidence_min": 0.5
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 85
+      },
+      "tokens": {
+        "input": 180,
+        "output": 688,
+        "total": 868
+      },
+      "cost": 0.00044,
+      "elapsed_seconds": 13.66,
+      "timestamp": "2025-11-21T07:43:07.773762",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase4_complex_fermi",
+      "scenario_name": "Phase 4 (Complex Fermi - Multi-layer)",
+      "phase": 4,
+      "category": "very_complex",
+      "response": {
+        "value": 120000000000,
+        "unit": "원",
+        "confidence": 0.7,
+        "decomposition": {
+          "학습자 수": 500000,
+          "학원비": 200000,
+          "교재비": 50000,
+          "악기 구매/렌탈": 0.3,
+          "기타 비용": 50000
+        },
+        "models": [
+          {
+            "name": "기본 모델",
+            "description": "각 요소의 평균 값을 곱하여 총 지출액을 계산",
+            "calculation": "학습자 수 * (학원비 * 12 + 교재비 + 악기 구매/렌탈 비용 + 기타 비용)"
+          },
+          {
+            "name": "비율 모델",
+            "description": "악기 구매/렌탈 비율을 고려하여 학습자 중 일부만 악기 관련 비용을 지출",
+            "calculation": "학습자 수 * (학원비 * 12 + 교재비 + 기타 비용) + (학습자 수 * 악기 구매/렌탈 비율 * 평균 악기 비용)"
+          }
+        ],
+        "recursive_estimates": {
+          "학습자 수": {
+            "value": 500000,
+            "confidence": 0.6,
+            "reasoning": "한국의 성인 인구 중 피아노 학습자 비율을 1%로 가정"
+          },
+          "학원비": {
+            "value": 200000,
+            "confidence": 0.8,
+            "reasoning": "서울 지역 피아노 학원의 평균 월 수강료"
+          },
+          "교재비": {
+            "value": 50000,
+            "confidence": 0.7,
+            "reasoning": "연간 평균 교재비 추정"
+          },
+          "악기 구매/렌탈": {
+            "value": 0.3,
+            "confidence": 0.5,
+            "reasoning": "학습자의 30%가 악기를 구매하거나 렌탈한다고 가정"
+          },
+          "기타 비용": {
+            "value": 50000,
+            "confidence": 0.6,
+            "reasoning": "조율, 액세서리 등 기타 비용의 평균 추정"
+          }
+        },
+        "reasoning_detail": "한국 성인 인구의 1%가 피아노를 배우고 있다고 가정하고, 평균 학원비와 기타 비용을 고려하여 총 지출액을 추정. 악기 구매/렌탈 비율을 30%로 설정하여 일부 학습자만 악기 관련 비용을 지출한다고 가정. 각 요소의 신뢰도를 기반으로 전체 추정의 신뢰도를 설정."
+      },
+      "expected": {
+        "value_range": [
+          50000000000,
+          500000000000
+        ],
+        "confidence_min": 0.5
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 180,
+        "output": 601,
+        "total": 781
+      },
+      "cost": 0.00646,
+      "elapsed_seconds": 9.45,
+      "timestamp": "2025-11-21T07:43:18.226068",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1-mini",
+      "scenario_id": "phase4_complex_fermi",
+      "scenario_name": "Phase 4 (Complex Fermi - Multi-layer)",
+      "phase": 4,
+      "error": "Error code: 404 - {'error': {'message': 'The model `o1-mini` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}",
+      "elapsed_seconds": 0.19,
+      "timestamp": "2025-11-21T07:43:19.421140",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "scenario_id": "phase4_complex_fermi",
+      "scenario_name": "Phase 4 (Complex Fermi - Multi-layer)",
+      "phase": 4,
+      "category": "very_complex",
+      "response": {
+        "value": 1850000,
+        "unit": "원",
+        "confidence": 0.75,
+        "decomposition": {
+          "total_learners": 120000,
+          "monthly_lesson_cost": 120000,
+          "annual_lesson_cost": 1440000,
+          "learning_materials": 150000,
+          "instrument_cost": 260000
+        },
+        "models": [
+          {
+            "name": "Bottom-Up Estimation",
+            "approach": "개별 비용 항목 합산"
+          },
+          {
+            "name": "Market Penetration Model",
+            "learner_percentage": 0.3
+          }
+        ],
+        "recursive_estimates": {
+          "learner_growth_rate": 0.05,
+          "cost_inflation": 0.03
+        },
+        "reasoning_detail": "성인 피아노 학습자 시장의 연간 평균 지출을 다각도로 분석한 결과"
+      },
+      "expected": {
+        "value_range": [
+          50000000000,
+          500000000000
+        ],
+        "confidence_min": 0.5
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 85
+      },
+      "tokens": {
+        "input": 257,
+        "output": 262,
+        "total": 519
+      },
+      "cost": 0.001254,
+      "elapsed_seconds": 4.75,
+      "timestamp": "2025-11-21T07:43:25.176968",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.5",
+      "scenario_id": "phase4_complex_fermi",
+      "scenario_name": "Phase 4 (Complex Fermi - Multi-layer)",
+      "phase": 4,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-5-sonnet-20241022'}, 'request_id': 'req_011CVKx3ysGNPw2MSet6m6jH'}",
+      "elapsed_seconds": 0.26,
+      "timestamp": "2025-11-21T07:43:26.436817",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-3",
+      "scenario_id": "phase4_complex_fermi",
+      "scenario_name": "Phase 4 (Complex Fermi - Multi-layer)",
+      "phase": 4,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-opus-20240229'}, 'request_id': 'req_011CVKx45Fi57wi8siRXVHWU'}",
+      "elapsed_seconds": 0.24,
+      "timestamp": "2025-11-21T07:43:27.679041",
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase4_creative_synthesis",
+      "scenario_name": "Phase 4 (Creative Synthesis)",
+      "phase": 4,
+      "category": "very_complex",
+      "response": {
+        "value": 75000,
+        "unit": "원",
+        "confidence": 0.85,
+        "models": [
+          {
+            "name": "기존 피아노 렌탈비",
+            "description": "한국에서 평균 피아노 렌탈비는 월 50,000원에서 70,000원 사이입니다.",
+            "estimated_cost": 60000
+          },
+          {
+            "name": "기존 대면 레슨비",
+            "description": "대면 레슨의 평균 비용은 1회 30,000원에서 50,000원이며, 월 4회 기준으로 120,000원에서 200,000원입니다.",
+            "estimated_cost": 160000
+          },
+          {
+            "name": "온라인 할인율",
+            "description": "온라인 레슨은 대면 레슨보다 20% 저렴하다고 가정.",
+            "discounted_cost": 128000
+          },
+          {
+            "name": "결합 할인",
+            "description": "렌탈과 레슨 결합 시 15% 할인 적용.",
+            "discounted_combined_cost": 108800
+          },
+          {
+            "name": "WTP (지불 의향)",
+            "description": "소비자 조사에 따르면, 이 서비스에 대한 평균 지불 의향은 70,000원에서 90,000원.",
+            "estimated_wtp": 80000
+          },
+          {
+            "name": "경쟁 대안",
+            "description": "유사 서비스의 가격대는 70,000원에서 100,000원.",
+            "estimated_competition_price": 85000
+          }
+        ],
+        "creative_approaches": [
+          "소비자 설문조사를 통해 피아노 렌탈과 온라인 레슨의 결합 서비스에 대한 선호도를 조사.",
+          "비슷한 서비스의 가격 분석 및 소비자 피드백을 통해 가격 조정.",
+          "프로모션 및 초기 할인 제공을 통해 초기 고객 유치."
+        ],
+        "final_reasoning": "종합 판단: 기존 렌탈비와 레슨비를 고려하고, 온라인 할인율 및 결합 할인 적용 후, 소비자 지불 의향과 경쟁 대안을 반영하여 최종적으로 75,000원이 적정 월 구독료로 판단됨."
+      },
+      "expected": {
+        "value_range": [
+          80000,
+          200000
+        ],
+        "confidence_min": 0.55
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 70
+      },
+      "tokens": {
+        "input": 176,
+        "output": 511,
+        "total": 687
+      },
+      "cost": 0.000333,
+      "elapsed_seconds": 11.25,
+      "timestamp": "2025-11-21T07:43:39.940609",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase4_creative_synthesis",
+      "scenario_name": "Phase 4 (Creative Synthesis)",
+      "phase": 4,
+      "category": "very_complex",
+      "response": {
+        "value": 120000,
+        "unit": "원",
+        "confidence": 0.75,
+        "models": [
+          {
+            "name": "기존 피아노 렌탈비 모델",
+            "assumptions": {
+              "average_rental_cost": 50000
+            },
+            "calculation": "기존 피아노 렌탈비를 기준으로 설정"
+          },
+          {
+            "name": "기존 대면 레슨비 모델",
+            "assumptions": {
+              "average_lesson_cost": 80000,
+              "online_discount_rate": 0.2
+            },
+            "calculation": "80000 * (1 - 0.2) = 64000"
+          },
+          {
+            "name": "결합 할인 모델",
+            "assumptions": {
+              "combined_discount_rate": 0.1
+            },
+            "calculation": "(50000 + 64000) * (1 - 0.1) = 102600"
+          },
+          {
+            "name": "WTP 모델",
+            "assumptions": {
+              "average_wtp": 130000
+            },
+            "calculation": "WTP를 기준으로 설정"
+          },
+          {
+            "name": "경쟁 대안 모델",
+            "assumptions": {
+              "competitive_price": 110000
+            },
+            "calculation": "경쟁 대안 가격을 기준으로 설정"
+          }
+        ],
+        "creative_approaches": [
+          {
+            "name": "시장 세분화 접근",
+            "description": "다양한 고객 세그먼트에 따라 가격을 차별화하여 설정"
+          },
+          {
+            "name": "초기 프로모션 접근",
+            "description": "초기 가입자에게 특별 할인을 제공하여 시장 진입"
+          }
+        ],
+        "final_reasoning": "각 모델의 결과를 종합하여, 기존 피아노 렌탈비와 온라인 레슨비를 고려한 후, 결합 할인과 경쟁 대안을 반영하여 적정 구독료를 120,000원으로 설정. 이는 시장의 평균 WTP와 경쟁 대안을 고려한 결과로, 초기 시장 진입을 위한 프로모션 전략도 고려함."
+      },
+      "expected": {
+        "value_range": [
+          80000,
+          200000
+        ],
+        "confidence_min": 0.55
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 85
+      },
+      "tokens": {
+        "input": 176,
+        "output": 489,
+        "total": 665
+      },
+      "cost": 0.00533,
+      "elapsed_seconds": 7.43,
+      "timestamp": "2025-11-21T07:43:48.375272",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1-mini",
+      "scenario_id": "phase4_creative_synthesis",
+      "scenario_name": "Phase 4 (Creative Synthesis)",
+      "phase": 4,
+      "error": "Error code: 404 - {'error': {'message': 'The model `o1-mini` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}",
+      "elapsed_seconds": 0.2,
+      "timestamp": "2025-11-21T07:43:49.576516",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "scenario_id": "phase4_creative_synthesis",
+      "scenario_name": "Phase 4 (Creative Synthesis)",
+      "phase": 4,
+      "category": "very_complex",
+      "response": {
+        "value": 89000,
+        "unit": "원",
+        "confidence": 0.75,
+        "models": [
+          {
+            "traditional_piano_rental": 50000,
+            "traditional_offline_lesson": 150000,
+            "online_discount_rate": 0.4,
+            "bundled_discount": 0.3
+          }
+        ],
+        "creative_approaches": [
+          "원가 기반 접근",
+          "경쟁사 벤치마킹",
+          "소비자 WTP 분석",
+          "서브스크립션 심리학 적용"
+        ],
+        "final_reasoning": "기존 대면 레슨 대비 40% 할인, 렌탈 포함으로 토탈 가치 제공, 중산층 타겟 가격대 설정",
+        "target_segments": [
+          "20-40대 직장인",
+          "음악 취미 학습자",
+          "자기계발 관심층"
+        ],
+        "price_sensitivity_analysis": {
+          "optimal_range_min": 75000,
+          "optimal_range_max": 95000
+        }
+      },
+      "expected": {
+        "value_range": [
+          80000,
+          200000
+        ],
+        "confidence_min": 0.55
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "has_models": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 85
+      },
+      "tokens": {
+        "input": 261,
+        "output": 319,
+        "total": 580
+      },
+      "cost": 0.001485,
+      "elapsed_seconds": 5.78,
+      "timestamp": "2025-11-21T07:43:56.356012",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.5",
+      "scenario_id": "phase4_creative_synthesis",
+      "scenario_name": "Phase 4 (Creative Synthesis)",
+      "phase": 4,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-5-sonnet-20241022'}, 'request_id': 'req_011CVKx6H8PvDVPKde96w45w'}",
+      "elapsed_seconds": 0.22,
+      "timestamp": "2025-11-21T07:43:57.581971",
+      "success": false
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-3",
+      "scenario_id": "phase4_creative_synthesis",
+      "scenario_name": "Phase 4 (Creative Synthesis)",
+      "phase": 4,
+      "error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-3-opus-20240229'}, 'request_id': 'req_011CVKx6NPeqX8MAeFqkcQwc'}",
+      "elapsed_seconds": 0.29,
+      "timestamp": "2025-11-21T07:43:58.877639",
+      "success": false
+    }
+  ]
+}

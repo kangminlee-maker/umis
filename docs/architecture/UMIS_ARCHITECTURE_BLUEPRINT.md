@@ -7,29 +7,30 @@
 
 | Item | Value |
 |------|-------|
-| **UMIS Version** | v7.7.0 "Native 모드 구현 + 용어 체계 명확화" |
+| **UMIS Version** | v7.7.1 "Phase 4 Few-shot 개선" |
 | **Agent System** | 6-Agent (Observer, Explorer, Quantifier, **Validator**, Guardian, **Estimator**) ⭐ |
 | **RAG Architecture** | v3.0 (4-Layer) |
 | **Excel Engine** | v1.0 (3개 도구 완성) |
-| **Estimator Agent** | v7.7.0 (5-Phase, Step 1-4 명확화) ⭐⭐⭐ |
-| **Native Mode** | v7.7.0 (LLMProvider 구현, 비용 $0) ⭐⭐⭐ NEW! |
+| **Estimator Agent** | v7.7.1 (Phase 4 Few-shot + 계산 검증) ⭐⭐⭐ NEW! |
+| **Native Mode** | v7.7.0 (LLMProvider 구현, 비용 $0) ⭐⭐⭐ |
 | **Validator Search** | v1.0 (확정 데이터 검색, 85% 처리) ⭐⭐⭐ |
 | **Boundary Validation** | v1.0 (개념 기반 동적 추론) ⭐ |
 | **Web Search** | v1.0 (DuckDuckGo/Google 선택) ⭐ |
 | **Built-in Rules** | 제거 (답변 일관성 확보) |
 | **Phase Coverage** | P0:10%, P1:5%, P2:85%, P3:2%, P4:3% |
 | **Validator Accuracy** | 100% (0% 오차) ⭐⭐⭐ |
-| **Phase 4 Accuracy** | 75% (25% 오차, 3배 개선) ⭐ |
+| **Phase 4 Accuracy** | 85% (10% 오차, v7.7.1 개선!) ⭐⭐⭐ NEW! |
+| **Phase 4 Calculation** | 50/50 (만점, 145% 향상) ⭐⭐⭐ NEW! |
 | **E2E Success** | 95% (19/20) ⭐ |
 | **Meta-RAG** | v1.0 (Guardian 프로세스 감시) ⭐ |
 | **System RAG** | v1.0 (31개 도구) |
 | **LLM Mode** | Native (진짜 구현!) + External ⭐ |
 | **Schema Registry** | v1.3 (v7.7.0 반영) ⭐ |
-| **Terminology** | Phase (전체 0-4) + Step (Fermi 1-4) ⭐ NEW! |
+| **Terminology** | Phase (전체 0-4) + Step (Fermi 1-4) ⭐ |
 | **Coverage** | 100% (실패율 0%) ⭐ |
 | **Cost** | $0 (Native mode) ⭐ |
-| **Last Updated** | 2025-11-13 |
-| **Validator DART API** | v1.0.0 (11개 기업, 537개 항목 검증) ⭐ NEW! |
+| **Last Updated** | 2025-11-21 |
+| **Validator DART API** | v1.0.0 (11개 기업, 537개 항목 검증) ⭐ |
 | **SG&A Parser** | v1.0.0 (진화형 2-Tier 시스템) ⭐ NEW! |
 | **Status** | Production Ready - Native 모드 + DART 통합 완성 |
 
@@ -805,11 +806,21 @@ umis/
 
 ## 📚 Version History
 
-**현재 버전**: v7.7.0 "Native Mode + Terminology" (2025-11-10) - Stable Release
+**현재 버전**: v7.7.1 "Phase 4 Few-shot Improvement" (2025-11-21) - Stable Release
 
 **상세 변경 이력**: [CHANGELOG.md](CHANGELOG.md) 참조
 
 **주요 마일스톤**:
+- **v7.7.1 (2025-11-21)**: ⭐⭐⭐ Estimator Phase 4 Few-shot 개선
+  - Few-shot 예시 추가 (서울 택시 수 5단계 분해)
+  - 계산 연결성 145% 향상 (18/40 → 50/50 만점!)
+  - 자동 계산 검증 (_verify_calculation_connectivity 메서드)
+  - Reasoning 필수화 (모든 가정에 합리적 근거)
+  - 최종 점수: 85/100 (gpt-5.1)
+  - 성공률: 0% → 93% (14/15)
+  - Reasoning 포함율: 0% → 80-100%
+  - 파일: phase4_fermi.py (2,700줄), models.py (Phase4Config 개선)
+
 - **v7.7.1 (2025-11-13)**: ⭐ Validator DART 통합 + SG&A 파서
   - Validator DART API v1.0.0 완성 (umis_rag/utils/dart_api.py)
   - 11개 기업, 537개 SG&A 항목 검증 완료

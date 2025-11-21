@@ -1,0 +1,64 @@
+{
+  "metadata": {
+    "timestamp": "2025-11-21T13:53:53.302870",
+    "test_type": "reasoning_effort_comparison"
+  },
+  "results": [
+    {
+      "model": "gpt-5",
+      "reasoning_effort": "minimal",
+      "config_name": "gpt-5 (effort=minimal)",
+      "error": "Responses.create() got an unexpected keyword argument 'reasoning_effort'",
+      "success": false
+    },
+    {
+      "model": "gpt-5",
+      "reasoning_effort": "low",
+      "config_name": "gpt-5 (effort=low)",
+      "error": "Responses.create() got an unexpected keyword argument 'reasoning_effort'",
+      "success": false
+    },
+    {
+      "model": "gpt-5",
+      "reasoning_effort": "medium",
+      "config_name": "gpt-5 (effort=medium)",
+      "error": "Responses.create() got an unexpected keyword argument 'reasoning_effort'",
+      "success": false
+    },
+    {
+      "model": "gpt-5",
+      "reasoning_effort": "high",
+      "config_name": "gpt-5 (effort=high)",
+      "error": "Responses.create() got an unexpected keyword argument 'reasoning_effort'",
+      "success": false
+    },
+    {
+      "model": "gpt-5.1",
+      "reasoning_effort": "minimal",
+      "config_name": "gpt-5.1 (effort=minimal)",
+      "error": "Responses.create() got an unexpected keyword argument 'reasoning_effort'",
+      "success": false
+    },
+    {
+      "model": "gpt-5.1",
+      "reasoning_effort": "low",
+      "config_name": "gpt-5.1 (effort=low)",
+      "error": "Responses.create() got an unexpected keyword argument 'reasoning_effort'",
+      "success": false
+    },
+    {
+      "model": "gpt-5.1",
+      "reasoning_effort": "medium",
+      "config_name": "gpt-5.1 (effort=medium)",
+      "error": "Responses.create() got an unexpected keyword argument 'reasoning_effort'",
+      "success": false
+    },
+    {
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "config_name": "gpt-5.1 (effort=high)",
+      "error": "Responses.create() got an unexpected keyword argument 'reasoning_effort'",
+      "success": false
+    }
+  ]
+}

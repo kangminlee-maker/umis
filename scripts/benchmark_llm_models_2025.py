@@ -12,6 +12,7 @@ from typing import Dict, List, Any, Optional
 from datetime import datetime
 from openai import OpenAI
 import anthropic
+import backoff
 
 # 환경변수 로드
 from dotenv import load_dotenv
@@ -29,84 +30,52 @@ class LLMBenchmark2025:
         
         # 테스트할 모델 (2025-11-20 최신)
         self.models = {
-            'openai_nano': [
-                'gpt-5-nano',
-                'gpt-4.1-nano'
-            ],
             'openai_mini': [
-                'gpt-4o-mini',
-                'gpt-5-mini',
-                'gpt-4.1-mini'
+                'gpt-4o-mini'
             ],
             'openai_standard': [
-                'gpt-4o',
-                'gpt-4.1',
-                'gpt-5.1'
+                'gpt-4o'
             ],
             'openai_thinking': [
-                'o1-mini',
-                'o3-mini',
-                'o4-mini',
-                'o3'
-            ],
-            'openai_pro': [
-                'gpt-5-pro',
-                'o1-pro',
-                'o3-pro'
+                'o1-mini'
             ],
             'claude_haiku': [
-                'claude-haiku-4.5',
                 'claude-haiku-3.5'
             ],
             'claude_sonnet': [
-                'claude-sonnet-4.5',
-                'claude-sonnet-4',
-                'claude-sonnet-3.7'
+                'claude-sonnet-3.5'
             ],
             'claude_opus': [
-                'claude-opus-4.1',
-                'claude-opus-4'
+                'claude-opus-3'
             ]
         }
         
         # 가격 정보 ($/1M 토큰) - 2025-11-20 기준
         self.pricing = {
-            # OpenAI (Standard Tier)
-            'gpt-5-nano': {'input': 0.05, 'output': 0.40},
-            'gpt-4.1-nano': {'input': 0.10, 'output': 0.40},
+            # OpenAI (Standard Tier) - 현재 사용 가능한 모델
             'gpt-4o-mini': {'input': 0.15, 'output': 0.60},
-            'gpt-5-mini': {'input': 0.25, 'output': 2.00},
-            'gpt-4.1-mini': {'input': 0.40, 'output': 1.60},
             'gpt-4o': {'input': 2.50, 'output': 10.00},
-            'gpt-4.1': {'input': 2.00, 'output': 8.00},
-            'gpt-5.1': {'input': 1.25, 'output': 10.00},
             'o1-mini': {'input': 1.10, 'output': 4.40},
-            'o3-mini': {'input': 1.10, 'output': 4.40},
-            'o4-mini': {'input': 1.10, 'output': 4.40},
-            'o3': {'input': 2.00, 'output': 8.00},
-            'gpt-5-pro': {'input': 15.00, 'output': 120.00},
-            'o1-pro': {'input': 150.00, 'output': 600.00},
-            'o3-pro': {'input': 20.00, 'output': 80.00},
+            'o1': {'input': 15.00, 'output': 60.00},
             
-            # Claude (Standard Tier)
-            'claude-haiku-4.5': {'input': 1.00, 'output': 5.00},
+            # Claude (Standard Tier) - 현재 사용 가능한 모델
             'claude-haiku-3.5': {'input': 0.80, 'output': 4.00},
-            'claude-sonnet-4.5': {'input': 3.00, 'output': 15.00},  # ≤200K
-            'claude-sonnet-4': {'input': 3.00, 'output': 15.00},
-            'claude-sonnet-3.7': {'input': 3.00, 'output': 15.00},
-            'claude-opus-4.1': {'input': 15.00, 'output': 75.00},
-            'claude-opus-4': {'input': 15.00, 'output': 75.00}
+            'claude-sonnet-3.5': {'input': 3.00, 'output': 15.00},
+            'claude-opus-3': {'input': 15.00, 'output': 75.00}
         }
         
-        # 모델별 API 이름 매핑
+        # Claude API 이름 매핑 (2025-11-21 업데이트)
         self.model_api_names = {
-            'claude-haiku-4.5': 'claude-haiku-4-5-20250514',
+            # Claude
             'claude-haiku-3.5': 'claude-3-5-haiku-20241022',
-            'claude-sonnet-4.5': 'claude-sonnet-4-5-20250514',
-            'claude-sonnet-4': 'claude-4-20250118',
+            'claude-sonnet-3.5': 'claude-3-5-sonnet-20241022',
             'claude-sonnet-3.7': 'claude-3-7-sonnet-20250219',
-            'claude-opus-4.1': 'claude-opus-4-1-20250514',
-            'claude-opus-4': 'claude-4-opus-20250118'
+            'claude-sonnet-4': 'claude-sonnet-4-20250514',
+            'claude-sonnet-4.5': 'claude-sonnet-4-5-20250929',
+            'claude-haiku-4.5': 'claude-haiku-4-5-20251001',
+            'claude-opus-3': 'claude-3-opus-20240229',
+            'claude-opus-4': 'claude-opus-4-20250514',
+            'claude-opus-4.1': 'claude-opus-4-1-20250805'
         }
         
         # 결과 저장
@@ -150,7 +119,12 @@ class LLMBenchmark2025:
                             result = self.test_openai_model(model, scenario)
                             self.results.append(result)
                             self._print_result(result)
-                            time.sleep(1)  # Rate limit
+                            
+                            # Rate limiting: 더 긴 대기 시간 적용
+                            if model.startswith('o'):  # thinking 모델은 더 긴 대기
+                                time.sleep(3)
+                            else:
+                                time.sleep(1.5)
                         
                         except Exception as e:
                             print(f"   ❌ {model}: 오류 - {str(e)}")
@@ -162,6 +136,8 @@ class LLMBenchmark2025:
                                 'timestamp': datetime.now().isoformat(),
                                 'success': False
                             })
+                            # 오류 발생 시 더 긴 대기
+                            time.sleep(3)
             
             # Claude 모델 테스트
             if test_claude:
@@ -175,7 +151,9 @@ class LLMBenchmark2025:
                             result = self.test_claude_model(model, scenario)
                             self.results.append(result)
                             self._print_result(result)
-                            time.sleep(1)  # Rate limit
+                            
+                            # Rate limiting: Claude도 긴 대기 시간 적용
+                            time.sleep(2)
                         
                         except Exception as e:
                             print(f"   ❌ {model}: 오류 - {str(e)}")
@@ -187,6 +165,8 @@ class LLMBenchmark2025:
                                 'timestamp': datetime.now().isoformat(),
                                 'success': False
                             })
+                            # 오류 발생 시 더 긴 대기
+                            time.sleep(3)
         
         # 결과 저장
         self.save_results(output_file)
@@ -384,36 +364,73 @@ JSON 형식:
             }
         ]
     
+    @backoff.on_exception(
+        backoff.expo,
+        (Exception),
+        max_tries=3,
+        max_time=30,
+        giveup=lambda e: "429" not in str(e) and "rate limit" not in str(e).lower() and "timeout" not in str(e).lower()
+    )
+    def _call_openai_with_retry(self, api_params: Dict) -> Any:
+        """OpenAI API 호출 with retry"""
+        return self.openai_client.chat.completions.create(**api_params)
+    
     def test_openai_model(self, model: str, scenario: Dict) -> Dict[str, Any]:
         """OpenAI 모델 테스트"""
         start_time = time.time()
         
         try:
-            # Thinking 모델 여부
-            is_thinking = model.startswith('o1') or model.startswith('o3') or model.startswith('o4')
+            # 모델 타입 구분
+            is_o_series = model.startswith(('o1', 'o3', 'o4'))  # o1/o3/o4 시리즈
+            is_gpt5 = model.startswith('gpt-5')  # gpt-5 시리즈
+            is_reasoning_model = is_o_series or is_gpt5
             
             messages = [{"role": "user", "content": scenario['prompt']}]
             
-            if not is_thinking:
+            if not is_reasoning_model:
                 messages.insert(0, {
                     "role": "system",
                     "content": "당신은 시장 분석 전문가입니다. 항상 JSON 형식으로만 답변하세요."
                 })
             
-            # API 호출
-            response = self.openai_client.chat.completions.create(
-                model=model,
-                messages=messages,
-                temperature=0.2 if not is_thinking else None,
-                response_format={"type": "json_object"} if not is_thinking else None
-            )
+            # API 호출 파라미터 구성
+            api_params = {
+                "model": model,
+                "messages": messages
+            }
+            
+            # 파라미터 추가 (모델별 차별화)
+            if is_reasoning_model:
+                # o1/o3/o4: low/medium/high, gpt-5: minimal/low/medium/high
+                if is_o_series:
+                    api_params["reasoning_effort"] = "medium"  # o 시리즈 기본값
+                else:  # gpt-5
+                    api_params["reasoning_effort"] = "low"  # gpt-5 균형잡힌 설정
+            else:
+                # 일반 모델: temperature 사용
+                api_params["temperature"] = 0.2
+                api_params["response_format"] = {"type": "json_object"}
+            
+            # API 호출 with retry
+            response = self._call_openai_with_retry(api_params)
             
             elapsed = time.time() - start_time
             
             # 응답 파싱
             content = response.choices[0].message.content
             
+            # JSON 추출 시도 (```json ... ``` 블록 또는 일반 JSON)
             try:
+                # 코드 블록 내 JSON 추출
+                if '```json' in content:
+                    json_start = content.find('```json') + 7
+                    json_end = content.find('```', json_start)
+                    content = content[json_start:json_end].strip()
+                elif '```' in content:
+                    json_start = content.find('```') + 3
+                    json_end = content.find('```', json_start)
+                    content = content[json_start:json_end].strip()
+                
                 parsed = json.loads(content)
             except json.JSONDecodeError:
                 parsed = {'raw_response': content, 'parse_error': True}
@@ -464,6 +481,17 @@ JSON 형식:
                 'success': False
             }
     
+    @backoff.on_exception(
+        backoff.expo,
+        (Exception),
+        max_tries=3,
+        max_time=30,
+        giveup=lambda e: "429" not in str(e) and "rate limit" not in str(e).lower() and "timeout" not in str(e).lower()
+    )
+    def _call_claude_with_retry(self, api_params: Dict) -> Any:
+        """Claude API 호출 with retry"""
+        return self.anthropic_client.messages.create(**api_params)
+    
     def test_claude_model(self, model: str, scenario: Dict) -> Dict[str, Any]:
         """Claude 모델 테스트"""
         start_time = time.time()
@@ -472,23 +500,53 @@ JSON 형식:
             # API 모델 이름 변환
             api_model = self.model_api_names.get(model, model)
             
-            # API 호출
-            response = self.anthropic_client.messages.create(
-                model=api_model,
-                max_tokens=2048,
-                temperature=0.2,
-                system="당신은 시장 분석 전문가입니다. 항상 JSON 형식으로만 답변하세요.",
-                messages=[
+            # API 호출 파라미터 구성
+            api_params = {
+                "model": api_model,
+                "max_tokens": 2048,
+                "temperature": 0.2,
+                "system": "당신은 시장 분석 전문가입니다. 항상 JSON 형식으로만 답변하세요.",
+                "messages": [
                     {"role": "user", "content": scenario['prompt']}
                 ]
-            )
+            }
+            
+            # API 호출 with retry
+            response = self._call_claude_with_retry(api_params)
             
             elapsed = time.time() - start_time
+            
+            # refusal 중지 이유 처리 (Claude 4.5 요구사항)
+            if response.stop_reason == "refusal":
+                return {
+                    'provider': 'claude',
+                    'model': model,
+                    'scenario_id': scenario['id'],
+                    'scenario_name': scenario['name'],
+                    'phase': scenario['phase'],
+                    'category': scenario['category'],
+                    'error': 'Model refused to respond (safety/policy)',
+                    'stop_reason': 'refusal',
+                    'elapsed_seconds': round(elapsed, 2),
+                    'timestamp': datetime.now().isoformat(),
+                    'success': False
+                }
             
             # 응답 파싱
             content = response.content[0].text
             
+            # JSON 추출 시도 (```json ... ``` 블록 또는 일반 JSON)
             try:
+                # 코드 블록 내 JSON 추출
+                if '```json' in content:
+                    json_start = content.find('```json') + 7
+                    json_end = content.find('```', json_start)
+                    content = content[json_start:json_end].strip()
+                elif '```' in content:
+                    json_start = content.find('```') + 3
+                    json_end = content.find('```', json_start)
+                    content = content[json_start:json_end].strip()
+                
                 parsed = json.loads(content)
             except json.JSONDecodeError:
                 parsed = {'raw_response': content, 'parse_error': True}
@@ -796,14 +854,14 @@ def main():
     benchmark = LLMBenchmark2025()
     
     if choice == '2':
-        # 핵심 모델만
+        # 핵심 모델만 (실제 사용 가능한 모델)
         benchmark.models = {
             'openai_mini': ['gpt-4o-mini'],
             'openai_standard': ['gpt-4o'],
             'openai_thinking': ['o1-mini'],
-            'claude_haiku': ['claude-haiku-4.5'],
-            'claude_sonnet': ['claude-sonnet-4.5'],
-            'claude_opus': ['claude-opus-4.1']
+            'claude_haiku': ['claude-haiku-3.5'],
+            'claude_sonnet': ['claude-sonnet-3.5'],
+            'claude_opus': ['claude-opus-3']
         }
     
     try:

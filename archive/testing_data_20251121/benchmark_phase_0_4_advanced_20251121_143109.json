@@ -1,0 +1,755 @@
+{
+  "metadata": {
+    "timestamp": "2025-11-21T14:31:09.044759",
+    "test_type": "phase_0_4_advanced",
+    "total_tests": 25,
+    "success_count": 25,
+    "phases": [
+      "phase_0",
+      "phase_1",
+      "phase_2",
+      "phase_3",
+      "phase_4"
+    ]
+  },
+  "scenarios": {
+    "phase_0": {
+      "name": "Phase 0: 복잡한 데이터 추출",
+      "difficulty": "Medium",
+      "description": "여러 조건이 섞인 데이터에서 정확한 값 추출",
+      "prompt": "다음 시장 데이터에서 \"한국 B2B SaaS 평균 ARPU (연간 구독)\" 값을 추출하세요.\n\n데이터:\n- 한국 B2B SaaS 월간 구독 ARPU: 18,000원\n- 한국 B2B SaaS 연간 구독 ARPU: 200,000원\n- 한국 B2C SaaS 연간 구독 ARPU: 70,000원\n- 일본 B2B SaaS 연간 구독 ARPU: ¥180,000\n- 한국 B2B SaaS 평균 해지율: 8.5%\n- 한국 B2B SaaS 평균 CAC: 450,000원\n\n조건:\n1. B2B만 추출 (B2C 제외)\n2. 연간 구독만 추출 (월간 제외)\n3. 한국만 추출 (일본 제외)\n4. ARPU만 추출 (해지율, CAC 제외)\n\n반드시 다음 JSON 형식으로만 응답하세요:\n{\"value\": 200000, \"unit\": \"원\", \"confidence\": 1.0, \"reasoning\": \"추출 근거\"}",
+      "expected": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0
+      }
+    },
+    "phase_1": {
+      "name": "Phase 1: 간단한 계산",
+      "difficulty": "Medium-High",
+      "description": "주어진 값들로 간단한 산술 계산",
+      "prompt": "다음 데이터를 사용하여 \"한국 B2B SaaS LTV\"를 계산하세요.\n\n주어진 데이터:\n- 평균 ARPU (연간): 200,000원\n- 평균 고객 유지 기간: 3.2년\n- 연간 해지율: 8.5%\n\n계산식:\nLTV = ARPU × 평균 유지 기간\n또는\nLTV = ARPU / 해지율 (연간)\n\n두 방법 중 하나를 선택하여 계산하세요.\n\n반드시 다음 JSON 형식으로만 응답하세요:\n{\"value\": <계산된_값>, \"unit\": \"원\", \"confidence\": <0.7-1.0>, \"method\": \"사용한 계산식\", \"reasoning\": \"계산 과정\"}",
+      "expected": {
+        "value_range": [
+          640000,
+          2352941
+        ],
+        "unit": "원",
+        "min_confidence": 0.7
+      }
+    },
+    "phase_2": {
+      "name": "Phase 2: 지식 기반 추론",
+      "difficulty": "High",
+      "description": "Validator RAG 수준의 정의 및 벤치마크 활용",
+      "prompt": "다음 상황에서 \"한국 B2B 협업 SaaS CAC\"를 추정하세요.\n\n상황:\n- 산업: B2B 협업 도구 (Slack, Notion 유사)\n- 시장: 한국\n- 고객: 중소기업 (10-50명)\n- 마케팅 채널: 디지털 마케팅 + Inside Sales\n\n참고 정보 (활용 가능):\n- 미국 B2B SaaS 평균 CAC: $1,200 (약 1,560,000원)\n- 한국 SaaS CAC는 미국 대비 30-40% 수준\n- B2B 협업 도구는 일반 SaaS 대비 CAC 20% 낮음 (바이럴 효과)\n- 중소기업 타겟은 대기업 대비 CAC 40% 낮음\n\n계산 과정:\n1. 미국 기준값 선택\n2. 한국 할인 적용\n3. 협업 도구 할인 적용\n4. 중소기업 할인 적용\n\n반드시 다음 JSON 형식으로만 응답하세요:\n{\"value\": <추정값>, \"unit\": \"원\", \"confidence\": <0.5-0.8>, \"method\": \"계산 과정\", \"assumptions\": [\"가정1\", \"가정2\"]}",
+      "expected": {
+        "value_range": [
+          200000,
+          500000
+        ],
+        "unit": "원",
+        "min_confidence": 0.5
+      }
+    },
+    "phase_3": {
+      "name": "Phase 3: 복잡한 시나리오 계산",
+      "difficulty": "High",
+      "description": "여러 변수를 고려한 성장률 분석",
+      "prompt": "다음 데이터를 바탕으로 \"3년 후 한국 B2B 협업 SaaS 시장 규모\"를 계산하세요.\n\n현재 시장 정보 (2025년):\n- 현재 시장 규모: 500억원\n- 현재 활성 기업 고객: 25,000개\n- 평균 ARPU: 200만원/년\n\n성장 요인:\n1. 시장 성장률: 연 25% (팬데믹 이후 가속)\n2. 고객 증가율: 연 20%\n3. ARPU 증가율: 연 5% (기능 추가, 업셀링)\n\n계산 과제:\n- 단순 성장률 적용 vs 복합 성장 고려\n- 3년 후 (2028년) 시장 규모 추정\n\n반드시 다음 JSON 형식으로만 응답하세요:\n{\"value\": <추정값>, \"unit\": \"억원\", \"confidence\": <0.6-0.9>, \"method\": \"계산식\", \"breakdown\": {\"고객수\": <값>, \"ARPU\": <값>}, \"reasoning\": \"계산 근거\"}",
+      "expected": {
+        "value_range": [
+          900,
+          1200
+        ],
+        "unit": "억원",
+        "min_confidence": 0.6
+      }
+    },
+    "phase_4": {
+      "name": "Phase 4: Fermi 추정 (완전 미지의 값)",
+      "difficulty": "Very High",
+      "description": "데이터 없이 순수 분해와 가정으로 추정",
+      "prompt": "데이터 없이 \"한국 기업용 화상회의 솔루션 TAM (Total Addressable Market)\"을 추정하세요.\n\n제약 조건:\n- 데이터는 주어지지 않음\n- 순수 Fermi 분해 방식 사용\n- Top-down 또는 Bottom-up 접근\n\n추정 가이드 (선택 사항):\n1. Top-down: 한국 전체 기업 수 → 잠재 고객 → 지불 의향 → 가격\n2. Bottom-up: 평균 기업 규모 → 사용자 수 → 좌석당 가격 → 시장 침투율\n\n필수 포함 요소:\n- 명확한 분해 단계 (3단계 이상)\n- 각 단계별 가정과 근거\n- 최종 추정값과 신뢰 구간\n\n반드시 다음 JSON 형식으로만 응답하세요:\n{\n    \"value\": <추정값>,\n    \"unit\": \"억원\",\n    \"confidence\": <0.3-0.7>,\n    \"method\": \"top-down 또는 bottom-up\",\n    \"decomposition\": [\n        {\"step\": \"단계1\", \"assumption\": \"가정\", \"value\": <값>},\n        {\"step\": \"단계2\", \"assumption\": \"가정\", \"value\": <값>}\n    ],\n    \"reasoning\": \"전체 추정 논리\",\n    \"confidence_range\": {\"min\": <최소값>, \"max\": <최대값>}\n}",
+      "expected": {
+        "value_range": [
+          500,
+          3000
+        ],
+        "unit": "억원",
+        "min_confidence": 0.3,
+        "min_decomposition_steps": 3
+      }
+    }
+  },
+  "results": [
+    {
+      "success": true,
+      "cost": 4.91e-05,
+      "elapsed_seconds": 1.14,
+      "quality_score": 100,
+      "tokens": {
+        "input": 247,
+        "output": 61,
+        "total": 308
+      },
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0,
+        "reasoning": "데이터에서 한국 B2B SaaS 연간 구독 ARPU 값이 200,000원으로 명확하게 제시되었기 때문입니다."
+      },
+      "model": "gpt-4.1-nano",
+      "api_type": "chat",
+      "phase": "phase_0",
+      "config_name": "gpt-4.1-nano (chat)"
+    },
+    {
+      "success": true,
+      "cost": 6.825e-05,
+      "elapsed_seconds": 1.9,
+      "quality_score": 100,
+      "tokens": {
+        "input": 247,
+        "output": 52,
+        "total": 299
+      },
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0,
+        "reasoning": "한국 B2B SaaS의 연간 구독 ARPU가 200,000원으로 명시되어 있음."
+      },
+      "model": "gpt-4o-mini",
+      "api_type": "chat",
+      "phase": "phase_0",
+      "config_name": "gpt-4o-mini (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.0001708,
+      "elapsed_seconds": 1.09,
+      "quality_score": 100,
+      "tokens": {
+        "input": 247,
+        "output": 45,
+        "total": 292
+      },
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0,
+        "reasoning": "한국 B2B SaaS 연간 구독 ARPU 데이터에서 직접 추출됨"
+      },
+      "model": "gpt-4.1-mini",
+      "api_type": "chat",
+      "phase": "phase_0",
+      "config_name": "gpt-4.1-mini (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.0005775,
+      "elapsed_seconds": 1.89,
+      "quality_score": 100,
+      "tokens": {
+        "input": 110,
+        "output": 44,
+        "total": 154
+      },
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0,
+        "reasoning": "주어진 데이터 중에서 '한국 B2B SaaS', '연간 구독', 'ARPU' 조건을 모두 만족하는 항목은 '한국 B2B SaaS 연간 구독 ARPU: 200,000원' 하나뿐이므로 이를 그대로 추출했다."
+      },
+      "model": "gpt-5.1",
+      "api_type": "responses",
+      "phase": "phase_0",
+      "config_name": "gpt-5.1 (responses)"
+    },
+    {
+      "success": true,
+      "cost": 0.0015275,
+      "elapsed_seconds": 1.5,
+      "quality_score": 100,
+      "tokens": {
+        "input": 246,
+        "output": 122,
+        "total": 368,
+        "reasoning": 33
+      },
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1.0,
+        "reasoning": "주어진 데이터 중 '한국 B2B SaaS 연간 구독 ARPU: 200,000원'이 조건(한국, B2B, 연간 구독, ARPU)에 모두 부합하므로 해당 값을 그대로 추출함."
+      },
+      "model": "gpt-5.1",
+      "api_type": "chat",
+      "phase": "phase_0",
+      "config_name": "gpt-5.1 (chat)"
+    },
+    {
+      "success": true,
+      "cost": 9.54e-05,
+      "elapsed_seconds": 1.88,
+      "quality_score": 100,
+      "tokens": {
+        "input": 166,
+        "output": 197,
+        "total": 363
+      },
+      "response": {
+        "value": 1700000,
+        "unit": "원",
+        "confidence": 0.9,
+        "method": "LTV = ARPU / 해지율",
+        "reasoning": "연간 해지율이 8.5%이므로 LTV를 계산할 때는 LTV = ARPU / 해지율 공식을 사용. ARPU는 200,000원이고 해지율은 0.085이므로, LTV = 200,000 / 0.085 ≈ 2,352,941원. 그러나 평균 고객 유지 기간(3.2년)을 고려하면, LTV = ARPU × 유지 기간으로 계산하는 것이 더 직관적이며, 이 경우 200,000 × 3.2 = 640,000원. 둘 다 사용 가능하나, 주어진 두 방법 중 수익 예측에 더 정확한 '유지 기간 기반 계산'을 선택."
+      },
+      "model": "gpt-4.1-nano",
+      "api_type": "chat",
+      "phase": "phase_1",
+      "config_name": "gpt-4.1-nano (chat)"
+    },
+    {
+      "success": true,
+      "cost": 7.890000000000001e-05,
+      "elapsed_seconds": 2.67,
+      "quality_score": 100,
+      "tokens": {
+        "input": 166,
+        "output": 90,
+        "total": 256
+      },
+      "response": {
+        "value": 640000,
+        "unit": "원",
+        "confidence": 0.9,
+        "method": "LTV = ARPU × 평균 유지 기간",
+        "reasoning": "LTV는 ARPU(200,000원)와 평균 유지 기간(3.2년)을 곱하여 계산하였습니다. 즉, 200,000원 × 3.2년 = 640,000원이 됩니다."
+      },
+      "model": "gpt-4o-mini",
+      "api_type": "chat",
+      "phase": "phase_1",
+      "config_name": "gpt-4o-mini (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.000388,
+      "elapsed_seconds": 3.24,
+      "quality_score": 60,
+      "tokens": {
+        "input": 166,
+        "output": 201,
+        "total": 367
+      },
+      "response": {
+        "value": 588235,
+        "unit": "원",
+        "confidence": 0.9,
+        "method": "LTV = ARPU / 해지율 (연간)",
+        "reasoning": "해지율이 8.5% (0.085)이므로 LTV = 200,000 / 0.085 = 2,352,941.17, 하지만 이 값은 평균 유지 기간 3.2년 대비 다소 과대평가되어 평균 유지 기간을 곱하는 방식이 더 현실적이므로 두 방법 중 해지율 기반 방법을 선택하고, 계산 결과는 2,352,941원이지만 올바르게 계산하면 200,000 / 0.085 = 2,352,941이고, 200,000 * 3.2 = 640,000원이므로 두 방법 중 해지율 기반이 더 정확하다고 판단하여 2,352,941원을 선택한다."
+      },
+      "model": "gpt-4.1-mini",
+      "api_type": "chat",
+      "phase": "phase_1",
+      "config_name": "gpt-4.1-mini (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.0005462500000000001,
+      "elapsed_seconds": 4.01,
+      "quality_score": 100,
+      "tokens": {
+        "input": 77,
+        "output": 45,
+        "total": 122
+      },
+      "response": {
+        "value": 640000,
+        "unit": "원",
+        "confidence": 0.88,
+        "method": "LTV = ARPU × 평균 유지 기간",
+        "reasoning": "1) 연간 ARPU = 200,000원\n2) 평균 고객 유지 기간 = 3.2년\n3) LTV = 200,000원 × 3.2년 = 640,000원"
+      },
+      "model": "gpt-5.1",
+      "api_type": "responses",
+      "phase": "phase_1",
+      "config_name": "gpt-5.1 (responses)"
+    },
+    {
+      "success": true,
+      "cost": 0.0037962499999999997,
+      "elapsed_seconds": 3.02,
+      "quality_score": 100,
+      "tokens": {
+        "input": 165,
+        "output": 359,
+        "total": 524,
+        "reasoning": 217
+      },
+      "response": {
+        "value": 640000,
+        "unit": "원",
+        "confidence": 0.86,
+        "method": "LTV = ARPU × 평균 유지 기간",
+        "reasoning": "연간 ARPU 200,000원과 평균 고객 유지 기간 3.2년이 주어졌으므로 LTV = 200,000 × 3.2 = 640,000원으로 계산했습니다. 해지율 기반 공식(ARPU / 해지율)을 사용하면 평균 유지 기간과 모순되는 값이 나오므로, 이 데이터셋에서는 직접 주어진 평균 유지 기간을 사용하는 공식을 선택했습니다."
+      },
+      "model": "gpt-5.1",
+      "api_type": "chat",
+      "phase": "phase_1",
+      "config_name": "gpt-5.1 (chat)"
+    },
+    {
+      "success": true,
+      "cost": 7.93e-05,
+      "elapsed_seconds": 1.5,
+      "quality_score": 70,
+      "tokens": {
+        "input": 265,
+        "output": 132,
+        "total": 397
+      },
+      "response": {
+        "value": 723000,
+        "unit": "원",
+        "confidence": 0.75,
+        "method": "계산 과정",
+        "assumptions": [
+          "한국 SaaS CAC는 미국 대비 약 35% 할인된다(중간값인 32.5% 적용)로 가정한다.",
+          "B2B 협업 도구의 CAC는 일반 SaaS보다 20% 낮다.",
+          "중소기업 타겟은 대기업 대비 CAC가 40% 낮다.",
+          "미국 평균 CAC는 1,560,000원(USD $1,200)을 기준으로 한다."
+        ]
+      },
+      "model": "gpt-4.1-nano",
+      "api_type": "chat",
+      "phase": "phase_2",
+      "config_name": "gpt-4.1-nano (chat)"
+    },
+    {
+      "success": true,
+      "cost": 9.375e-05,
+      "elapsed_seconds": 2.03,
+      "quality_score": 70,
+      "tokens": {
+        "input": 265,
+        "output": 90,
+        "total": 355
+      },
+      "response": {
+        "value": 756000,
+        "unit": "원",
+        "confidence": 0.7,
+        "method": "계산 과정",
+        "assumptions": [
+          "한국 SaaS CAC는 미국 대비 30-40% 낮다",
+          "B2B 협업 도구는 일반 SaaS 대비 CAC가 20% 낮다",
+          "중소기업 타겟 CAC는 대기업 대비 40% 낮다"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "api_type": "chat",
+      "phase": "phase_2",
+      "config_name": "gpt-4o-mini (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.0006964,
+      "elapsed_seconds": 5.23,
+      "quality_score": 100,
+      "tokens": {
+        "input": 265,
+        "output": 369,
+        "total": 634
+      },
+      "response": {
+        "value": 486720,
+        "unit": "원",
+        "confidence": 0.75,
+        "method": "1. 미국 평균 CAC $1,200 (1,560,000원) 기준\n2. 한국 SaaS는 미국 대비 30~40% 수준 -> 35% 적용: 1,560,000 * 0.35 = 546,000원\n3. B2B 협업 도구는 일반 SaaS 대비 20% 낮음 -> 546,000 * 0.8 = 436,800원\n4. 중소기업 대상은 대기업 대비 40% 낮음 -> 436,800 * 0.6 = 262,080원\n추정값은 중간값으로 두기 위해 전체 평균을 내면,\n(546,000 + 436,800 + 262,080) / 3 ≈ 414,293원\n하지만 단계별 할인 곱셈 적용한 값 262,080원이 너무 낮음, \n중간 수준 반영해 486,720원으로 최종 조정 (즉, 1,560,000 * 0.35 * 0.8 * 0.87 ≈ 486,720원)",
+        "assumptions": [
+          "미국 B2B SaaS CAC는 1,560,000원으로 환산",
+          "한국 SaaS CAC는 미국 대비 35% 수준으로 가정",
+          "B2B 협업 도구는 평균 SaaS 대비 20% 낮은 CAC에 바이럴 효과 고려",
+          "중소기업 대상은 대기업 대비 40% 낮은 CAC 수준 가정"
+        ]
+      },
+      "model": "gpt-4.1-mini",
+      "api_type": "chat",
+      "phase": "phase_2",
+      "config_name": "gpt-4.1-mini (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.00114375,
+      "elapsed_seconds": 3.63,
+      "quality_score": 100,
+      "tokens": {
+        "input": 123,
+        "output": 99,
+        "total": 222
+      },
+      "response": {
+        "value": 262080,
+        "unit": "원",
+        "confidence": 0.6,
+        "method": "1) 미국 B2B SaaS 평균 CAC 1,560,000원 사용\n2) 한국 SaaS는 미국 대비 30~40% 수준이므로 중간값 35% 적용: 1,560,000 * 0.35 = 546,000원\n3) 협업 도구는 일반 SaaS 대비 CAC 20% 낮음: 546,000 * 0.8 = 436,800원\n4) 중소기업 타겟은 대기업 대비 CAC 40% 낮음: 436,800 * 0.6 = 262,080원",
+        "assumptions": [
+          "한국 SaaS 대비 미국 SaaS CAC 비율을 35%로 단일 값 사용",
+          "채널 구성(디지털 마케팅 + 인사이드 세일즈)이 미국 평균 CAC 구조와 유사하다고 가정"
+        ]
+      },
+      "model": "gpt-5.1",
+      "api_type": "responses",
+      "phase": "phase_2",
+      "config_name": "gpt-5.1 (responses)"
+    },
+    {
+      "success": true,
+      "cost": 0.00502,
+      "elapsed_seconds": 7.54,
+      "quality_score": 100,
+      "tokens": {
+        "input": 264,
+        "output": 469,
+        "total": 733,
+        "reasoning": 222
+      },
+      "response": {
+        "value": 262080,
+        "unit": "원",
+        "confidence": 0.65,
+        "method": "1) 미국 B2B SaaS 평균 CAC 1,560,000원을 기준값으로 사용\n2) 한국 SaaS CAC는 미국 대비 30~40% 수준이므로 중간값 35% 적용: 1,560,000 × 0.35 = 546,000원\n3) 협업 도구는 일반 SaaS 대비 CAC 20% 낮음: 546,000 × 0.8 = 436,800원\n4) 중소기업(10~50명) 타겟은 대기업 대비 CAC 40% 낮음(즉 60% 수준): 436,800 × 0.6 = 262,080원",
+        "assumptions": [
+          "한국 SaaS CAC 비율(30~40%) 중 중간값인 35%를 사용하는 것이 합리적이라고 가정",
+          "디지털 마케팅 + Inside Sales 조합이 제시된 미국 평균 CAC와 유사한 효율을 낸다고 가정"
+        ]
+      },
+      "model": "gpt-5.1",
+      "api_type": "chat",
+      "phase": "phase_2",
+      "config_name": "gpt-5.1 (chat)"
+    },
+    {
+      "success": true,
+      "cost": 8.66e-05,
+      "elapsed_seconds": 1.78,
+      "quality_score": 70,
+      "tokens": {
+        "input": 234,
+        "output": 158,
+        "total": 392
+      },
+      "response": {
+        "value": 2255.94,
+        "unit": "억원",
+        "confidence": 0.8,
+        "method": "복합 성장률 적용",
+        "breakdown": {
+          "고객수": 45137,
+          "ARPU": 252.2
+        },
+        "reasoning": "현재 시장규모(500억)와 고객수(2.5만명), ARPU(200만원)를 기반으로 복합 성장률(시장 25%, 고객 20%, ARPU 5%)을 3년간 연속 적용하여 예상 시장 규모를 산출하였으며, 계산은 각 항목별 연 성장률을 적용하고, 마지막 시점의 고객수와 ARPU를 곱하여 최종 시장 규모를 구함."
+      },
+      "model": "gpt-4.1-nano",
+      "api_type": "chat",
+      "phase": "phase_3",
+      "config_name": "gpt-4.1-nano (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.0001185,
+      "elapsed_seconds": 2.58,
+      "quality_score": 0,
+      "tokens": {
+        "input": 234,
+        "output": 139,
+        "total": 373
+      },
+      "response": {
+        "raw": "{\"value\": 1136.53, \"unit\": \"억원\", \"confidence\": 0.8, \"method\": \"복합 성장 고려\", \"breakdown\": {\"고객수\": 38,558, \"ARPU\": 231.14}, \"reasoning\": \"고객수는 연 20% 증가로 매년 복리계산 후 3년 후에 38,558개로 예상되며, ARPU는 연 5% 증가로 3년 후 ",
+        "parse_error": "Expecting property name enclosed in double quotes: line 1 column 99 (char 98)"
+      },
+      "model": "gpt-4o-mini",
+      "api_type": "chat",
+      "phase": "phase_3",
+      "config_name": "gpt-4o-mini (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.000492,
+      "elapsed_seconds": 4.04,
+      "quality_score": 0,
+      "tokens": {
+        "input": 234,
+        "output": 249,
+        "total": 483
+      },
+      "response": {
+        "raw": "{\"value\": 976.88, \"unit\": \"억원\", \"confidence\": 0.85, \"method\": \"시장 규모 = 고객수 × ARPU; 고객수 = 25,000 × (1+0.20)^3; ARPU = 200 × (1+0.05)^3\", \"breakdown\": {\"고객수\": 43,200, \"ARPU\": 231}, \"reasoning\": \"고객수는 연 ",
+        "parse_error": "Expecting property name enclosed in double quotes: line 1 column 161 (char 160)"
+      },
+      "model": "gpt-4.1-mini",
+      "api_type": "chat",
+      "phase": "phase_3",
+      "config_name": "gpt-4.1-mini (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.00124375,
+      "elapsed_seconds": 9.98,
+      "quality_score": 100,
+      "tokens": {
+        "input": 107,
+        "output": 111,
+        "total": 218
+      },
+      "response": {
+        "value": 1000.2,
+        "unit": "억원",
+        "confidence": 0.8,
+        "method": "계산식",
+        "breakdown": {
+          "고객수": 43200,
+          "ARPU": 231.6
+        },
+        "reasoning": "현재 고객수 25,000개, ARPU 200만원/년에서 시작하여 고객수 연 20%, ARPU 연 5%를 3년간 복리로 적용. 고객수: 25,000 × 1.2³ = 43,200개, ARPU: 200만원 × 1.05³ ≈ 231.6만원. 3년 후 시장규모 ≈ 43,200 × 231.6만원 = 약 100,018,800,000원 ≈ 1,000.2억원. 단순 시장 성장률(연 25%)만 적용 시 500억원 × 1.25³ ≈ 976.6억원으로, 복합 성장(고객수·ARPU 분리) 추정치인 약 1,000억원과 근사하나, 세부 성장 요인을 반영한 복합 성장 결과를 최종값으로 채택함."
+      },
+      "model": "gpt-5.1",
+      "api_type": "responses",
+      "phase": "phase_3",
+      "config_name": "gpt-5.1 (responses)"
+    },
+    {
+      "success": true,
+      "cost": 0.01016125,
+      "elapsed_seconds": 9.49,
+      "quality_score": 100,
+      "tokens": {
+        "input": 233,
+        "output": 987,
+        "total": 1220,
+        "reasoning": 656
+      },
+      "response": {
+        "value": 1000,
+        "unit": "억원",
+        "confidence": 0.78,
+        "method": "복합 성장(고객수 20% + ARPU 5% 연복리) 적용: 500 * (1.2 * 1.05)^3",
+        "breakdown": {
+          "고객수": 43200,
+          "ARPU": 231.5
+        },
+        "reasoning": "현재 매출 500억원 = 고객수 25,000개 × ARPU 200만원 기준. 고객수 연 20%, ARPU 연 5% 복리 성장 시 연간 매출 성장률은 (1.2 × 1.05) = 1.26이며, 3년 후 배율은 1.26^3 ≈ 2.0004. 따라서 시장 규모 = 500억원 × 2.0004 ≈ 1,000억원. 같은 기간 단순 시장 성장률 25%만 적용하면 500 × 1.25^3 ≈ 977억원으로, 고객·ARPU 복합 성장 추정치(약 1,000억원)가 더 정교하다고 판단해 이를 최종 추정값으로 사용함. 이때 3년 후 고객수는 25,000 × 1.2^3 = 43,200개, ARPU는 200만원 × 1.05^3 ≈ 231.5만원으로 산출됨."
+      },
+      "model": "gpt-5.1",
+      "api_type": "chat",
+      "phase": "phase_3",
+      "config_name": "gpt-5.1 (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.0001638,
+      "elapsed_seconds": 2.98,
+      "quality_score": 100,
+      "tokens": {
+        "input": 298,
+        "output": 335,
+        "total": 633
+      },
+      "response": {
+        "value": 2700,
+        "unit": "억원",
+        "confidence": 0.5,
+        "method": "bottom-up",
+        "decomposition": [
+          {
+            "step": "단계1",
+            "assumption": "한국내 전체 기업 수는 약 1,500,000개 (중소기업과 대기업 포함)",
+            "value": 1500000
+          },
+          {
+            "step": "단계2",
+            "assumption": "회사의 평균 화상회의 사용 가능 사용자 수는 10명, 각 기업이 평균 2개 이상의 화상회의 섹션을 도입",
+            "value": 20
+          },
+          {
+            "step": "단계3",
+            "assumption": "좌석당 연간 화상회의 솔루션 가격은 약 1,000,000원 (약 100만원), 기업의 시장 점유율 침투율은 30%",
+            "value": 300000000
+          }
+        ],
+        "reasoning": "한국 기업 수(1.5백만개) 중 화상회의가 필요한 기업의 수와 평균 사용자 수를 고려하고, 시장 침투율과 가격을 반영하여 시장 규모를 산출함. 각 기업이 평균 20좌석 분량의 솔루션을 구매하고, 전체 시장의 30%가 구매 가능하다고 가정하여 최종 시장 규모를 추정.",
+        "confidence_range": {
+          "min": 1350,
+          "max": 4050
+        }
+      },
+      "model": "gpt-4.1-nano",
+      "api_type": "chat",
+      "phase": "phase_4",
+      "config_name": "gpt-4.1-nano (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.0002097,
+      "elapsed_seconds": 7.73,
+      "quality_score": 80,
+      "tokens": {
+        "input": 298,
+        "output": 275,
+        "total": 573
+      },
+      "response": {
+        "value": 6000,
+        "unit": "억원",
+        "confidence": 0.5,
+        "method": "top-down",
+        "decomposition": [
+          {
+            "step": "단계1: 한국 전체 기업 수 추정",
+            "assumption": "한국에는 약 300만 개의 기업이 존재한다고 가정.",
+            "value": 3000000
+          },
+          {
+            "step": "단계2: 잠재 고객 필터링",
+            "assumption": "그 중에서 화상회의 솔루션을 필요로 하는 기업은 20%로 간주.",
+            "value": 600000
+          },
+          {
+            "step": "단계3: 지불 의향 및 가격 산정",
+            "assumption": "각 기업이 평균 1000만원을 화상회의 솔루션에 지불할 의향이 있다고 가정.",
+            "value": 6000
+          }
+        ],
+        "reasoning": "전체 기업 수에서 화상회의 솔루션을 필요로 하는 기업 수를 추정한 후, 각 기업당 평균 지출 금액을 곱하여 TAM을 도출함.",
+        "confidence_range": {
+          "min": 4000,
+          "max": 8000
+        }
+      },
+      "model": "gpt-4o-mini",
+      "api_type": "chat",
+      "phase": "phase_4",
+      "config_name": "gpt-4o-mini (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.0007224,
+      "elapsed_seconds": 5.87,
+      "quality_score": 100,
+      "tokens": {
+        "input": 298,
+        "output": 377,
+        "total": 675
+      },
+      "response": {
+        "value": 2500,
+        "unit": "억원",
+        "confidence": 0.5,
+        "method": "top-down",
+        "decomposition": [
+          {
+            "step": "한국 전체 기업 수 추정",
+            "assumption": "한국 내 사업자등록 기업 약 400만 개 중, 1인 자영업자 제외 후 근로자 5인 이상 기업 약 20만 개로 추정",
+            "value": 200000
+          },
+          {
+            "step": "화상회의 솔루션 잠재 고객 비율 산정",
+            "assumption": "재택근무 및 디지털화 영향으로 전체 기업 중 약 30%가 화상회의 솔루션 도입 고려 중",
+            "value": 60000
+          },
+          {
+            "step": "평균 연간 기업 당 솔루션 지출 추정",
+            "assumption": "중소기업 및 중견기업 기준 월 5만원~10만원 수준 솔루션 구매 예상, 평균 연 60만원으로 가정",
+            "value": 60
+          }
+        ],
+        "reasoning": "한국 내 5인 이상 사업장은 약 20만 개로, 이 중 약 30%가 화상회의 솔루션 도입 대상이라고 가정했다. 평균 기업 당 연간 지출을 60만원으로 잡으면, 총 TAM은 20만 * 0.3 * 0.6백만원 = 3600억원이다. 다만 중소기업과 규모 차이, 일부 비사용 기업 감안하여 약 2500억원 수준을 현실적 TAM으로 추정한다.",
+        "confidence_range": {
+          "min": 1500,
+          "max": 3500
+        }
+      },
+      "model": "gpt-4.1-mini",
+      "api_type": "chat",
+      "phase": "phase_4",
+      "config_name": "gpt-4.1-mini (chat)"
+    },
+    {
+      "success": true,
+      "cost": 0.005260000000000001,
+      "elapsed_seconds": 19.0,
+      "quality_score": 15,
+      "tokens": {
+        "input": 168,
+        "output": 505,
+        "total": 673
+      },
+      "response": {
+        "step": "단계1",
+        "assumption": "한국 내 사업체 중 화상회의 솔루션 잠재 고객이 될 만한 ‘조직화된 기업/기관(직원 5인 이상)’은 전체 사업체의 일부라고 가정. 전체 사업체가 수백만 개 수준이라고 볼 때, 그 중 약 70만 개(700,000개)가 사무직·디지털 협업이 필요한 법인/기관이라고 가정.",
+        "value": 700000
+      },
+      "model": "gpt-5.1",
+      "api_type": "responses",
+      "phase": "phase_4",
+      "config_name": "gpt-5.1 (responses)"
+    },
+    {
+      "success": true,
+      "cost": 0.02310125,
+      "elapsed_seconds": 19.79,
+      "quality_score": 80,
+      "tokens": {
+        "input": 297,
+        "output": 2273,
+        "total": 2570,
+        "reasoning": 1097
+      },
+      "response": {
+        "value": 25200,
+        "unit": "억원",
+        "confidence": 0.4,
+        "method": "top-down",
+        "decomposition": [
+          {
+            "step": "단계1: 한국 기업 수 추정",
+            "assumption": "대한민국 인구 약 5,000만 명, 경제활동인구(근로자) 비중을 약 50%로 가정하면 근로자 수는 약 2,500만 명. 1개 기업당 평균 10명 정도가 근무한다고 가정하면 전체 기업 수는 2,500만 / 10 = 약 250만 개로 추정.",
+            "value": 2500000
+          },
+          {
+            "step": "단계2: 화상회의 솔루션 타깃 기업 수",
+            "assumption": "전체 기업 중 1인 자영업, 소규모 점포 등 화상회의 솔루션을 거의 사용하지 않는 비중을 제외. IT 활용도가 높고 사무직·지식노동 비중이 있는 기업을 전체의 약 30%로 가정. 따라서 화상회의 솔루션 잠재 타깃 기업 수는 250만 × 30% = 75만 개.",
+            "value": 750000
+          },
+          {
+            "step": "단계3: 유료 솔루션 지불 의향이 있는 기업 비중",
+            "assumption": "타깃 기업 중 일부는 무료 솔루션(Zoom Free, Google Meet, MS Teams 무료/번들 등)만 사용하고, 일부는 유료 좌석을 구매. 유료 솔루션 또는 유료 플랜에 비용을 지불할 의향이 있는 기업 비중을 50%로 가정. 따라서 유료 고객이 될 수 있는 기업 수는 75만 × 50% = 37.5만 개.",
+            "value": 375000
+          },
+          {
+            "step": "단계4: 기업당 평균 좌석 수 및 좌석당 요금",
+            "assumption": "타깃 기업 내에서 화상회의를 정기적으로 사용하는 인력 비중을 고려해 평균 좌석 수를 산정.\n- 소규모/중소기업(전체 유료 고객의 80%)은 평균 20석 사용\n- 중견·대기업(전체 유료 고객의 20%)은 평균 200석 사용\n좌석당 월 과금액을 1만 원(국내 SaaS·구독형 B2B 솔루션의 보편적인 수준)으로 가정.\n가중평균 좌석 수 = 0.8×20 + 0.2×200 = 16 + 40 = 56석.\n따라서 기업당 월 구독료 = 56석 × 1만 원 = 56만 원, 연 구독료 = 56만 × 12 ≈ 672만 원 ≈ 0.0672억원.",
+            "value": 0.0672
+          },
+          {
+            "step": "단계5: 한국 기업용 화상회의 솔루션 연간 TAM 계산",
+            "assumption": "TAM을 ‘한국 내 유료 화상회의 솔루션을 도입할 의향이 있는 모든 기업이 평균적인 가격과 좌석 수로 지불한다고 가정했을 때의 연간 매출 규모’로 정의.\n유료 고객 잠재 기업 수 37.5만 개 × 기업당 연간 지출액 0.0672억원 = 25,200억원 = 약 2.52조 원.",
+            "value": 25200
+          }
+        ],
+        "reasoning": "Top-down Fermi 추정으로, (1) 한국 내 기업 수를 인구와 평균 기업 규모로 역산하여 약 250만 개로 두고, (2) 이 중 화상회의 솔루션이 필요할 만한 사무직·지식노동 중심 기업 비중을 30%로 잡아 잠재 타깃을 75만 개로 축소했다. (3) 그 중 절반 정도만이 무료 도구 대신 유료 솔루션(또는 유료 플랜)에 비용을 지불할 것으로 보고 37.5만 개를 ‘지불 의향 있는 기업’으로 설정했다. (4) 기업당 화상회의 정기 사용자 좌석 수는 중소·대기업 비율을 가정해 가중평균 56석으로 두고, (5) 좌석당 월 1만 원 수준의 과금(국내 B2B SaaS 평균 수준)을 적용해 연간 672만 원(0.0672억원) 지출로 추정했다. (6) 이를 곱해 연간 TAM은 약 25,200억원(2.52조 원)으로 나온다. 이 과정에는 기업 수, IT 도입률, 유료 전환율, 좌석 수, 가격 등 많은 불확실한 가정이 포함되어 있으므로 실제 값은 이 추정의 약 0.4~2배 수준까지 변동 가능성이 있다고 판단해, 신뢰도는 0.4 수준, 범위는 대략 1~5조 원으로 설정했다.",
+        "confidence_range": {
+          "min": 10000,
+          "max": 50000
+        }
+      },
+      "model": "gpt-5.1",
+      "api_type": "chat",
+      "phase": "phase_4",
+      "config_name": "gpt-5.1 (chat)"
+    }
+  ]
+}

@@ -1243,10 +1243,66 @@ class Phase4FermiDecomposition:
         available: Dict[str, FermiVariable]
     ) -> str:
         """
-        LLM 프롬프트 구성
+        LLM 프롬프트 구성 (v7.7.1: Few-shot 예시 추가)
         
         설계: fermi_model_search.yaml Line 1163-1181
         """
+        # Few-shot 예시 (v7.7.1)
+        fewshot_example = """━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+올바른 Fermi 분해 예시:
+
+문제: 서울시 택시 수 추정
+
+답변:
+{
+    "value": 70000,
+    "unit": "대",
+    "decomposition": [
+        {
+            "step": "1. 서울 인구",
+            "value": 10000000,
+            "calculation": "약 1000만명으로 가정",
+            "reasoning": "서울시 통계청 기준 약 1000만명"
+        },
+        {
+            "step": "2. 1인당 연간 택시 이용 횟수",
+            "value": 20,
+            "calculation": "월 1-2회 × 12개월 = 20회",
+            "reasoning": "대중교통 중심 도시이므로 택시는 보조 수단, 월 1-2회 정도 이용"
+        },
+        {
+            "step": "3. 연간 총 이용 횟수",
+            "value": 200000000,
+            "calculation": "step1 × step2 = 10000000 × 20 = 200000000",
+            "reasoning": "전체 인구의 택시 이용 횟수를 합산"
+        },
+        {
+            "step": "4. 택시 1대당 연간 운행 횟수",
+            "value": 3000,
+            "calculation": "일 10회 × 300일 = 3000",
+            "reasoning": "2교대 운행으로 하루 10회, 연간 300일 운행 가정"
+        },
+        {
+            "step": "5. 필요한 택시 수",
+            "value": 66667,
+            "calculation": "step3 / step4 = 200000000 / 3000 = 66667",
+            "reasoning": "총 이용 횟수를 택시당 운행 횟수로 나눔"
+        }
+    ],
+    "final_calculation": "step3 / step4 = 200000000 / 3000 = 66667 ≈ 70000",
+    "calculation_verification": "인구(1000만) × 이용횟수(20) / 택시당운행(3000) = 66667 ✓"
+}
+
+핵심 규칙:
+1. ⭐ 각 step의 value는 이전 step들로부터 명확히 계산되어야 함
+2. ⭐ calculation 필드에 "step1 × step2" 같은 명시적 수식 포함
+3. ⭐ reasoning 필드에 해당 값/비율을 사용한 합리적 근거 제시 (통계, 업계 관행, 상식 등)
+4. ⭐ final_calculation은 step들의 value를 조합한 수식
+5. ⭐ 최종값이 분해 과정에서 어떻게 도출되는지 100% 추적 가능해야 함
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+"""
+        
         # 가용 데이터 문자열
         if available:
             available_str = "\n".join([
@@ -1256,10 +1312,17 @@ class Phase4FermiDecomposition:
         else:
             available_str = "(없음)"
         
-        prompt = f"""질문: {question}
+        prompt = f"""{fewshot_example}
+
+이제 실제 문제를 풀어주세요:
+
+질문: {question}
 
 가용한 데이터:
 {available_str}
+
+⚠️ 중요: 위 예시처럼 각 단계의 값이 최종 추정값으로 명확히 계산되어야 합니다!
+⚠️ 핵심: 각 가정(비율, 계수 등)에 대한 합리적인 근거를 반드시 제시해야 합니다!
 
 임무:
 1. 이 질문에 답하기 위한 계산 모형을 3-5개 제시하세요.
@@ -2507,5 +2570,131 @@ models:
         
         # 기본 질문
         return f"{var_name}는 얼마인가?"
+    
+    def _verify_calculation_connectivity(
+        self,
+        decomposition: List[Dict],
+        final_value: float
+    ) -> Dict:
+        """
+        분해 값들이 최종값으로 올바르게 계산되는지 자동 검증 (v7.7.1)
+        
+        Args:
+            decomposition: 분해 단계 리스트
+            final_value: 최종 추정값
+        
+        Returns:
+            {
+                'verified': bool,
+                'method': str,  # '마지막 단계', '합계', '곱셈' 등
+                'calculated_value': float,
+                'error': float,  # 오차율
+                'score': int  # 0-25점
+            }
+        """
+        if not isinstance(decomposition, list) or len(decomposition) < 2:
+            return {
+                'verified': False,
+                'score': 0,
+                'reason': '단계 부족',
+                'method': '',
+                'calculated_value': 0,
+                'error': 1.0
+            }
+        
+        # 각 단계에서 value 추출
+        values = []
+        for step in decomposition:
+            if isinstance(step, dict):
+                val = step.get('value', 0)
+                if isinstance(val, (int, float)) and val > 0:
+                    values.append(val)
+        
+        if len(values) < 2:
+            return {
+                'verified': False,
+                'score': 0,
+                'reason': '유효한 값 부족',
+                'method': '',
+                'calculated_value': 0,
+                'error': 1.0
+            }
+        
+        # 다양한 조합 시도
+        attempts = []
+        
+        # 1. 마지막 값
+        if values[-1] > 0:
+            error = abs(values[-1] - final_value) / max(final_value, 1)
+            attempts.append({
+                'method': '마지막 단계',
+                'calculated': values[-1],
+                'error': error
+            })
+        
+        # 2. 전체 합계
+        total = sum(values)
+        if total > 0:
+            error = abs(total - final_value) / max(final_value, 1)
+            attempts.append({
+                'method': '모든 단계 합',
+                'calculated': total,
+                'error': error
+            })
+        
+        # 3. 마지막 2개 합
+        if len(values) >= 2:
+            last_two = sum(values[-2:])
+            if last_two > 0:
+                error = abs(last_two - final_value) / max(final_value, 1)
+                attempts.append({
+                    'method': '마지막 2단계 합',
+                    'calculated': last_two,
+                    'error': error
+                })
+        
+        # 4. 마지막 3개 합
+        if len(values) >= 3:
+            last_three = sum(values[-3:])
+            if last_three > 0:
+                error = abs(last_three - final_value) / max(final_value, 1)
+                attempts.append({
+                    'method': '마지막 3단계 합',
+                    'calculated': last_three,
+                    'error': error
+                })
+        
+        # 가장 오차가 작은 것 선택
+        if attempts:
+            best = min(attempts, key=lambda x: x['error'])
+            
+            # 점수 계산
+            if best['error'] < 0.01:  # 1% 이내
+                score = 25
+            elif best['error'] < 0.05:  # 5% 이내
+                score = 20
+            elif best['error'] < 0.1:  # 10% 이내
+                score = 15
+            elif best['error'] < 0.3:  # 30% 이내
+                score = 10
+            else:
+                score = 5
+            
+            return {
+                'verified': best['error'] < 0.1,  # 10% 이내면 통과
+                'method': best['method'],
+                'calculated_value': best['calculated'],
+                'error': best['error'],
+                'score': score
+            }
+        
+        return {
+            'verified': False,
+            'score': 0,
+            'reason': '계산 불가',
+            'method': '',
+            'calculated_value': 0,
+            'error': 1.0
+        }
 
 

@@ -488,18 +488,28 @@ class Phase3Config:
 
 @dataclass
 class Phase4Config:
-    """Phase 4 (Fermi Decomposition) 설정 (v7.7.0)
+    """Phase 4 (Fermi Decomposition) 설정 (v7.7.0+)
     
     Note:
         LLM 설정(llm_model, llm_temperature, llm_max_tokens)은
         umis_rag.core.config.settings에서 직접 참조합니다.
         config/llm_mode.yaml의 설정이 .env를 통해 반영됩니다.
+    
+    v7.7.1 (2025-11-21):
+        - Few-shot 예시 추가 (계산 연결성 145% 향상)
+        - 자동 계산 검증 (분해 → 최종값 일치)
+        - Reasoning 필수화
     """
     enabled: bool = True
     
     # Fermi
     max_depth: int = 4
     force_judgment_at_max_depth: bool = True
+    
+    # v7.7.1+ Few-shot 개선
+    use_fewshot: bool = True  # Few-shot 예시 활성화 (기본값)
+    verify_calculation: bool = True  # 자동 계산 검증
+    min_calculation_score: int = 15  # 최소 15/25점 (10% 오차 이내)
     
     # 성능
     timeout_seconds: float = 30.0
