@@ -5,6 +5,74 @@
 
 ---
 
+## v7.7.4 (2025-11-21) - "Estimator Phase 4 Few-shot Improvement" ⭐⭐⭐
+
+### 주요 변경사항
+
+- 🎯 **Estimator Phase 4 Few-shot 개선** (계산 연결성 145% 향상!)
+  - Few-shot 예시 추가 (서울 택시 수 5단계 분해)
+  - 계산 연결성: 18/40 → 50/50 (만점!) ⭐⭐⭐
+  - 성공률: 0% → 93% (14/15)
+  - Reasoning 포함율: 0% → 80-100%
+  - 최종 점수: 85/100 (gpt-5.1)
+
+- 🔍 **자동 계산 검증 시스템 추가**
+  - `_verify_calculation_connectivity()` 메서드 구현
+  - 분해 값들이 최종값으로 올바르게 계산되는지 자동 검증
+  - 10% 오차 이내 통과 기준
+  - 점수 범위: 0-25점
+
+- 📝 **Reasoning 필수화**
+  - 모든 가정(비율, 계수 등)에 합리적 근거 필수
+  - 예: "경활 비율 0.62 → OECD 수준 + 한국 통계 기준"
+  - 업계 관행, 통계, 상식 등 다양한 근거 활용
+
+### 수정 파일
+
+**핵심 코드**:
+- `umis_rag/agents/estimator/phase4_fermi.py` (2,700줄)
+  - `_build_llm_prompt()`: Few-shot 예시 추가 (택시 수 5단계 분해)
+  - `_verify_calculation_connectivity()`: 계산 검증 메서드 추가
+
+- `umis_rag/agents/estimator/models.py`
+  - `Phase4Config`: Few-shot 옵션 추가
+    - `use_fewshot: bool = True`
+    - `verify_calculation: bool = True`
+    - `min_calculation_score: int = 15`
+
+**문서**:
+- `umis.yaml` - Estimator Phase 4 섹션 v7.7.1 개선 사항 반영
+- `umis_core.yaml` - 버전 v7.7.1 업데이트
+- `docs/architecture/UMIS_ARCHITECTURE_BLUEPRINT.md` - Version Info 및 History 업데이트
+
+### 성능 개선
+
+| 지표 | Before | After | 향상율 |
+|------|--------|-------|--------|
+| **계산 연결성** | 18-30/40 | **50/50** | **145%** ⭐ |
+| **성공률** | 0% | **93%** | **무한대** 🚀 |
+| **Reasoning** | 0% | **80-100%** | - |
+| **최종 점수** | 낮음 | **85/100** | - |
+
+### 테스트 결과
+
+- **gpt-5.1 (chat)**: 85.0/100 (3문제 평균) ⭐ 1위
+- **gpt-5.1 (responses)**: 83.3/100 ⭐ 2위
+- **gpt-4o-mini (chat)**: 75.0/100 ⭐ 3위
+
+**테스트 문제**:
+1. 한국 전체 사업자 수 (정답: 7,837,000개)
+2. 서울시 인구 (정답: 9,668,465명)
+3. 한국 커피 전문점 수 (정답: 100,000개)
+
+### 참고 문서
+
+- `docs/PHASE4_IMPROVEMENT_PLAN_20251121.md` - 개선 안 (3가지 옵션)
+- `docs/PHASE4_IMPLEMENTATION_GUIDE_20251121.md` - 구현 가이드
+- `docs/FERMI_COMPREHENSIVE_REPORT_20251121_165419.md` - 테스트 보고서
+
+---
+
 ## v7.7.3 (2025-11-16) - "DART Robust 크롤러 + 통합 파이프라인 완성" ⭐⭐⭐
 
 ### 주요 변경사항
