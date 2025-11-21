@@ -1,7 +1,8 @@
 # UMIS Documentation
 
 **목적**: UMIS 활성 참조 문서 및 프로토콜  
-**버전**: v7.0.0
+**버전**: v7.7.1  
+**업데이트**: 2025-11-21
 
 ---
 
@@ -10,37 +11,45 @@
 `docs/` 폴더는 **활성 참조 문서**를 포함합니다.
 
 - ✅ 현재 사용 중인 프로토콜
-- ✅ 설치 및 설정 가이드
-- ✅ 폴더 구조 참조
+- ✅ 설치 및 설정 가이드 (guides/)
+- ✅ 시스템 아키텍처 (architecture/)
 - ✅ 버전 관리 가이드
 - ❌ 개발 히스토리 (→ `dev_docs/`)
-- ❌ Deprecated 문서 (→ `archive/deprecated/`)
+- ❌ 테스트 보고서 (→ `dev_docs/testing_reports/`)
+- ❌ Deprecated 문서 (→ `archive/`)
 
 ---
 
-## 📄 문서 목록 (6개)
+## 📄 문서 목록
 
-### 설치 및 설정
-- **INSTALL.md** - 빠른 설치 가이드 (3가지 방법)
-- **MAIN_BRANCH_SETUP.md** - main 브랜치 설정 (alpha → main 병합)
-
-### 참조 가이드
+### 루트 문서 (5개)
+- **README.md** - 이 파일
 - **FOLDER_STRUCTURE.md** - 전체 폴더 구조 및 네이밍 규칙
 - **VERSION_UPDATE_CHECKLIST.md** - 버전 업데이트 체크리스트
-
-### 프로토콜
 - **UMIS-DART-재무제표-조사-프로토콜.md** - Rachel 재무 데이터 조사 표준 (v0.1)
+- **PHASE_IMPROVEMENT_OPPORTUNITIES_20251121.md** - Phase 0-3 개선 기회 분석
 
-### 폴더 설명
-- **README.md** - 이 파일
+### 설치 및 설정 가이드 (guides/, 8개)
+- **INSTALL.md** - 빠른 설치 가이드 (3가지 방법)
+- **MAIN_BRANCH_SETUP.md** - main 브랜치 설정
+- **NATIVE_MODE_GUIDE.md** - Native 모드 사용 가이드
+- **RAG_DATABASE_SETUP.md** - RAG 데이터베이스 설정
+- **DART_CRAWLER_USER_GUIDE.md** - DART 크롤러 사용법
+- **API_DATA_COLLECTION_GUIDE.md** - API 데이터 수집 가이드
+- **WEB_SEARCH_SETUP_GUIDE.md** - 웹 검색 설정
+- **WEB_SEARCH_CRAWLING_GUIDE.md** - 웹 크롤링 가이드
+
+### 아키텍처 (architecture/, 1개)
+- **UMIS_ARCHITECTURE_BLUEPRINT.md** - 전체 시스템 구조 (1,400줄)
 
 ---
 
 ## 🗂️ 다른 문서 위치
 
-### 루트 핵심 문서 (4개)
+### 루트 핵심 문서 (5개)
 - **[../README.md](../README.md)** - 프로젝트 관문 (GitHub 첫 페이지)
-- **[../UMIS_ARCHITECTURE_BLUEPRINT.md](../UMIS_ARCHITECTURE_BLUEPRINT.md)** - 전체 시스템 구조 (Comprehensive)
+- **[../umis.yaml](../umis.yaml)** - UMIS 시스템 전체 가이드 (6,100줄)
+- **[../umis_core.yaml](../umis_core.yaml)** - System RAG INDEX (150줄)
 - **[../CURRENT_STATUS.md](../CURRENT_STATUS.md)** - 현재 작동 상태
 - **[../CHANGELOG.md](../CHANGELOG.md)** - 버전 변경 이력
 
@@ -51,13 +60,23 @@
 - **[../config/](../config/)** - 모든 설정 파일 (agent_names, schema_registry, ...)
 
 ### 개발 문서
-- **[../dev_docs/](../dev_docs/)** - RAG 개발 히스토리 및 아키텍처 설계
+- **[../dev_docs/](../dev_docs/)** - 개발 히스토리 및 아키텍처 설계
+  - `release_notes/` - 릴리스 노트 (v7.0.0 ~ v7.5.0)
+  - `testing_reports/` - 테스트 보고서 (Fermi, Benchmark)
+  - `phase4_improvement/` - Phase 4 Few-shot 개선 문서
+  - `guides/` - 개발 가이드 (Deployment, Benchmark 등)
+  - `reports/` - 시스템 검증 보고서
+  - `excel/` - Excel QA/검증 문서
+  - `session_summaries/` - 개발 세션 요약
 
 ### Deprecated
-- **[../archive/deprecated/](../archive/deprecated/)** - 과거 버전 문서들
+- **[../archive/](../archive/)** - 과거 버전 문서 및 코드
+  - `deprecated_features/` - Deprecated 기능 문서
+  - `v1.x ~ v7.2.0_and_earlier/` - 과거 버전들
+  - `testing_data_20251121/` - 테스트 JSON 데이터
 
 ### 프로젝트
-- **[../projects/](../projects/)** - 시장 분석 프로젝트 산출물
+- **[../projects/](../projects/)** - 시장 분석 프로젝트 산출물 (Git 제외)
 
 ---
 
@@ -69,13 +88,23 @@
 3. 버전 명시 (v0.1, v1.0 등)
 4. 작성일 또는 업데이트 날짜 명시
 
+### 설치/설정 가이드 작성 시
+1. `docs/guides/` 폴더 사용
+2. 사용자 관점 문서 (개발자는 `dev_docs/guides/`)
+3. 명확한 단계별 지침
+
 ### 개발 관련 문서 작성 시
 1. `dev_docs/` 폴더 사용
-2. 적절한 서브폴더 선택 (analysis, architecture, guides 등)
-3. 파일명에 날짜 포함 (예: `feature_analysis_20251103.md`)
+2. 적절한 서브폴더 선택:
+   - `release_notes/` - 릴리스 노트
+   - `testing_reports/` - 테스트 결과
+   - `guides/` - 개발 가이드
+   - `reports/` - 검증 보고서
+   - `session_summaries/` - 세션 요약
+3. 파일명에 날짜 포함 (예: `feature_analysis_20251121.md`)
 
 ### Deprecated 문서 처리
-1. `archive/docs_deprecated/` 폴더로 이동
+1. `archive/deprecated_features/` 폴더로 이동
 2. 파일명에 버전 정보 유지
 3. 이동 이유 기록
 
@@ -86,14 +115,32 @@
 ### 이 폴더의 문서는:
 - ✅ 현재 버전에서 사용
 - ✅ 에이전트가 참조 가능
+- ✅ 사용자가 직접 참조
 - ✅ 버전 업데이트 시 함께 검토
 
 ### 제외 대상:
 - 과거 버전 문서 → `archive/`
 - 개발 과정 문서 → `dev_docs/`
+- 테스트 보고서 → `dev_docs/testing_reports/`
 - 분석 프로젝트 → `projects/`
 
 ---
 
-**현재 버전**: v7.0.0  
-**마지막 업데이트**: 2025-11-03
+## 📊 문서 정리 이력
+
+### 2025-11-21: 대규모 재구성
+- 릴리스 노트 → `dev_docs/release_notes/` (7개)
+- 테스트 보고서 → `dev_docs/testing_reports/` (12개)
+- Phase 4 개선 → `dev_docs/phase4_improvement/` (8개)
+- Excel 문서 → `dev_docs/excel/` (3개)
+- 개발 가이드 → `dev_docs/guides/` (6개)
+- 검증 보고서 → `dev_docs/reports/` (1개)
+- 활성 프로토콜만 `docs/`에 유지
+
+**결과**: docs 폴더가 깔끔해지고 목적이 명확해짐
+
+---
+
+**현재 버전**: v7.7.1  
+**마지막 업데이트**: 2025-11-21  
+**활성 문서 수**: 14개 (루트 5개 + guides 8개 + architecture 1개)

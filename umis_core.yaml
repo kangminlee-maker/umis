@@ -1,12 +1,17 @@
 # ========================================
-# UMIS Core (INDEX) v7.7.0
+# UMIS Core (INDEX) v7.7.1
 # ========================================
 
-version: 7.7.0
-updated: 2025-11-12
+version: 7.7.1
+updated: 2025-11-21
 
 purpose: |
   System RAG INDEX - AI가 어떤 도구를 로드할지 안내
+  
+  v7.7.1 (2025-11-21):
+    - Estimator Phase 4 Few-shot 개선
+    - 계산 연결성 145% 향상 (18/40 → 50/50)
+    - Reasoning 필수화
   
 structure:
   total_tools: 44
