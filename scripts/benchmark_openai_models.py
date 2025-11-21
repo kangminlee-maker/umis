@@ -252,15 +252,24 @@ JSON 형식:
         start_time = time.time()
         
         try:
+            # 모델 타입 구분
+            is_o_series = model.startswith(('o1', 'o3', 'o4'))
+            is_gpt5 = model.startswith('gpt-5')
+            is_reasoning = is_o_series or is_gpt5
+            
             # API 호출 (모델별 분기)
-            if model.startswith('o1') or model.startswith('o3') or model.startswith('o4'):
-                # Thinking 모델 (system 메시지 미지원)
-                response = self.client.chat.completions.create(
-                    model=model,
-                    messages=[
-                        {"role": "user", "content": scenario['prompt']}
-                    ]
-                )
+            if is_reasoning:
+                # reasoning 모델 (system 메시지 미지원, reasoning_effort 사용)
+                api_params = {
+                    "model": model,
+                    "messages": [{"role": "user", "content": scenario['prompt']}]
+                }
+                if is_o_series:
+                    api_params["reasoning_effort"] = "medium"
+                else:  # gpt-5
+                    api_params["reasoning_effort"] = "low"
+                
+                response = self.client.chat.completions.create(**api_params)
             else:
                 # 일반 모델
                 response = self.client.chat.completions.create(
@@ -278,7 +287,16 @@ JSON 형식:
             # 응답 파싱
             content = response.choices[0].message.content
             
+            # JSON 추출
             try:
+                if '```json' in content:
+                    json_start = content.find('```json') + 7
+                    json_end = content.find('```', json_start)
+                    content = content[json_start:json_end].strip()
+                elif '```' in content:
+                    json_start = content.find('```') + 3
+                    json_end = content.find('```', json_start)
+                    content = content[json_start:json_end].strip()
                 parsed = json.loads(content)
             except json.JSONDecodeError:
                 # JSON 파싱 실패 시 텍스트로 저장

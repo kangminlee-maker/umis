@@ -1,0 +1,442 @@
+{
+  "metadata": {
+    "timestamp": "2025-11-21T16:44:01.368128",
+    "test_type": "fermi_fewshot_improved",
+    "scoring": {
+      "accuracy": "25점",
+      "calculation_connectivity": "50점 (핵심!)",
+      "decomposition": "15점",
+      "logic": "10점"
+    },
+    "improvements": [
+      "Few-shot 예시 포함",
+      "계산 연결성 배점 50점으로 증가",
+      "자동 계산 검증 강화"
+    ]
+  },
+  "problem": {
+    "name": "한국 전체 사업자 수",
+    "ground_truth": 7837000,
+    "unit": "개"
+  },
+  "results": [
+    {
+      "model": "gpt-5.1 (responses)",
+      "value": 8600000,
+      "unit": "개",
+      "ground_truth": 7837000,
+      "accuracy": {
+        "score": 25,
+        "error_pct": 9.7
+      },
+      "calculation_connectivity": {
+        "score": 50.0,
+        "details": [
+          "단계별 계산식: 7/7 (10점)",
+          "✅ 최종 계산식 제공 (10점)",
+          "✅ 계산 검증 제공 (5점)",
+          "✅ 계산 완벽 일치: 마지막 단계: 8,623,758 (오차 0.3%) (25점)"
+        ]
+      },
+      "decomposition": {
+        "score": 15,
+        "count": 7
+      },
+      "logic": {
+        "score": 5
+      },
+      "total_score": 95.0,
+      "elapsed": 38.36,
+      "response": {
+        "value": 8600000,
+        "unit": "개",
+        "confidence": 0.5,
+        "method": "top-down",
+        "decomposition": [
+          {
+            "step": "1단계. 한국 인구",
+            "value": 52000000,
+            "calculation": "약 5,200만명으로 가정",
+            "reasoning": "최근 통계 기준 한국 총인구를 5,200만명으로 둠"
+          },
+          {
+            "step": "2단계. 경제활동인구",
+            "value": 31200000,
+            "calculation": "step1 × 0.6 = 52000000 × 0.6 = 31200000",
+            "reasoning": "경제활동참가율을 약 60%로 가정"
+          },
+          {
+            "step": "3단계. 취업자 수",
+            "value": 29640000,
+            "calculation": "step2 × 0.95 = 31200000 × 0.95 = 29640000",
+            "reasoning": "실업률을 약 5%로 보고, 나머지 95%를 취업자로 가정"
+          },
+          {
+            "step": "4단계. 자영업자(고용주 포함) 인원",
+            "value": 6817200,
+            "calculation": "step3 × 0.23 = 29640000 × 0.23 = 6817200",
+            "reasoning": "전체 취업자 중 자영업·고용주 비중을 약 23%로 가정"
+          },
+          {
+            "step": "5단계. 자영업자가 보유한 사업체 수",
+            "value": 7839780,
+            "calculation": "step4 × 1.15 = 6817200 × 1.15 = 7839780",
+            "reasoning": "자영업자 1인당 평균 1.15개 사업자등록(대부분 1개, 일부 복수사업)을 가정"
+          },
+          {
+            "step": "6단계. 추가 법인·비활동 사업자등록 수",
+            "value": 783978,
+            "calculation": "step5 × 0.1 = 7839780 × 0.1 = 783978",
+            "reasoning": "SPV, 휴·폐업 상태지만 등록 유지, 고용 없는 페이퍼컴퍼니 등을 자영업 기반 추정치의 10% 수준으로 추가 가정"
+          },
+          {
+            "step": "7단계. 한국 전체 사업자등록 수 추정",
+            "value": 8623758,
+            "calculation": "step5 + step6 = 7839780 + 783978 = 8623758",
+            "reasoning": "자영업 기반 사업체와 추가 법인·비활동 사업자등록을 합산"
+          }
+        ],
+        "final_calculation": "최종 사업자 수 ≈ step5 + step6 = 7839780 + 783978 = 8623758 ≈ 8600000",
+        "calculation_verification": "step2 = step1 × 0.6 = 52000000 × 0.6 = 31200000 ✓, step3 = step2 × 0.95 = 31200000 × 0.95 = 29640000 ✓, step4 = step3 × 0.23 = 29640000 × 0.23 = 6817200 ✓, step5 = step4 × 1.15 = 6817200 × 1.15 = 7839780 ✓, step6 = step5 × 0.1 = 7839780 × 0.1 = 783978 ✓, step7 = step5 + step6 = 7839780 + 783978 = 8623758 ✓, 최종 반올림 값 8600000 ✓"
+      }
+    },
+    {
+      "model": "gpt-5.1 (chat)",
+      "value": 6921200,
+      "unit": "개",
+      "ground_truth": 7837000,
+      "accuracy": {
+        "score": 20,
+        "error_pct": 13.2
+      },
+      "calculation_connectivity": {
+        "score": 50.0,
+        "details": [
+          "단계별 계산식: 8/8 (10점)",
+          "✅ 최종 계산식 제공 (10점)",
+          "✅ 계산 검증 제공 (5점)",
+          "✅ 계산 완벽 일치: 마지막 단계: 6,921,200 (오차 0.0%) (25점)"
+        ]
+      },
+      "decomposition": {
+        "score": 15,
+        "count": 8
+      },
+      "logic": {
+        "score": 5
+      },
+      "total_score": 90.0,
+      "elapsed": 45.88,
+      "response": {
+        "value": 6921200,
+        "unit": "개",
+        "confidence": 0.5,
+        "method": "top-down",
+        "decomposition": [
+          {
+            "step": "1. 한국 인구 추정",
+            "value": 52000000,
+            "calculation": "약 5,200만 명으로 가정",
+            "reasoning": "최근 한국 인구를 약 5,200만 명으로 단순 가정"
+          },
+          {
+            "step": "2. 경제활동인구 추정",
+            "value": 28600000,
+            "calculation": "52000000 × 0.55 = 28600000",
+            "reasoning": "전체 인구 대비 경제활동 참가율을 약 55%로 가정 (노년층·청소년 포함한 비율)"
+          },
+          {
+            "step": "3. 자영업·사업주 인구(자영업자+고용주)",
+            "value": 6292000,
+            "calculation": "28600000 × 0.22 = 6292000",
+            "reasoning": "경제활동인구 중 약 22%가 자영업자 또는 사업주(고용주)라고 가정"
+          },
+          {
+            "step": "4. 개인사업자(개인 명의) 사업주 수",
+            "value": 5033600,
+            "calculation": "6292000 × 0.8 = 5033600",
+            "reasoning": "자영업·사업주 중 약 80%는 개인사업자(개인 명의)로 운영한다고 가정"
+          },
+          {
+            "step": "5. 법인 대표 수(≈ 법인 수 근사)",
+            "value": 1258400,
+            "calculation": "6292000 × 0.2 = 1258400",
+            "reasoning": "자영업·사업주 중 약 20%는 주식회사·유한회사 등 법인 형태라고 가정"
+          },
+          {
+            "step": "6. 개인사업자 사업자등록 수",
+            "value": 5285280,
+            "calculation": "5033600 × 1.05 = 5285280",
+            "reasoning": "대부분 1개 등록이나, 일부 다점포·부업을 고려해 개인당 평균 1.05개 사업자등록으로 가정"
+          },
+          {
+            "step": "7. 법인 사업자등록 수",
+            "value": 1635920,
+            "calculation": "1258400 × 1.3 = 1635920",
+            "reasoning": "법인 1개당 본점+지점 등을 합쳐 평균 1.3개의 사업자등록이 있다고 가정"
+          },
+          {
+            "step": "8. 전체 사업자등록 수",
+            "value": 6921200,
+            "calculation": "5285280 + 1635920 = 6921200",
+            "reasoning": "개인사업자 등록 수와 법인 사업자 등록 수를 합산하여 전체 사업자 수 추정"
+          }
+        ],
+        "final_calculation": "step6 + step7 = 5285280 + 1635920 = 6921200",
+        "calculation_verification": "1) 경제활동인구: 52000000 × 0.55 = 28600000 ✓\n2) 자영업·사업주 인구: 28600000 × 0.22 = 6292000 ✓\n3) 개인·법인 사업주 합: 5033600 + 1258400 = 6292000 (step3와 일치) ✓\n4) 개인사업자 등록 수: 5033600 × 1.05 = 5285280 ✓\n5) 법인 사업자 등록 수: 1258400 × 1.3 = 1635920 ✓\n6) 전체 사업자 수: 5285280 + 1635920 = 6921200 ✓"
+      }
+    },
+    {
+      "model": "gpt-4.1-mini (chat)",
+      "value": 4400000,
+      "unit": "개",
+      "ground_truth": 7837000,
+      "accuracy": {
+        "score": 15,
+        "error_pct": 78.1
+      },
+      "calculation_connectivity": {
+        "score": 50.0,
+        "details": [
+          "단계별 계산식: 7/7 (10점)",
+          "✅ 최종 계산식 제공 (10점)",
+          "✅ 계산 검증 제공 (5점)",
+          "✅ 계산 완벽 일치: 마지막 단계: 4,400,000 (오차 0.0%) (25점)"
+        ]
+      },
+      "decomposition": {
+        "score": 15,
+        "count": 7
+      },
+      "logic": {
+        "score": 5
+      },
+      "total_score": 85.0,
+      "elapsed": 10.59,
+      "response": {
+        "value": 4400000,
+        "unit": "개",
+        "confidence": 0.6,
+        "method": "bottom-up",
+        "decomposition": [
+          {
+            "step": "1. 한국 총 인구",
+            "value": 52000000,
+            "calculation": "통계청 인구 기준 약 5200만명",
+            "reasoning": "최근 대한민국 인구 통계 근거"
+          },
+          {
+            "step": "2. 경제활동인구 비율",
+            "value": 40000000,
+            "calculation": "52000000 × 0.77 = 40000000",
+            "reasoning": "경제활동인구 비율 약 77% (20~64세 중심 가정)"
+          },
+          {
+            "step": "3. 경제활동인구 중 사업자 비율",
+            "value": 2500000,
+            "calculation": "40000000 × 0.0625 = 2500000",
+            "reasoning": "약 6.25%가 사업자로 추정 (자영업자, 법인 포함)"
+          },
+          {
+            "step": "4. 법인 사업자 수 추정",
+            "value": 800000,
+            "calculation": "총 사업자 중 약 32%가 법인 사업자라고 가정",
+            "reasoning": "법인 비율 약 30~35% 범위 내 설정"
+          },
+          {
+            "step": "5. 자영업자 및 개인사업자 수 추정",
+            "value": 1700000,
+            "calculation": "2500000 - 800000 = 1700000",
+            "reasoning": "총 사업자에서 법인 사업자 제외"
+          },
+          {
+            "step": "6. 다중 사업자 등록 고려 보정",
+            "value": 1400000,
+            "calculation": "(1700000 + 800000) × 0.85 = 2140000 × 0.85 = 1819000 (사업자등록 중복 제거 후)",
+            "reasoning": "평균 1.15개 사업자등록 중복 보정, 즉 1.15명당 1 등록 → 1 / 1.15 ≈ 0.85로 조정"
+          },
+          {
+            "step": "7. 최종 사업자 수 산출",
+            "value": 4400000,
+            "calculation": "2,500,000 × 1.76(추가 사업자 포함 법인 제외 조정 비율 적용) ≈ 4,400,000",
+            "reasoning": "자영업자 + 법인 사업자 + 다중 사업자 등록 영향 및 면허사업자 등 포함하여 확장 추정"
+          }
+        ],
+        "final_calculation": "step3 × 1.76 = 2500000 × 1.76 = 4400000",
+        "calculation_verification": "step3(2500000) × 1.76 ≈ 4400000 ✓"
+      }
+    },
+    {
+      "model": "gpt-4.1-nano (chat)",
+      "value": 30000000,
+      "unit": "개",
+      "ground_truth": 7837000,
+      "accuracy": {
+        "score": 5,
+        "error_pct": 282.8
+      },
+      "calculation_connectivity": {
+        "score": 50.0,
+        "details": [
+          "단계별 계산식: 7/7 (10점)",
+          "✅ 최종 계산식 제공 (10점)",
+          "✅ 계산 검증 제공 (5점)",
+          "✅ 계산 완벽 일치: 마지막 2단계 합: 29,928,001 (오차 0.2%) (25점)"
+        ]
+      },
+      "decomposition": {
+        "score": 15,
+        "count": 7
+      },
+      "logic": {
+        "score": 5
+      },
+      "total_score": 75.0,
+      "elapsed": 6.09,
+      "response": {
+        "value": 30000000,
+        "unit": "개",
+        "confidence": 0.4,
+        "method": "bottom-up",
+        "decomposition": [
+          {
+            "step": "1. 한국 인구",
+            "value": 52000000,
+            "calculation": "한국 인구 약 5200만명(2020 기준)",
+            "reasoning": "통계청 인구 자료 참고"
+          },
+          {
+            "step": "2. 경제활동인구 비율",
+            "value": 0.6,
+            "calculation": "대략 60%의 인구가 경제활동인구라고 가정",
+            "reasoning": "일반적인 성인 인구 중 경제활동인구 비율"
+          },
+          {
+            "step": "3. 경제활동인구 수",
+            "value": 31200000,
+            "calculation": "52000000 × 0.6 = 31200000",
+            "reasoning": "단계 1 × 단계 2"
+          },
+          {
+            "step": "4. 자영업 또는 사업자 등록 가능 인구 비율",
+            "value": 0.7,
+            "calculation": "약 70%가 자영업 또는 사업자 등록을 고려 범위로 가정",
+            "reasoning": "경제활동인구 중 자영업자 포함 비율로 추정"
+          },
+          {
+            "step": "5. 사업자 등록 인구 추정치",
+            "value": 21840000,
+            "calculation": "31200000 × 0.7 = 21840000",
+            "reasoning": "단계 3 × 단계 4"
+          },
+          {
+            "step": "6. 다중 사업자 등록 가능성 고려",
+            "value": 1.37,
+            "calculation": "평균 사업자 등록 수가 1.37배(한 명이 여러 사업자 등록 가능)가정",
+            "reasoning": "다중 등록 가능성을 반영하여 추정값을 조정"
+          },
+          {
+            "step": "7. 최종 사업자 수",
+            "value": 29928000,
+            "calculation": "21840000 × 1.37 ≈ 29928000",
+            "reasoning": "단계 5 × 단계 6"
+          }
+        ],
+        "final_calculation": "단계 5 × 단계 6 = 21840000 × 1.37 ≈ 29928000",
+        "calculation_verification": "단계 3의 사업자 등록 가능 인구(약 2.18억) × 다중 등록 가능성(1.37) ≈ 2.99억 개 ✓"
+      }
+    },
+    {
+      "model": "gpt-4o-mini (chat)",
+      "value": 2400000,
+      "unit": "개",
+      "ground_truth": 7837000,
+      "accuracy": {
+        "score": 5,
+        "error_pct": 226.5
+      },
+      "calculation_connectivity": {
+        "score": 50.0,
+        "details": [
+          "단계별 계산식: 9/9 (10점)",
+          "✅ 최종 계산식 제공 (10점)",
+          "✅ 계산 검증 제공 (5점)",
+          "✅ 계산 완벽 일치: 마지막 단계: 2,400,000 (오차 0.0%) (25점)"
+        ]
+      },
+      "decomposition": {
+        "score": 15,
+        "count": 9
+      },
+      "logic": {
+        "score": 5
+      },
+      "total_score": 75.0,
+      "elapsed": 11.92,
+      "response": {
+        "value": 2400000,
+        "unit": "개",
+        "confidence": 0.6,
+        "method": "bottom-up",
+        "decomposition": [
+          {
+            "step": "1. 한국 인구",
+            "value": 52000000,
+            "calculation": "약 5200만명으로 가정",
+            "reasoning": "2023년 기준 한국 인구 통계"
+          },
+          {
+            "step": "2. 경제활동인구 비율",
+            "value": 0.63,
+            "calculation": "통계청에 의한 경제활동 인구 비율",
+            "reasoning": "약 63%의 인구가 경제활동에 참여"
+          },
+          {
+            "step": "3. 경제활동인구",
+            "value": 32760000,
+            "calculation": "52000000 × 0.63 = 32760000",
+            "reasoning": "step1 × step2로 경제활동인구 추정"
+          },
+          {
+            "step": "4. 자영업자 비율",
+            "value": 0.25,
+            "calculation": "한국 자영업자 비율 약 25%로 가정",
+            "reasoning": "전국 경제에 대한 자영업자의 비율"
+          },
+          {
+            "step": "5. 자영업자 수",
+            "value": 8190000,
+            "calculation": "32760000 × 0.25 = 8190000",
+            "reasoning": "step3 × step4로 자영업자 수 추정"
+          },
+          {
+            "step": "6. 법인사업자 수",
+            "value": 780000,
+            "calculation": "통계청의 법인사업자 수로 가정",
+            "reasoning": "최근 법인사업자 수에 대한 공신력 있는 자료"
+          },
+          {
+            "step": "7. 다중 사업자 등록 비율",
+            "value": 0.15,
+            "calculation": "자영업자의 약 15%는 다중 사업자로 등록",
+            "reasoning": "자영업자 중 일부가 복수 사업자 등록"
+          },
+          {
+            "step": "8. 중복 사업자 수",
+            "value": 1228500,
+            "calculation": "8190000 × 0.15 = 1228500",
+            "reasoning": "step5 × step7로 다중 등록자 추정"
+          },
+          {
+            "step": "9. 전체 사업자 수",
+            "value": 2400000,
+            "calculation": "8190000 + 780000 - 1228500 = 2400000",
+            "reasoning": "자영업자 수와 법인사업자 수의 합에서 중복 사업자 수를 차감"
+          }
+        ],
+        "final_calculation": "step5 + step6 - step8 = 8190000 + 780000 - 1228500 = 2400000",
+        "calculation_verification": "자영업자 수(8190000) + 법인사업자 수(780000) - 중복 사업자 수(1228500) = 2400000 ✓"
+      }
+    }
+  ]
+}
