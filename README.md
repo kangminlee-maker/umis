@@ -60,6 +60,62 @@ AI 에이전트 6명이 협업하여 시장을 분석하는 **RAG 기반 프레�
 
 ---
 
+## 💡 독특한 사용 방식
+
+UMIS는 **전통적인 CLI나 GUI 대신 Cursor IDE를 인터페이스로 활용**합니다.
+
+### 왜 Cursor를?
+
+기존 도구들:
+- ❌ **CLI**: 명령어 외우기 어려움, 결과 시각화 불편
+- ❌ **GUI**: 개발 비용 높음, 복잡한 분석 표현 한계
+- ❌ **Jupyter**: 코드 작성 필요, 재현성 낮음
+
+**UMIS + Cursor**:
+- ✅ **자연어로 대화**: `"@Explorer, 구독 모델 패턴 찾아줘"`
+- ✅ **컨텍스트 유지**: 이전 대화 기억, 연속 작업 가능
+- ✅ **자동화**: `.cursorrules`로 반복 작업 자동화
+- ✅ **결과 저장**: Markdown/Excel/YAML 자동 생성
+- ✅ **비용 $0**: Native 모드 (Cursor LLM 직접 사용)
+
+### 실제 사용 흐름
+
+```
+1. Cursor Composer 열기 (Cmd+I / Ctrl+I)
+2. umis.yaml 첨부 (@umis.yaml)
+3. 자연어로 요청:
+   "@Steve, 음악 스트리밍 시장 분석해줘"
+4. Steve (Explorer)가 RAG 검색 → 패턴 발견 → 분석
+5. 결과를 Markdown/Excel로 저장
+6. 추가 질문: "@Bill, SAM 계산해줘"
+7. Bill (Quantifier)이 계속 이어서 작업
+```
+
+### 코딩 불필요
+
+```
+비개발자도 사용 가능:
+- Python 코드 작성 X
+- API 호출 X
+- 데이터 처리 X
+
+→ 오직 대화만!
+```
+
+### 설정 한 번, 평생 사용
+
+```bash
+# 최초 1회 설정 (5분)
+python setup/setup.py
+
+# 이후 사용
+Cmd+I → @umis.yaml → 대화 시작
+```
+
+**TL;DR**: UMIS는 Cursor가 읽는 지식 저장소입니다. CLI/GUI가 아니라 **AI 협업 도구**입니다.
+
+---
+
 ## 📦 빠른 시작
 
 ### 1. Clone

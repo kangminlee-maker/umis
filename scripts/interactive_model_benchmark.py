@@ -237,16 +237,25 @@ JSON 형식:
         
         try:
             # 모델별 분기 (o1/o3/o4는 다른 파라미터)
-            if model.startswith('o1') or model.startswith('o3') or model.startswith('o4'):
-                # Thinking 모델 (system, temperature, response_format 미지원)
-                response = self.client.chat.completions.create(
-                    model=model,
-                    messages=[
-                        {"role": "user", "content": scenario['prompt']}
-                    ]
-                )
-            elif 'nano' in model or 'gpt-5' in model:
-                # nano/gpt-5 모델 (temperature 기본값만 지원)
+            is_o_series = model.startswith(('o1', 'o3', 'o4'))
+            is_gpt5 = model.startswith('gpt-5')
+            is_nano = 'nano' in model
+            is_reasoning = is_o_series or is_gpt5
+            
+            if is_reasoning:
+                # reasoning 모델 (system, temperature, response_format 미지원)
+                api_params = {
+                    "model": model,
+                    "messages": [{"role": "user", "content": scenario['prompt']}]
+                }
+                if is_o_series:
+                    api_params["reasoning_effort"] = "medium"  # o 시리즈
+                else:  # gpt-5
+                    api_params["reasoning_effort"] = "low"  # gpt-5
+                
+                response = self.client.chat.completions.create(**api_params)
+            elif is_nano:
+                # nano 모델 (temperature 기본값만 지원)
                 response = self.client.chat.completions.create(
                     model=model,
                     messages=[
@@ -272,7 +281,16 @@ JSON 형식:
             # 응답 파싱
             content = response.choices[0].message.content
             
+            # JSON 추출
             try:
+                if '```json' in content:
+                    json_start = content.find('```json') + 7
+                    json_end = content.find('```', json_start)
+                    content = content[json_start:json_end].strip()
+                elif '```' in content:
+                    json_start = content.find('```') + 3
+                    json_end = content.find('```', json_start)
+                    content = content[json_start:json_end].strip()
                 parsed = json.loads(content)
             except json.JSONDecodeError:
                 parsed = {'raw_response': content, 'parse_error': True}
