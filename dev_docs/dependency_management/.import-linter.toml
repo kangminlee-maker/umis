@@ -1,0 +1,93 @@
+# UMIS Import Linter Configuration
+# 의존성 규칙 강제
+
+[tool.importlinter]
+root_package = "umis_rag"
+
+# ========================================
+# Contract 1: Agent Independence
+# ========================================
+# Agent 간 직접 import 금지
+# → 각 Agent는 독립적으로 작동해야 함
+# → 협업은 WorkflowExecutor를 통해서만
+
+[[tool.importlinter.contracts]]
+name = "Agent independence"
+type = "independence"
+modules = [
+    "umis_rag.agents.observer",
+    "umis_rag.agents.explorer",
+    "umis_rag.agents.quantifier",
+    "umis_rag.agents.validator",
+    "umis_rag.agents.guardian",
+    "umis_rag.agents.estimator",
+]
+
+# ========================================
+# Contract 2: Core Layer Isolation
+# ========================================
+# Core는 Agent에 의존하지 않음
+# → Core는 기반 레이어, Agent는 상위 레이어
+
+[[tool.importlinter.contracts]]
+name = "Core does not depend on agents"
+type = "forbidden"
+source_modules = ["umis_rag.core"]
+forbidden_modules = ["umis_rag.agents"]
+
+# ========================================
+# Contract 3: Layered Architecture
+# ========================================
+# Layer 순서 강제
+# deliverables → agents → methodologies → core
+
+[[tool.importlinter.contracts]]
+name = "Layered architecture"
+type = "layers"
+layers = [
+    "umis_rag.deliverables",    # Layer 3: 산출물 (최상위)
+    "umis_rag.agents",           # Layer 2: Agent
+    "umis_rag.methodologies",    # Layer 1.5: 방법론
+    "umis_rag.core",             # Layer 1: Core (기반)
+]
+
+# ========================================
+# Contract 4: Graph Isolation (선택)
+# ========================================
+# Graph는 core만 의존 (Agent 의존 금지)
+
+[[tool.importlinter.contracts]]
+name = "Graph isolation"
+type = "forbidden"
+source_modules = ["umis_rag.graph"]
+forbidden_modules = [
+    "umis_rag.agents",
+    "umis_rag.deliverables",
+]
+
+# ========================================
+# Contract 5: Utils는 어디서나 사용 가능
+# ========================================
+# Utils는 모든 레이어에서 import 가능
+
+# (명시적 규칙 불필요, 기본 허용)
+
+# ========================================
+# 사용법
+# ========================================
+#
+# 설치:
+#   pip install import-linter
+#
+# 실행:
+#   lint-imports
+#
+# CI 통합:
+#   .github/workflows/dependency-check.yml
+#
+# 규칙 위반 시:
+#   ❌ umis_rag.agents.explorer imports umis_rag.agents.quantifier
+#      (agents should be independent)
+#
+# ========================================
+
