@@ -1,0 +1,76 @@
+// UMIS Business Model Pattern - Protocol Buffers 정의
+// v7.5.0 - Production Format Optimization
+//
+// Explorer RAG 패턴 라이브러리 (54개)
+
+syntax = "proto3";
+
+package umis.pattern;
+
+// 패턴 라이브러리 (전체)
+message PatternLibrary {
+  repeated Pattern patterns = 1;
+  int32 total_count = 2;
+  string version = 3;
+  int64 updated_at = 4;
+}
+
+// 개별 패턴
+message Pattern {
+  string id = 1;                    // BM001, BM002, ...
+  string name = 2;
+  PatternCategory category = 3;
+  string description = 4;
+  
+  repeated string triggers = 5;     // 트리거 시그널
+  repeated Example examples = 6;    // 성공 사례
+  repeated string metrics = 7;      // 핵심 지표
+  
+  // 추가 메타데이터
+  string value_proposition = 8;
+  string revenue_model = 9;
+  string competitive_advantage = 10;
+  
+  repeated string related_patterns = 11;  // 관련 패턴 ID
+  repeated string disruption_patterns = 12;  // 파괴 패턴 ID
+  
+  map<string, string> metadata = 13;
+}
+
+// 패턴 카테고리
+enum PatternCategory {
+  UNKNOWN_CATEGORY = 0;
+  REVENUE_MODEL = 1;
+  VALUE_CREATION = 2;
+  MARKET_POSITION = 3;
+  CUSTOMER_ENGAGEMENT = 4;
+  OPERATIONAL_EFFICIENCY = 5;
+  PLATFORM = 6;
+  NETWORK_EFFECT = 7;
+}
+
+// 성공 사례
+message Example {
+  string company = 1;
+  string industry = 2;
+  string description = 3;
+  Metrics metrics = 4;
+  int32 year_founded = 5;
+  string status = 6;  // active, acquired, public
+}
+
+// 지표
+message Metrics {
+  map<string, MetricValue> values = 1;
+}
+
+message MetricValue {
+  oneof value {
+    double number = 1;
+    string text = 2;
+    bool flag = 3;
+  }
+  string unit = 4;  // %, $, users, etc.
+  string source = 5;
+}
+
