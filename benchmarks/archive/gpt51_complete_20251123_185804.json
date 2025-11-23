@@ -1,0 +1,285 @@
+{
+  "metadata": {
+    "timestamp": "2025-11-23T18:58:04.658211",
+    "model": "gpt-5.1",
+    "reasoning_effort": "high",
+    "problems_completed": 3
+  },
+  "summary": {
+    "avg_total": 80.0,
+    "avg_accuracy": 23.333333333333332,
+    "avg_connectivity": 41.666666666666664,
+    "avg_decomp": 11.666666666666666,
+    "avg_logic": 3.3333333333333335
+  },
+  "results": [
+    {
+      "model": "gpt-5.1",
+      "value": 8200000,
+      "unit": "개",
+      "expected_value": 7837000,
+      "accuracy": {
+        "score": 25,
+        "error_pct": 4.6
+      },
+      "calculation_connectivity": {
+        "score": 35.0,
+        "details": [
+          "단계별 계산식: 16/16 (10점)",
+          "✅ 최종 계산식 제공 (10점)",
+          "✅ 계산 검증 제공 (5점)",
+          "⚠️ 계산 부분 일치: 마지막 2단계 합: 10,248,400 (오차 25.0%) (10점)"
+        ]
+      },
+      "decomposition": {
+        "score": 15,
+        "count": 16
+      },
+      "logic": {
+        "score": 5
+      },
+      "total_score": 80.0,
+      "elapsed": 68.35,
+      "response": {
+        "value": 8200000,
+        "unit": "개",
+        "confidence": 0.5,
+        "method": "bottom-up",
+        "decomposition": [
+          {
+            "step": "1. 한국 인구",
+            "value": 52000000,
+            "calculation": "약 5200만명으로 가정",
+            "reasoning": "최근 한국 인구를 5200만명 수준으로 단순 가정"
+          },
+          {
+            "step": "2. 생산가능인구(15-64세) 비율",
+            "value": 0.7,
+            "calculation": "생산가능인구 비율을 70%로 가정",
+            "reasoning": "고령화 고려 시 전체 인구의 약 70%가 생산가능인구라고 가정"
+          },
+          {
+            "step": "3. 생산가능인구 수",
+            "value": 36400000,
+            "calculation": "step1 × step2 = 52000000 × 0.7 = 36400000",
+            "reasoning": "생산가능인구(15-64세) 인원 추정"
+          },
+          {
+            "step": "4. 경제활동참가율",
+            "value": 0.65,
+            "calculation": "경제활동참가율을 65%로 가정",
+            "reasoning": "선진국 평균 수준을 반영한 보수적 가정"
+          },
+          {
+            "step": "5. 경제활동인구 수",
+            "value": 23660000,
+            "calculation": "step3 × step4 = 36400000 × 0.65 = 23660000",
+            "reasoning": "일을 하거나 구직활동을 하는 인원 추정"
+          },
+          {
+            "step": "6. 자영업자·고용주 비율",
+            "value": 0.2,
+            "calculation": "경제활동인구 중 20%가 자영업자·고용주라고 가정",
+            "reasoning": "한국의 높은 자영업 비중(직장인 대비) 반영한 단순 가정"
+          },
+          {
+            "step": "7. 자영업자·고용주 인원 수",
+            "value": 4732000,
+            "calculation": "step5 × step6 = 23660000 × 0.2 = 4732000",
+            "reasoning": "사업체를 직접 소유·운영하는 사람 수 추정"
+          },
+          {
+            "step": "8. 자영업자 1인당 평균 사업자등록 수",
+            "value": 1.1,
+            "calculation": "자영업자 1인당 평균 1.1개의 사업자등록을 보유한다고 가정",
+            "reasoning": "대부분 1개이나, 다점포·겸업 등으로 다중 사업자등록 보유 비율을 반영"
+          },
+          {
+            "step": "9. 자영업자·고용주 기반 사업자 수",
+            "value": 5205200,
+            "calculation": "step7 × step8 = 4732000 × 1.1 = 5205200",
+            "reasoning": "본업이 자영업/고용주인 사람들이 보유한 사업자등록 수"
+          },
+          {
+            "step": "10. 임금근로자 수",
+            "value": 18928000,
+            "calculation": "step5 - step7 = 23660000 - 4732000 = 18928000",
+            "reasoning": "경제활동인구 중 사업자가 아닌 순수 임금근로자 수"
+          },
+          {
+            "step": "11. 부업 사업자 보유 비율(임금근로자 중)",
+            "value": 0.05,
+            "calculation": "임금근로자의 5%가 부업으로 사업자등록 보유라고 가정",
+            "reasoning": "프리랜서, 온라인 판매, 소규모 창업 등 부업 사업자 비율을 보수적으로 5%로 설정"
+          },
+          {
+            "step": "12. 부업 사업자 수 및 그로 인한 사업자 수",
+            "value": 946400,
+            "calculation": "step10 × step11 = 18928000 × 0.05 = 946400",
+            "reasoning": "부업 사업자는 1인당 1개의 사업자등록을 가진다고 보고, 인원 수와 사업자 수를 동일하게 둠"
+          },
+          {
+            "step": "13. 개인 명의 사업자등록 수 합계(본업+부업)",
+            "value": 6151600,
+            "calculation": "step9 + step12 = 5205200 + 946400 = 6151600",
+            "reasoning": "자영업자·고용주 및 임금근로자 부업을 모두 합친 개인 명의 사업자 수"
+          },
+          {
+            "step": "14. 전체 사업자 중 개인사업자 비중",
+            "value": 0.75,
+            "calculation": "전체 사업자 중 75%가 개인사업자라고 가정",
+            "reasoning": "한국은 법인보다 개인사업자 비중이 높은 구조라는 점을 반영한 가정"
+          },
+          {
+            "step": "15. 한국 전체 사업자 수(사업자등록 수) 추정",
+            "value": 8200000,
+            "calculation": "step13 / step14 ≈ 6151600 / 0.75 ≈ 8200000",
+            "reasoning": "개인사업자 수가 전체의 75%라는 가정으로부터 전체 사업자등록 수로 환산"
+          },
+          {
+            "step": "16. 법인 사업자 수 추정",
+            "value": 2048400,
+            "calculation": "step15 - step13 = 8200000 - 6151600 = 2048400",
+            "reasoning": "전체 사업자 수에서 개인사업자를 제외해 법인 사업자 수를 추정"
+          }
+        ],
+        "final_calculation": "최종 추정값(step15)은 개인 명의 사업자 수(step13)를 전체에서 개인이 차지하는 비중(step14)으로 나누어 산출: step15 = step13 / step14 ≈ 6151600 / 0.75 ≈ 8200000",
+        "calculation_verification": "검증: step3 = step1 × step2 = 52000000 × 0.7 = 36400000 ✓; step5 = step3 × step4 = 36400000 × 0.65 = 23660000 ✓; step7 = step5 × step6 = 23660000 × 0.2 = 4732000 ✓; step9 = step7 × step8 = 4732000 × 1.1 = 5205200 ✓; step10 = step5 - step7 = 23660000 - 4732000 = 18928000 ✓; step12 = step10 × step11 = 18928000 × 0.05 = 946400 ✓; step13 = step9 + step12 = 5205200 + 946400 = 6151600 ✓; step15 ≈ step13 / step14 = 6151600 / 0.75 ≈ 8202133 ≈ 8200000 (반올림) ✓"
+      },
+      "problem": "Phase 4 - 한국 전체 사업자 수",
+      "problem_id": "phase4_korean_businesses"
+    },
+    {
+      "model": "gpt-5.1",
+      "value": 10000000,
+      "unit": "명",
+      "expected_value": 9668465,
+      "accuracy": {
+        "score": 25,
+        "error_pct": 3.4
+      },
+      "calculation_connectivity": {
+        "score": 45.0,
+        "details": [
+          "단계별 계산식: 5/5 (10점)",
+          "✅ 최종 계산식 제공 (10점)",
+          "✅ 계산 검증 제공 (5점)",
+          "✅ 계산 거의 일치: 마지막 단계: 10,200,000 (오차 2.0%) (20점)"
+        ]
+      },
+      "decomposition": {
+        "score": 15,
+        "count": 5
+      },
+      "logic": {
+        "score": 5
+      },
+      "total_score": 90.0,
+      "elapsed": 11.61,
+      "response": {
+        "value": 10000000,
+        "unit": "명",
+        "confidence": 0.7,
+        "method": "top-down",
+        "decomposition": [
+          {
+            "step": "1. 한국 전체 인구",
+            "value": 51000000,
+            "calculation": "약 5100만명으로 가정",
+            "reasoning": "최근 통계 기준으로 한국 인구는 약 5천만명 수준"
+          },
+          {
+            "step": "2. 수도권 인구 비중",
+            "value": 0.5,
+            "calculation": "수도권(서울·경기·인천)에 한국 인구의 절반이 산다고 가정 → 0.5",
+            "reasoning": "수도권 과밀을 고려하면 전체의 약 50% 수준으로 추정 가능"
+          },
+          {
+            "step": "3. 수도권 인구 수",
+            "value": 25500000,
+            "calculation": "51000000 × 0.5 = 25500000",
+            "reasoning": "step1 × step2"
+          },
+          {
+            "step": "4. 수도권 내 서울 비중",
+            "value": 0.4,
+            "calculation": "수도권 인구 중 약 40%가 서울 거주한다고 가정 → 0.4",
+            "reasoning": "서울·경기·인천 중 서울이 가장 밀집되어 있으나 면적은 상대적으로 작음"
+          },
+          {
+            "step": "5. 서울 인구",
+            "value": 10200000,
+            "calculation": "25500000 × 0.4 = 10200000",
+            "reasoning": "step3 × step4"
+          }
+        ],
+        "final_calculation": "step1 × step2 × step4 = 51000000 × 0.5 × 0.4 = 10200000 ≈ 10000000",
+        "calculation_verification": "한국 인구(51000000) × 수도권 비중(0.5) × 수도권 내 서울 비중(0.4) = 10200000명으로, 약 1000만명 수준과 일치함 ✓"
+      },
+      "problem": "Phase 4 - 서울시 인구",
+      "problem_id": "phase4_seoul_population"
+    },
+    {
+      "model": "gpt-5.1",
+      "value": 80000,
+      "unit": "",
+      "expected_value": 100000,
+      "accuracy": {
+        "score": 20,
+        "error_pct": 25.0
+      },
+      "calculation_connectivity": {
+        "score": 45.0,
+        "details": [
+          "단계별 계산식: 5/5 (10점)",
+          "✅ 최종 계산식 제공 (10점)",
+          "✅ 계산 검증 제공 (5점)",
+          "✅ 계산 거의 일치: 마지막 단계: 76,364 (오차 4.5%) (20점)"
+        ]
+      },
+      "decomposition": {
+        "score": 5.0,
+        "count": 5
+      },
+      "logic": {
+        "score": 0
+      },
+      "total_score": 70.0,
+      "elapsed": 23.57,
+      "response": {
+        "value": 80000,
+        "decomposition": [
+          {
+            "step": "1. 커피 소비 인구",
+            "value": 35000000,
+            "calculation": "총 인구 5000만 × 커피 소비자 비중 70% ≈ 3500만명"
+          },
+          {
+            "step": "2. 1인당 연간 카페 방문 수",
+            "value": 72,
+            "calculation": "월 6회 × 12개월 = 72회/년"
+          },
+          {
+            "step": "3. 연간 총 카페 방문 수",
+            "value": 2520000000,
+            "calculation": "step1 × step2 = 35000000 × 72 ≈ 2520000000회/년"
+          },
+          {
+            "step": "4. 점포당 연간 방문 처리량",
+            "value": 33000,
+            "calculation": "하루 평균 100명 × 연 330일 영업 ≈ 33000회/년"
+          },
+          {
+            "step": "5. 커피 전문점 수",
+            "value": 76364,
+            "calculation": "step3 / step4 ≈ 2520000000 / 33000 ≈ 76364개"
+          }
+        ],
+        "final_calculation": "step3 / step4 = 25.2억 / 3.3만 ≈ 7.6만개 ≈ 80000개",
+        "calculation_verification": "계산 확인 완료 ✓"
+      },
+      "problem": "Phase 4 - 한국 커피 전문점 수",
+      "problem_id": "phase4_coffee_shops"
+    }
+  ]
+}

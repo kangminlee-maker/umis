@@ -173,3 +173,4 @@ with open(report_file, 'w', encoding='utf-8') as f:
 
 print(f"✅ 상세 보고서 생성: {report_file}")
 
+
