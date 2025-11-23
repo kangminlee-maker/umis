@@ -1,12 +1,20 @@
 # ========================================
-# UMIS Core (INDEX) v7.7.1
+# UMIS Core (INDEX) v7.8.0
 # ========================================
 
-version: 7.7.1
-updated: 2025-11-21
+version: 7.8.0
+updated: 2025-11-24
 
 purpose: |
   System RAG INDEX - AI가 어떤 도구를 로드할지 안내
+  
+  v7.8.0 (2025-11-24): ⭐⭐⭐ Major Release
+    - Model Config 시스템: 중앙 집중식 LLM 관리 (17개 모델)
+    - benchmarks/ 폴더: 통합 벤치마크 시스템
+    - Phase 0-3 벤치마크: 98% 비용 절감 달성
+    - Phase 4 평가 시스템: 내용/형식 분리 (110점)
+    - phase4_fermi.py: Model Config 통합
+    - env.template: Model Config 가이드 추가
   
   v7.7.1 (2025-11-21):
     - Estimator Phase 4 Few-shot 개선
@@ -156,6 +164,188 @@ key_principles:
     principle_2: tool_registry.yaml 편집 금지 (자동 생성)
     principle_3: 수정 후 sync_umis_to_rag.py 실행
     principle_4: 백업 자동 생성 (안전)
+
+# ========================================
+# v7.8.0: Model Config System
+# ========================================
+
+model_config_system:
+  version: 7.8.0
+  purpose: 중앙 집중식 LLM 모델 관리
+  
+  key_features:
+    - 17개 모델 중앙 관리 (config/model_configs.yaml)
+    - .env 모델 변경 → 코드 수정 0줄
+    - API 타입 자동 분기 (Responses/Chat)
+    - Pro 모델 Fast Mode 자동 적용
+    - Reasoning Effort 지능형 처리
+  
+  core_files:
+    config: config/model_configs.yaml (320줄, 17개 모델)
+    python: umis_rag/core/model_configs.py (262줄)
+    router: umis_rag/core/model_router.py (확장)
+  
+  supported_models:
+    o1_series: [o1-mini, o1, o1-2024-12-17, o1-pro, o1-pro-2025-03-19]
+    o3_series: [o3, o3-2025-04-16, o3-mini, o3-mini-2025-01-31]
+    gpt5_series: [gpt-5.1, gpt-5-pro]
+    gpt4_series: [gpt-4.1-nano, gpt-4o-mini, gpt-4-turbo-preview, gpt-4o, gpt-4o-2024-08-06]
+    total: 17개
+  
+  usage:
+    change_model: .env에서 LLM_MODEL_PHASE4=gpt-5.1
+    auto_apply:
+      - API 타입 (responses/chat)
+      - max_output_tokens (모델별 최적값)
+      - reasoning_effort (지원 모델만)
+      - temperature (지원 모델만)
+      - Fast Mode (Pro 모델만)
+  
+  benefits:
+    development: 모델 추가 5분 → 30초 (10배 ↓)
+    maintenance: API 변경 시 코드 수정 불필요
+    extensibility: YAML 5줄로 신규 모델 즉시 사용
+
+# ========================================
+# v7.8.0: LLM Optimization (3-Model 구성)
+# ========================================
+
+llm_optimization:
+  version: 7.8.0
+  achievement: 98% 비용 절감 달성!
+  
+  phase_0_2:
+    model: gpt-4.1-nano
+    coverage: 45%
+    cost_per_task: $0.000033
+    speed: 1.02초
+    accuracy: 100%
+    use_case:
+      - Phase 0 (Literal)
+      - Phase 1 (Inferred)
+      - Phase 2 (Formula)
+      - Quantifier 공식 계산
+      - Validator 기본 검증
+  
+  phase_3:
+    model: gpt-4o-mini
+    coverage: 48%
+    cost_per_task: $0.000121
+    speed: 4.61초
+    accuracy: 100%
+    use_case:
+      - Phase 3 Guestimation
+      - Explorer RAG 검색
+      - Validator 정의 검증
+    note: 프롬프트 개선으로 100% 정확도
+  
+  phase_4:
+    model: o1-mini
+    coverage: 7%
+    cost_per_task: $0.0033
+    speed: 5-15초
+    accuracy: 93%
+    use_case:
+      - Phase 4 Fermi Decomposition
+      - Discovery Sprint
+      - 복잡한 추론
+  
+  total_cost:
+    per_1000_tasks: $0.30
+    vs_previous: $15.00 (Sonnet Think)
+    savings: 98%
+    breakdown:
+      phase_0_2: 450 × $0.000033 = $0.015
+      phase_3: 480 × $0.000121 = $0.058
+      phase_4: 70 × $0.0033 = $0.231
+  
+  env_configuration:
+    USE_PHASE_BASED_ROUTING: true
+    LLM_MODEL_PHASE0_2: gpt-4.1-nano
+    LLM_MODEL_PHASE3: gpt-4o-mini
+    LLM_MODEL_PHASE4: o1-mini
+    note: Model Config 시스템이 자동으로 API 최적화
+
+# ========================================
+# v7.8.0: Benchmarks System
+# ========================================
+
+benchmarks_system:
+  version: 7.8.0
+  purpose: 통합 벤치마크 시스템
+  
+  structure:
+    root: benchmarks/
+    common: benchmarks/common/ (공통 모듈)
+    estimator: benchmarks/estimator/ (Estimator 벤치마크)
+    phase4: benchmarks/estimator/phase4/ (Phase 4 Fermi)
+  
+  phase4_contents:
+    tests:
+      - batch1.py (o1-mini, gpt-5.1 high, o3-mini)
+      - batch2.py (gpt-5-pro, o1-pro)
+      - batch3.py (gpt-4o, gpt-4o-mini, gpt-4-turbo)
+      - batch4.py (gpt-5.1 medium)
+      - batch5.py (gpt-5.1 low)
+      - extended_10problems.py (확장 테스트)
+    
+    scenarios: 15개 Fermi 문제
+    
+    results: 8개 JSON 파일
+    
+    analysis:
+      - model_recommendations.md (모델 추천)
+      - evaluation_rebalancing.md (평가 재조정 v7.8.0)
+    
+    common: common.py (평가 시스템 v7.8.0)
+  
+  documentation:
+    - MODEL_CONFIG_DESIGN.md (773줄)
+    - MODEL_CONFIG_IMPLEMENTATION.md (203줄)
+    - MODEL_CONFIG_TEST_RESULTS.md (275줄)
+    - PHASE4_INTEGRATION_COMPLETE.md (350줄)
+    - PHASE4_INTEGRATION_FINAL.md (420줄)
+    - PHASE4_IMPROVEMENT_PLAN.md (1,035줄)
+    - PHASE4_IMPROVEMENTS_SUMMARY.md (137줄)
+  
+  migration_plan:
+    phase_1: Phase 4 이관 (완료)
+    phase_2: Phase 0-3 추가 (예정)
+    phase_3: 전체 Agent 확장 (예정)
+    phase_4: Workflow 통합 (예정)
+
+# ========================================
+# v7.8.0: Phase 4 Evaluation System
+# ========================================
+
+phase4_evaluation:
+  version: 7.8.0
+  total_score: 110점
+  
+  scoring_breakdown:
+    accuracy_score:
+      points: "25점 (log10 기반 오차)"
+    
+    content_score:
+      points: "45점"
+      step_completeness: "10점 (분해 단계 완성도)"
+      calculation_logic: "10점 (논리적 연결)"
+      numerical_accuracy: "25점 (수치 정확도)"
+    
+    format_score:
+      points: "5점"
+      final_calculation: "2점 (0점 if 자동 생성)"
+      calculation_verification: "2점 (0점 if 자동 생성)"
+      concept_fields: "1점 (개념 필드 완성도)"
+    
+    decomposition_quality: "10점"
+    conceptual_coherence: "15점"
+    logic: "10점"
+  
+  key_improvement:
+    issue: gpt-5.1은 핵심 추론 우수하지만 JSON 형식 약함
+    solution: 내용(45점)/형식(5점) 분리 → 핵심 능력 정확 평가
+    effect: gpt-5.1 평가 공정성 향상
 
 # ========================================
 # 끝
