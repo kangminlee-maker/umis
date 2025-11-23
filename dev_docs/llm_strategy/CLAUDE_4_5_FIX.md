@@ -291,3 +291,4 @@ After:
 **참조**: [Claude 4 마이그레이션 가이드](https://platform.claude.com/docs/ko/about-claude/models/migrating-to-claude-4)  
 **상태**: ✅ 수정 완료, 테스트 대기중
 
+

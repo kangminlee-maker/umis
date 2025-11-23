@@ -224,3 +224,4 @@ python3 scripts/benchmark_comprehensive_2025.py
 **승인**: 사용자 검증 필요  
 **상태**: ✅ 수정 완료, 테스트 대기중
 
+
