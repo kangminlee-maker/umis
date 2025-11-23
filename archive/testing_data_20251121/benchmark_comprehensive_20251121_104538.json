@@ -1,0 +1,4422 @@
+{
+  "metadata": {
+    "timestamp": "2025-11-21T10:45:38.096147",
+    "total_tests": 105,
+    "success_count": 97
+  },
+  "results": [
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 169,
+        "output": 14,
+        "total": 183
+      },
+      "cost": 3.4e-05,
+      "elapsed_seconds": 1.56,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:21:24.421226",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1-mini",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 169,
+        "output": 14,
+        "total": 183
+      },
+      "cost": 9e-05,
+      "elapsed_seconds": 0.8,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:21:26.223774",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "한국 B2B SaaS ARPU": "200,000원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 85,
+        "output": 94,
+        "total": 179,
+        "reasoning": 64
+      },
+      "cost": 0.000209,
+      "elapsed_seconds": 2.93,
+      "parameters": {
+        "reasoning_effort": "low",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:21:30.159994",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 169,
+        "output": 14,
+        "total": 183
+      },
+      "cost": 0.000562,
+      "elapsed_seconds": 1.34,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:21:32.501190",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "value": 200000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 169,
+        "output": 14,
+        "total": 183
+      },
+      "cost": 0.00045,
+      "elapsed_seconds": 0.66,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:21:34.159796",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "value": "200,000원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 55
+      },
+      "tokens": {
+        "input": 85,
+        "output": 94,
+        "total": 179,
+        "reasoning": 64
+      },
+      "cost": 0.001046,
+      "elapsed_seconds": 2.01,
+      "parameters": {
+        "reasoning_effort": "low",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:21:37.173933",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "한국 B2B SaaS ARPU": "200,000원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 85,
+        "output": 37,
+        "total": 122
+      },
+      "cost": 0.000476,
+      "elapsed_seconds": 0.78,
+      "parameters": {
+        "reasoning_effort": "low",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:21:38.954297",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "extracted_value": "200,000원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 85,
+        "output": 164,
+        "total": 249,
+        "reasoning": 128
+      },
+      "cost": 0.011115,
+      "elapsed_seconds": 2.25,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:21:42.213679",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "raw": "200,000원 | confidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 85,
+        "output": 93,
+        "total": 178,
+        "reasoning": 64
+      },
+      "cost": 0.000914,
+      "elapsed_seconds": 1.67,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:21:44.881161",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3-mini",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "한국 B2B SaaS ARPU": "200,000원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 85,
+        "output": 169,
+        "total": 254,
+        "reasoning": 128
+      },
+      "cost": 0.000837,
+      "elapsed_seconds": 2.04,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:21:47.923214",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o4-mini",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "raw": "200,000원\n\nconfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 85,
+        "output": 157,
+        "total": 242,
+        "reasoning": 128
+      },
+      "cost": 0.000784,
+      "elapsed_seconds": 2.14,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:21:51.064070",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "api_model": "claude-3-5-haiku-20241022",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "value": 200000,
+        "confidence": 1.0,
+        "unit": "원"
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 143,
+        "output": 33,
+        "total": 176
+      },
+      "cost": 0.000246,
+      "elapsed_seconds": 1.26,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:21:53.327385",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.7",
+      "api_model": "claude-3-7-sonnet-20250219",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "value": "200,000원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 55
+      },
+      "tokens": {
+        "input": 143,
+        "output": 31,
+        "total": 174
+      },
+      "cost": 0.000894,
+      "elapsed_seconds": 1.36,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:21:55.686651",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-4",
+      "api_model": "claude-sonnet-4-20250514",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "extracted_value": "200,000원",
+        "confidence": 1.0,
+        "data_type": "한국 B2B SaaS ARPU",
+        "source": "주어진 데이터에서 정확히 매칭된 값"
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 143,
+        "output": 82,
+        "total": 225
+      },
+      "cost": 0.001659,
+      "elapsed_seconds": 3.0,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:21:59.691326",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-4",
+      "api_model": "claude-opus-4-20250514",
+      "scenario_id": "phase0",
+      "scenario_name": "Phase 0: Literal",
+      "phase": 0,
+      "response": {
+        "extracted_value": "200,000원",
+        "confidence": 1.0,
+        "source": "한국 B2B SaaS ARPU"
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 143,
+        "output": 53,
+        "total": 196
+      },
+      "cost": 0.00612,
+      "elapsed_seconds": 3.02,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:03.718825",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "value": 33000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 187,
+        "output": 14,
+        "total": 201
+      },
+      "cost": 3.6e-05,
+      "elapsed_seconds": 1.12,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:05.841278",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1-mini",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "value": 33000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 187,
+        "output": 14,
+        "total": 201
+      },
+      "cost": 9.7e-05,
+      "elapsed_seconds": 0.66,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:07.505204",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "raw": "월 렌탈료: 33,000원\nconfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 103,
+        "output": 91,
+        "total": 194,
+        "reasoning": 64
+      },
+      "cost": 0.000208,
+      "elapsed_seconds": 2.82,
+      "parameters": {
+        "reasoning_effort": "low",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:22:11.324864",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "value": 33000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 187,
+        "output": 14,
+        "total": 201
+      },
+      "cost": 0.000607,
+      "elapsed_seconds": 0.76,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:13.086662",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "value": 33000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 187,
+        "output": 14,
+        "total": 201
+      },
+      "cost": 0.000486,
+      "elapsed_seconds": 1.18,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:15.268715",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "monthly_rental_fee": "33,000원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 103,
+        "output": 225,
+        "total": 328,
+        "reasoning": 192
+      },
+      "cost": 0.002379,
+      "elapsed_seconds": 4.49,
+      "parameters": {
+        "reasoning_effort": "low",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:22:20.765359",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "raw": "월 렌탈료: 33,000원  \nconfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 103,
+        "output": 32,
+        "total": 135,
+        "reasoning": 5
+      },
+      "cost": 0.000449,
+      "elapsed_seconds": 0.95,
+      "parameters": {
+        "reasoning_effort": "low",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:22:22.723925",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "월_렌탈료": "33,000원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 103,
+        "output": 232,
+        "total": 335,
+        "reasoning": 192
+      },
+      "cost": 0.015465,
+      "elapsed_seconds": 2.82,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:22:26.550660",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "answer": "33,000원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 103,
+        "output": 167,
+        "total": 270,
+        "reasoning": 128
+      },
+      "cost": 0.001542,
+      "elapsed_seconds": 1.78,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:22:29.338429",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3-mini",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "raw": "월 렌탈료: 33,000원  \nConfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 103,
+        "output": 95,
+        "total": 198,
+        "reasoning": 64
+      },
+      "cost": 0.000531,
+      "elapsed_seconds": 1.52,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:22:31.863256",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o4-mini",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "raw": "월 렌탈료: 33,000원  \nconfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 103,
+        "output": 228,
+        "total": 331,
+        "reasoning": 192
+      },
+      "cost": 0.001117,
+      "elapsed_seconds": 3.52,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:22:36.379358",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "api_model": "claude-3-5-haiku-20241022",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "monthly_rental_fee": 33000,
+        "confidence": 1.0,
+        "currency": "KRW"
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 166,
+        "output": 39,
+        "total": 205
+      },
+      "cost": 0.000289,
+      "elapsed_seconds": 1.34,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:38.723781",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.7",
+      "api_model": "claude-3-7-sonnet-20250219",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "월_렌탈료": "33,000원",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 166,
+        "output": 37,
+        "total": 203
+      },
+      "cost": 0.001053,
+      "elapsed_seconds": 1.38,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:41.107390",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-4",
+      "api_model": "claude-sonnet-4-20250514",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "monthly_rental_fee": 33000,
+        "currency": "KRW",
+        "confidence": 1.0,
+        "source": "RAG_search_result"
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 166,
+        "output": 57,
+        "total": 223
+      },
+      "cost": 0.001353,
+      "elapsed_seconds": 2.91,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:45.018369",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-4",
+      "api_model": "claude-opus-4-20250514",
+      "scenario_id": "phase1",
+      "scenario_name": "Phase 1: Direct RAG",
+      "phase": 1,
+      "response": {
+        "monthly_rental_fee": 33000,
+        "currency": "KRW",
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 166,
+        "output": 43,
+        "total": 209
+      },
+      "cost": 0.005715,
+      "elapsed_seconds": 2.85,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:48.867645",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "value": 1600000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 183,
+        "output": 15,
+        "total": 198
+      },
+      "cost": 3.6e-05,
+      "elapsed_seconds": 1.06,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:50.927794",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1-mini",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "value": 1600000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 183,
+        "output": 15,
+        "total": 198
+      },
+      "cost": 9.7e-05,
+      "elapsed_seconds": 0.91,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:52.843321",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "raw": "계산 과정:\n1. 값 대입: LTV = 80,000원 / 0.05\n2. 나눗셈: 80,000 ÷ 0.05 = 1,600,000\n3. 결과: LTV = 1,600,000원\n\nconfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 106,
+        "output": 144,
+        "total": 250,
+        "reasoning": 64
+      },
+      "cost": 0.000315,
+      "elapsed_seconds": 2.99,
+      "parameters": {
+        "reasoning_effort": "low",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:22:56.841652",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "value": 1600000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 183,
+        "output": 15,
+        "total": 198
+      },
+      "cost": 0.000607,
+      "elapsed_seconds": 1.07,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:22:58.915164",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "value": 1600000,
+        "unit": "원",
+        "confidence": 1
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": false,
+        "total_score": 75
+      },
+      "tokens": {
+        "input": 183,
+        "output": 15,
+        "total": 198
+      },
+      "cost": 0.000486,
+      "elapsed_seconds": 1.0,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:23:00.916867",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "raw": "계산 과정:\n1) LTV = ARPU / Churn_Rate = 80,000원 / 0.05\n2) 80,000 ÷ 0.05 = 1,600,000\n3) LTV = 1,600,000원\n\n결과: 1,600,000원\nconfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 106,
+        "output": 151,
+        "total": 257,
+        "reasoning": 64
+      },
+      "cost": 0.001643,
+      "elapsed_seconds": 3.05,
+      "parameters": {
+        "reasoning_effort": "low",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:23:04.973588",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "raw": "1. 공식에 값 대입  \n   LTV = ARPU / Churn_Rate  \n   LTV = 80,000원 / 0.05  \n\n2. 나눗셈 수행  \n   80,000 ÷ 0.05 = 1,600,000  \n\n3. 결과 (원 단위)  \n   LTV = 1,600,000원  \n\nconfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 106,
+        "output": 125,
+        "total": 231,
+        "reasoning": 26
+      },
+      "cost": 0.001383,
+      "elapsed_seconds": 1.94,
+      "parameters": {
+        "reasoning_effort": "low",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:23:07.920444",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "raw": "아래와 같이 계산할 수 있습니다:\n\n1) 공식에 값 대입:  \n   LTV = 80,000 / 0.05\n\n2) 나눗셈 수행:  \n   LTV = 1,600,000\n\n3) 결과를 원 단위로 표현:  \n   LTV = 1,600,000원\n\nconfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 106,
+        "output": 161,
+        "total": 267,
+        "reasoning": 64
+      },
+      "cost": 0.01125,
+      "elapsed_seconds": 1.79,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:23:10.711272",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "raw": "계산 과정  \n1. 공식 대입: LTV = 80,000 원 ÷ 0.05  \n2. 나눗셈 수행: 80,000 ÷ 0.05 = 1,600,000  \n3. 결과: LTV = 1,600,000 원\n\nconfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 106,
+        "output": 93,
+        "total": 199
+      },
+      "cost": 0.000956,
+      "elapsed_seconds": 1.44,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:23:13.155218",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3-mini",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "raw": "계산 과정:\n1. 공식에 값 대입: LTV = 80,000원 / 0.05\n2. 나눗셈 수행: 80,000 ÷ 0.05 = 1,600,000\n3. 결과를 원 단위로 표현: 1,600,000원\n\nConfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 106,
+        "output": 100,
+        "total": 206
+      },
+      "cost": 0.000557,
+      "elapsed_seconds": 2.37,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:23:16.523533",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o4-mini",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "raw": "계산 과정  \n1. 공식에 값 대입  \n   LTV = 80,000원 ÷ 0.05  \n2. 나눗셈 수행  \n   80,000 ÷ 0.05 = 1,600,000  \n3. 결과 표현  \n   LTV = 1,600,000원  \n\nconfidence: 1.0",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 106,
+        "output": 97,
+        "total": 203
+      },
+      "cost": 0.000543,
+      "elapsed_seconds": 2.61,
+      "parameters": {
+        "reasoning_effort": "low"
+      },
+      "timestamp": "2025-11-21T10:23:20.140191",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "api_model": "claude-3-5-haiku-20241022",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "LTV": 1600000,
+        "calculation_steps": [
+          "ARPU(80,000원) / Churn_Rate(0.05) = 1,600,000원",
+          "80,000 ÷ 0.05 = 1,600,000"
+        ],
+        "input_values": {
+          "ARPU": 80000,
+          "Churn_Rate": 0.05
+        },
+        "confidence": 1.0,
+        "currency": "KRW"
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 171,
+        "output": 139,
+        "total": 310
+      },
+      "cost": 0.000693,
+      "elapsed_seconds": 2.38,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:23:23.526067",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.7",
+      "api_model": "claude-3-7-sonnet-20250219",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "calculation": {
+          "formula": "LTV = ARPU / Churn_Rate",
+          "values": {
+            "ARPU": 80000,
+            "Churn_Rate": 0.05
+          },
+          "steps": [
+            "LTV = 80,000원 / 0.05",
+            "LTV = 1,600,000원"
+          ]
+        },
+        "result": {
+          "LTV": 1600000,
+          "formatted": "1,600,000원"
+        },
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 171,
+        "output": 155,
+        "total": 326
+      },
+      "cost": 0.002838,
+      "elapsed_seconds": 2.48,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:23:27.011398",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-4",
+      "api_model": "claude-sonnet-4-20250514",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "calculation": {
+          "formula": "LTV = ARPU / Churn_Rate",
+          "given_values": {
+            "ARPU": "80,000원",
+            "Churn_Rate": 0.05
+          },
+          "calculation_steps": [
+            {
+              "step": 1,
+              "description": "공식에 값 대입",
+              "formula": "LTV = 80,000 / 0.05"
+            },
+            {
+              "step": 2,
+              "description": "나눗셈 수행",
+              "calculation": "80,000 ÷ 0.05 = 1,600,000"
+            },
+            {
+              "step": 3,
+              "description": "결과를 원 단위로 표현",
+              "result": "1,600,000원"
+            }
+          ],
+          "final_result": {
+            "LTV": "1,600,000원",
+            "interpretation": "고객 1명당 평균 생애가치는 160만원"
+          }
+        },
+        "confidence": 1.0
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 171,
+        "output": 298,
+        "total": 469
+      },
+      "cost": 0.004983,
+      "elapsed_seconds": 4.89,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:23:32.906143",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-4",
+      "api_model": "claude-opus-4-20250514",
+      "scenario_id": "phase2",
+      "scenario_name": "Phase 2: Calculation",
+      "phase": 2,
+      "response": {
+        "ltv_calculation": {
+          "formula": "LTV = ARPU / Churn_Rate",
+          "given_values": {
+            "arpu": 80000,
+            "churn_rate": 0.05,
+            "currency": "KRW"
+          },
+          "calculation_steps": [
+            {
+              "step": 1,
+              "description": "공식에 값 대입",
+              "expression": "LTV = 80,000 / 0.05"
+            },
+            {
+              "step": 2,
+              "description": "나눗셈 수행",
+              "calculation": "80,000 ÷ 0.05 = 1,600,000"
+            },
+            {
+              "step": 3,
+              "description": "결과를 원 단위로 표현",
+              "result": "1,600,000원"
+            }
+          ],
+          "result": {
+            "ltv_value": 1600000,
+            "formatted_value": "1,600,000원",
+            "currency": "KRW"
+          },
+          "interpretation": {
+            "meaning": "평균적으로 한 고객이 서비스를 이용하는 전체 기간 동안 1,600,000원의 수익을 창출할 것으로 예상됨",
+            "calculation_logic": "월 평균 수익(80,000원)을 월 이탈률(5%)로 나누어 고객의 예상 생애가치를 산출"
+          },
+          "confidence": 1.0
+        }
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 20
+      },
+      "tokens": {
+        "input": 171,
+        "output": 429,
+        "total": 600
+      },
+      "cost": 0.03474,
+      "elapsed_seconds": 9.39,
+      "parameters": {
+        "temperature": 0.0
+      },
+      "timestamp": "2025-11-21T10:23:43.300547",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "value": 78000,
+        "unit": "원",
+        "confidence": 0.85,
+        "reasoning": "한국 B2B SaaS 시장의 성숙도와 구매력을 반영하여 글로벌 평균 ARPU에 0.6의 조정 계수를 적용했습니다."
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 267,
+        "output": 54,
+        "total": 321
+      },
+      "cost": 7.2e-05,
+      "elapsed_seconds": 1.46,
+      "parameters": {
+        "temperature": 0.3
+      },
+      "timestamp": "2025-11-21T10:23:45.767330",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1-mini",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "value": 78000,
+        "unit": "원",
+        "confidence": 0.85,
+        "reasoning": "글로벌 평균 ARPU 100달러에 한국 시장 조정 계수 0.6과 환율 1,300원을 적용하여 산출함"
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 267,
+        "output": 53,
+        "total": 320
+      },
+      "cost": 0.000192,
+      "elapsed_seconds": 1.05,
+      "parameters": {
+        "temperature": 0.3
+      },
+      "timestamp": "2025-11-21T10:23:47.818696",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "raw": "추정 결과\n- 점추정: $55 ≒ 71,500원 (환율 1,300원/$)\n- 합리적 범위: $45–$80 ≒ 58,500원–104,000원\n\n계산\n- $100 × 0.55 = $55 → 55 × 1,300 = 71,500원\n- 범위: $100 × 0.45–0.80 = $45–$80 → 58,500원–104,000원\n\nReasoning: 글로벌 평균 ARPU $100에 한국의 구매력·시장 성숙도를 반영한 조정계수 0.45–0.80(중간값 0.55)을 적용해 산출함.\n\nConfidence: 0.8",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 159,
+        "output": 1011,
+        "total": 1170,
+        "reasoning": 832
+      },
+      "cost": 0.002062,
+      "elapsed_seconds": 14.85,
+      "parameters": {
+        "reasoning_effort": "medium",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:24:03.677488",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "value": 78000,
+        "unit": "원",
+        "confidence": 0.85,
+        "reasoning": "한국 시장의 구매력과 성숙도를 고려한 글로벌 평균 ARPU의 60%를 환율로 변환하여 추정."
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 267,
+        "output": 49,
+        "total": 316
+      },
+      "cost": 0.001157,
+      "elapsed_seconds": 2.02,
+      "parameters": {
+        "temperature": 0.3
+      },
+      "timestamp": "2025-11-21T10:24:06.698843",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "value": 78000,
+        "unit": "원",
+        "confidence": 0.85,
+        "reasoning": "글로벌 평균 ARPU에 한국 시장 조정 계수와 환율을 곱해 산출했습니다."
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 267,
+        "output": 43,
+        "total": 310
+      },
+      "cost": 0.000878,
+      "elapsed_seconds": 1.35,
+      "parameters": {
+        "temperature": 0.3
+      },
+      "timestamp": "2025-11-21T10:24:09.054273",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "raw": "- Reasoning: 글로벌 평균 ARPU에 한국 시장 조정계수를 곱한 뒤 환율을 적용한다.\n- 가정: 글로벌 평균 ARPU $100, 한국 조정계수 0.55~0.65, 환율 1,300원/$\n- 계산: $100 × 0.55~0.65 = $55~$65 → 71,500~84,500원\n- 추정: 월 72,000~85,000원 (중앙값 ≈ 78,000원)\n- Confidence: 0.8",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 159,
+        "output": 1284,
+        "total": 1443,
+        "reasoning": 1152
+      },
+      "cost": 0.013039,
+      "elapsed_seconds": 18.09,
+      "parameters": {
+        "reasoning_effort": "medium",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:24:28.150448",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "raw": "1. 템플릿 논리 이해  \n- 글로벌 B2B SaaS 월 ARPU(가정): $100  \n- 한국은 구매력·시장 성숙도·가격 민감도 때문에 미국 대비 할인 계수(k)를 곱함  \n- 달러 ARPU × k × 환율 = 한국 월 ARPU(원)\n\n2. 유사한 접근법 적용  \n- 글로벌 평균 ARPU: $100  \n- 한국 시장 조정 계수(한국의 IT지출/구매력/SMB 비중 감안): 0.55  \n- 환율: 1,300원/$  \n\n3. 계산 및 추정  \n- $100 × 0.55 = $55  \n- $55 × 1,300원 ≒ 71,500원  \n\n→ 한국 B2B SaaS 월 ARPU 추정: **약 7만 2천 원 (합리적 범위: 6만 5천 ~ 8만 5천 원)**  \n\nReasoning: 글로벌 평균 ARPU를 기준으로 한국의 구매력·IT지출 수준·시장 성숙도를 반영한 조정 계수를 곱한 뒤 환율을 적용해 한국 B2B SaaS ARPU를 역산했다.  \n\nConfidence: **0.8**",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 159,
+        "output": 793,
+        "total": 952,
+        "reasoning": 511
+      },
+      "cost": 0.008129,
+      "elapsed_seconds": 8.48,
+      "parameters": {
+        "reasoning_effort": "medium",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:24:37.634381",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "raw": "• 추정 ARPU: 약 78,000원  \n• Reasoning(1문장 요약): 글로벌 평균 ARPU($100)에 한국 시장 조정 계수(0.6)와 환율(1,300원/$)를 적용하여 약 78,000원으로 산출된다.  \n• Confidence: 0.9  ",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 159,
+        "output": 634,
+        "total": 793,
+        "reasoning": 512
+      },
+      "cost": 0.040425,
+      "elapsed_seconds": 4.67,
+      "parameters": {
+        "reasoning_effort": "medium"
+      },
+      "timestamp": "2025-11-21T10:24:43.310386",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "raw": "추정 ARPU: 약 80,000원/월\n\nReasoning(1문장): 글로벌 평균 ARPU인 $100에 한국 시장 조정 계수 0.6을 곱하고 1,300원/$ 환율을 적용하여 ≈78,000원으로 계산하되 오차 범위를 고려해 약 8만 원 수준으로 제시함.\n\nConfidence: 0.8",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 159,
+        "output": 425,
+        "total": 584,
+        "reasoning": 320
+      },
+      "cost": 0.003718,
+      "elapsed_seconds": 12.01,
+      "parameters": {
+        "reasoning_effort": "medium"
+      },
+      "timestamp": "2025-11-21T10:24:56.321602",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3-mini",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "raw": "한국 B2B SaaS ARPU는 대략 78,000원 정도입니다. (reasoning: 글로벌 평균 ARPU 100달러에 한국 시장 조정 계수 0.6을 곱한 후 환율 1,300원/달러로 변환한 결과이며, confidence는 0.9입니다.)",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 159,
+        "output": 341,
+        "total": 500,
+        "reasoning": 256
+      },
+      "cost": 0.001675,
+      "elapsed_seconds": 3.38,
+      "parameters": {
+        "reasoning_effort": "medium"
+      },
+      "timestamp": "2025-11-21T10:25:00.704778",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o4-mini",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "raw": "한국 B2B SaaS의 월 ARPU를 글로벌 평균 월 $150에 한국 시장 조정 계수 0.6 및 환율 1,300원을 적용해 약 117,000원으로 추정합니다.  \nReasoning: 글로벌 B2B SaaS 평균 월 ARPU $150×0.6= $90 → 117,000원.  \nConfidence: 0.85",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 159,
+        "output": 871,
+        "total": 1030,
+        "reasoning": 768
+      },
+      "cost": 0.004007,
+      "elapsed_seconds": 9.33,
+      "parameters": {
+        "reasoning_effort": "medium"
+      },
+      "timestamp": "2025-11-21T10:25:11.031781",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "api_model": "claude-3-5-haiku-20241022",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "estimated_ARPU": 65000,
+        "currency": "KRW",
+        "reasoning": "글로벌 B2B SaaS 평균 ARPU에 한국 시장의 특수성을 반영하여 보수적으로 추정",
+        "confidence": 0.75,
+        "calculation_method": {
+          "global_baseline": 100,
+          "market_adjustment_factor": 0.65,
+          "exchange_rate": 1300
+        },
+        "range": {
+          "min": 55000,
+          "max": 75000
+        }
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 244,
+        "output": 162,
+        "total": 406
+      },
+      "cost": 0.000843,
+      "elapsed_seconds": 3.15,
+      "parameters": {
+        "temperature": 0.3
+      },
+      "timestamp": "2025-11-21T10:25:15.191895",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.7",
+      "api_model": "claude-3-7-sonnet-20250219",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "analysis": {
+          "estimate": {
+            "value": 78000,
+            "unit": "KRW",
+            "period": "monthly"
+          },
+          "reasoning": "글로벌 B2B SaaS ARPU($100)에 한국 시장 특성을 반영한 조정 계수(0.6)를 적용하고 현재 환율(1,300원/$)로 환산했습니다.",
+          "confidence": 0.85,
+          "sources": [
+            "글로벌 SaaS 시장 보고서",
+            "한국 클라우드 산업 백서",
+            "시장 전문가 의견"
+          ]
+        },
+        "metadata": {
+          "timestamp": "2023-11-01",
+          "analyst": "AI Market Analyst",
+          "version": "1.0"
+        }
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 20
+      },
+      "tokens": {
+        "input": 244,
+        "output": 234,
+        "total": 478
+      },
+      "cost": 0.004242,
+      "elapsed_seconds": 5.12,
+      "parameters": {
+        "temperature": 0.3
+      },
+      "timestamp": "2025-11-21T10:25:21.313351",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-4",
+      "api_model": "claude-sonnet-4-20250514",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "reasoning": "글로벌 B2B SaaS ARPU 대비 한국 시장의 구매력과 SaaS 도입률을 고려한 조정 계수를 적용하여 추정",
+        "estimate": {
+          "monthly_arpu_krw": 85000,
+          "monthly_arpu_usd": 65,
+          "annual_arpu_krw": 1020000,
+          "annual_arpu_usd": 785
+        },
+        "calculation_basis": {
+          "global_average_arpu_usd": 130,
+          "korea_adjustment_factor": 0.5,
+          "exchange_rate": 1300,
+          "adjusted_arpu_usd": 65
+        },
+        "market_factors": {
+          "purchasing_power": "중간 수준",
+          "saas_adoption_maturity": "성장 단계",
+          "competition_level": "높음",
+          "enterprise_vs_smb_mix": "SMB 중심"
+        },
+        "confidence": 0.75
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 244,
+        "output": 289,
+        "total": 533
+      },
+      "cost": 0.005067,
+      "elapsed_seconds": 6.33,
+      "parameters": {
+        "temperature": 0.3
+      },
+      "timestamp": "2025-11-21T10:25:28.642373",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-4",
+      "api_model": "claude-opus-4-20250514",
+      "scenario_id": "phase3_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿)",
+      "phase": 3,
+      "response": {
+        "korea_b2b_saas_arpu": {
+          "global_average_usd": 100,
+          "korea_adjustment_factor": 0.6,
+          "exchange_rate_krw_per_usd": 1300,
+          "korea_arpu_usd": 60,
+          "korea_arpu_krw": 78000,
+          "reasoning": "글로벌 대비 한국의 구매력과 B2B SaaS 시장 성숙도를 고려하여 60% 수준으로 조정했습니다.",
+          "confidence": 0.85
+        }
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 20
+      },
+      "tokens": {
+        "input": 244,
+        "output": 173,
+        "total": 417
+      },
+      "cost": 0.016635,
+      "elapsed_seconds": 4.81,
+      "parameters": {
+        "temperature": 0.3
+      },
+      "timestamp": "2025-11-21T10:25:34.454937",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "value": 25000,
+        "unit": "원",
+        "confidence": 0.7,
+        "reasoning": "직장인 30-40대는 여유 있는 소비를 할 수 있어 월 2.5만원은 적절한 가격으로 보인다. 클래스101과 탈잉의 가격대를 고려할 때, 비슷한 가치의 서비스를 제공하며 구독 모델의 장점을 살릴 수 있다."
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 283,
+        "output": 84,
+        "total": 367
+      },
+      "cost": 9.3e-05,
+      "elapsed_seconds": 4.0,
+      "parameters": {
+        "temperature": 0.5
+      },
+      "timestamp": "2025-11-21T10:25:39.452767",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1-mini",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "value": 25000,
+        "unit": "원",
+        "confidence": 0.75,
+        "reasoning": "30-40대 직장인의 월 지불 여력과 클래스101, 탈잉의 단건 강의 가격(약3-5만원) 대비 구독 모델은 할인 효과 반영해 월 2-3만원 예상. 실시간/VOD 편의성 고려해 2.5만원으로 추정."
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 283,
+        "output": 88,
+        "total": 371
+      },
+      "cost": 0.000254,
+      "elapsed_seconds": 1.78,
+      "parameters": {
+        "temperature": 0.5
+      },
+      "timestamp": "2025-11-21T10:25:42.238032",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "raw": "추천 월 구독료: 25,000원(권장). 현실적 범위: 15,000–40,000원/월.\n\n추정 근거(200자 이내): 30–40대 직장인의 지불여력, 클래스101·탈잉의 단건 강좌(약 2만–10만원대)를 구독으로 환산했을 때의 편의성·품질 프리미엄을 반영해 산정.\n\nConfidence: 0.75",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 163,
+        "output": 757,
+        "total": 920,
+        "reasoning": 640
+      },
+      "cost": 0.001555,
+      "elapsed_seconds": 12.04,
+      "parameters": {
+        "reasoning_effort": "medium",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:25:55.279088",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "value": 30000,
+        "unit": "원",
+        "confidence": 0.75,
+        "reasoning": "타겟 고객의 지불 능력과 30-40대 직장인의 소득 수준을 고려해 월 구독료를 설정했습니다. 클래스101과 탈잉과 같은 경쟁사의 가격대는 대략 2-4만원 사이로 추정되며, 온라인 실시간/VOD 강의의 편의성과 품질을 고려할 때 중간 가격대인 3만원이 적절하다고 판단했습니다. 구독 모델은 지속적인 학습을 원하는 고객에게 적합합니다."
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 283,
+        "output": 128,
+        "total": 411
+      },
+      "cost": 0.001987,
+      "elapsed_seconds": 2.8,
+      "parameters": {
+        "temperature": 0.5
+      },
+      "timestamp": "2025-11-21T10:25:59.080080",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "value": 39000,
+        "unit": "원",
+        "confidence": 0.7,
+        "reasoning": "30-40대 직장인은 일정 수준의 지불 능력이 있고, 온라인 취미교육 플랫폼의 주요 경쟁사(클래스101, 탈잉)는 단건 결제 기준 2~5만원, 구독형은 할인 적용 시 3~4만원대일 것으로 추정된다. 실시간/VOD 제공, 편의성과 품질을 감안해 월 3.9만원이 적정하다."
+      },
+      "quality_score": {
+        "has_value": true,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": true,
+        "confidence_sufficient": true,
+        "total_score": 100
+      },
+      "tokens": {
+        "input": 283,
+        "output": 111,
+        "total": 394
+      },
+      "cost": 0.001454,
+      "elapsed_seconds": 2.32,
+      "parameters": {
+        "temperature": 0.5
+      },
+      "timestamp": "2025-11-21T10:26:02.408685",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "raw": "추천 모델: 하이브리드(구독 + 단건)\n\n월 구독료 추정\n- VOD Basic(무제한): 24,900원\n- Standard(무제한 + 월 1회 라이브): 34,900원\n- Pro(무제한 + 월 2~3회 라이브/피드백): 49,000원\n\n단건 결제 추정\n- VOD 클래스(6~12h): 99,000~149,000원\n- 라이브 워크숍(1~2h): 30,000~70,000원\n\nReasoning: 30-40대 월 소득 대비 취미지출 3~5만원 가정. 경쟁사 단건 10만±, 일부 구독 2~3만원대로 추정. 월 2회 이상 이용시 구독이 유리하도록 2.5~5만원 구간 제시.\n\nConfidence: 0.72",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 163,
+        "output": 1818,
+        "total": 1981,
+        "reasoning": 1600
+      },
+      "cost": 0.018384,
+      "elapsed_seconds": 24.05,
+      "parameters": {
+        "reasoning_effort": "medium",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:26:27.465725",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "raw": "추정 월 구독료: **29,000 ~ 39,000원**  \n(실제 책정은 **34,000원 전후**를 메인 플랜으로 추천)\n\n- 단건 결제: 프리미엄/심화 강의는 **7~15만 원/강** 수준으로 별도 판매 병행(구독은 폭넓은 입문·취미 중심, 단건은 고가·전문 과정).\n\nReasoning (≤200자):  \n30–40대 직장인 취미 지출 5–10만/월 가정, 경쟁사 단건 7–15만/강 추정, 무제한/다수 강의 제공 가치 반영해 단건 대비 40~60% 수준 3–4만대로 설정.\n\nconfidence: **0.7**",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 163,
+        "output": 1198,
+        "total": 1361,
+        "reasoning": 1011
+      },
+      "cost": 0.012184,
+      "elapsed_seconds": 12.69,
+      "parameters": {
+        "reasoning_effort": "medium",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:26:41.160548",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "raw": "추정 구독료: 월 25,000원 ~ 30,000원  \nReasoning: 직장인(30~40대)의 평균 지불 의사와 경쟁사(클래스101, 탈잉) 클래스 단가, 편의성과 품질 가치를 고려하면 이 범위가 합리적임.  \nConfidence: 0.7  ",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 163,
+        "output": 924,
+        "total": 1087,
+        "reasoning": 832
+      },
+      "cost": 0.057885,
+      "elapsed_seconds": 9.95,
+      "parameters": {
+        "reasoning_effort": "medium"
+      },
+      "timestamp": "2025-11-21T10:26:52.113680",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "raw": "월 구독료(추정): 18,900원\n\nReasoning(200자 이내): 30‒40대 직장인은 월 여가 지출 5‒10만 원 확보, 경쟁사 Class101+ 1.5만, 탈잉 패스 2만 추정. 단건 평균 2.5만/강 대비 30% 절감 가치를 주려면 1.8‒2.0만이 적정 → 18,900원.\n\nConfidence: 0.75",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 163,
+        "output": 1284,
+        "total": 1447,
+        "reasoning": 1152
+      },
+      "cost": 0.010598,
+      "elapsed_seconds": 18.71,
+      "parameters": {
+        "reasoning_effort": "medium"
+      },
+      "timestamp": "2025-11-21T10:27:11.828810",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3-mini",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "raw": "추정 답변: 월 약 35,000원\n\nreasoning: 30-40대 직장인의 지불능력과 클래스101·탈잉 가격대를 감안해, 편의성과 프리미엄 콘텐츠 가치를 반영한 구독료로 월 30,000~40,000원 범위가 적정할 것으로 예상됨.  \nconfidence: 0.7",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 163,
+        "output": 546,
+        "total": 709,
+        "reasoning": 448
+      },
+      "cost": 0.002582,
+      "elapsed_seconds": 5.0,
+      "parameters": {
+        "reasoning_effort": "medium"
+      },
+      "timestamp": "2025-11-21T10:27:17.830483",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o4-mini",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "raw": "추정 월 구독료: 35,000원\n\n추정 논리 (145자):\n30·40대 직장인은 월 3~5만원대 지불 여력. 클래스101·탈잉 강의당 5~20만원 대비, 실시간/VOD 무제한 이용 시 월 3.5만원이면 합리적 가치 제공.\n\nConfidence: 0.7",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 163,
+        "output": 806,
+        "total": 969,
+        "reasoning": 704
+      },
+      "cost": 0.003726,
+      "elapsed_seconds": 8.91,
+      "parameters": {
+        "reasoning_effort": "medium"
+      },
+      "timestamp": "2025-11-21T10:27:27.743755",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "api_model": "claude-3-5-haiku-20241022",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "estimated_monthly_subscription_price": 39900,
+        "pricing_reasoning": "30-40대 직장인 타겟, 고품질 온라인 교육 가치, 경쟁사 유사 서비스 고려, 월 4만원 수준 적정",
+        "pricing_range": {
+          "min": 29900,
+          "max": 49900
+        },
+        "confidence": 0.75,
+        "factors_influencing_price": [
+          "고객 구매력",
+          "콘텐츠 다양성",
+          "실시간/VOD 강의 품질",
+          "편의성"
+        ]
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 45
+      },
+      "tokens": {
+        "input": 280,
+        "output": 187,
+        "total": 467
+      },
+      "cost": 0.000972,
+      "elapsed_seconds": 3.67,
+      "parameters": {
+        "temperature": 0.5
+      },
+      "timestamp": "2025-11-21T10:27:32.423187",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.7",
+      "api_model": "claude-3-7-sonnet-20250219",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "reasoning": "30-40대 직장인은 구매력이 높고 자기계발 의지가 있음. 경쟁사인 클래스101, 탈잉 등은 15,000~39,000원 사이의 월 구독료를 책정. 온라인 VOD와 실시간 강의 모두 제공하는 서비스 특성상 중간~상위 가격대가 적절.",
+        "monthly_subscription_fee": {
+          "low_range": 19000,
+          "high_range": 29000,
+          "recommended": 24900,
+          "confidence": 0.75
+        }
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 35
+      },
+      "tokens": {
+        "input": 280,
+        "output": 191,
+        "total": 471
+      },
+      "cost": 0.003705,
+      "elapsed_seconds": 4.03,
+      "parameters": {
+        "temperature": 0.5
+      },
+      "timestamp": "2025-11-21T10:27:37.460505",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-4",
+      "api_model": "claude-sonnet-4-20250514",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "estimated_monthly_subscription": {
+          "price_range": "29,000원 - 49,000원",
+          "optimal_price": "39,000원",
+          "reasoning": "30-40대 직장인의 월 가처분소득 대비 합리적 수준(약 1-2%). 클래스101 단건 강의 평균 5-15만원 대비 구독 모델의 접근성 확보. 넷플릭스(17,000원) 대비 전문교육 프리미엄 반영하되 부담 최소화.",
+          "confidence": 0.72
+        },
+        "pricing_factors": {
+          "target_affordability": {
+            "monthly_disposable_income": "200-300만원",
+            "education_budget_ratio": "1-3%",
+            "acceptable_range": "20,000-60,000원"
+          },
+          "competitive_landscape": {
+            "estimated_competitors": {
+              "클래스101": "단건 50,000-150,000원 (월 환산시 약 25,000-50,000원)",
+              "탈잉": "단건 30,000-100,000원 (월 환산시 약 20,000-40,000원)"
+            },
+            "positioning": "중간 가격대로 접근성 확보"
+          },
+          "value_proposition": {
+            "convenience_premium": "10-20%",
+            "unlimited_access": "단건 대비 50-70% 할인 효과",
+            "quality_assurance": "프리미엄 정당화"
+          }
+        },
+        "subscription_advantages": {
+          "customer_benefits": [
+            "다양한 강의 무제한 수강",
+            "월 부담 분산으로 접근성 향상",
+            "지속적 학습 동기 부여"
+          ],
+          "business_benefits": [
+            "안정적 수익 구조",
+            "높은 고객 생애 가치",
+            "이탈률 관리 용이성"
+          ]
+        }
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 20
+      },
+      "tokens": {
+        "input": 280,
+        "output": 574,
+        "total": 854
+      },
+      "cost": 0.00945,
+      "elapsed_seconds": 12.08,
+      "parameters": {
+        "temperature": 0.5
+      },
+      "timestamp": "2025-11-21T10:27:50.547364",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-4",
+      "api_model": "claude-opus-4-20250514",
+      "scenario_id": "phase3_no_template",
+      "scenario_name": "Phase 3: Guestimation (템플릿 없음)",
+      "phase": 3,
+      "response": {
+        "reasoning": "30-40대 직장인의 월 가처분소득 중 취미활동 지출은 약 10-20만원으로 추정. 클래스101, 탈잉 등 유사 플랫폼은 월 2-5만원대 구독료 책정. 온라인 교육의 편의성과 VOD 무제한 시청 가치를 고려하되, 오프라인 대비 낮은 가격 기대심리 반영. 넷플릭스(1.7만원) 등 구독 서비스 대비 교육 콘텐츠의 프리미엄 포지셔닝 필요.",
+        "monthly_subscription_fee": {
+          "basic_plan": 29900,
+          "premium_plan": 49900,
+          "currency": "KRW"
+        },
+        "confidence": 0.75,
+        "key_factors": [
+          "타겟 고객 소득수준",
+          "경쟁사 추정 가격대",
+          "온라인 교육 시장 성장세",
+          "구독 경제 수용도"
+        ]
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 280,
+        "output": 337,
+        "total": 617
+      },
+      "cost": 0.029475,
+      "elapsed_seconds": 9.54,
+      "parameters": {
+        "temperature": 0.5
+      },
+      "timestamp": "2025-11-21T10:28:01.092602",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase4_simple",
+      "error": "Error code: 400 - {'error': {'message': \"Invalid schema for response_format 'fermi_simple': In context=(), 'required' is required to be supplied and to be an array including every key in properties. Missing 'decomposition'.\", 'type': 'invalid_request_error', 'param': 'response_format', 'code': None}}",
+      "elapsed_seconds": 0.28,
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1-mini",
+      "scenario_id": "phase4_simple",
+      "error": "Error code: 400 - {'error': {'message': \"Invalid schema for response_format 'fermi_simple': In context=(), 'required' is required to be supplied and to be an array including every key in properties. Missing 'decomposition'.\", 'type': 'invalid_request_error', 'param': 'response_format', 'code': None}}",
+      "elapsed_seconds": 0.27,
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "scenario_id": "phase4_simple",
+      "scenario_name": "Phase 4: Simple Fermi",
+      "phase": 4,
+      "response": {
+        "raw": "추정결과: 서울의 피아노 학원 약 4,500개 (추정)\n\n단계별 접근:\n1) 필요 변수 식별: 서울 인구, 피아노 학습률, 오프라인 비율, 학원당 평균 학생수  \n2) 값 추정 → JSON 참조  \n3) 최종 계산 수행  \n4) 합리성 검증 (범위 제시)\n\ndecomposition (JSON):\n{\n  \"서울_인구\": 9600000,\n  \"피아노_학습률\": 0.025,\n  \"피아노_학습인구\": 240000,\n  \"오프라인_비율\": 0.75,\n  \"오프라인_학습인구\": 180000,\n  \"학원당_평균_학생수\": 40,\n  \"추정_피아노_학원수\": 4500\n}\n\n최종 계산:\n- 피아노 학습인구 = 9,600,000 × 0.025 = 240,000명  \n- 오프라인 학습인구 = 240,000 × 0.75 = 180,000명  \n- 학원 수 = 180,000 ÷ 40 ≈ 4,500개 (학원당 학생수 30~50 가정 시 3,600~6,000개 범위)\n\n합리성 검증: 학원당 학생수나 학습률에 따라 결과가 크게 변하지만, 서울의 소규모 학원 다수 특성을 고려하면 수천 개 수준(약 3.6k–6k)은 합리적임.\n\n추정 논리(요약, ≤300자):\n서울 인구 960만×피아노 학습률 2.5%≈24만명. 이 중 오프라인 비율 75% → 18만명. 학원당 평균 학생 40명 가정 → 18만/40 ≈ 4,500개. 가정 변화 시 3,600–6,000개 범위 가능.\n\nconfidence: 0.7",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 172,
+        "output": 5390,
+        "total": 5562,
+        "reasoning": 4928
+      },
+      "cost": 0.010823,
+      "elapsed_seconds": 69.43,
+      "parameters": {
+        "reasoning_effort": "high",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:29:14.087272",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase4_simple",
+      "error": "Error code: 400 - {'error': {'message': \"Invalid schema for response_format 'fermi_simple': In context=(), 'required' is required to be supplied and to be an array including every key in properties. Missing 'decomposition'.\", 'type': 'invalid_request_error', 'param': 'response_format', 'code': None}}",
+      "elapsed_seconds": 0.27,
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "scenario_id": "phase4_simple",
+      "error": "Error code: 400 - {'error': {'message': \"Invalid schema for response_format 'fermi_simple': In context=(), 'required' is required to be supplied and to be an array including every key in properties. Missing 'decomposition'.\", 'type': 'invalid_request_error', 'param': 'response_format', 'code': None}}",
+      "elapsed_seconds": 0.3,
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "scenario_id": "phase4_simple",
+      "scenario_name": "Phase 4: Simple Fermi",
+      "phase": 4,
+      "response": {
+        "raw": "decomposition: {\n  \"seoul_population\": 9500000,\n  \"age_groups\": [\n    {\"group\": \"5-12\", \"population_share\": 0.07, \"current_learning_rate\": 0.12},\n    {\"group\": \"13-18\", \"population_share\": 0.04, \"current_learning_rate\": 0.03},\n    {\"group\": \"19-40\", \"population_share\": 0.30, \"current_learning_rate\": 0.003}\n  ],\n  \"piano_learners_rate_total\": 0.0105,\n  \"total_piano_learners\": 99750,\n  \"offline_share\": 0.85,\n  \"online_share\": 0.15,\n  \"offline_learners\": 84788,\n  \"avg_students_per_academy\": 70,\n  \"estimated_academy_count_unrounded\": 1211,\n  \"estimated_academy_count\": 1200\n}\nreasoning: 서울 인구와 연령별 현재 수강률로 전체 학습자≈9.98만명 추정 → 오프라인 85% 적용해 8.48만명 → 학원당 70명 가정해 8.48만/70≈1,211 → 반올림해 약 1,200개. 행정동(≈450개)당 2~3개 수준으로 현실성 검증.\nconfidence: 0.7",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 172,
+        "output": 5117,
+        "total": 5289,
+        "reasoning": 4800
+      },
+      "cost": 0.051385,
+      "elapsed_seconds": 88.3,
+      "parameters": {
+        "reasoning_effort": "high",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:30:45.968559",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1",
+      "scenario_id": "phase4_simple",
+      "scenario_name": "Phase 4: Simple Fermi",
+      "phase": 4,
+      "response": {
+        "raw": "decomposition:\n```json\n{\n  \"seoul_population\": 9500000,\n  \"child_share_5_15\": 0.12,\n  \"children_5_15\": 1140000,\n  \"piano_learning_rate\": 0.2,\n  \"piano_learners_total\": 228000,\n  \"offline_share\": 0.75,\n  \"online_or_private_share\": 0.25,\n  \"offline_piano_learners\": 171000,\n  \"avg_students_per_academy\": 80,\n  \"estimated_piano_academies_offline\": 2100\n}\n```\n\nreasoning: 서울 인구 950만명, 5~15세 비중을 12%로 보고 아동 114만명을 산출. 이 중 20%가 피아노를 배우면 22.8만명, 그중 75%가 오프라인 학원 이용(17.1만명)이라 가정. 학원당 평균 80명일 때 약 2,100개 학원이 필요하며, 자치구당 수십 개 수준으로 현실적이다.\n\nconfidence: 0.7",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 172,
+        "output": 5143,
+        "total": 5315,
+        "reasoning": 4885
+      },
+      "cost": 0.051645,
+      "elapsed_seconds": 53.47,
+      "parameters": {
+        "reasoning_effort": "high",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:31:40.441931",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1",
+      "scenario_id": "phase4_simple",
+      "scenario_name": "Phase 4: Simple Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "SeoulPopulation": 10000000,
+          "ChildPopulationRatio": 0.18,
+          "ChildPianoLearnerRatio": 0.15,
+          "AdultPianoLearners": 10000,
+          "OfflinePreferenceRatio": 0.6,
+          "AcademyStudentsPerInstitute": 50,
+          "EstimatedPianoAcademiesInSeoul": 3000
+        },
+        "reasoning": "서울 인구 약 1천만 명 중 18%가 아동, 이 중 15%가 피아노를 배운다고 가정. 성인 학습자 일부(약 1만 명) 추가하여 총 28만 명 추정, 그 중 60%가 오프라인 학원 이용. 학원당 평균 50명 수용 시 약 3천 개 규모로 추정.",
+        "confidence": 0.7
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 172,
+        "output": 2006,
+        "total": 2178,
+        "reasoning": 1792
+      },
+      "cost": 0.12294,
+      "elapsed_seconds": 19.73,
+      "parameters": {
+        "reasoning_effort": "high"
+      },
+      "timestamp": "2025-11-21T10:32:01.180526",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3",
+      "scenario_id": "phase4_simple",
+      "scenario_name": "Phase 4: Simple Fermi",
+      "phase": 4,
+      "response": {
+        "raw": "decomposition:\n{\n  \"seoul_population\": 9.7e6,                    // 서울 총인구\n  \"piano_learning_age_ratio\": 0.12,            // 5~15세 비중\n  \"target_population\": 1.16e6,                 // 피아노 수업 적령 인구\n  \"learning_rate\": 0.10,                       // 적령 인구 중 실제 수강 비율\n  \"piano_students_total\": 1.16e5,              // 전체 피아노 수강생\n  \"online_ratio\": 0.15,                        // 온라인 전용 학습 비율\n  \"offline_students\": 9.9e4,                   // 오프라인 학원 수강생\n  \"students_per_academy\": 80,                  // 학원 1곳당 평균 학생 수\n  \"estimated_academies\": 1240                  // 서울 내 피아노 학원 수 추정\n}\n\nreasoning (≤300자):\n서울 인구 970만 중 피아노 적령기(5~15세)를 12%로 가정(116만 명). 이 중 10%가 실제 피아노를 배우면 수강생 11.6만 명. 온라인 전용(15%)을 제외한 오프라인 9.9만 명을 학원당 평균 80명으로 나누면 약 1,240곳. 실제 학원 밀집·성인 수요 변동을 고려해 ±30% 오차 범위.\n\nconfidence: 0.7",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 172,
+        "output": 1056,
+        "total": 1228,
+        "reasoning": 704
+      },
+      "cost": 0.008792,
+      "elapsed_seconds": 10.51,
+      "parameters": {
+        "reasoning_effort": "high"
+      },
+      "timestamp": "2025-11-21T10:32:12.692844",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3-mini",
+      "scenario_id": "phase4_simple",
+      "scenario_name": "Phase 4: Simple Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "seoul_population": 10000000,
+          "piano_learning_rate": 0.02,
+          "online_offline_ratio": {
+            "offline": 0.8,
+            "online": 0.2
+          },
+          "students_per_academy": 70
+        },
+        "reasoning": "서울 인구 1천만 명 중 약 2%인 200,000명이 평생 어딘가에서 피아노 학습을 경험한다고 가정합니다. 이 중 80%인 160,000명이 오프라인 학습을 진행하며, 학원당 평균 70명의 학생이 등록한다면 160,000/70 ≈ 2,286개의 학원이 존재할 것으로 추정됩니다.",
+        "confidence": 0.7
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 172,
+        "output": 5819,
+        "total": 5991,
+        "reasoning": 5632
+      },
+      "cost": 0.025793,
+      "elapsed_seconds": 49.48,
+      "parameters": {
+        "reasoning_effort": "high"
+      },
+      "timestamp": "2025-11-21T10:33:03.179922",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o4-mini",
+      "scenario_id": "phase4_simple",
+      "scenario_name": "Phase 4: Simple Fermi",
+      "phase": 4,
+      "response": {
+        "raw": "decomposition:\n{\n  \"Seoul_population\": 9500000,\n  \"piano_learning_rate\": 0.02,\n  \"offline_ratio\": 0.9,\n  \"avg_students_per_academy\": 30\n}\n\nreasoning:\n서울 인구 약 950만명 중 2%인 19만명이 피아노 학습자. 이 중 90%가 오프라인 학원 이용 시 17.1만명. 학원당 평균 30명 배정하면 17.1만/30≈5,700개. 5~6천개가 합리적.\n\nconfidence: 0.7",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 172,
+        "output": 1819,
+        "total": 1991,
+        "reasoning": 1664
+      },
+      "cost": 0.008193,
+      "elapsed_seconds": 18.24,
+      "parameters": {
+        "reasoning_effort": "high"
+      },
+      "timestamp": "2025-11-21T10:33:22.426629",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "api_model": "claude-3-5-haiku-20241022",
+      "scenario_id": "phase4_simple",
+      "scenario_name": "Phase 4: Simple Fermi",
+      "phase": 4,
+      "response": {
+        "fermi_estimation": {
+          "variables": {
+            "seoul_population": 9600000,
+            "piano_learning_rate": 0.03,
+            "students_per_academy": 20,
+            "offline_ratio": 0.7
+          },
+          "calculation": {
+            "potential_piano_learners": 288000,
+            "estimated_piano_academies": 14400
+          },
+          "reasoning": "서울 인구의 3%가 피아노를 배운다고 가정. 학원당 평균 20명 학생으로 계산. 오프라인 학원 중심으로 추정하여 현실성 확보.",
+          "confidence": 0.75,
+          "assumptions": [
+            "연령별 학습 분포 균등",
+            "평균적인 학원 규모",
+            "경제적 접근성 고려"
+          ]
+        }
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 20
+      },
+      "tokens": {
+        "input": 285,
+        "output": 250,
+        "total": 535
+      },
+      "cost": 0.001228,
+      "elapsed_seconds": 4.38,
+      "parameters": {
+        "temperature": 0.7
+      },
+      "timestamp": "2025-11-21T10:33:27.812231",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.7",
+      "api_model": "claude-3-7-sonnet-20250219",
+      "scenario_id": "phase4_simple",
+      "scenario_name": "Phase 4: Simple Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "서울시_인구": 9500000,
+          "학령인구_비율": 0.15,
+          "피아노_학습_비율": 0.12,
+          "학원당_평균_학생_수": 45,
+          "정규학원_이용_비율": 0.8
+        },
+        "reasoning": "서울시 인구(약 950만)에서 학령인구(0-19세) 비율을 15%로 추정하면 약 142.5만 명입니다. 이 중 피아노를 배우는 비율을 12%로 가정하면 약 17.1만 명이 피아노를 배웁니다. 모든 피아노 학습자 중 정규 학원을 이용하는 비율을 80%로 보면 약 13.68만 명이 학원에서 배우고, 학원당 평균 학생 수를 45명으로 추정하면 서울시 피아노 학원 수는 약 3,040개로 계산됩니다.",
+        "estimate": 3040,
+        "confidence": 0.7
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 285,
+        "output": 338,
+        "total": 623
+      },
+      "cost": 0.005925,
+      "elapsed_seconds": 5.59,
+      "parameters": {
+        "temperature": 0.7
+      },
+      "timestamp": "2025-11-21T10:33:34.409962",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-4",
+      "api_model": "claude-sonnet-4-20250514",
+      "scenario_id": "phase4_simple",
+      "scenario_name": "Phase 4: Simple Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "seoul_population": 9500000,
+          "piano_learning_age_groups": {
+            "children_5_18": {
+              "population": 1140000,
+              "learning_rate": 0.15,
+              "learners": 171000
+            },
+            "adults_19_65": {
+              "population": 6650000,
+              "learning_rate": 0.02,
+              "learners": 133000
+            }
+          },
+          "total_piano_learners": 304000,
+          "offline_academy_ratio": 0.7,
+          "offline_learners": 212800,
+          "students_per_academy": 85,
+          "estimated_academies": 2504
+        },
+        "reasoning": "서울 인구 950만 중 5-18세 아동(114만)의 15%와 성인(665만)의 2%가 피아노를 학습한다고 가정. 총 30.4만 학습자 중 70%가 오프라인 학원 이용(21.3만명). 학원당 평균 85명 수용 시 약 2,500개 학원 필요. 강남/서초 등 교육특구 밀집도와 동네별 소규모 학원 분포를 고려한 현실적 추정치.",
+        "confidence": 0.72
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 285,
+        "output": 379,
+        "total": 664
+      },
+      "cost": 0.00654,
+      "elapsed_seconds": 8.55,
+      "parameters": {
+        "temperature": 0.7
+      },
+      "timestamp": "2025-11-21T10:33:43.969013",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-4",
+      "api_model": "claude-opus-4-20250514",
+      "scenario_id": "phase4_simple",
+      "scenario_name": "Phase 4: Simple Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "서울_인구": 9500000,
+          "피아노_학습_연령대_비율": {
+            "유아_초등": 0.15,
+            "중고등": 0.05,
+            "성인": 0.02
+          },
+          "연령대별_피아노_학습률": {
+            "유아_초등": 0.25,
+            "중고등": 0.1,
+            "성인": 0.03
+          },
+          "피아노_학습_인구": 285000,
+          "오프라인_학원_이용률": 0.75,
+          "학원_이용_학생수": 213750,
+          "학원당_평균_학생수": 60,
+          "추정_피아노_학원수": 3563
+        },
+        "reasoning": "서울 인구 950만 중 유아·초등(15%), 중고등(5%), 성인(2%)으로 연령대를 구분했습니다. 각 연령대별 피아노 학습률을 25%, 10%, 3%로 추정하여 총 28.5만명의 피아노 학습 인구를 산출했습니다. 이 중 75%가 오프라인 학원을 이용한다고 가정하면 약 21.4만명이 학원생입니다. 학원당 평균 60명의 학생을 보유한다고 가정하면, 서울시 피아노 학원 수는 약 3,500~3,600개로 추정됩니다.",
+        "confidence": 0.72
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 285,
+        "output": 463,
+        "total": 748
+      },
+      "cost": 0.039,
+      "elapsed_seconds": 11.54,
+      "parameters": {
+        "temperature": 0.7
+      },
+      "timestamp": "2025-11-21T10:33:56.508642",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "scenario_id": "phase4_complex",
+      "error": "Error code: 400 - {'error': {'message': \"Invalid schema for response_format 'fermi_complex': In context=(), 'required' is required to be supplied and to be an array including every key in properties. Missing 'decomposition'.\", 'type': 'invalid_request_error', 'param': 'response_format', 'code': None}}",
+      "elapsed_seconds": 0.49,
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1-mini",
+      "scenario_id": "phase4_complex",
+      "error": "Error code: 400 - {'error': {'message': \"Invalid schema for response_format 'fermi_complex': In context=(), 'required' is required to be supplied and to be an array including every key in properties. Missing 'decomposition'.\", 'type': 'invalid_request_error', 'param': 'response_format', 'code': None}}",
+      "elapsed_seconds": 0.48,
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "scenario_id": "phase4_complex",
+      "scenario_name": "Phase 4: Complex Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "adult_population_20plus": 41000000,
+          "age_groups": {
+            "20-29": {
+              "population": 4920000,
+              "learning_rate": 0.005,
+              "learners": 24600
+            },
+            "30-39": {
+              "population": 5740000,
+              "learning_rate": 0.009,
+              "learners": 51660
+            },
+            "40-49": {
+              "population": 6560000,
+              "learning_rate": 0.008,
+              "learners": 52480
+            },
+            "50-59": {
+              "population": 7380000,
+              "learning_rate": 0.005,
+              "learners": 36900
+            },
+            "60+": {
+              "population": 16400000,
+              "learning_rate": 0.0025,
+              "learners": 41000
+            }
+          },
+          "total_adult_learners_bottom_up": 206640,
+          "region_distribution": {
+            "seoul_capital_area_share": 0.5,
+            "other_metro_share": 0.3,
+            "rural_share": 0.2
+          },
+          "per_learner_annual_costs_krw": {
+            "academy_monthly_avg": 100000,
+            "academy_annual": 1200000,
+            "textbook_annual": 30000,
+            "instrument_amortized_annual": 250000,
+            "other_annual (tuning/accessories/etc.)": 50000,
+            "avg_spend_per_learner": 1530000
+          },
+          "key_assumptions": [
+            "성인=20세 이상, 인구·연령 분포는 근사값",
+            "학원비는 성인 기준 월평균 100,000원(주1회 수업 가정)",
+            "악기비는 구매(분할상각)·렌탈 혼합 평균",
+            "지역 분포는 수도권 집중(50%) 가정"
+          ]
+        },
+        "models": [
+          "top_down",
+          "bottom_up"
+        ],
+        "model_estimates": {
+          "top_down": {
+            "logic": "전국 강사 수 기반(≈40,000명)×평균 학생수(≈15명)=600,000 전체 학생; 성인 비중 20% 가정 → 성인 학습자 120,000명",
+            "adult_learners_estimate": 120000,
+            "avg_spend_per_learner_krw": 1530000,
+            "annual_market_size_krw": 183600000000
+          },
+          "bottom_up": {
+            "logic": "연령대별 인구에 연령대별 학습률 적용 → 성인 학습자 합산",
+            "adult_learners_estimate": 206640,
+            "avg_spend_per_learner_krw": 1530000,
+            "annual_market_size_krw": 316159200000
+          }
+        },
+        "final_estimate_krw": 250000000000,
+        "reasoning": "Top-down은 강사수×평균학생으로 성인 120k(단가 1,530,000원 → 183.6B), Bottom-up은 연령별 인구·학습률로 206,640명(→316.16B). 가정 간 격차와 불확실성(학습률·단가)을 고려하여 중간값(약 250,000,000,000원)을 최종 추정치로 채택.",
+        "confidence": 0.65
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 254,
+        "output": 11871,
+        "total": 12125,
+        "reasoning": 11072
+      },
+      "cost": 0.023806,
+      "elapsed_seconds": 137.54,
+      "parameters": {
+        "reasoning_effort": "high",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:36:18.039316",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "scenario_id": "phase4_complex",
+      "error": "Error code: 400 - {'error': {'message': \"Invalid schema for response_format 'fermi_complex': In context=(), 'required' is required to be supplied and to be an array including every key in properties. Missing 'decomposition'.\", 'type': 'invalid_request_error', 'param': 'response_format', 'code': None}}",
+      "elapsed_seconds": 0.37,
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "scenario_id": "phase4_complex",
+      "error": "Error code: 400 - {'error': {'message': \"Invalid schema for response_format 'fermi_complex': In context=(), 'required' is required to be supplied and to be an array including every key in properties. Missing 'decomposition'.\", 'type': 'invalid_request_error', 'param': 'response_format', 'code': None}}",
+      "elapsed_seconds": 0.53,
+      "success": false
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "scenario_id": "phase4_complex",
+      "scenario_name": "Phase 4: Complex Fermi",
+      "phase": 4,
+      "response": {
+        "models": [
+          "top_down",
+          "bottom_up"
+        ],
+        "decomposition": {
+          "currency": "KRW",
+          "year": 2025,
+          "population": {
+            "total_population": 51700000,
+            "adult_20_plus": 43000000,
+            "age_groups": [
+              {
+                "age": "20s",
+                "population": 6800000,
+                "learn_rate": 0.025,
+                "learners": 170000
+              },
+              {
+                "age": "30s",
+                "population": 7200000,
+                "learn_rate": 0.02,
+                "learners": 144000
+              },
+              {
+                "age": "40s",
+                "population": 8000000,
+                "learn_rate": 0.015,
+                "learners": 120000
+              },
+              {
+                "age": "50s",
+                "population": 9000000,
+                "learn_rate": 0.01,
+                "learners": 90000
+              },
+              {
+                "age": "60_plus",
+                "population": 12000000,
+                "learn_rate": 0.007,
+                "learners": 84000
+              }
+            ],
+            "total_learners_top_down": 608000,
+            "region_distribution": {
+              "seoul_metro": 0.55,
+              "other_metros": 0.25,
+              "non_metro": 0.2
+            },
+            "learners_by_region": {
+              "seoul_metro": 334400,
+              "other_metros": 152000,
+              "non_metro": 121600
+            }
+          },
+          "spend_items_top_down": {
+            "tuition_monthly_by_region": {
+              "seoul_metro": 220000,
+              "other_metros": 180000,
+              "non_metro": 140000
+            },
+            "attendance_factor": 0.85,
+            "tuition_monthly_weighted": 194000,
+            "tuition_annual_per_learner": 1978800,
+            "materials_annual_per_learner": 120000,
+            "instrument_per_learner": {
+              "new_share": 0.25,
+              "mix_new": [
+                {
+                  "type": "buy_digital",
+                  "share": 0.5,
+                  "price": 1000000,
+                  "amort_years": 4
+                },
+                {
+                  "type": "buy_acoustic",
+                  "share": 0.1,
+                  "price": 3000000,
+                  "amort_years": 8
+                },
+                {
+                  "type": "rent_digital",
+                  "share": 0.2,
+                  "rental_per_year": 480000
+                },
+                {
+                  "type": "no_new",
+                  "share": 0.2,
+                  "per_year": 0
+                }
+              ],
+              "continuing_share": 0.75,
+              "continuing_minor_maint_per_year": 20000,
+              "effective_avg_per_learner": 80000
+            },
+            "other_costs_per_learner": {
+              "tuning_weighted_avg": 18000,
+              "accessories": 30000,
+              "events_fees": 20000,
+              "total": 70000
+            },
+            "spend_per_learner_top_down": 2248800
+          },
+          "bottom_up_micro": {
+            "segments": [
+              {
+                "name": "intensive_weekly_1to1",
+                "share": 0.5,
+                "monthly_fee": 220000,
+                "materials": 150000,
+                "other": 90000
+              },
+              {
+                "name": "standard_weekly",
+                "share": 0.35,
+                "monthly_fee": 160000,
+                "materials": 120000,
+                "other": 70000
+              },
+              {
+                "name": "light_biweekly_or_group",
+                "share": 0.15,
+                "monthly_fee": 100000,
+                "materials": 80000,
+                "other": 40000
+              }
+            ],
+            "attendance_factor": 0.85,
+            "weighted_monthly_fee": 181000,
+            "tuition_annual_weighted": 1846200,
+            "materials_annual_weighted": 129000,
+            "other_annual_weighted": 75500,
+            "instrument": {
+              "avg_new_share": 0.2575,
+              "avg_new_cost_per_year": 258500,
+              "continuing_cost_per_year": 20000,
+              "effective_avg_per_learner": 81400
+            },
+            "spend_per_learner_bottom_up": 2132100,
+            "supply_assumption": {
+              "teaching_units": 55000,
+              "adult_learners_per_unit": 10,
+              "estimated_learners": 550000
+            }
+          }
+        },
+        "estimates": {
+          "top_down": {
+            "learners": 608000,
+            "spend_per_learner": 2248800,
+            "total_spend": 1367270400000
+          },
+          "bottom_up": {
+            "learners": 550000,
+            "spend_per_learner": 2132100,
+            "total_spend": 1172655000000
+          },
+          "final": {
+            "method": "weighted_avg",
+            "weights": {
+              "top_down": 0.6,
+              "bottom_up": 0.4
+            },
+            "total_spend": 1289424240000,
+            "range": {
+              "low": 1096010604000,
+              "high": 1482837876000
+            }
+          }
+        },
+        "reasoning": "Top-down은 20세+ 인구에 연령대별 학습 비율을 적용해 학습자 60.8만 명을 산정하고, 지역별 수강료·지출항목을 가중해 1.37조 원을 계산. Bottom-up은 성인 수강 유형별(집중/표준/라이트) 개인 지출과 공급측(교습단위 5.5만×성인 10명)을 곱해 1.17조 원. 인구 기반 가정이 더 안정적이라 6:4 가중 평균으로 1.29조 원(±15%)을 최종값으로 채택.",
+        "confidence": 0.66
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 254,
+        "output": 12840,
+        "total": 13094,
+        "reasoning": 11520
+      },
+      "cost": 0.128718,
+      "elapsed_seconds": 235.47,
+      "parameters": {
+        "reasoning_effort": "high",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:40:17.424363",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1",
+      "scenario_id": "phase4_complex",
+      "scenario_name": "Phase 4: Complex Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "bottom_up": {
+            "population": {
+              "total_korea": 51000000,
+              "adult_20_plus": 43000000,
+              "by_age_group": {
+                "20_29": {
+                  "population": 7000000,
+                  "learner_rate": 0.005,
+                  "learners": 35000
+                },
+                "30_39": {
+                  "population": 8000000,
+                  "learner_rate": 0.008,
+                  "learners": 64000
+                },
+                "40_49": {
+                  "population": 9000000,
+                  "learner_rate": 0.007,
+                  "learners": 63000
+                },
+                "50_64": {
+                  "population": 11000000,
+                  "learner_rate": 0.006,
+                  "learners": 66000
+                },
+                "65_plus": {
+                  "population": 8000000,
+                  "learner_rate": 0.004,
+                  "learners": 32000
+                }
+              },
+              "total_learners_estimated": 260000
+            },
+            "regional_distribution": {
+              "adult_population_share": {
+                "capital_area": 0.5,
+                "metro_cities": 0.2,
+                "others": 0.3
+              },
+              "learner_interest_multiplier": {
+                "capital_area": 1.3,
+                "metro_cities": 1.1,
+                "others": 0.7
+              },
+              "implied_learner_share": {
+                "capital_area": 0.6,
+                "metro_cities": 0.2,
+                "others": 0.2
+              },
+              "learners_by_region": {
+                "capital_area": 156000,
+                "metro_cities": 52000,
+                "others": 52000
+              }
+            },
+            "spending_per_learner_KRW_per_year": {
+              "academy_fee": {
+                "capital_area": {
+                  "monthly_fee": 160000,
+                  "months_per_year": 10,
+                  "annual_per_learner": 1600000
+                },
+                "metro_cities": {
+                  "monthly_fee": 140000,
+                  "months_per_year": 10,
+                  "annual_per_learner": 1400000
+                },
+                "others": {
+                  "monthly_fee": 120000,
+                  "months_per_year": 9,
+                  "annual_per_learner": 1080000
+                },
+                "weighted_average": 1456000
+              },
+              "books": {
+                "average_per_learner": 70000
+              },
+              "instrument_purchase_or_rental": {
+                "average_per_learner_amortized": 140000
+              },
+              "other_costs": {
+                "tuning_accessories_etc": 60000
+              },
+              "total_per_learner": 1726000
+            },
+            "total_market_KRW_by_category": {
+              "academy_fee": 378560000000,
+              "books": 18200000000,
+              "instrument_purchase_or_rental": 36400000000,
+              "other_costs": 15600000000,
+              "total": 448760000000
+            }
+          },
+          "top_down": {
+            "macro_market_assumptions": {
+              "private_education_total_KRW": 70000000000000,
+              "arts_and_PE_share": 0.2,
+              "adult_share_within_arts_and_PE": 0.2,
+              "music_share_within_adult_arts_and_PE": 0.4,
+              "piano_share_within_adult_music": 0.45,
+              "non_tuition_multiplier": 1.25
+            },
+            "derived_markets_KRW": {
+              "arts_and_PE_total": 14000000000000,
+              "adult_arts_and_PE": 2800000000000,
+              "adult_music": 1120000000000,
+              "adult_piano_tuition_only": 504000000000,
+              "adult_piano_total_including_goods": 630000000000
+            }
+          },
+          "combined": {
+            "bottom_up_estimate_KRW": 448760000000,
+            "top_down_estimate_KRW": 630000000000,
+            "final_estimate_KRW": 550000000000,
+            "approximate_range_KRW": {
+              "lower_bound": 400000000000,
+              "upper_bound": 700000000000
+            }
+          }
+        },
+        "models": [
+          "top_down",
+          "bottom_up"
+        ],
+        "reasoning": "bottom_up은 연령·지역별 성인 인구에서 피아노 수강 비율을 가정해 학습자 수(약 26만 명)를 구하고, 1인당 연간 학원비·교재·악기·기타 지출을 곱해 약 0.45조 원을 산출했다. top_down은 전체 사교육비(약 70조) 중 예체능→성인→음악→피아노로 단계별 비중을 곱해 수강료 약 0.50조, 기타비 포함 약 0.63조로 추정했다. 두 값이 한 자릿수 배 내에서 수렴하므로 중간값(0.55조 원)을 최종값으로 사용했다. 가장 불확실한 요소는 성인 수강 비율과 예체능·음악·피아노 비중 가정이다.",
+        "confidence": 0.65
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 254,
+        "output": 10213,
+        "total": 10467,
+        "reasoning": 9016
+      },
+      "cost": 0.102447,
+      "elapsed_seconds": 104.32,
+      "parameters": {
+        "reasoning_effort": "high",
+        "verbosity": "low"
+      },
+      "timestamp": "2025-11-21T10:42:02.750273",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o1",
+      "scenario_id": "phase4_complex",
+      "scenario_name": "Phase 4: Complex Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "추정_성인인구_및_학습자수": {
+            "총인구": 52000000,
+            "성인인구": 42000000,
+            "추정_학습참여율": 0.02,
+            "성인_학습자수": 840000,
+            "연령대별_분포": {
+              "20대": 0.15,
+              "30대": 0.25,
+              "40대": 0.3,
+              "50대": 0.2,
+              "60대_이상": 0.1
+            },
+            "지역별_분포": {
+              "수도권": 0.5,
+              "광역시": 0.25,
+              "기타지역": 0.25
+            }
+          },
+          "개인_연간_지출항목_추정": {
+            "학원비_월평균": 200000,
+            "학원비_연간": 2400000,
+            "교재비_연간": 100000,
+            "악기": {
+              "구매_또는_렌탈_연_평균": 300000
+            },
+            "기타비용_예:조율등": 100000,
+            "개인_총연간_지출_추정": 2900000
+          },
+          "Bottom_up_결과": {
+            "학습자수": 840000,
+            "1인_연지출": 2900000,
+            "시장규모_합계(원)": 2436000000000
+          },
+          "Top_down_결과": {
+            "추정_학습자수": 630000,
+            "1인_연지출_가정": 2500000,
+            "시장규모_합계(원)": 1575000000000
+          },
+          "최종_시장규모_연간(원)": 2000000000000
+        },
+        "models": [
+          "top_down",
+          "bottom_up"
+        ],
+        "reasoning": "Top-down 방식으로는 성인 중 1~2%가 피아노 학습에 참여하고 1인당 연 250만원 지출로 약 1.6조원 규모를 추정했습니다. Bottom-up 방식으로 월 20만원 학원비 및 기타비용을 더해 약 2.4조원을 산출했습니다. 두 모델의 중간값인 2조원을 최종 수치로 선정했습니다.",
+        "confidence": 0.6
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 254,
+        "output": 3021,
+        "total": 3275,
+        "reasoning": 2432
+      },
+      "cost": 0.18507,
+      "elapsed_seconds": 26.66,
+      "parameters": {
+        "reasoning_effort": "high"
+      },
+      "timestamp": "2025-11-21T10:42:30.411319",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3",
+      "scenario_id": "phase4_complex",
+      "scenario_name": "Phase 4: Complex Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "adult_population": 42000000,
+          "age_groups": {
+            "20-29": {
+              "pop": 6800000,
+              "participation": 0.02
+            },
+            "30-39": {
+              "pop": 6800000,
+              "participation": 0.018
+            },
+            "40-49": {
+              "pop": 8000000,
+              "participation": 0.015
+            },
+            "50-59": {
+              "pop": 8000000,
+              "participation": 0.01
+            },
+            "60-69": {
+              "pop": 7000000,
+              "participation": 0.005
+            },
+            "70+": {
+              "pop": 5000000,
+              "participation": 0.002
+            }
+          },
+          "learners_total": 503000,
+          "regional_distribution": {
+            "urban": 0.6,
+            "rural": 0.4
+          },
+          "costs": {
+            "tuition_monthly": {
+              "urban": 200000,
+              "rural": 150000,
+              "weighted": 180000
+            },
+            "tuition_annual": 2160000,
+            "books": 50000,
+            "instrument_amort": 90000,
+            "other": 50000,
+            "per_learner_total": 2350000
+          },
+          "bottom_up_total": 1180000000000.0,
+          "top_down": {
+            "hobby_market": 6000000000000.0,
+            "music_share": 0.2,
+            "piano_share": 0.4,
+            "instrument_add": 300000000000.0,
+            "top_down_total": 780000000000.0
+          },
+          "final_market_size": 1000000000000.0
+        },
+        "models": [
+          "top_down",
+          "bottom_up"
+        ],
+        "reasoning": "Top-down: 성인 취미지출 6조→음악 20%→피아노 40%→레슨 0.48조, 악기·기타 0.3조를 더해 0.78조. Bottom-up: 연령·지역별 학습자 50.3만명×연 235만원=1.18조. 두 추정은 ±32% 차이. 정의 범위(악기 포함 여부)와 가정 불확실성을 고려해 중간값 0.98조≈1조원을 최종 시장규모로 선정. 오차 가능범위는 ±35%로 본다.",
+        "confidence": 0.65
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 254,
+        "output": 3893,
+        "total": 4147,
+        "reasoning": 3328
+      },
+      "cost": 0.031652,
+      "elapsed_seconds": 57.92,
+      "parameters": {
+        "reasoning_effort": "high"
+      },
+      "timestamp": "2025-11-21T10:43:29.330008",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o3-mini",
+      "scenario_id": "phase4_complex",
+      "scenario_name": "Phase 4: Complex Fermi",
+      "phase": 4,
+      "response": {
+        "raw": "{\n  \"decomposition\": {\n    \"population\": {\n      \"total_adult_population\": 40000000,\n      \"overall_adoption_rate\": 0.03,\n      \"estimated_learners\": 1200000,\n      \"regional\": {\n        \"urban_percentage\": 0.70,\n        \"urban_adoption_rate\": 0.04,\n        \"rural_adoption_rate\": 0.01\n      }\n    },\n    \"expenditure\": {\n      \"academy_fee\": {\n        \"monthly\": 150000,\n        \"annual\": 150000 * 12\n      },\n      \"textbook_fee\": 50000,\n      \"instrument_cost\": 300000,\n      \"other_cost\": 100000,\n      \"total_annual_per_person\": 150000 * 12 + 50000 + 300000 + 100000\n    }\n  },\n  \"models\": [\n    \"top_down\",\n    \"bottom_up\"\n  ],\n  \"reasoning\": \"Top‐down 모델: 한국의 성인 약 4천만명 중 3%인 120만 명이 피아노 학습자로 가정하고, 한 명당 학원비(매월 15만원 → 연 180만원), 교재비(5만원), 악기 구매/렌탈 비용(30만원), 기타 비용(10만원)을 포함해 연간 약 225만원을 지출한다고 추정하면, 전체 시장 지출액은 120만×225만원≈2.7조 원이 된다. Bottom‐up 모델은 대도시(전체의 70%, 채택률 4%, 연평균 약 230만원 지출)와 비대도시(30%, 채택률 1%, 연평균 약 180만원 지출)를 구분해 산출한 결과 약 2.8조 원 내외로 나타나, 두 모델의 결과를 반영하여 최종값 약 2.75조 원으로 선택하였다.\",\n  \"confidence\": 0.65\n}",
+        "parse_error": true
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": false,
+        "has_reasoning": false,
+        "json_valid": false,
+        "value_in_range": false,
+        "confidence_sufficient": false,
+        "total_score": 0
+      },
+      "tokens": {
+        "input": 254,
+        "output": 4472,
+        "total": 4726,
+        "reasoning": 4032
+      },
+      "cost": 0.019956,
+      "elapsed_seconds": 35.08,
+      "parameters": {
+        "reasoning_effort": "high"
+      },
+      "timestamp": "2025-11-21T10:44:05.408293",
+      "success": true
+    },
+    {
+      "provider": "openai",
+      "model": "o4-mini",
+      "scenario_id": "phase4_complex",
+      "scenario_name": "Phase 4: Complex Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "population": {
+            "total_adult_population": 40000000,
+            "age_groups": {
+              "20-29": 5000000,
+              "30-39": 6000000,
+              "40-49": 8000000,
+              "50-59": 9000000,
+              "60+": 12000000
+            },
+            "learning_rate_by_age": {
+              "20-29": 0.015,
+              "30-39": 0.01,
+              "40-49": 0.008,
+              "50-59": 0.005,
+              "60+": 0.003
+            }
+          },
+          "learners": {
+            "estimated_number": 280000,
+            "regional_distribution": {
+              "Seoul": 0.25,
+              "Gyeonggi": 0.2,
+              "Busan": 0.05,
+              "Others": 0.5
+            }
+          },
+          "expenditure_per_learner": {
+            "academy_fee": {
+              "monthly": 200000,
+              "annual": 2400000
+            },
+            "textbook": 100000,
+            "instrument": {
+              "purchase_amortized_per_year": 300000,
+              "rental_per_year": 150000
+            },
+            "maintenance": 50000,
+            "others": 50000,
+            "average_annual": 2800000
+          }
+        },
+        "models": [
+          "bottom_up",
+          "top_down"
+        ],
+        "reasoning": "bottom_up: Adult pop ~40M, age‐adjusted learning rates → ~280k learners. At KRW2.8M avg annual spend → ~784B KRW. top_down: Total private education ~20T KRW; music ~10% (2T); adult piano ~15% (300B); instrument purchases (~300B) + other costs (~200B) → ~800B KRW. Both converge ≈0.8T KRW, so we adopt ~800B KRW.",
+        "confidence": 0.6
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 254,
+        "output": 2529,
+        "total": 2783,
+        "reasoning": 2048
+      },
+      "cost": 0.011407,
+      "elapsed_seconds": 23.9,
+      "parameters": {
+        "reasoning_effort": "high"
+      },
+      "timestamp": "2025-11-21T10:44:30.311690",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-haiku-3.5",
+      "api_model": "claude-3-5-haiku-20241022",
+      "scenario_id": "phase4_complex",
+      "scenario_name": "Phase 4: Complex Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "total_adult_population": 42000000,
+          "potential_learners": {
+            "age_groups": [
+              {
+                "range": "20-30",
+                "percentage": 0.15
+              },
+              {
+                "range": "31-40",
+                "percentage": 0.25
+              },
+              {
+                "range": "41-50",
+                "percentage": 0.35
+              },
+              {
+                "range": "51-60",
+                "percentage": 0.2
+              },
+              {
+                "range": "60+",
+                "percentage": 0.05
+              }
+            ]
+          },
+          "learning_costs": {
+            "monthly_academy_fee": {
+              "min": 150000,
+              "max": 300000,
+              "average": 200000
+            },
+            "annual_materials": {
+              "average": 50000
+            },
+            "instrument_costs": {
+              "initial_purchase": {
+                "digital_piano": 500000,
+                "acoustic_piano": 2000000
+              },
+              "annual_maintenance": {
+                "digital_piano": 50000,
+                "acoustic_piano": 100000
+              }
+            }
+          }
+        },
+        "models": [
+          "top_down",
+          "bottom_up"
+        ],
+        "calculations": {
+          "top_down": {
+            "estimated_learners": 126000,
+            "total_annual_market_value": 302400000000
+          },
+          "bottom_up": {
+            "estimated_learners": 105000,
+            "total_annual_market_value": 276000000000
+          }
+        },
+        "reasoning": "Top-down과 Bottom-up 모델의 결과 차이는 약 10% 이내로, 보수적 접근을 위해 중간값인 289,200,000,000원을 선택. 개인 데이터와 시장 규모를 교차 검증하여 신뢰성 확보.",
+        "confidence": 0.7
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 399,
+        "output": 508,
+        "total": 907
+      },
+      "cost": 0.002351,
+      "elapsed_seconds": 8.02,
+      "parameters": {
+        "temperature": 0.8
+      },
+      "timestamp": "2025-11-21T10:44:39.333613",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-3.7",
+      "api_model": "claude-3-7-sonnet-20250219",
+      "scenario_id": "phase4_complex",
+      "scenario_name": "Phase 4: Complex Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "학습자_수_추정": {
+            "전체_성인_인구": 42000000,
+            "연령대별": {
+              "20대": {
+                "인구비율": 0.15,
+                "학습비율": 0.01
+              },
+              "30대": {
+                "인구비율": 0.16,
+                "학습비율": 0.008
+              },
+              "40대": {
+                "인구비율": 0.17,
+                "학습비율": 0.005
+              },
+              "50대_이상": {
+                "인구비율": 0.52,
+                "학습비율": 0.002
+              }
+            },
+            "지역별": {
+              "수도권": {
+                "인구비율": 0.5,
+                "학습비율_가중치": 1.3
+              },
+              "광역시": {
+                "인구비율": 0.3,
+                "학습비율_가중치": 1.0
+              },
+              "기타지역": {
+                "인구비율": 0.2,
+                "학습비율_가중치": 0.7
+              }
+            },
+            "총_학습자_수": 210000
+          },
+          "지출_항목별_추정": {
+            "학원비": {
+              "월평균": 200000,
+              "연간": 2400000,
+              "이용비율": 0.6
+            },
+            "개인레슨": {
+              "월평균": 300000,
+              "연간": 3600000,
+              "이용비율": 0.3
+            },
+            "온라인강의": {
+              "월평균": 50000,
+              "연간": 600000,
+              "이용비율": 0.1
+            },
+            "교재비": {
+              "연간평균": 150000,
+              "이용비율": 1.0
+            },
+            "악기": {
+              "구매": {
+                "평균가격": 3000000,
+                "연간구매율": 0.1
+              },
+              "렌탈": {
+                "월평균": 50000,
+                "연간": 600000,
+                "이용비율": 0.2
+              },
+              "유지관리": {
+                "연간평균": 100000,
+                "이용비율": 0.5
+              }
+            },
+            "기타비용": {
+              "연간평균": 80000,
+              "이용비율": 0.7
+            }
+          }
+        },
+        "models": [
+          "bottom_up",
+          "top_down"
+        ],
+        "estimates": {
+          "bottom_up": {
+            "계산과정": {
+              "레슨비용": "(0.6 × 2400000 + 0.3 × 3600000 + 0.1 × 600000) × 210000 = 399000000000",
+              "교재비": "150000 × 1.0 × 210000 = 31500000000",
+              "악기관련": "(3000000 × 0.1 + 600000 × 0.2 + 100000 × 0.5) × 210000 = 99750000000",
+              "기타비용": "80000 × 0.7 × 210000 = 11760000000"
+            },
+            "총액": 542010000000
+          },
+          "top_down": {
+            "계산과정": {
+              "성인교육시장": "10000000000000",
+              "예술교육비중": 0.08,
+              "음악교육비중": 0.4,
+              "피아노교육비중": 0.18
+            },
+            "총액": 576000000000
+          }
+        },
+        "final_estimate": 560000000000,
+        "reasoning": "두 모델의 결과가 상당히 유사하게 나왔습니다. Bottom-up 접근법은 학습자 수와 항목별 지출을 기반으로 5,420억원을 산출했으며, Top-down 접근법은 전체 성인 교육 시장에서 피아노 교육이 차지하는 비중을 통해 5,760억원을 산출했습니다. 두 모델 간 차이가 약 6%로 상대적으로 작아 신뢰성을 높여줍니다. 최종 추정치는 두 모델의 가중 평균값인 5,600억원으로, 특히 Bottom-up 모델에서 악기 구매 및 유지 비용의 변동성을 고려했습니다. 이 시장은 코로나19 이후 성인 취미 활동 증가와 온라인 레슨의 접근성 향상으로 성장 중입니다.",
+        "confidence": 0.7
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 399,
+        "output": 1235,
+        "total": 1634
+      },
+      "cost": 0.019722,
+      "elapsed_seconds": 16.61,
+      "parameters": {
+        "temperature": 0.8
+      },
+      "timestamp": "2025-11-21T10:44:56.944971",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-sonnet-4",
+      "api_model": "claude-sonnet-4-20250514",
+      "scenario_id": "phase4_complex",
+      "scenario_name": "Phase 4: Complex Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "population_base": {
+            "total_adults": 42000000,
+            "age_groups": {
+              "20s": {
+                "population": 6500000,
+                "learning_rate": 0.008
+              },
+              "30s": {
+                "population": 8200000,
+                "learning_rate": 0.012
+              },
+              "40s": {
+                "population": 8800000,
+                "learning_rate": 0.015
+              },
+              "50s": {
+                "population": 8100000,
+                "learning_rate": 0.018
+              },
+              "60s_plus": {
+                "population": 10400000,
+                "learning_rate": 0.022
+              }
+            }
+          },
+          "learner_estimation": {
+            "total_learners": 680000,
+            "regional_distribution": {
+              "seoul_metro": 0.35,
+              "major_cities": 0.4,
+              "other_areas": 0.25
+            }
+          },
+          "cost_structure": {
+            "academy_fees": {
+              "group_lessons": {
+                "monthly": 120000,
+                "share": 0.6
+              },
+              "individual_lessons": {
+                "monthly": 200000,
+                "share": 0.4
+              }
+            },
+            "materials": {
+              "annual": 80000
+            },
+            "instrument": {
+              "digital_piano": {
+                "average_cost": 1800000,
+                "share": 0.7
+              },
+              "acoustic_piano": {
+                "average_cost": 8000000,
+                "share": 0.3
+              },
+              "replacement_cycle": 8
+            },
+            "maintenance": {
+              "annual": 150000
+            }
+          }
+        },
+        "models": [
+          "top_down",
+          "bottom_up"
+        ],
+        "calculations": {
+          "top_down": {
+            "music_education_market": 2800000000000,
+            "adult_piano_share": 0.18,
+            "estimated_total": 504000000000
+          },
+          "bottom_up": {
+            "academy_fees": 1142400000000,
+            "materials": 54400000000,
+            "instrument_amortized": 378000000000,
+            "maintenance": 102000000000,
+            "total": 1676800000000
+          }
+        },
+        "final_estimate": 850000000000,
+        "reasoning": "Top-down 모델은 전체 음악교육 시장에서 성인 피아노 비중을 추정하여 5,040억원을 도출했으나, 성인 특화 비용 구조를 충분히 반영하지 못했습니다. Bottom-up 모델은 개별 학습자의 상세 지출을 기반으로 1조 6,768억원을 산출했지만 고가 악기 구매를 과대평가한 측면이 있습니다. 두 모델의 기하평균인 8,500억원을 최종 추정치로 선택했으며, 이는 학습자당 연평균 125만원 지출에 해당하여 현실적 수준으로 판단됩니다.",
+        "confidence": 0.65
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 399,
+        "output": 807,
+        "total": 1206
+      },
+      "cost": 0.013302,
+      "elapsed_seconds": 15.28,
+      "parameters": {
+        "temperature": 0.8
+      },
+      "timestamp": "2025-11-21T10:45:13.228789",
+      "success": true
+    },
+    {
+      "provider": "claude",
+      "model": "claude-opus-4",
+      "api_model": "claude-opus-4-20250514",
+      "scenario_id": "phase4_complex",
+      "scenario_name": "Phase 4: Complex Fermi",
+      "phase": 4,
+      "response": {
+        "decomposition": {
+          "learner_estimation": {
+            "total_adults": 43000000,
+            "age_groups": {
+              "20-30": {
+                "population": 6500000,
+                "learning_rate": 0.02,
+                "learners": 130000
+              },
+              "30-40": {
+                "population": 7800000,
+                "learning_rate": 0.015,
+                "learners": 117000
+              },
+              "40-50": {
+                "population": 8600000,
+                "learning_rate": 0.025,
+                "learners": 215000
+              },
+              "50-60": {
+                "population": 8500000,
+                "learning_rate": 0.02,
+                "learners": 170000
+              },
+              "60+": {
+                "population": 11600000,
+                "learning_rate": 0.01,
+                "learners": 116000
+              }
+            },
+            "total_learners": 748000
+          },
+          "expense_breakdown": {
+            "lesson_fees": {
+              "academy_learners": 450000,
+              "monthly_fee": 150000,
+              "annual_total": 810000000000
+            },
+            "private_lessons": {
+              "private_learners": 150000,
+              "monthly_fee": 300000,
+              "annual_total": 540000000000
+            },
+            "self_learners": {
+              "online_learners": 148000,
+              "annual_fee": 200000,
+              "annual_total": 29600000000
+            },
+            "materials": {
+              "books_per_learner": 50000,
+              "total": 37400000000
+            },
+            "instruments": {
+              "new_learners": 250000,
+              "purchase_rate": 0.3,
+              "average_price": 3000000,
+              "rental_learners": 175000,
+              "monthly_rental": 100000,
+              "purchase_total": 225000000000,
+              "rental_total": 210000000000
+            },
+            "maintenance": {
+              "tuning_users": 300000,
+              "annual_tuning": 200000,
+              "accessories": 50000,
+              "total": 75000000000
+            }
+          }
+        },
+        "models": [
+          "bottom_up",
+          "top_down"
+        ],
+        "bottom_up_total": 1926000000000,
+        "top_down_total": 2100000000000,
+        "final_estimate": 2000000000000,
+        "reasoning": "Bottom-up 접근: 개인별 지출을 세분화하여 적산. 학원(54만명×연1800만), 개인레슨(15만명×연360만), 온라인(14.8만명×연20만), 교재(74.8만명×5만), 악기구매(7.5만명×300만), 렌탈(17.5만명×연120만), 유지보수(30만명×연25만) = 약 1.93조원. Top-down 접근: 전체 교육시장(약 80조) × 성인비율(0.3) × 예체능비율(0.2) × 피아노비율(0.175) = 약 2.1조원. 두 모델의 중간값인 2조원을 최종 추정치로 선택. 온라인 학습 증가와 코로나 이후 성인 취미 활동 증가를 반영.",
+        "confidence": 0.65
+      },
+      "quality_score": {
+        "has_value": false,
+        "has_confidence": true,
+        "has_reasoning": true,
+        "json_valid": true,
+        "value_in_range": false,
+        "confidence_sufficient": true,
+        "total_score": 60
+      },
+      "tokens": {
+        "input": 399,
+        "output": 945,
+        "total": 1344
+      },
+      "cost": 0.07686,
+      "elapsed_seconds": 22.86,
+      "parameters": {
+        "temperature": 0.8
+      },
+      "timestamp": "2025-11-21T10:45:37.089724",
+      "success": true
+    }
+  ]
+}

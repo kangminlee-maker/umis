@@ -41,7 +41,8 @@ from umis_rag.agents.estimator.models import (
 from umis_rag.agents.estimator.phase3_guestimation import Phase3Guestimation
 from umis_rag.utils.logger import logger
 from umis_rag.core.config import settings
-from umis_rag.core.model_router import select_model
+from umis_rag.core.model_router import select_model_with_config
+from umis_rag.core.model_configs import is_pro_model
 
 # LLM API
 try:
@@ -1192,6 +1193,11 @@ class Phase4FermiDecomposition:
         
         설계: fermi_model_search.yaml Line 1158-1181
         
+        v7.8.0: Model Config 시스템 통합
+        - select_model_with_config() 사용
+        - API 타입 자동 분기 (Responses/Chat)
+        - Pro 모델 Fast Mode 자동 적용
+        
         Args:
             question: 질문
             available: 가용 변수
@@ -1206,24 +1212,47 @@ class Phase4FermiDecomposition:
         prompt = self._build_llm_prompt(question, available)
         
         try:
-            # OpenAI API 호출 (Phase 4 최적 모델 사용)
-            model = select_model(4)  # Phase 4 → o1-mini
-            response = self.llm_client.chat.completions.create(
-                model=model,
-                temperature=settings.llm_temperature,
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "당신은 Fermi Estimation 전문가입니다. 질문을 계산 가능한 수학적 모형으로 분해하세요."
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ]
+            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            # v7.8.0: Model Config 시스템 사용
+            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            model_name, model_config = select_model_with_config(phase=4)
+            
+            logger.info(f"{'  ' * depth}      [LLM] 모델: {model_name}")
+            logger.info(f"{'  ' * depth}      [LLM] API: {model_config.api_type}")
+            
+            # Fast Mode 적용 (Pro 모델)
+            if is_pro_model(model_name):
+                logger.info(f"{'  ' * depth}      [LLM] Fast Mode 적용 (Pro 모델)")
+                fast_mode_prefix = """🔴 SPEED OPTIMIZATION MODE
+⏱️ 목표 응답 시간: 60초 이내
+📏 최대 출력 길이: 2,000자 이내
+
+"""
+                prompt = fast_mode_prefix + prompt
+            
+            # API 파라미터 구성 (자동)
+            api_params = model_config.build_api_params(
+                prompt=prompt,
+                reasoning_effort='medium'  # Phase 4 기본값
             )
             
-            llm_output = response.choices[0].message.content
+            # API 타입별 분기 (Responses vs Chat)
+            if model_config.api_type == 'responses':
+                # Responses API (o1, o3, gpt-5 시리즈)
+                response = self.llm_client.responses.create(**api_params)
+                llm_output = response.output
+            else:
+                # Chat Completions API (gpt-4 시리즈)
+                # System message 추가
+                if 'messages' in api_params:
+                    api_params['messages'].insert(0, {
+                        "role": "system",
+                        "content": "당신은 Fermi Estimation 전문가입니다. 질문을 계산 가능한 수학적 모형으로 분해하세요."
+                    })
+                
+                response = self.llm_client.chat.completions.create(**api_params)
+                llm_output = response.choices[0].message.content
+            
             logger.info(f"{'  ' * depth}      [LLM] 응답 수신 ({len(llm_output)}자)")
             
             # 응답 파싱
