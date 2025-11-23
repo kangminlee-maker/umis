@@ -1,0 +1,920 @@
+{
+  "timestamp": "2025-11-23T17:09:01.158684",
+  "test_type": "Phase 4 Comprehensive (Responses API)",
+  "total_models": 14,
+  "total_tests": 28,
+  "model_summary": {
+    "o1": {
+      "tier": "Tier 1",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 80.0,
+      "total_cost": 0.22275,
+      "total_time": 26.90214705467224,
+      "cost_per_1000": 111.375
+    },
+    "o1-2024-12-17": {
+      "tier": "Tier 1",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 80.0,
+      "total_cost": 0.27111,
+      "total_time": 38.23807096481323,
+      "cost_per_1000": 135.555
+    },
+    "o3": {
+      "tier": "Tier 1",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 90.0,
+      "total_cost": 0.022196,
+      "total_time": 22.86056113243103,
+      "cost_per_1000": 11.098
+    },
+    "o3-2025-04-16": {
+      "tier": "Tier 1",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 90.0,
+      "total_cost": 0.028451999999999998,
+      "total_time": 30.332624912261963,
+      "cost_per_1000": 14.225999999999999
+    },
+    "o3-mini": {
+      "tier": "Tier 1",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 90.0,
+      "total_cost": 0.025825800000000003,
+      "total_time": 51.056015491485596,
+      "cost_per_1000": 12.912900000000002
+    },
+    "o3-mini-2025-01-31": {
+      "tier": "Tier 1",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 90.0,
+      "total_cost": 0.0371338,
+      "total_time": 72.1410026550293,
+      "cost_per_1000": 18.5669
+    },
+    "o4-mini": {
+      "tier": "Tier 1",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 100.0,
+      "total_cost": 0.018807800000000003,
+      "total_time": 32.49765491485596,
+      "cost_per_1000": 9.403900000000002
+    },
+    "o4-mini-2025-04-16": {
+      "tier": "Tier 1",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 90.0,
+      "total_cost": 0.016374600000000003,
+      "total_time": 28.33380627632141,
+      "cost_per_1000": 8.187300000000002
+    },
+    "gpt-5-pro": {
+      "tier": "Premium",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 90.0,
+      "total_cost": 1.99923,
+      "total_time": 981.5438070297241,
+      "cost_per_1000": 999.615
+    },
+    "gpt-5.1": {
+      "tier": "Premium",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 90.0,
+      "total_cost": 0.0996025,
+      "total_time": 2660.0526468753815,
+      "cost_per_1000": 49.801249999999996
+    },
+    "o1-pro": {
+      "tier": "Pro",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 80.0,
+      "total_cost": 2.9847,
+      "total_time": 197.92348909378052,
+      "cost_per_1000": 1492.3500000000001
+    },
+    "o1-pro-2025-03-19": {
+      "tier": "Pro",
+      "tests": 2,
+      "successful": 2,
+      "avg_quality": 90.0,
+      "total_cost": 2.4051,
+      "total_time": 242.89665985107422,
+      "cost_per_1000": 1202.55
+    }
+  },
+  "results": [
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 4500,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "서울 인구 약 1천만 중 15%가 학습 연령(150만), 그중 30%가 피아노를 배운다고 가정(45만). 이 중 20%가 온라인으로 배우면 남은 36만이 오프라인 학원을 이용. 한 학원당 평균 80명으로 보면 약 4,500개로 추정."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 0.09849000000000001,
+      "time": 11.545992136001587,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 1588,
+        "reasoning_tokens": 1472,
+        "total_tokens": 1802
+      },
+      "reasoning_effort": "high",
+      "model": "o1",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 1100000000000,
+        "unit": "원",
+        "confidence": 0.6,
+        "models": [
+          "top_down"
+        ],
+        "reasoning": "성인 인구 4천만 명 중 약 1%(40만 명)가 연 평균 280만 원(학원비 240만 원+교재비 5만 원+악기 사용 26만 원+기타 10만 원)을 지출한다고 가정하여 약 1.12조 원이 산출되며, 추정 오차를 감안해 최종적으로 1.1조 원으로 설정했다."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 0.12426000000000001,
+      "time": 15.356154918670654,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 1996,
+        "reasoning_tokens": 1856,
+        "total_tokens": 2296
+      },
+      "reasoning_effort": "high",
+      "model": "o1",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 5000,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "서울 인구 약 1,000만 명 중 10%인 100만 명이 초중등생이라 가정, 그중 20%인 20만 명이 피아노를 배운다고 추정. 성인 학습자 포함 시 총 30만 명. 이 중 70%인 21만 명이 오프라인 선호, 학원당 40명 가정 시 약 5,000곳으로 추산함."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 0.08025,
+      "time": 12.533066987991333,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 1284,
+        "reasoning_tokens": 1152,
+        "total_tokens": 1498
+      },
+      "reasoning_effort": "high",
+      "model": "o1-2024-12-17",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 750000000000,
+        "unit": "원",
+        "confidence": 0.6,
+        "models": [
+          "bottom_up"
+        ],
+        "reasoning": "성인 인구 약 4천만 명 중 1%인 40만 명을 학습자로 가정하고, 1인당 연간 학원비 120만원(월 10만원×12개월)·교재비 5만원·악기 구매·유지비 50만원·기타 10만원을 추산해 약 7,500억 원으로 산출했다. 이는 Bottom-up 접근으로 산정한 것으로, 불확실성을 고려해 최종 약 0.75조 원 수준으로 추정하였다."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 0.19086,
+      "time": 25.7050039768219,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 3106,
+        "reasoning_tokens": 2944,
+        "total_tokens": 3406
+      },
+      "reasoning_effort": "high",
+      "model": "o1-2024-12-17",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 4000,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "서울 950만명 중 5~15세 12%(114만명). 그중 25%가 오프라인 피아노 수강→29만명, 성인 3만명 더해 32만명. 온라인 15% 제외해 27만명. 학원당 평균 재원생 60명 가정 시 27만/60≈4,500. 근사치로 4천 개로 추정."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 20,
+        "confidence_accuracy": 10,
+        "total_score": 100
+      },
+      "cost": 0.011228,
+      "time": 11.850236177444458,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 1350,
+        "reasoning_tokens": 1216,
+        "total_tokens": 1564
+      },
+      "reasoning_effort": "high",
+      "model": "o3",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 2066625000000,
+        "unit": "원",
+        "confidence": 0.65,
+        "models": [
+          "bottom_up"
+        ],
+        "reasoning": "성인 인구(19+) 4,100만 중 피아노 학습 비율을 20대 4%, 30대 3%, 40대 2%, 50대 1.5%, 60대+ 0.5%로 계층 적용해 학습자 82.5만 명 추정. 지역 가중(대도시 81%, 지방 19%)을 반영한 월평균 학원비 19.4만 원 → 연 233만 원. 교재 3만, 악기 구매(25%가 연 150만 원 구입·5년 감가) 7.5만, 조율·악세서리 7만 원으로 1인 연 지출 250.5만 원 산출. 82.5만 명 × 250.5만 원 = 약 2.07조 원. 학원 등록·악기 구매 비중이 다를 수 있어 ±35% 오차를 고려해 신뢰도 0.65로 설정."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 0.010968,
+      "time": 11.010324954986572,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 1296,
+        "reasoning_tokens": 1024,
+        "total_tokens": 1596
+      },
+      "reasoning_effort": "high",
+      "model": "o3",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 2100,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "인구 950만 중 5~15세 11%인 104만 명으로 가정, 이 중 15%가 피아노 학원 수강 → 15.7만 명. 온라인·개인레슨 20% 제외하면 오프라인 학원 수요 12.6만 명. 학원당 평균 60명(소규모 원장 1~2명 시설 기준) 수용 시 12.6만/60 ≈ 2,100개 학원으로 추정. 오차 고려 ±30% 범위."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 20,
+        "confidence_accuracy": 10,
+        "total_score": 100
+      },
+      "cost": 0.007852,
+      "time": 8.459924936294556,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 928,
+        "reasoning_tokens": 768,
+        "total_tokens": 1142
+      },
+      "reasoning_effort": "high",
+      "model": "o3-2025-04-16",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 1400000000000,
+        "unit": "원",
+        "confidence": 0.6,
+        "models": [
+          "bottom_up",
+          "top_down"
+        ],
+        "reasoning": "bottom-up: 성인 4,400만명×참여율(20대3%·30대2.5%·40대2%·50대1.5%·60대1%·70대0.5%)≈72만명. 수도권/비수도권 5:5로 월평균 학원비 17.5만→연 210만. 교재 5만, 악기 감가 15만, 기타 5만 합계 235만/인→1.69조원. top-down: 문화부 예체능 사교육 5조 중 성인 40%≈2조, 그중 음악 70%·피아노 60% =0.84조, 악기·유지 0.3조 포함≈1.1조. 두 모델 오차범위 내 중앙값(가중 60:40) 1.4조원을 시장 규모로採用."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 0.0206,
+      "time": 21.872699975967407,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 2500,
+        "reasoning_tokens": 2240,
+        "total_tokens": 2800
+      },
+      "reasoning_effort": "high",
+      "model": "o3-2025-04-16",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 600,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "서울 인구를 약 10M 명이라 가정하고, 이 중 약 20%인 2M 명을 아동으로 추정합니다. 그 중 약 10~12%가 피아노 학원에 등록한다고 가정하면 약 200K~240K 명의 수요가 발생합니다. 학원당 평균 40명의 학생을 수용할 경우 240K/40 ≈ 600개의 학원이 필요합니다. 온라인 학원 비율(약 30%)은 전체 수에 미치는 영향이 크지 않으므로 총 600개 정도로 추정합니다."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 0.012489400000000001,
+      "time": 22.83834218978882,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 2785,
+        "reasoning_tokens": 2624,
+        "total_tokens": 2999
+      },
+      "reasoning_effort": "high",
+      "model": "o3-mini",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 310000000000,
+        "unit": "원",
+        "confidence": 0.6,
+        "models": [
+          "bottom_up"
+        ],
+        "reasoning": "한국 성인 인구를 약 4천만 명으로 가정할 때, 피아노 학습에 참여하는 비율을 0.5%로 잡아 약 20만 명의 학습자가 있다고 추정합니다. 각 학습자의 연간 지출은 학원비(월 10만원×12개월 = 120만원), 교재비(10만원), 악기 구매/렌탈 및 유지비(20만원), 기타비용(5만원)으로 총 약 155만원으로 계산됩니다. 이를 20만 명에 곱하면 약 3100억 원의 연간 총 지출액이 산출되며, 여러 불확실성을 감안해 신뢰도는 0.6으로 평가합니다."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 20,
+        "confidence_accuracy": 10,
+        "total_score": 100
+      },
+      "cost": 0.013336400000000002,
+      "time": 28.217673301696777,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 2956,
+        "reasoning_tokens": 2752,
+        "total_tokens": 3256
+      },
+      "reasoning_effort": "high",
+      "model": "o3-mini",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 4000,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "서울 인구를 약 1,000만 명으로 두고, 이 중 아동 비중 약 20%(200만)라 가정합니다. 이 중 약 10%인 20만 명이 피아노를 배우며, 온라인 수업이 20%이므로 오프라인은 16만 명입니다. 학원당 평균 40명 수강한다고 보면 16만÷40≈4000개로 추정됩니다."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 20,
+        "confidence_accuracy": 10,
+        "total_score": 100
+      },
+      "cost": 0.0236126,
+      "time": 42.64426279067993,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 5313,
+        "reasoning_tokens": 5184,
+        "total_tokens": 5527
+      },
+      "reasoning_effort": "high",
+      "model": "o3-mini-2025-01-31",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 1720000000000,
+        "unit": "원",
+        "confidence": 0.65,
+        "models": [
+          "bottom_up"
+        ],
+        "reasoning": "전체 성인 인구 약 4천만 명 중 약 1%인 400,000명이 피아노 학습에 참여한다고 가정합니다. 이들은 학원비 월평균 250,000원(연 3,000,000원), 교재비 100,000원, 악기 구매 또는 렌탈 및 유지비 1,000,000원, 그리고 기타 비용 200,000원을 부담하여 약 4,300,000원의 연간 지출을 합니다. 이를 400,000명에 곱하면 총 연간 지출액은 약 1.72조 원으로 추정됩니다."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 0.0135212,
+      "time": 29.496739864349365,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 2998,
+        "reasoning_tokens": 2816,
+        "total_tokens": 3298
+      },
+      "reasoning_effort": "high",
+      "model": "o3-mini-2025-01-31",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 3200,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "1) 서울 인구 약 1,000만 명 2) 아동·청소년 비율 20%(200만 명), 이 중 10%가 피아노 학습→20만 명 3) 온라인 20% 가정→오프라인 16만 명 4) 학원당 평균 50명 배정→약 3,200개"
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 20,
+        "confidence_accuracy": 10,
+        "total_score": 100
+      },
+      "cost": 0.007178600000000001,
+      "time": 12.949068069458008,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 1578,
+        "reasoning_tokens": 1472,
+        "total_tokens": 1792
+      },
+      "reasoning_effort": "high",
+      "model": "o4-mini",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 500000000000,
+        "unit": "원",
+        "confidence": 0.6,
+        "models": [
+          "top_down",
+          "bottom_up"
+        ],
+        "reasoning": "Top-down: 성인 사교육 시장을 14조원으로 보고, 음악 교육이 5%인 7000억원, 피아노 비중 50%로 3500억원 추정. Bottom-up: 성인 3400만명 중 0.5%인 17만명 학습자, 1인당 연평균 350만원 지출→5950억원. 두 모델 평균값 약5000억원으로 최종 선택."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 20,
+        "confidence_accuracy": 10,
+        "total_score": 100
+      },
+      "cost": 0.011629200000000001,
+      "time": 19.54858684539795,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 2568,
+        "reasoning_tokens": 2432,
+        "total_tokens": 2868
+      },
+      "reasoning_effort": "high",
+      "model": "o4-mini",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 2000,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "1. 서울 인구 1천만명, 2. 피아노 학습률 1%→10만명, 3. 오프라인 80%→8만명, 4. 학원당 평균 40명→8만명/40명≈2000개"
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 20,
+        "confidence_accuracy": 10,
+        "total_score": 100
+      },
+      "cost": 0.006052200000000001,
+      "time": 12.028368949890137,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 1322,
+        "reasoning_tokens": 1216,
+        "total_tokens": 1536
+      },
+      "reasoning_effort": "high",
+      "model": "o4-mini-2025-04-16",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 1870000000000,
+        "unit": "원",
+        "confidence": 0.6,
+        "models": [
+          "top_down",
+          "bottom_up"
+        ],
+        "reasoning": "top_down: 국내 사교육 시장 25조원 중 음악레슨 8%→2조원, 피아노 절반→1조원, 성인비중 30%→0.3조원. bottom_up: 성인(34M) 중 2% 학습자→680k명, 1인당 연평균 비용(월 200k×12 + 교재50k + 악기200k + 기타100k)≈2.75M원→1.87조원. 세부 추정 기반 bottom_up 채택."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 0.010322400000000002,
+      "time": 16.305437326431274,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 2271,
+        "reasoning_tokens": 2112,
+        "total_tokens": 2571
+      },
+      "reasoning_effort": "high",
+      "model": "o4-mini-2025-04-16",
+      "tier": "Tier 1"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": false,
+      "error": "Error code: 400 - {'error': {'message': \"Unsupported parameter: 'reasoning.effort' is not supported with this model.\", 'type': 'invalid_request_error', 'param': 'reasoning.effort', 'code': 'unsupported_parameter'}}",
+      "quality_score": {
+        "total_score": 0
+      },
+      "model": "gpt-4.1",
+      "tier": "Tier 2"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": false,
+      "error": "Error code: 400 - {'error': {'message': \"Unsupported parameter: 'reasoning.effort' is not supported with this model.\", 'type': 'invalid_request_error', 'param': 'reasoning.effort', 'code': 'unsupported_parameter'}}",
+      "quality_score": {
+        "total_score": 0
+      },
+      "model": "gpt-4.1",
+      "tier": "Tier 2"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": false,
+      "error": "Error code: 400 - {'error': {'message': \"Unsupported parameter: 'reasoning.effort' is not supported with this model.\", 'type': 'invalid_request_error', 'param': 'reasoning.effort', 'code': 'unsupported_parameter'}}",
+      "quality_score": {
+        "total_score": 0
+      },
+      "model": "gpt-4.1-mini",
+      "tier": "Tier 2"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": false,
+      "error": "Error code: 400 - {'error': {'message': \"Unsupported parameter: 'reasoning.effort' is not supported with this model.\", 'type': 'invalid_request_error', 'param': 'reasoning.effort', 'code': 'unsupported_parameter'}}",
+      "quality_score": {
+        "total_score": 0
+      },
+      "model": "gpt-4.1-mini",
+      "tier": "Tier 2"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 2900,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "인구 950만, 5~17세 12%≈114만. 피아노 수강률: 아동 14%, 성인 0.4%. 온라인 15% 제외(오프라인 85%), 오프라인 중 학원 이용 80%. 학원생 ≈(114만×0.14+836만×0.004)×0.85×0.8≈13.1만. 학원당 45명 → 약 2,900개. 감도: 수강률±5%p, 정원±10명에 따라 2~5천개 범위."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 20,
+        "confidence_accuracy": 10,
+        "total_score": 100
+      },
+      "cost": 0.61521,
+      "time": 460.83876395225525,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 5100,
+        "reasoning_tokens": 4928,
+        "total_tokens": 5314
+      },
+      "reasoning_effort": "high",
+      "model": "gpt-5-pro",
+      "tier": "Premium"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 814300000000,
+        "unit": "원",
+        "confidence": 0.66,
+        "models": [
+          "bottom_up",
+          "top_down"
+        ],
+        "reasoning": "bottom_up: 성인 19+ 4,100만명. 연령별 학습률 19–29 2.0%, 30대 1.5%, 40대 1.0%, 50대 0.8%, 60대 0.6%, 70+ 0.3% → 43.4만명. 지역 51:16:33(수도권:광역:기타). 수업채널 60:15:15:10(학원/개인/온라인/무). 월 수업료 평균(천원) 수도권 133.5·광역 109.5·기타 94.5 → 연 140.1만/인. 교재 8만, 악기(구매·렌탈) 35.4만, 기타(조율·악세서리) 4.1만 → 1.876만/인, 합 8,143억원. top_down: 성인×학습률 1.06%×1.876만/인≈8,142억원. 근접해 평균 채택."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 1.38402,
+      "time": 520.7050430774689,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 11496,
+        "reasoning_tokens": 11200,
+        "total_tokens": 11796
+      },
+      "reasoning_effort": "high",
+      "model": "gpt-5-pro",
+      "tier": "Premium"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 4200,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "1) 서울 인구 950만 가정. 2) 5~18세 15%(140만) 중 20%가 피아노 학습 → 28만. 성인 80% 중 1% 학습 → 8만. 총 36만. 3) 이 중 70%가 오프라인 학원 이용 → 25만. 4) 학원당 평균 60명 수용 가정 시 25만/60 ≈ 4,200개로 추정."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 0.0102775,
+      "time": 2559.934185028076,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 1001,
+        "reasoning_tokens": 851,
+        "total_tokens": 1215
+      },
+      "reasoning_effort": "high",
+      "model": "gpt-5.1",
+      "tier": "Premium"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 400000000000,
+        "unit": "원",
+        "confidence": 0.65,
+        "models": [
+          "bottom_up",
+          "top_down"
+        ],
+        "reasoning": "bottom_up: 성인 4,200만명을 20~70대 6개 연령대로 나누고, 각 연령의 취미강좌 수강률×음악 비중×피아노 비중으로 학습 비율을 추정해 성인 피아노 학습자를 약 30만명으로 계산했다. 1인당 연 학원비 100만원, 교재 5만원, 악기·연습공간 21만원, 기타 4만원(합계 130만원)으로 잡으면 연간 약 3.9×10¹¹원. top_down: 성인 취미교육 시장을 약 3조원으로 보고 그중 공연·음악 20%, 음악 내 피아노 35%를 적용해 수업비 3.2×10¹¹원을 얻고, 교재 5%, 악기·기타 25%를 더해 총 4.2×10¹¹원 수준으로 산출했다. 두 모델이 4±0.3×10¹¹원 범위로 수렴해 중간값인 4.0×10¹¹원을 최종값으로 채택했다."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 20,
+        "confidence_accuracy": 10,
+        "total_score": 100
+      },
+      "cost": 0.089325,
+      "time": 100.1184618473053,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 8895,
+        "reasoning_tokens": 8588,
+        "total_tokens": 9195
+      },
+      "reasoning_effort": "high",
+      "model": "gpt-5.1",
+      "tier": "Premium"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 6400,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "서울 인구는 약 천만 명이라 가정. 5~15세 아동이 15%로 150만 명, 이 중 20%가 피아노를 배워 30만 명. 성인 85% 중 1%가 학습해 약 8.5만 명. 총 38.5만 명 중 오프라인 비율 80% 적용하면 30.8만 명. 학원당 평균 50명으로 보면 6,400개 추정."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 1.2693,
+      "time": 80.91525602340698,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 2062,
+        "reasoning_tokens": 1920,
+        "total_tokens": 2276
+      },
+      "reasoning_effort": "high",
+      "model": "o1-pro",
+      "tier": "Pro"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 1500000000000,
+        "unit": "원",
+        "confidence": 0.7,
+        "models": [
+          "bottom_up",
+          "top_down"
+        ],
+        "reasoning": "성인 인구를 20대(7백만 명), 30대(7백만 명), 40대(8백만 명), 50대(8백만 명), 60대(7백만 명)로 나눈 뒤, 각 연령대별 0.5~5%가 피아노를 학습한다고 가정해 약 100만 명을 산출했다. 이를 기준으로 1인당 연 학원비(약 150만원), 교재·악기비 및 기타비(약 30만원)로 연간 180만원 내외를 추정했다. 단, 전체 음악 교육 시장의 규모(5조원 내외)를 고려한 상향식·하향식 검증 후, 최종적으로 약 1.5조원으로 조정했다."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 1.7154,
+      "time": 117.00823307037354,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 2784,
+        "reasoning_tokens": 2560,
+        "total_tokens": 3084
+      },
+      "reasoning_effort": "high",
+      "model": "o1-pro",
+      "tier": "Pro"
+    },
+    {
+      "scenario_id": "phase4_simple",
+      "success": true,
+      "response": {
+        "value": 4000,
+        "unit": "개",
+        "confidence": 0.7,
+        "reasoning": "서울 인구 1천만 명 가정, 그중 5~19세 15%로 150만 명 추정, 이 중 20%가 피아노 학습해 30만 명. 성인 중 2%가 배우는 인구 17만 명. 온라인·독학 제외해 절반만 오프라인으로 본다면 23.5만 명. 학원당 60명 추정 시 약 4천 곳. 수치 반올림해 결과 도출."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 20,
+        "confidence_accuracy": 10,
+        "total_score": 100
+      },
+      "cost": 1.2693,
+      "time": 99.72889494895935,
+      "tokens": {
+        "input_tokens": 214,
+        "output_tokens": 2062,
+        "reasoning_tokens": 1920,
+        "total_tokens": 2276
+      },
+      "reasoning_effort": "high",
+      "model": "o1-pro-2025-03-19",
+      "tier": "Pro"
+    },
+    {
+      "scenario_id": "phase4_complex",
+      "success": true,
+      "response": {
+        "value": 650000000000,
+        "unit": "원",
+        "confidence": 0.7,
+        "models": [
+          "bottom_up"
+        ],
+        "reasoning": "성인 인구 약 4천만 명 중 0.75%인 30만 명이 학습한다고 가정. 1인당 연간 학원비 180만 원, 교재비 5만 원, 악기(구매/유지) 20만 원, 기타 10만 원으로 합계 215만 원. 이를 30만 명에 곱하면 약 6,450억 원이며, 이를 반올림해 6,500억 원으로 추정함."
+      },
+      "quality_score": {
+        "json_parse": 20,
+        "has_value": 20,
+        "has_confidence": 15,
+        "has_reasoning": 15,
+        "value_accuracy": 0,
+        "confidence_accuracy": 10,
+        "total_score": 80
+      },
+      "cost": 1.1358,
+      "time": 143.16776490211487,
+      "tokens": {
+        "input_tokens": 300,
+        "output_tokens": 1818,
+        "reasoning_tokens": 1664,
+        "total_tokens": 2118
+      },
+      "reasoning_effort": "high",
+      "model": "o1-pro-2025-03-19",
+      "tier": "Pro"
+    }
+  ]
+}

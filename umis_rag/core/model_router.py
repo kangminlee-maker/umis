@@ -8,10 +8,15 @@ Phase별 최적 모델 자동 선택 (v7.7.0+)
 - 98% 비용 절감 ($15 → $0.30/1,000회)
 - 40-70% 속도 개선
 - 품질 유지 (98-100% 정확도)
+
+v7.8.0 추가:
+- select_model_with_config(): 모델 + API 설정 함께 반환
+- config/model_configs.yaml 기반
 """
 
-from typing import Literal, Optional
+from typing import Literal, Optional, Tuple
 from umis_rag.core.config import settings
+from umis_rag.core.model_configs import model_config_manager, ModelConfig
 import logging
 
 logger = logging.getLogger(__name__)
@@ -103,6 +108,41 @@ class ModelRouter:
                 f"알 수 없는 Phase {phase} - 레거시 모델 사용"
             )
             return settings.llm_model
+    
+    def select_model_with_config(self, phase: PhaseType) -> Tuple[str, ModelConfig]:
+        """
+        Phase에 맞는 최적 모델과 API 설정을 함께 반환 (v7.8.0)
+        
+        Args:
+            phase: Estimator Phase (0, 1, 2, 3, 4)
+        
+        Returns:
+            (model_name, model_config) 튜플
+        
+        Example:
+            >>> router = ModelRouter()
+            >>> model_name, config = router.select_model_with_config(4)
+            >>> model_name
+            'o1-mini'
+            >>> config.api_type
+            'responses'
+            >>> config.max_output_tokens
+            16000
+        """
+        # 모델 선택 (기존 로직)
+        model_name = self.select_model(phase)
+        
+        # API 설정 조회
+        config = model_config_manager.get_config(model_name)
+        
+        logger.debug(
+            f"Phase {phase} → {model_name} "
+            f"(api_type={config.api_type}, "
+            f"max_output_tokens={config.max_output_tokens}, "
+            f"reasoning_effort={config.reasoning_effort_support})"
+        )
+        
+        return model_name, config
 
     def get_model_info(self, phase: PhaseType) -> dict:
         """
@@ -264,6 +304,27 @@ def select_model(phase: PhaseType) -> str:
     """
     router = get_model_router()
     return router.select_model(phase)
+
+
+def select_model_with_config(phase: PhaseType) -> Tuple[str, ModelConfig]:
+    """
+    Phase에 맞는 모델 + API 설정 반환 (편의 함수, v7.8.0)
+    
+    Args:
+        phase: Estimator Phase (0, 1, 2, 3, 4)
+    
+    Returns:
+        (model_name, model_config) 튜플
+    
+    Example:
+        >>> from umis_rag.core.model_router import select_model_with_config
+        >>> model_name, config = select_model_with_config(4)
+        >>> print(model_name)
+        'o1-mini'
+        >>> params = config.build_api_params(prompt="Test", reasoning_effort='medium')
+    """
+    router = get_model_router()
+    return router.select_model_with_config(phase)
 
 
 def get_model_info(phase: PhaseType) -> dict:
