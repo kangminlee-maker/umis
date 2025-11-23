@@ -348,3 +348,4 @@ response = client.chat.completions.create(
 
 **다음 단계**: 벤치마크 재실행하여 reasoning_effort 효과 검증
 
+

@@ -324,3 +324,4 @@ if __name__ == "__main__":
     print(f"   (${savings['baseline_cost_per_1000']:.2f} → "
           f"${savings['optimized_cost_per_1000']:.2f}/1,000회)")
 
+

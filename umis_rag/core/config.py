@@ -16,6 +16,7 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=False,
+        extra='allow',  # .env에 추가 필드 허용
     )
     
     # Paths
@@ -29,6 +30,10 @@ class Settings(BaseSettings):
     openai_api_key: str
     # .env: OPENAI_ORG_ID=org-... (선택)
     openai_org_id: Optional[str] = Field(default=None)
+    
+    # Anthropic API (선택, v7.7.0+)
+    # .env: ANTHROPIC_API_KEY=sk-ant-...
+    anthropic_api_key: Optional[str] = Field(default=None)
     
     # Embeddings API (벡터 변환용)
     # - text-embedding-3-small: $0.02/1M 토큰 (저렴, 기본 품질)

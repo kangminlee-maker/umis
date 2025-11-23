@@ -169,3 +169,4 @@ JSON 형식: {"value": 200000, "unit": "원", "confidence": 1.0}'''
 if __name__ == "__main__":
     quick_test_gpt51()
 
+
