@@ -6,18 +6,18 @@
 # 동기화 방법:
 #   python3 scripts/sync_umis_to_rag.py
 # 
-# 마지막 동기화: 2025-11-24 03:47:10
+# 마지막 동기화: 2025-11-13 20:56:54
 # ========================================
 
-version: 7.8.0
+version: 7.7.0
 created: '2025-11-03'
-updated: '2025-11-24 03:47:10'
+updated: '2025-11-13 20:56:54'
 total_tools: 15
 auto_generated: true
 changelog: AUTO-GENERATED from umis.yaml (DO NOT EDIT MANUALLY!)
 source: umis.yaml (complete, 0% loss)
 sync_info:
-  last_sync: '2025-11-24 03:47:10'
+  last_sync: '2025-11-13 20:56:54'
   source_file: umis.yaml
   sync_script: scripts/sync_umis_to_rag.py
 tools:
@@ -105,7 +105,7 @@ tools:
   metadata:
     agent: system
     category: complete_context
-    context_size: 28491
+    context_size: 18925
     priority: high
     source: umis.yaml system (auto-sync)
     auto_generated: true
@@ -119,114 +119,31 @@ tools:
     - UMIS 시스템 구조 이해
   content: "# System: system (0% Loss from umis.yaml)\n\n## \U0001F4CB 출처\numis.yaml - system 섹션 전체 (Auto-Sync)\n\n## \U0001F4D6\
     \ 전체 내용 (YAML)\n\n아래는 umis.yaml의 system 섹션을 0% 손실로 그대로 복사한 것입니다.\n\n```yaml\nsystem:\n  name: Universal Market Intelligence\
-    \ System\n  version: 7.8.0\n  release_date: '2025-11-24'\n  status: Stable Release - Model Config + Benchmarks\n  purpose:\
-    \ RAG 기반 6-Agent 협업 시장 분석 시스템\n  description: 6-Agent + 5-Phase Estimator + Model Config 시스템 + 98% 비용 절감 (Native $0 /\
-    \ External $0.30)\n  default_mode: Discovery Sprint → Comprehensive Study (2-4주) - 별도 언급 없으면 자동 적용\n  rag_architecture:\n\
-    \    version: v3.0\n    active_agent: Explorer (Steve)\n    layers:\n      layer_1_vector: Canonical Index + Projected\
-    \ Index (ChromaDB)\n      layer_3_graph: Knowledge Graph (Neo4j, 선택)\n      layer_4_memory: Query/Goal/RAE Memory\n  \
-    \  knowledge_base:\n      business_models: 31개 패턴 (data/raw/umis_business_model_patterns.yaml)\n      disruptions: 23개\
-    \ 패턴 (data/raw/umis_disruption_patterns.yaml)\n      total_chunks: 354개\n    projection_mechanism:\n      rules_based:\
-    \ 90% (config/projection_rules.yaml)\n      llm_based: 10% (자동 학습 → data/llm_projection_log.jsonl)\n      learning: 3회\
-    \ 일관성 → 자동 규칙화\n  core_capabilities:\n  - 'Multi-Industry Coverage: 제조업부터 서비스업, 전통산업부터 신산업까지'\n  - 'Scale Flexibility:\
-    \ 글로벌 수조 달러부터 로컬 니치 시장까지'\n  - 'Universal Framework: B2B, B2C, B2G, C2C, Platform 등 모든 비즈니스 모델'\n  - 'RAG Knowledge Utilization:\
-    \ 54개 검증된 패턴/사례 자동 검색 및 매칭'\n  - 'Knowledge Graph: 패턴 조합 자동 발견 (Hybrid Search)'\n  - 'Progressive Intelligence: 낮은 명확도에서\
-    \ 시작해 발견을 통한 목표 구체화'\n  - 'Autonomous Monitoring: 능동적 목표 정렬과 개입'\n  - 'Complete Traceability: 모든 결론 → 원본 데이터 역추적 (ID Namespace)'\n\
-    \  - 'Reproducibility: Excel 함수, YAML 스키마로 재검증 가능'\n  - 'Model Config System (v7.8.0): 17개 LLM 모델 중앙 관리, .env 변경 → 코드\
-    \ 수정 0줄'\n  - '3-Model Optimization (v7.8.0): 98% 비용 절감 달성 ($0.30/1,000회)'\n  - 'Integrated Benchmarks (v7.8.0): benchmarks/\
-    \ 폴더로 통합 벤치마크 시스템'\n  model_config_system:\n    version: 7.8.0\n    purpose: 중앙 집중식 LLM 모델 관리\n    description: .env 파일로\
-    \ 모델 변경 시 코드 수정 불필요, API 파라미터 자동 최적화\n    core_files:\n      config_file: config/model_configs.yaml (320줄, 17개 모델)\n \
-    \     python_module: umis_rag/core/model_configs.py (262줄)\n      router_extension: umis_rag/core/model_router.py (select_model_with_config)\n\
-    \    supported_models:\n      o1_series:\n      - o1-mini (Phase 4 기본)\n      - o1 (고급 추론)\n      - o1-2024-12-17 (버전\
-    \ 고정)\n      - o1-pro (Pro 모델)\n      - o1-pro-2025-03-19 (Pro 버전 고정)\n      o3_series:\n      - o3 (최신 추론)\n      - o3-2025-04-16\
-    \ (버전 고정)\n      - o3-mini (경제적 추론)\n      - o3-mini-2025-01-31 (버전 고정)\n      gpt5_series:\n      - gpt-5.1 (reasoning_effort\
-    \ 지원)\n      - gpt-5-pro (Pro 모델)\n      gpt4_series:\n      - gpt-4.1-nano (Phase 0-2 최적)\n      - gpt-4o-mini (Phase\
-    \ 3 최적)\n      - gpt-4-turbo-preview\n      - gpt-4o (고성능)\n      - gpt-4o-2024-08-06 (버전 고정)\n      total: 17개\n    key_features:\n\
-    \      zero_touch_model_change:\n        description: .env 변경만으로 모델 전환\n        example: LLM_MODEL_PHASE4=gpt-5.1 → 즉시\
-    \ 적용\n        code_change: 0줄\n      api_type_auto_detection:\n        description: 모델에 맞는 API 자동 선택\n        responses_api:\
-    \ o1/o3/gpt-5.1/gpt-5-pro + Pro 모델\n        chat_api: gpt-4.1-nano/gpt-4o-mini/gpt-4-turbo-preview\n        benefit: API\
-    \ 변경 시 코드 수정 불필요\n      intelligent_parameter_management:\n        max_output_tokens:\n          description: 모델별 최적 토큰\
-    \ 수 자동 적용\n          examples:\n            o1_mini: 65536\n            gpt_4_1_nano: 16384\n            gpt_5_1: 32768\n\
-    \        reasoning_effort:\n          description: 지원 모델에만 자동 적용\n          supported: o1/o3/gpt-5.1 (비 Pro 모델)\n    \
-    \      levels: low/medium/high\n          phase4_default: medium\n        temperature:\n          description: 모델 특성에\
-    \ 따라 자동 설정\n          o1_series: 설정 불가 (내부 고정)\n          gpt4_series: 설정 가능 (기본 1.0)\n      pro_model_optimization:\n\
-    \        description: Pro 모델 Fast Mode 자동 적용\n        models: o1-pro/o1-pro-2025-03-19/gpt-5-pro\n        fast_mode_prompt:\
-    \ 60초 이내 / 2,000자 이내 목표\n        reasoning_effort: high 고정\n        benefit: 응답 시간 단축 + 품질 유지\n      prefix_based_fallback:\n\
-    \        description: 버전 모델 자동 폴백\n        example: o1-mini-2025-12-31 → o1-mini 설정 사용\n        benefit: 신규 버전 즉시 사용 가능\n\
-    \    usage_examples:\n      phase4_gpt51_high:\n        env_setting: LLM_MODEL_PHASE4=gpt-5.1\n        automatic_application:\n\
-    \          api_type: responses\n          max_output_tokens: 32768\n          reasoning_effort: high (Phase 4)\n     \
-    \   code: 변경 불필요\n      phase4_o1_pro:\n        env_setting: LLM_MODEL_PHASE4=o1-pro\n        automatic_application:\n\
-    \          api_type: responses\n          max_output_tokens: 100000\n          reasoning_effort: high (Pro 고정)\n     \
-    \     fast_mode: true\n        code: 변경 불필요\n      phase3_gpt4o_mini:\n        env_setting: LLM_MODEL_PHASE3=gpt-4o-mini\n\
-    \        automatic_application:\n          api_type: chat\n          max_output_tokens: 16384\n          temperature:\
-    \ 1.0\n        code: 변경 불필요\n    integration_status:\n      phase4_fermi: ✅ 완료 (umis_rag/agents/estimator/phase4_fermi.py)\n\
-    \      phase0_2: \U0001F4CB 예정\n      phase3: \U0001F4CB 예정\n      other_agents: \U0001F4CB 예정\n    benefits:\n      development_speed:\
-    \ 모델 추가 5분 → 30초 (10배 단축)\n      maintenance: API 변경 시 코드 수정 불필요\n      extensibility: YAML 5줄로 신규 모델 즉시 사용\n      consistency:\
-    \ 모든 Phase에서 일관된 모델 관리\n      testing: 모델 A/B 테스트 간소화\n  llm_optimization:\n    version: 7.8.0\n    achievement: 98% 비용\
-    \ 절감 달성! ($15.00 → $0.30)\n    phase_0_2_configuration:\n      model: gpt-4.1-nano\n      coverage: 45% (450/1,000 작업)\n\
-    \      cost_per_task: $0.000033\n      speed: 1.02초\n      accuracy: 100%\n      use_cases:\n      - 'Phase 0 (Literal):\
-    \ 데이터에서 직접 추출'\n      - 'Phase 1 (Inferred): 간단한 추론'\n      - 'Phase 2 (Formula): 공식 기반 계산'\n      - 'Quantifier: 공식 계산\
-    \ (SAM, 성장률)'\n      - 'Validator: 기본 검증'\n      reason: 구조화된 작업 → 저렴한 모델로 100% 정확도\n    phase_3_configuration:\n    \
-    \  model: gpt-4o-mini\n      coverage: 48% (480/1,000 작업)\n      cost_per_task: $0.000121\n      speed: 4.61초\n      accuracy:\
-    \ 100%\n      use_cases:\n      - 'Phase 3 Guestimation: 중간 복잡도 추정'\n      - 'Explorer: RAG 패턴 검색 + 해석'\n      - 'Validator:\
-    \ 정의 검증 + 창의적 소싱'\n      improvement: 프롬프트 개선으로 100% 정확도 달성\n      reason: 중간 추론 → Mini 모델로 충분\n    phase_4_configuration:\n\
-    \      model: o1-mini\n      coverage: 7% (70/1,000 작업)\n      cost_per_task: $0.0033\n      speed: 5-15초\n      accuracy:\
-    \ 93%\n      use_cases:\n      - 'Phase 4 Fermi Decomposition: 복잡한 분해'\n      - 'Discovery Sprint: 목표 불명확 시'\n      -\
-    \ '복잡한 추론: 다단계 논리'\n      reason: 고급 추론 필요 → Reasoning 모델 필수\n    cost_breakdown:\n      phase_0_2: 450 × $0.000033 =\
-    \ $0.015 (0.5%)\n      phase_3: 480 × $0.000121 = $0.058 (19.3%)\n      phase_4: 70 × $0.0033 = $0.231 (77%)\n      total_per_1000:\
-    \ $0.30\n      vs_previous: $15.00 (Sonnet Think 100%)\n      savings: 98%\n    env_configuration:\n      USE_PHASE_BASED_ROUTING:\
-    \ true\n      LLM_MODEL_PHASE0_2: gpt-4.1-nano\n      LLM_MODEL_PHASE3: gpt-4o-mini\n      LLM_MODEL_PHASE4: o1-mini\n\
-    \      note: Model Config 시스템이 API 파라미터 자동 최적화\n    performance_comparison:\n      gpt_4_1_nano:\n        cost_per_task:\
-    \ $0.000033\n        phase_0_2_accuracy: 100%\n        phase_3_accuracy: 40% (불충분)\n        phase_4_accuracy: 0% (불가능)\n\
-    \      gpt_4o_mini:\n        cost_per_task: $0.000121\n        phase_0_2_accuracy: 100%\n        phase_3_accuracy: 100%\n\
-    \        phase_4_accuracy: 3% (불충분)\n      o1_mini:\n        cost_per_task: $0.0033\n        phase_0_2_accuracy: 100%\n\
-    \        phase_3_accuracy: 100%\n        phase_4_accuracy: 93%\n    recommendation:\n      default: 3-Model 구성 (Phase별\
-    \ 최적 모델)\n      cost_sensitive: gpt-4.1-nano + gpt-4o-mini (Phase 4 제외)\n      quality_first: o1-mini 단일 모델 (비용 ↑)\n \
-    \     experimental: gpt-5.1 (high) + Pro 모델 테스트\n  benchmarks_system:\n    version: 7.8.0\n    purpose: UMIS 전체 시스템 벤치마크\
-    \ 통합 관리\n    structure:\n      root: benchmarks/\n      common: benchmarks/common/ (공통 평가 모듈)\n      estimator: benchmarks/estimator/\
-    \ (Estimator 벤치마크)\n      phase4: benchmarks/estimator/phase4/ (Phase 4 Fermi)\n    phase4_fermi_benchmarks:\n      test_batches:\n\
-    \        batch1: o1-mini / gpt-5.1 (high) / o3-mini\n        batch2: gpt-5-pro / o1-pro\n        batch3: gpt-4o / gpt-4o-mini\
-    \ / gpt-4-turbo\n        batch4: gpt-5.1 (medium)\n        batch5: gpt-5.1 (low)\n        extended: 10개 추가 문제 (extended_10problems.py)\n\
-    \      scenarios:\n        count: 15개\n        examples:\n        - 한국 연간 샴푸 사용량\n        - 서울 피아노 조율사 수\n        - 제주도\
-    \ 연간 커피 소비량\n        - 부산 연간 택배 박스 사용량\n        - 전국 연간 치킨 소비량\n      results:\n        format: JSON (8개 파일)\n       \
-    \ location: benchmarks/estimator/phase4/results/\n        content: 모델별 15개 문제 추정 결과 + 평가 점수\n      analysis:\n       \
-    \ model_recommendations: model_recommendations.md (모델 추천)\n        evaluation_rebalancing: evaluation_rebalancing.md (평가\
-    \ 재조정 v7.8.0)\n      evaluation_system:\n        version: v7.8.0\n        file: benchmarks/common/common.py\n        total_score:\
-    \ 110점\n        content_vs_format: 45점 (내용) + 5점 (형식)\n        improvement: gpt-5.1 평가 공정성 향상\n    documentation:\n  \
-    \    design:\n      - 'MODEL_CONFIG_DESIGN.md (773줄): 전체 설계'\n      - 'MODEL_CONFIG_IMPLEMENTATION.md (203줄): 구현 상세'\n\
-    \      testing:\n      - 'MODEL_CONFIG_TEST_RESULTS.md (275줄): 테스트 결과'\n      - 'PHASE4_INTEGRATION_COMPLETE.md (350줄):\
-    \ 통합 완료'\n      final:\n      - 'PHASE4_INTEGRATION_FINAL.md (420줄): 최종 보고서'\n      improvements:\n      - 'PHASE4_IMPROVEMENT_PLAN.md\
-    \ (1,035줄): 개선 계획'\n      - 'PHASE4_IMPROVEMENTS_SUMMARY.md (137줄): 개선 요약'\n    migration_plan:\n      phase_1: Phase\
-    \ 4 이관 (✅ 완료)\n      phase_2: Phase 0-3 추가 (\U0001F4CB 예정)\n      phase_3: 전체 Agent 확장 (\U0001F4CB 예정)\n      phase_4:\
-    \ Workflow 통합 (\U0001F4CB 예정)\n  phase4_evaluation_system:\n    version: 7.8.0\n    total_score: 110점\n    rationale:\
-    \ 내용/형식 분리로 공정한 평가\n    scoring_breakdown:\n      accuracy_score:\n        points: 25점\n        method: log10 기반 오차\n\
-    \        formula: max(0, 25 - 10 * log10(error_ratio))\n        example:\n          error_2x: 22점\n          error_10x:\
-    \ 15점\n          error_100x: 5점\n      content_score:\n        total: 45점\n        components:\n          step_completeness:\n\
-    \            points: 10점\n            description: 분해 단계 완성도\n            criteria: 5개 이상 단계 / 논리적 흐름\n          calculation_logic:\n\
-    \            points: 10점\n            description: 계산 연결성\n            criteria: 이전 단계 → 다음 단계 논리적 연결\n          numerical_accuracy:\n\
-    \            points: 25점\n            description: 수치 정확도\n            criteria: 최종 값의 오차\n      format_score:\n     \
-    \   total: 5점\n        components:\n          final_calculation:\n            points: 2점\n            penalty: 자동 생성 시\
-    \ 0점\n          calculation_verification:\n            points: 2점\n            penalty: 자동 생성 시 0점\n          concept_fields:\n\
-    \            points: 1점\n            description: 개념 필드 완성도\n      decomposition_quality:\n        points: 10점\n     \
-    \   description: 분해 품질\n      conceptual_coherence:\n        points: 15점\n        description: 개념적 일관성\n      logic:\n\
-    \        points: 10점\n        description: 논리적 건전성\n    key_improvement:\n      issue: gpt-5.1은 핵심 추론 우수하지만 JSON 형식 약함\n\
-    \      previous_penalty: 형식 점수 50점 중 감점 과다\n      solution: 내용(45점)/형식(5점) 분리 → 핵심 능력 정확 평가\n      effect: gpt-5.1 평가\
-    \ 공정성 향상 (추론 능력에 집중)\n    model_performance_example:\n      gpt_5_1_high:\n        content_score: 40/45 (우수한 추론)\n   \
-    \     format_score: 1/5 (형식 약함)\n        total: 66/110 (60%)\n        evaluation: 공정 (추론 능력 정확 반영)\n      o1_mini:\n \
-    \       content_score: 38/45\n        format_score: 5/5\n        total: 68/110 (62%)\n        evaluation: 형식 완벽 + 추론 우수\n\
-    \  adaptive_principles:\n  - principle: Start with Ambiguity\n    description: 불확실성을 받아들이고 시작\n    implementation:\n \
-    \   - 낮은 명확도(20-30%)로도 프로젝트 착수\n    - Discovery Sprint로 빠른 방향 탐색\n    - 점진적 구체화 과정 수용\n  - principle: Learn and Pivot\n\
-    \    description: 발견을 통한 지속적 조정\n    implementation:\n    - 중간 발견사항에 따른 즉각적 피벗\n    - 고정된 목표보다 진화하는 목표\n    - 실패를 학습 기회로\
-    \ 전환\n  - principle: Autonomous Guidance\n    description: 시스템의 능동적 가이드\n    implementation:\n    - Stewart의 자율적 개입\n\
-    \    - 과몰입/이탈 자동 감지\n    - 더 나은 기회 제안\n  information_flow_architecture:\n    description: UMIS의 체계적인 정보 처리 및 가치 창출 구조\n\
-    \    main_flow:\n      description: '핵심 정보 흐름: 관찰 → 해석 → 결정'\n      stages:\n      - stage: 구조 관찰 (Albert)\n        input:\
-    \ 검증된 데이터\n        process: 시장 구조 해석\n        output: Market Reality Report\n      - stage: 기회 발굴 (Steve)\n        input:\
-    \ 구조 분석 + 정량 데이터\n        process: 의미 해석 및 가설 생성\n        output: Opportunity Portfolio\n      - stage: 의사결정 (Owner)\n\
-    \        input: 기회 포트폴리오\n        process: 평가 및 우선순위 결정\n        output: Strategic Decision\n    information_layers:\n\
-    \      layer_1_raw_data:\n        owner: Rachel\n        type: 검증된 원시 데이터\n        examples:\n        - 거래 기록\n      \
-    \  - 시장 통계\n        - 공시 자료\n        quality_criteria: 신뢰도 > 80%\n      layer_2_processed_data:\n        owner: Bill\n\
-    \        type: 계산/가공된 데이터\n        examples:\n        - 시장 규모\n        - 성장률\n        - TAM/SAM/SOM\n        quality_criteria:\
-    \ 오차 < 10%\n      layer_3a_structural_insights:\n        owner: Albert\n        type: 구조적 해석\n        examples:\n    \
-    \    - 가치사슬\n        - 거래 패턴\n        - 시장 구조\n        quality_criteria: 논리적 일관성\n      layer_3b_hypothetical_insights:\n\
+    \ System\n  version: 7.7.0\n  release_date: '2025-11-10'\n  status: Stable Release\n  purpose: RAG 기반 6-Agent 협업 시장 분석\
+    \ 시스템\n  description: 6-Agent + 5-Phase Estimator + Native 모드로 100% 커버리지 달성 (비용 $0)\n  default_mode: Discovery Sprint\
+    \ → Comprehensive Study (2-4주) - 별도 언급 없으면 자동 적용\n  rag_architecture:\n    version: v3.0\n    active_agent: Explorer (Steve)\n\
+    \    layers:\n      layer_1_vector: Canonical Index + Projected Index (ChromaDB)\n      layer_3_graph: Knowledge Graph\
+    \ (Neo4j, 선택)\n      layer_4_memory: Query/Goal/RAE Memory\n    knowledge_base:\n      business_models: 31개 패턴 (data/raw/umis_business_model_patterns.yaml)\n\
+    \      disruptions: 23개 패턴 (data/raw/umis_disruption_patterns.yaml)\n      total_chunks: 354개\n    projection_mechanism:\n\
+    \      rules_based: 90% (config/projection_rules.yaml)\n      llm_based: 10% (자동 학습 → data/llm_projection_log.jsonl)\n\
+    \      learning: 3회 일관성 → 자동 규칙화\n  core_capabilities:\n  - 'Multi-Industry Coverage: 제조업부터 서비스업, 전통산업부터 신산업까지'\n  - 'Scale\
+    \ Flexibility: 글로벌 수조 달러부터 로컬 니치 시장까지'\n  - 'Universal Framework: B2B, B2C, B2G, C2C, Platform 등 모든 비즈니스 모델'\n  - 'RAG\
+    \ Knowledge Utilization: 54개 검증된 패턴/사례 자동 검색 및 매칭'\n  - 'Knowledge Graph: 패턴 조합 자동 발견 (Hybrid Search)'\n  - 'Progressive\
+    \ Intelligence: 낮은 명확도에서 시작해 발견을 통한 목표 구체화'\n  - 'Autonomous Monitoring: 능동적 목표 정렬과 개입'\n  - 'Complete Traceability: 모든\
+    \ 결론 → 원본 데이터 역추적 (ID Namespace)'\n  - 'Reproducibility: Excel 함수, YAML 스키마로 재검증 가능'\n  adaptive_principles:\n  - principle:\
+    \ Start with Ambiguity\n    description: 불확실성을 받아들이고 시작\n    implementation:\n    - 낮은 명확도(20-30%)로도 프로젝트 착수\n    - Discovery\
+    \ Sprint로 빠른 방향 탐색\n    - 점진적 구체화 과정 수용\n  - principle: Learn and Pivot\n    description: 발견을 통한 지속적 조정\n    implementation:\n\
+    \    - 중간 발견사항에 따른 즉각적 피벗\n    - 고정된 목표보다 진화하는 목표\n    - 실패를 학습 기회로 전환\n  - principle: Autonomous Guidance\n    description:\
+    \ 시스템의 능동적 가이드\n    implementation:\n    - Stewart의 자율적 개입\n    - 과몰입/이탈 자동 감지\n    - 더 나은 기회 제안\n  information_flow_architecture:\n\
+    \    description: UMIS의 체계적인 정보 처리 및 가치 창출 구조\n    main_flow:\n      description: '핵심 정보 흐름: 관찰 → 해석 → 결정'\n      stages:\n\
+    \      - stage: 구조 관찰 (Albert)\n        input: 검증된 데이터\n        process: 시장 구조 해석\n        output: Market Reality Report\n\
+    \      - stage: 기회 발굴 (Steve)\n        input: 구조 분석 + 정량 데이터\n        process: 의미 해석 및 가설 생성\n        output: Opportunity\
+    \ Portfolio\n      - stage: 의사결정 (Owner)\n        input: 기회 포트폴리오\n        process: 평가 및 우선순위 결정\n        output: Strategic\
+    \ Decision\n    information_layers:\n      layer_1_raw_data:\n        owner: Rachel\n        type: 검증된 원시 데이터\n      \
+    \  examples:\n        - 거래 기록\n        - 시장 통계\n        - 공시 자료\n        quality_criteria: 신뢰도 > 80%\n      layer_2_processed_data:\n\
+    \        owner: Bill\n        type: 계산/가공된 데이터\n        examples:\n        - 시장 규모\n        - 성장률\n        - TAM/SAM/SOM\n\
+    \        quality_criteria: 오차 < 10%\n      layer_3a_structural_insights:\n        owner: Albert\n        type: 구조적 해석\n\
+    \        examples:\n        - 가치사슬\n        - 거래 패턴\n        - 시장 구조\n        quality_criteria: 논리적 일관성\n      layer_3b_hypothetical_insights:\n\
     \        owner: Steve\n        type: 가설적 해석\n        examples:\n        - 기회 가설\n        - 변화 시나리오\n        - 가치 제안\n\
     \        quality_criteria: 실행 가능성\n    support_functions:\n      rachel_role:\n        primary: 데이터 수집 및 검증\n        supports:\n\
     \        - Albert\n        - Steve\n        - Bill\n        deliverables: 신뢰도 평가된 데이터셋\n      bill_role:\n        primary:\
@@ -1096,7 +1013,7 @@ tools:
   metadata:
     agent: system
     category: complete_context
-    context_size: 69635
+    context_size: 68453
     priority: high
     source: umis.yaml agents (auto-sync)
     auto_generated: true
@@ -1613,103 +1530,93 @@ tools:
     \       - estimation_method\n          - reasoning\n          - confidence\n          - sources\n        estimation_trace:\n\
     \          description: 추정 과정 스텝별 추적\n          format: '[''Step 1: ...'', ''Step 2: ...'']'\n        decomposition:\n\
     \          description: Fermi 분해 추적 (Phase 4용)\n          fields:\n          - formula\n          - variables (각각 EstimationResult)\n\
-    \          - depth (분해 깊이)\n    phase_4_fermi_decomposition:\n      description: 일반 Fermi 분해 + 재귀 추정 (Phase 4, v7.7.1\
-    \ Few-shot 개선)\n      speed: 10-30초\n      coverage: 5% → 0.5% (Year 1)\n      confidence: 0.60-0.80 → 0.70-0.85 (v7.7.1\
-    \ 개선)\n      when: Phase 1-3 모두 실패\n      status: ✅ v7.7.1 Few-shot 개선 완료 (2025-11-21)\n      implementation: umis_rag/agents/estimator/phase4_fermi.py\
-    \ (2,700줄)\n      v7_7_1_improvements:\n        summary: Few-shot 예시 추가로 계산 연결성 145% 향상\n        date: '2025-11-21'\n\
-    \        test_results:\n          calculation_connectivity: 18/40 → 50/50 (만점!)\n          success_rate: 0% → 93% (14/15)\n\
-    \          reasoning_coverage: 0% → 80-100%\n          total_score: 85/100 (gpt-5.1)\n        few_shot_example:\n    \
-    \      enabled: true\n          example: 서울 택시 수 추정 (5단계 분해)\n          effect: 모든 모델이 올바른 Fermi 방법론 학습\n          location:\
-    \ _build_llm_prompt() 메서드\n        calculation_verification:\n          enabled: true\n          method: 자동 계산 검증 (_verify_calculation_connectivity)\n\
-    \          check: 분해 값들이 최종값으로 올바르게 계산되는지 확인\n          threshold: 10% 오차 이내\n          score_range: 0-25점\n        reasoning_requirement:\n\
-    \          mandatory: true\n          description: 모든 가정(비율, 계수)에 합리적 근거 필수\n          examples:\n          - 경활 비율 0.62\
-    \ → OECD 수준 + 한국 통계 기준\n          - 자영업 0.2 → 한국 높은 편, 5명 중 1명\n          - 등록 비율 0.8 → 영세·비공식 자영업 감안\n        quality_standards:\n\
-    \          calculation_connectivity: 50/50 (만점)\n          reasoning_coverage: 80% 이상\n          accuracy: 10% 오차 이내\n\
-    \          final_score: 85/100 (gpt-5.1 chat)\n      v7_7_0_changes:\n        terminology: Phase 4 내부를 Step 1-4로 명확화\n\
-    \        removed: Phase/Step 혼란 제거\n        focus: 일반 Fermi 분해만 (물리적/수학적)\n        reason: Estimator = 추정, Quantifier\
-    \ = 계산 (MECE)\n      features:\n        general_fermi:\n          description: 일반적 Fermi 분해 (비즈니스 지표 제외)\n          examples:\n\
-    \          - 서울 음식점 수는? (인구 × 음식점 밀도)\n          - 여객기에 탁구공? (부피 / 탁구공 부피)\n          - 한국 커피 시장? (인구 × 소비율 × 가격)\n  \
-    \        not_handled: LTV, CAC, Payback 등 → Quantifier\n          coverage: 일반 추정 100%\n        recursion:\n         \
-    \ description: 재귀 분해 추정 (논리의 퍼즐)\n          max_depth: 4\n          process: Unknown 변수 → Phase 3 시도 → 재귀 호출\n       \
-    \   backtracking: depth 3 → 2 → 1 → 0 재조립\n        data_inheritance:\n          description: 부모 데이터 상속 (v7.5.0)\n    \
-    \      feature: 재귀 시 부모의 available 변수 상속\n          benefit: 재계산 불필요, 일관성 보장, 시간 절약\n        circular_detection:\n   \
-    \       description: 순환 의존성 감지\n          method: Call stack 추적\n          example: 시장 규모 → 점유율 → 시장 규모 (순환!) → 중단\n \
-    \       variable_policy:\n          name: SimpleVariablePolicy (오버엔지니어링 회피)\n          code: 20줄 (vs Hybrid 300줄)\n  \
-    \        principle: 6개 권장 (Occam), 10개 절대 (Miller)\n          flexibility: 7-10개 허용 (경고)\n        llm_mode:\n        \
-    \  description: config/llm_mode.yaml 통합\n          native: 템플릿만 (비용 $0, 90-95% 커버)\n          external: 템플릿 + OpenAI API\
-    \ (100% 커버)\n      llm_integration:\n        native_mode:\n          description: Cursor LLM 사용 (기본, 권장)\n          behavior:\
-    \ 템플릿 성공 → 실행, 템플릿 실패 → Cursor에게 맡김\n          cost: $0\n          coverage: 90-95%\n        external_mode:\n        \
-    \  description: OpenAI API 사용 (자동화 시)\n          behavior: 템플릿 실패 → API 호출 → 모형 생성\n          cost: ~$0.03/질문\n      \
-    \    coverage: 100%\n      internal_steps_v7_7_0:\n        step_1_scan:\n          description: 초기 스캔 - 가용 데이터 파악 (Bottom-up)\n\
-    \          process:\n          - 부모 데이터 상속 (재귀 시)\n          - 프로젝트 데이터 확인\n          - RAG 검색 (벤치마크)\n          output:\
-    \ '{''available'': Dict, ''unknown'': List}'\n        step_2_generate:\n          description: 모형 생성 - 3-5개 후보 (Top-down)\n\
-    \          process:\n          - 'Step 2a: LLM 모형 생성'\n          - 'Step 2b: 변수 재검색 (최대 2회)'\n          - 'Step 2c: 변수\
-    \ 정책 필터링'\n          output: List[FermiModel] (3-5개)\n        step_3_feasibility:\n          description: 실행 가능성 체크 (재귀\
-    \ 추정)\n          process:\n          - Unknown 변수 재귀 호출\n          - 실행 가능성 점수 계산\n          - 최선 모형 선택\n          output:\
-    \ List[RankedModel] (점수 순)\n        step_4_execute:\n          description: 모형 실행 (Backtracking)\n          steps:\n \
-    \         - 변수 바인딩\n          - 안전한 수식 실행\n          - Confidence 조합 (Geometric Mean)\n          - DecompositionTrace\
-    \ 생성\n          - EstimationResult 반환\n      safety:\n        max_depth: 4\n        circular_detection: Call stack 추적\n\
-    \        phase_3_fallback: depth 4 도달 시 Guestimation으로 복귀\n        variable_limit: 10개 절대 상한\n  exclusive_responsibilities:\n\
-    \    value_estimation:\n      description: 데이터 부족 시 값 추정 (단일 권한)\n      authority: UMIS 시스템 내 유일한 추정 권한\n      common_use_cases:\n\
-    \        quantifier_support:\n        - 전환율 (Conversion Rate)\n        - AOV (Average Order Value)\n        - Frequency\
-    \ (구매 빈도)\n        - 시장 필터 비율\n        - 성장률 (CAGR)\n        observer_support:\n        - 가치사슬 마진 비율\n        - 플랫폼 수수료율\n\
-    \        - 시장 집중도 (CR3, HHI)\n        explorer_support:\n        - 잠재 시장 크기 (Order of Magnitude)\n        - 기회 우선순위 판단\n\
-    \        validator_support:\n        - 데이터 신뢰구간\n        - Error Range 계산\n      output_format:\n        value: 추정값\n\
-    \        confidence: 신뢰도 (0.0-1.0)\n        phase: 사용한 Phase (0/1/2/3/4)\n        sources: 증거 출처 리스트\n        reasoning_detail:\
-    \ 상세 판단 근거 (v7.3.2)\n        component_estimations: 개별 요소 추정 (v7.3.2)\n        estimation_trace: 과정 추적 (v7.3.2)\n    cross_validation:\n\
-    \      description: Validator와 협업한 교차 검증 (v7.3.2)\n      process:\n      - Validator가 추정치 검증 요청\n      - Estimator가 독립적으로\
-    \ 추정\n      - 두 값 비교 (차이 계산)\n      - '±30% 이내: pass, 초과: caution/fail'\n      output:\n        claimed_value: 주장된 값\n\
-    \        estimator_value: Estimator 추정값\n        estimator_confidence: 신뢰도\n        estimator_reasoning: 상세 근거\n     \
-    \   difference_pct: 차이 비율\n        validation_result: pass/caution/fail\n    learning_system:\n      description: 사용할수록\
-    \ 빨라지는 학습 시스템\n      learning_pipeline:\n        phase_3_execution: 11개 Source 수집 + 판단 (첫 실행)\n        canonical_storage:\
-    \ 정규화된 형태로 저장\n        projection: Agent별 View로 자동 투영\n        phase_1_integration: 학습 규칙으로 자동 통합\n      learning_conditions:\n\
-    \        high_confidence:\n          threshold: confidence >= 0.90\n          required_evidence: 1개 이상\n        medium_confidence:\n\
-    \          threshold: confidence >= 0.80\n          required_evidence: 2개 이상\n        no_learning:\n          threshold:\
-    \ confidence < 0.80\n      performance_evolution:\n        week_1: 45% 커버 (20개 규칙)\n        month_1: 75% 커버 (120개 규칙)\n\
-    \        year_1: 95% 커버 (2,000개 규칙)\n        speed_improvement:\n          first_run: 3-8초 (Phase 3)\n          learned_run:\
-    \ <0.5초 (Phase 1)\n          improvement: 6-16배 빠름\n  quality_criteria:\n    transparency:\n      measure: 추정 근거 완전성\n\
-    \      standard: 모든 추정에 reasoning_detail 필수\n    consistency:\n      measure: 동일 질문 재현성\n      standard: 같은 맥락 → 같은 답\
-    \ (±5%)\n    confidence_accuracy:\n      measure: 신뢰도 정확성\n      standard: confidence >= 0.80일 때 오차 ≤ 30%\n    learning_efficiency:\n\
-    \      measure: 학습 속도\n      standard: Month 1에 75% 커버\n  fermi_role_boundaries:\n    primary_focus: 값 추정 및 판단 (협업 파트너)\n\
-    \    collaboration_model: 필요 시 호출 (Workflow에 끼어들지 않음)\n    called_by:\n      quantifier: SAM 계산 시 데이터 부족\n      validator:\
-    \ 추정치 교차 검증\n      observer: 시장 구조 비율 추정\n      explorer: 기회 크기 가늠\n      guardian: 프로젝트 리소스 추정\n    not_called_for:\n\
-    \    - 확정 데이터 있을 때 (직접 계산)\n    - 간단한 산술 (Quantifier)\n    - 정의 검증 (Validator)\n  support_and_validation:\n    provides_support_to:\n\
-    \      quantifier:\n        when: 전환율, AOV, Frequency 등 직접 데이터 없을 때\n        method: estimate() 호출 → EstimationResult\
-    \ 반환\n        frequency: ★★★★★ 가장 많이 협업\n      validator:\n        when: 추정치 교차 검증 필요 시\n        method: validate_estimation()\
-    \ → 독립 추정 + 비교\n        frequency: ★★★ 종종 협업\n      observer:\n        when: 가치사슬 마진, 시장 집중도 등\n        method: estimate()\
-    \ 호출\n        frequency: ★★★ 종종 협업\n      explorer:\n        when: 잠재 시장 크기, 기회 우선순위\n        method: estimate() 호출\n\
-    \        frequency: ★★★★ 자주 협업\n      guardian:\n        when: 프로젝트 기간, 리소스 추정\n        method: estimate() 호출\n      \
-    \  frequency: ★ 기획 시 협업\n  concrete_examples:\n    example_1_quantifier_support:\n      scenario: B2B SaaS Churn Rate\
-    \ 추정\n      context:\n        domain: B2B_SaaS\n        region: 한국\n      estimator_process:\n        phase_1_check: 학습된\
-    \ 규칙 없음 → Phase 2\n        phase_2_validator: Validator 검색 없음 → Phase 3\n        phase_3_execution:\n          sources_found:\n\
-    \          - 'RAG: 6% (3개 사례 평균)'\n          - '통계값: 6% (정규분포)'\n          - 'Soft: 5-8% (행동경제학)'\n          judgment:\
-    \ weighted_average (신뢰도 비슷)\n          result: '6% (confidence: 0.85)'\n        reasoning_detail:\n          method: weighted_average\n\
-    \          sources_used:\n          - rag\n          - statistical\n          - soft\n          why: 3개 증거의 신뢰도가 유사 (0.75-0.85)\n\
-    \          evidence_breakdown:\n          - source: rag\n            value: 0.06\n            confidence: 0.75\n     \
-    \     - source: statistical\n            value: 0.06\n            confidence: 0.8\n          - source: soft\n        \
-    \    value: 0.065\n            confidence: 0.7\n          judgment_process:\n          - 'Step 1: domain=B2B_SaaS 인식'\n\
-    \          - 'Step 2: 11개 Source 검색 → 3개 발견'\n          - 'Step 3: weighted_average 선택 (신뢰도 유사)'\n          - 'Step 4:\
-    \ (0.06×0.75 + 0.06×0.80 + 0.065×0.70) / (0.75+0.80+0.70) = 0.061'\n      quantifier_usage:\n        call: estimator.estimate('Churn\
-    \ Rate는?', domain='B2B_SaaS')\n        receive: EstimationResult(value=0.06, confidence=0.85, reasoning_detail={...})\n\
-    \        use_in_calculation: SAM = 고객수 × (1 - 0.06) × ARPU × 12\n    example_2_validator_cross_validation:\n      scenario:\
-    \ 외부 자료 Churn Rate 8% 검증\n      validator_request:\n        claimed_value: 0.08\n        context:\n          domain: B2B_SaaS\n\
-    \        question: Churn Rate는?\n      estimator_independent_estimation:\n        phase_3_result: '6% (confidence: 0.85)'\n\
-    \        reasoning_detail: 위와 동일\n      comparison:\n        difference: '|(0.08 - 0.06) / 0.06| = 33%'\n        threshold:\
-    \ 30%\n        validation_result: caution (경계선)\n        recommendation: 추가 검증 권장 (차이 33%)\n    example_3_learning_system:\n\
-    \      scenario: 동일 질문 재요청\n      first_request:\n        phase: 3\n        time: 5.2초\n        learning: confidence 0.85\
-    \ >= 0.80 → 학습\n      second_request:\n        phase: 1\n        time: 0.3초\n        improvement: 17배 빠름\n        consistency:\
-    \ 동일한 답 (6%)\n  implementation:\n    location: umis_rag/agents/estimator/\n    class: EstimatorRAG\n    key_files:\n \
-    \   - estimator.py (통합 인터페이스, 5-Phase)\n    - phase1_direct_rag.py (Phase 1)\n    - phase3_guestimation.py (Phase 3)\n\
-    \    - phase4_fermi.py (Phase 4, Step 1-4)\n    - learning_writer.py (학습 시스템)\n    - models.py (데이터 모델)\n    usage:\n\
-    \      python: \"from umis_rag.agents.estimator import EstimatorRAG\\n\\nestimator = EstimatorRAG()\\nresult = estimator.estimate(\\\
-    n\\\n        \\    \\\"B2B SaaS Churn Rate는?\\\",\\n    domain=\\\"B2B_SaaS\\\"\\n)\\n\\nprint(f\\\"값: {result.value}\\\
-    \")\\nprint(f\\\"신뢰도: {result.confidence:.0%}\\\"\\\n        )\\nprint(f\\\"근거: {result.reasoning_detail}\\\")\\n\"\n\
-    \      cursor: '@Fermi, B2B SaaS Churn Rate는?'\n    collections:\n    - learned_rules (Phase 1, 0 → 2,000개 진화)\n    -\
-    \ canonical_store (정규화)\n    - estimator (Agent View)\n    files:\n    - estimator.py (520줄) - 통합 인터페이스 (5-Phase)\n  \
-    \  - phase1_direct_rag.py (320줄) - Phase 1 구현\n    - phase3_guestimation.py (650줄) - Phase 3 구현\n    - phase4_fermi.py\
-    \ (2,500줄) - Phase 4 구현 (Step 1-4)\n    - models.py (520줄) - 데이터 모델\n    - learning_writer.py (565줄) - 학습 시스템\n    - source_collector.py\
-    \ (400줄) - 11개 Source\n    - sources/ (Physical, Soft, Value)\n    total: 14개 파일, 5,200줄\n```\n\n---\n\n⚠️  이 도구는 자동 생성됩니다.\n\
-    \   수정하려면 umis.yaml을 편집하고 sync_umis_to_rag.py를 실행하세요.\n"
+    \          - depth (분해 깊이)\n    phase_4_fermi_decomposition:\n      description: 일반 Fermi 분해 + 재귀 추정 (Phase 4, v7.7.0\
+    \ 용어 명확화)\n      speed: 10-30초\n      coverage: 5% → 0.5% (Year 1)\n      confidence: 0.60-0.80\n      when: Phase 1-3\
+    \ 모두 실패\n      status: ✅ v7.7.0 용어 명확화 완료\n      implementation: umis_rag/agents/estimator/phase4_fermi.py (2,500줄)\n\
+    \      v7_7_0_changes:\n        terminology: Phase 4 내부를 Step 1-4로 명확화\n        removed: Phase/Step 혼란 제거\n        focus:\
+    \ 일반 Fermi 분해만 (물리적/수학적)\n        reason: Estimator = 추정, Quantifier = 계산 (MECE)\n      features:\n        general_fermi:\n\
+    \          description: 일반적 Fermi 분해 (비즈니스 지표 제외)\n          examples:\n          - 서울 음식점 수는? (인구 × 음식점 밀도)\n       \
+    \   - 여객기에 탁구공? (부피 / 탁구공 부피)\n          - 한국 커피 시장? (인구 × 소비율 × 가격)\n          not_handled: LTV, CAC, Payback 등 → Quantifier\n\
+    \          coverage: 일반 추정 100%\n        recursion:\n          description: 재귀 분해 추정 (논리의 퍼즐)\n          max_depth: 4\n\
+    \          process: Unknown 변수 → Phase 3 시도 → 재귀 호출\n          backtracking: depth 3 → 2 → 1 → 0 재조립\n        data_inheritance:\n\
+    \          description: 부모 데이터 상속 (v7.5.0)\n          feature: 재귀 시 부모의 available 변수 상속\n          benefit: 재계산 불필요, 일관성\
+    \ 보장, 시간 절약\n        circular_detection:\n          description: 순환 의존성 감지\n          method: Call stack 추적\n        \
+    \  example: 시장 규모 → 점유율 → 시장 규모 (순환!) → 중단\n        variable_policy:\n          name: SimpleVariablePolicy (오버엔지니어링 회피)\n\
+    \          code: 20줄 (vs Hybrid 300줄)\n          principle: 6개 권장 (Occam), 10개 절대 (Miller)\n          flexibility: 7-10개\
+    \ 허용 (경고)\n        llm_mode:\n          description: config/llm_mode.yaml 통합\n          native: 템플릿만 (비용 $0, 90-95% 커버)\n\
+    \          external: 템플릿 + OpenAI API (100% 커버)\n      llm_integration:\n        native_mode:\n          description:\
+    \ Cursor LLM 사용 (기본, 권장)\n          behavior: 템플릿 성공 → 실행, 템플릿 실패 → Cursor에게 맡김\n          cost: $0\n          coverage:\
+    \ 90-95%\n        external_mode:\n          description: OpenAI API 사용 (자동화 시)\n          behavior: 템플릿 실패 → API 호출 →\
+    \ 모형 생성\n          cost: ~$0.03/질문\n          coverage: 100%\n      internal_steps_v7_7_0:\n        step_1_scan:\n   \
+    \       description: 초기 스캔 - 가용 데이터 파악 (Bottom-up)\n          process:\n          - 부모 데이터 상속 (재귀 시)\n          - 프로젝트\
+    \ 데이터 확인\n          - RAG 검색 (벤치마크)\n          output: '{''available'': Dict, ''unknown'': List}'\n        step_2_generate:\n\
+    \          description: 모형 생성 - 3-5개 후보 (Top-down)\n          process:\n          - 'Step 2a: LLM 모형 생성'\n          -\
+    \ 'Step 2b: 변수 재검색 (최대 2회)'\n          - 'Step 2c: 변수 정책 필터링'\n          output: List[FermiModel] (3-5개)\n        step_3_feasibility:\n\
+    \          description: 실행 가능성 체크 (재귀 추정)\n          process:\n          - Unknown 변수 재귀 호출\n          - 실행 가능성 점수 계산\n\
+    \          - 최선 모형 선택\n          output: List[RankedModel] (점수 순)\n        step_4_execute:\n          description: 모형\
+    \ 실행 (Backtracking)\n          steps:\n          - 변수 바인딩\n          - 안전한 수식 실행\n          - Confidence 조합 (Geometric\
+    \ Mean)\n          - DecompositionTrace 생성\n          - EstimationResult 반환\n      safety:\n        max_depth: 4\n   \
+    \     circular_detection: Call stack 추적\n        phase_3_fallback: depth 4 도달 시 Guestimation으로 복귀\n        variable_limit:\
+    \ 10개 절대 상한\n  exclusive_responsibilities:\n    value_estimation:\n      description: 데이터 부족 시 값 추정 (단일 권한)\n      authority:\
+    \ UMIS 시스템 내 유일한 추정 권한\n      common_use_cases:\n        quantifier_support:\n        - 전환율 (Conversion Rate)\n      \
+    \  - AOV (Average Order Value)\n        - Frequency (구매 빈도)\n        - 시장 필터 비율\n        - 성장률 (CAGR)\n        observer_support:\n\
+    \        - 가치사슬 마진 비율\n        - 플랫폼 수수료율\n        - 시장 집중도 (CR3, HHI)\n        explorer_support:\n        - 잠재 시장 크기\
+    \ (Order of Magnitude)\n        - 기회 우선순위 판단\n        validator_support:\n        - 데이터 신뢰구간\n        - Error Range 계산\n\
+    \      output_format:\n        value: 추정값\n        confidence: 신뢰도 (0.0-1.0)\n        phase: 사용한 Phase (0/1/2/3/4)\n \
+    \       sources: 증거 출처 리스트\n        reasoning_detail: 상세 판단 근거 (v7.3.2)\n        component_estimations: 개별 요소 추정 (v7.3.2)\n\
+    \        estimation_trace: 과정 추적 (v7.3.2)\n    cross_validation:\n      description: Validator와 협업한 교차 검증 (v7.3.2)\n \
+    \     process:\n      - Validator가 추정치 검증 요청\n      - Estimator가 독립적으로 추정\n      - 두 값 비교 (차이 계산)\n      - '±30% 이내: pass,\
+    \ 초과: caution/fail'\n      output:\n        claimed_value: 주장된 값\n        estimator_value: Estimator 추정값\n        estimator_confidence:\
+    \ 신뢰도\n        estimator_reasoning: 상세 근거\n        difference_pct: 차이 비율\n        validation_result: pass/caution/fail\n\
+    \    learning_system:\n      description: 사용할수록 빨라지는 학습 시스템\n      learning_pipeline:\n        phase_3_execution: 11개\
+    \ Source 수집 + 판단 (첫 실행)\n        canonical_storage: 정규화된 형태로 저장\n        projection: Agent별 View로 자동 투영\n        phase_1_integration:\
+    \ 학습 규칙으로 자동 통합\n      learning_conditions:\n        high_confidence:\n          threshold: confidence >= 0.90\n     \
+    \     required_evidence: 1개 이상\n        medium_confidence:\n          threshold: confidence >= 0.80\n          required_evidence:\
+    \ 2개 이상\n        no_learning:\n          threshold: confidence < 0.80\n      performance_evolution:\n        week_1: 45%\
+    \ 커버 (20개 규칙)\n        month_1: 75% 커버 (120개 규칙)\n        year_1: 95% 커버 (2,000개 규칙)\n        speed_improvement:\n   \
+    \       first_run: 3-8초 (Phase 3)\n          learned_run: <0.5초 (Phase 1)\n          improvement: 6-16배 빠름\n  quality_criteria:\n\
+    \    transparency:\n      measure: 추정 근거 완전성\n      standard: 모든 추정에 reasoning_detail 필수\n    consistency:\n      measure:\
+    \ 동일 질문 재현성\n      standard: 같은 맥락 → 같은 답 (±5%)\n    confidence_accuracy:\n      measure: 신뢰도 정확성\n      standard: confidence\
+    \ >= 0.80일 때 오차 ≤ 30%\n    learning_efficiency:\n      measure: 학습 속도\n      standard: Month 1에 75% 커버\n  fermi_role_boundaries:\n\
+    \    primary_focus: 값 추정 및 판단 (협업 파트너)\n    collaboration_model: 필요 시 호출 (Workflow에 끼어들지 않음)\n    called_by:\n      quantifier:\
+    \ SAM 계산 시 데이터 부족\n      validator: 추정치 교차 검증\n      observer: 시장 구조 비율 추정\n      explorer: 기회 크기 가늠\n      guardian:\
+    \ 프로젝트 리소스 추정\n    not_called_for:\n    - 확정 데이터 있을 때 (직접 계산)\n    - 간단한 산술 (Quantifier)\n    - 정의 검증 (Validator)\n  support_and_validation:\n\
+    \    provides_support_to:\n      quantifier:\n        when: 전환율, AOV, Frequency 등 직접 데이터 없을 때\n        method: estimate()\
+    \ 호출 → EstimationResult 반환\n        frequency: ★★★★★ 가장 많이 협업\n      validator:\n        when: 추정치 교차 검증 필요 시\n      \
+    \  method: validate_estimation() → 독립 추정 + 비교\n        frequency: ★★★ 종종 협업\n      observer:\n        when: 가치사슬 마진, 시장\
+    \ 집중도 등\n        method: estimate() 호출\n        frequency: ★★★ 종종 협업\n      explorer:\n        when: 잠재 시장 크기, 기회 우선순위\n\
+    \        method: estimate() 호출\n        frequency: ★★★★ 자주 협업\n      guardian:\n        when: 프로젝트 기간, 리소스 추정\n      \
+    \  method: estimate() 호출\n        frequency: ★ 기획 시 협업\n  concrete_examples:\n    example_1_quantifier_support:\n    \
+    \  scenario: B2B SaaS Churn Rate 추정\n      context:\n        domain: B2B_SaaS\n        region: 한국\n      estimator_process:\n\
+    \        phase_1_check: 학습된 규칙 없음 → Phase 2\n        phase_2_validator: Validator 검색 없음 → Phase 3\n        phase_3_execution:\n\
+    \          sources_found:\n          - 'RAG: 6% (3개 사례 평균)'\n          - '통계값: 6% (정규분포)'\n          - 'Soft: 5-8% (행동경제학)'\n\
+    \          judgment: weighted_average (신뢰도 비슷)\n          result: '6% (confidence: 0.85)'\n        reasoning_detail:\n\
+    \          method: weighted_average\n          sources_used:\n          - rag\n          - statistical\n          - soft\n\
+    \          why: 3개 증거의 신뢰도가 유사 (0.75-0.85)\n          evidence_breakdown:\n          - source: rag\n            value:\
+    \ 0.06\n            confidence: 0.75\n          - source: statistical\n            value: 0.06\n            confidence:\
+    \ 0.8\n          - source: soft\n            value: 0.065\n            confidence: 0.7\n          judgment_process:\n\
+    \          - 'Step 1: domain=B2B_SaaS 인식'\n          - 'Step 2: 11개 Source 검색 → 3개 발견'\n          - 'Step 3: weighted_average\
+    \ 선택 (신뢰도 유사)'\n          - 'Step 4: (0.06×0.75 + 0.06×0.80 + 0.065×0.70) / (0.75+0.80+0.70) = 0.061'\n      quantifier_usage:\n\
+    \        call: estimator.estimate('Churn Rate는?', domain='B2B_SaaS')\n        receive: EstimationResult(value=0.06, confidence=0.85,\
+    \ reasoning_detail={...})\n        use_in_calculation: SAM = 고객수 × (1 - 0.06) × ARPU × 12\n    example_2_validator_cross_validation:\n\
+    \      scenario: 외부 자료 Churn Rate 8% 검증\n      validator_request:\n        claimed_value: 0.08\n        context:\n   \
+    \       domain: B2B_SaaS\n        question: Churn Rate는?\n      estimator_independent_estimation:\n        phase_3_result:\
+    \ '6% (confidence: 0.85)'\n        reasoning_detail: 위와 동일\n      comparison:\n        difference: '|(0.08 - 0.06) / 0.06|\
+    \ = 33%'\n        threshold: 30%\n        validation_result: caution (경계선)\n        recommendation: 추가 검증 권장 (차이 33%)\n\
+    \    example_3_learning_system:\n      scenario: 동일 질문 재요청\n      first_request:\n        phase: 3\n        time: 5.2초\n\
+    \        learning: confidence 0.85 >= 0.80 → 학습\n      second_request:\n        phase: 1\n        time: 0.3초\n       \
+    \ improvement: 17배 빠름\n        consistency: 동일한 답 (6%)\n  implementation:\n    location: umis_rag/agents/estimator/\n\
+    \    class: EstimatorRAG\n    key_files:\n    - estimator.py (통합 인터페이스, 5-Phase)\n    - phase1_direct_rag.py (Phase 1)\n\
+    \    - phase3_guestimation.py (Phase 3)\n    - phase4_fermi.py (Phase 4, Step 1-4)\n    - learning_writer.py (학습 시스템)\n\
+    \    - models.py (데이터 모델)\n    usage:\n      python: \"from umis_rag.agents.estimator import EstimatorRAG\\n\\nestimator\
+    \ = EstimatorRAG()\\nresult = estimator.estimate(\\n\\\n        \\    \\\"B2B SaaS Churn Rate는?\\\",\\n    domain=\\\"\
+    B2B_SaaS\\\"\\n)\\n\\nprint(f\\\"값: {result.value}\\\")\\nprint(f\\\"신뢰도: {result.confidence:.0%}\\\"\\\n        )\\nprint(f\\\
+    \"근거: {result.reasoning_detail}\\\")\\n\"\n      cursor: '@Fermi, B2B SaaS Churn Rate는?'\n    collections:\n    - learned_rules\
+    \ (Phase 1, 0 → 2,000개 진화)\n    - canonical_store (정규화)\n    - estimator (Agent View)\n    files:\n    - estimator.py\
+    \ (520줄) - 통합 인터페이스 (5-Phase)\n    - phase1_direct_rag.py (320줄) - Phase 1 구현\n    - phase3_guestimation.py (650줄) - Phase\
+    \ 3 구현\n    - phase4_fermi.py (2,500줄) - Phase 4 구현 (Step 1-4)\n    - models.py (520줄) - 데이터 모델\n    - learning_writer.py\
+    \ (565줄) - 학습 시스템\n    - source_collector.py (400줄) - 11개 Source\n    - sources/ (Physical, Soft, Value)\n    total: 14개\
+    \ 파일, 5,200줄\n```\n\n---\n\n⚠️  이 도구는 자동 생성됩니다.\n   수정하려면 umis.yaml을 편집하고 sync_umis_to_rag.py를 실행하세요.\n"
 - tool_id: observer:complete
   tool_key: tool:observer:complete
   metadata:
@@ -2253,7 +2160,7 @@ tools:
   metadata:
     agent: estimator
     category: complete_context
-    context_size: 14960
+    context_size: 13840
     priority: high
     source: umis.yaml agents.Estimator (auto-sync)
     auto_generated: true
@@ -2305,24 +2212,15 @@ tools:
     \ component_value\n        - estimation_method\n        - reasoning\n        - confidence\n        - sources\n      estimation_trace:\n\
     \        description: 추정 과정 스텝별 추적\n        format: '[''Step 1: ...'', ''Step 2: ...'']'\n      decomposition:\n     \
     \   description: Fermi 분해 추적 (Phase 4용)\n        fields:\n        - formula\n        - variables (각각 EstimationResult)\n\
-    \        - depth (분해 깊이)\n  phase_4_fermi_decomposition:\n    description: 일반 Fermi 분해 + 재귀 추정 (Phase 4, v7.7.1 Few-shot\
-    \ 개선)\n    speed: 10-30초\n    coverage: 5% → 0.5% (Year 1)\n    confidence: 0.60-0.80 → 0.70-0.85 (v7.7.1 개선)\n    when:\
-    \ Phase 1-3 모두 실패\n    status: ✅ v7.7.1 Few-shot 개선 완료 (2025-11-21)\n    implementation: umis_rag/agents/estimator/phase4_fermi.py\
-    \ (2,700줄)\n    v7_7_1_improvements:\n      summary: Few-shot 예시 추가로 계산 연결성 145% 향상\n      date: '2025-11-21'\n      test_results:\n\
-    \        calculation_connectivity: 18/40 → 50/50 (만점!)\n        success_rate: 0% → 93% (14/15)\n        reasoning_coverage:\
-    \ 0% → 80-100%\n        total_score: 85/100 (gpt-5.1)\n      few_shot_example:\n        enabled: true\n        example:\
-    \ 서울 택시 수 추정 (5단계 분해)\n        effect: 모든 모델이 올바른 Fermi 방법론 학습\n        location: _build_llm_prompt() 메서드\n      calculation_verification:\n\
-    \        enabled: true\n        method: 자동 계산 검증 (_verify_calculation_connectivity)\n        check: 분해 값들이 최종값으로 올바르게\
-    \ 계산되는지 확인\n        threshold: 10% 오차 이내\n        score_range: 0-25점\n      reasoning_requirement:\n        mandatory:\
-    \ true\n        description: 모든 가정(비율, 계수)에 합리적 근거 필수\n        examples:\n        - 경활 비율 0.62 → OECD 수준 + 한국 통계 기준\n\
-    \        - 자영업 0.2 → 한국 높은 편, 5명 중 1명\n        - 등록 비율 0.8 → 영세·비공식 자영업 감안\n      quality_standards:\n        calculation_connectivity:\
-    \ 50/50 (만점)\n        reasoning_coverage: 80% 이상\n        accuracy: 10% 오차 이내\n        final_score: 85/100 (gpt-5.1 chat)\n\
-    \    v7_7_0_changes:\n      terminology: Phase 4 내부를 Step 1-4로 명확화\n      removed: Phase/Step 혼란 제거\n      focus: 일반 Fermi\
-    \ 분해만 (물리적/수학적)\n      reason: Estimator = 추정, Quantifier = 계산 (MECE)\n    features:\n      general_fermi:\n        description:\
-    \ 일반적 Fermi 분해 (비즈니스 지표 제외)\n        examples:\n        - 서울 음식점 수는? (인구 × 음식점 밀도)\n        - 여객기에 탁구공? (부피 / 탁구공 부피)\n\
-    \        - 한국 커피 시장? (인구 × 소비율 × 가격)\n        not_handled: LTV, CAC, Payback 등 → Quantifier\n        coverage: 일반 추정 100%\n\
-    \      recursion:\n        description: 재귀 분해 추정 (논리의 퍼즐)\n        max_depth: 4\n        process: Unknown 변수 → Phase 3\
-    \ 시도 → 재귀 호출\n        backtracking: depth 3 → 2 → 1 → 0 재조립\n      data_inheritance:\n        description: 부모 데이터 상속 (v7.5.0)\n\
+    \        - depth (분해 깊이)\n  phase_4_fermi_decomposition:\n    description: 일반 Fermi 분해 + 재귀 추정 (Phase 4, v7.7.0 용어 명확화)\n\
+    \    speed: 10-30초\n    coverage: 5% → 0.5% (Year 1)\n    confidence: 0.60-0.80\n    when: Phase 1-3 모두 실패\n    status:\
+    \ ✅ v7.7.0 용어 명확화 완료\n    implementation: umis_rag/agents/estimator/phase4_fermi.py (2,500줄)\n    v7_7_0_changes:\n  \
+    \    terminology: Phase 4 내부를 Step 1-4로 명확화\n      removed: Phase/Step 혼란 제거\n      focus: 일반 Fermi 분해만 (물리적/수학적)\n  \
+    \    reason: Estimator = 추정, Quantifier = 계산 (MECE)\n    features:\n      general_fermi:\n        description: 일반적 Fermi\
+    \ 분해 (비즈니스 지표 제외)\n        examples:\n        - 서울 음식점 수는? (인구 × 음식점 밀도)\n        - 여객기에 탁구공? (부피 / 탁구공 부피)\n        -\
+    \ 한국 커피 시장? (인구 × 소비율 × 가격)\n        not_handled: LTV, CAC, Payback 등 → Quantifier\n        coverage: 일반 추정 100%\n   \
+    \   recursion:\n        description: 재귀 분해 추정 (논리의 퍼즐)\n        max_depth: 4\n        process: Unknown 변수 → Phase 3 시도\
+    \ → 재귀 호출\n        backtracking: depth 3 → 2 → 1 → 0 재조립\n      data_inheritance:\n        description: 부모 데이터 상속 (v7.5.0)\n\
     \        feature: 재귀 시 부모의 available 변수 상속\n        benefit: 재계산 불필요, 일관성 보장, 시간 절약\n      circular_detection:\n     \
     \   description: 순환 의존성 감지\n        method: Call stack 추적\n        example: 시장 규모 → 점유율 → 시장 규모 (순환!) → 중단\n      variable_policy:\n\
     \        name: SimpleVariablePolicy (오버엔지니어링 회피)\n        code: 20줄 (vs Hybrid 300줄)\n        principle: 6개 권장 (Occam),\

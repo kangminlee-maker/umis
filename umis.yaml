@@ -1,5 +1,5 @@
 # ========================================
-# UMIS v7.5.0 GUIDELINES
+# UMIS v7.8.0 GUIDELINES
 # ========================================
 #
 # 📖 핵심 문서:
@@ -18,6 +18,14 @@
 # - Native/External 모드 (LLM 선택)
 # - RAG 기반 패턴/사례 자동 검색 (54개)
 # - Excel 자동 생성 + 완전 추적성
+# - Model Config 시스템 (17개 모델 중앙 관리) ⭐ v7.8.0 NEW!
+# - 통합 벤치마크 (98% 비용 절감) ⭐ v7.8.0 NEW!
+#
+# v7.8.0 주요 변경:
+# - Model Config 시스템: .env 모델 변경 → 코드 수정 0줄
+# - benchmarks/ 폴더: 통합 벤치마크 시스템
+# - Phase 0-3 벤치마크: 98% 비용 절감 ($0.30/1,000회)
+# - Phase 4 평가 시스템: 내용/형식 분리 (110점)
 #
 # 문서 구조:
 # - Section 0-1: 시스템 개요 및 정의
@@ -26,7 +34,7 @@
 # - Section 8: 실행 가이드
 # ========================================
 
-# Universal Market Intelligence System v7.5.0
+# Universal Market Intelligence System v7.8.0
 # ========================================
 # SECTION 0: SYSTEM ARCHITECTURE OVERVIEW
 # @id: system_architecture_overview
@@ -259,11 +267,11 @@ system_architecture:
 # ========================================
 system:
   name: "Universal Market Intelligence System"
-  version: "7.7.0"
-  release_date: "2025-11-10"
-  status: "Stable Release"
+  version: "7.8.0"
+  release_date: "2025-11-24"
+  status: "Stable Release - Model Config + Benchmarks"
   purpose: "RAG 기반 6-Agent 협업 시장 분석 시스템"
-  description: "6-Agent + 5-Phase Estimator + Native 모드로 100% 커버리지 달성 (비용 $0)"
+  description: "6-Agent + 5-Phase Estimator + Model Config 시스템 + 98% 비용 절감 (Native $0 / External $0.30)"
   default_mode: "Discovery Sprint → Comprehensive Study (2-4주) - 별도 언급 없으면 자동 적용"
 
   rag_architecture:
@@ -294,6 +302,345 @@ system:
     - "Autonomous Monitoring: 능동적 목표 정렬과 개입"
     - "Complete Traceability: 모든 결론 → 원본 데이터 역추적 (ID Namespace)"
     - "Reproducibility: Excel 함수, YAML 스키마로 재검증 가능"
+    - "Model Config System (v7.8.0): 17개 LLM 모델 중앙 관리, .env 변경 → 코드 수정 0줄"
+    - "3-Model Optimization (v7.8.0): 98% 비용 절감 달성 ($0.30/1,000회)"
+    - "Integrated Benchmarks (v7.8.0): benchmarks/ 폴더로 통합 벤치마크 시스템"
+
+  # v7.8.0 신규: Model Config System
+  model_config_system:
+    version: "7.8.0"
+    purpose: "중앙 집중식 LLM 모델 관리"
+    description: ".env 파일로 모델 변경 시 코드 수정 불필요, API 파라미터 자동 최적화"
+
+    core_files:
+      config_file: "config/model_configs.yaml (320줄, 17개 모델)"
+      python_module: "umis_rag/core/model_configs.py (262줄)"
+      router_extension: "umis_rag/core/model_router.py (select_model_with_config)"
+
+    supported_models:
+      o1_series:
+        - "o1-mini (Phase 4 기본)"
+        - "o1 (고급 추론)"
+        - "o1-2024-12-17 (버전 고정)"
+        - "o1-pro (Pro 모델)"
+        - "o1-pro-2025-03-19 (Pro 버전 고정)"
+      o3_series:
+        - "o3 (최신 추론)"
+        - "o3-2025-04-16 (버전 고정)"
+        - "o3-mini (경제적 추론)"
+        - "o3-mini-2025-01-31 (버전 고정)"
+      gpt5_series:
+        - "gpt-5.1 (reasoning_effort 지원)"
+        - "gpt-5-pro (Pro 모델)"
+      gpt4_series:
+        - "gpt-4.1-nano (Phase 0-2 최적)"
+        - "gpt-4o-mini (Phase 3 최적)"
+        - "gpt-4-turbo-preview"
+        - "gpt-4o (고성능)"
+        - "gpt-4o-2024-08-06 (버전 고정)"
+      total: 17개
+
+    key_features:
+      zero_touch_model_change:
+        description: ".env 변경만으로 모델 전환"
+        example: "LLM_MODEL_PHASE4=gpt-5.1 → 즉시 적용"
+        code_change: "0줄"
+
+      api_type_auto_detection:
+        description: "모델에 맞는 API 자동 선택"
+        responses_api: "o1/o3/gpt-5.1/gpt-5-pro + Pro 모델"
+        chat_api: "gpt-4.1-nano/gpt-4o-mini/gpt-4-turbo-preview"
+        benefit: "API 변경 시 코드 수정 불필요"
+
+      intelligent_parameter_management:
+        max_output_tokens:
+          description: "모델별 최적 토큰 수 자동 적용"
+          examples:
+            o1_mini: 65536
+            gpt_4_1_nano: 16384
+            gpt_5_1: 32768
+        reasoning_effort:
+          description: "지원 모델에만 자동 적용"
+          supported: "o1/o3/gpt-5.1 (비 Pro 모델)"
+          levels: "low/medium/high"
+          phase4_default: "medium"
+        temperature:
+          description: "모델 특성에 따라 자동 설정"
+          o1_series: "설정 불가 (내부 고정)"
+          gpt4_series: "설정 가능 (기본 1.0)"
+
+      pro_model_optimization:
+        description: "Pro 모델 Fast Mode 자동 적용"
+        models: "o1-pro/o1-pro-2025-03-19/gpt-5-pro"
+        fast_mode_prompt: "60초 이내 / 2,000자 이내 목표"
+        reasoning_effort: "high 고정"
+        benefit: "응답 시간 단축 + 품질 유지"
+
+      prefix_based_fallback:
+        description: "버전 모델 자동 폴백"
+        example: "o1-mini-2025-12-31 → o1-mini 설정 사용"
+        benefit: "신규 버전 즉시 사용 가능"
+
+    usage_examples:
+      phase4_gpt51_high:
+        env_setting: "LLM_MODEL_PHASE4=gpt-5.1"
+        automatic_application:
+          api_type: "responses"
+          max_output_tokens: 32768
+          reasoning_effort: "high (Phase 4)"
+        code: "변경 불필요"
+
+      phase4_o1_pro:
+        env_setting: "LLM_MODEL_PHASE4=o1-pro"
+        automatic_application:
+          api_type: "responses"
+          max_output_tokens: 100000
+          reasoning_effort: "high (Pro 고정)"
+          fast_mode: true
+        code: "변경 불필요"
+
+      phase3_gpt4o_mini:
+        env_setting: "LLM_MODEL_PHASE3=gpt-4o-mini"
+        automatic_application:
+          api_type: "chat"
+          max_output_tokens: 16384
+          temperature: 1.0
+        code: "변경 불필요"
+
+    integration_status:
+      phase4_fermi: "✅ 완료 (umis_rag/agents/estimator/phase4_fermi.py)"
+      phase0_2: "📋 예정"
+      phase3: "📋 예정"
+      other_agents: "📋 예정"
+
+    benefits:
+      development_speed: "모델 추가 5분 → 30초 (10배 단축)"
+      maintenance: "API 변경 시 코드 수정 불필요"
+      extensibility: "YAML 5줄로 신규 모델 즉시 사용"
+      consistency: "모든 Phase에서 일관된 모델 관리"
+      testing: "모델 A/B 테스트 간소화"
+
+  # v7.8.0 신규: LLM 최적화 (3-Model 구성)
+  llm_optimization:
+    version: "7.8.0"
+    achievement: "98% 비용 절감 달성! ($15.00 → $0.30)"
+
+    phase_0_2_configuration:
+      model: "gpt-4.1-nano"
+      coverage: "45% (450/1,000 작업)"
+      cost_per_task: "$0.000033"
+      speed: "1.02초"
+      accuracy: "100%"
+      use_cases:
+        - "Phase 0 (Literal): 데이터에서 직접 추출"
+        - "Phase 1 (Inferred): 간단한 추론"
+        - "Phase 2 (Formula): 공식 기반 계산"
+        - "Quantifier: 공식 계산 (SAM, 성장률)"
+        - "Validator: 기본 검증"
+      reason: "구조화된 작업 → 저렴한 모델로 100% 정확도"
+
+    phase_3_configuration:
+      model: "gpt-4o-mini"
+      coverage: "48% (480/1,000 작업)"
+      cost_per_task: "$0.000121"
+      speed: "4.61초"
+      accuracy: "100%"
+      use_cases:
+        - "Phase 3 Guestimation: 중간 복잡도 추정"
+        - "Explorer: RAG 패턴 검색 + 해석"
+        - "Validator: 정의 검증 + 창의적 소싱"
+      improvement: "프롬프트 개선으로 100% 정확도 달성"
+      reason: "중간 추론 → Mini 모델로 충분"
+
+    phase_4_configuration:
+      model: "o1-mini"
+      coverage: "7% (70/1,000 작업)"
+      cost_per_task: "$0.0033"
+      speed: "5-15초"
+      accuracy: "93%"
+      use_cases:
+        - "Phase 4 Fermi Decomposition: 복잡한 분해"
+        - "Discovery Sprint: 목표 불명확 시"
+        - "복잡한 추론: 다단계 논리"
+      reason: "고급 추론 필요 → Reasoning 모델 필수"
+
+    cost_breakdown:
+      phase_0_2: "450 × $0.000033 = $0.015 (0.5%)"
+      phase_3: "480 × $0.000121 = $0.058 (19.3%)"
+      phase_4: "70 × $0.0033 = $0.231 (77%)"
+      total_per_1000: "$0.30"
+      vs_previous: "$15.00 (Sonnet Think 100%)"
+      savings: "98%"
+
+    env_configuration:
+      USE_PHASE_BASED_ROUTING: true
+      LLM_MODEL_PHASE0_2: "gpt-4.1-nano"
+      LLM_MODEL_PHASE3: "gpt-4o-mini"
+      LLM_MODEL_PHASE4: "o1-mini"
+      note: "Model Config 시스템이 API 파라미터 자동 최적화"
+
+    performance_comparison:
+      gpt_4_1_nano:
+        cost_per_task: "$0.000033"
+        phase_0_2_accuracy: "100%"
+        phase_3_accuracy: "40% (불충분)"
+        phase_4_accuracy: "0% (불가능)"
+      gpt_4o_mini:
+        cost_per_task: "$0.000121"
+        phase_0_2_accuracy: "100%"
+        phase_3_accuracy: "100%"
+        phase_4_accuracy: "3% (불충분)"
+      o1_mini:
+        cost_per_task: "$0.0033"
+        phase_0_2_accuracy: "100%"
+        phase_3_accuracy: "100%"
+        phase_4_accuracy: "93%"
+
+    recommendation:
+      default: "3-Model 구성 (Phase별 최적 모델)"
+      cost_sensitive: "gpt-4.1-nano + gpt-4o-mini (Phase 4 제외)"
+      quality_first: "o1-mini 단일 모델 (비용 ↑)"
+      experimental: "gpt-5.1 (high) + Pro 모델 테스트"
+
+  # v7.8.0 신규: 통합 벤치마크 시스템
+  benchmarks_system:
+    version: "7.8.0"
+    purpose: "UMIS 전체 시스템 벤치마크 통합 관리"
+
+    structure:
+      root: "benchmarks/"
+      common: "benchmarks/common/ (공통 평가 모듈)"
+      estimator: "benchmarks/estimator/ (Estimator 벤치마크)"
+      phase4: "benchmarks/estimator/phase4/ (Phase 4 Fermi)"
+
+    phase4_fermi_benchmarks:
+      test_batches:
+        batch1: "o1-mini / gpt-5.1 (high) / o3-mini"
+        batch2: "gpt-5-pro / o1-pro"
+        batch3: "gpt-4o / gpt-4o-mini / gpt-4-turbo"
+        batch4: "gpt-5.1 (medium)"
+        batch5: "gpt-5.1 (low)"
+        extended: "10개 추가 문제 (extended_10problems.py)"
+
+      scenarios:
+        count: 15개
+        examples:
+          - "한국 연간 샴푸 사용량"
+          - "서울 피아노 조율사 수"
+          - "제주도 연간 커피 소비량"
+          - "부산 연간 택배 박스 사용량"
+          - "전국 연간 치킨 소비량"
+
+      results:
+        format: "JSON (8개 파일)"
+        location: "benchmarks/estimator/phase4/results/"
+        content: "모델별 15개 문제 추정 결과 + 평가 점수"
+
+      analysis:
+        model_recommendations: "model_recommendations.md (모델 추천)"
+        evaluation_rebalancing: "evaluation_rebalancing.md (평가 재조정 v7.8.0)"
+
+      evaluation_system:
+        version: "v7.8.0"
+        file: "benchmarks/common/common.py"
+        total_score: 110점
+        content_vs_format: "45점 (내용) + 5점 (형식)"
+        improvement: "gpt-5.1 평가 공정성 향상"
+
+    documentation:
+      design:
+        - "MODEL_CONFIG_DESIGN.md (773줄): 전체 설계"
+        - "MODEL_CONFIG_IMPLEMENTATION.md (203줄): 구현 상세"
+      testing:
+        - "MODEL_CONFIG_TEST_RESULTS.md (275줄): 테스트 결과"
+        - "PHASE4_INTEGRATION_COMPLETE.md (350줄): 통합 완료"
+      final:
+        - "PHASE4_INTEGRATION_FINAL.md (420줄): 최종 보고서"
+      improvements:
+        - "PHASE4_IMPROVEMENT_PLAN.md (1,035줄): 개선 계획"
+        - "PHASE4_IMPROVEMENTS_SUMMARY.md (137줄): 개선 요약"
+
+    migration_plan:
+      phase_1: "Phase 4 이관 (✅ 완료)"
+      phase_2: "Phase 0-3 추가 (📋 예정)"
+      phase_3: "전체 Agent 확장 (📋 예정)"
+      phase_4: "Workflow 통합 (📋 예정)"
+
+  # v7.8.0 신규: Phase 4 평가 시스템
+  phase4_evaluation_system:
+    version: "7.8.0"
+    total_score: 110점
+    rationale: "내용/형식 분리로 공정한 평가"
+
+    scoring_breakdown:
+      accuracy_score:
+        points: 25점
+        method: "log10 기반 오차"
+        formula: "max(0, 25 - 10 * log10(error_ratio))"
+        example:
+          error_2x: "22점"
+          error_10x: "15점"
+          error_100x: "5점"
+
+      content_score:
+        total: 45점
+        components:
+          step_completeness:
+            points: 10점
+            description: "분해 단계 완성도"
+            criteria: "5개 이상 단계 / 논리적 흐름"
+          calculation_logic:
+            points: 10점
+            description: "계산 연결성"
+            criteria: "이전 단계 → 다음 단계 논리적 연결"
+          numerical_accuracy:
+            points: 25점
+            description: "수치 정확도"
+            criteria: "최종 값의 오차"
+
+      format_score:
+        total: 5점
+        components:
+          final_calculation:
+            points: 2점
+            penalty: "자동 생성 시 0점"
+          calculation_verification:
+            points: 2점
+            penalty: "자동 생성 시 0점"
+          concept_fields:
+            points: 1점
+            description: "개념 필드 완성도"
+
+      decomposition_quality:
+        points: 10점
+        description: "분해 품질"
+
+      conceptual_coherence:
+        points: 15점
+        description: "개념적 일관성"
+
+      logic:
+        points: 10점
+        description: "논리적 건전성"
+
+    key_improvement:
+      issue: "gpt-5.1은 핵심 추론 우수하지만 JSON 형식 약함"
+      previous_penalty: "형식 점수 50점 중 감점 과다"
+      solution: "내용(45점)/형식(5점) 분리 → 핵심 능력 정확 평가"
+      effect: "gpt-5.1 평가 공정성 향상 (추론 능력에 집중)"
+
+    model_performance_example:
+      gpt_5_1_high:
+        content_score: "40/45 (우수한 추론)"
+        format_score: "1/5 (형식 약함)"
+        total: "66/110 (60%)"
+        evaluation: "공정 (추론 능력 정확 반영)"
+      o1_mini:
+        content_score: "38/45"
+        format_score: "5/5"
+        total: "68/110 (62%)"
+        evaluation: "형식 완벽 + 추론 우수"
+
   adaptive_principles:
     - principle: "Start with Ambiguity"
       description: "불확실성을 받아들이고 시작"

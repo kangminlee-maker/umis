@@ -7,11 +7,15 @@
 
 | Item | Value |
 |------|-------|
-| **UMIS Version** | v7.7.1 "Phase 4 Few-shot 개선" |
+| **UMIS Version** | v7.8.0 "Model Config System + Benchmarks" ⭐⭐⭐ NEW! |
 | **Agent System** | 6-Agent (Observer, Explorer, Quantifier, **Validator**, Guardian, **Estimator**) ⭐ |
 | **RAG Architecture** | v3.0 (4-Layer) |
 | **Excel Engine** | v1.0 (3개 도구 완성) |
-| **Estimator Agent** | v7.7.1 (Phase 4 Few-shot + 계산 검증) ⭐⭐⭐ NEW! |
+| **Estimator Agent** | v7.8.0 (Phase 4 평가 시스템 개선) ⭐⭐⭐ NEW! |
+| **Model Config System** | v7.8.0 (중앙 집중식 LLM 관리) ⭐⭐⭐ NEW! |
+| **Phase 0-3 Benchmark** | v7.8.0 (98% 비용 절감 달성) ⭐⭐⭐ NEW! |
+| **Phase 4 Evaluation** | v7.8.0 (내용/형식 분리, 110점 만점) ⭐⭐⭐ NEW! |
+| **Benchmarks Structure** | v1.0 (통합 벤치마크 시스템) ⭐⭐⭐ NEW! |
 | **Native Mode** | v7.7.0 (LLMProvider 구현, 비용 $0) ⭐⭐⭐ |
 | **Validator Search** | v1.0 (확정 데이터 검색, 85% 처리) ⭐⭐⭐ |
 | **Boundary Validation** | v1.0 (개념 기반 동적 추론) ⭐ |
@@ -19,20 +23,22 @@
 | **Built-in Rules** | 제거 (답변 일관성 확보) |
 | **Phase Coverage** | P0:10%, P1:5%, P2:85%, P3:2%, P4:3% |
 | **Validator Accuracy** | 100% (0% 오차) ⭐⭐⭐ |
-| **Phase 4 Accuracy** | 85% (10% 오차, v7.7.1 개선!) ⭐⭐⭐ NEW! |
-| **Phase 4 Calculation** | 50/50 (만점, 145% 향상) ⭐⭐⭐ NEW! |
+| **Phase 4 Accuracy** | 93% (14/15, v7.7.1 Few-shot 개선) ⭐⭐⭐ |
+| **Phase 4 Calculation** | 50/50 (만점, v7.7.1) ⭐⭐⭐ |
+| **Phase 4 Content Score** | 45/45 (만점, v7.8.0) ⭐⭐⭐ NEW! |
 | **E2E Success** | 95% (19/20) ⭐ |
 | **Meta-RAG** | v1.0 (Guardian 프로세스 감시) ⭐ |
 | **System RAG** | v1.0 (31개 도구) |
 | **LLM Mode** | Native (진짜 구현!) + External ⭐ |
+| **LLM Optimization** | 3-Model 구성 ($0.30/1,000회, 98% 절감) ⭐⭐⭐ NEW! |
 | **Schema Registry** | v1.3 (v7.7.0 반영) ⭐ |
 | **Terminology** | Phase (전체 0-4) + Step (Fermi 1-4) ⭐ |
 | **Coverage** | 100% (실패율 0%) ⭐ |
-| **Cost** | $0 (Native mode) ⭐ |
-| **Last Updated** | 2025-11-21 |
+| **Cost** | $0 (Native mode) / $0.30/1,000회 (External mode) ⭐ |
+| **Last Updated** | 2025-11-24 ⭐ NEW! |
 | **Validator DART API** | v1.0.0 (11개 기업, 537개 항목 검증) ⭐ |
-| **SG&A Parser** | v1.0.0 (진화형 2-Tier 시스템) ⭐ NEW! |
-| **Status** | Production Ready - Native 모드 + DART 통합 완성 |
+| **SG&A Parser** | v1.0.0 (진화형 2-Tier 시스템) ⭐ |
+| **Status** | Production Ready - Model Config + Benchmarks 완성 ⭐⭐⭐ NEW! |
 
 **Purpose**: UMIS 전체 구조와 기능을 한눈에 파악할 수 있는 고수준 설계도
 
@@ -643,8 +649,9 @@ umis/
 ├── umis_examples.yaml                 # 사용 예시
 ├── VERSION.txt                        # v7.3.2 ⭐
 │
-├── config/                            # 설정 파일 (13개) ⭐
+├── config/                            # 설정 파일 (15개) ⭐
 │   ├── agent_names.yaml               # Agent 이름 (6-Agent)
+│   ├── model_configs.yaml             # LLM 모델 설정 (17개 모델) ⭐⭐⭐ v7.8.0 NEW!
 │   ├── tool_registry.yaml             # System RAG 도구 (31개) ⭐
 │   ├── schema_registry.yaml           # RAG 스키마 (v1.1) ⭐
 │   ├── projection_rules.yaml          # Projection 규칙 (Estimator 포함)
@@ -677,10 +684,12 @@ umis/
 │   └── test_*.py                      # 26개 테스트
 │
 ├── umis_rag/                          # 핵심 패키지 (실제 RAG 코드)
-│   ├── core/                          # 핵심 시스템 (9개 파일)
+│   ├── core/                          # 핵심 시스템 (11개 파일) ⭐
 │   │   ├── schema.py                  # Pydantic 스키마
 │   │   ├── metadata_schema.py         # 메타데이터 스키마
 │   │   ├── config.py                  # 설정 관리
+│   │   ├── model_router.py            # Phase별 모델 자동 선택 ⭐⭐⭐ v7.8.0
+│   │   ├── model_configs.py           # Model Config 시스템 ⭐⭐⭐ v7.8.0 NEW!
 │   │   ├── layer_manager.py           # 3-Layer 관리
 │   │   ├── workflow_executor.py       # Workflow 실행
 │   │   ├── circuit_breaker.py         # Circuit Breaker
@@ -763,6 +772,48 @@ umis/
 │   ├── AI_SETUP_GUIDE.md              # AI용 가이드
 │   └── START_HERE.md                  # 빠른 시작
 │
+├── benchmarks/                        # 통합 벤치마크 시스템 ⭐⭐⭐ v7.8.0 NEW!
+│   ├── README.md                      # 벤치마크 시스템 가이드
+│   ├── MIGRATION_PLAN.md              # 4단계 마이그레이션 플랜
+│   ├── PHASE1_COMPLETION_REPORT.md    # Phase 1 완료 보고서
+│   ├── common/                        # 공통 모듈
+│   │   └── __init__.py
+│   └── estimator/                     # Estimator 벤치마크
+│       ├── MODEL_CONFIG_DESIGN.md     # Model Config 설계 (773줄)
+│       ├── MODEL_CONFIG_IMPLEMENTATION.md  # ModelRouter 확장 (203줄)
+│       ├── MODEL_CONFIG_TEST_RESULTS.md    # 테스트 결과 (275줄)
+│       ├── PHASE4_INTEGRATION_COMPLETE.md  # Phase 4 통합 (350줄)
+│       ├── PHASE4_INTEGRATION_FINAL.md     # 최종 완료 (420줄)
+│       ├── PHASE4_IMPROVEMENT_PLAN.md      # 개선 계획 (1,035줄)
+│       ├── PHASE4_IMPROVEMENTS_SUMMARY.md  # 개선 요약 (137줄)
+│       └── phase4/                    # Phase 4 Fermi 벤치마크
+│           ├── README.md              # Phase 4 Architecture (v7.8.0)
+│           ├── common.py              # 공통 함수 (평가 시스템 v7.8.0)
+│           ├── scenarios.py           # 15개 Fermi 문제
+│           ├── tests/                 # 벤치마크 테스트
+│           │   ├── batch1.py          # o1-mini, gpt-5.1 (high), o3-mini
+│           │   ├── batch2.py          # gpt-5-pro, o1-pro (high 고정)
+│           │   ├── batch3.py          # gpt-4o, gpt-4o-mini, gpt-4-turbo
+│           │   ├── batch4.py          # gpt-5.1 (medium)
+│           │   ├── batch5.py          # gpt-5.1 (low)
+│           │   └── extended_10problems.py  # 확장 10문제
+│           ├── results/               # 벤치마크 결과 (JSON)
+│           └── analysis/              # 분석 문서
+│               ├── model_recommendations.md    # 모델 추천
+│               └── evaluation_rebalancing.md   # 평가 재조정 (v7.8.0)
+│
+├── tests/                             # 통합 테스트
+│   ├── test_model_configs.py          # Model Config 기본 테스트 ⭐ v7.8.0
+│   ├── test_model_configs_simulation.py  # Model Config 실전 시뮬레이션 ⭐ v7.8.0
+│   ├── test_integration_timeline.py
+│   ├── test_observer_timeline.py
+│   └── test_strategy_playbook.py
+│
+├── setup/                             # 설치 파일
+│   ├── setup.py                       # 자동 설치 스크립트
+│   ├── AI_SETUP_GUIDE.md              # AI용 가이드
+│   └── START_HERE.md                  # 빠른 시작
+│
 ├── dev_docs/                          # 개발 문서 (Alpha only, 50,000줄+)
 │   ├── guestimation_v3/               # Estimator 설계 (20개)
 │   ├── reports/                       # 분석 리포트 (10개)
@@ -789,28 +840,90 @@ umis/
 
 ### 주요 파일 역할
 
-| 파일 | 역할 | 크기/개수 | v7.3.2 |
-|------|------|-----------|--------|
+| 파일 | 역할 | 크기/개수 | 버전 |
+|------|------|-----------|------|
 | **umis.yaml** | Cursor Rules, 메인 가이드 | 6,539줄 | ⭐ Estimator 386줄 |
 | **umis_core.yaml** | 압축 INDEX (AI 빠른 참조) | 928줄 | ⭐ 87% 절약 |
+| **config/model_configs.yaml** | LLM 모델 설정 (중앙 관리) | 17개 모델, 320줄 | ⭐⭐⭐ v7.8.0 NEW! |
 | **config/tool_registry.yaml** | System RAG 도구 정의 | 31개 도구 | ⭐ Estimator 3개 |
 | **config/schema_registry.yaml** | RAG 레이어 통합 스키마 | 851줄, v1.1 | ⭐ EST- prefix |
 | **config/projection_rules.yaml** | Canonical → Projected 변환 | 125줄 | ⭐ Estimator 규칙 |
 | **config/routing_policy.yaml** | Workflow 정의 | 194줄, v1.1.0 | ⭐ Estimator 협업 |
 | **config/runtime.yaml** | 실행 모드 (hybrid) | 99줄 | Circuit Breaker |
 | **config/fermi_model_search.yaml** | Phase 4 설계 (Step 1-4) | 1,500줄 | ⭐ v2.0 |
-| **umis_rag/agents/estimator/** | Estimator Agent | 14개 파일, 5,200줄 | ⭐ v7.7.0 |
+| **umis_rag/core/model_configs.py** | Model Config 시스템 | 262줄 | ⭐⭐⭐ v7.8.0 NEW! |
+| **umis_rag/core/model_router.py** | Phase별 모델 자동 선택 | 확장됨 | ⭐⭐⭐ v7.8.0 |
+| **umis_rag/agents/estimator/** | Estimator Agent | 14개 파일, 5,200줄 | ⭐ v7.8.0 |
 | **umis_rag/guardian/** | Meta-RAG | 7개 파일, 2,401줄 | ⭐ v7.1.0+ |
+| **benchmarks/estimator/** | Estimator 벤치마크 | 7개 문서, 3,193줄 | ⭐⭐⭐ v7.8.0 NEW! |
 
 ---
 
 ## 📚 Version History
 
-**현재 버전**: v7.7.1 "Phase 4 Few-shot Improvement" (2025-11-21) - Stable Release
+**현재 버전**: v7.8.0 "Model Config System + Benchmarks" (2025-11-24) ⭐⭐⭐ - Major Release
 
 **상세 변경 이력**: [CHANGELOG.md](CHANGELOG.md) 참조
 
 **주요 마일스톤**:
+
+- **v7.8.0 (2025-11-24)**: ⭐⭐⭐ Model Config 시스템 + 통합 벤치마크
+  - **Model Config 시스템**: 중앙 집중식 LLM 모델 관리 (17개 모델)
+    - `config/model_configs.yaml` 신규 (320줄, 17개 모델 정의)
+    - `umis_rag/core/model_configs.py` 신규 (262줄, ModelConfig/ModelConfigManager)
+    - `umis_rag/core/model_router.py` 확장 (select_model_with_config 추가)
+    - `.env` 모델 변경 시 코드 수정 0줄 (자동 API 최적화)
+    - API 타입 자동 분기 (Responses/Chat)
+    - Pro 모델 Fast Mode 자동 적용
+    - Reasoning Effort 지능형 처리
+  
+  - **통합 벤치마크 시스템**: `benchmarks/` 폴더 구조 완성
+    - Phase 1 완료: Phase 4 Fermi 벤치마크 이관
+    - `benchmarks/estimator/phase4/` (tests, results, analysis)
+    - 7개 문서 (3,193줄): 설계, 구현, 테스트, 개선 계획
+    - 15개 Fermi 문제, 6개 배치 테스트
+    - 벤치마크 결과 (JSON): 8개 파일
+  
+  - **Phase 0-3 벤치마크**: 98% 비용 절감 달성!
+    - **Phase 0-2**: gpt-4.1-nano (45%, $0.000033, 1.02초, 100%)
+    - **Phase 3**: GPT-4o-mini (48%, $0.000121, 4.61초, 100%)
+    - **Phase 4**: o1-mini (7%, $0.0033, 5-15초, 93%)
+    - 총 비용: $0.30/1,000회 (기존 $15.00, 98% 절감!)
+    - 프롬프트 개선으로 모든 모델 100% 정확도 (Phase 3)
+  
+  - **Phase 4 평가 시스템 v7.8.0**: 내용/형식 분리 (110점 만점)
+    - **Content Score (45점)**: 계산 완성도 (10), 로직 연결 (10), 수치 정확도 (25)
+    - **Format Score (5점)**: final_calculation (2), calculation_verification (2), concept 필드 (1)
+    - 자동 생성 필드는 0점 처리 (JSON 형식 문제 해결)
+    - gpt-5.1 약점 명확화: 핵심 추론 우수, JSON 형식 약함
+  
+  - **Phase 4 통합**: Model Config 시스템 적용
+    - `phase4_fermi.py` 리팩토링 (API 호출 로직 간소화)
+    - Fast Mode 자동 적용 (gpt-5-pro, o1-pro)
+    - API 타입 자동 분기 (Responses/Chat)
+    - Reasoning Effort 자동 설정
+  
+  - **env.template 업데이트**: Model Config 가이드 추가 (43줄)
+    - 지원 모델 목록 (17개)
+    - 자동 적용 기능 설명
+    - 사용 예시 4개
+    - 신규 모델 추가 방법
+  
+  - **문서화**:
+    - MODEL_CONFIG_DESIGN.md (773줄): 설계 대안 4개 분석
+    - MODEL_CONFIG_IMPLEMENTATION.md (203줄): ModelRouter 확장 구현
+    - MODEL_CONFIG_TEST_RESULTS.md (275줄): 10개 테스트 (100% 통과)
+    - PHASE4_INTEGRATION_COMPLETE.md (350줄): Phase 4 통합 완료
+    - PHASE4_INTEGRATION_FINAL.md (420줄): 최종 완료 보고서
+    - MIGRATION_PLAN.md: 4단계 마이그레이션 플랜
+    - PHASE1_COMPLETION_REPORT.md: Phase 1 완료 보고서
+  
+  - **파일 통계**:
+    - 신규 파일: 2개 (582줄)
+    - 수정 파일: 3개 (+94줄)
+    - 문서: 7개 (2,576줄)
+    - 테스트: 2개 (555줄)
+
 - **v7.7.1 (2025-11-21)**: ⭐⭐⭐ Estimator Phase 4 Few-shot 개선
   - Few-shot 예시 추가 (서울 택시 수 5단계 분해)
   - 계산 연결성 145% 향상 (18/40 → 50/50 만점!)
@@ -1402,7 +1515,7 @@ result.estimation_trace = [...]       # 과정 추적
 ---
 
 **Document Owner**: AI Team
-**Last Reviewed**: 2025-11-13 (Validator DART API v1.0.0 + SG&A Parser v1.0.0 반영)
+**Last Reviewed**: 2025-11-24 (v7.8.0: Model Config System + Benchmarks 반영) ⭐⭐⭐
 **Next Review**: 버전 업데이트 시
 
 ---
