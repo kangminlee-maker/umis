@@ -1,0 +1,31 @@
+{
+  "timestamp": "20251124_161057",
+  "version": "v7.8.1",
+  "llm_mode": "native",
+  "test_type": "phase4_final",
+  "total_tests": 2,
+  "phase4_count": 2,
+  "success_count": 2,
+  "results": [
+    {
+      "id": "quantum_computers",
+      "question": "양자 컴퓨터는 2030년에 몇 대?",
+      "phase": 4,
+      "value": 1250.0,
+      "unit": "",
+      "confidence": 0.674536878161602,
+      "duration": 2.859192,
+      "success": true
+    },
+    {
+      "id": "metaverse_real_estate",
+      "question": "메타버스 부동산 거래는 한 달에 몇 건?",
+      "phase": 4,
+      "value": 150000.0,
+      "unit": "",
+      "confidence": 0.6316359597656379,
+      "duration": 1.422006,
+      "success": true
+    }
+  ]
+}
