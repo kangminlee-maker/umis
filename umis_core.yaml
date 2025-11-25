@@ -1,12 +1,19 @@
 # ========================================
-# UMIS Core (INDEX) v7.8.0
+# UMIS Core (INDEX) v7.8.1
 # ========================================
 
-version: 7.8.0
+version: 7.8.1
 updated: 2025-11-24
 
 purpose: |
   System RAG INDEX - AI가 어떤 도구를 로드할지 안내
+  
+  v7.8.1 (2025-11-24): ⭐⭐⭐ cursor-native 통합
+    - cursor-native 모델 설정: Native Mode를 Model Config 시스템으로 통합
+    - config/model_configs.yaml: 18개 모델 (17 External + cursor-native)
+    - phase4_fermi.py: api_type 기반 통일된 분기 처리
+    - Phase 4 테스트: 100% 성공 (2/2, 평균 2.14초)
+    - Phase 2 Validator: Distance threshold 개선 (0.90 / 1.10)
   
   v7.8.0 (2025-11-24): ⭐⭐⭐ Major Release
     - Model Config 시스템: 중앙 집중식 LLM 관리 (17개 모델)
@@ -170,32 +177,44 @@ key_principles:
 # ========================================
 
 model_config_system:
-  version: 7.8.0
+  version: 7.8.1
   purpose: 중앙 집중식 LLM 모델 관리
   
   key_features:
-    - 17개 모델 중앙 관리 (config/model_configs.yaml)
+    - 18개 모델 중앙 관리 (17 External + cursor-native)
     - .env 모델 변경 → 코드 수정 0줄
-    - API 타입 자동 분기 (Responses/Chat)
+    - API 타입 자동 분기 (Responses/Chat/Cursor)
     - Pro 모델 Fast Mode 자동 적용
     - Reasoning Effort 지능형 처리
   
   core_files:
-    config: config/model_configs.yaml (320줄, 17개 모델)
-    python: umis_rag/core/model_configs.py (262줄)
+    config: config/model_configs.yaml (327줄, 18개 모델)
+    python: umis_rag/core/model_configs.py (297줄)
     router: umis_rag/core/model_router.py (확장)
   
   supported_models:
+    cursor: cursor-native (api_type: cursor, 무료)
     o1_series: [o1-mini, o1, o1-2024-12-17, o1-pro, o1-pro-2025-03-19]
     o3_series: [o3, o3-2025-04-16, o3-mini, o3-mini-2025-01-31]
     gpt5_series: [gpt-5.1, gpt-5-pro]
     gpt4_series: [gpt-4.1-nano, gpt-4o-mini, gpt-4-turbo-preview, gpt-4o, gpt-4o-2024-08-06]
-    total: 17개
+    total: 18개
+  
+  cursor_native:
+    api_type: cursor
+    cost: $0 (무료)
+    usage: Native Mode에서 자동 선택
+    purpose: Cursor LLM 직접 활용 (API 불필요)
+    benefits:
+      - 무료 사용
+      - 패턴 매칭 기반 직접 추론
+      - External LLM 불필요
   
   usage:
-    change_model: .env에서 LLM_MODEL_PHASE4=gpt-5.1
+    change_model: .env에서 LLM_MODEL_PHASE4=gpt-5.1 (External)
+    native_mode: UMIS_MODE=native → cursor-native 자동 사용
     auto_apply:
-      - API 타입 (responses/chat)
+      - API 타입 (responses/chat/cursor)
       - max_output_tokens (모델별 최적값)
       - reasoning_effort (지원 모델만)
       - temperature (지원 모델만)
@@ -205,6 +224,7 @@ model_config_system:
     development: 모델 추가 5분 → 30초 (10배 ↓)
     maintenance: API 변경 시 코드 수정 불필요
     extensibility: YAML 5줄로 신규 모델 즉시 사용
+    native_integration: Native Mode도 동일 시스템 (cursor-native)
 
 # ========================================
 # v7.8.0: LLM Optimization (3-Model 구성)

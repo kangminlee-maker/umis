@@ -182,7 +182,7 @@ Cursor Composer (Cmd+I):
 | **guardian** | Stewart | 프로세스 관리 | .project_meta.yaml, deliverables_registry.yaml | - (메타 관리자) |
 | **estimator** | **Fermi** | **값 추정 전문 (5-Phase)** | **EstimationResult** (값 + 근거 + phase) | - (협업 파트너) |
 
-**핵심**:
+**핵심**: 
 - **Agent ID 불변** (observer, explorer, quantifier, validator, guardian, **estimator**) → 폴더/파일 경로
 - **Name 변경 가능** (config/agent_names.yaml) → 사용자 UI
 - **상호 검증** (각 산출물 2-3명 검증)
@@ -287,7 +287,7 @@ Layer 3: Knowledge Graph (GND-*, GED-*)
     graph_node_id: "GND-platform-001"
     pattern_id: "platform_business_model"
     vector_chunk_id: "PRJ-baemin-exp-001"
-
+  
   Edges:
     graph_edge_id: "GED-plat-sub-001"
     (GND-platform-001)-[COMBINES_WITH]->(GND-subscription-001)
@@ -307,16 +307,16 @@ Layer 3: Knowledge Graph (GND-*, GED-*)
 Layer 4: Memory (MEM-*, RAE-*, EST-*)
   Query Memory: 순환 감지 (repetition_count)
     - memory_id: "MEM-query-001"
-
+  
   Goal Memory: 목표 정렬 (alignment_score)
     - memory_id: "MEM-goal-001"
-
+  
   RAE Index: Guardian 평가 재사용 (일관성)
     - rae_id: "RAE-eval-001"
     - deliverable_id: "OPP-001"
     - grade: "A"
     - rationale: "구조적 실현성 높음, 근거 충분"
-
+  
   Estimation Results: Estimator 추정 결과
     - estimation_id: "EST-churn-001"
     - value: 0.06, confidence: 0.85
@@ -375,11 +375,11 @@ field_rules:
   business_model:
     agents: [explorer]
     reason: "기회 발굴에 핵심"
-
+  
   trigger_observations:
     agents: [observer, explorer]
     reason: "구조 관찰 + 기회 인식"
-
+  
   churn_rate:
     agents: [explorer, quantifier, guardian]
     reason: "구독 평가 + 계산 + 검증"
@@ -454,7 +454,7 @@ Steve 기회 가설: "피아노 구독 서비스 SAM 270억"
           ↓ Rachel source_registry.yaml
             ↓ source_url: "https://..."
             ↓ 신뢰도: 75/100
-
+  
   ↓ 근거 2: Bill SAM 계산
     ↓ Method 2 Bottom-Up: 270억
       ↓ Assumptions: ASM_001 = 1,500억
@@ -482,7 +482,7 @@ Step 1: pattern_search
   └─ Graph Search: Neo4j
      Query: (Pattern)-[COMBINES_WITH]->()
      → Platform + Subscription 조합 발견
-
+  
   Output: matched_patterns = [subscription_model, platform_model]
   ↓
 Step 2: case_search
@@ -491,14 +491,14 @@ Step 2: case_search
   Query: pattern_id = "subscription_model"
   Filter: chunk_type = "success_case"
   Top 3: Netflix, Spotify, Adobe
-
+  
   Output: success_cases = [Netflix, Spotify, Adobe]
   ↓
 Step 3: estimator_collaboration (조건부) v7.3.2+
   Condition: needs_estimation
   Agent: Estimator (Fermi)
   Query: "잠재 시장 크기는?"
-
+  
   Estimator.estimate():
     - Phase 0: 프로젝트 데이터
     - Phase 1: 학습된 규칙
@@ -506,7 +506,7 @@ Step 3: estimator_collaboration (조건부) v7.3.2+
     - Phase 3: 11개 Source
     - Phase 4: Fermi 분해
     - reasoning_detail 생성
-
+    
   Output: estimation_result = {value, confidence, reasoning_detail}
   ↓
 Step 4: quantifier_collaboration (조건부)
@@ -518,7 +518,7 @@ Step 5: hypothesis_generation
   Layers: [vector, memory]
   Input: [patterns, cases, estimator_data, quantifier_data]
   Memory Check: query_memory (순환 감지)
-
+  
   Generate: hypothesis = {
     title: "피아노 구독 서비스",
     pattern: "subscription_model",
@@ -526,7 +526,7 @@ Step 5: hypothesis_generation
     market_size_estimate: estimator_data,  # Estimator 결과
     ...
   }
-
+  
   Output: hypothesis
 ```
 
@@ -963,7 +963,7 @@ search_order: [personal, team, core]  # 개인 > 팀 > 공식
 
 ### 프로젝트 산출물
 - `projects/`: 실제 시장 분석 프로젝트 (Git 제외)
-  - `market_analysis/`: Legacy 프로젝트
+  - `market_analysis/`: Legacy 프로젝트 (v7.0.0 이전)
 
 ### 예시
 - `umis_examples.yaml`: 산출물 예시
@@ -978,11 +978,11 @@ search_order: [personal, team, core]  # 개인 > 팀 > 공식
 
 ## 🚀 Getting Started
 
-**신규 사용자**: [INSTALL.md](docs/INSTALL.md) - 설치 가이드
-**빠른 시작**: [setup/START_HERE.md](setup/START_HERE.md) - 30초 가이드
+**신규 사용자**: [INSTALL.md](docs/INSTALL.md) - 설치 가이드  
+**빠른 시작**: [setup/START_HERE.md](setup/START_HERE.md) - 30초 가이드  
 **상세 가이드**: [setup/SETUP.md](setup/SETUP.md) - 단계별 설치
 
-**개발자**: [dev_docs/guides/](dev_docs/guides/) - 개발 가이드
+**개발자**: [dev_docs/guides/](dev_docs/guides/) - 개발 가이드  
 **기여자**: [VERSION_UPDATE_CHECKLIST.md](docs/VERSION_UPDATE_CHECKLIST.md) - 버전 관리
 
 ---
@@ -1046,7 +1046,7 @@ search_order: [personal, team, core]  # 개인 > 팀 > 공식
 └───────────────────────────────────────┘
 ```
 
-**권장사항**:
+**권장사항**: 
 - 일회성 분석 → Native Mode (무료, 고품질)
 - 대량 자동화 → External Mode (필요 시만)
 
@@ -1068,7 +1068,7 @@ def _load_environment():
         Path(__file__).parent.parent / '.env',  # 2. UMIS 루트
         Path.home() / '.env',          # 3. 홈 디렉토리
     ]
-
+    
     for env_path in search_paths:
         if env_path.exists():
             load_dotenv(env_path, override=False)
@@ -1087,7 +1087,7 @@ _env_loaded = _load_environment()
 
 ---
 
-## 🎯 Estimator (Fermi) Agent
+## 🎯 Estimator (Fermi) Agent (v7.7.0 용어 명확화)
 
 ### 6번째 Agent - 값 추정 전문가
 
@@ -1121,7 +1121,7 @@ estimator.estimate("B2B SaaS ARPU는?", domain="B2B_SaaS")
 # Quantifier: 계산만
 quantifier.calculate_ltv(...)
 # 내부적으로:
-#   1. ARPU 필요 → estimator.estimate("ARPU는?")
+#   1. ARPU 필요 → estimator.estimate("ARPU는?") 
 #   2. Churn 필요 → estimator.estimate("Churn은?")
 #   3. 계산: LTV = 80,000 / 0.05 = 1,600,000원
 ```
@@ -1315,11 +1315,11 @@ Quantifier (계산, 31개 방법론):
 이유:
   1. 데이터 일관성
      - 같은 질문 → 같은 답 (보장)
-
+  
   2. 학습 효율
      - 모든 추정이 한 곳에 축적
      - Phase 3 → Phase 1 진화
-
+  
   3. 근거 추적
      - 추정값의 출처 명확
      - 재현 가능성

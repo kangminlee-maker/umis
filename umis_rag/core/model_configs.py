@@ -25,8 +25,8 @@ class ModelConfig:
     """모델별 API 설정
     
     Attributes:
-        model_name: 모델 이름 (e.g., 'o1-mini', 'gpt-5.1')
-        api_type: API 타입 ('responses' or 'chat')
+        model_name: 모델 이름 (e.g., 'o1-mini', 'gpt-5.1', 'cursor-native')
+        api_type: API 타입 ('responses', 'chat', 'cursor')
         max_output_tokens: 최대 출력 토큰 수
         reasoning_effort_support: reasoning effort 지원 여부
         reasoning_effort_levels: 지원하는 effort 레벨 목록
@@ -79,9 +79,18 @@ class ModelConfig:
             >>> {'model': 'o1-mini', 'input': 'Test', 'reasoning': {'effort': 'medium'}, ...}
             >>> # Chat API
             >>> {'model': 'gpt-4o-mini', 'messages': [...], 'temperature': 0.7, ...}
+            >>> # Cursor API
+            >>> {'mode': 'cursor', 'prompt': 'Test'}
         """
         
-        if self.api_type == 'responses':
+        # Cursor Native: API 호출 불필요, 패턴 매칭만 수행
+        if self.api_type == 'cursor':
+            return {
+                'mode': 'cursor',
+                'prompt': prompt
+            }
+        
+        elif self.api_type == 'responses':
             params = {
                 'model': self.model_name,
                 'input': prompt,
@@ -225,6 +234,7 @@ class ModelConfigManager:
         logger.warning(f"Exact model config not found: {model_name}, trying prefix match")
         
         prefix_map = {
+            'cursor': 'cursor-native',
             'o1-pro': 'o1-pro',
             'o1-mini': 'o1-mini',
             'o1': 'o1',
