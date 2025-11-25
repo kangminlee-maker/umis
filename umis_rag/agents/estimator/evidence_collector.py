@@ -287,12 +287,16 @@ class EvidenceCollector:
             # Phase 2에서 유사 데이터 검색
             context_dict = {}
             if context:
-                if hasattr(context, 'domain') and context.domain:
-                    context_dict['domain'] = context.domain
-                if hasattr(context, 'region') and context.region:
-                    context_dict['region'] = context.region
-                if hasattr(context, 'industry') and context.industry:
-                    context_dict['industry'] = context.industry
+                # Context 형식 처리: 객체 또는 딕셔너리
+                if isinstance(context, dict):
+                    context_dict = {k: v for k, v in context.items() if k in ['domain', 'region', 'industry']}
+                else:
+                    if hasattr(context, 'domain') and context.domain:
+                        context_dict['domain'] = context.domain
+                    if hasattr(context, 'region') and context.region:
+                        context_dict['region'] = context.region
+                    if hasattr(context, 'industry') and context.industry:
+                        context_dict['industry'] = context.industry
             
             # Phase 2 검색 (similar_data 수집용)
             phase2_search_result = self.phase2.search_with_context(
