@@ -165,9 +165,11 @@ class TestStage3Synthesize:
 
         # 교차 검증 성공 → +0.15
         assert result.confidence == pytest.approx(0.95, rel=1e-6)  # 0.80 + 0.15
-        assert result.value == 95000
+        # Weighted Fusion 적용으로 값이 약간 변경됨 (P3:0.85, P4:0.80 가중평균)
+        # (100000 * 0.85 + 95000 * 0.80) / (0.85 + 0.80) = 97575.76
+        assert result.value == pytest.approx(97575.76, rel=1e-3)
         assert result.value_range == (80000, 120000)
-        assert "교차검증=성공" in result.reasoning
+        assert "Cross=True" in result.reasoning
 
     def test_cross_validation_failure(self):
         """교차 검증 실패 시 신뢰도 보너스 없음"""
@@ -200,7 +202,7 @@ class TestStage3Synthesize:
 
         # 교차 검증 실패 → 보너스 없음
         assert result.confidence == 0.80
-        assert "교차검증=실패" in result.reasoning
+        assert "Cross=False" in result.reasoning
 
     def test_hard_guardrail_applied(self):
         """Hard Guardrail 적용 확인"""
@@ -306,10 +308,176 @@ class TestEstimateHybrid:
                             domain="General"
                         )
 
-        # Synthesis 결과
-        assert result.value == 95000
+        # Synthesis 결과 (Weighted Fusion 적용)
+        assert result.value == pytest.approx(97575.76, rel=1e-3)
         assert result.value_range == (80000, 120000)
         assert result.confidence == pytest.approx(0.95, rel=1e-6)  # 교차 검증 성공
+
+
+class TestEnhancedSynthesis:
+    """Week 3: Enhanced Synthesis 테스트"""
+
+    def test_soft_guardrail_bonus(self):
+        """Soft Guardrail 일치 시 +5% 보너스"""
+        from umis_rag.agents.estimator.estimator import EstimatorRAG
+
+        estimator = EstimatorRAG()
+
+        # Soft Guardrail 추가
+        collector = GuardrailCollector()
+        collector.add_guardrail(Guardrail(
+            type=GuardrailType.EXPECTED_RANGE,
+            value=95000,  # Phase 4 값과 근접 (20% 이내)
+            confidence=0.70,
+            is_hard=False,
+            reasoning="예상 범위",
+            source="Test"
+        ))
+
+        phase3 = EstimationResult(
+            question="테스트",
+            value=100000,
+            value_range=(80000, 120000),
+            confidence=0.85,
+            phase=3
+        )
+
+        phase4 = EstimationResult(
+            question="테스트",
+            value=95000,  # Soft Guardrail과 일치!
+            confidence=0.80,
+            phase=4
+        )
+
+        result = estimator._stage3_synthesize(
+            question="테스트",
+            context=Context(),
+            collector=collector,
+            phase3_result=phase3,
+            phase4_result=phase4
+        )
+
+        # Cross-Validation +0.15, Soft +0.05 = 0.80 + 0.20 = 1.00 → 0.99 (cap)
+        assert result.confidence == pytest.approx(0.99, rel=1e-6)
+
+    def test_soft_guardrail_penalty(self):
+        """Soft Guardrail 불일치 시 -10% 페널티"""
+        from umis_rag.agents.estimator.estimator import EstimatorRAG
+
+        estimator = EstimatorRAG()
+
+        # Soft Guardrail 추가 (값과 불일치)
+        collector = GuardrailCollector()
+        collector.add_guardrail(Guardrail(
+            type=GuardrailType.SOFT_UPPER,
+            value=50000,  # Phase 4 값 (95000) 보다 작음 → 불일치
+            confidence=0.70,
+            is_hard=False,
+            reasoning="상한 제안",
+            source="Test"
+        ))
+
+        phase3 = EstimationResult(
+            question="테스트",
+            value=100000,
+            value_range=(80000, 120000),
+            confidence=0.85,
+            phase=3
+        )
+
+        phase4 = EstimationResult(
+            question="테스트",
+            value=95000,  # Soft Upper(50000)보다 큼 → 불일치
+            confidence=0.80,
+            phase=4
+        )
+
+        result = estimator._stage3_synthesize(
+            question="테스트",
+            context=Context(),
+            collector=collector,
+            phase3_result=phase3,
+            phase4_result=phase4
+        )
+
+        # Cross-Validation +0.15, Soft -0.10 = 0.80 + 0.05 = 0.85
+        assert result.confidence == pytest.approx(0.85, rel=1e-6)
+
+    def test_uncertainty_calculation(self):
+        """95% CI 및 Uncertainty 계산 확인"""
+        from umis_rag.agents.estimator.estimator import EstimatorRAG
+
+        estimator = EstimatorRAG()
+
+        phase3 = EstimationResult(
+            question="테스트",
+            value=100000,
+            value_range=(80000, 120000),  # Range width = 40000
+            confidence=0.85,
+            phase=3
+        )
+
+        phase4 = EstimationResult(
+            question="테스트",
+            value=100000,
+            confidence=0.80,
+            phase=4
+        )
+
+        result = estimator._stage3_synthesize(
+            question="테스트",
+            context=Context(),
+            collector=GuardrailCollector(),
+            phase3_result=phase3,
+            phase4_result=phase4
+        )
+
+        # Uncertainty 계산: range_width / (2 * value) = 40000 / 200000 = 0.2
+        assert result.uncertainty == pytest.approx(0.2, rel=0.1)
+
+        # 95% CI 계산 확인
+        ci_info = result.reasoning_detail['steps']['confidence_interval']
+        assert ci_info['ci_95_lower'] is not None
+        assert ci_info['ci_95_upper'] is not None
+        assert ci_info['ci_95_lower'] < result.value < ci_info['ci_95_upper']
+
+    def test_weighted_fusion_applied(self):
+        """Weighted Fusion 적용 확인"""
+        from umis_rag.agents.estimator.estimator import EstimatorRAG
+
+        estimator = EstimatorRAG()
+
+        phase3 = EstimationResult(
+            question="테스트",
+            value=100000,  # Range 중앙값
+            value_range=(80000, 120000),
+            confidence=0.90,  # 높은 confidence
+            phase=3
+        )
+
+        phase4 = EstimationResult(
+            question="테스트",
+            value=95000,
+            confidence=0.80,  # 낮은 confidence
+            phase=4
+        )
+
+        result = estimator._stage3_synthesize(
+            question="테스트",
+            context=Context(),
+            collector=GuardrailCollector(),
+            phase3_result=phase3,
+            phase4_result=phase4
+        )
+
+        # Weighted: (100000 * 0.90 + 95000 * 0.80) / (0.90 + 0.80) = 97647.06
+        expected_value = (100000 * 0.90 + 95000 * 0.80) / (0.90 + 0.80)
+        assert result.value == pytest.approx(expected_value, rel=1e-3)
+
+        # reasoning_detail에 가중치 정보 포함
+        fusion_info = result.reasoning_detail['steps']['weighted_fusion']
+        assert fusion_info['phase3_weight'] == 0.90
+        assert fusion_info['phase4_weight'] == 0.80
 
 
 class TestPerformance:
