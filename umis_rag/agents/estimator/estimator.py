@@ -85,14 +85,25 @@ class EstimatorRAG:
         >>> result = estimator.estimate("서울 음식점 수는?", budget=budget)
     """
     
-    def __init__(self):
-        """Estimator RAG Agent 초기화 (v7.11.0)"""
+    def __init__(self, project_id: Optional[str] = None):
+        """
+        Estimator RAG Agent 초기화 (v7.11.0)
+        
+        Args:
+            project_id: 프로젝트 ID (Phase 0 Literal용, 선택)
+        """
         logger.info("[Estimator] v7.11.0 Fusion Architecture 초기화")
+        
+        if project_id:
+            logger.info(f"  📌 Project ID: {project_id}")
         
         logger.info(f"  📌 LLM Mode: {self.llm_mode}")
         
         # Stage 1: Evidence Collector
-        self.evidence_collector = EvidenceCollector(llm_mode=self.llm_mode)
+        self.evidence_collector = EvidenceCollector(
+            llm_mode=self.llm_mode,
+            project_id=project_id
+        )
         logger.info("  ✅ Stage 1: Evidence Collector")
         
         # Stage 2: Prior Estimator
