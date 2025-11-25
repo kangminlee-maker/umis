@@ -1,5 +1,5 @@
 # ========================================
-# UMIS v7.8.0 GUIDELINES
+# UMIS v7.8.1 GUIDELINES
 # ========================================
 #
 # 📖 핵심 문서:
@@ -18,8 +18,14 @@
 # - Native/External 모드 (LLM 선택)
 # - RAG 기반 패턴/사례 자동 검색 (54개)
 # - Excel 자동 생성 + 완전 추적성
-# - Model Config 시스템 (17개 모델 중앙 관리) ⭐ v7.8.0 NEW!
-# - 통합 벤치마크 (98% 비용 절감) ⭐ v7.8.0 NEW!
+# - Model Config 시스템 (18개 모델: 17 External + cursor-native) ⭐ v7.8.1 NEW!
+# - 통합 벤치마크 (98% 비용 절감) ⭐ v7.8.0
+#
+# v7.8.1 주요 변경:
+# - cursor-native 통합: Native Mode를 Model Config 시스템으로 통합
+# - Phase 4 통합: api_type 기반 통일된 분기 처리 (cursor/responses/chat)
+# - Phase 4 테스트: 100% 성공 (2/2, 평균 2.14초, $0)
+# - Phase 2 Validator: Distance threshold 개선 (0.90 / 1.10)
 #
 # v7.8.0 주요 변경:
 # - Model Config 시스템: .env 모델 변경 → 코드 수정 0줄
@@ -34,7 +40,7 @@
 # - Section 8: 실행 가이드
 # ========================================
 
-# Universal Market Intelligence System v7.8.0
+# Universal Market Intelligence System v7.8.1
 # ========================================
 # SECTION 0: SYSTEM ARCHITECTURE OVERVIEW
 # @id: system_architecture_overview
@@ -267,11 +273,11 @@ system_architecture:
 # ========================================
 system:
   name: "Universal Market Intelligence System"
-  version: "7.8.0"
+  version: "7.8.1"
   release_date: "2025-11-24"
-  status: "Stable Release - Model Config + Benchmarks"
+  status: "Stable Release - cursor-native Integration"
   purpose: "RAG 기반 6-Agent 협업 시장 분석 시스템"
-  description: "6-Agent + 5-Phase Estimator + Model Config 시스템 + 98% 비용 절감 (Native $0 / External $0.30)"
+  description: "6-Agent + 5-Phase Estimator + Model Config 시스템 (18개: 17 External + cursor-native) + 98% 비용 절감 (Native $0 / External $0.30)"
   default_mode: "Discovery Sprint → Comprehensive Study (2-4주) - 별도 언급 없으면 자동 적용"
 
   rag_architecture:
@@ -302,22 +308,25 @@ system:
     - "Autonomous Monitoring: 능동적 목표 정렬과 개입"
     - "Complete Traceability: 모든 결론 → 원본 데이터 역추적 (ID Namespace)"
     - "Reproducibility: Excel 함수, YAML 스키마로 재검증 가능"
-    - "Model Config System (v7.8.0): 17개 LLM 모델 중앙 관리, .env 변경 → 코드 수정 0줄"
+    - "Model Config System (v7.8.1): 18개 LLM 모델 중앙 관리 (17 External + cursor-native), .env 변경 → 코드 수정 0줄"
     - "3-Model Optimization (v7.8.0): 98% 비용 절감 달성 ($0.30/1,000회)"
     - "Integrated Benchmarks (v7.8.0): benchmarks/ 폴더로 통합 벤치마크 시스템"
+    - "cursor-native Integration (v7.8.1): Native Mode를 Model Config 시스템으로 통합"
 
-  # v7.8.0 신규: Model Config System
+  # v7.8.1 신규: cursor-native 통합
   model_config_system:
-    version: "7.8.0"
-    purpose: "중앙 집중식 LLM 모델 관리"
-    description: ".env 파일로 모델 변경 시 코드 수정 불필요, API 파라미터 자동 최적화"
+    version: "7.8.1"
+    purpose: "중앙 집중식 LLM 모델 관리 (18개: 17 External + cursor-native)"
+    description: ".env 파일로 모델 변경 시 코드 수정 불필요, API 파라미터 자동 최적화, Native Mode 통합"
 
     core_files:
-      config_file: "config/model_configs.yaml (320줄, 17개 모델)"
-      python_module: "umis_rag/core/model_configs.py (262줄)"
+      config_file: "config/model_configs.yaml (327줄, 18개 모델)"
+      python_module: "umis_rag/core/model_configs.py (297줄)"
       router_extension: "umis_rag/core/model_router.py (select_model_with_config)"
 
     supported_models:
+      cursor:
+        - "cursor-native (Native Mode, 무료)"
       o1_series:
         - "o1-mini (Phase 4 기본)"
         - "o1 (고급 추론)"
@@ -338,9 +347,16 @@ system:
         - "gpt-4-turbo-preview"
         - "gpt-4o (고성능)"
         - "gpt-4o-2024-08-06 (버전 고정)"
-      total: 17개
+      total: 18개 (17 External + cursor-native)
 
     key_features:
+      cursor_native_integration:
+        description: "Native Mode를 Model Config 시스템으로 통합"
+        api_type: "cursor"
+        cost: "$0 (무료)"
+        usage: "UMIS_MODE=native → cursor-native 자동 선택"
+        benefit: "External LLM과 동일한 시스템으로 관리, Phase 4 통일된 처리"
+
       zero_touch_model_change:
         description: ".env 변경만으로 모델 전환"
         example: "LLM_MODEL_PHASE4=gpt-5.1 → 즉시 적용"
@@ -348,6 +364,7 @@ system:
 
       api_type_auto_detection:
         description: "모델에 맞는 API 자동 선택"
+        cursor_api: "cursor-native (Native Mode, 패턴 매칭)"
         responses_api: "o1/o3/gpt-5.1/gpt-5-pro + Pro 모델"
         chat_api: "gpt-4.1-nano/gpt-4o-mini/gpt-4-turbo-preview"
         benefit: "API 변경 시 코드 수정 불필요"
@@ -408,7 +425,7 @@ system:
         code: "변경 불필요"
 
     integration_status:
-      phase4_fermi: "✅ 완료 (umis_rag/agents/estimator/phase4_fermi.py)"
+      phase4_fermi: "✅ 완료 (umis_rag/agents/estimator/phase4_fermi.py, cursor-native 통합)"
       phase0_2: "📋 예정"
       phase3: "📋 예정"
       other_agents: "📋 예정"
@@ -4861,354 +4878,538 @@ agents:
       - "학습 (confidence >= 0.80 → 자동 학습)"
 
     # ===== 3. WORK DOMAIN =====
-    # ===== 3. WORK DOMAIN (5-Phase Architecture v7.7.0) =====
-    five_phase_architecture:
+    # ===== 3. WORK DOMAIN (Hybrid Architecture v7.10.0 - Proposal) =====
+    hybrid_architecture_v7_10_0:
+      version: "v7.10.0"
+      status: "🚧 설계 완료, 구현 대기 (Week 1-5)"
+      
+      paradigm_shift:
+        from: "Sequential Fallback (Phase 0→1→2→3→4, Early Return)"
+        to: "Hybrid (Fast Cascade + Parallel Estimation + Synthesis)"
+        key_changes:
+          - "Phase 0-2: 정보 손실 제거 (유사 데이터 → 가드레일 변환)"
+          - "Phase 3-4: 병렬 실행 (독립적 추정 → 교차 검증)"
+          - "Synthesis: 모든 Phase 통합 (가중 종합 + 신뢰도 향상)"
 
-      overview:
-        total_coverage: "100% (v7.7.0)"
-        failure_rate: "0%"
-        phases: 5
-        implementation: "umis_rag/agents/estimator/ (5,200줄)"
-        terminology:
-          phase: "Estimator 전체 프로세스 단계 (0-4)"
-          step: "Phase 4 (Fermi) 내부 세부 단계 (1-4)"
-          # tier 제거됨 (v7.7.0)
+      design_goals:
+        - "확정값 Fast Path 유지 (0.001s)"
+        - "유사 데이터 100% 활용 (가드레일로 변환)"
+        - "교차 검증 (Range ∋ Point → +15%)"
+        - "신뢰도 향상 (+15-20% 목표)"
+        - "100% 커버리지 유지"
 
-      phase_0_literal:
-        description: "프로젝트 명시 데이터 (즉시 반환)"
-        speed: "<0.1초"
-        coverage: "10%"
-        confidence: "1.0"
-        when: "프로젝트에서 명시적으로 제공한 데이터"
-        method: "project_data 딕셔너리 확인"
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      # Stage Overview (3-Stage Pipeline)
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      stage_overview:
+        
+        stage_1_tiered_collection:
+          name: "Stage 1 - 검증 & 가드레일 수집 (Tiered Collection)"
+          description: "Phase 0-2를 순차 실행하면서 확정값과 가드레일을 모으는 단계"
+          phases: [0, 1, 2]
+          speed: "0.001~1초"
+          fast_path: "100% 동일 데이터 발견 시 즉시 반환 ⚡"
+          
+          outputs:
+            definite_values:
+              description: "이미 계산/검증/학습된 정확한 값 리스트"
+              confidence: "1.0 (확정)"
+              sources:
+                - "프로젝트 컨텍스트 (Phase 0)"
+                - "학습된 규칙 (Phase 1)"
+                - "Validator 검증값 (Phase 2)"
+              
+            guardrails:
+              description: "상한/하한/집합 포함관계/비율 등 제약 조건 세트"
+              types:
+                hard:
+                  - "hard_upper: 논리적 상한 (음식점 < 사업자)"
+                  - "hard_lower: 논리적 하한 (자영업자 > 0)"
+                  - "logical: 물리적/수학적 제약 (value >= 0)"
+                soft:
+                  - "soft_upper: 경험적 상한 (통계적 범위)"
+                  - "soft_lower: 경험적 하한"
+                  - "expected_range: 일반적 범위"
+              usage: "Phase 3-4에 전달하여 추정 범위 좁히기"
 
-      phase_1_direct_rag:
-        description: "학습된 규칙 (Direct RAG)"
-        file: "phase1_direct_rag.py"
-        class: "Phase1DirectRAG"
-        speed: "<0.5초"
-        coverage: "5% (초기) → 40% (Year 1)"
-        sources:
-          - "Learned Rules (0 → 2,000개 진화)"
-        when: "이미 학습된 질문"
-        method: "정확 매칭 또는 유사도 검색"
-        confidence: "0.95+"
-        change: "v7.6.0: Built-in Rules 제거 (일관성)"
+        stage_2_parallel_estimation:
+          name: "Stage 2 - 병렬 추정 (Parallel Estimation)"
+          description: "Phase 3 (Range)와 Phase 4 (Point)를 병렬 실행하여 상호 보완적 추정 생성"
+          phases: [3, 4]
+          speed: "max(3~8초, 10~30초) = 병렬 실행으로 최대 시간만 소요"
+          parallelism: "asyncio.gather(phase3, phase4)"
+          
+          inputs:
+            - "question: 추정 대상 질문"
+            - "context: domain/region/time 맥락"
+            - "guardrails: Stage 1에서 수집된 제약 조건"
+          
+          outputs:
+            phase3_range_estimate:
+              description: "Hard Guardrail 기반 안전한 범위 추정"
+              type: "Range Estimation (Top-Down)"
+              output_format:
+                value: "None (부수적) 또는 Range 중앙값"
+                value_range: "[min, max] (필수)"
+                confidence: "0.90-0.95 (Hard 제약 기반)"
+                reasoning: "11개 Source + Hard Guardrails"
+              
+            phase4_point_estimate:
+              description: "Fermi 분해 기반 단일 값 추정"
+              type: "Point Estimation (Bottom-Up)"
+              output_format:
+                value: "단일 값 (필수)"
+                value_range: "None (또는 ±불확실성)"
+                confidence: "0.60-0.80 (분해 복잡도 반영)"
+                reasoning: "Decomposition Trace"
 
-      phase_2_validator:
-        description: "확정 데이터 검색 (추정 전 마지막 확인)"
-        speed: "<1초"
-        coverage: "85% (현재) → 50% (Year 1)"
-        confidence: "1.0"
-        when: "Validator에 확정 데이터 존재"
-        method: "Validator RAG 검색"
-        features:
-          - "단위 자동 변환 (갑/년 → 갑/일)"
-          - "Relevance 검증 (GDP 오류 방지)"
-          - "data_sources_registry (24개)"
-        change: "v7.6.0: 신규 추가 (핵심!)"
+        stage_3_synthesis:
+          name: "Stage 3 - Synthesis (종합 판단)"
+          description: "모든 Phase 결과와 guardrails를 통합하여 최종 EstimationResult 생성"
+          speed: "0.1초"
+          phase_number:
+            external_api: "4 (API 호환성 유지)"
+            internal_log: "5 또는 'Synthesis' (로그 명확화)"
+          
+          responsibilities:
+            
+            step_1_definite_values_priority:
+              description: "definite_values 우선 반환"
+              condition: "Stage 1에서 confidence=1.0 확정값 발견"
+              action: "그대로 반환 (Fast Path)"
+              result:
+                confidence: "1.0"
+                phase: "원본 phase (0/1/2)"
+                reasoning: "확정 데이터 직접 반환"
+            
+            step_2_cross_validation:
+              description: "Phase 3 Range ∋ Phase 4 Point 여부 검증"
+              
+              case_success:
+                condition: "phase4_value ∈ [phase3_range_min, phase3_range_max]"
+                confidence_boost: "+15% (최대 1.0)"
+                range_narrowing:
+                  method: "Intersection(Phase3_Range, Point±10%)"
+                  example: "[20만, 40만] ∩ [27만, 33만] = [27만, 33만]"
+                reasoning: "두 독립 추정 일치 → 신뢰도 향상"
+              
+              case_failure:
+                condition: "phase4_value ∉ phase3_range"
+                confidence_penalty: "-10%"
+                range_expansion:
+                  method: "Union(Phase3_Range, Point±20%)"
+                  example: "[20만, 40만] ∪ [48만, 72만] = [20만, 72만]"
+                reasoning: "불일치 → 불확실성 증가, 재검토 필요"
+            
+            step_3_weighted_fusion:
+              description: "신뢰도/불확실성 기반 가중 평균으로 최종 값 산출"
+              
+              patterns:
+                confidence_weighted:
+                  formula: "value = Σ(conf_i × value_i) / Σ(conf_i)"
+                  usage: "Phase 3/4 신뢰도 기반 가중 평균"
+                
+                uncertainty_weighted:
+                  formula: "weight_i = 1 / uncertainty_i²"
+                  pattern: "Kalman Filter (센서 퓨전)"
+                  usage: "불확실성 명시적 추적 시"
+                
+                meta_learning:
+                  condition: "과거 10개 이상 이력 존재"
+                  method: "Ridge Regression으로 가중치 학습"
+                  usage: "Phase별 과거 정확도 반영"
+            
+            step_4_guardrail_validation:
+              description: "최종 값이 가드레일 위반 여부 검증 및 조정"
+              
+              hard_violation:
+                action: "값을 경계값으로 클램핑 (강제 조정)"
+                confidence_penalty: "× 0.7 (-30%)"
+                logging: "reasoning_detail.guardrail_violations에 기록"
+                example: "추정값 50만 > 상한 40만 → 40만으로 조정"
+              
+              soft_violation:
+                action: "경고만 기록, 값은 유지"
+                confidence_penalty: "× 0.9 (-10%)"
+                logging: "reasoning_detail에 경고만"
+                example: "추정값 45만, 예상 범위 [20만, 40만] → 유지하되 경고"
+            
+            step_5_result_construction:
+              description: "최종 EstimationResult 객체 생성"
+              fields:
+                value: "최종 값 (가중 평균 + 가드레일 조정)"
+                value_range: "최종 범위 (Narrowing/Expansion)"
+                confidence: "최종 신뢰도 (Boost/Penalty 반영)"
+                uncertainty: "불확실성 (Propagation)"
+                phase: "4 (API) or 5 (내부)"
+                sources_used: "각 Phase 출처 리스트"
+                reasoning_detail: "교차 검증 + 가중 통합 + 가드레일 과정 전체 로그"
 
-      phase_3_guestimation:
-        description: "11개 Source 수집 + 종합 판단 (Guestimation)"
-        file: "phase3_guestimation.py"
-        class: "Phase3Guestimation"
-        speed: "3-8초"
-        coverage: "2-5%"
-        confidence: "0.60-0.80"
-        sources:
-          physical_category:
-            - "Source #1: 시공간 절대 제약 (시간/공간)"
-            - "Source #2: 보존 법칙 (질량/에너지)"
-            - "Source #3: 수학적 필연성"
-          soft_category:
-            - "Source #4: 법률/규제 제약"
-            - "Source #5: 통계적 패턴 (정규분포, 파레토)"
-            - "Source #6: 행동경제학 (손실회피, 앵커링)"
-          value_category:
-            - "Source #7: 확정 데이터 (프로젝트)"
-            - "Source #8: LLM API (추정 전용, 구현 대기)"
-            - "Source #9: 웹 검색 (실시간, 구현 대기)"
-            - "Source #10: RAG (Pattern/Benchmark)"
-            - "Source #11: 통계값 (평균/중앙값)"
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      # Information Flow
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      information_flow:
+        pattern: "Unidirectional Cascade + Shared GuardrailCollector"
+        
+        shared_state:
+          collector:
+            name: "GuardrailCollector"
+            stores:
+              - "definite_values: List[EstimationResult]"
+              - "hard_guardrails: List[Guardrail]"
+              - "soft_guardrails: List[Guardrail]"
+          
+          visibility:
+            phase_0_2: "Write-only (수집만)"
+            phase_3_4: "Read/Write (읽기 + 추가 가드레일 생성)"
+            synthesis: "Read-only (최종 판단)"
+        
+        early_return_policy:
+          fast_path:
+            condition: "Phase 0-2에서 confidence=1.0 확정값 발견"
+            action: "즉시 반환 (Stage 2-3 스킵)"
+            speed: "0.001~1초 ⚡⚡⚡"
+          
+          no_early_return:
+            principle: "확정값 없으면 모든 Phase 결과를 Synthesis로 전달"
+            rationale: "정보 손실 방지, 교차 검증 가능"
 
-        judgment_strategies:
-          weighted_average:
-            when: "여러 증거의 신뢰도가 비슷할 때"
-            formula: "∑(value_i × confidence_i) / ∑(confidence_i)"
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      # Phase Definitions (Detailed)
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      phase_definitions:
+        
+        phase_0_project_data:
+          name: "Phase 0 - Literal (Project Data)"
+          role: "프로젝트 컨텍스트 내 명시 값 확인"
+          speed: "<0.001초"
+          
+          typical_sources:
+            - "Owner 직접 입력 숫자"
+            - "이전 Workflow Export 값"
+            - "프로젝트 설정 파일 초기 값"
+          
+          behavior:
+            exact_match:
+              description: "질문과 정의/맥락 100% 일치"
+              action:
+                - "definite_values에 추가 (confidence=1.0)"
+                - "Fast Path 조건 만족 시 즉시 반환"
+            
+            similar_match:
+              description: "정의 동일, 맥락 약간 다름 (연도/지역 등)"
+              action:
+                - "soft_guardrails에 추가 (참고용)"
+                - "예: 2023년 값 → 2024년 추정 시 성장률 가정 기준"
 
-          highest_confidence:
-            when: "한 증거의 신뢰도가 압도적으로 높을 때"
-            condition: "confidence > 0.90"
+        phase_1_direct_rag:
+          name: "Phase 1 - Direct RAG (Learned Rules)"
+          role: "과거 Estimator 결과/학습 규칙에서 값과 제약 검색"
+          speed: "<0.5초"
+          coverage: "5% (초기) → 40% (Year 1)"
+          
+          behavior:
+            exact_match:
+              description: "동일 질문·정의·맥락에 과거 EstimationResult 존재"
+              action:
+                - "definite_values에 추가 (source='Phase1', conf ≥ 0.90)"
+                - "원본 phase 유지, 현재 요청 phase=1로 tagging"
+            
+            similar_match:
+              description: "구조/정의 동일, 질문 다름"
+              example: "'B2B SaaS ARPU' vs '한국 B2B SaaS ARPU'"
+              action:
+                - "guardrails에 bound_constraint 추가"
+                - "상한/하한/비율/order_of_magnitude"
+                - "Phase 3에서 hard constraint 후보로 사용"
+          
+          outputs:
+            to_collector:
+              - "definite_values (exact match)"
+              - "hard/soft_guardrails (similar match)"
 
-          range_consensus:
-            when: "증거들이 범위를 형성할 때"
-            method: "중앙값 또는 IQR 중심"
+        phase_2_validator_rag:
+          name: "Phase 2 - Validator (확정 데이터)"
+          role: "Validator 검증 외부 데이터에서 확정값과 구조적 제약 검색"
+          speed: "<1초"
+          
+          behavior:
+            confirmed_value:
+              description: "Validator가 confidence=1.0으로 검증한 숫자"
+              action:
+                - "definite_values에 추가 (source='Validator', conf=1.0)"
+                - "동시에 hard_guardrail로도 등록 (최상위 우선순위)"
+            
+            related_metric:
+              description: "구조적으로 연결된 지표"
+              examples:
+                - "'개인사업자 수' 질문 시 → '사업자 수', '경제활동인구 수'"
+                - "'자영업자 수' 질문 시 → '개인사업자 수', '경제활동인구 수'"
+              action:
+                - "structural_constraint로 guardrails에 추가"
+                - "예: '개인사업자 ≤ 사업자 ≤ 경제활동인구'"
+          
+          outputs:
+            to_collector:
+              - "definite_values (confirmed_value)"
+              - "hard_guardrails (structural_constraint)"
 
-          conflict_resolution:
-            when: "증거 간 충돌 (>30% 차이)"
-            action: "맥락 기반 우선순위 → 상세 설명"
+        phase_3_guardrail_range_engine:
+          name: "Phase 3 - Guardrail Range Engine (Hard Constraints)"
+          role: "Hard Guardrail 기반으로 값이 존재해야 하는 안전한 범위 계산"
+          redesign_v7_10_0: "순수 Range 엔진으로 재정의 (value는 부수적)"
+          speed: "3-8초"
+          
+          output:
+            value: "None (또는 Range 중앙값, 부수적)"
+            value_range: "[min, max] (핵심 출력)"
+            confidence: "0.90-0.95 (Hard Guardrail 기반)"
+            uncertainty: "Range 폭 기반"
+          
+          constraints_usage:
+            hard_only:
+              description: "논리적으로 100% 위반 불가한 제약만 사용"
+              examples:
+                - "자영업자 수 ≤ 경제활동인구 수"
+                - "개인사업자 ≤ 사업자 ≤ 경제활동인구"
+                - "value >= 0 (물리적)"
+              action: "Range 자체를 제한"
+            
+            soft_context_only:
+              description: "경험적/통계적 제약"
+              examples:
+                - "신고 누락 자영업자 존재 → 실제 > 신고"
+                - "자영업 비율 ~ 20% (경험적)"
+              action: "Range 제한 안 함, reasoning에만 사용"
+          
+          sources_11:
+            physical_3:
+              - "SpacetimeConstraint (시공간 제약)"
+              - "ConservationLaw (보존 법칙)"
+              - "MathematicalDefinition (수학 정의)"
+            soft_3:
+              - "LegalNorm (법률 규범)"
+              - "StatisticalPattern (통계 패턴)"
+              - "BehavioralInsight (행동경제학)"
+            value_5:
+              - "DefiniteData (확정 데이터)"
+              - "LLMEstimation (LLM 추정)"
+              - "WebSearch (웹 검색)"
+              - "RAGBenchmark (RAG 벤치마크)"
+              - "StatisticalValue (통계 값)"
+          
+          calculation_logic:
+            step_1_absolute_bounds:
+              description: "물리적/논리적 절대 범위"
+              examples:
+                - "min = 0 (음수 불가)"
+                - "max = 인구 × 10 (비현실 제한)"
+            
+            step_2_hard_guardrail_application:
+              description: "Stage 1 수집 hard_guardrails 적용"
+              action:
+                - "hard_upper → max = min(max, guard.value)"
+                - "hard_lower → min = max(min, guard.value)"
+            
+            step_3_11_sources:
+              description: "11개 Source에서 hard constraints 추출"
+              action: "추가 제약으로 Range 좁히기"
+            
+            step_4_intersection:
+              description: "모든 제약의 교집합"
+              result: "final_range = [max(all_mins), min(all_maxs)]"
 
-        # v7.3.2 신규: 추정 근거 투명화
-        reasoning_transparency:
-          reasoning_detail:
-            method: "사용한 판단 전략"
-            sources_used: "활용한 Source 리스트"
-            why_this_method: "왜 이 전략을 선택했는가"
-            evidence_breakdown:
-              - "각 증거별 value, confidence"
-              - "증거 출처 및 신뢰 근거"
-            judgment_process:
-              - "Step 1: 맥락 파악"
-              - "Step 2: 증거 수집"
-              - "Step 3: 전략 선택"
-              - "Step 4: 계산 및 판단"
-            context_info: "domain, region, time"
-
-          component_estimations:
-            description: "개별 요소별 추정 논리"
-            fields:
-              - "component_name"
-              - "component_value"
-              - "estimation_method"
-              - "reasoning"
-              - "confidence"
-              - "sources"
-
-          estimation_trace:
-            description: "추정 과정 스텝별 추적"
-            format: "['Step 1: ...', 'Step 2: ...']"
-
-          decomposition:
-            description: "Fermi 분해 추적 (Phase 4용)"
-            fields:
-              - "formula"
-              - "variables (각각 EstimationResult)"
-              - "depth (분해 깊이)"
-
-      phase_4_fermi_decomposition:
-        description: "일반 Fermi 분해 + 재귀 추정 (Phase 4, v7.7.1 Few-shot 개선)"
-        speed: "10-30초"
-        coverage: "3% (현재) → 1% (Year 1)"
-        confidence: "0.60-0.80 → 0.70-0.85 (v7.7.1 개선)"
-        when: "Phase 1-3 모두 실패"
-        status: "✅ v7.7.1 Few-shot 개선 완료 (2025-11-21)"
-        implementation: "umis_rag/agents/estimator/phase4_fermi.py (2,700줄)"
-
-        v7_7_1_improvements:
-          summary: "Few-shot 예시 추가로 계산 연결성 145% 향상"
-          date: "2025-11-21"
-          test_results:
-            calculation_connectivity: "18/40 → 50/50 (만점!)"
-            success_rate: "0% → 93% (14/15)"
-            reasoning_coverage: "0% → 80-100%"
-            total_score: "85/100 (gpt-5.1)"
-
-          few_shot_example:
-            enabled: true
-            example: "서울 택시 수 추정 (5단계 분해)"
-            effect: "모든 모델이 올바른 Fermi 방법론 학습"
-            location: "_build_llm_prompt() 메서드"
-
-          calculation_verification:
-            enabled: true
-            method: "자동 계산 검증 (_verify_calculation_connectivity)"
-            check: "분해 값들이 최종값으로 올바르게 계산되는지 확인"
-            threshold: "10% 오차 이내"
-            score_range: "0-25점"
-
-          reasoning_requirement:
-            mandatory: true
-            description: "모든 가정(비율, 계수)에 합리적 근거 필수"
+        phase_4_fermi_decomposition:
+          name: "Phase 4 - Fermi Decomposition (Point)"
+          role: "문제를 분해하여 개별 요소 추정 후 단일 값 산출"
+          speed: "10-30초"
+          focus: "물리적/수학적 분해 (비즈니스 지표 계산은 Quantifier)"
+          
+          uses_guardrails:
+            description: "Stage 1-3 수집 guardrails를 분해/변수 수준에 적용"
             examples:
-              - "경활 비율 0.62 → OECD 수준 + 한국 통계 기준"
-              - "자영업 0.2 → 한국 높은 편, 5명 중 1명"
-              - "등록 비율 0.8 → 영세·비공식 자영업 감안"
-
-          quality_standards:
-            calculation_connectivity: "50/50 (만점)"
-            reasoning_coverage: "80% 이상"
-            accuracy: "10% 오차 이내"
-            final_score: "85/100 (gpt-5.1 chat)"
-
-        v7_7_0_changes:
-          terminology: "Phase 4 내부를 Step 1-4로 명확화"
-          removed: "Phase/Step 혼란 제거"
-          focus: "일반 Fermi 분해만 (물리적/수학적)"
-          reason: "Estimator = 추정, Quantifier = 계산 (MECE)"
-
-        features:
-          general_fermi:
-            description: "일반적 Fermi 분해 (비즈니스 지표 제외)"
-            examples:
-              - "서울 음식점 수는? (인구 × 음식점 밀도)"
-              - "여객기에 탁구공? (부피 / 탁구공 부피)"
-              - "한국 커피 시장? (인구 × 소비율 × 가격)"
-            not_handled: "LTV, CAC, Payback 등 → Quantifier"
-            coverage: "일반 추정 100%"
-
-          recursion:
-            description: "재귀 분해 추정 (논리의 퍼즐)"
+              - "변수 조합이 경제활동인구 상한 넘지 않도록 제한"
+              - "비율 합이 1 넘지 않도록 제한"
+              - "불가능 조합 (음수, 100% 초과) 제거"
+          
+          internal_steps:
+            step_1_scan: "가용 데이터 스캔 (Bottom-up, 부모 데이터 상속)"
+            step_2_generate: "3-5개 분해 모형 생성 (Top-down)"
+            step_3_feasibility: "Unknown 변수 재귀 추정 + 실행 가능성 점수"
+            step_4_execute: "Backtracking, 안전 실행, Confidence 조합, Trace 생성"
+          
+          safety:
             max_depth: 4
-            process: "Unknown 변수 → Phase 3 시도 → 재귀 호출"
-            backtracking: "depth 3 → 2 → 1 → 0 재조립"
+            variable_limit: 10
+            circular_detection: "Call stack 기반 순환 의존성 감지"
+            phase_3_fallback: "깊이 한계/guardrail 반복 위반 시 Range 기반 재평가"
 
-          data_inheritance:
-            description: "부모 데이터 상속 (v7.5.0)"
-            feature: "재귀 시 부모의 available 변수 상속"
-            benefit: "재계산 불필요, 일관성 보장, 시간 절약"
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      # Guardrail System
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      guardrail_system:
+        
+        collector:
+          name: "GuardrailCollector"
+          purpose: "모든 Phase에서 수집한 제약 조건 중앙 관리"
+          
+          stores:
+            definite_values:
+              type: "List[EstimationResult]"
+              description: "Phase 0-2에서 수집한 확정값"
+            
+            hard_guardrails:
+              type: "List[Guardrail]"
+              description: "논리적으로 100% 성립하는 제약"
+              subtypes:
+                - "hard_upper: 상한 (논리적)"
+                - "hard_lower: 하한 (논리적)"
+                - "logical: 물리/수학 제약"
+              confidence: "≥ 0.90"
+            
+            soft_guardrails:
+              type: "List[Guardrail]"
+              description: "경험적/통계적 제약"
+              subtypes:
+                - "soft_upper: 상한 (경험적)"
+                - "soft_lower: 하한 (경험적)"
+                - "expected_range: 일반 범위"
+              confidence: "0.60-0.85"
+        
+        priority_order:
+          rationale: "외부 검증 > 프로젝트 명시 > 구조적 > 경험적"
+          order:
+            1: "hard_guardrails_from_validator (최우선)"
+            2: "hard_guardrails_from_project_data"
+            3: "structural_constraints_from_rag"
+            4: "soft_constraints (설명용)"
+        
+        application_points:
+          phase_3:
+            usage: "Hard guardrails만 사용하여 Range 생성"
+            action: "논리적으로 확실한 제약으로 범위 좁히기"
+          
+          phase_4:
+            usage: "Hard/Soft 모두 참고"
+            action: "분해 모형/변수 후보 필터링"
+          
+          synthesis:
+            usage: "Hard 위반 시 값 조정, Soft 위반 시 경고"
+            action: "최종 값/범위가 제약 만족하도록 보정"
 
-          circular_detection:
-            description: "순환 의존성 감지"
-            method: "Call stack 추적"
-            example: "시장 규모 → 점유율 → 시장 규모 (순환!) → 중단"
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      # Implementation Guidance
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      implementation_guidance:
+        
+        code_structure:
+          file: "umis_rag/agents/estimator/estimator.py"
+          
+          functions:
+            stage_1:
+              - "_stage1_collect(question, context) → (definite_values, guardrails)"
+              - "_check_project_data_sync() → Phase 0"
+              - "await asyncio.gather(phase1, phase2) → Phase 1-2 병렬"
+            
+            stage_2:
+              - "_stage2_estimate(question, context, guardrails) → (phase3, phase4)"
+              - "await asyncio.gather(phase3.calculate_range(), phase4.estimate())"
+            
+            stage_3:
+              - "_stage3_synthesis(phase3, phase4, guardrails) → EstimationResult"
+              - "_cross_validate(range, point)"
+              - "_weighted_fusion(results, weights)"
+              - "_guardrail_validate(value, guardrails)"
+          
+          classes:
+            - "GuardrailCollector (definite_values, hard_guards, soft_guards)"
+            - "Guardrail (type, value, confidence, is_hard, reasoning)"
+            - "Phase3GuardrailRangeEngine (calculate_range)"
+            - "Phase4FermiDecomposition (estimate)"
+        
+        testing_strategy:
+          unit_tests:
+            - "GuardrailCollector 동작"
+            - "Phase 3 Range 생성 (Hard only)"
+            - "Phase 4 Point 추정"
+            - "Cross-Validation 로직"
+            - "Weighted Fusion 계산"
+          
+          integration_tests:
+            - "Stage 1-2-3 전체 Flow"
+            - "Fast Path (Phase 0-2 확정값)"
+            - "Slow Path (Phase 3-4 병렬)"
+            - "Guardrail 위반 시나리오"
+          
+          validation_cases:
+            - "'자영업자 수' → '개인사업자 수', '경제활동인구 수' 가드레일"
+            - "'음식점 수' → '사업자 수' 상한선"
+            - "Phase 3 Range [20만, 40만] + Phase 4 Point 30만 → Agreement"
+        
+        migration_path:
+          from: "v7.9.0 Sequential"
+          to: "v7.10.0 Hybrid"
+          
+          steps:
+            week_1:
+              - "GuardrailType에 HARD/SOFT 추가"
+              - "GuardrailCollector 구현"
+              - "Phase 3 → Phase3GuardrailRangeEngine 재설계"
+            
+            week_2:
+              - "Phase 1-2 병렬 실행"
+              - "Phase 3-4 병렬 실행"
+            
+            week_3:
+              - "Synthesis 구현 (Cross-Validation + Fusion)"
+              - "Guardrail Validation"
+            
+            week_4:
+              - "GuardrailAnalyzer (LLM 2단계 체인)"
+              - "Meta-Learning (Optional)"
+            
+            week_5:
+              - "전체 통합 테스트 (130개)"
+              - "A/B 테스트 (v7.9.0 vs v7.10.0)"
+              - "Phase별 책임 측정"
 
-          variable_policy:
-            name: "SimpleVariablePolicy (오버엔지니어링 회피)"
-            code: "20줄 (vs Hybrid 300줄)"
-            principle: "6개 권장 (Occam), 10개 절대 (Miller)"
-            flexibility: "7-10개 허용 (경고)"
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      # Expected Improvements
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      expected_improvements:
+        
+        metrics:
+          phase_0_speed:
+            before: "0.1초"
+            after: "0.001초"
+            improvement: "100배"
+          
+          information_utilization:
+            before: "유사 데이터 버림"
+            after: "가드레일로 변환 100%"
+            improvement: "정보 손실 제거"
+          
+          cross_validation:
+            before: "불가능"
+            after: "Range ∋ Point 검증"
+            improvement: "신뢰도 +15%"
+          
+          confidence:
+            before: "0.70-0.80"
+            after: "0.85-0.95 (Agreement 시)"
+            improvement: "+15-20%"
+          
+          execution_time:
+            before: "8초 (Sequential)"
+            after: "6초 (Parallel)"
+            improvement: "23% 단축"
+        
+        qualitative:
+          - "Phase 역할 명확 (Range vs Point)"
+          - "Guardrail 안정성 향상 (Hard/Soft 분리)"
+          - "불확실성 정량화 (95% CI 제공)"
+          - "검증 가능성 (A/B 테스트)"
 
-          llm_mode:
-            description: "config/llm_mode.yaml 통합"
-            native: "템플릿만 (비용 $0, 90-95% 커버)"
-            external: "템플릿 + OpenAI API (100% 커버)"
-
-        coverage: "5% → 0.5% (Year 1)"
-
-        llm_integration:
-          native_mode:
-            description: "Cursor LLM 사용 (기본, 권장)"
-            behavior: "템플릿 성공 → 실행, 템플릿 실패 → Cursor에게 맡김"
-            cost: "$0"
-            coverage: "90-95%"
-
-          external_mode:
-            description: "OpenAI API 사용 (자동화 시)"
-            behavior: "템플릿 실패 → API 호출 → 모형 생성"
-            cost: "~$0.03/질문"
-            coverage: "100%"
-
-        internal_steps_v7_7_0:
-          step_1_scan:
-            description: "초기 스캔 - 가용 데이터 파악 (Bottom-up)"
-            process:
-              - "부모 데이터 상속 (재귀 시)"
-              - "프로젝트 데이터 확인"
-              - "RAG 검색 (벤치마크)"
-            output: "{'available': Dict, 'unknown': List}"
-
-          step_2_generate:
-            description: "모형 생성 - 3-5개 후보 (Top-down)"
-            process:
-              - "Step 2a: LLM 모형 생성"
-              - "Step 2b: 변수 재검색 (최대 2회)"
-              - "Step 2c: 변수 정책 필터링"
-            output: "List[FermiModel] (3-5개)"
-
-          step_3_feasibility:
-            description: "실행 가능성 체크 (재귀 추정)"
-            process:
-              - "Unknown 변수 재귀 호출"
-              - "실행 가능성 점수 계산"
-              - "최선 모형 선택"
-            output: "List[RankedModel] (점수 순)"
-
-          step_4_execute:
-            description: "모형 실행 (Backtracking)"
-            steps:
-              - "변수 바인딩"
-              - "안전한 수식 실행"
-              - "Confidence 조합 (Geometric Mean)"
-              - "DecompositionTrace 생성"
-              - "EstimationResult 반환"
-
-        safety:
-          max_depth: 4
-          circular_detection: "Call stack 추적"
-          phase_3_fallback: "depth 4 도달 시 Guestimation으로 복귀"
-          variable_limit: "10개 절대 상한"
-
-    exclusive_responsibilities:
-      value_estimation:
-        description: "데이터 부족 시 값 추정 (단일 권한)"
-        authority: "UMIS 시스템 내 유일한 추정 권한"
-
-        common_use_cases:
-          quantifier_support:
-            - "전환율 (Conversion Rate)"
-            - "AOV (Average Order Value)"
-            - "Frequency (구매 빈도)"
-            - "시장 필터 비율"
-            - "성장률 (CAGR)"
-
-          observer_support:
-            - "가치사슬 마진 비율"
-            - "플랫폼 수수료율"
-            - "시장 집중도 (CR3, HHI)"
-
-          explorer_support:
-            - "잠재 시장 크기 (Order of Magnitude)"
-            - "기회 우선순위 판단"
-
-          validator_support:
-            - "데이터 신뢰구간"
-            - "Error Range 계산"
-
-        output_format:
-          value: "추정값"
-          confidence: "신뢰도 (0.0-1.0)"
-          phase: "사용한 Phase (0/1/2/3/4)"
-          sources: "증거 출처 리스트"
-          reasoning_detail: "상세 판단 근거 (v7.3.2)"
-          component_estimations: "개별 요소 추정 (v7.3.2)"
-          estimation_trace: "과정 추적 (v7.3.2)"
-
-      cross_validation:
-        description: "Validator와 협업한 교차 검증 (v7.3.2)"
-        process:
-          - "Validator가 추정치 검증 요청"
-          - "Estimator가 독립적으로 추정"
-          - "두 값 비교 (차이 계산)"
-          - "±30% 이내: pass, 초과: caution/fail"
-
-        output:
-          claimed_value: "주장된 값"
-          estimator_value: "Estimator 추정값"
-          estimator_confidence: "신뢰도"
-          estimator_reasoning: "상세 근거"
-          difference_pct: "차이 비율"
-          validation_result: "pass/caution/fail"
-
-      learning_system:
-        description: "사용할수록 빨라지는 학습 시스템"
-
-        learning_pipeline:
-          phase_3_execution: "11개 Source 수집 + 판단 (첫 실행)"
-          canonical_storage: "정규화된 형태로 저장"
-          projection: "Agent별 View로 자동 투영"
-          phase_1_integration: "학습 규칙으로 자동 통합"
-
-        learning_conditions:
-          high_confidence:
-            threshold: "confidence >= 0.90"
-            required_evidence: "1개 이상"
-
-          medium_confidence:
-            threshold: "confidence >= 0.80"
-            required_evidence: "2개 이상"
-
-          no_learning:
-            threshold: "confidence < 0.80"
-
-        performance_evolution:
-          week_1: "45% 커버 (20개 규칙)"
-          month_1: "75% 커버 (120개 규칙)"
-          year_1: "95% 커버 (2,000개 규칙)"
-
-          speed_improvement:
-            first_run: "3-8초 (Phase 3)"
-            learned_run: "<0.5초 (Phase 1)"
-            improvement: "6-16배 빠름"
 
     # ===== 4. QUALITY CRITERIA =====
     quality_criteria:
