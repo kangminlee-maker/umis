@@ -283,7 +283,7 @@ class StatisticalPatternSource(SoftConstraintBase):
                 )
                 
                 guide = SoftGuide(
-                    source_type=SourceType.STATISTICAL,
+                    source_type=SourceType.SOFT,  # v7.8.1: STATISTICAL deprecated
                     suggested_range=(1000, 4500),  # p10-p90
                     distribution=distribution,
                     confidence=0.65,
@@ -309,7 +309,7 @@ class StatisticalPatternSource(SoftConstraintBase):
                 )
                 
                 guide = SoftGuide(
-                    source_type=SourceType.STATISTICAL,
+                    source_type=SourceType.SOFT,  # v7.8.1: STATISTICAL deprecated
                     suggested_range=(0.05, 0.07),
                     typical_value=0.06,
                     distribution=distribution,
@@ -415,7 +415,7 @@ class BehavioralInsightSource(SoftConstraintBase):
             pattern = self.patterns['loss_aversion']
             
             guide = SoftGuide(
-                source_type=SourceType.BEHAVIORAL,
+                source_type=SourceType.SOFT,  # v7.8.1: BEHAVIORAL deprecated
                 insight=pattern['insight'],
                 quantitative_hint=pattern.get('quantitative_hint'),
                 confidence=0.60,
@@ -429,7 +429,7 @@ class BehavioralInsightSource(SoftConstraintBase):
             pattern = self.patterns['power_law']
             
             guide = SoftGuide(
-                source_type=SourceType.BEHAVIORAL,
+                source_type=SourceType.SOFT,  # v7.8.1: BEHAVIORAL deprecated
                 insight=pattern['insight'],
                 confidence=0.70,
                 reasoning="행동경제학: Power Law"

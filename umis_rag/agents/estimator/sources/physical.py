@@ -302,7 +302,7 @@ class SpacetimeConstraintSource(PhysicalConstraintBase):
         if any(word in question for word in ['하루', '일', '1일']):
             if any(word in question for word in ['시간', '시']):
                 return Boundary(
-                    source_type=SourceType.SPACETIME,
+                    source_type=SourceType.PHYSICAL,  # v7.8.1: SPACETIME deprecated
                     min_value=0,
                     max_value=24,
                     confidence=1.0,
@@ -312,7 +312,7 @@ class SpacetimeConstraintSource(PhysicalConstraintBase):
         if any(word in question for word in ['주', '1주', '일주일']):
             if any(word in question for word in ['시간', '근무']):
                 return Boundary(
-                    source_type=SourceType.SPACETIME,
+                    source_type=SourceType.PHYSICAL,  # v7.8.1: SPACETIME deprecated
                     min_value=0,
                     max_value=168,
                     confidence=1.0,
@@ -402,7 +402,7 @@ class MathematicalDefinitionSource(PhysicalConstraintBase):
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         if self._is_probability_question(question):
             constraints.append(Boundary(
-                source_type=SourceType.MATHEMATICAL,
+                source_type=SourceType.PHYSICAL,  # v7.8.1: MATHEMATICAL deprecated
                 min_value=0.0,
                 max_value=1.0,
                 confidence=1.0,
@@ -414,7 +414,7 @@ class MathematicalDefinitionSource(PhysicalConstraintBase):
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         if self._is_percentage_question(question):
             constraints.append(Boundary(
-                source_type=SourceType.MATHEMATICAL,
+                source_type=SourceType.PHYSICAL,  # v7.8.1: MATHEMATICAL deprecated
                 min_value=0.0,
                 max_value=100.0,
                 confidence=1.0,
@@ -426,7 +426,7 @@ class MathematicalDefinitionSource(PhysicalConstraintBase):
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         if self._is_non_negative_metric(question):
             constraints.append(Boundary(
-                source_type=SourceType.MATHEMATICAL,
+                source_type=SourceType.PHYSICAL,  # v7.8.1: MATHEMATICAL deprecated
                 min_value=0.0,
                 max_value=None,
                 confidence=1.0,

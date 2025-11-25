@@ -121,7 +121,7 @@ class FermiModelSearch:
         
         # LLM 모드
         import umis_rag
-        self.llm_mode = umis_rag.UMIS_MODE
+        self.llm_mode = umis_rag.LLM_MODE
     
     def estimate(
         self,
@@ -261,8 +261,8 @@ class FermiModelSearch:
         """
         
         # LLM 모드 체크
-        if self.llm_mode == 'native':
-            # Native: 사용자에게 안내
+        if self.llm_mode == 'cursor':
+            # Cursor: 사용자에게 안내
             print(f"\n💡 [Fermi Phase 2] 모형 생성 필요")
             print(f"   질문: {question}")
             print(f"   가용 데이터: {available}")
@@ -272,13 +272,9 @@ class FermiModelSearch:
             # 현재: 기본 모형 사용 (테스트용)
             return self._get_default_models(question)
         
-        elif self.llm_mode == 'external':
-            # External: OpenAI API 호출
-            return self._generate_models_with_llm(question, available, unknown)
-        
         else:
-            # Skip: 기본 모형
-            return self._get_default_models(question)
+            # External LLM: OpenAI API 호출
+            return self._generate_models_with_llm(question, available, unknown)
     
     def _generate_models_with_llm(
         self,

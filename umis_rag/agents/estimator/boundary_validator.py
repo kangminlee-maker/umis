@@ -90,17 +90,18 @@ class BoundaryValidator:
         ...     print("비현실적:", check.hard_violations)
     """
     
-    def __init__(self, llm_mode: str = "native"):
+    def __init__(self, llm_mode: str = "cursor"):
         """
-        초기화
+        초기화 (v7.8.1)
         
         Args:
-            llm_mode: "native" (Cursor) or "external" (API)
+            llm_mode: "cursor" (Cursor AI) or LLM 모델명 (API: gpt-4o-mini, o1-mini 등)
         """
         self.llm_mode = llm_mode
         self.llm_client = None
         
-        if llm_mode == "external" and HAS_OPENAI:
+        # LLM API 초기화 (cursor 제외한 모든 모드) - v7.8.1
+        if llm_mode != "cursor" and HAS_OPENAI:
             self.llm_client = OpenAI(api_key=settings.openai_api_key)
         
         logger.info(f"[Boundary Validator] 초기화 (mode: {llm_mode})")
@@ -157,10 +158,10 @@ class BoundaryValidator:
             logger.info(f"  ⚠️  Soft Boundary 경고: {soft_check['warnings']}")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Step 3: LLM Reasoning (Native Mode)
+        # Step 3: LLM Reasoning (v7.8.1)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Native Mode: Cursor가 직접 판단
-        # External Mode: GPT API 호출
+        # Cursor Mode: Cursor AI가 직접 판단 (대화 컨텍스트)
+        # API Mode: External LLM API 호출 (GPT, Claude 등)
         
         llm_check = self._llm_boundary_check(
             question, estimated_value, unit, context, formula
@@ -221,7 +222,7 @@ class BoundaryValidator:
             }
         """
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Native Mode: Cursor가 개념 기반 추론
+        # Cursor Mode: 개념 기반 추론 (v7.8.1)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         
         # 1. 개념 추출 및 분석
@@ -264,7 +265,7 @@ class BoundaryValidator:
         context: Optional[Any]
     ) -> Optional[Dict]:
         """
-        개념 분석 (Native Mode - Cursor 추론)
+        개념 분석 (Cursor Mode - AI 추론) (v7.8.1)
         
         질문에서 추정 대상의 개념을 추출하고 분석
         
@@ -315,7 +316,7 @@ class BoundaryValidator:
         # 스코프 (지역)
         scope = context.region if context and context.region else '한국'
         
-        # 상위 개념 추론 (Native Mode - Cursor가 직접)
+        # 상위 개념 추론 (Cursor Mode - AI가 직접) (v7.8.1)
         super_concepts = self._infer_super_concepts(
             concept_name, scope, context
         )
@@ -334,7 +335,7 @@ class BoundaryValidator:
         context: Optional[Any]
     ) -> list:
         """
-        상위 개념 추론 (Native Mode - 일반화)
+        상위 개념 추론 (Cursor Mode - 일반화) (v7.8.1)
         
         열거형 최소화, 개념 계층 구조 활용
         
@@ -402,7 +403,7 @@ class BoundaryValidator:
         """
         hierarchy = []
         
-        # 기본 상수 (Native Mode - Cursor가 알고 있는 값)
+        # 기본 상수 (Cursor가 알고 있는 값) (v7.8.1)
         POPULATIONS = {
             '한국': 51_000_000,
             '서울': 9_500_000,
@@ -438,7 +439,7 @@ class BoundaryValidator:
         context: Optional[Any]
     ) -> Dict:
         """
-        논리적 Boundary 도출 (Native Mode - Cursor 추론)
+        논리적 Boundary 도출 (Cursor Mode - AI 추론) (v7.8.1)
         
         개념과 상위 개념을 바탕으로 논리적 상한/하한 계산
         
@@ -598,8 +599,8 @@ class BoundaryValidator:
         """
         LLM 기반 Boundary 검증 (비정형 사고)
         
-        Native Mode: Cursor가 직접 판단
-        External Mode: GPT API 호출
+        Cursor Mode: Cursor AI가 직접 판단 (대화 컨텍스트)
+        API Mode: External LLM API 호출 (GPT, Claude 등)
         
         Returns:
             {
@@ -608,17 +609,17 @@ class BoundaryValidator:
                 'reasoning': str
             } or None
         """
-        if self.llm_mode == "native":
-            # Native Mode: 템플릿 기반 (빠름, 비용 $0)
-            return self._native_boundary_check(question, value, unit, context)
+        if self.llm_mode == "cursor":
+            # Cursor Mode: 개념 기반 검증 (빠름, 비용 $0)
+            return self._cursor_boundary_check(question, value, unit, context)
         
-        elif self.llm_mode == "external" and self.llm_client:
-            # External Mode: GPT 호출 (정교, 비용 $0.001)
-            return self._external_boundary_check(question, value, unit, context, formula)
+        elif self.llm_client:
+            # API Mode: External LLM 호출 (정교, 비용 ~$0.001)
+            return self._api_boundary_check(question, value, unit, context, formula)
         
         return None
     
-    def _native_boundary_check(
+    def _cursor_boundary_check(
         self,
         question: str,
         value: float,
@@ -626,7 +627,7 @@ class BoundaryValidator:
         context: Optional[Any]
     ) -> Dict:
         """
-        Native Mode Boundary Check (v7.6.2)
+        Cursor Mode Boundary Check (v7.8.1)
         
         개념 기반 동적 추론은 _check_hard_boundaries에서 수행
         여기서는 추가 검증만
@@ -640,10 +641,10 @@ class BoundaryValidator:
         return {
             'violations': violations,
             'warnings': warnings,
-            'reasoning': "Native Mode (개념 기반 검증 완료)"
+            'reasoning': "Cursor Mode (개념 기반 검증 완료)"
         }
     
-    def _external_boundary_check(
+    def _api_boundary_check(
         self,
         question: str,
         value: float,
@@ -652,7 +653,7 @@ class BoundaryValidator:
         formula: str
     ) -> Dict:
         """
-        External Mode: GPT API로 정교한 검증
+        API Mode: External LLM API로 정교한 검증 (v7.8.1)
         
         LLM에게 비정형적 사고 요청:
         - 상위/하위 개념

@@ -210,9 +210,15 @@ class JudgmentSynthesizer:
         
         final_value = weighted_sum / total_weight
         
-        # 불확실성 계산
+        # 불확실성 계산 (v7.9.0: 0으로 나누기 방지)
         values = [e.value for e in estimates]
-        uncertainty = statistics.stdev(values) / statistics.mean(values) if len(values) > 1 else 0.3
+        mean_val = statistics.mean(values) if values else 0
+        
+        if len(values) > 1 and mean_val != 0:
+            uncertainty = statistics.stdev(values) / mean_val
+        else:
+            # 값이 1개이거나 평균이 0이면 기본 불확실성
+            uncertainty = 0.3
         
         return {
             'value': final_value,
@@ -263,7 +269,7 @@ class JudgmentSynthesizer:
         return {
             'value': best.value,
             'confidence': best.confidence,
-            'uncertainty': best.uncertainty,
+            'uncertainty': getattr(best, 'uncertainty', 0.3),  # v7.8.1: 기본값 0.3
             'reasoning': f"최고 신뢰 증거: {best.source_type.value}"
         }
     

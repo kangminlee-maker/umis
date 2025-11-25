@@ -216,6 +216,15 @@ models:
     context_window: 128000
     notes: "Phase 3 최적화, $0.000121/작업, 정확도 100%"
 
+  # ===== Cursor Native =====
+
+  cursor-native:
+    api_type: cursor
+    description: "Cursor AI - 무료, 모든 파라미터는 Cursor 내부 관리"
+    cost_per_1k_input: 0.0
+    cost_per_1k_output: 0.0
+    notes: "Native mode, API 불필요, 패턴 매칭 기반 직접 추론"
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Pro 모델 (Fast Mode 대상)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

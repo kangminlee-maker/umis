@@ -18,7 +18,9 @@ v7.6.2 주요 개선:
 - 하드코딩 완전 제거 (adoption_rate, arpu 등)
 - Boundary 검증 추가 (개념 기반)
 - Fallback 체계 (confidence 0.5)
-- Native Mode 재귀 추정 강화
+
+v7.8.1 개선:
+- Cursor Mode 재귀 추정 강화
 - 정확도 3배 개선 (70% → 25% 오차)
 """
 
@@ -42,7 +44,7 @@ from umis_rag.agents.estimator.phase3_guestimation import Phase3Guestimation
 from umis_rag.utils.logger import logger
 from umis_rag.core.config import settings
 from umis_rag.core.model_router import select_model_with_config
-from umis_rag.core.model_configs import is_pro_model
+from umis_rag.core.model_configs import is_pro_model, model_config_manager
 
 # LLM API
 try:
@@ -62,6 +64,7 @@ except ImportError:
 
 import yaml
 import re
+import json
 
 
 # ═══════════════════════════════════════════════════════
@@ -487,11 +490,12 @@ class Phase4FermiDecomposition:
     """
     
     def __init__(self, config: Phase4Config = None):
-        """초기화"""
+        """초기화 (v7.9.0)"""
         self.config = config or Phase4Config()
         
-        # Phase 3 의존성
-        self.phase3 = Phase3Guestimation()
+        # v7.9.0: llm_mode를 Property로 변경 (동적 읽기)
+        # Phase 3 의존성 (None으로 전달 → 동적 읽기)
+        self.phase3 = Phase3Guestimation(llm_mode=None)
         
         # 재귀 추적
         self.call_stack: List[str] = []
@@ -500,25 +504,56 @@ class Phase4FermiDecomposition:
         # 변수 정책
         self.variable_policy = SimpleVariablePolicy()
         
-        # LLM 모드 (config/llm_mode.yaml 준수)
-        self.llm_mode = getattr(settings, 'llm_mode', 'native')  # 기본: native
-        self.llm_client = None
-        
-        # External mode일 때만 API 초기화
-        if self.llm_mode == 'external':
-            if HAS_OPENAI and settings.openai_api_key:
-                self.llm_client = OpenAI(api_key=settings.openai_api_key)
-                logger.info("  ✅ External LLM (OpenAI API) 준비")
-            else:
-                logger.warning("  ⚠️  External mode지만 OpenAI API 키 없음 (Fallback: 템플릿만)")
-        else:
-            logger.info("  ✅ Native Mode (Cursor LLM, 비용 $0)")
-            logger.info("     직접 모형 생성: 질문 분석 → 상식 기반 추정 (재귀 최소화)")
+        # LLM Client (초기화 시에는 생성 안 함, 필요할 때 동적 생성)
+        self._llm_client = None
         
         logger.info("[Phase 4] Fermi Decomposition 초기화")
         logger.info(f"  Max depth: {self.max_depth}")
         logger.info(f"  변수 정책: 권장 6개, 절대 10개")
         logger.info(f"  LLM 모드: {self.llm_mode}")
+        
+        # 초기화 시점의 모드 로깅
+        if self.llm_mode != 'cursor':
+            logger.info(f"  ✅ API Mode: {self.llm_mode}")
+        else:
+            logger.info("  ✅ Cursor AI Mode (비용 $0)")
+            logger.info("     직접 모형 생성: 질문 분석 → 상식 기반 추정 (재귀 최소화)")
+    
+    @property
+    def llm_mode(self) -> str:
+        """
+        LLM 모드 동적 읽기 (v7.9.0)
+        
+        Property 패턴으로 구현하여 settings 변경 시 즉시 반영
+        """
+        from umis_rag.core.config import settings
+        return settings.llm_mode
+    
+    @property
+    def llm_client(self):
+        """
+        LLM Client 동적 생성 (v7.9.0)
+        
+        cursor 모드가 아닐 때만 OpenAI API 클라이언트 생성
+        매번 현재 llm_mode를 확인하여 필요 시 재생성
+        """
+        # cursor 모드면 None 반환
+        if self.llm_mode == 'cursor':
+            return None
+        
+        # API 모드이지만 클라이언트가 없거나 모드가 변경되었으면 생성
+        if self._llm_client is None or getattr(self, '_cached_mode', None) != self.llm_mode:
+            from umis_rag.core.config import settings
+            if HAS_OPENAI and settings.openai_api_key:
+                from openai import OpenAI
+                self._llm_client = OpenAI(api_key=settings.openai_api_key)
+                self._cached_mode = self.llm_mode
+                logger.debug(f"  OpenAI Client 생성: {self.llm_mode}")
+            else:
+                logger.warning(f"  ⚠️  API 모드({self.llm_mode})지만 OpenAI API 키 없음")
+                return None
+        
+        return self._llm_client
     
     def estimate(
         self,
@@ -849,338 +884,35 @@ class Phase4FermiDecomposition:
         context: Optional[Context] = None
     ) -> List[FermiModel]:
         """
-        기본 모형 생성
+        기본 모형 생성 (v7.8.1: Model Config 통합)
         
-        v7.6.2 변경:
-        - External Mode: LLM API 호출 (GPT 등)
-        - Native Mode: Cursor가 직접 모형 생성
-        - context 파라미터 추가 (하드코딩 제거용)
+        Model Config 시스템을 통해 통합된 처리:
+        - Cursor/API 모두 동일한 로직 사용
+        - 차이는 LLM 호출 방식만 (Cursor AI vs External API)
         
         Args:
             question: 질문
             available: 가용 변수
             depth: 깊이
-            context: 맥락 (v7.6.2)
+            context: 맥락
         
         Returns:
             FermiModel 리스트
         """
-        # 1. External Mode: LLM API 호출
-        if self.llm_mode == 'external' and self.llm_client:
-            logger.info(f"{'  ' * depth}    External Mode → LLM API 모형 생성")
-            llm_models = self._generate_llm_models(question, available, depth)
-            if llm_models:
-                return llm_models
+        # v7.8.1: Model Config 시스템 사용
+        # Cursor/API 모두 _generate_llm_models 사용
+        # 단지 LLM 호출 방식만 다름
         
-        # 2. Native Mode: 직접 모형 생성 (NEW!)
-        if self.llm_mode == 'native':
-            logger.info(f"{'  ' * depth}    Native Mode → 직접 모형 생성")
-            native_models = self._generate_native_models(question, available, depth, context)
-            if native_models:
-                return native_models
+        logger.info(f"{'  ' * depth}    [Phase 4] 모형 생성 시작 (Mode: {self.llm_mode})")
         
-        # 3. Fallback: Phase 3으로 위임
+        models = self._generate_llm_models(question, available, depth)
+        
+        if models:
+            return models
+        
+        # Fallback: Phase 3으로 위임
         logger.info(f"{'  ' * depth}    Fallback → Phase 3 위임")
         return []
-    
-    def _generate_native_models(
-        self,
-        question: str,
-        available: Dict[str, FermiVariable],
-        depth: int,
-        context: Optional[Context] = None
-    ) -> List[FermiModel]:
-        """
-        Native Mode: Cursor가 직접 Fermi 모형 생성
-        
-        원리:
-        - 질문 분석하여 적절한 모형 선택
-        - 상식 기반 추정값 직접 제공 (재귀 최소화)
-        - 간단하고 실용적인 접근
-        
-        Args:
-            question: 질문
-            available: 가용 변수
-            depth: 깊이
-        
-        Returns:
-            추정값이 포함된 FermiModel 리스트
-        """
-        q_lower = question.lower()
-        
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # 1. 담배/소비재 판매량
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        if '담배' in question and ('판매' in question or '개수' in question or '갑' in question):
-            return [FermiModel(
-                model_id="NATIVE_CIGARETTE_SALES",
-                name="담배갑 판매량 모형",
-                formula="sales = smokers * packs_per_day",
-                description="흡연자 수 × 하루 평균 흡연량",
-                variables={
-                    'smokers': FermiVariable(
-                        name='smokers',
-                        available=True,
-                        value=8_170_000,
-                        source='native_estimate',
-                        confidence=0.85,
-                        description='한국 흡연자 수 (성인 4300만 × 흡연율 19%)'
-                    ),
-                    'packs_per_day': FermiVariable(
-                        name='packs_per_day',
-                        available=True,
-                        value=0.65,
-                        source='native_estimate',
-                        confidence=0.80,
-                        description='하루 평균 흡연량 (13개비/20개비 = 0.65갑)'
-                    ),
-                    'sales': FermiVariable(
-                        name='sales',
-                        available=False,
-                        is_result=True
-                    )
-                },
-                total_variables=3,
-                unknown_count=0
-            )]
-        
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # 2. 음식점/매장 수 (v7.6.1: 재귀 추정)
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        if ('음식점' in question or '식당' in question or '카페' in question) and '수' in question:
-            store_type = '음식점'
-            if '카페' in question:
-                store_type = '카페'
-            
-            korea_pop = 51_000_000
-            
-            # v7.6.1: 하드코딩 제거, 재귀 추정으로 변경!
-            return [FermiModel(
-                model_id=f"NATIVE_{store_type.upper()}_COUNT",
-                name=f"{store_type} 수 모형",
-                formula="count = population / people_per_store",
-                description=f"인구 / 인구당 {store_type} 수",
-                variables={
-                    'population': FermiVariable(
-                        name='population',
-                        available=True,
-                        value=korea_pop,
-                        source='native_constant',
-                        confidence=0.95,
-                        description='한국 인구 (2024)'
-                    ),
-                    'people_per_store': FermiVariable(
-                        name='people_per_store',
-                        available=False,  # ← 재귀 추정 필요!
-                        need_estimate=True,
-                        estimation_question=f"{store_type} 1개당 담당 인구는?",
-                        source='',
-                        confidence=0.0,
-                        description=f'{store_type} 1개당 담당 인구 (재귀 추정)'
-                    ),
-                    'count': FermiVariable(
-                        name='count',
-                        available=False,
-                        is_result=True
-                    )
-                },
-                total_variables=3,
-                unknown_count=1  # ← people_per_store 추정 필요
-            )]
-        
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # 3. 이동 시간 (거리 / 속도)
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        if '시간' in question and ('걸리' in question or 'time' in q_lower):
-            # 가용 데이터에서 거리 찾기
-            distance_val = None
-            for k, v in available.items():
-                if 'distance' in k.lower() or '거리' in k:
-                    distance_val = v.value
-                    break
-            
-            if distance_val:
-                # 교통수단 추정 (거리 기반)
-                if distance_val < 10:
-                    speed = 5
-                    transport = '도보'
-                elif distance_val < 50:
-                    speed = 40
-                    transport = '자동차(시내)'
-                else:
-                    speed = 100
-                    transport = 'KTX/고속도로'
-                
-                return [FermiModel(
-                    model_id="NATIVE_TRAVEL_TIME",
-                    name="이동 시간 모형",
-                    formula="time = distance / speed",
-                    description=f"거리 / 속도 ({transport})",
-                    variables={
-                        'distance': FermiVariable(
-                            name='distance',
-                            available=True,
-                            value=distance_val,
-                            source='provided',
-                            confidence=1.0
-                        ),
-                        'speed': FermiVariable(
-                            name='speed',
-                            available=True,
-                            value=speed,
-                            source='native_estimate',
-                            confidence=0.70,
-                            description=f'{transport} 평균 속도'
-                        ),
-                        'time': FermiVariable(
-                            name='time',
-                            available=False,
-                            is_result=True
-                        )
-                    },
-                    total_variables=3,
-                    unknown_count=0
-                )]
-        
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # 4. 부피/개수 (여객기에 탁구공 등)
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        if '여객기' in question and '탁구공' in question:
-            return [FermiModel(
-                model_id="NATIVE_AIRPLANE_PINGPONG",
-                name="여객기 탁구공 모형",
-                formula="count = airplane_volume / pingpong_volume",
-                description="여객기 부피 / 탁구공 부피",
-                variables={
-                    'airplane_volume': FermiVariable(
-                        name='airplane_volume',
-                        available=True,
-                        value=1000,
-                        source='native_estimate',
-                        confidence=0.70,
-                        description='여객기 내부 부피 (m³) - 대략 추정'
-                    ),
-                    'pingpong_volume': FermiVariable(
-                        name='pingpong_volume',
-                        available=True,
-                        value=0.000034,
-                        source='native_constant',
-                        confidence=0.95,
-                        description='탁구공 부피 (m³) - 지름 4cm'
-                    ),
-                    'count': FermiVariable(
-                        name='count',
-                        available=False,
-                        is_result=True
-                    )
-                },
-                total_variables=3,
-                unknown_count=0
-            )]
-        
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # 5. 인구 조회 (상수 - 정확함, 유지)
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        if '인구' in question and ('한국' in question or 'korea' in q_lower):
-            return [FermiModel(
-                model_id="NATIVE_KOREA_POPULATION",
-                name="한국 인구 상수",
-                formula="population = korea_population",
-                description="한국 인구 (통계청 2024)",
-                variables={
-                    'korea_population': FermiVariable(
-                        name='korea_population',
-                        available=True,
-                        value=51_000_000,
-                        source='native_constant',
-                        confidence=0.95,
-                        description='한국 인구 (2024)'
-                    ),
-                    'population': FermiVariable(
-                        name='population',
-                        available=False,
-                        is_result=True
-                    )
-                },
-                total_variables=2,
-                unknown_count=0
-            )]
-        
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # 6. 일반 소비/시장 규모 (v7.6.2: 하드코딩 제거!)
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        if '시장' in question or '규모' in question or 'market' in q_lower:
-            return [FermiModel(
-                model_id="NATIVE_MARKET_SIZE",
-                name="시장 규모 모형",
-                formula="market = population * adoption_rate * arpu * 12",
-                description="인구 × 사용률 × ARPU × 12개월",
-                variables={
-                    'population': FermiVariable(
-                        name='population',
-                        available=True,
-                        value=51_000_000,
-                        source='native_constant',
-                        confidence=0.95,
-                        description='한국 인구'
-                    ),
-                    'adoption_rate': FermiVariable(
-                        name='adoption_rate',
-                        available=False,  # ← 재귀 추정!
-                        need_estimate=True,
-                        estimation_question=f"{context.domain if context and context.domain != 'General' else '서비스'} 사용률은?",
-                        description='서비스 사용률 (재귀 추정)'
-                    ),
-                    'arpu': FermiVariable(
-                        name='arpu',
-                        available=False,  # ← 재귀 추정!
-                        need_estimate=True,
-                        estimation_question=f"{context.domain if context and context.domain != 'General' else '서비스'} 월평균 매출은?",
-                        description='월 평균 매출 (재귀 추정)'
-                    ),
-                    'market': FermiVariable(
-                        name='market',
-                        available=False,
-                        is_result=True
-                    )
-                },
-                total_variables=4,
-                unknown_count=2  # ← adoption_rate, arpu 추정 필요
-            )]
-        
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Fallback: 제공된 가용 데이터 활용
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        if available:
-            logger.info(f"{'  ' * depth}      가용 데이터 활용 모형")
-            # 가용 변수들을 곱셈으로 연결
-            var_names = list(available.keys())
-            formula = ' * '.join(var_names)
-            
-            variables = {}
-            for name, var in available.items():
-                variables[name] = var
-            
-            variables['result'] = FermiVariable(
-                name='result',
-                available=False,
-                is_result=True
-            )
-            
-            return [FermiModel(
-                model_id="NATIVE_AVAILABLE_DATA",
-                name="가용 데이터 활용 모형",
-                formula=f"result = {formula}",
-                description="제공된 데이터 조합",
-                variables=variables,
-                total_variables=len(variables),
-                unknown_count=0
-            )]
-        
-        # 모형 생성 실패
-        logger.warning(f"{'  ' * depth}      적합한 Native 모형 없음")
-        return []
-    
     
     def _generate_llm_models(
         self,
@@ -1189,9 +921,14 @@ class Phase4FermiDecomposition:
         depth: int
     ) -> List[FermiModel]:
         """
-        LLM API로 모형 생성
+        LLM으로 모형 생성 (v7.8.1: Native/External 통합)
         
         설계: fermi_model_search.yaml Line 1158-1181
+        
+        v7.8.1: Cursor/API 통합
+        - Cursor Mode: Cursor AI에게 instruction 전달 (무료, 대화 컨텍스트)
+        - API Mode: External LLM API 호출 (유료)
+        - 차이는 LLM 호출 방식만, 로직은 동일
         
         v7.8.0: Model Config 시스템 통합
         - select_model_with_config() 사용
@@ -1206,65 +943,197 @@ class Phase4FermiDecomposition:
         Returns:
             LLM이 생성한 FermiModel 리스트
         """
-        logger.info(f"{'  ' * depth}      [LLM] 모형 생성 요청")
+        logger.info(f"{'  ' * depth}      [LLM] 모형 생성 요청 (Mode: {self.llm_mode})")
         
-        # 프롬프트 구성
+        # 프롬프트 구성 (Cursor/API 공통)
         prompt = self._build_llm_prompt(question, available)
         
         try:
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            # v7.8.0: Model Config 시스템 사용
+            # Cursor AI: instruction 전달 (대화형)
             # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            model_name, model_config = select_model_with_config(phase=4)
+            if self.llm_mode == 'cursor':  # v7.8.1: cursor = Cursor AI
+                logger.info(f"{'  ' * depth}      [Cursor AI] 대화형 모형 생성 - instruction 작성")
+                logger.info(f"{'  ' * depth}      [Cursor AI] 비용: $0 (무료)")
+                
+                instruction = f"""
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 Fermi 모형 생성 요청 (Cursor AI)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+{prompt}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️ 중요: 위 프롬프트에 따라 Fermi 모형을 생성해주세요!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+"""
+                logger.warning(f"{'  ' * depth}      [Cursor AI] 대화 컨텍스트에서 직접 응답 필요")
+                logger.info(f"{'  ' * depth}      [Cursor AI] Instruction 작성 완료 → Phase 3 Fallback")
+                return []
             
-            logger.info(f"{'  ' * depth}      [LLM] 모델: {model_name}")
-            logger.info(f"{'  ' * depth}      [LLM] API: {model_config.api_type}")
-            
-            # Fast Mode 적용 (Pro 모델)
-            if is_pro_model(model_name):
-                logger.info(f"{'  ' * depth}      [LLM] Fast Mode 적용 (Pro 모델)")
-                fast_mode_prefix = """🔴 SPEED OPTIMIZATION MODE
+            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            # External API: OpenAI API 호출
+            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            else:  # External API (self.llm_mode = gpt-4o-mini, o1-mini 등)
+                # v7.8.0: Model Config 시스템 사용
+                model_name, model_config = select_model_with_config(phase=4)
+                
+                logger.info(f"{'  ' * depth}      [LLM] 모델: {model_name}")
+                logger.info(f"{'  ' * depth}      [LLM] API: {model_config.api_type}")
+                
+                # Fast Mode 적용 (Pro 모델)
+                if is_pro_model(model_name):
+                    logger.info(f"{'  ' * depth}      [LLM] Fast Mode 적용 (Pro 모델)")
+                    fast_mode_prefix = """🔴 SPEED OPTIMIZATION MODE
 ⏱️ 목표 응답 시간: 60초 이내
 📏 최대 출력 길이: 2,000자 이내
 
 """
-                prompt = fast_mode_prefix + prompt
-            
-            # API 파라미터 구성 (자동)
-            api_params = model_config.build_api_params(
-                prompt=prompt,
-                reasoning_effort='medium'  # Phase 4 기본값
-            )
-            
-            # API 타입별 분기 (Responses vs Chat)
-            if model_config.api_type == 'responses':
-                # Responses API (o1, o3, gpt-5 시리즈)
-                response = self.llm_client.responses.create(**api_params)
-                llm_output = response.output
-            else:
-                # Chat Completions API (gpt-4 시리즈)
-                # System message 추가
-                if 'messages' in api_params:
-                    api_params['messages'].insert(0, {
-                        "role": "system",
-                        "content": "당신은 Fermi Estimation 전문가입니다. 질문을 계산 가능한 수학적 모형으로 분해하세요."
-                    })
+                    prompt = fast_mode_prefix + prompt
                 
-                response = self.llm_client.chat.completions.create(**api_params)
-                llm_output = response.choices[0].message.content
-            
-            logger.info(f"{'  ' * depth}      [LLM] 응답 수신 ({len(llm_output)}자)")
-            
-            # 응답 파싱
-            models = self._parse_llm_models(llm_output, depth)
-            
-            logger.info(f"{'  ' * depth}      [LLM] 파싱 완료: {len(models)}개 모형")
-            
-            return models
+                # API 파라미터 구성 (자동)
+                api_params = model_config.build_api_params(
+                    prompt=prompt,
+                    reasoning_effort='medium'  # Phase 4 기본값
+                )
+                
+                # API 타입별 분기 (Responses vs Chat)
+                if model_config.api_type == 'responses':
+                    # Responses API (o1, o3, gpt-5 시리즈)
+                    response = self.llm_client.responses.create(**api_params)
+                else:
+                    # Chat Completions API (gpt-4 시리즈)
+                    # System message 추가
+                    if 'messages' in api_params:
+                        api_params['messages'].insert(0, {
+                            "role": "system",
+                            "content": "당신은 Fermi Estimation 전문가입니다. 질문을 계산 가능한 수학적 모형으로 분해하세요."
+                        })
+                    
+                    response = self.llm_client.chat.completions.create(**api_params)
+                
+                # ⭐ v7.8.1: 통합 파싱 (구조적 응답 파싱)
+                llm_output = self._parse_llm_response(
+                    response=response,
+                    api_type=model_config.api_type,
+                    depth=depth
+                )
+                
+                # v7.8.1: llm_output이 None일 수 있음 (빈 응답 또는 파싱 실패)
+                if not llm_output:
+                    logger.warning(f"{'  ' * depth}      ⚠️ LLM 빈 응답 또는 파싱 실패")
+                    return []
+                
+                logger.info(f"{'  ' * depth}      [LLM] 응답 수신 ({len(llm_output)}자)")
+                
+                # 응답 파싱
+                models = self._parse_llm_models(llm_output, depth)
+                
+                if not models:
+                    logger.warning(f"{'  ' * depth}      ⚠️ 파싱 결과 없음")
+                    return []
+                
+                logger.info(f"{'  ' * depth}      [LLM] 파싱 완료: {len(models)}개 모형")
+                
+                return models
         
         except Exception as e:
-            logger.error(f"{'  ' * depth}      ❌ LLM API 실패: {e}")
+            logger.error(f"{'  ' * depth}      ❌ LLM 생성 실패: {e}")
             return []
+    
+    def _parse_llm_response(
+        self,
+        response: Any,
+        api_type: str,
+        depth: int = 0
+    ) -> Optional[str]:
+        """
+        LLM 응답 파싱 (API Type별 통합)
+        
+        v7.8.1: 구조적 응답 파싱 (벤치마크 패턴 적용)
+        
+        Args:
+            response: API 응답 객체
+            api_type: 'responses', 'chat', 'cursor'
+            depth: 로그 들여쓰기
+        
+        Returns:
+            파싱된 텍스트 또는 None
+        """
+        try:
+            # API Type별 파싱
+            if api_type == 'responses':
+                # Responses API (o1, o3, o4, gpt-5 시리즈)
+                
+                # Level 1: 표준 프로퍼티 (output_text)
+                if hasattr(response, 'output_text'):
+                    logger.info(f"{'  ' * depth}      [Parser] Level 1: output_text 프로퍼티 사용")
+                    return response.output_text
+                
+                # Level 2: 객체 구조 탐색 (output)
+                if hasattr(response, 'output'):
+                    output = response.output
+                    
+                    # output이 리스트인 경우
+                    if isinstance(output, list) and output:
+                        output_item = output[0]
+                        
+                        # ResponseOutputMessage 객체
+                        if hasattr(output_item, 'content'):
+                            content = output_item.content
+                            
+                            # content가 리스트인 경우 (실제 구조!)
+                            if isinstance(content, list) and content:
+                                # ResponseOutputText 객체
+                                if hasattr(content[0], 'text'):
+                                    logger.info(f"{'  ' * depth}      [Parser] Level 2: output[0].content[0].text")
+                                    return content[0].text
+                            
+                            # content가 문자열인 경우
+                            if isinstance(content, str):
+                                logger.info(f"{'  ' * depth}      [Parser] Level 2: output[0].content (string)")
+                                return content
+                        
+                        # text 프로퍼티 직접 존재
+                        if hasattr(output_item, 'text'):
+                            logger.info(f"{'  ' * depth}      [Parser] Level 2: output[0].text")
+                            return output_item.text
+                    
+                    # output이 문자열인 경우
+                    if isinstance(output, str):
+                        logger.info(f"{'  ' * depth}      [Parser] Level 2: output (string)")
+                        return output
+                
+                # Level 3: 문자열 변환
+                logger.warning(f"{'  ' * depth}      ⚠️ Responses API: 알 수 없는 응답 구조, str() 변환")
+                return str(response)
+            
+            elif api_type == 'chat':
+                # Chat Completions API (gpt-4, gpt-4o 시리즈)
+                
+                # Level 1: 표준 구조
+                if hasattr(response, 'choices') and response.choices:
+                    message = response.choices[0].message
+                    if hasattr(message, 'content'):
+                        logger.info(f"{'  ' * depth}      [Parser] Level 1: choices[0].message.content")
+                        return message.content
+                
+                # Level 2: Fallback
+                logger.warning(f"{'  ' * depth}      ⚠️ Chat API: 알 수 없는 응답 구조")
+                return str(response)
+            
+            elif api_type == 'cursor':
+                # Cursor AI (대화형)
+                logger.info(f"{'  ' * depth}      ℹ️  Cursor AI는 대화형 모드 (파싱 불필요)")
+                return None
+            
+            else:
+                logger.error(f"{'  ' * depth}      ❌ 알 수 없는 API Type: {api_type}")
+                return None
+        
+        except Exception as e:
+            logger.error(f"{'  ' * depth}      ❌ 응답 파싱 실패: {e}")
+            return None
     
     def _build_llm_prompt(
         self,
@@ -1360,11 +1229,17 @@ class Phase4FermiDecomposition:
 4. Unknown 변수를 최소화하세요.
 5. 간단할수록 좋습니다 (Occam's Razor, 최대 6개 변수 권장).
 
+⚠️ 필수 규칙:
+   - 변수명은 영문자와 언더스코어만 사용하세요 (예: monthly_revenue, churn_rate)
+   - 순환 참조를 피하세요 (A가 B에 의존하고, B가 다시 A에 의존하는 구조 금지)
+   - 각 변수는 더 기본적인 변수에만 의존해야 합니다
+   - 변수 이름 규칙: [a-zA-Z_][a-zA-Z0-9_]* (영문자/언더스코어로 시작, 숫자 포함 가능)
+
 출력 형식 (YAML):
 ```yaml
 models:
   - id: MODEL_001
-    formula: "result = A × B × C"
+    formula: "result = A * B * C"
     description: "설명"
     variables:
       - name: A
@@ -1378,7 +1253,7 @@ models:
         available: false
   
   - id: MODEL_002
-    formula: "result = A × B × C × D"
+    formula: "result = A * B * C * D"
     description: "설명"
     variables:
       - name: A
@@ -1405,7 +1280,9 @@ models:
         depth: int
     ) -> List[FermiModel]:
         """
-        LLM 응답 파싱 (YAML)
+        LLM 응답 파싱 (YAML/JSON 지원)
+        
+        v7.8.1: JSON 추출 로직 강화 (벤치마크 패턴 적용)
         
         Args:
             llm_output: LLM 응답
@@ -1415,20 +1292,45 @@ models:
             FermiModel 리스트
         """
         try:
-            # YAML 블록 추출 (```yaml ... ```)
+            # 1. YAML 블록 추출 시도 (```yaml ... ```)
             yaml_match = re.search(r'```yaml\n(.*?)\n```', llm_output, re.DOTALL)
             
-            if not yaml_match:
-                # YAML 블록 없으면 전체 파싱 시도
-                yaml_str = llm_output
-            else:
+            if yaml_match:
                 yaml_str = yaml_match.group(1)
+                logger.info(f"{'  ' * depth}        [Parser] YAML 블록 감지")
+                
+                # YAML 파싱
+                data = yaml.safe_load(yaml_str)
+            else:
+                # 2. JSON 블록 추출 시도 (```json ... ```)
+                content = llm_output
+                
+                if '```json' in content:
+                    json_start = content.find('```json') + 7
+                    json_end = content.find('```', json_start)
+                    content = content[json_start:json_end].strip()
+                    logger.info(f"{'  ' * depth}        [Parser] JSON 블록 감지 (```json)")
+                elif '```' in content:
+                    json_start = content.find('```') + 3
+                    json_end = content.find('```', json_start)
+                    content = content[json_start:json_end].strip()
+                    logger.info(f"{'  ' * depth}        [Parser] JSON 블록 감지 (```)")
+                else:
+                    logger.info(f"{'  ' * depth}        [Parser] 코드 블록 없음, 전체 파싱 시도")
+                
+                # 3. JSON 파싱 시도
+                try:
+                    data = json.loads(content)
+                    logger.info(f"{'  ' * depth}        [Parser] JSON 파싱 성공")
+                except json.JSONDecodeError:
+                    # 4. YAML로 전체 파싱 시도 (Fallback)
+                    logger.info(f"{'  ' * depth}        [Parser] JSON 실패, YAML 시도")
+                    data = yaml.safe_load(llm_output)
             
-            # YAML 파싱
-            data = yaml.safe_load(yaml_str)
-            
+            # 데이터 검증
             if not data or 'models' not in data:
-                logger.warning(f"{'  ' * depth}        ⚠️  YAML 파싱 실패 (models 키 없음)")
+                logger.warning(f"{'  ' * depth}        ⚠️  파싱 실패 (models 키 없음)")
+                logger.debug(f"{'  ' * depth}        응답 미리보기: {llm_output[:200]}...")
                 return []
             
             # FermiModel 변환
@@ -1460,10 +1362,27 @@ models:
                 
                 models.append(model)
             
+            logger.info(f"{'  ' * depth}        [Parser] 파싱 완료: {len(models)}개 모형")
             return models
         
         except Exception as e:
             logger.error(f"{'  ' * depth}        ❌ LLM 응답 파싱 실패: {e}")
+            logger.error(f"{'  ' * depth}        에러 타입: {type(e).__name__}")
+            
+            # 상세 로깅 (디버깅용)
+            logger.error(f"{'  ' * depth}        응답 전체:\n{llm_output}")
+            
+            # data 변수가 정의되어 있으면 로깅
+            try:
+                if 'data' in locals():
+                    logger.error(f"{'  ' * depth}        data 타입: {type(data)}")
+                    if isinstance(data, dict):
+                        logger.error(f"{'  ' * depth}        data 키: {list(data.keys())}")
+                    else:
+                        logger.error(f"{'  ' * depth}        data 값: {str(data)[:200]}")
+            except:
+                pass
+            
             return []
     
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2086,10 +2005,25 @@ models:
                 # 변수 이름을 값으로 치환
                 expr = expr.replace(var_name, str(var_value))
             
-            # 안전한 계산 (허용 문자만)
+            # 변수명은 안전: [a-zA-Z_][a-zA-Z0-9_]* 패턴
+            # 하지만 치환 후에는 숫자와 연산자만 남아야 함
+            # 따라서 치환 검증을 강화
+            
+            # 치환이 제대로 되었는지 확인 (변수명이 남아있으면 경고)
+            import re
+            remaining_vars = re.findall(r'[a-zA-Z_][a-zA-Z0-9_]*', expr)
+            if remaining_vars:
+                logger.warning(f"    ⚠️  치환되지 않은 변수: {remaining_vars}")
+                logger.warning(f"    수식: {formula}")
+                logger.warning(f"    bindings: {list(bindings.keys())}")
+                # Fallback: 곱셈
+                return math.prod(bindings.values()) if bindings else 0.0
+            
+            # 안전한 계산 (허용 문자만: 숫자, 연산자, 괄호, 공백)
             allowed_chars = set('0123456789.+-*/() ')
             if not all(c in allowed_chars for c in expr):
                 logger.warning(f"    ⚠️  수식에 허용되지 않는 문자: {formula}")
+                logger.warning(f"    치환 후: {expr}")
                 # Fallback: 곱셈
                 return math.prod(bindings.values()) if bindings else 0.0
             

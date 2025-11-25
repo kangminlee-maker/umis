@@ -62,14 +62,16 @@ class SourceCollector:
     result = collector.collect_all(question, context)
     """
     
-    def __init__(self, llm_mode: str = "native"):
+    def __init__(self, llm_mode: Optional[str] = None):
         """
-        초기화
+        초기화 (v7.9.0)
         
         Args:
-            llm_mode: LLM 모드 ("native" | "external" | "skip")
+            llm_mode: LLM 모드 (None이면 settings에서 동적 읽기)
         """
         logger.info("[Source Collector] 초기화 (v7.8.0)")
+        
+        self._llm_mode = llm_mode  # None이면 Property에서 읽기
         
         # Physical (1개) ⭐ v7.8.0: 통합
         self.physical = UnifiedPhysicalConstraintSource()
@@ -81,7 +83,7 @@ class SourceCollector:
         
         # Value (4개) ⭐ v7.8.0: LLM + Web 통합
         self.definite_data = DefiniteDataSource()
-        self.ai_augmented = AIAugmentedEstimationSource(llm_mode)  # ⭐ 신규
+        self.ai_augmented = AIAugmentedEstimationSource(self.llm_mode)  # ⭐ 신규
         self.rag = RAGBenchmarkSource()
         self.statistical_value = StatisticalValueSource()
         
@@ -89,12 +91,24 @@ class SourceCollector:
         self.spacetime = SpacetimeConstraintSource()  # deprecated
         self.conservation = ConservationLawSource()  # deprecated
         self.mathematical = MathematicalDefinitionSource()  # deprecated
-        self.llm = LLMEstimationSource(llm_mode)  # deprecated
+        self.llm = LLMEstimationSource(self.llm_mode)  # deprecated
         self.web = WebSearchSource()  # deprecated
         
         logger.info(f"  ✅ 8개 핵심 Source 준비 완료 (v7.8.0)")
         logger.info(f"  🆕 Physical 통합 (개념 기반)")
         logger.info(f"  🆕 AIAugmented (LLM+Web 통합)")
+    
+    @property
+    def llm_mode(self) -> str:
+        """
+        LLM 모드 동적 읽기 (v7.9.0)
+        
+        _llm_mode가 None이면 settings에서 동적으로 읽음
+        """
+        if self._llm_mode is None:
+            from umis_rag.core.config import settings
+            return settings.llm_mode
+        return self._llm_mode
 
     
     def collect_all(

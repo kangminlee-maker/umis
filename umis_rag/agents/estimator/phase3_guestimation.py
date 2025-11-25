@@ -45,25 +45,25 @@ class Phase3Guestimation:
     def __init__(
         self,
         config: Optional[Phase3Config] = None,
-        llm_mode: str = "native",
+        llm_mode: Optional[str] = None,
         learning_writer: Optional[LearningWriter] = None
     ):
         """
-        초기화 (v7.7.0)
+        초기화 (v7.9.0)
         
         Args:
             config: Phase 3 설정
-            llm_mode: LLM 모드
+            llm_mode: LLM 모드 (None이면 settings에서 동적 읽기)
             learning_writer: 학습 Writer (옵션)
         """
         self.config = config or Phase3Config()
-        self.llm_mode = llm_mode
+        self._llm_mode = llm_mode  # None이면 Property에서 settings 읽기
         self.learning_writer = learning_writer
         
         logger.info("[Phase 3] Guestimation 초기화")
         
-        # Source Collector
-        self.source_collector = SourceCollector(llm_mode=llm_mode)
+        # Source Collector (현재 llm_mode 전달)
+        self.source_collector = SourceCollector(llm_mode=self.llm_mode)
         
         # Judgment Synthesizer
         self.synthesizer = JudgmentSynthesizer()
@@ -72,6 +72,18 @@ class Phase3Guestimation:
         
         if self.learning_writer:
             logger.info(f"  ✅ Learning Writer 연결됨")
+    
+    @property
+    def llm_mode(self) -> str:
+        """
+        LLM 모드 동적 읽기 (v7.9.0)
+        
+        _llm_mode가 None이면 settings에서 동적으로 읽음
+        """
+        if self._llm_mode is None:
+            from umis_rag.core.config import settings
+            return settings.llm_mode
+        return self._llm_mode
     
     def estimate(
         self,
@@ -140,8 +152,9 @@ class Phase3Guestimation:
             soft_guides=soft_guides
         )
         
-        if not judgment['value']:
-            logger.warning("  판단 실패")
+        # v7.8.1: value=0.0도 유효한 값일 수 있으므로 None만 체크
+        if judgment['value'] is None:
+            logger.warning("  판단 실패 (증거 없음)")
             return None
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
