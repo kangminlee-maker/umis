@@ -20,6 +20,7 @@ from umis_rag.utils.logger import logger
 from umis_rag.core.config import settings
 
 from .common.estimation_result import Evidence, EstimationResult, create_definite_result
+from .phase0_literal import Phase0Literal
 from .phase1_direct_rag import Phase1DirectRAG
 from .phase2_validator_search_enhanced import Phase2ValidatorSearchEnhanced
 from .guardrail_analyzer import GuardrailAnalyzer
@@ -43,16 +44,22 @@ class EvidenceCollector:
     - 확정 값이 있으면 EstimationResult 반환 (추정 불필요)
     """
     
-    def __init__(self, llm_mode: Optional[str] = None):
+    def __init__(self, llm_mode: Optional[str] = None, project_id: Optional[str] = None):
         """
         초기화
         
         Args:
             llm_mode: LLM 모드 (None이면 settings에서 읽기)
+            project_id: 프로젝트 ID (Phase 0용)
         """
         self._llm_mode = llm_mode
+        self._project_id = project_id
         
         logger.info("[EvidenceCollector] 초기화 시작")
+        
+        # Phase 0: Literal (프로젝트 데이터)
+        self.phase0 = Phase0Literal(project_id=project_id)
+        logger.info("  ✅ Phase 0 (Literal)")
         
         # Phase 1: Direct RAG
         self.phase1 = Phase1DirectRAG()
@@ -106,8 +113,30 @@ class EvidenceCollector:
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # Phase 0: Literal (프로젝트 데이터)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # TODO: 프로젝트 데이터 구현
-        # 현재는 스킵
+        try:
+            phase0_result = self.phase0.get(question, context)
+            
+            if phase0_result and phase0_result.confidence >= 0.95:
+                logger.info(f"  ✅ Phase 0: 프로젝트 데이터 발견 ({phase0_result.value:,.0f})")
+                evidence.definite_value = phase0_result.value
+                evidence.source = "Phase 0 Literal (프로젝트 데이터)"
+                evidence.confidence = phase0_result.confidence
+                evidence.reasoning = phase0_result.reasoning
+                
+                # 확정 값 있으면 즉시 반환
+                elapsed = time.time() - start_time
+                result = create_definite_result(
+                    value=phase0_result.value,
+                    evidence=evidence,
+                    reasoning=f"Phase 0 Literal (프로젝트 확정 데이터, {elapsed:.2f}초)"
+                )
+                result.cost['time'] = elapsed
+                
+                logger.info(f"  ⚡ 프로젝트 확정 데이터 발견 (Phase 0) → 추정 불필요")
+                return result, evidence
+        
+        except Exception as e:
+            logger.warning(f"  Phase 0 실패: {e}")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # Phase 1: Direct RAG (학습된 규칙)
@@ -241,7 +270,7 @@ class EvidenceCollector:
         context: Optional[Context]
     ) -> List[Any]:
         """
-        Guardrail 수집
+        Guardrail 수집 - Phase 2 유사 데이터를 자동 변환
         
         Args:
             question: 질문
@@ -250,9 +279,82 @@ class EvidenceCollector:
         Returns:
             Guardrail 리스트
         """
-        # TODO: Guardrail Engine 구현
-        # 현재는 빈 리스트 반환
-        return []
+        guardrails = []
+        
+        try:
+            logger.info(f"[Guardrail Engine] 자동 수집 시작")
+            
+            # Phase 2에서 유사 데이터 검색
+            context_dict = {}
+            if context:
+                if hasattr(context, 'domain') and context.domain:
+                    context_dict['domain'] = context.domain
+                if hasattr(context, 'region') and context.region:
+                    context_dict['region'] = context.region
+                if hasattr(context, 'industry') and context.industry:
+                    context_dict['industry'] = context.industry
+            
+            # Phase 2 검색 (similar_data 수집용)
+            phase2_search_result = self.phase2.search_with_context(
+                question,
+                context_dict
+            )
+            
+            # 유사 데이터 추출
+            similar_items = []
+            
+            if isinstance(phase2_search_result, dict):
+                similar_items = phase2_search_result.get('similar_data', [])
+            elif hasattr(phase2_search_result, 'metadata'):
+                similar_items = phase2_search_result.metadata.get('similar_data', [])
+            
+            if not similar_items:
+                logger.info(f"  유사 데이터 없음")
+                return guardrails
+            
+            logger.info(f"  유사 데이터 {len(similar_items)}개 발견")
+            
+            # 각 유사 데이터를 Guardrail로 변환 (최대 5개)
+            for i, item in enumerate(similar_items[:5]):
+                try:
+                    # 유사 데이터 형식 파싱
+                    if isinstance(item, dict):
+                        similar_question = item.get('question', '')
+                        similar_value = item.get('value', 0)
+                        similar_context = item.get('context', '')
+                    elif isinstance(item, (tuple, list)) and len(item) >= 2:
+                        similar_question = item[0]
+                        similar_value = item[1]
+                        similar_context = item[2] if len(item) > 2 else None
+                    else:
+                        logger.warning(f"    항목 {i+1}: 지원하지 않는 형식 ({type(item)})")
+                        continue
+                    
+                    # Guardrail 분석
+                    guardrail = self.guardrail_analyzer.analyze(
+                        target_question=question,
+                        similar_question=similar_question,
+                        similar_value=similar_value,
+                        target_context=f"{context.domain} | {context.region}" if context else None,
+                        similar_context=similar_context
+                    )
+                    
+                    if guardrail:
+                        guardrails.append(guardrail)
+                        logger.info(f"    ✅ Guardrail {i+1}: {guardrail.type.value} = {guardrail.value:,.0f}")
+                    else:
+                        logger.info(f"    ℹ️  Guardrail {i+1}: 무관")
+                
+                except Exception as e:
+                    logger.warning(f"    항목 {i+1} 변환 실패: {e}")
+                    continue
+            
+            logger.info(f"[Guardrail Engine] 수집 완료: {len(guardrails)}개")
+            
+        except Exception as e:
+            logger.error(f"[Guardrail Engine] 실패: {e}")
+        
+        return guardrails
     
     def _extract_hard_bounds(
         self,
