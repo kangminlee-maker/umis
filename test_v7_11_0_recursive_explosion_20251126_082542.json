@@ -1,0 +1,96 @@
+{
+  "version": "v7.11.0",
+  "test_name": "recursive_explosion_prevention",
+  "timestamp": "20251126_082542",
+  "summary": {
+    "total": 5,
+    "success": 5,
+    "time_ok": 5
+  },
+  "results": [
+    {
+      "id": "ltv_cac_ratio",
+      "question": "한국 B2B SaaS 시장 LTV/CAC 비율은?",
+      "success": true,
+      "value": 3,
+      "source": "Fusion(Prior)",
+      "certainty": "medium",
+      "cost": {
+        "llm_calls": 1,
+        "variables": 1,
+        "time": 11.394075155258179
+      },
+      "elapsed_time": 11.395275115966797,
+      "expected_time": 60,
+      "time_within_limit": true,
+      "decomposition": null,
+      "error": null
+    },
+    {
+      "id": "market_size",
+      "question": "한국 B2B SaaS 시장 규모는?",
+      "success": true,
+      "value": 3.5,
+      "source": "Fusion(Prior)",
+      "certainty": "medium",
+      "cost": {
+        "llm_calls": 1,
+        "variables": 1,
+        "time": 12.743122816085815
+      },
+      "elapsed_time": 12.743692874908447,
+      "expected_time": 60,
+      "time_within_limit": true,
+      "decomposition": null,
+      "error": null
+    },
+    {
+      "id": "restaurant_count",
+      "question": "서울 음식점 수는?",
+      "success": true,
+      "value": 1.0,
+      "source": "Fusion(Fallback)",
+      "certainty": "low",
+      "cost": {
+        "time": 0.0005578994750976562
+      },
+      "elapsed_time": 0.0007991790771484375,
+      "expected_time": 30,
+      "time_within_limit": true,
+      "decomposition": null,
+      "error": null
+    },
+    {
+      "id": "churn_rate",
+      "question": "B2B SaaS의 월 해지율은?",
+      "success": true,
+      "value": 1.0,
+      "source": "Fusion(Fallback)",
+      "certainty": "low",
+      "cost": {
+        "time": 0.0003871917724609375
+      },
+      "elapsed_time": 0.0007197856903076172,
+      "expected_time": 20,
+      "time_within_limit": true,
+      "decomposition": null,
+      "error": null
+    },
+    {
+      "id": "arpu",
+      "question": "B2B SaaS ARPU는?",
+      "success": true,
+      "value": 1.0,
+      "source": "Fusion(Fallback)",
+      "certainty": "low",
+      "cost": {
+        "time": 0.00039696693420410156
+      },
+      "elapsed_time": 0.0006208419799804688,
+      "expected_time": 20,
+      "time_within_limit": true,
+      "decomposition": null,
+      "error": null
+    }
+  ]
+}
