@@ -1,16 +1,22 @@
 """
 Estimator (Fermi) RAG Agent
 
-6번째 Agent - 값 추정 및 지능적 판단 전문가 (v7.6.2 재설계)
+6번째 Agent - 값 추정 및 지능적 판단 전문가 (v7.10.0 Hybrid Architecture)
 
-주요 변경 (v7.6.0 → v7.6.2):
+주요 변경:
 - v7.6.0: 5-Phase 재설계, Validator 우선 검색, Built-in 제거
 - v7.6.1: 단위 자동 변환, Relevance 검증
 - v7.6.2: Boundary 검증, 하드코딩 제거, Web Search 추가
+- v7.10.0: Hybrid Architecture (Thread Pool 병렬화)
+  - Stage 1: Phase 1-2 병렬 수집
+  - Stage 2: Phase 3-4 병렬 추정
+  - Stage 3: Synthesis (교차 검증 + 융합)
 """
 
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Tuple, List
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
 
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
@@ -25,7 +31,7 @@ from umis_rag.utils.logger import logger
 from .phase1_direct_rag import Phase1DirectRAG
 from .phase3_guestimation import Phase3Guestimation
 from .learning_writer import LearningWriter, UserContribution
-from .models import Context, EstimationResult
+from .models import Context, EstimationResult, GuardrailCollector, Guardrail, GuardrailType
 
 
 class EstimatorRAG:
@@ -80,8 +86,12 @@ class EstimatorRAG:
     """
     
     def __init__(self):
-        """Estimator RAG Agent 초기화"""
+        """Estimator RAG Agent 초기화 (v7.9.0)"""
         logger.info("[Estimator] Fermi Agent 초기화")
+        
+        # v7.9.0: llm_mode를 Property로 변경 (동적 읽기)
+        # self.llm_mode 제거 → @property로 대체
+        logger.info(f"  📌 LLM Mode: {self.llm_mode}")
         
         # Phase 1: Direct RAG
         self.phase1 = Phase1DirectRAG()
@@ -105,6 +115,18 @@ class EstimatorRAG:
         self.projected_store = None
         
         logger.info("  ✅ Estimator Agent 준비 완료")
+    
+    @property
+    def llm_mode(self) -> str:
+        """
+        LLM 모드 동적 읽기 (v7.9.0)
+        
+        Property 패턴으로 구현하여 settings 변경 시 즉시 반영
+        
+        Returns:
+            현재 설정된 LLM 모드 (cursor, gpt-4o-mini, o1-mini 등)
+        """
+        return settings.llm_mode
     
     def estimate(
         self,
@@ -210,18 +232,43 @@ class EstimatorRAG:
         logger.info("  → Validator에도 없음 → 추정 시작")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Phase 3: Guestimation (추정 시작, v7.7.0)
+        # v7.9.0: Cursor 모드 자동 Fallback
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        self._ensure_phase3_initialized()
-        result = self.phase3.estimate(question, context)
+        # Phase 3-4는 LLM API 호출 필요
+        # Cursor 모드는 대화형이므로 자동 추정 불가
+        # → gpt-4o-mini로 자동 Fallback
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        cursor_fallback_active = False
+        if self.llm_mode == "cursor":
+            logger.info("  🔄 Cursor 모드 → API 모드 자동 Fallback")
+            logger.info("     Phase 3-4는 LLM API 필요 → gpt-4o-mini 사용")
+            
+            # settings 임시 변경
+            from umis_rag.core.config import settings
+            original_mode = settings.llm_mode
+            settings.llm_mode = "gpt-4o-mini"
+            cursor_fallback_active = True
         
-        if result:
-            logger.info(f"  🧠 Phase 3 완료: {result.value} ({result.execution_time:.2f}초)")
+        try:
+            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            # Phase 3: Guestimation (추정 시작, v7.7.0)
+            # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            self._ensure_phase3_initialized()
+            result = self.phase3.estimate(question, context)
             
-            if result.should_learn:
-                logger.info(f"  📚 학습됨 (다음엔 Phase 1로 빠름!)")
-            
-            return result
+            if result:
+                logger.info(f"  🧠 Phase 3 완료: {result.value} ({result.execution_time:.2f}초)")
+                
+                if result.should_learn:
+                    logger.info(f"  📚 학습됨 (다음엔 Phase 1로 빠름!)")
+                
+                return result
+        
+        finally:
+            # Cursor Fallback 복원
+            if cursor_fallback_active:
+                settings.llm_mode = original_mode
+                logger.debug(f"  Cursor 모드 복원: {original_mode}")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # Phase 4: Fermi Decomposition (v7.7.0)
@@ -230,25 +277,58 @@ class EstimatorRAG:
         # 없는 숫자를 만드는 창조적 추정
         # 시간(10-30초), 비용($0) 투자 정당화됨
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        self._ensure_phase4_initialized()
         
-        logger.info("  💎 Phase 4 시도: 가치있는 작업!")
-        result = self.phase4.estimate(question, context, project_data, depth=0)
+        # v7.9.0: Cursor Fallback (Phase 4도 동일)
+        if self.llm_mode == "cursor" and not cursor_fallback_active:
+            logger.info("  🔄 Cursor 모드 → API 모드 자동 Fallback (Phase 4)")
+            from umis_rag.core.config import settings
+            original_mode = settings.llm_mode
+            settings.llm_mode = "gpt-4o-mini"
+            cursor_fallback_active = True
         
-        if result:
-            logger.info(f"  🧩 Phase 4 완료: {result.value} ({result.execution_time:.2f}초)")
-            if result.decomposition:
-                logger.info(f"     모형: {result.decomposition.formula}")
-                logger.info(f"     Depth: {result.decomposition.depth}")
-            return result
+        try:
+            self._ensure_phase4_initialized()
+            
+            logger.info("  💎 Phase 4 시도: 가치있는 작업!")
+            result = self.phase4.estimate(question, context, project_data, depth=0)
+            
+            if result:
+                logger.info(f"  🧩 Phase 4 완료: {result.value} ({result.execution_time:.2f}초)")
+                if result.decomposition:
+                    logger.info(f"     모형: {result.decomposition.formula}")
+                    logger.info(f"     Depth: {result.decomposition.depth}")
+                return result
         
+        finally:
+            # Cursor Fallback 복원
+            if cursor_fallback_active:
+                settings.llm_mode = original_mode
+                logger.debug(f"  Cursor 모드 복원: {original_mode}")
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # 모든 Phase 실패 → 실패 결과 반환 (v7.9.0)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         logger.warning("  ❌ 모든 Phase 실패")
-        return None
+        
+        # v7.9.0: None 대신 실패 결과 반환
+        return EstimationResult(
+            question=question,
+            phase=-1,
+            value=None,
+            confidence=0.0,
+            error="모든 Phase(0-4)에서 추정 실패",
+            failed_phases=[0, 1, 2, 3, 4],
+            reasoning="추정 불가: 프로젝트 데이터, 학습 규칙, Validator, Guestimation, Fermi 모두 실패",
+            context=context,
+            execution_time=0.0
+        )
     
     def _ensure_phase3_initialized(self):
-        """Phase 3 Lazy 초기화"""
+        """Phase 3 Lazy 초기화 (v7.9.0)"""
         if self.phase3 is None:
+            # llm_mode=None으로 전달 → Phase 3이 동적으로 settings 읽음
             self.phase3 = Phase3Guestimation(
+                llm_mode=None,  # v7.9.0: 동적 읽기
                 learning_writer=self.learning_writer
             )
             logger.info("  ✅ Phase 3 (Guestimation) 로드")
@@ -259,7 +339,309 @@ class EstimatorRAG:
             from .phase4_fermi import Phase4FermiDecomposition
             self.phase4 = Phase4FermiDecomposition()
             logger.info("  ✅ Phase 4 (Fermi Decomposition) 로드")
-    
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # v7.10.0: Hybrid Architecture (Thread Pool 병렬화)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    def _stage1_collect(
+        self,
+        question: str,
+        context: Context,
+        project_data: Optional[Dict] = None
+    ) -> Tuple[GuardrailCollector, Optional[EstimationResult]]:
+        """
+        Stage 1: 검증 & 가드레일 수집 (Phase 0-2 병렬)
+
+        Returns:
+            (GuardrailCollector, definite_result or None)
+        """
+        start_time = time.time()
+        collector = GuardrailCollector()
+
+        # Phase 0: Project Data (동기, Ultra-fast)
+        if project_data:
+            result = self._check_project_data(question, project_data, context)
+            if result and result.confidence >= 0.95:
+                collector.add_definite(result)
+                logger.info(f"  [Stage 1] Phase 0 확정값: {result.value}")
+
+        # Fast Path: 이미 확정값 있으면 Stage 2-3 스킵
+        if collector.has_definite_value():
+            return collector, collector.get_best_definite()
+
+        # Phase 1-2: 병렬 실행 (Thread Pool)
+        phase1_result = None
+        phase2_result = None
+
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            futures = {}
+
+            # Phase 1: Direct RAG
+            futures[executor.submit(self.phase1.estimate, question, context)] = "phase1"
+
+            # Phase 2: Validator 검색
+            futures[executor.submit(self._search_validator, question, context)] = "phase2"
+
+            for future in as_completed(futures):
+                phase_name = futures[future]
+                try:
+                    result = future.result(timeout=5.0)
+                    if phase_name == "phase1":
+                        phase1_result = result
+                    else:
+                        phase2_result = result
+                except Exception as e:
+                    logger.warning(f"  [Stage 1] {phase_name} 실패: {e}")
+
+        # 결과 처리
+        if phase1_result and phase1_result.confidence >= 0.95:
+            collector.add_definite(phase1_result)
+            logger.info(f"  [Stage 1] Phase 1 확정값: {phase1_result.value}")
+
+        if phase2_result and phase2_result.confidence >= 0.95:
+            collector.add_definite(phase2_result)
+            logger.info(f"  [Stage 1] Phase 2 확정값: {phase2_result.value}")
+        elif phase2_result and phase2_result.confidence >= 0.60:
+            # Soft Guardrail로 추가
+            guardrail = Guardrail(
+                type=GuardrailType.EXPECTED_RANGE,
+                value=phase2_result.value,
+                confidence=phase2_result.confidence,
+                is_hard=False,
+                reasoning=f"Validator 유사 데이터: {phase2_result.reasoning or ''}",
+                source="Phase2_Validator"
+            )
+            collector.add_guardrail(guardrail)
+            logger.info(f"  [Stage 1] Phase 2 가드레일: {phase2_result.value} (conf={phase2_result.confidence:.2f})")
+
+        elapsed = time.time() - start_time
+        logger.info(f"  [Stage 1] 완료: {elapsed:.2f}초, 확정값={collector.has_definite_value()}")
+
+        # 확정값 있으면 반환
+        if collector.has_definite_value():
+            return collector, collector.get_best_definite()
+
+        return collector, None
+
+    def _stage2_estimate(
+        self,
+        question: str,
+        context: Context,
+        collector: GuardrailCollector,
+        project_data: Optional[Dict] = None
+    ) -> Tuple[Optional[EstimationResult], Optional[EstimationResult]]:
+        """
+        Stage 2: 병렬 추정 (Phase 3-4)
+
+        Returns:
+            (phase3_result, phase4_result)
+        """
+        start_time = time.time()
+
+        # Lazy 초기화
+        self._ensure_phase3_initialized()
+        self._ensure_phase4_initialized()
+
+        phase3_result = None
+        phase4_result = None
+
+        # Cursor Fallback 설정
+        original_mode = None
+        if self.llm_mode == "cursor":
+            logger.info("  [Stage 2] Cursor → gpt-4o-mini Fallback")
+            original_mode = settings.llm_mode
+            settings.llm_mode = "gpt-4o-mini"
+
+        try:
+            with ThreadPoolExecutor(max_workers=2) as executor:
+                futures = {}
+
+                # Phase 3: Guestimation
+                futures[executor.submit(self.phase3.estimate, question, context)] = "phase3"
+
+                # Phase 4: Fermi Decomposition
+                futures[executor.submit(
+                    self.phase4.estimate, question, context, project_data, 0
+                )] = "phase4"
+
+                for future in as_completed(futures):
+                    phase_name = futures[future]
+                    try:
+                        result = future.result(timeout=30.0)
+                        if phase_name == "phase3":
+                            phase3_result = result
+                        else:
+                            phase4_result = result
+                    except Exception as e:
+                        logger.warning(f"  [Stage 2] {phase_name} 실패: {e}")
+
+        finally:
+            if original_mode:
+                settings.llm_mode = original_mode
+
+        elapsed = time.time() - start_time
+        logger.info(f"  [Stage 2] 완료: {elapsed:.2f}초")
+        if phase3_result:
+            logger.info(f"    Phase 3: {phase3_result.value} (conf={phase3_result.confidence:.2f})")
+        if phase4_result:
+            logger.info(f"    Phase 4: {phase4_result.value} (conf={phase4_result.confidence:.2f})")
+
+        return phase3_result, phase4_result
+
+    def _stage3_synthesize(
+        self,
+        question: str,
+        context: Context,
+        collector: GuardrailCollector,
+        phase3_result: Optional[EstimationResult],
+        phase4_result: Optional[EstimationResult]
+    ) -> EstimationResult:
+        """
+        Stage 3: Synthesis (교차 검증 + 융합)
+
+        교차 검증:
+        - Phase 3 Range가 Phase 4 Point를 포함하면 신뢰도 +15%
+        - 불포함시 경고 + 가중 평균
+
+        Returns:
+            최종 EstimationResult
+        """
+        start_time = time.time()
+
+        # 결과 없으면 실패
+        if not phase3_result and not phase4_result:
+            return EstimationResult(
+                question=question,
+                phase=-1,
+                value=None,
+                confidence=0.0,
+                error="Stage 2 (Phase 3-4) 모두 실패",
+                context=context,
+                execution_time=time.time() - start_time
+            )
+
+        # Phase 4만 있으면 그대로 반환
+        if not phase3_result:
+            phase4_result.execution_time = time.time() - start_time
+            return phase4_result
+
+        # Phase 3만 있으면 그대로 반환
+        if not phase4_result:
+            phase3_result.execution_time = time.time() - start_time
+            return phase3_result
+
+        # 둘 다 있으면 교차 검증
+        cross_validated = False
+        confidence_bonus = 0.0
+
+        if phase3_result.value_range and phase4_result.value:
+            range_min, range_max = phase3_result.value_range
+            point_value = phase4_result.value
+
+            if range_min <= point_value <= range_max:
+                cross_validated = True
+                confidence_bonus = 0.15
+                logger.info(f"  [Stage 3] 교차 검증 성공: {range_min:.0f} <= {point_value:.0f} <= {range_max:.0f}")
+            else:
+                logger.warning(f"  [Stage 3] 교차 검증 실패: {point_value:.0f} not in [{range_min:.0f}, {range_max:.0f}]")
+
+        # 융합: Phase 4 값 + Phase 3 Range + 교차 검증 보너스
+        final_value = phase4_result.value
+        final_confidence = min(0.99, phase4_result.confidence + confidence_bonus)
+        final_range = phase3_result.value_range
+
+        # Hard Guardrail 적용
+        bounds = collector.get_hard_bounds()
+        if bounds['min'] > 0 and final_value < bounds['min']:
+            logger.warning(f"  [Stage 3] Hard 하한 적용: {final_value} → {bounds['min']}")
+            final_value = bounds['min']
+        if bounds['max'] < float('inf') and final_value > bounds['max']:
+            logger.warning(f"  [Stage 3] Hard 상한 적용: {final_value} → {bounds['max']}")
+            final_value = bounds['max']
+
+        elapsed = time.time() - start_time
+        logger.info(f"  [Stage 3] 완료: {elapsed:.2f}초, 교차검증={cross_validated}")
+
+        return EstimationResult(
+            question=question,
+            value=final_value,
+            value_range=final_range,
+            confidence=final_confidence,
+            phase=4,  # Synthesis 결과는 API phase=4
+            reasoning=f"Hybrid Synthesis: Phase 3 Range + Phase 4 Point (교차검증={'성공' if cross_validated else '실패'})",
+            reasoning_detail={
+                "method": "hybrid_synthesis",
+                "cross_validated": cross_validated,
+                "confidence_bonus": confidence_bonus,
+                "phase3_range": final_range,
+                "phase4_value": phase4_result.value,
+                "phase4_confidence": phase4_result.confidence,
+                "hard_bounds": bounds
+            },
+            decomposition=phase4_result.decomposition,
+            context=context,
+            execution_time=elapsed
+        )
+
+    def estimate_hybrid(
+        self,
+        question: str,
+        context: Optional[Context] = None,
+        domain: Optional[str] = None,
+        region: Optional[str] = None,
+        time_period: Optional[str] = None,
+        project_data: Optional[Dict[str, Any]] = None
+    ) -> EstimationResult:
+        """
+        v7.10.0 Hybrid Architecture 추정 (3-Stage Pipeline)
+
+        Stage 1: Phase 0-2 병렬 수집 (확정값 Fast Path)
+        Stage 2: Phase 3-4 병렬 추정 (Range + Point)
+        Stage 3: Synthesis (교차 검증 + 융합)
+
+        Example:
+            >>> estimator = EstimatorRAG()
+            >>> result = estimator.estimate_hybrid("서울 음식점 수는?")
+            >>> print(f"값: {result.value}, 범위: {result.value_range}")
+        """
+        total_start = time.time()
+
+        # Context 생성
+        if context is None:
+            context = Context(
+                domain=domain or "General",
+                region=region,
+                time_period=time_period or "2024",
+                project_data=project_data or {}
+            )
+
+        logger.info(f"[Estimator] Hybrid 추정: {question}")
+
+        # Stage 1: 수집 (Phase 0-2)
+        collector, definite_result = self._stage1_collect(question, context, project_data)
+
+        # Fast Path: 확정값 있으면 즉시 반환
+        if definite_result:
+            logger.info(f"  ⚡ Fast Path: Phase {definite_result.phase} 확정값 반환")
+            definite_result.execution_time = time.time() - total_start
+            return definite_result
+
+        # Stage 2: 추정 (Phase 3-4)
+        phase3_result, phase4_result = self._stage2_estimate(
+            question, context, collector, project_data
+        )
+
+        # Stage 3: Synthesis
+        final_result = self._stage3_synthesize(
+            question, context, collector, phase3_result, phase4_result
+        )
+
+        final_result.execution_time = time.time() - total_start
+        logger.info(f"[Estimator] Hybrid 완료: {final_result.value} ({final_result.execution_time:.2f}초)")
+
+        return final_result
+
     def contribute(
         self,
         question: str,
@@ -570,10 +952,10 @@ _estimator_rag_instance = None
 def get_estimator_rag() -> EstimatorRAG:
     """
     Estimator RAG 싱글톤 인스턴스 반환
-    
+
     Returns:
         EstimatorRAG 인스턴스
-    
+
     Example:
         >>> estimator = get_estimator_rag()
         >>> result = estimator.estimate("Churn Rate는?")
@@ -582,5 +964,4 @@ def get_estimator_rag() -> EstimatorRAG:
     if _estimator_rag_instance is None:
         _estimator_rag_instance = EstimatorRAG()
     return _estimator_rag_instance
-
 
