@@ -226,12 +226,17 @@ class PriorEstimator:
         # 맥락 추가
         if context:
             prompt += f"\n맥락:\n"
-            if context.domain:
-                prompt += f"  - 도메인: {context.domain}\n"
-            if context.region:
-                prompt += f"  - 지역: {context.region}\n"
-            if context.time_period:
-                prompt += f"  - 시기: {context.time_period}\n"
+            # Context 형식 처리: 객체 또는 딕셔너리
+            domain = context.get('domain') if isinstance(context, dict) else getattr(context, 'domain', None)
+            region = context.get('region') if isinstance(context, dict) else getattr(context, 'region', None)
+            time_period = context.get('time_period') if isinstance(context, dict) else getattr(context, 'time_period', None)
+            
+            if domain:
+                prompt += f"  - 도메인: {domain}\n"
+            if region:
+                prompt += f"  - 지역: {region}\n"
+            if time_period:
+                prompt += f"  - 시기: {time_period}\n"
         
         # Hard Bounds 추가
         if evidence.hard_bounds:
@@ -293,6 +298,10 @@ JSON 형식으로 응답하세요:
             content = content.split("```json")[1].split("```")[0].strip()
         elif "```" in content:
             content = content.split("```")[1].split("```")[0].strip()
+        
+        # Underscore 제거 (51_700_000 → 51700000)
+        import re
+        content = re.sub(r'(\d)_(\d)', r'\1\2', content)
         
         # JSON 파싱
         try:

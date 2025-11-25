@@ -322,10 +322,14 @@ class FermiEstimator:
         
         if context:
             prompt += f"\n맥락:\n"
-            if context.domain:
-                prompt += f"  - 도메인: {context.domain}\n"
-            if context.region:
-                prompt += f"  - 지역: {context.region}\n"
+            # Context 형식 처리: 객체 또는 딕셔너리
+            domain = context.get('domain') if isinstance(context, dict) else getattr(context, 'domain', None)
+            region = context.get('region') if isinstance(context, dict) else getattr(context, 'region', None)
+            
+            if domain:
+                prompt += f"  - 도메인: {domain}\n"
+            if region:
+                prompt += f"  - 지역: {region}\n"
         
         prompt += """
 분해 원칙:
