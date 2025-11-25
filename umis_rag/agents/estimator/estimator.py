@@ -498,19 +498,24 @@ class EstimatorRAG:
         phase4_result: Optional[EstimationResult]
     ) -> EstimationResult:
         """
-        Stage 3: Synthesis (교차 검증 + 융합)
+        Stage 3: Enhanced Synthesis (v7.10.0 Week 3)
 
-        교차 검증:
-        - Phase 3 Range가 Phase 4 Point를 포함하면 신뢰도 +15%
-        - 불포함시 경고 + 가중 평균
+        기능:
+        1. Cross-Validation: Phase 3 Range가 Phase 4 Point 포함 시 +15%
+        2. Soft Guardrail: 일치도에 따라 Confidence 조정 (+5% ~ -10%)
+        3. Hard Guardrail: Range 강제 적용
+        4. Weighted Fusion: Uncertainty 기반 가중 평균
+        5. 95% CI: Confidence Interval 계산
 
         Returns:
-            최종 EstimationResult
+            최종 EstimationResult (value, value_range, uncertainty, confidence)
         """
         start_time = time.time()
+        logger.info("  [Stage 3] Synthesis 시작...")
 
         # 결과 없으면 실패
         if not phase3_result and not phase4_result:
+            logger.error("  [Stage 3] Phase 3-4 모두 실패")
             return EstimationResult(
                 question=question,
                 phase=-1,
@@ -523,17 +528,21 @@ class EstimatorRAG:
 
         # Phase 4만 있으면 그대로 반환
         if not phase3_result:
+            logger.info("  [Stage 3] Phase 3 없음 → Phase 4 결과 반환")
             phase4_result.execution_time = time.time() - start_time
             return phase4_result
 
         # Phase 3만 있으면 그대로 반환
         if not phase4_result:
+            logger.info("  [Stage 3] Phase 4 없음 → Phase 3 결과 반환")
             phase3_result.execution_time = time.time() - start_time
             return phase3_result
 
-        # 둘 다 있으면 교차 검증
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Step 1: Cross-Validation (Phase 3 Range vs Phase 4 Point)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         cross_validated = False
-        confidence_bonus = 0.0
+        cross_validation_bonus = 0.0
 
         if phase3_result.value_range and phase4_result.value:
             range_min, range_max = phase3_result.value_range
@@ -541,43 +550,165 @@ class EstimatorRAG:
 
             if range_min <= point_value <= range_max:
                 cross_validated = True
-                confidence_bonus = 0.15
-                logger.info(f"  [Stage 3] 교차 검증 성공: {range_min:.0f} <= {point_value:.0f} <= {range_max:.0f}")
+                cross_validation_bonus = 0.15
+                logger.info(f"  [Stage 3] Step 1: 교차 검증 성공 (+15%)")
+                logger.info(f"            Range [{range_min:,.0f}, {range_max:,.0f}] contains {point_value:,.0f}")
             else:
-                logger.warning(f"  [Stage 3] 교차 검증 실패: {point_value:.0f} not in [{range_min:.0f}, {range_max:.0f}]")
+                logger.warning(f"  [Stage 3] Step 1: 교차 검증 실패")
+                logger.warning(f"            {point_value:,.0f} not in [{range_min:,.0f}, {range_max:,.0f}]")
 
-        # 융합: Phase 4 값 + Phase 3 Range + 교차 검증 보너스
-        final_value = phase4_result.value
-        final_confidence = min(0.99, phase4_result.confidence + confidence_bonus)
-        final_range = phase3_result.value_range
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Step 2: Soft Guardrail Confidence 조정
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        soft_adjustment = 0.0
+        soft_matches = 0
+        soft_total = len(collector.soft_guardrails)
 
-        # Hard Guardrail 적용
+        if soft_total > 0 and phase4_result.value:
+            for guard in collector.soft_guardrails:
+                # Soft Guardrail과의 일치 여부 확인
+                if guard.type == GuardrailType.EXPECTED_RANGE:
+                    # Expected Range: 값이 가드레일 근처인지 확인 (20% 이내)
+                    tolerance = guard.value * 0.2
+                    if abs(phase4_result.value - guard.value) <= tolerance:
+                        soft_matches += 1
+
+                elif guard.type == GuardrailType.SOFT_UPPER:
+                    if phase4_result.value <= guard.value:
+                        soft_matches += 1
+
+                elif guard.type == GuardrailType.SOFT_LOWER:
+                    if phase4_result.value >= guard.value:
+                        soft_matches += 1
+
+            # 일치율에 따른 Confidence 조정
+            match_rate = soft_matches / soft_total
+            if match_rate >= 0.8:
+                soft_adjustment = 0.05  # 80%+ 일치: +5%
+                logger.info(f"  [Stage 3] Step 2: Soft 일치 {soft_matches}/{soft_total} (+5%)")
+            elif match_rate >= 0.5:
+                soft_adjustment = 0.0   # 50-80%: 변화 없음
+                logger.info(f"  [Stage 3] Step 2: Soft 일치 {soft_matches}/{soft_total} (0%)")
+            else:
+                soft_adjustment = -0.10  # 50% 미만: -10%
+                logger.warning(f"  [Stage 3] Step 2: Soft 불일치 {soft_matches}/{soft_total} (-10%)")
+        else:
+            logger.info(f"  [Stage 3] Step 2: Soft Guardrail 없음 (스킵)")
+
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Step 3: Hard Guardrail 적용 (Range 강제)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         bounds = collector.get_hard_bounds()
+        final_value = phase4_result.value
+        hard_adjusted = False
+
         if bounds['min'] > 0 and final_value < bounds['min']:
-            logger.warning(f"  [Stage 3] Hard 하한 적용: {final_value} → {bounds['min']}")
+            logger.warning(f"  [Stage 3] Step 3: Hard 하한 적용: {final_value:,.0f} → {bounds['min']:,.0f}")
             final_value = bounds['min']
+            hard_adjusted = True
+
         if bounds['max'] < float('inf') and final_value > bounds['max']:
-            logger.warning(f"  [Stage 3] Hard 상한 적용: {final_value} → {bounds['max']}")
+            logger.warning(f"  [Stage 3] Step 3: Hard 상한 적용: {final_value:,.0f} → {bounds['max']:,.0f}")
             final_value = bounds['max']
+            hard_adjusted = True
+
+        if not hard_adjusted:
+            logger.info(f"  [Stage 3] Step 3: Hard Guardrail 통과")
+
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Step 4: Weighted Fusion (Uncertainty 기반)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Phase 3 (Range 중앙값)과 Phase 4 (Point)의 가중 평균
+        if phase3_result.value and phase4_result.value:
+            # Weight = Confidence (높을수록 비중 높음)
+            w3 = phase3_result.confidence
+            w4 = phase4_result.confidence
+            total_weight = w3 + w4
+
+            if total_weight > 0:
+                weighted_value = (phase3_result.value * w3 + phase4_result.value * w4) / total_weight
+                # 가중 평균과 Phase 4 값의 차이가 크면 Phase 4 유지
+                if abs(weighted_value - phase4_result.value) / phase4_result.value < 0.1:
+                    final_value = weighted_value
+                    logger.info(f"  [Stage 3] Step 4: Weighted Fusion 적용 (P3:{w3:.2f}, P4:{w4:.2f})")
+                else:
+                    logger.info(f"  [Stage 3] Step 4: Phase 4 값 유지 (차이 > 10%)")
+        else:
+            logger.info(f"  [Stage 3] Step 4: Weighted Fusion 스킵 (값 없음)")
+
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Step 5: 95% CI 계산
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        final_range = phase3_result.value_range
+        uncertainty = 0.3  # 기본 불확실성 30%
+
+        if final_range and final_value:
+            range_min, range_max = final_range
+            range_width = range_max - range_min
+            uncertainty = range_width / (2 * final_value) if final_value > 0 else 0.3
+            uncertainty = min(0.5, max(0.1, uncertainty))  # 10% ~ 50% 범위
+
+            # 95% CI 계산 (정규분포 가정, z=1.96)
+            ci_half = final_value * uncertainty * 1.96
+            ci_lower = max(0, final_value - ci_half)
+            ci_upper = final_value + ci_half
+            logger.info(f"  [Stage 3] Step 5: 95% CI = [{ci_lower:,.0f}, {ci_upper:,.0f}]")
+        else:
+            ci_lower, ci_upper = None, None
+            logger.info(f"  [Stage 3] Step 5: 95% CI 계산 불가")
+
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # Final: Confidence 종합
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        base_confidence = phase4_result.confidence
+        final_confidence = base_confidence + cross_validation_bonus + soft_adjustment
+        final_confidence = min(0.99, max(0.10, final_confidence))  # 10% ~ 99% 범위
 
         elapsed = time.time() - start_time
-        logger.info(f"  [Stage 3] 완료: {elapsed:.2f}초, 교차검증={cross_validated}")
+        logger.info(f"  [Stage 3] 완료: {elapsed:.3f}초")
+        logger.info(f"            값: {final_value:,.0f}")
+        logger.info(f"            신뢰도: {base_confidence:.2f} → {final_confidence:.2f}")
+        logger.info(f"              Cross: +{cross_validation_bonus:.2f}, Soft: {soft_adjustment:+.2f}")
 
         return EstimationResult(
             question=question,
             value=final_value,
             value_range=final_range,
+            unit=phase4_result.unit if phase4_result.unit else "",
             confidence=final_confidence,
+            uncertainty=uncertainty,
             phase=4,  # Synthesis 결과는 API phase=4
-            reasoning=f"Hybrid Synthesis: Phase 3 Range + Phase 4 Point (교차검증={'성공' if cross_validated else '실패'})",
+            reasoning=f"Hybrid Synthesis: Cross={cross_validated}, Soft={soft_matches}/{soft_total}",
             reasoning_detail={
-                "method": "hybrid_synthesis",
-                "cross_validated": cross_validated,
-                "confidence_bonus": confidence_bonus,
+                "method": "enhanced_synthesis_v7.10.0",
+                "steps": {
+                    "cross_validation": {
+                        "passed": cross_validated,
+                        "bonus": cross_validation_bonus
+                    },
+                    "soft_guardrail": {
+                        "matches": soft_matches,
+                        "total": soft_total,
+                        "adjustment": soft_adjustment
+                    },
+                    "hard_guardrail": {
+                        "adjusted": hard_adjusted,
+                        "bounds": bounds
+                    },
+                    "weighted_fusion": {
+                        "phase3_weight": phase3_result.confidence if phase3_result.value else 0,
+                        "phase4_weight": phase4_result.confidence
+                    },
+                    "confidence_interval": {
+                        "ci_95_lower": ci_lower,
+                        "ci_95_upper": ci_upper,
+                        "uncertainty": uncertainty
+                    }
+                },
                 "phase3_range": final_range,
                 "phase4_value": phase4_result.value,
-                "phase4_confidence": phase4_result.confidence,
-                "hard_bounds": bounds
+                "base_confidence": base_confidence,
+                "final_confidence": final_confidence
             },
             decomposition=phase4_result.decomposition,
             context=context,
