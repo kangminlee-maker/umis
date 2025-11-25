@@ -32,6 +32,7 @@ from .phase1_direct_rag import Phase1DirectRAG
 from .phase3_guestimation import Phase3Guestimation
 from .learning_writer import LearningWriter, UserContribution
 from .models import Context, EstimationResult, GuardrailCollector, Guardrail, GuardrailType
+from .guardrail_analyzer import GuardrailAnalyzer
 
 
 class EstimatorRAG:
@@ -109,11 +110,14 @@ class EstimatorRAG:
         
         # Phase 4: Fermi Decomposition (Lazy 초기화)
         self.phase4 = None
-        
+
+        # v7.10.0 Week 4: GuardrailAnalyzer (LLM 2단계 체인)
+        self.guardrail_analyzer = None  # Lazy 초기화
+
         # RAG Collections (Lazy)
         self.canonical_store = None
         self.projected_store = None
-        
+
         logger.info("  ✅ Estimator Agent 준비 완료")
     
     @property
@@ -340,6 +344,68 @@ class EstimatorRAG:
             self.phase4 = Phase4FermiDecomposition()
             logger.info("  ✅ Phase 4 (Fermi Decomposition) 로드")
 
+    def _ensure_guardrail_analyzer_initialized(self):
+        """GuardrailAnalyzer Lazy 초기화 (v7.10.0 Week 4)"""
+        if self.guardrail_analyzer is None:
+            self.guardrail_analyzer = GuardrailAnalyzer()
+            logger.info("  ✅ GuardrailAnalyzer (LLM 2단계 체인) 로드")
+
+    def _analyze_phase2_result(
+        self,
+        question: str,
+        phase2_result: EstimationResult,
+        context: Context
+    ) -> Optional[Guardrail]:
+        """
+        Phase 2 결과를 GuardrailAnalyzer로 분석 (v7.10.0 Week 4)
+
+        LLM 모드가 cursor가 아닐 때만 GuardrailAnalyzer 사용
+        cursor 모드에서는 기존 방식 (EXPECTED_RANGE) 사용
+        """
+        # Cursor 모드에서는 LLM 호출 없이 기존 방식 사용
+        if self.llm_mode == "cursor":
+            return Guardrail(
+                type=GuardrailType.EXPECTED_RANGE,
+                value=phase2_result.value,
+                confidence=phase2_result.confidence,
+                is_hard=False,
+                reasoning=f"Validator 유사 데이터: {phase2_result.reasoning or ''}",
+                source="Phase2_Validator"
+            )
+
+        # GuardrailAnalyzer 사용 (External LLM 모드)
+        try:
+            self._ensure_guardrail_analyzer_initialized()
+
+            # Phase 2 결과에서 유사 데이터 정보 추출
+            similar_question = phase2_result.question or "유사 데이터"
+            if phase2_result.reasoning:
+                # reasoning에서 출처 정보 추출 시도
+                similar_question = phase2_result.reasoning[:50]
+
+            guardrail = self.guardrail_analyzer.analyze(
+                target_question=question,
+                similar_question=similar_question,
+                similar_value=phase2_result.value,
+                target_context=f"{context.domain}, {context.region}" if context else None
+            )
+
+            if guardrail:
+                return guardrail
+
+        except Exception as e:
+            logger.warning(f"  [Stage 1] GuardrailAnalyzer 실패: {e}")
+
+        # Fallback: 기존 방식
+        return Guardrail(
+            type=GuardrailType.EXPECTED_RANGE,
+            value=phase2_result.value,
+            confidence=phase2_result.confidence,
+            is_hard=False,
+            reasoning=f"Validator 유사 데이터: {phase2_result.reasoning or ''}",
+            source="Phase2_Validator"
+        )
+
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     # v7.10.0: Hybrid Architecture (Thread Pool 병렬화)
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -403,17 +469,13 @@ class EstimatorRAG:
             collector.add_definite(phase2_result)
             logger.info(f"  [Stage 1] Phase 2 확정값: {phase2_result.value}")
         elif phase2_result and phase2_result.confidence >= 0.60:
-            # Soft Guardrail로 추가
-            guardrail = Guardrail(
-                type=GuardrailType.EXPECTED_RANGE,
-                value=phase2_result.value,
-                confidence=phase2_result.confidence,
-                is_hard=False,
-                reasoning=f"Validator 유사 데이터: {phase2_result.reasoning or ''}",
-                source="Phase2_Validator"
+            # v7.10.0 Week 4: GuardrailAnalyzer로 정교한 분석 시도
+            guardrail = self._analyze_phase2_result(
+                question, phase2_result, context
             )
-            collector.add_guardrail(guardrail)
-            logger.info(f"  [Stage 1] Phase 2 가드레일: {phase2_result.value} (conf={phase2_result.confidence:.2f})")
+            if guardrail:
+                collector.add_guardrail(guardrail)
+                logger.info(f"  [Stage 1] Phase 2 분석 완료: {guardrail.type.value} (conf={guardrail.confidence:.2f})")
 
         elapsed = time.time() - start_time
         logger.info(f"  [Stage 1] 완료: {elapsed:.2f}초, 확정값={collector.has_definite_value()}")
