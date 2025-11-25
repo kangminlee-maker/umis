@@ -332,3 +332,5 @@ def test_fermi_estimation_all_llm_modes():
 **예상 효과**: Native/External 레거시 완전 제거, v7.8.1 철학 완성
 
 
+
+

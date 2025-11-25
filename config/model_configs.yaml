@@ -14,9 +14,35 @@ defaults:
   api_type: chat
   max_output_tokens: 4096
   temperature: 0.7
+  timeout_seconds: 30  # v7.10.0: 기본 timeout
   reasoning_effort:
     support: false
     default: medium
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Phase별 Timeout 설정 (v7.10.0)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 벤치마크 기반 Phase별 timeout 설정
+# Phase 3: Guestimation (6-35초)
+# Phase 4: Fermi Decomposition (11-60초, 모델에 따라 다름)
+phase_timeouts:
+  phase_3:
+    default: 45  # 기본 45초
+    models:
+      gpt-4o-mini: 15      # 빠름 (2-6초)
+      gpt-4.1-nano: 10     # 매우 빠름 (1-3초)
+      gpt-5.1: 45          # reasoning 모델 (6-35초)
+      o1-mini: 45          # reasoning 모델
+
+  phase_4:
+    default: 60  # 기본 60초
+    models:
+      gpt-4o-mini: 20      # 빠름 (5-15초)
+      gpt-5.1: 60          # reasoning high (11-14초, 여유)
+      o1-mini: 60          # reasoning (12-13초)
+      o1: 90               # 대형 reasoning (느림)
+      o1-pro: 120          # Pro 모델 (30-70초)
+      gpt-5-pro: 180       # Pro 모델 (73초)
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 모델별 설정

@@ -91,8 +91,9 @@ class TestStage2Estimate:
     """Stage 2: 병렬 추정 테스트"""
 
     def test_parallel_phase3_phase4(self):
-        """Phase 3-4 병렬 실행 확인"""
+        """Phase 3-4 병렬 실행 확인 (API 모드)"""
         from umis_rag.agents.estimator.estimator import EstimatorRAG
+        from umis_rag.core.config import settings
 
         estimator = EstimatorRAG()
 
@@ -117,18 +118,61 @@ class TestStage2Estimate:
         estimator._ensure_phase3_initialized()
         estimator._ensure_phase4_initialized()
 
-        with patch.object(estimator.phase3, 'estimate', return_value=mock_phase3):
-            with patch.object(estimator.phase4, 'estimate', return_value=mock_phase4):
-                phase3_result, phase4_result = estimator._stage2_estimate(
-                    question="서울 음식점 수는?",
-                    context=Context(region="서울"),
-                    collector=GuardrailCollector()
-                )
+        # API 모드로 전환하여 Phase 3-4 병렬 실행 테스트
+        original_mode = settings.llm_mode
+        settings.llm_mode = "gpt-4o-mini"
+
+        try:
+            with patch.object(estimator.phase3, 'estimate', return_value=mock_phase3):
+                with patch.object(estimator.phase4, 'estimate', return_value=mock_phase4):
+                    phase3_result, phase4_result = estimator._stage2_estimate(
+                        question="서울 음식점 수는?",
+                        context=Context(region="서울"),
+                        collector=GuardrailCollector()
+                    )
+        finally:
+            settings.llm_mode = original_mode
 
         assert phase3_result is not None
         assert phase3_result.value_range == (80000, 120000)
         assert phase4_result is not None
         assert phase4_result.value == 95000
+
+    def test_cursor_mode_phase3_only(self):
+        """Cursor 모드에서는 Phase 3만 실행"""
+        from umis_rag.agents.estimator.estimator import EstimatorRAG
+        from umis_rag.core.config import settings
+
+        estimator = EstimatorRAG()
+
+        mock_phase3 = EstimationResult(
+            question="테스트",
+            value=100000,
+            confidence=0.85,
+            phase=3
+        )
+
+        estimator._ensure_phase3_initialized()
+        estimator._ensure_phase4_initialized()
+
+        # Cursor 모드 확인
+        original_mode = settings.llm_mode
+        settings.llm_mode = "cursor"
+
+        try:
+            with patch.object(estimator.phase3, 'estimate', return_value=mock_phase3):
+                phase3_result, phase4_result = estimator._stage2_estimate(
+                    question="테스트",
+                    context=Context(),
+                    collector=GuardrailCollector()
+                )
+        finally:
+            settings.llm_mode = original_mode
+
+        # Cursor 모드에서는 Phase 3만 실행
+        assert phase3_result is not None
+        assert phase3_result.value == 100000
+        assert phase4_result is None  # Phase 4는 실행 안 됨
 
 
 class TestStage3Synthesize:
@@ -275,38 +319,46 @@ class TestEstimateHybrid:
         assert result.phase == 0
 
     def test_full_pipeline_execution(self):
-        """전체 파이프라인 실행 (Stage 1-2-3)"""
+        """전체 파이프라인 실행 (Stage 1-2-3, API 모드)"""
         from umis_rag.agents.estimator.estimator import EstimatorRAG
+        from umis_rag.core.config import settings
 
         estimator = EstimatorRAG()
 
-        # Stage 1: 확정값 없음
-        with patch.object(estimator.phase1, 'estimate', return_value=None):
-            with patch.object(estimator, '_search_validator', return_value=None):
-                # Stage 2: Mock 결과
-                mock_phase3 = EstimationResult(
-                    question="테스트",
-                    value=100000,
-                    value_range=(80000, 120000),
-                    confidence=0.85,
-                    phase=3
-                )
-                mock_phase4 = EstimationResult(
-                    question="테스트",
-                    value=95000,
-                    confidence=0.80,
-                    phase=4
-                )
+        # API 모드로 전환
+        original_mode = settings.llm_mode
+        settings.llm_mode = "gpt-4o-mini"
 
-                estimator._ensure_phase3_initialized()
-                estimator._ensure_phase4_initialized()
+        try:
+            # Stage 1: 확정값 없음
+            with patch.object(estimator.phase1, 'estimate', return_value=None):
+                with patch.object(estimator, '_search_validator', return_value=None):
+                    # Stage 2: Mock 결과
+                    mock_phase3 = EstimationResult(
+                        question="테스트",
+                        value=100000,
+                        value_range=(80000, 120000),
+                        confidence=0.85,
+                        phase=3
+                    )
+                    mock_phase4 = EstimationResult(
+                        question="테스트",
+                        value=95000,
+                        confidence=0.80,
+                        phase=4
+                    )
 
-                with patch.object(estimator.phase3, 'estimate', return_value=mock_phase3):
-                    with patch.object(estimator.phase4, 'estimate', return_value=mock_phase4):
-                        result = estimator.estimate_hybrid(
-                            question="테스트 질문",
-                            domain="General"
-                        )
+                    estimator._ensure_phase3_initialized()
+                    estimator._ensure_phase4_initialized()
+
+                    with patch.object(estimator.phase3, 'estimate', return_value=mock_phase3):
+                        with patch.object(estimator.phase4, 'estimate', return_value=mock_phase4):
+                            result = estimator.estimate_hybrid(
+                                question="테스트 질문",
+                                domain="General"
+                            )
+        finally:
+            settings.llm_mode = original_mode
 
         # Synthesis 결과 (Weighted Fusion 적용)
         assert result.value == pytest.approx(97575.76, rel=1e-3)
