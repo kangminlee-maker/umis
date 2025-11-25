@@ -1,0 +1,96 @@
+{
+  "timestamp": "20251124_144031",
+  "model": "gpt-5.1",
+  "test_type": "creative_fermi",
+  "total_scenarios": 7,
+  "phase_distribution": {
+    "0": 0,
+    "1": 0,
+    "2": 7,
+    "3": 0,
+    "4": 0
+  },
+  "success_count": 7,
+  "success_rate": 100.0,
+  "phase4_count": 0,
+  "phase4_rate": 0.0,
+  "results": [
+    {
+      "id": "quantum_computers_2030",
+      "question": "2030년 전세계에서 상용화된 양자 컴퓨터는 몇 대일까?",
+      "category": "future_tech",
+      "phase": 2,
+      "value": 21000000,
+      "unit": "가구",
+      "duration": 0.437492,
+      "success": true,
+      "reached_phase4": false
+    },
+    {
+      "id": "metaverse_land_sales",
+      "question": "메타버스에서 한 달에 거래되는 가상 부동산은 몇 건일까?",
+      "category": "virtual",
+      "phase": 2,
+      "value": 0.058,
+      "unit": "비율",
+      "duration": 0.347457,
+      "success": true,
+      "reached_phase4": false
+    },
+    {
+      "id": "mars_colony_population",
+      "question": "2040년 화성 식민지 인구는 몇 명일까?",
+      "category": "space",
+      "phase": 2,
+      "value": 9500000,
+      "unit": "명",
+      "duration": 0.367726,
+      "success": true,
+      "reached_phase4": false
+    },
+    {
+      "id": "ai_agents_korea",
+      "question": "2025년 한국 기업에서 사용되는 AI 에이전트 수는?",
+      "category": "ai",
+      "phase": 2,
+      "value": 900000000000,
+      "unit": "원/년",
+      "duration": 0.351089,
+      "success": true,
+      "reached_phase4": false
+    },
+    {
+      "id": "drone_delivery_2026",
+      "question": "2026년 서울에서 하루에 드론으로 배송되는 택배는 몇 개?",
+      "category": "future_logistics",
+      "phase": 2,
+      "value": 9500000,
+      "unit": "명",
+      "duration": 0.397811,
+      "success": true,
+      "reached_phase4": false
+    },
+    {
+      "id": "vertical_farm_production",
+      "question": "한국의 수직농장에서 연간 생산되는 상추는 몇 kg?",
+      "category": "agritech",
+      "phase": 2,
+      "value": 32000000000,
+      "unit": "갑/년",
+      "duration": 0.379401,
+      "success": true,
+      "reached_phase4": false
+    },
+    {
+      "id": "blockchain_transactions",
+      "question": "한국에서 하루에 발생하는 블록체인 트랜잭션은 몇 건?",
+      "category": "crypto",
+      "phase": 2,
+      "value": 87671233,
+      "unit": "갑/일",
+      "duration": 0.36788,
+      "success": true,
+      "reached_phase4": false
+    }
+  ]
+}
