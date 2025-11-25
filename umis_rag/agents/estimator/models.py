@@ -71,9 +71,63 @@ class Granularity(Enum):
     MICRO = "micro"
 
 
+
+
+
+class GuardrailType(Enum):
+    """가드레일 타입 (v7.10.0: Hard/Soft 명확 분리)"""
+    # Hard Guardrails (논리적으로 100% 위반 불가)
+    HARD_UPPER = "hard_upper"  # 논리적 상한 (음식점 < 사업자)
+    HARD_LOWER = "hard_lower"  # 논리적 하한 (자영업자 > 0)
+    LOGICAL = "logical"        # 물리/수학 제약 (value >= 0)
+    
+    # Soft Guardrails (경험적/통계적 제약)
+    SOFT_UPPER = "soft_upper"          # 경험적 상한
+    SOFT_LOWER = "soft_lower"          # 경험적 하한
+    EXPECTED_RANGE = "expected_range"  # 일반적 범위
+
+class GuardrailType(Enum):
+    """가드레일 타입 (v7.10.0: Hard/Soft 명확 분리)"""
+    # Hard Guardrails (논리적으로 100% 위반 불가)
+    HARD_UPPER = "hard_upper"  # 논리적 상한 (음식점 < 사업자)
+    HARD_LOWER = "hard_lower"  # 논리적 하한 (자영업자 > 0)
+    LOGICAL = "logical"        # 물리/수학 제약 (value >= 0)
+    
+    # Soft Guardrails (경험적/통계적 제약)
+    SOFT_UPPER = "soft_upper"          # 경험적 상한
+    SOFT_LOWER = "soft_lower"          # 경험적 하한
+    EXPECTED_RANGE = "expected_range"  # 일반적 범위
+
 # ═══════════════════════════════════════════════════════
 # Core Data Classes
 # ═══════════════════════════════════════════════════════
+
+@dataclass
+class Guardrail:
+    """가드레일 (v7.10.0: Hard/Soft 통합)"""
+    
+    type: GuardrailType
+    value: float
+    confidence: float
+    is_hard: bool  # True for HARD_*, False for SOFT_*
+    reasoning: str
+    source: str  # "Phase0", "Phase1", "Phase2", "Validator", etc.
+    
+    # Optional
+    relationship: Optional[str] = None  # "A < B", "A + B = C"
+    conditions: List[str] = field(default_factory=list)
+    raw_output: Dict[str, Any] = field(default_factory=dict)
+    
+    def __post_init__(self):
+        """type에 따라 is_hard 자동 설정 (명시적으로 전달되지 않은 경우)"""
+        # is_hard가 명시적으로 False가 아닌 경우에만 type 기반으로 설정
+        if self.type in [GuardrailType.HARD_UPPER, GuardrailType.HARD_LOWER, GuardrailType.LOGICAL]:
+            if not hasattr(self, '_is_hard_explicit'):
+                object.__setattr__(self, 'is_hard', True)
+        else:
+            if not hasattr(self, '_is_hard_explicit'):
+                object.__setattr__(self, 'is_hard', False)
+
 
 @dataclass
 class Context:
@@ -245,7 +299,7 @@ class SourceOutput:
 
 @dataclass
 class EstimationResult:
-    """최종 추정 결과"""
+    """최종 추정 결과 (v7.9.0)"""
     
     question: str
     
@@ -255,9 +309,13 @@ class EstimationResult:
     unit: str = ""
     
     # 메타 정보
-    phase: int = 0  # 0, 1, 2, 3, 4
+    phase: int = 0  # 0, 1, 2, 3, 4 (-1: 전체 실패)
     confidence: float = 0.0
     uncertainty: float = 0.3
+    
+    # v7.9.0: 에러 정보 추가
+    error: Optional[str] = None  # 실패 시 에러 메시지
+    failed_phases: List[int] = field(default_factory=list)  # 실패한 Phase 목록
     
     # Phase 3 전용
     context: Optional[Context] = None
@@ -314,8 +372,13 @@ class EstimationResult:
     estimation_trace: List[str] = field(default_factory=list)
     
     def is_successful(self) -> bool:
-        """추정 성공 여부"""
-        return self.value is not None or self.value_range is not None
+        """
+        추정 성공 여부 (v7.9.0)
+        
+        phase >= 0이고 값이 있으면 성공
+        phase == -1이면 실패
+        """
+        return self.phase >= 0 and (self.value is not None or self.value_range is not None)
     
     def get_display_value(self) -> str:
         """표시용 값"""
@@ -537,3 +600,75 @@ class GuestimationConfig:
     # 로깅
     verbose: bool = False
     log_all_sources: bool = True
+
+
+# ═══════════════════════════════════════════════════════
+# Guardrail Collector (v7.10.0)
+# ═══════════════════════════════════════════════════════
+
+class GuardrailCollector:
+    """가드레일 수집기 (v7.10.0: Stage 1 Phase 0-2 통합 관리)"""
+    
+    def __init__(self):
+        self.definite_values: List[EstimationResult] = []
+        self.hard_guardrails: List[Guardrail] = []
+        self.soft_guardrails: List[Guardrail] = []
+    
+    def add_definite(self, result: EstimationResult) -> None:
+        """Phase 0-2에서 확정값 추가 (confidence=1.0)"""
+        if result.confidence == 1.0:
+            self.definite_values.append(result)
+    
+    def add_guardrail(self, guardrail: Guardrail) -> None:
+        """Hard/Soft 분리하여 추가"""
+        if guardrail.is_hard:
+            self.hard_guardrails.append(guardrail)
+        else:
+            self.soft_guardrails.append(guardrail)
+    
+    def get_hard_bounds(self) -> Dict[str, float]:
+        """Hard Guardrails에서 상한/하한 추출"""
+        bounds = {
+            'min': 0.0,  # 기본값
+            'max': float('inf')
+        }
+        
+        for guard in self.hard_guardrails:
+            if guard.type == GuardrailType.HARD_UPPER:
+                bounds['max'] = min(bounds['max'], guard.value)
+            elif guard.type == GuardrailType.HARD_LOWER:
+                bounds['min'] = max(bounds['min'], guard.value)
+            elif guard.type == GuardrailType.LOGICAL:
+                # 논리적 제약 (예: value >= 0)
+                if 'min' in guard.relationship or '>' in guard.relationship:
+                    bounds['min'] = max(bounds['min'], guard.value)
+                elif 'max' in guard.relationship or '<' in guard.relationship:
+                    bounds['max'] = min(bounds['max'], guard.value)
+        
+        return bounds
+    
+    def has_definite_value(self) -> bool:
+        """확정값 존재 여부 (Fast Path 조건)"""
+        return len(self.definite_values) > 0
+    
+    def get_best_definite(self) -> Optional[EstimationResult]:
+        """가장 신뢰도 높은 확정값 반환"""
+        if not self.definite_values:
+            return None
+        
+        # confidence=1.0, phase가 낮을수록 우선 (Phase 0 > 1 > 2)
+        return sorted(
+            self.definite_values,
+            key=lambda x: (x.confidence, -x.phase),
+            reverse=True
+        )[0]
+    
+    def summary(self) -> Dict[str, Any]:
+        """수집 현황 요약"""
+        return {
+            'definite_count': len(self.definite_values),
+            'hard_guardrails': len(self.hard_guardrails),
+            'soft_guardrails': len(self.soft_guardrails),
+            'has_fast_path': self.has_definite_value(),
+            'hard_bounds': self.get_hard_bounds()
+        }
