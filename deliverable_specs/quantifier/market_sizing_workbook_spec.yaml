@@ -10,12 +10,15 @@
 # ========================================
 
 spec_meta:
-  spec_version: "1.0"
+  spec_version: "1.1"
   agent_id: "quantifier"
   agent_role: "Quantifier"
-  agent_name: "Bill"  # customizable
+  agent_name: "Bill"
   output_format: "xlsx"
   deliverable_type: "market_sizing_workbook"
+  created: "2025-11-08"
+  updated: "2025-11-26"
+  version: "7.11.0"
 
 output_file:
   naming_convention: "market_sizing_{market_name}.xlsx"

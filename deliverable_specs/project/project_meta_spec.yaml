@@ -10,11 +10,14 @@
 # ========================================
 
 spec_meta:
-  spec_version: "1.0"
-  manager: "guardian"  # Stewart
+  spec_version: "1.1"
+  manager: "guardian"
   output_format: "yaml"
   deliverable_type: "project_metadata"
   auto_managed: true
+  created: "2025-11-08"
+  updated: "2025-11-26"
+  version: "7.11.0"
 
 output_file:
   filename: ".project_meta.yaml"
