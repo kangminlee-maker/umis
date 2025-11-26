@@ -20,7 +20,7 @@ deliverable_specs/
 │   └── market_reality_report_spec.yaml
 ├── explorer/           # Steve (Explorer)
 │   └── opportunity_hypothesis_spec.yaml
-├── estimator/          # Fermi (Estimator) ⭐ v7.5.0 신규
+├── estimator/          # Fermi (Estimator) ⭐ v7.11.0
 │   └── (산출물: EstimationResult, 문서 내 인라인)
 └── project/            # 프로젝트 공통
     ├── project_meta_spec.yaml

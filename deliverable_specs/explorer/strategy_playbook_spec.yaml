@@ -3,16 +3,18 @@
 # ========================================
 # Agent: Explorer
 # Purpose: 검증된 기회 → 실행 가능한 전략 Playbook
-# Version: v7.10.0 (Gap #3)
+# Version: v7.11.0 (4-Stage Fusion)
 # Created: 2025-11-12
+# Updated: 2025-11-26
 
 spec_meta:
-  spec_version: "1.0"
+  spec_version: "1.1"
   agent_id: "explorer"
   agent_role: "Explorer"
   deliverable_type: "strategy_playbook"
   created: "2025-11-12"
-  version: "7.10.0"
+  updated: "2025-11-26"
+  version: "7.11.0"
   status: "production"
 
 deliverable_info:
@@ -79,7 +81,7 @@ input_requirements:
   
   optional_inputs:
     estimator_metrics:
-      source: "Estimator 지표 추정"
+      source: "Estimator 4-Stage Fusion 지표 추정"
       fields:
         - ltv: "고객 생애 가치"
         - cac: "고객 획득 비용"
