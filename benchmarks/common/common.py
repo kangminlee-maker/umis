@@ -1,6 +1,23 @@
 #!/usr/bin/env python3
 """
-Phase 4 공통 함수 모듈
+⚠️ DEPRECATED (v7.11.0) - Legacy Phase 4 공통 함수 모듈
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+이 파일은 v7.10.2의 Phase 기반 벤치마크를 위한 Legacy 코드입니다.
+
+**v7.11.0 변경사항**:
+- Phase 5 (0-4) → 4-Stage Fusion Architecture로 재설계
+- 벤치마크는 `tests/unit/`, `tests/integration/`, `tests/e2e/`로 이동
+- 이 파일의 기능은 `umis_rag/core/model_configs.py`로 대체됨
+
+**권장사항**:
+- 새로운 벤치마크: `tests/` 폴더 참조
+- 모델 설정: `config/model_configs.yaml` 및 `umis_rag/core/model_configs.py`
+- Legacy 벤치마크: `archive/benchmarks_v7.10.2/`
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Phase 4 공통 함수 모듈 (Legacy)
 - 개선된 프롬프트 (연결성 강제)
 - 개념적 일관성 평가 (신규)
 - Fermi 추정 평가 시스템
