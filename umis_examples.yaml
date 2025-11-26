@@ -996,27 +996,25 @@ estimator_examples:
     key_point: "Validator는 직접 추정 안 함, Estimator 교차 검증"
 
 # ========================================
-# PART 6: 참조 문서 (v7.5.0 업데이트)
+# PART 6: 참조 문서
 # ========================================
 
 reference_docs:
-  description: "UMIS v7.5.0 참조 문서"
+  description: "UMIS v7.11.0 참조 문서"
 
   getting_started:
     - "README.md: 빠른 개요"
     - "setup/START_HERE.md: 30초 시작"
     - "UMIS_ARCHITECTURE_BLUEPRINT.md: 전체 아키텍처"
-    - "CURRENT_STATUS.md: 현재 상태 (v7.5.0)" 
+    - "CHANGELOG.md: 버전 이력"
 
   understanding:
     - "FOLDER_STRUCTURE.md: 폴더 구조"
-    - "CHANGELOG.md: 버전 이력"
-    - "UMIS_V7.5.0_RELEASE_NOTES.md: v7.5.0 릴리즈" 
+    - "dev_docs/improvements/LLM_COMPLETE_ABSTRACTION_SUMMARY_v7_11_0.md"
 
   configuration:
     - "config/README.md: Config 폴더 (12개 파일)"
     - "config/agent_names.yaml: Agent 커스터마이징"
-    - "config/llm_mode.yaml: LLM 모드 (Native/External)" 
     - "config/runtime.yaml: 실행 모드"
 
   estimator:
