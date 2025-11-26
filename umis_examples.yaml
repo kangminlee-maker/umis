@@ -1,35 +1,33 @@
-# UMIS examples - Compatible with v7.7.0
+# UMIS examples - Compatible with v7.11.0
 # ========================================
-# UMIS v7.7.0 사용 예시
+# UMIS v7.11.0 사용 예시
 # ========================================
 #
-# v7.7.0 주요 특징:
+# v7.11.0 주요 특징:
 # - 6-Agent 협업 시스템
-# - 5-Phase Estimator (100% 커버리지)
-# - Native 모드 진짜 구현 (비용 $0)
-# - Phase/Step 용어 명확화
-# - 파일명 phase 기반 (phase1/3/4_*.py)
-# - Backward compatibility 유지
+# - 4-Stage Fusion Estimator (100% 커버리지)
+# - LLM Complete Abstraction (Clean Architecture)
+# - Recursion 금지 (예산 기반 탐색)
 # - Explorer RAG (54개 패턴/사례)
 # - Knowledge Graph (13 노드, 45 관계)
 # - Meta-RAG (Guardian 프로세스 감시)
 # - System RAG (31개 도구)
 #
-# 최종 업데이트: 2025-11-10
+# 최종 업데이트: 2025-11-26
 # ========================================
 
 _meta:
-  version: "7.7.0"
-  umis_version: "7.7.0"
-  purpose: "UMIS v7.7.0 실제 사용 예시 (5-Phase + Native 모드)"
-  last_updated: "2025-11-10"
+  version: "7.11.0"
+  umis_version: "7.11.0"
+  purpose: "UMIS v7.11.0 실제 사용 예시 (4-Stage Fusion + LLM Abstraction)"
+  last_updated: "2025-11-26"
 
 # ========================================
 # PART 1: 빠른 시작 예시
 # ========================================
 
 quick_start_examples:
-  description: "UMIS v7.0.0 빠른 시작"
+  description: "UMIS v7.11.0 빠른 시작"
 
   # 예시 1: AI 자동 설치
   example_1_auto_install:
@@ -272,11 +270,11 @@ rag_usage_examples:
       → YouTube Premium, Spotify 성공 사례
 
 # ========================================
-# PART 3: 6-Agent 협업 예시 (v7.5.0)
+# PART 3: 6-Agent 협업 예시
 # ========================================
 
 agent_collaboration_examples:
-  description: "v7.0.0 Agent 협업 실제 시나리오"
+  description: "Agent 협업 실제 시나리오"
 
   # 시나리오: 피아노 구독 서비스 시장 분석
   scenario_piano_subscription:
@@ -433,7 +431,7 @@ rag_search_examples:
 # ========================================
 
 project_structure_example:
-  description: "v7.0.0 표준 프로젝트 구조"
+  description: "표준 프로젝트 구조"
 
   project_folder:
     path: "projects/20251103_piano_subscription/"
@@ -578,14 +576,14 @@ learning_system_example:
 # ========================================
 
 version_update_example:
-  description: "v7.0.0 → v7.1.0 업데이트 프로세스"
+  description: "버전 업데이트 프로세스"
 
   auto_script:
     command: "./update_version.sh 7.1.0"
 
     auto_updates:
       - "VERSION.txt → 7.1.0"
-      - "umis.yaml 첫 줄 → Compatible with v7.1.0"
+      - "umis.yaml 첫 줄 → Compatible with v7.11.0"
       - "모든 YAML 첫 줄 업데이트"
       - ".cursorrules 버전 업데이트"
       - "README.md 배지 업데이트"
@@ -647,7 +645,7 @@ troubleshooting_examples:
     symptom: "FileNotFoundError: config/..."
 
     solution: |
-      # v7.0.0에서 config/ 폴더로 이동됨
+      # config/ 폴더로 이동됨
       # 오래된 참조 확인
       grep -r "agent_names.yaml" . --include="*.py"
 
@@ -680,223 +678,120 @@ reference_documents:
     - "dev_docs/guides/: 개발 가이드"
 
 # ========================================
-# PART 5: Estimator 5-Phase 예시 (v7.7.0)
+# PART 5: Estimator 4-Stage 예시 (v7.11.0)
 # ========================================
 
 estimator_examples:
-  description: "Estimator (Fermi) Agent 사용 예시 - 5-Phase Architecture"
+  description: "Estimator Agent 사용 예시 - 4-Stage Fusion Architecture"
 
-  # 예시 1: Phase 1 (Direct RAG)
-  example_1_phase1_direct_rag:
-    scenario: "학습된 질문 (두 번째 요청)"
+  # 예시 1: Stage 1 (Evidence Collection)
+  example_1_stage1_evidence:
+    scenario: "확정 데이터 발견 (Early Return)"
 
-    first_request:
-      user: "@Fermi, B2B SaaS Churn Rate는?"
-      estimator_action:
-        phase: 3  # Phase 3 (Guestimation)
-        time: "5.2초"
-        sources: ["statistical", "rag", "soft"]
-        result: "6% (confidence: 0.85)"
-        learning: "confidence >= 0.80 → 학습"
+    user: "@Estimator, 프로젝트에서 ARPU는?"
+    
+    estimator_action:
+      stage: 1  # Stage 1 (Evidence Collection)
+      phase_0_literal:
+        found: "ARPU = 80,000원 (프로젝트 데이터)"
+        early_return: true
+      time: "0.1초"
+      result: "80,000원 (confidence: 1.0)"
+      source: "Evidence"
+    
+    key_point: "확정 데이터 발견 시 즉시 반환 (Stage 1)"
 
-    second_request:
-      user: "@Fermi, B2B SaaS Churn Rate는?"  # 동일 질문
-      estimator_action:
-        phase: 1  # ✅ Phase 1 (Direct RAG) - 학습된 규칙 사용
-        time: "0.3초"
-        improvement: "17배 빠름"
-        result: "6% (confidence: 0.85)"  # 동일한 답
+  # 예시 2: Stage 2 (Generative Prior)
+  example_2_stage2_prior:
+    scenario: "LLM 직접 추정 (생성적 추정)"
 
-    key_point: "사용할수록 빨라짐 (Phase 3 → Phase 1 학습)"
+    user: "@Estimator, B2B SaaS Churn Rate는?"
+    
+    estimator_action:
+      stage: 2  # Stage 2 (Generative Prior)
+      llm_estimation:
+        prompt: "B2B SaaS의 일반적인 Churn Rate를 확신 있게 제시하세요"
+        response:
+          value: 0.06
+          value_range: [0.05, 0.08]
+          certainty: "medium"
+          reasoning: "B2B SaaS 업계 평균은 5-8%, 중간값 6%"
+      time: "3.5초"
+      result: "6% (confidence: 0.80)"
+      source: "Generative Prior"
+    
+    key_point: "LLM이 경험 데이터로부터 직접 추정 (재귀 없음)"
 
-  # 예시 2: Phase 2-3 (Validator → Guestimation)
-  example_2_phase2_3:
-    scenario: "데이터 부족 시 추정"
+  # 예시 3: Stage 3 (Structural Explanation)
+  example_3_stage3_fermi:
+    scenario: "Fermi 분해로 구조 설명"
 
-    user: "@Quantifier, 음식점 SaaS 전환율 필요해"
-
-    quantifier_action:
-      step_1: "전환율 데이터 없음 확인"
-      step_2: "Estimator 호출 (Single Source Policy)"
-
-      estimator_call:
-        question: "음식점 SaaS 전환율은?"
-        domain: "Food_Service_SaaS"
-
-      estimator_5phase:
-        action_0: "Phase 0 체크 → 프로젝트 데이터 없음"
-        action_1: "Phase 1 체크 → 학습 규칙 없음"
-        action_2: "Phase 2 실행 → Validator 검색"
-        action_3: "Phase 2 없음 → Phase 3 (Guestimation) 실행"
-
-        source_collection:
-          - "RAG 벤치마크: 카페 SaaS 12% 발견"
-          - "통계 패턴: B2B SaaS 평균 8-12%"
-          - "행동경제학: Loss Aversion 조정"
-
-        judgment:
-          strategy: "weighted_average"
-          calculation: "(0.12×0.75 + 0.10×0.80) / (0.75+0.80) = 0.11"
-          result: "11% (confidence: 0.78)"
-
-        reasoning_detail:
-          method: "weighted_average"
-          sources_used: ["rag", "statistical"]
-          why: "두 증거의 신뢰도가 유사 (0.75-0.80)"
-          evidence_breakdown:
-            - source: "rag"
-              value: 0.12
-              confidence: 0.75
-            - source: "statistical"
-              value: 0.10
-              confidence: 0.80
-          judgment_process:
-            - "Step 1: domain=Food_Service_SaaS 인식"
-            - "Step 2: 11개 Source 검색 → 2개 발견"
-            - "Step 3: weighted_average 선택"
-            - "Step 4: 계산 완료"
-
-      quantifier_usage:
-        sam_calculation: "음식점 70만 × 디지털 30% × 전환 11% × ARPU"
-        note: "Estimator 결과를 SAM 계산에 사용"
-
-    key_point: "Quantifier는 계산만, 추정은 Estimator"
-
-  # 예시 3: Phase 4 (Fermi Decomposition) - Step 1-4
-  example_3_phase4_fermi:
-    scenario: "LTV 추정 (재귀 분해)"
-
-    user: "@Fermi, B2B SaaS LTV는?"
-
-    estimator_5phase:
-      phase_0: "프로젝트 데이터 없음"
-      phase_1: "학습 규칙 없음"
-      phase_2: "Validator 없음"
-      phase_3: "단일 값 추정 실패 (복잡)"
-      phase_4: "Fermi Decomposition 실행 (Step 1-4)"
-
-      step_1_scan:
-        available: []
-        unknown: []
-
-      step_2_generate:
-        matched: "ltv"
-        models:
-          - id: "LTV_001"
-            formula: "ltv = arpu / churn_rate"
-            variables: ["arpu", "churn_rate"]
-          - id: "LTV_002"
-            formula: "ltv = arpu × average_lifetime_months"
-            variables: ["arpu", "average_lifetime_months"]
-        selected: "LTV_001 (Unknown 2개, 더 간단)"
-
-      step_3_recursive:
-        depth_0: "ltv = arpu / churn_rate"
-        unknown: ["arpu", "churn_rate"]
-
-        depth_1_arpu:
+    user: "@Estimator, B2B SaaS LTV는?"
+    
+    estimator_stage3:
+      decomposition:
+        formula: "LTV = ARPU / Churn_Rate"
+        max_depth: 1
+        
+      variable_estimation:
+        arpu:
           question: "ARPU는?"
-          phase3_result: "80,000원 (RAG 벤치마크, confidence: 0.85)"
-          no_recursion: "Phase 3 성공"
-
-        depth_1_churn:
+          stage2_result: "80,000원 (Generative Prior, certainty: high)"
+          no_recursion: true
+        
+        churn_rate:
           question: "Churn Rate는?"
-          phase3_result: "0.05 (통계 패턴, confidence: 0.80)"
-          no_recursion: "Phase 3 성공"
-
-      step_4_execute:
+          stage2_result: "0.05 (Generative Prior, certainty: medium)"
+          no_recursion: true
+      
+      calculation:
         formula: "ltv = arpu / churn_rate"
         bindings:
           arpu: 80000
           churn_rate: 0.05
-        calculation: "80,000 / 0.05 = 1,600,000원"
-        confidence: "√(0.85 × 0.80) = 0.82 (Geometric Mean)"
-        result: "1,600,000원 (confidence: 0.82)"
-
+        result: "80,000 / 0.05 = 1,600,000원"
+        confidence: "√(high × medium) = 0.82"
+      
       output:
         value: 1600000
-        phase: 4
+        source: "Fermi"
         decomposition:
           formula: "ltv = arpu / churn_rate"
           depth: 1
           variables:
-            arpu: {value: 80000, confidence: 0.85, phase: 3}
-            churn_rate: {value: 0.05, confidence: 0.80, phase: 3}
+            arpu: {value: 80000, certainty: "high", source: "Generative Prior"}
+            churn_rate: {value: 0.05, certainty: "medium", source: "Generative Prior"}
+    
+    key_point: "Fermi 분해로 구조적 설명 제공 (재귀 금지, max_depth=2)"
 
-    key_point: "Phase 4가 자동으로 재귀 분해 + Backtracking (Step 1-4)"
+  # 예시 4: LLM Provider (Cursor vs External)
+  example_4_llm_provider:
+    scenario: "LLM Provider 선택 (v7.11.0 Abstraction)"
 
-  # 예시 4: Phase 4 - 데이터 상속 (Step 1)
-  example_4_phase4_data_inheritance:
-    scenario: "재귀 추정 시 부모 데이터 상속"
-
-    user: "@Fermi, Unit Economics는?"
-
-    estimator_phase4:
-      phase_4_process:
-        step_1_scan:
-          available: []
-          unknown: ["ltv", "cac"]
-          
-        step_2_generate:
-          formula: "ratio = ltv / cac"
-          variables: ["ltv", "cac"]
-          
-        step_3_recursive:
-          depth_1_ltv:
-            question: "LTV는?"
-            phase_0_4_try: "Phase 0-3 없음"
-            phase_4_execute:
-              formula: "ltv = arpu / churn_rate"
-              depth_2_arpu:
-                question: "ARPU는?"
-                phase_3_result: "80,000원 (Guestimation)"
-              depth_2_churn:
-                question: "Churn Rate는?"
-                phase_3_result: "0.05 (Guestimation)"
-            result: "1,600,000원"
-          
-          depth_1_cac:
-            question: "CAC는?"
-            phase_3_result: "50,000원 (Guestimation)"
-        
-        step_4_execute:
-          formula: "ratio = ltv / cac"
-          bindings: {ltv: 1600000, cac: 50000}
-          calculation: "1,600,000 / 50,000 = 32"
-          result: "32 (LTV/CAC, 건강)"
-
-    data_inheritance_benefit:
-      - "재귀 시 부모의 available 변수 상속 (Step 1)"
-      - "재계산 불필요 (효율성)"
-      - "일관성 보장"
-
-    key_point: "Phase 4 (Step 1)에서 데이터 상속으로 재귀 최적화"
-
-  # 예시 5: LLM 모드 (Native vs External)
-  example_5_llm_mode:
-    scenario: "LLM 모드 선택"
-
-    # Native Mode (기본, 권장)
-    native_mode:
+    # Cursor Mode (기본, 권장)
+    cursor_mode:
       설정:
-        llm_mode: "native"  # 기본값
+        LLM_MODE: "cursor"  # .env 설정
         OPENAI_API_KEY: "sk-... (RAG 임베딩만)"
 
-      동작:
-        phase_0_4_시도: |
-          @Fermi, LTV는?
-          → Phase 0: 프로젝트 데이터 없음
-          → Phase 1: 학습 규칙 없음
-          → Phase 2: Validator 없음
-          → Phase 3: 단일 값 실패
-          → Phase 4: Fermi 실행 (Step 1-4)
-          → 비용: $0
+      초기화:
+        python: |
+          from umis_rag.agents.estimator import EstimatorRAG
+          
+          # 자동으로 CursorLLMProvider 사용
+          estimator = EstimatorRAG()
+          
+          result = estimator.estimate("B2B SaaS ARPU는?")
+          # LLM 호출: None 반환 (Cursor Composer가 수동 처리)
+          # 비용: $0
 
-        native_모드_explorer: |
-          @Explorer, 시장 분석
-          → RAG 검색만 수행
-          → Cursor LLM이 직접 분석
-          → 비용: $0 (Native 모드)
+      동작:
+        stage_실행: |
+          @Estimator, LTV는?
+          → Stage 1 (Evidence): 데이터 없음
+          → Stage 2 (Prior): CursorLLM (로그만 출력)
+          → Cursor Composer에서 수동 추정
+          → 비용: $0
 
       장점:
         - "비용: $0"
@@ -908,24 +803,27 @@ estimator_examples:
     # External Mode (자동화)
     external_mode:
       설정:
-        llm_mode: "external"
+        LLM_MODE: "gpt-4o-mini"  # .env 설정
         OPENAI_API_KEY: "sk-..."
 
-      동작:
-        phase_실행: |
-          LTV는?
-          → Phase 0-3: 없음
-          → Phase 4: Fermi 실행
-          → 비용: $0
+      초기화:
+        python: |
+          from umis_rag.agents.estimator import EstimatorRAG
+          
+          # 자동으로 ExternalLLMProvider 사용
+          estimator = EstimatorRAG()
+          
+          result = estimator.estimate("B2B SaaS ARPU는?")
+          # LLM 호출: OpenAI API 자동 호출
+          # 비용: ~$0.001/질문
 
-        external_모드_api: |
-          신규 시장 잠재력은?
-          → Phase 0-3: 없음
-          → Phase 4: OpenAI API 호출 (External 모드)
-          → 모형 생성 프롬프트
-          → 3-5개 모형 생성
-          → Step 1-4 실행
-          → 비용: $0.03/질문
+      동작:
+        stage_실행: |
+          LTV는?
+          → Stage 1 (Evidence): 데이터 없음
+          → Stage 2 (Prior): ExternalLLM (OpenAI API 호출)
+          → 자동 추정 완료
+          → 비용: ~$0.001
 
       장점:
         - "완전 자동화"
@@ -934,12 +832,12 @@ estimator_examples:
 
       use_case: "자동화 (배치 처리, cron job)"
 
-    key_point: "Native는 비용 $0 권장, External은 자동화 시만"
+    key_point: "Cursor는 비용 $0 권장, External은 자동화 시만"
 
-  # 예시 6: 비즈니스 지표 (v7.5.0 Quantifier로 이동)
-  example_6_business_metrics:
+  # 예시 5: 비즈니스 지표 (Quantifier로 이동)
+  example_5_business_metrics:
     scenario: "비즈니스 지표 계산 (Quantifier 담당)"
-    note: "v7.5.0 역할 분리: Estimator=추정, Quantifier=계산"
+    note: "역할 분리: Estimator=추정, Quantifier=계산"
 
     지표_목록:
       핵심_8개:
@@ -997,7 +895,7 @@ estimator_examples:
           예시: "(1,000,000 - 300,000) / 1,000,000 = 70%"
 
     note: |
-      v7.5.0 이후 비즈니스 지표 계산은 Quantifier가 담당
+      비즈니스 지표 계산은 Quantifier가 담당
       Estimator는 값 추정만 수행 (ARPU는?, Churn은?)
       Quantifier가 공식 계산 (LTV = ARPU / Churn)
       
@@ -1067,8 +965,8 @@ estimator_examples:
 
     key_point: "KISS 원칙 - 단순함이 최고"
 
-  # 예시 9: Validator 교차 검증 (v7.3.2)
-  example_9_cross_validation:
+  # 예시 6: Validator 교차 검증
+  example_6_cross_validation:
     scenario: "외부 자료 추정치 교차 검증"
 
     user: "@Validator, 이 보고서의 Churn 8% 맞아?"
@@ -1098,33 +996,33 @@ estimator_examples:
     key_point: "Validator는 직접 추정 안 함, Estimator 교차 검증"
 
 # ========================================
-# PART 6: 참조 문서 (v7.5.0 업데이트)
+# PART 6: 참조 문서
 # ========================================
 
 reference_docs:
-  description: "UMIS v7.5.0 참조 문서"
+  description: "UMIS v7.11.0 참조 문서"
 
   getting_started:
     - "README.md: 빠른 개요"
     - "setup/START_HERE.md: 30초 시작"
     - "UMIS_ARCHITECTURE_BLUEPRINT.md: 전체 아키텍처"
-    - "CURRENT_STATUS.md: 현재 상태 (v7.5.0)" 
+    - "CHANGELOG.md: 버전 이력"
 
   understanding:
     - "FOLDER_STRUCTURE.md: 폴더 구조"
-    - "CHANGELOG.md: 버전 이력"
-    - "UMIS_V7.5.0_RELEASE_NOTES.md: v7.5.0 릴리즈" 
+    - "dev_docs/improvements/LLM_COMPLETE_ABSTRACTION_SUMMARY_v7_11_0.md"
 
   configuration:
     - "config/README.md: Config 폴더 (12개 파일)"
     - "config/agent_names.yaml: Agent 커스터마이징"
-    - "config/llm_mode.yaml: LLM 모드 (Native/External)" 
     - "config/runtime.yaml: 실행 모드"
 
   estimator:
-    - "config/fermi_model_search.yaml: Phase 4 설계 문서"
-    - "umis_rag/agents/estimator/phase4_fermi.py: Phase 4 구현"
-    - "docs/guides/NATIVE_MODE_GUIDE.md: Native 모드 가이드" 
+    - "umis_rag/agents/estimator/estimator.py: 4-Stage Fusion 구현"
+    - "umis_rag/agents/estimator/fermi_estimator.py: Stage 3 (Fermi)"
+    - "umis_rag/agents/estimator/prior_estimator.py: Stage 2 (Prior)"
+    - "umis_rag/core/llm_provider.py: LLM Abstraction"
+    - "dev_docs/improvements/LLM_COMPLETE_ABSTRACTION_SUMMARY_v7_11_0.md" 
 
   advanced:
     - "dev_docs/guestimation_v3/: Estimator 설계 (20개)"

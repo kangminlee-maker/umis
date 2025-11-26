@@ -91,13 +91,13 @@ class ExplorerRAG:
         
         self.use_projected = use_projected
         
-        # LLM 초기화 (가설 생성용) - v7.7.0: Native/External 모드 지원
+        # LLM 초기화 (가설 생성용) - v7.8.1: llm_mode 지원
         self.llm = LLMProvider.create_llm()
-        self.mode = settings.umis_mode
+        self.mode = settings.llm_mode
         
         logger.info(f"  ✅ 벡터 스토어: {collection_name}")
         logger.info(f"  ✅ 청크 수: {self.vectorstore._collection.count()}개")
-        logger.info(f"  🎯 UMIS 모드: {self.mode}")
+        logger.info(f"  🎯 LLM 모드: {self.mode}")
         
         # Hybrid Search 초기화 (선택적)
         self.hybrid_search = None
