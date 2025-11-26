@@ -22,9 +22,9 @@ from umis_rag.core.llm_interface import LLMProvider
 from umis_rag.core.llm_provider_factory import get_default_llm_provider
 
 from .common.estimation_result import Evidence, EstimationResult, create_definite_result
-from .phase0_literal import Phase0Literal
-from .phase1_direct_rag import Phase1DirectRAG
-from .phase2_validator_search_enhanced import Phase2ValidatorSearchEnhanced
+from .literal_source import LiteralSource
+from .rag_source import RAGSource
+from .validator_source import ValidatorSource
 from .guardrail_analyzer import GuardrailAnalyzer
 from .models import Context
 
@@ -35,9 +35,9 @@ class EvidenceCollector:
     
     역할:
     -----
-    - Phase 0: Literal (프로젝트 데이터)
-    - Phase 1: Direct RAG (학습된 규칙)
-    - Phase 2: Validator Search (확정 데이터)
+    - Literal Source: Literal (프로젝트 데이터)
+    - RAG Source: Direct RAG (학습된 규칙)
+    - Validator Source: Validator Search (확정 데이터)
     - Guardrail Engine: 논리적/경험적 제약
     
     출력:
@@ -66,17 +66,17 @@ class EvidenceCollector:
         
         logger.info("[EvidenceCollector] 초기화 시작")
         
-        # Phase 0: Literal (프로젝트 데이터)
-        self.phase0 = Phase0Literal(project_id=project_id)
-        logger.info("  ✅ Phase 0 (Literal)")
+        # Literal Source (프로젝트 데이터)
+        self.literal_source = LiteralSource(project_id=project_id)
+        logger.info("  ✅ Literal Source")
         
-        # Phase 1: Direct RAG
-        self.phase1 = Phase1DirectRAG()
-        logger.info("  ✅ Phase 1 (Direct RAG)")
+        # RAG Source (학습된 규칙)
+        self.rag_source = RAGSource()
+        logger.info("  ✅ RAG Source")
         
-        # Phase 2: Validator Search
-        self.phase2 = Phase2ValidatorSearchEnhanced()
-        logger.info("  ✅ Phase 2 (Validator Search Enhanced)")
+        # Validator Source (외부 데이터)
+        self.validator_source = ValidatorSource()
+        logger.info("  ✅ Validator Source")
         
         # Guardrail Analyzer (같은 Provider 사용)
         self.guardrail_analyzer = GuardrailAnalyzer(llm_provider=self.llm_provider)
@@ -113,13 +113,13 @@ class EvidenceCollector:
         evidence = Evidence()
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Phase 0: Literal (프로젝트 데이터)
+        # Literal Source: Literal (프로젝트 데이터)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         try:
-            phase0_result = self.phase0.get(question, context)
+            phase0_result = self.literal_source.get(question, context)
             
             if phase0_result and phase0_result.confidence >= 0.95:
-                logger.info(f"  ✅ Phase 0: 프로젝트 데이터 발견 ({phase0_result.value:,.0f})")
+                logger.info(f"  ✅ Literal Source: 프로젝트 데이터 발견 ({phase0_result.value:,.0f})")
                 evidence.definite_value = phase0_result.value
                 evidence.source = "Phase 0 Literal (프로젝트 데이터)"
                 evidence.confidence = phase0_result.confidence
@@ -141,14 +141,14 @@ class EvidenceCollector:
             logger.warning(f"  Phase 0 실패: {e}")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Phase 1: Direct RAG (학습된 규칙)
+        # RAG Source: Direct RAG (학습된 규칙)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         try:
             # Phase1DirectRAG.estimate() 사용
-            phase1_result = self.phase1.estimate(question, context)
+            phase1_result = self.rag_source.estimate(question, context)
             
             if phase1_result and phase1_result.confidence >= 0.95:
-                logger.info(f"  ✅ Phase 1: 확정 값 발견 ({phase1_result.value:,.0f})")
+                logger.info(f"  ✅ RAG Source: 확정 값 발견 ({phase1_result.value:,.0f})")
                 evidence.definite_value = phase1_result.value
                 evidence.source = "Phase 1 Direct RAG"
                 evidence.confidence = phase1_result.confidence
@@ -170,7 +170,7 @@ class EvidenceCollector:
             logger.warning(f"  Phase 1 실패: {e}")
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Phase 2: Validator Search (확정 데이터)
+        # Validator Source: Validator Search (확정 데이터)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         try:
             # Phase2에서는 search_with_context() 사용
@@ -183,10 +183,10 @@ class EvidenceCollector:
                     'industry': context.domain if context.domain else None
                 }
             
-            phase2_result = self.phase2.search_with_context(question, context_dict)
+            phase2_result = self.validator_source.search_with_context(question, context_dict)
             
             if phase2_result and phase2_result.confidence >= 0.95:
-                logger.info(f"  ✅ Phase 2: 확정 값 발견 ({phase2_result.value:,.0f})")
+                logger.info(f"  ✅ Validator Source: 확정 값 발견 ({phase2_result.value:,.0f})")
                 evidence.definite_value = phase2_result.value
                 evidence.source = "Phase 2 Validator Search"
                 evidence.confidence = phase2_result.confidence
@@ -301,7 +301,7 @@ class EvidenceCollector:
                         context_dict['industry'] = context.industry
             
             # Phase 2 검색 (similar_data 수집용)
-            phase2_search_result = self.phase2.search_with_context(
+            phase2_search_result = self.validator_source.search_with_context(
                 question,
                 context_dict
             )

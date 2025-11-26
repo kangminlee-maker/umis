@@ -1,12 +1,31 @@
-# 모델 API 최적화 구현 완료 보고서
+# ⚠️ DEPRECATED (v7.11.0): 모델 API 최적화 구현 완료 보고서
 
 **날짜:** 2025-11-23  
 **버전:** v7.8.0  
-**상태:** ✅ 완료
+**상태:** ✅ 완료 → **DEPRECATED**
 
 ---
 
-## 📋 구현 요약
+## ⚠️ Deprecation Notice
+
+이 문서는 **v7.10.2의 Phase 기반 벤치마크**를 위한 Legacy 문서입니다.
+
+**v7.11.0 변경사항**:
+- Phase 5 (0-4) → **4-Stage Fusion Architecture**로 재설계
+- 모델 설정은 이제 `config/model_configs.yaml`에서 중앙 관리
+- 로더: `umis_rag/core/model_configs.py`
+- 라우터: `umis_rag/core/model_router.py`
+
+**최신 문서**:
+- **모델 설정**: `config/model_configs.yaml` (17개 모델)
+- **사용 가이드**: `docs/guides/LLM_MODEL_SELECTION.md`
+- **Architecture**: `docs/architecture/LLM_ABSTRACTION_v7_11_0.md`
+
+**Legacy 벤치마크**: `archive/benchmarks_v7.10.2/`
+
+---
+
+## 📋 구현 요약 (Legacy - v7.8.0)
 
 **선택된 대안:** 대안 2 (ModelRouter 확장) ⭐⭐⭐⭐⭐
 

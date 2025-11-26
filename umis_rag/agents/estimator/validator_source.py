@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """
-Phase 2 Validator Search Enhanced
+Validator Source - 컨텍스트 기반 Validator 검색 (v7.11.1)
 
-컨텍스트 기반 Validator 검색으로 비공개 기업 이익률 추정 정확도 향상
+역할:
+- 산업별/규모별/모델별 컨텍스트 기반 검색
+- Validator 외부 데이터 소스 활용
+- 정확도 및 Coverage 향상
 
-주요 개선사항:
+주요 기능:
 1. Industry-specific search (산업별 검색)
 2. Company size adjustment (규모 조정)
 3. Revenue scale adjustment (매출 조정)
@@ -20,6 +23,10 @@ Phase 2 Validator Search Enhanced
 - Coverage: 10-15% → 70-80% (6배 증가)
 - 정확도: 94.7% → 96-97% (개선)
 - 비공개 기업 오차: ±30% → ±10-15% (절반)
+
+v7.11.1 변경:
+- Phase2ValidatorSearchEnhanced → ValidatorSource (명확성)
+- 기능 변경 없음
 
 v7.9.0 (Gap #2 Week 3)
 """
@@ -62,9 +69,9 @@ class EstimationResult:
         }
 
 
-class Phase2ValidatorSearchEnhanced:
+class ValidatorSource:
     """
-    컨텍스트 기반 Validator 검색 (강화 버전)
+    Validator Source - 컨텍스트 기반 Validator 검색 (v7.11.1)
 
     100개 벤치마크를 활용하여 비공개 기업 이익률을 정확하게 추정
     """
@@ -77,7 +84,7 @@ class Phase2ValidatorSearchEnhanced:
         self.validator = validator_rag
         self.benchmark_store = None  # ChromaDB collection (초기화 필요)
 
-        logger.info("[Phase2Enhanced] 초기화 완료")
+        logger.info("[ValidatorSource] 초기화 완료")
 
     def initialize_benchmark_store(self, collection_name="profit_margin_benchmarks"):
         """
@@ -105,10 +112,10 @@ class Phase2ValidatorSearchEnhanced:
                 persist_directory=persist_directory
             )
             
-            logger.info(f"[Phase2Enhanced] Benchmark store 로드 완료: {collection_name}")
+            logger.info(f"[ValidatorSource] Benchmark store 로드 완료: {collection_name}")
             
         except Exception as e:
-            logger.warning(f"[Phase2Enhanced] Benchmark store 로드 실패: {e}")
+            logger.warning(f"[ValidatorSource] Benchmark store 로드 실패: {e}")
             logger.warning("  → RAG Collection이 없습니다. 먼저 구축하세요:")
             logger.warning("  → python scripts/build_margin_benchmarks_rag.py")
             self.benchmark_store = None
@@ -137,12 +144,12 @@ class Phase2ValidatorSearchEnhanced:
             EstimationResult or None (Phase 3로)
         """
 
-        logger.info(f"[Phase2Enhanced] 컨텍스트 기반 검색 시작: {query}")
+        logger.info(f"[ValidatorSource] 컨텍스트 기반 검색 시작: {query}")
         logger.info(f"  Context: {context}")
 
         # Benchmark store 확인
         if not self.benchmark_store:
-            logger.warning("[Phase2Enhanced] Benchmark store 없음 → Phase 3로")
+            logger.warning("[ValidatorSource] Benchmark store 없음 → Phase 3로")
             return None
 
         # Step 1: Industry-specific 벤치마크 검색
@@ -154,7 +161,7 @@ class Phase2ValidatorSearchEnhanced:
         )
 
         if not benchmark:
-            logger.warning("[Phase2Enhanced] 매칭되는 벤치마크 없음 → Phase 3로")
+            logger.warning("[ValidatorSource] 매칭되는 벤치마크 없음 → Phase 3로")
             return None
 
         logger.info(f"  매칭 벤치마크: {benchmark.get('benchmark_id')}")
@@ -165,7 +172,7 @@ class Phase2ValidatorSearchEnhanced:
         base_margin = operating_margin.get('median')
 
         if base_margin is None:
-            logger.warning("[Phase2Enhanced] Margin 데이터 없음 → Phase 3로")
+            logger.warning("[ValidatorSource] Margin 데이터 없음 → Phase 3로")
             return None
 
         logger.info(f"  Base margin: {base_margin:.1%}")
@@ -261,7 +268,7 @@ class Phase2ValidatorSearchEnhanced:
             unit='ratio'
         )
 
-        logger.info(f"[Phase2Enhanced] 추정 완료: {final_margin:.1%} (Confidence: {confidence:.2f})")
+        logger.info(f"[ValidatorSource] 추정 완료: {final_margin:.1%} (Confidence: {confidence:.2f})")
 
         return result
 
@@ -285,7 +292,7 @@ class Phase2ValidatorSearchEnhanced:
         """
 
         if not industry:
-            logger.warning("[Phase2Enhanced] Industry 정보 없음")
+            logger.warning("[ValidatorSource] Industry 정보 없음")
             return None
 
         # RAG 검색 쿼리 생성
@@ -344,7 +351,7 @@ class Phase2ValidatorSearchEnhanced:
                 logger.error(f"  RAG 검색 오류: {e}")
                 continue
 
-        logger.warning("[Phase2Enhanced] 매칭되는 벤치마크 없음")
+        logger.warning("[ValidatorSource] 매칭되는 벤치마크 없음")
         return None
 
     def _parse_benchmark_data(self, search_result) -> Optional[Dict]:

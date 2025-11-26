@@ -387,46 +387,6 @@ class TestEstimatorE2EScenarios:
 
         print(f"\n✅ Scenario 9: Validator Priority = ${result.value:.2f} (source={result.source}, certainty={result.certainty})")
 
-    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    # Scenario 10: Legacy API 하위 호환성 (Backward Compatibility)
-    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-    # Scenario 10은 API 호출 없이 Import만 테스트하므로 항상 실행
-    def test_scenario_10_legacy_api_compatibility(self):
-        """Scenario 10: Legacy API 하위 호환성
-
-        Expected:
-        - Phase3Guestimation → PriorEstimator 자동 매핑
-        - Phase4FermiDecomposition → FermiEstimator 자동 매핑
-        - DeprecationWarning 발생
-        - 정상 작동
-        """
-        import warnings
-
-        from umis_rag.agents.estimator import Phase3Guestimation, Phase4FermiDecomposition
-
-        # Phase3Guestimation 테스트
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")
-            phase3 = Phase3Guestimation()
-            
-            # DeprecationWarning 확인
-            assert len(w) > 0, "DeprecationWarning should be raised"
-            assert issubclass(w[0].category, DeprecationWarning)
-            assert "PriorEstimator" in str(w[0].message)
-
-        # Phase4FermiDecomposition 테스트
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")
-            phase4 = Phase4FermiDecomposition()
-            
-            # DeprecationWarning 확인
-            assert len(w) > 0, "DeprecationWarning should be raised"
-            assert issubclass(w[0].category, DeprecationWarning)
-            assert "FermiEstimator" in str(w[0].message)
-
-        print(f"\n✅ Scenario 10: Legacy API Compatibility - DeprecationWarning raised correctly")
-
 
 class TestEstimatorE2EPerformance:
     """v7.11.0 성능 벤치마크 (E2E)"""

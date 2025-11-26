@@ -1,20 +1,19 @@
 """
-Phase 1: Direct RAG (v7.7.0)
+RAG Source - 학습된 규칙 검색 (v7.11.1)
 
-학습된 규칙 RAG 검색 (Direct RAG)
-
-v7.7.0 파일명 변경:
--------------------
-- tier1.py → phase1_direct_rag.py
-- Tier1FastPath → Phase1DirectRAG
-- 용어 명확화 (Tier는 구현 개념, Phase는 사용자 개념)
-
-v7.6.0 변경:
-------------
+역할:
+- 학습된 규칙 RAG 검색 (Direct RAG)
 - Built-in Rules 완전 제거 (답변 일관성 확보)
-- Learned RAG만 사용
 - threshold 0.95+ (엄격)
 - 처음 추정 시 무조건 통과 (의도됨)
+
+v7.11.1 변경:
+- Phase1DirectRAG → RAGSource (명확성)
+- 기능 변경 없음
+
+v7.7.0 변경:
+- tier1.py → phase1_direct_rag.py
+- Tier1FastPath → Phase1DirectRAG
 """
 
 from typing import Optional, List, Dict, Tuple
@@ -26,9 +25,9 @@ from .models import Context, EstimationResult, Phase1Config, LearnedRule
 from .rag_searcher import EstimatorRAGSearcher
 
 
-class Phase1DirectRAG:
+class RAGSource:
     """
-    Phase 1: Direct RAG (v7.7.0 - 학습 규칙 검색)
+    RAG Source - 학습된 규칙 검색 (v7.11.1)
     
     원칙:
     -----

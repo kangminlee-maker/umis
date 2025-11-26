@@ -1,5 +1,5 @@
 """
-Phase 0: Literal - 프로젝트 확정 데이터 (v7.11.0)
+Literal Source - 프로젝트 확정 데이터 (v7.11.1)
 
 역할:
 - 프로젝트별로 저장된 확정 데이터 탐색
@@ -31,9 +31,9 @@ from umis_rag.core.config import settings
 from .models import Context, EstimationResult
 
 
-class Phase0Literal:
+class LiteralSource:
     """
-    Phase 0: Literal - 프로젝트 확정 데이터 (v7.11.0)
+    Literal Source - 프로젝트 확정 데이터 (v7.11.1)
     
     역할:
     -----
