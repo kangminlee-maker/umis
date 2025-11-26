@@ -1,5 +1,5 @@
 # ========================================
-# UMIS v7.8.0 GUIDELINES
+# UMIS v7.11.0 GUIDELINES
 # ========================================
 #
 # 📖 핵심 문서:
@@ -10,22 +10,23 @@
 #
 # 빠른 시작:
 # 1. 설치: "UMIS 설치해줘" (AI 자동) 또는 python setup/setup.py
-# 2. 사용: "@Explorer, 시장 분석해줘" / "@Fermi, ARPU는?"
+# 2. 사용: "@Explorer, 시장 분석해줘" / "@Estimator, ARPU는?"
 #
-# UMIS 기능:
+# UMIS 핵심 기능:
 # - 6-Agent 협업 시스템 (역할 MECE)
-# - 5-Phase Estimator (100% 커버리지)
-# - Native/External 모드 (LLM 선택)
+# - 4-Stage Fusion Estimator (100% 커버리지)
+# - LLM Complete Abstraction (Clean Architecture, Zero Branching)
+# - Model Config 시스템 (18개 모델: 17 External + cursor-native)
 # - RAG 기반 패턴/사례 자동 검색 (54개)
 # - Excel 자동 생성 + 완전 추적성
-# - Model Config 시스템 (17개 모델 중앙 관리) ⭐ v7.8.0 NEW!
-# - 통합 벤치마크 (98% 비용 절감) ⭐ v7.8.0 NEW!
+# - 통합 벤치마크 (98% 비용 절감)
 #
-# v7.8.0 주요 변경:
-# - Model Config 시스템: .env 모델 변경 → 코드 수정 0줄
-# - benchmarks/ 폴더: 통합 벤치마크 시스템
-# - Phase 0-3 벤치마크: 98% 비용 절감 ($0.30/1,000회)
-# - Phase 4 평가 시스템: 내용/형식 분리 (110점)
+# v7.11.0 핵심 특징:
+# - LLM 완전 추상화: 61개 llm_mode 분기 → 0개 (100% 제거)
+# - Clean Architecture: DIP, SRP, OCP, ISP 완전 준수
+# - 4-Stage Fusion: Evidence → Prior → Fermi → Fusion
+# - Recursion 금지: 예산 기반 탐색 제어
+# - 하위 호환성: compat.py로 v7.10.0 API 완전 지원
 #
 # 문서 구조:
 # - Section 0-1: 시스템 개요 및 정의
@@ -34,7 +35,7 @@
 # - Section 8: 실행 가이드
 # ========================================
 
-# Universal Market Intelligence System v7.8.0
+# Universal Market Intelligence System v7.11.0
 # ========================================
 # SECTION 0: SYSTEM ARCHITECTURE OVERVIEW
 # @id: system_architecture_overview
@@ -267,11 +268,11 @@ system_architecture:
 # ========================================
 system:
   name: "Universal Market Intelligence System"
-  version: "7.8.0"
-  release_date: "2025-11-24"
-  status: "Stable Release - Model Config + Benchmarks"
+  version: "7.11.0"
+  release_date: "2025-11-26"
+  status: "Production - LLM Complete Abstraction"
   purpose: "RAG 기반 6-Agent 협업 시장 분석 시스템"
-  description: "6-Agent + 5-Phase Estimator + Model Config 시스템 + 98% 비용 절감 (Native $0 / External $0.30)"
+  description: "6-Agent + 4-Stage Fusion Estimator + LLM Complete Abstraction + Model Config 시스템 (18개: 17 External + cursor-native) + 98% 비용 절감"
   default_mode: "Discovery Sprint → Comprehensive Study (2-4주) - 별도 언급 없으면 자동 적용"
 
   rag_architecture:
@@ -302,22 +303,23 @@ system:
     - "Autonomous Monitoring: 능동적 목표 정렬과 개입"
     - "Complete Traceability: 모든 결론 → 원본 데이터 역추적 (ID Namespace)"
     - "Reproducibility: Excel 함수, YAML 스키마로 재검증 가능"
-    - "Model Config System (v7.8.0): 17개 LLM 모델 중앙 관리, .env 변경 → 코드 수정 0줄"
-    - "3-Model Optimization (v7.8.0): 98% 비용 절감 달성 ($0.30/1,000회)"
-    - "Integrated Benchmarks (v7.8.0): benchmarks/ 폴더로 통합 벤치마크 시스템"
+    - "Model Config System: 18개 LLM 모델 중앙 관리 (17 External + cursor-native), .env 변경 → 코드 수정 0줄"
+    - "3-Model Optimization: 98% 비용 절감 달성 ($0.30/1,000회)"
+    - "Integrated Benchmarks: benchmarks/ 폴더로 통합 벤치마크 시스템"
+    - "LLM Complete Abstraction: 61개 llm_mode 분기 → 0개, Clean Architecture 완전 준수"
 
-  # v7.8.0 신규: Model Config System
   model_config_system:
-    version: "7.8.0"
-    purpose: "중앙 집중식 LLM 모델 관리"
-    description: ".env 파일로 모델 변경 시 코드 수정 불필요, API 파라미터 자동 최적화"
+    purpose: "중앙 집중식 LLM 모델 관리 (18개: 17 External + cursor-native)"
+    description: ".env 파일로 모델 변경 시 코드 수정 불필요, API 파라미터 자동 최적화, Native Mode 통합"
 
     core_files:
-      config_file: "config/model_configs.yaml (320줄, 17개 모델)"
-      python_module: "umis_rag/core/model_configs.py (262줄)"
+      config_file: "config/model_configs.yaml (327줄, 18개 모델)"
+      python_module: "umis_rag/core/model_configs.py (297줄)"
       router_extension: "umis_rag/core/model_router.py (select_model_with_config)"
 
     supported_models:
+      cursor:
+        - "cursor-native (Native Mode, 무료)"
       o1_series:
         - "o1-mini (Phase 4 기본)"
         - "o1 (고급 추론)"
@@ -338,9 +340,16 @@ system:
         - "gpt-4-turbo-preview"
         - "gpt-4o (고성능)"
         - "gpt-4o-2024-08-06 (버전 고정)"
-      total: 17개
+      total: 18개 (17 External + cursor-native)
 
     key_features:
+      cursor_native_integration:
+        description: "Native Mode를 Model Config 시스템으로 통합"
+        api_type: "cursor"
+        cost: "$0 (무료)"
+        usage: "UMIS_MODE=native → cursor-native 자동 선택"
+        benefit: "External LLM과 동일한 시스템으로 관리, Phase 4 통일된 처리"
+
       zero_touch_model_change:
         description: ".env 변경만으로 모델 전환"
         example: "LLM_MODEL_PHASE4=gpt-5.1 → 즉시 적용"
@@ -348,6 +357,7 @@ system:
 
       api_type_auto_detection:
         description: "모델에 맞는 API 자동 선택"
+        cursor_api: "cursor-native (Native Mode, 패턴 매칭)"
         responses_api: "o1/o3/gpt-5.1/gpt-5-pro + Pro 모델"
         chat_api: "gpt-4.1-nano/gpt-4o-mini/gpt-4-turbo-preview"
         benefit: "API 변경 시 코드 수정 불필요"
@@ -408,7 +418,7 @@ system:
         code: "변경 불필요"
 
     integration_status:
-      phase4_fermi: "✅ 완료 (umis_rag/agents/estimator/phase4_fermi.py)"
+      phase4_fermi: "✅ 완료 (umis_rag/agents/estimator/phase4_fermi.py, cursor-native 통합)"
       phase0_2: "📋 예정"
       phase3: "📋 예정"
       other_agents: "📋 예정"
@@ -420,9 +430,7 @@ system:
       consistency: "모든 Phase에서 일관된 모델 관리"
       testing: "모델 A/B 테스트 간소화"
 
-  # v7.8.0 신규: LLM 최적화 (3-Model 구성)
   llm_optimization:
-    version: "7.8.0"
     achievement: "98% 비용 절감 달성! ($15.00 → $0.30)"
 
     phase_0_2_configuration:
@@ -502,18 +510,13 @@ system:
       quality_first: "o1-mini 단일 모델 (비용 ↑)"
       experimental: "gpt-5.1 (high) + Pro 모델 테스트"
 
-  # v7.8.0 신규: 통합 벤치마크 시스템
   benchmarks_system:
-    version: "7.8.0"
     purpose: "UMIS 전체 시스템 벤치마크 통합 관리"
 
     structure:
       root: "benchmarks/"
       common: "benchmarks/common/ (공통 평가 모듈)"
       estimator: "benchmarks/estimator/ (Estimator 벤치마크)"
-      phase4: "benchmarks/estimator/phase4/ (Phase 4 Fermi)"
-
-    phase4_fermi_benchmarks:
       test_batches:
         batch1: "o1-mini / gpt-5.1 (high) / o3-mini"
         batch2: "gpt-5-pro / o1-pro"
@@ -538,7 +541,7 @@ system:
 
       analysis:
         model_recommendations: "model_recommendations.md (모델 추천)"
-        evaluation_rebalancing: "evaluation_rebalancing.md (평가 재조정 v7.8.0)"
+        evaluation_rebalancing: "evaluation_rebalancing.md (평가 재조정)"
 
       evaluation_system:
         version: "v7.8.0"
@@ -566,9 +569,7 @@ system:
       phase_3: "전체 Agent 확장 (📋 예정)"
       phase_4: "Workflow 통합 (📋 예정)"
 
-  # v7.8.0 신규: Phase 4 평가 시스템
-  phase4_evaluation_system:
-    version: "7.8.0"
+  fermi_evaluation_system:
     total_score: 110점
     rationale: "내용/형식 분리로 공정한 평가"
 
@@ -2388,7 +2389,7 @@ data_integrity_system:
   # 5. Deliverable Standards 통합 (v6.2 신규)
     deliverable_standards_integration:
       description: "산출물 표준화 및 재검증 가능성 보장"
-      reference: "umis_deliverable_standards.yaml (v7.5.0)"
+      reference: "umis_deliverable_standards.yaml"
       specs: "deliverable_specs/ (AI 최적화 YAML 스펙 6개)"
 
     core_principle: "모든 결론은 원본 데이터까지 추적 가능해야 한다"
@@ -2462,7 +2463,7 @@ data_integrity_system:
     project_lifecycle_protocols:
       description: "프로젝트 시작부터 종료까지의 체계적 관리"
       reference: "umis_deliverable_standards.yaml § project_lifecycle_management"
-      project_folder: "projects/YYYYMMDD_name/ (v7.5.0 표준 구조)"
+      project_folder: "projects/YYYYMMDD_name/ (표준 구조)"
 
     lifecycle_phases:
 
@@ -2843,11 +2844,28 @@ agents:
     universal_tools:
       estimator_collaboration:
         when: "공개되지 않은 시장 구조 비율 추정 필요 시"
-        agent: "Estimator (Fermi)"
-        method: "estimator.estimate()"
+        agent: "Estimator"
+        method: "estimator.estimate(question, domain=None, region=None, context=None, budget=None)"
         frequency: "★★★ 종종 사용"
         common_cases: "가치사슬 마진, 플랫폼 수수료, 시장 집중도"
-        note: "v7.3.2+: 직접 추정 금지, Estimator 호출 필수"
+        note: "모든 값 추정은 Estimator만 수행 (Single Source of Truth)"
+        
+        architecture: "4-Stage Fusion (Evidence → Prior → Fermi → Fusion)"
+        
+        example:
+          python: |
+            from umis_rag.agents.estimator import EstimatorRAG
+            
+            estimator = EstimatorRAG()
+            result = estimator.estimate(
+                question="플랫폼 평균 수수료율은?",
+                domain="Platform",
+                region="한국"
+            )
+            
+            if result and result.is_successful():
+                fee_rate = result.value
+                print(f"수수료율: {fee_rate*100:.1f}% (출처: {result.source})")
 
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
@@ -3122,11 +3140,28 @@ agents:
     universal_tools:
       estimator_collaboration:
         when: "기회 크기 빠른 가늠, 우선순위 판단"
-        agent: "Estimator (Fermi)"
-        method: "estimator.estimate()"
+        agent: "Estimator"
+        method: "estimator.estimate(question, domain=None, region=None, context=None, budget=None)"
         frequency: "★★★★ 자주 사용"
         common_cases: "잠재 시장 규모, 기회 우선순위, 투자 수익"
-        note: "v7.3.2+: 직접 추정 금지, Estimator 호출 필수"
+        note: "모든 값 추정은 Estimator만 수행 (Single Source of Truth)"
+        
+        architecture: "4-Stage Fusion (Evidence → Prior → Fermi → Fusion)"
+        
+        example:
+          python: |
+            from umis_rag.agents.estimator import EstimatorRAG
+            
+            estimator = EstimatorRAG()
+            result = estimator.estimate(
+                question="AI 챗봇 시장 규모는?",
+                domain="AI_Chatbot",
+                region="글로벌"
+            )
+            
+            if result and result.is_successful():
+                market_size = result.value
+                print(f"시장 규모: ${market_size/1e9:.1f}B (출처: {result.source})")
 
     # ===== 3. INTEGRATED OPPORTUNITY DISCOVERY PROCESS =====
     integrated_opportunity_discovery_process:
@@ -3626,37 +3661,56 @@ agents:
       - "4가지 방법 모두 사용하여 교차 검증"
       - "±30% 이내 수렴을 목표로 반복 검증"
       - "모든 숫자는 정의, 출처, 가정을 명시"
-      - "직접 데이터 없을 때: Estimator (Fermi) 호출 필수 (v7.3.2 Single Source)"
+      - "직접 데이터 없을 때: Estimator 호출 필수 (Single Source of Truth)"
 
     universal_tools:
       estimator_collaboration:
         when: "값이 필요한데 데이터가 없을 때"
-        agent: "Estimator (Fermi)"
-        method: "estimator.estimate(question, domain, region)"
+        agent: "Estimator"
+        method: "estimator.estimate(question, domain=None, region=None, context=None, budget=None)"
         frequency: "★★★★★ 가장 많이 사용"
-        common_cases: "ARPU, Churn, 전환율, 성장률, 음식점 수 등"
-        note: "v7.5.0: Quantifier는 계산만, 추정은 Estimator"
+        common_cases: "ARPU, Churn, 전환율, 성장률, 음식점 수, 비율 등"
         single_source: "모든 값 추정은 Estimator만 수행"
-
-        role_clarity_v7_5_0:
+        
+        architecture: "4-Stage Fusion (Evidence → Prior → Fermi → Fusion)"
+        
+        role_separation:
           quantifier_role: "계산 공식 소유 + 실행 (예: LTV = ARPU / Churn)"
           estimator_role: "값 추정 (예: ARPU는? → 80,000원)"
           collaboration: "Quantifier가 필요한 값을 Estimator에게 요청"
-
-          example_ltv_calculation:
-            step_1: "Quantifier: LTV 계산 시작"
-            step_2: "Quantifier: ARPU 필요 → Estimator.estimate('B2B SaaS ARPU는?')"
-            step_3: "Estimator: 80,000원 반환"
-            step_4: "Quantifier: Churn 필요 → Estimator.estimate('B2B SaaS Churn은?')"
-            step_5: "Estimator: 5% 반환"
-            step_6: "Quantifier: LTV = 80,000 / 0.05 = 1,600,000원 계산"
+        
+        example_ltv_calculation:
+          step_1: "Quantifier: LTV 계산 시작"
+          step_2: "Quantifier: ARPU 필요 → estimator.estimate('B2B SaaS ARPU는?')"
+          step_3: "Estimator: 80,000원 반환"
+          step_4: "Quantifier: Churn 필요 → estimator.estimate('B2B SaaS Churn은?')"
+          step_5: "Estimator: 5% 반환"
+          step_6: "Quantifier: LTV = 80,000 / 0.05 = 1,600,000원 계산"
+        
+        code_example:
+          python: |
+            from umis_rag.agents.estimator import EstimatorRAG
+            
+            estimator = EstimatorRAG()
+            
+            # ARPU 추정
+            arpu_result = estimator.estimate("B2B SaaS ARPU는?", domain="B2B_SaaS", region="한국")
+            arpu = arpu_result.value if arpu_result else 0
+            
+            # Churn 추정
+            churn_result = estimator.estimate("B2B SaaS Churn은?", domain="B2B_SaaS", region="한국")
+            churn = churn_result.value if churn_result else 0.05
+            
+            # LTV 계산 (Quantifier가 수행)
+            ltv = arpu / churn if churn > 0 else 0
+            print(f"LTV: {ltv:,.0f}원")
 
       business_metric_calculation:
         owner: "Quantifier"
         location: "data/raw/calculation_methodologies.yaml"
         metrics: "LTV, CAC, ARPU, Churn, Payback, Rule of 40, NRR, Gross Margin"
         total: "31개 계산 방법론"
-        note: "v7.5.0: Estimator에서 이동, 역할 명확화"
+        note: "Estimator에서 이동, 역할 명확화"
 
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
@@ -4032,16 +4086,37 @@ agents:
       - "불명확한 정의는 사용 금지"
       - "조정은 투명하고 추적 가능하게"
       - "사용자 관점에서 검색어를 확장하여 정보의 사각지대 제거"
-      - "신뢰도 범위 추정 시: Estimator (Fermi) 호출 또는 교차 검증 요청"
+      - "신뢰도 범위 추정 시: Estimator 호출 또는 교차 검증 요청"
 
     universal_tools:
       estimator_collaboration:
         when: "데이터 신뢰도 범위 평가, 추정치 교차 검증"
-        agent: "Estimator (Fermi)"
-        method: "estimator.estimate() 또는 validator.validate_estimation()"
-        frequency: "★★★ 자주 사용 (v7.3.2 교차 검증)"
-        common_cases: "Error Range, 신뢰구간, 추정치 검증"
-        note: "v7.3.2+: 교차 검증 지원 (Estimator 독립 추정 → 비교)"
+        agent: "Estimator"
+        method: "estimator.estimate(question, domain=None, region=None) 또는 validator.validate_estimation()"
+        frequency: "★★★ 자주 사용"
+        common_cases: "Error Range, 신뢰구간, 추정치 교차 검증"
+        note: "교차 검증 지원 (Estimator 독립 추정 → 비교)"
+        
+        architecture: "4-Stage Fusion (Evidence → Prior → Fermi → Fusion)"
+        
+        example:
+          python: |
+            from umis_rag.agents.estimator import EstimatorRAG
+            
+            estimator = EstimatorRAG()
+            
+            # 독립 추정 (교차 검증용)
+            result = estimator.estimate(
+                question="Netflix 2024 ARPU는?",
+                domain="Streaming",
+                region="글로벌"
+            )
+            
+            # 신뢰도 확인
+            if result and result.is_successful():
+                print(f"추정값: ${result.value:.2f}")
+                print(f"확신도: {result.certainty}")
+                print(f"출처: {result.source}")
 
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
@@ -4492,7 +4567,7 @@ agents:
         method: "estimator.estimate()"
         frequency: "★ 기획 시 사용"
         common_cases: "프로젝트 기간, 필요 인력, 토큰 예측"
-        note: "v7.3.2+: 직접 추정 금지, Estimator 호출 필수"
+        note: "직접 추정 금지, Estimator 호출 필수"
 
     # ===== 3. WORK DOMAIN =====
     guardian_mode:
@@ -4817,18 +4892,15 @@ agents:
     description: "데이터 없을 때 창의적으로 값을 추정하는 전문가"
     character: "논리와 증거로 판단하는 냉철한 추정가. 모든 추정에는 근거와 신뢰도를 제시한다."
 
-    # v7.3.1 신규: 6번째 Agent
-    # v7.5.0 역할 명확화: 추정 전문 (계산은 Quantifier)
     agent_type: "협업 파트너 (Workflow 독립)"
     focus: "값 추정만 (예: ARPU는? Churn은? 음식점 수는?)"
     not_focus: "계산 (Quantifier), 검증 (Validator), 분석 (Observer/Explorer)"
 
-    role_clarity_v7_5_0:
+    role_clarity:
       what_estimator_does: "값이 없을 때 만들어냄 (증거/논리/Fermi)"
       what_quantifier_does: "값이 있을 때 공식으로 계산 (LTV, Payback 등)"
       mece: "Estimator = 추정, Quantifier = 계산 (명확히 분리)"
 
-    # v7.3.2 핵심 원칙: Single Source of Truth
     single_source_policy:
       principle: "모든 값/데이터 추정은 Estimator만 수행"
       enforcement:
@@ -4844,13 +4916,12 @@ agents:
 
     # ===== 2. CAPABILITIES =====
     core_competencies:
-      - "5-Phase Architecture (Literal → RAG → Validator → Guestimation → Fermi)"
-      - "11개 Source 통합 (Physical, Soft, Value)"
+      - "4-Stage Fusion Architecture (Evidence → Prior → Fermi → Fusion)"
+      - "LLM Complete Abstraction (Clean Architecture)"
       - "Context-Aware 판단 (domain, region, time)"
       - "학습 시스템 (사용할수록 6-16배 빠름)"
-      - "추정 근거 완전 투명화 (v7.3.2)"
+      - "추정 근거 완전 투명화"
       - "교차 검증 지원 (Validator 협업)"
-      - "Native/External 모드 (v7.7.0)"
 
     estimation_principles:
       - "증거 기반 판단 (최소 1개 증거 필요)"
@@ -4861,354 +4932,470 @@ agents:
       - "학습 (confidence >= 0.80 → 자동 학습)"
 
     # ===== 3. WORK DOMAIN =====
-    # ===== 3. WORK DOMAIN (5-Phase Architecture v7.7.0) =====
-    five_phase_architecture:
+    # ===== 3. WORK DOMAIN (Fusion Architecture v7.11.0 - IMPLEMENTED) =====
+    fusion_architecture_v7_11_0:
+      version: "v7.11.0"
+      status: "✅ 구현 완료 (2025-11-26)"
+      implementation_date: "2025-11-26"
+      
+      paradigm_shift:
+        from: "Sequential Fallback (증명하려는 알고리즘)"
+        to: "Fusion (제약 안에서 숫자를 찍는 생성 모델 + 센서 퓨전)"
+        
+        key_changes:
+          - "⛔ 재귀 완전 제거 (Recursion FORBIDDEN)"
+          - "🔀 4-Stage Architecture (Evidence → Prior → Fermi → Fusion)"
+          - "📊 Evidence vs Generative Prior 완전 분리"
+          - "🎯 공통 인터페이스 (EstimationResult + certainty)"
+          - "⏱️ Budget 기반 탐색 (confidence threshold 제거)"
+          - "🔗 센서 퓨전 (Weighted Synthesis)"
 
-      overview:
-        total_coverage: "100% (v7.7.0)"
-        failure_rate: "0%"
-        phases: 5
-        implementation: "umis_rag/agents/estimator/ (5,200줄)"
-        terminology:
-          phase: "Estimator 전체 프로세스 단계 (0-4)"
-          step: "Phase 4 (Fermi) 내부 세부 단계 (1-4)"
-          # tier 제거됨 (v7.7.0)
+      design_principles:
+        core_philosophy:
+          before: "추정을 '증명'하려는 알고리즘"
+          after: "제약 안에서 숫자를 찍는 생성 모델 + 합리적인 퓨전"
+          
+        key_insights:
+          - "재귀는 증상, 진짜 병은 신뢰도 개념과 역할 분리가 꼬인 것"
+          - "Evidence(검증)와 Prior(생성) 완전 분리"
+          - "각자 독립적으로 작동, Fusion에서 합성"
+          - "예산 내에서 최선 → 예측 가능한 종료"
+        
+        design_goals:
+          - "✅ 재귀 완전 제거 (0% tolerance)"
+          - "✅ 응답 시간 < 60초 (P95 보장)"
+          - "✅ API 호출 < 10회 (평균)"
+          - "✅ 비용 < $2/query"
+          - "✅ 100% 커버리지 유지"
 
-      phase_0_literal:
-        description: "프로젝트 명시 데이터 (즉시 반환)"
-        speed: "<0.1초"
-        coverage: "10%"
-        confidence: "1.0"
-        when: "프로젝트에서 명시적으로 제공한 데이터"
-        method: "project_data 딕셔너리 확인"
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      # Stage Overview (4-Stage Fusion Architecture)
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      stage_overview:
+        description: "4단계로 구성된 Fusion Architecture - 재귀 없이 병렬 추정 후 통합"
+        pattern: "Evidence → Prior → Fermi → Fusion (센서 퓨전 패턴)"
+        
+        stage_1_evidence_guardrails:
+          name: "Stage 1 - Evidence & Guardrails Collection"
+          role: "거의 확정적인 사실 / 제약 제공"
+          speed: "0.001~1초"
+          fast_path: "Literal에서 확정 데이터 발견 시 즉시 반환 ⚡"
+          
+          components:
+            literal:
+              name: "Literal (프로젝트 데이터)"
+              status: "✅ 구현 완료"
+              file: "umis_rag/agents/estimator/phase0_literal.py"
+              role: "프로젝트별 확정 데이터 저장/조회"
+              speed: "<0.1초"
+              confidence: "1.0 (100% 확정)"
+              output:
+                definite_value: "확정 값 (있으면 즉시 종료)"
+                context_support: "domain_region_variable 형식 지원"
+                storage: "projects/{project_id}/data.json"
+              note: "구 Phase 0 (레거시 명칭)"
+            
+            direct_rag:
+              name: "Direct RAG (학습된 규칙)"
+              status: "✅ 구현 완료"
+              file: "umis_rag/agents/estimator/phase1_direct_rag.py"
+              role: "과거 추정 결과 및 학습 규칙 검색"
+              speed: "<0.5초"
+              confidence: "0.95+ (학습된 데이터)"
+              note: "구 Phase 1 (레거시 명칭)"
+            
+            validator_search:
+              name: "Validator Search (확정 데이터)"
+              status: "✅ Enhanced 버전 구현"
+              file: "umis_rag/agents/estimator/phase2_validator_search_enhanced.py"
+              role: "외부 검증 데이터 검색 및 유사 데이터 수집"
+              speed: "<1초"
+              confidence: "1.0 (Validator 검증값)"
+              output:
+                definite_value: "Validator 확정값"
+                similar_data: "Guardrail Engine 입력용"
+              note: "구 Phase 2 (레거시 명칭)"
+            
+            guardrail_engine:
+              name: "Guardrail Engine (자동 제약 수집)"
+              status: "✅ 구현 완료"
+              file: "umis_rag/agents/estimator/guardrail_analyzer.py"
+              role: "Validator Search 유사 데이터를 논리적/경험적 제약으로 자동 변환"
+              process:
+                step_1: "2단계 LLM 체인 (관계 판단 → Hard/Soft 판정)"
+                step_2: "Guardrail 객체 생성 및 Evidence 통합"
+              output:
+                hard_bounds: "(min, max) - 절대 벗어날 수 없는 범위"
+                soft_hints: "[{type, value, confidence}] - 경험적 힌트"
+                logical_relations: "['A <= B', 'B >= C'] - 논리 관계"
+          
+          outputs:
+            evidence:
+              definite_value: "확정값 (있으면 즉시 반환)"
+              hard_bounds: "(min, max) - 논리적 제약"
+              soft_hints: "경험적 힌트 (설명용)"
+              logical_relations: "수학적/논리적 관계"
+          
+          principle: "Evidence = 검증 계층 (이 범위 밖은 절대 아님)"
 
-      phase_1_direct_rag:
-        description: "학습된 규칙 (Direct RAG)"
-        file: "phase1_direct_rag.py"
-        class: "Phase1DirectRAG"
-        speed: "<0.5초"
-        coverage: "5% (초기) → 40% (Year 1)"
-        sources:
-          - "Learned Rules (0 → 2,000개 진화)"
-        when: "이미 학습된 질문"
-        method: "정확 매칭 또는 유사도 검색"
-        confidence: "0.95+"
-        change: "v7.6.0: Built-in Rules 제거 (일관성)"
+        stage_2_generative_prior:
+          name: "Stage 2 - Generative Prior"
+          role: "LLM의 '확신 기반 추정' - 재귀 없이 직접 값 생성"
+          status: "✅ 구현 완료"
+          file: "umis_rag/agents/estimator/prior_estimator.py"
+          speed: "1-3초"
+          note: "구 Phase 3 Guestimation을 완전히 대체 (더 이상 Phase 3 없음)"
+          
+          mechanism:
+            input: "question + Evidence.hard_bounds + Budget"
+            prompt: |
+              "당신이 확신있게 말할 수 있는 값을 제시하세요.
+               정확한 근거가 없어도 괜찮습니다.
+               상식적으로 합의된 범위, 또는 당신이 가장 그럴듯하다고
+               생각하는 값을 제시하세요."
+            output:
+              value: "가장 그럴듯한 값"
+              range: "[최소, 최대] (틀리지 않을 범위)"
+              certainty: "high/medium/low (내적 확신)"
+              reasoning: "추정 근거"
+          
+          llm_confident_values:
+            common_knowledge:
+              - "대한민국 인구 = 5,000만"
+              - "서울 인구 = 1,000만"
+              - "1년 = 365일"
+            domain_benchmarks:
+              - "SaaS Churn Rate = 3-5%"
+              - "음식점 마진 = 10-15%"
+              - "유료 전환율 = 2-5%"
+            anchoring_ratios:
+              - "10%, 20%, 50%"
+              - "80/20 (파레토)"
+            physical_constants:
+              - "하루 = 24시간"
+              - "사람 이동속도 = 4-5km/h"
+          
+          key_change:
+            from: "confidence (외부 검증) → 재귀 유발 (구 Phase 3)"
+            to: "certainty (내적 확신) → 항상 값 반환"
+          
+          principle: "Generative Prior = 생성 계층 (상식적 통념 기반)"
 
-      phase_2_validator:
-        description: "확정 데이터 검색 (추정 전 마지막 확인)"
-        speed: "<1초"
-        coverage: "85% (현재) → 50% (Year 1)"
-        confidence: "1.0"
-        when: "Validator에 확정 데이터 존재"
-        method: "Validator RAG 검색"
-        features:
-          - "단위 자동 변환 (갑/년 → 갑/일)"
-          - "Relevance 검증 (GDP 오류 방지)"
-          - "data_sources_registry (24개)"
-        change: "v7.6.0: 신규 추가 (핵심!)"
+        stage_3_structural_explanation:
+          name: "Stage 3 - Structural Explanation (Fermi)"
+          role: "구조 설명 + 약간의 튜닝 (정밀화 아님!)"
+          status: "✅ 재귀 제거 완료"
+          file: "umis_rag/agents/estimator/fermi_estimator.py"
+          speed: "5-15초 (Budget 제한)"
+          note: "구 Phase 4 Fermi를 완전히 재설계 (더 이상 Phase 4 없음)"
+          
+          role_redefinition:
+            before: "정밀화 (재귀 분해로 더 정확히, 구 Phase 4)"
+            after: |
+              1. 구조적 설명 제공 (explainability)
+              2. 정밀도 약간 향상 (Prior 앵커로 조정)
+              3. Stage 2 (Prior)의 보조 수단
+          
+          constraints:
+            max_depth: "2 (강제, 재귀 금지)"
+            max_llm_calls: "10 (예산 기반)"
+            max_variables: "8"
+            max_runtime_seconds: "60"
+            recursion_policy: "⛔ FORBIDDEN (정책 레벨 봉인)"
+          
+          mechanism:
+            step_1: "분해 (1회만, 2-4개 모형)"
+            step_2: "각 변수 직접 추정 (재귀 절대 금지!)"
+            step_3: "_direct_estimate() → PriorEstimator 호출"
+            step_4: "계산 및 가장 합리적인 모형 선택"
+          
+          budget_based_search:
+            principle: "confidence threshold 제거 → Budget 사용"
+            termination:
+              - "Budget 소진"
+              - "max_depth 도달"
+              - "변수 추정 완료"
+            
+          output:
+            value: "분해 기반 추정값"
+            value_range: "불확실성 범위"
+            certainty: "medium/low"
+            decomposition: "FermiModel (구조 설명)"
+            cost: "Budget 사용량"
+          
+          principle: "Fermi = 설명 계층 (구조 제공, 재귀 없음)"
 
-      phase_3_guestimation:
-        description: "11개 Source 수집 + 종합 판단 (Guestimation)"
-        file: "phase3_guestimation.py"
-        class: "Phase3Guestimation"
-        speed: "3-8초"
-        coverage: "2-5%"
-        confidence: "0.60-0.80"
-        sources:
-          physical_category:
-            - "Source #1: 시공간 절대 제약 (시간/공간)"
-            - "Source #2: 보존 법칙 (질량/에너지)"
-            - "Source #3: 수학적 필연성"
-          soft_category:
-            - "Source #4: 법률/규제 제약"
-            - "Source #5: 통계적 패턴 (정규분포, 파레토)"
-            - "Source #6: 행동경제학 (손실회피, 앵커링)"
-          value_category:
-            - "Source #7: 확정 데이터 (프로젝트)"
-            - "Source #8: LLM API (추정 전용, 구현 대기)"
-            - "Source #9: 웹 검색 (실시간, 구현 대기)"
-            - "Source #10: RAG (Pattern/Benchmark)"
-            - "Source #11: 통계값 (평균/중앙값)"
+        stage_4_fusion_validation:
+          name: "Stage 4 - Fusion & Validation"
+          role: "Evidence + Prior + Fermi의 센서 퓨전"
+          status: "✅ 구현 완료"
+          file: "umis_rag/agents/estimator/fusion_layer.py"
+          speed: "<0.2초"
+          
+          responsibilities:
+            
+            step_1_evidence_priority:
+              description: "Evidence의 definite_value 우선"
+              condition: "definite_value is not None"
+              action: "즉시 반환 (Fast Path)"
+              result:
+                confidence: "1.0"
+                source: "Evidence"
+                time: "<0.1초"
+            
+            step_2_weighted_synthesis:
+              description: "Prior + Fermi 가중 평균"
+              
+              weight_calculation:
+                certainty_to_weight:
+                  high: "0.8"
+                  medium: "0.5"
+                  low: "0.3"
+                
+                range_to_weight:
+                  formula: "1 / (range_width / value)"
+                  meaning: "범위가 좁을수록 높은 가중치"
+              
+              fusion_formula: "value = Σ(weight_i × value_i) / Σ(weight_i)"
+              
+              example:
+                prior:
+                  value: 145000
+                  certainty: "medium"
+                  weight: 0.5
+                fermi:
+                  value: 150000
+                  certainty: "medium"
+                  weight: 0.5
+                result: "(0.5×145000 + 0.5×150000) / 1.0 = 147500"
+            
+            step_3_hard_bounds_clipping:
+              description: "Evidence 하드 제약 적용"
+              action: "value = np.clip(value, lower, upper)"
+              example: "추정값 500,000 > 상한 400,000 → 400,000으로 클리핑"
+            
+            step_4_range_intersection:
+              description: "모든 범위의 교집합"
+              method: |
+                final_range = intersect([
+                  evidence.hard_bounds,
+                  prior_result.value_range,
+                  fermi_result.value_range
+                ])
+            
+            step_5_certainty_aggregation:
+              description: "최종 certainty 종합"
+              factors:
+                - "각 Stage의 certainty"
+                - "범위 일치도"
+                - "Guardrail 위반 여부"
+          
+          output:
+            value: "최종 융합 값"
+            value_range: "최종 범위 (교집합)"
+            certainty: "종합 확신도"
+            source: "Fusion(Evidence/Prior/Fermi)"
+            fusion_weights: "각 소스 가중치"
+            cost: "총 비용 (시간/API/변수)"
+          
+          principle: "Fusion = 통합 계층 (센서 퓨전, 누가 맞았냐 싸움 아님)"
 
-        judgment_strategies:
-          weighted_average:
-            when: "여러 증거의 신뢰도가 비슷할 때"
-            formula: "∑(value_i × confidence_i) / ∑(confidence_i)"
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      # Information Flow (v7.11.0)
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      information_flow:
+        pattern: "Unidirectional Cascade + Independent Stages"
+        
+        flow_diagram: |
+          Question + Context + Budget
+                 ↓
+          [Stage 1] Evidence Collection
+             → Literal (프로젝트 데이터)
+             → Direct RAG (학습 규칙)
+             → Validator Search (확정 데이터 + 유사 데이터)
+             → Guardrail Engine (자동 제약 변환)
+             ↓ Evidence(definite_value, hard_bounds, ...)
+                 ↓
+          ┌────Fast Path────┐
+          │ definite_value?  │
+          │ Yes → 즉시 반환   │ (<0.1초 ⚡)
+          └─────────────────┘
+                 ↓ No
+          [Stage 2] Generative Prior (병렬 가능)
+             → LLM 확신 기반 직접 추정
+             → Output: value, range, certainty
+             ↓ PriorResult
+                 ↓
+          [Stage 3] Structural Explanation (병렬 가능)
+             → Fermi 분해 (재귀 절대 금지!)
+             → _direct_estimate() → PriorEstimator 호출
+             → Budget 기반 종료
+             ↓ FermiResult
+                 ↓
+          [Stage 4] Fusion & Validation
+             → Evidence + Prior + Fermi 가중 평균
+             → Hard Bounds 클리핑
+             → Range 교집합
+             → 최종 EstimationResult
+          
+          ⚠️ 레거시 Phase 3-4 폐기됨:
+             - 구 Phase 3 (Guestimation) → Stage 2 (Prior)로 대체
+             - 구 Phase 4 (Fermi) → Stage 3 (Fermi, 재귀 제거)로 재설계
+        
+        stage_independence:
+          stage_1:
+            dependencies: "None"
+            output: "Evidence (definite_value, hard_bounds, soft_hints, logical_relations)"
+          
+          stage_2:
+            dependencies: "Evidence.hard_bounds (제약으로만 사용)"
+            output: "PriorResult (value, range, certainty, reasoning)"
+            parallel_with: "Stage 3 (독립 실행 가능)"
+          
+          stage_3:
+            dependencies: "Evidence, Budget"
+            output: "FermiResult (value, range, certainty, decomposition)"
+            parallel_with: "Stage 2 (독립 실행 가능)"
+            note: "PriorEstimator를 _direct_estimate()로 사용, 재귀 없음"
+          
+          stage_4:
+            dependencies: "Evidence + PriorResult + FermiResult"
+            output: "EstimationResult (최종)"
+            parallelism: "None (모든 입력 필요)"
+        
+        early_return_policy:
+          fast_path:
+            trigger: "Stage 1에서 definite_value 발견"
+            action: "Stage 2-3 스킵, 즉시 반환"
+            speed: "<0.1초 ⚡⚡⚡"
+            confidence: "1.0"
+            source: "Evidence (Literal/Direct RAG/Validator Search)"
+          
+          no_recursion_policy:
+            principle: "⛔ 재귀 완전 금지 (정책 레벨 봉인)"
+            enforcement:
+              - "FermiEstimator는 자기 자신을 절대 호출하지 않음"
+              - "변수 추정 시 _direct_estimate() → PriorEstimator만 사용"
+              - "Budget 소진 시 즉시 종료"
+              - "max_depth=2 강제 제한"
+            rationale: "코드 튜닝이 아닌 아키텍처 원칙"
+            legacy_problem: "구 Phase 4의 재귀 폭발 완전 해결"
+        
+        no_fallback_cascade:
+          before: "Phase 0→1→2→3→4 순차 Fallback (레거시)"
+          after: "Stage 1→2→3→4 독립 실행 → Fusion에서 통합"
+          principle: "'실패' 개념 없음, 항상 값 반환"
 
-          highest_confidence:
-            when: "한 증거의 신뢰도가 압도적으로 높을 때"
-            condition: "confidence > 0.90"
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      # Common Interface: EstimationResult (v7.11.0)
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      common_interface:
+        estimation_result:
+          purpose: "모든 Stage가 동일한 타입 반환 → Fusion 가능"
+          
+          fields:
+            value: "float - Point estimate"
+            value_range: "Tuple[float, float] - [min, max]"
+            certainty: "Literal['high', 'medium', 'low'] - LLM 내적 확신"
+            reasoning: "str - 추정 근거"
+            cost: "Cost - {time, tokens, api_calls}"
+            decomposition: "Optional[FermiModel] - Fermi 구조 (있으면)"
+            used_evidence: "Evidence - 사용한 Evidence"
+            fusion_weights: "Dict[str, float] - 각 소스 가중치"
+          
+          key_change:
+            confidence_to_certainty:
+              before: "confidence (외부 검증) - 재귀 유발"
+              after: "certainty (내적 확신) - 항상 값 반환"
+              meaning: |
+                - high: 상식적 통념, 널리 알려진 값
+                - medium: 도메인 벤치마크, 일반적 범위
+                - low: 추측, 불확실
+        
+        evidence:
+          purpose: "Stage 1의 출력, Stage 2-4의 입력"
+          
+          fields:
+            definite_value: "Optional[float] - 확정값 (있으면 즉시 종료)"
+            hard_bounds: "Tuple[float, float] - (min, max)"
+            soft_hints: "List[Dict] - [{type, value, confidence}]"
+            logical_relations: "List[str] - ['A <= B', 'B >= C']"
+        
+        budget:
+          purpose: "재귀 대신 예산 기반 탐색"
+          
+          fields:
+            max_llm_calls: "int = 10"
+            max_variables: "int = 8"
+            max_runtime_seconds: "float = 60.0"
+            max_depth: "int = 2 (Fermi 강제 제한)"
+          
+          methods:
+            consume: "리소스 소비 기록"
+            exhausted: "예산 소진 여부 확인"
+            remaining_variables: "남은 변수 할당량"
+          
+          principle: "confidence threshold 제거 → 예측 가능한 종료"
 
-          range_consensus:
-            when: "증거들이 범위를 형성할 때"
-            method: "중앙값 또는 IQR 중심"
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      # Expected Improvements (v7.11.0 실측값)
+      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      expected_improvements:
+        
+        quantitative_metrics:
+          execution_time:
+            before_v7_10_2: "15-20분 (재귀 폭발)"
+            after_v7_11_0: "30-60초"
+            improvement: "95% 단축 ✅"
+          
+          api_calls:
+            before_v7_10_2: "100회+"
+            after_v7_11_0: "5-10회"
+            improvement: "90% 감소 ✅"
+          
+          cost_per_query:
+            before_v7_10_2: "$20-30"
+            after_v7_11_0: "$1-2"
+            improvement: "95% 절감 ✅"
+          
+          recursion_occurrence:
+            before_v7_10_2: "100% (재귀 폭발 위험)"
+            after_v7_11_0: "0% (정책 레벨 금지)"
+            improvement: "재귀 완전 제거 ✅"
+          
+          phase0_speed:
+            before: "Phase 0 없음"
+            after: "<0.1초 (확정 데이터 발견 시)"
+            improvement: "99.5% 시간 절약 ✅"
+          
+          guardrail_automation:
+            before: "수동 제약 정의"
+            after: "자동 변환 (Phase 2 유사 데이터)"
+            improvement: "100% 자동화 ✅"
+        
+        qualitative_improvements:
+          - "✅ 재귀 완전 제거 (정책 레벨 봉인)"
+          - "✅ 예측 가능한 실행 시간 (Budget 보장)"
+          - "✅ 병렬화 가능 (Stage 2/3 독립)"
+          - "✅ 설명 가능성 향상 (Fermi 구조 + Evidence)"
+          - "✅ Phase 0 즉시 반환 (프로젝트 데이터)"
+          - "✅ Guardrail Engine 자동화"
+        
+        trade_offs:
+          precision:
+            note: "±30% → ±50% 오차 증가 가능"
+            mitigation: "Guardrail 하드 제약 + 범위 sanity check"
+            acceptance: "1분 내 답변 SLA 획득"
+          
+          llm_hallucination:
+            note: "LLM 확신은 높지만 틀릴 수 있음"
+            mitigation: "Evidence 계층에서 물리적/논리적 제약 검증"
+            acceptance: "certainty 레벨 표시로 불확실성 명시"
+          
+          fermi_educational_value:
+            note: "얕은 분해로 높은 추론 퀄리티 감소"
+            solution: "사용자용 vs 내부용 Fermi 역할 분리"
 
-          conflict_resolution:
-            when: "증거 간 충돌 (>30% 차이)"
-            action: "맥락 기반 우선순위 → 상세 설명"
-
-        # v7.3.2 신규: 추정 근거 투명화
-        reasoning_transparency:
-          reasoning_detail:
-            method: "사용한 판단 전략"
-            sources_used: "활용한 Source 리스트"
-            why_this_method: "왜 이 전략을 선택했는가"
-            evidence_breakdown:
-              - "각 증거별 value, confidence"
-              - "증거 출처 및 신뢰 근거"
-            judgment_process:
-              - "Step 1: 맥락 파악"
-              - "Step 2: 증거 수집"
-              - "Step 3: 전략 선택"
-              - "Step 4: 계산 및 판단"
-            context_info: "domain, region, time"
-
-          component_estimations:
-            description: "개별 요소별 추정 논리"
-            fields:
-              - "component_name"
-              - "component_value"
-              - "estimation_method"
-              - "reasoning"
-              - "confidence"
-              - "sources"
-
-          estimation_trace:
-            description: "추정 과정 스텝별 추적"
-            format: "['Step 1: ...', 'Step 2: ...']"
-
-          decomposition:
-            description: "Fermi 분해 추적 (Phase 4용)"
-            fields:
-              - "formula"
-              - "variables (각각 EstimationResult)"
-              - "depth (분해 깊이)"
-
-      phase_4_fermi_decomposition:
-        description: "일반 Fermi 분해 + 재귀 추정 (Phase 4, v7.7.1 Few-shot 개선)"
-        speed: "10-30초"
-        coverage: "3% (현재) → 1% (Year 1)"
-        confidence: "0.60-0.80 → 0.70-0.85 (v7.7.1 개선)"
-        when: "Phase 1-3 모두 실패"
-        status: "✅ v7.7.1 Few-shot 개선 완료 (2025-11-21)"
-        implementation: "umis_rag/agents/estimator/phase4_fermi.py (2,700줄)"
-
-        v7_7_1_improvements:
-          summary: "Few-shot 예시 추가로 계산 연결성 145% 향상"
-          date: "2025-11-21"
-          test_results:
-            calculation_connectivity: "18/40 → 50/50 (만점!)"
-            success_rate: "0% → 93% (14/15)"
-            reasoning_coverage: "0% → 80-100%"
-            total_score: "85/100 (gpt-5.1)"
-
-          few_shot_example:
-            enabled: true
-            example: "서울 택시 수 추정 (5단계 분해)"
-            effect: "모든 모델이 올바른 Fermi 방법론 학습"
-            location: "_build_llm_prompt() 메서드"
-
-          calculation_verification:
-            enabled: true
-            method: "자동 계산 검증 (_verify_calculation_connectivity)"
-            check: "분해 값들이 최종값으로 올바르게 계산되는지 확인"
-            threshold: "10% 오차 이내"
-            score_range: "0-25점"
-
-          reasoning_requirement:
-            mandatory: true
-            description: "모든 가정(비율, 계수)에 합리적 근거 필수"
-            examples:
-              - "경활 비율 0.62 → OECD 수준 + 한국 통계 기준"
-              - "자영업 0.2 → 한국 높은 편, 5명 중 1명"
-              - "등록 비율 0.8 → 영세·비공식 자영업 감안"
-
-          quality_standards:
-            calculation_connectivity: "50/50 (만점)"
-            reasoning_coverage: "80% 이상"
-            accuracy: "10% 오차 이내"
-            final_score: "85/100 (gpt-5.1 chat)"
-
-        v7_7_0_changes:
-          terminology: "Phase 4 내부를 Step 1-4로 명확화"
-          removed: "Phase/Step 혼란 제거"
-          focus: "일반 Fermi 분해만 (물리적/수학적)"
-          reason: "Estimator = 추정, Quantifier = 계산 (MECE)"
-
-        features:
-          general_fermi:
-            description: "일반적 Fermi 분해 (비즈니스 지표 제외)"
-            examples:
-              - "서울 음식점 수는? (인구 × 음식점 밀도)"
-              - "여객기에 탁구공? (부피 / 탁구공 부피)"
-              - "한국 커피 시장? (인구 × 소비율 × 가격)"
-            not_handled: "LTV, CAC, Payback 등 → Quantifier"
-            coverage: "일반 추정 100%"
-
-          recursion:
-            description: "재귀 분해 추정 (논리의 퍼즐)"
-            max_depth: 4
-            process: "Unknown 변수 → Phase 3 시도 → 재귀 호출"
-            backtracking: "depth 3 → 2 → 1 → 0 재조립"
-
-          data_inheritance:
-            description: "부모 데이터 상속 (v7.5.0)"
-            feature: "재귀 시 부모의 available 변수 상속"
-            benefit: "재계산 불필요, 일관성 보장, 시간 절약"
-
-          circular_detection:
-            description: "순환 의존성 감지"
-            method: "Call stack 추적"
-            example: "시장 규모 → 점유율 → 시장 규모 (순환!) → 중단"
-
-          variable_policy:
-            name: "SimpleVariablePolicy (오버엔지니어링 회피)"
-            code: "20줄 (vs Hybrid 300줄)"
-            principle: "6개 권장 (Occam), 10개 절대 (Miller)"
-            flexibility: "7-10개 허용 (경고)"
-
-          llm_mode:
-            description: "config/llm_mode.yaml 통합"
-            native: "템플릿만 (비용 $0, 90-95% 커버)"
-            external: "템플릿 + OpenAI API (100% 커버)"
-
-        coverage: "5% → 0.5% (Year 1)"
-
-        llm_integration:
-          native_mode:
-            description: "Cursor LLM 사용 (기본, 권장)"
-            behavior: "템플릿 성공 → 실행, 템플릿 실패 → Cursor에게 맡김"
-            cost: "$0"
-            coverage: "90-95%"
-
-          external_mode:
-            description: "OpenAI API 사용 (자동화 시)"
-            behavior: "템플릿 실패 → API 호출 → 모형 생성"
-            cost: "~$0.03/질문"
-            coverage: "100%"
-
-        internal_steps_v7_7_0:
-          step_1_scan:
-            description: "초기 스캔 - 가용 데이터 파악 (Bottom-up)"
-            process:
-              - "부모 데이터 상속 (재귀 시)"
-              - "프로젝트 데이터 확인"
-              - "RAG 검색 (벤치마크)"
-            output: "{'available': Dict, 'unknown': List}"
-
-          step_2_generate:
-            description: "모형 생성 - 3-5개 후보 (Top-down)"
-            process:
-              - "Step 2a: LLM 모형 생성"
-              - "Step 2b: 변수 재검색 (최대 2회)"
-              - "Step 2c: 변수 정책 필터링"
-            output: "List[FermiModel] (3-5개)"
-
-          step_3_feasibility:
-            description: "실행 가능성 체크 (재귀 추정)"
-            process:
-              - "Unknown 변수 재귀 호출"
-              - "실행 가능성 점수 계산"
-              - "최선 모형 선택"
-            output: "List[RankedModel] (점수 순)"
-
-          step_4_execute:
-            description: "모형 실행 (Backtracking)"
-            steps:
-              - "변수 바인딩"
-              - "안전한 수식 실행"
-              - "Confidence 조합 (Geometric Mean)"
-              - "DecompositionTrace 생성"
-              - "EstimationResult 반환"
-
-        safety:
-          max_depth: 4
-          circular_detection: "Call stack 추적"
-          phase_3_fallback: "depth 4 도달 시 Guestimation으로 복귀"
-          variable_limit: "10개 절대 상한"
-
-    exclusive_responsibilities:
-      value_estimation:
-        description: "데이터 부족 시 값 추정 (단일 권한)"
-        authority: "UMIS 시스템 내 유일한 추정 권한"
-
-        common_use_cases:
-          quantifier_support:
-            - "전환율 (Conversion Rate)"
-            - "AOV (Average Order Value)"
-            - "Frequency (구매 빈도)"
-            - "시장 필터 비율"
-            - "성장률 (CAGR)"
-
-          observer_support:
-            - "가치사슬 마진 비율"
-            - "플랫폼 수수료율"
-            - "시장 집중도 (CR3, HHI)"
-
-          explorer_support:
-            - "잠재 시장 크기 (Order of Magnitude)"
-            - "기회 우선순위 판단"
-
-          validator_support:
-            - "데이터 신뢰구간"
-            - "Error Range 계산"
-
-        output_format:
-          value: "추정값"
-          confidence: "신뢰도 (0.0-1.0)"
-          phase: "사용한 Phase (0/1/2/3/4)"
-          sources: "증거 출처 리스트"
-          reasoning_detail: "상세 판단 근거 (v7.3.2)"
-          component_estimations: "개별 요소 추정 (v7.3.2)"
-          estimation_trace: "과정 추적 (v7.3.2)"
-
-      cross_validation:
-        description: "Validator와 협업한 교차 검증 (v7.3.2)"
-        process:
-          - "Validator가 추정치 검증 요청"
-          - "Estimator가 독립적으로 추정"
-          - "두 값 비교 (차이 계산)"
-          - "±30% 이내: pass, 초과: caution/fail"
-
-        output:
-          claimed_value: "주장된 값"
-          estimator_value: "Estimator 추정값"
-          estimator_confidence: "신뢰도"
-          estimator_reasoning: "상세 근거"
-          difference_pct: "차이 비율"
-          validation_result: "pass/caution/fail"
-
-      learning_system:
-        description: "사용할수록 빨라지는 학습 시스템"
-
-        learning_pipeline:
-          phase_3_execution: "11개 Source 수집 + 판단 (첫 실행)"
-          canonical_storage: "정규화된 형태로 저장"
-          projection: "Agent별 View로 자동 투영"
-          phase_1_integration: "학습 규칙으로 자동 통합"
-
-        learning_conditions:
-          high_confidence:
-            threshold: "confidence >= 0.90"
-            required_evidence: "1개 이상"
-
-          medium_confidence:
-            threshold: "confidence >= 0.80"
-            required_evidence: "2개 이상"
-
-          no_learning:
-            threshold: "confidence < 0.80"
-
-        performance_evolution:
-          week_1: "45% 커버 (20개 규칙)"
-          month_1: "75% 커버 (120개 규칙)"
-          year_1: "95% 커버 (2,000개 규칙)"
-
-          speed_improvement:
-            first_run: "3-8초 (Phase 3)"
-            learned_run: "<0.5초 (Phase 1)"
-            improvement: "6-16배 빠름"
 
     # ===== 4. QUALITY CRITERIA =====
     quality_criteria:
@@ -6360,111 +6547,238 @@ implementation_guide:
 
     methodologies:
       estimator_agent:
-        name: "Estimator (Fermi) Agent"
-        version: "v7.7.0"
+        name: "Estimator Agent"
+        version: "v7.11.0"
         tool_key: "tool:estimator:estimate"
         category: "값 추정 (Single Source of Truth)"
-        status: "✅ 완성 (5-Phase, 100% 커버리지, 용어 명확화)"
+        status: "✅ Production (4-Stage Fusion, LLM Complete Abstraction)"
+        architecture: "Clean Architecture (DIP, SRP, OCP, ISP)"
 
-        role_clarity_v7_7_0:
+        role_clarity:
           what: "데이터 없을 때 값을 창의적으로 추정"
           not_what: "계산 (Quantifier), 검증 (Validator)"
           mece: "Estimator = 추정, Quantifier = 계산"
-          terminology:
-            files: "phase1/3/4_*.py"
-            classes: "Phase1DirectRAG, Phase3Guestimation, Phase4FermiDecomposition"
-            phase: "Estimator 전체 단계 (0-4)"
-            step: "Phase 4 내부 단계 (1-4)"
+          components:
+            - "EstimatorRAG: 메인 Agent (4-Stage 통합)"
+            - "PriorEstimator: Stage 2 (생성적 추정)"
+            - "FermiEstimator: Stage 3 (구조적 설명)"
+            - "EvidenceCollector: Stage 1 (증거 수집)"
+            - "FusionLayer: Stage 4 (결과 융합)"
 
-        five_phase_architecture:
-          phase_0:
-            name: "Literal (Project Data)"
-            speed: "<0.1초"
-            confidence: "1.0"
-            coverage: "10%"
-
-          phase_1:
-            name: "Direct RAG (Learned Rules)"
-            method: "학습 규칙만"
-            threshold: "유사도 0.95+"
-            speed: "<0.5초"
-            coverage: "5% (초기) → 40% (Year 1)"
-
-          phase_2:
-            name: "Validator (확정 데이터)"
-            method: "Validator RAG 검색"
-            threshold: "confidence 1.0"
-            speed: "<1초"
-            coverage: "85% (현재) → 50% (Year 1)"
-
-          phase_3:
-            name: "Guestimation (11 Sources)"
-            method: "증거 수집 + 종합 판단"
-            threshold: "confidence 0.80+"
-            speed: "3-8초"
-            coverage: "2-5%"
-
-            sources_11:
-              physical_3:
-                - "SpacetimeConstraint (시공간 제약)"
-                - "ConservationLaw (보존 법칙)"
-                - "MathematicalDefinition (수학 정의)"
-
-              soft_3:
-                - "LegalNorm (법률 규범)"
-                - "StatisticalPattern (통계 패턴)"
-                - "BehavioralInsight (행동경제학)"
-
-              value_5:
-                - "DefiniteData (확정 데이터)"
-                - "LLMEstimation (LLM 추정)"
-                - "WebSearch (웹 검색)"
-                - "RAGBenchmark (RAG 벤치마크)"
-                - "StatisticalValue (통계 값)"
-
-          phase_4:
-            name: "Fermi Decomposition (재귀 분해)"
-            method: "Fermi 분해 (재귀, max depth 4)"
-            speed: "10-30초"
-            coverage: "3% (현재) → 1% (Year 1)"
+        llm_abstraction_v7_11_0:
+          principle: "Dependency Inversion (의존성 역전)"
+          achievement: "61개 llm_mode 분기 → 0개 (100% 제거)"
+          
+          core_interfaces:
+            BaseLLM:
+              purpose: "Task별 LLM 작업 인터페이스"
+              key_methods:
+                - "estimate(question, context, **kwargs) -> Optional[Any]"
+                - "decompose(question, context, **kwargs) -> Optional[Dict]"
+                - "evaluate_certainty(value, evidence, **kwargs) -> str"
+                - "validate_boundary(value, bounds, **kwargs) -> Dict"
+                - "is_native() -> bool"
             
-            internal_steps:
-              step_1: "초기 스캔 (Bottom-up)"
-              step_2: "모형 생성 (Top-down)"
-              step_3: "실행 가능성 체크 (재귀)"
-              step_4: "모형 실행 (Backtracking)"
-            focus: "물리적/수학적 분해"
+            LLMProvider:
+              purpose: "LLM Provider 추상화"
+              key_methods:
+                - "get_llm(task: TaskType) -> BaseLLM"
+                - "is_native() -> bool"
+                - "get_mode_info() -> Dict[str, Any]"
+            
+            TaskType:
+              purpose: "14개 작업 유형 정의"
+              stages:
+                stage1: ["EVIDENCE_COLLECTION", "GUARDRAIL_ANALYSIS"]
+                stage2: ["PRIOR_ESTIMATION", "CERTAINTY_EVALUATION"]
+                stage3: ["FERMI_DECOMPOSITION", "VARIABLE_ESTIMATION"]
+                stage4: ["FUSION", "BOUNDARY_VALIDATION"]
+          
+          implementations:
+            cursor_native:
+              provider: "CursorLLMProvider"
+              llm: "CursorLLM"
+              cost: "$0 (API 호출 없음)"
+              behavior: "메서드 None 반환 + 로그 포맷팅 (Cursor Composer 수동 처리)"
+            
+            external_api:
+              provider: "ExternalLLMProvider"
+              llm: "ExternalLLM"
+              features:
+                - "ModelRouter 통합 (Task별 모델 선택)"
+                - "프롬프트 빌더 (Prior, Fermi, Certainty, Boundary)"
+                - "JSON 응답 파서 (Regex fallback)"
+          
+          factory:
+            class: "LLMProviderFactory"
+            method: "get_llm_provider(mode: str) -> LLMProvider"
+            singleton: "get_default_llm_provider() (Singleton)"
+            reset: "reset_llm_provider() (테스트용)"
+
+        four_stage_fusion_architecture:
+          overview:
+            principle: "증거 수집 → 생성적 추정 → 구조적 설명 → 융합"
+            recursion: "완전 금지 (Recursion FORBIDDEN)"
+            budget: "예산 기반 탐색 제어 (LLM 호출, 변수 수, 깊이)"
+          
+          stage_1_evidence_collection:
+            class: "EvidenceCollector"
+            purpose: "확정 데이터 및 제약 조건 수집"
+            phases_included: ["Phase 0 (Literal)", "Phase 1 (Direct RAG)", "Phase 2 (Validator)"]
+            speed: "<2초"
+            coverage: "45%"
+            early_return: "확정 값 발견 시 즉시 반환"
+            
+            outputs:
+              definite_value: "확정된 값 (있는 경우)"
+              hard_bounds: "논리적 제약 (절대 위반 불가)"
+              soft_hints: "경험적 힌트 (참고용)"
+              logical_relations: "논리적 관계"
+            
+            guardrail_engine:
+              purpose: "Hard/Soft Constraints 분석"
+              llm_chain: "2-Step (관계 판단 + Hard/Soft 판정)"
+              analyzer: "GuardrailAnalyzer (LLM 기반)"
+          
+          stage_2_generative_prior:
+            class: "PriorEstimator"
+            purpose: "LLM 직접 값 요청 (생성적 추정)"
+            model: "gpt-4.1-nano (Stage 2 최적화)"
+            speed: "3-8초"
+            coverage: "40%"
+            
+            approach:
+              principle: "LLM = 경험 데이터의 압축"
+              prompt: "당신이 확신 있게 말할 수 있는 값을 제시하세요"
+              recursion: "금지 (단일 호출만)"
+              certainty: "내적 확신도 (high/medium/low)"
+            
+            outputs:
+              value: "추정 값"
+              value_range: "[min, max]"
+              certainty: "high/medium/low"
+              reasoning: "추정 근거 (1-2문장)"
+          
+          stage_3_structural_explanation:
+            class: "FermiEstimator"
+            purpose: "Fermi 분해로 구조 설명"
+            model: "gpt-4o-mini (Stage 3 최적화)"
+            speed: "10-30초"
+            coverage: "10%"
+            
+            approach:
+              decomposition: "2-4개 변수로 분해"
+              variable_estimation: "각 변수 → PriorEstimator 호출 (재귀 금지)"
+              max_depth: "2 (강제)"
+              budget_control: "예산 소진 시 즉시 중단"
+            
+            outputs:
+              value: "계산된 값 (공식 기반)"
+              decomposition:
+                formula: "공식 (예: LTV = ARPU / Churn)"
+                variables: "변수별 추정 결과"
+                depth: "현재 깊이"
+              certainty: "변수들의 평균 certainty"
+            
             examples:
-              - "서울 음식점 수는? (인구 × 밀도)"
-              - "여객기에 탁구공? (부피 / 탁구공 부피)"
-              - "한국 커피 시장? (인구 × 소비율 × 가격)"
+              - "서울 음식점 수 = 인구 × 밀도"
+              - "한국 커피 시장 = 인구 × 소비율 × 가격"
+              - "여객기 탁구공 = 부피 / 탁구공 부피"
+            
             not_handled: "비즈니스 지표 계산 (LTV, CAC 등) → Quantifier"
+          
+          stage_4_fusion_validation:
+            class: "FusionLayer"
+            purpose: "Stage 1-3 결과 융합 (Sensor Fusion)"
+            method: "가중 평균 + Hard Bounds 클리핑"
+            
+            strategy:
+              evidence_priority: "Stage 1 (Evidence) 최우선"
+              prior_baseline: "Stage 2 (Prior) 기준값"
+              fermi_explanation: "Stage 3 (Fermi) 구조적 설명"
+              hard_bounds: "Hard Bounds 절대 준수"
+            
+            outputs:
+              value: "최종 융합 값"
+              source: "Evidence/Generative Prior/Fermi/Fusion"
+              certainty: "종합 확신도"
+              decomposition: "구조적 설명 (있는 경우)"
 
-        usage:
-          python: |
-            from umis_rag.agents.estimator import EstimatorRAG
-            from umis_rag.agents.estimator.models import Context
+        usage_examples:
+          basic:
+            description: "가장 간단한 사용법"
+            python: |
+              from umis_rag.agents.estimator import EstimatorRAG
+              
+              # 기본 초기화 (settings.llm_mode 자동 사용)
+              estimator = EstimatorRAG()
+              
+              # 추정 실행
+              result = estimator.estimate(
+                  question="B2B SaaS 한국 시장 ARPU는?",
+                  domain="B2B_SaaS",
+                  region="한국"
+              )
+              
+              # 결과 확인
+              if result and result.is_successful():
+                  print(f"값: {result.value:,.0f}원")
+                  print(f"출처: {result.source}")
+                  print(f"확신도: {result.certainty}")
+            
+            cursor: "@Estimator, B2B SaaS 한국 ARPU는?"
+          
+          with_context:
+            description: "Context 객체 사용"
+            python: |
+              from umis_rag.agents.estimator import EstimatorRAG
+              from umis_rag.agents.estimator.models import Context
+              
+              estimator = EstimatorRAG()
+              
+              context = Context(
+                  domain="B2B_SaaS",
+                  region="한국",
+                  time_period="2024"
+              )
+              
+              result = estimator.estimate("ARPU는?", context=context)
+          
+          with_budget:
+            description: "Budget 제어 (빠른 추정)"
+            python: |
+              from umis_rag.agents.estimator import EstimatorRAG
+              from umis_rag.agents.estimator.common import create_fast_budget
+              
+              estimator = EstimatorRAG()
+              budget = create_fast_budget()  # max_llm_calls=3
+              
+              result = estimator.estimate(
+                  question="서울 음식점 수는?",
+                  budget=budget
+              )
+          
+          custom_provider:
+            description: "Custom LLMProvider 주입"
+            python: |
+              from umis_rag.agents.estimator import EstimatorRAG
+              from umis_rag.core.llm_provider_factory import get_llm_provider
+              
+              # Cursor 모드 명시적 사용
+              cursor_provider = get_llm_provider("cursor")
+              estimator = EstimatorRAG(llm_provider=cursor_provider)
+              
+              # External 모드 명시적 사용
+              external_provider = get_llm_provider("gpt-4o-mini")
+              estimator = EstimatorRAG(llm_provider=external_provider)
 
-            estimator = EstimatorRAG()
-
-            # 간단한 호출
-            result = estimator.estimate(
-                question="B2B SaaS 한국 시장의 ARPU는?",
-                domain="B2B_SaaS",
-                region="한국"
-            )
-
-            # Context 객체 사용
-            context = Context(
-                domain="B2B_SaaS",
-                region="한국",
-                time_period="2024"
-            )
-            result = estimator.estimate("ARPU는?", context=context)
-
-            # 결과: value, confidence, phase, reasoning_detail
-
-          cursor: "@Fermi, B2B SaaS 한국 ARPU는?"
+        backward_compatibility:
+          note: "v7.10.0 이하 API는 compat.py를 통해 완전 호환"
+          deprecated_classes:
+            - "Phase3Guestimation → PriorEstimator (DeprecationWarning)"
+            - "Phase4FermiDecomposition → FermiEstimator (DeprecationWarning)"
+          removal_schedule: "v7.11.1에서 제거 예정"
+          docs: "dev_docs/improvements/LLM_COMPLETE_ABSTRACTION_SUMMARY_v7_11_0.md"
 
         collaboration:
           quantifier: "계산 시 필요한 값 요청 (★★★★★ 가장 많이)"

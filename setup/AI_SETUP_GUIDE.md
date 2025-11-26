@@ -1,8 +1,8 @@
-# UMIS v7.7.0 AI 자동 설치 가이드
+# UMIS v7.11.0 AI 자동 설치 가이드
 
-**버전**: v7.7.0  
-**업데이트**: 2025-11-12  
-**신규**: Native 모드, Web Search 페이지 크롤링 (3,614% 정보 증가)  
+**버전**: v7.11.0  
+**업데이트**: 2025-11-26  
+**신규**: 4-Stage Fusion Architecture, LLM Complete Abstraction  
 **대상**: AI Assistant (Cursor, Claude, GPT)  
 **목적**: 신규 사용자의 UMIS 설치를 AI가 자동으로 수행
 
@@ -62,6 +62,7 @@ python setup.py --check
 **주의**:
 - OpenAI API 키 입력 필요 시 사용자에게 안내
 - 네트워크 권한 필요 (`required_permissions: ["network"]`)
+- v7.11.0: 4-Stage Fusion + LLM Abstraction 적용
 
 ---
 
@@ -109,10 +110,11 @@ pip install -r requirements.txt
 - 성공 메시지 확인
 - 실패 시 에러 로그를 사용자에게 보고
 
-**v7.7.0 신규 패키지**:
-- `requests` - 웹 페이지 크롤링
-- `beautifulsoup4` - HTML 파싱
-- 이미 `requirements.txt`에 포함되어 자동 설치됨
+**v7.11.0 핵심 패키지**:
+- `chromadb` - Vector RAG
+- `openai` - LLM API
+- `pydantic` - 데이터 모델
+- 모두 `requirements.txt`에 포함되어 자동 설치됨
 
 #### Step 3: .env 파일 생성
 
@@ -234,8 +236,9 @@ all_ok = all(checklist.values())
 
 # 사용자에게 리포트
 if all_ok:
-    print("✅ UMIS v7.7.0 설치 완료!")
-    print("🆕 Web Search 페이지 크롤링 활성화")
+    print("✅ UMIS v7.11.0 설치 완료!")
+    print("🆕 4-Stage Fusion Architecture 활성화")
+    print("🆕 LLM Complete Abstraction 적용")
 else:
     print("⚠️  일부 항목 미완료:")
     for item, status in checklist.items():
@@ -249,12 +252,13 @@ else:
 설치 완료 후 사용자에게 다음을 안내하세요:
 
 ```markdown
-✅ UMIS v7.7.0 설치 완료!
+✅ UMIS v7.11.0 설치 완료!
 
 🆕 신규 기능:
-- Web Search 페이지 크롤링 (정보량 37배 증가)
-- Native 모드 (비용 $0)
-- Estimator 5-Phase 완성
+- 4-Stage Fusion Architecture (Phase → Stage 통합)
+- LLM Complete Abstraction (Clean Architecture)
+- Budget 기반 탐색 (예측 가능한 비용/시간)
+- 재귀 제거 (max_depth=2 고정)
 
 🚀 다음 단계:
 
@@ -262,14 +266,13 @@ else:
 2. umis.yaml 파일 첨부
 3. 다음 명령 시도:
    "@Explorer, 구독 모델 패턴 찾아줘"
-   "@Fermi, 한국 인구는?"  (Web 크롤링 자동!)
+   "@Estimator, SaaS LTV는?"  (4-Stage Fusion 자동!)
 
 또는 터미널에서:
    python scripts/query_rag.py "구독 모델"
-   python scripts/test_web_search_crawling.py --mode url
 
 📚 도움말:
-- docs/guides/WEB_SEARCH_CRAWLING_GUIDE.md (크롤링 가이드)
+- dev_docs/improvements/LLM_COMPLETE_ABSTRACTION_SUMMARY_v7_11_0.md
 - UMIS_ARCHITECTURE_BLUEPRINT.md (전체 구조)
 - SETUP.md (상세 가이드)
 - umis.yaml (Cursor Rules)
@@ -343,7 +346,7 @@ pip install -r requirements.txt
 AI가 사용자에게 보고할 때 사용할 템플릿:
 
 ```markdown
-🔄 UMIS v7.7.0 설치 진행 중...
+🔄 UMIS v7.11.0 설치 진행 중...
 
 [단계 1/5] 환경 확인
   ✅ Python 3.11.5
@@ -352,12 +355,10 @@ AI가 사용자에게 보고할 때 사용할 템플릿:
 [단계 2/5] 패키지 설치
   🔄 pip install 실행 중... (30초 예상)
   ✅ 30개 패키지 설치 완료
-  ✅ 신규: requests, beautifulsoup4 (웹 크롤링용)
 
 [단계 3/5] .env 파일 생성
   ✅ .env 파일 생성
   ⚠️  OpenAI API 키 입력 필요
-  ✅ Web Search 크롤링 설정 (기본 활성화)
 
 [단계 4/5] RAG 인덱스 빌드
   🔄 YAML → JSONL 변환 중...
@@ -370,10 +371,10 @@ AI가 사용자에게 보고할 때 사용할 템플릿:
 
 ✅ 설치 완료! (총 소요: 2분 30초)
 
-🆕 v7.7.0 신규 기능:
-  ✅ Web Search 페이지 크롤링 (정보량 37배 증가)
-  ✅ Native 모드 (비용 $0)
-  ✅ Estimator 5-Phase 완성
+🆕 v7.11.0 신규 기능:
+  ✅ 4-Stage Fusion Architecture
+  ✅ LLM Complete Abstraction
+  ✅ Budget 기반 탐색
 ```
 
 ---
@@ -395,7 +396,7 @@ if not Path("umis.yaml").exists():
 
 # 2. 사용자에게 안내
 print("""
-🚀 UMIS v7.6.2 자동 설치를 시작합니다.
+🚀 UMIS v7.11.0 자동 설치를 시작합니다.
 
 소요 시간: 약 3분
 필요 항목:

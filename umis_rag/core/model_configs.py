@@ -25,8 +25,8 @@ class ModelConfig:
     """모델별 API 설정
     
     Attributes:
-        model_name: 모델 이름 (e.g., 'o1-mini', 'gpt-5.1')
-        api_type: API 타입 ('responses' or 'chat')
+        model_name: 모델 이름 (e.g., 'o1-mini', 'gpt-5.1', 'cursor-native')
+        api_type: API 타입 ('responses', 'chat', 'cursor')
         max_output_tokens: 최대 출력 토큰 수
         reasoning_effort_support: reasoning effort 지원 여부
         reasoning_effort_levels: 지원하는 effort 레벨 목록
@@ -79,9 +79,18 @@ class ModelConfig:
             >>> {'model': 'o1-mini', 'input': 'Test', 'reasoning': {'effort': 'medium'}, ...}
             >>> # Chat API
             >>> {'model': 'gpt-4o-mini', 'messages': [...], 'temperature': 0.7, ...}
+            >>> # Cursor API
+            >>> {'mode': 'cursor', 'prompt': 'Test'}
         """
         
-        if self.api_type == 'responses':
+        # Cursor Native: API 호출 불필요, 패턴 매칭만 수행
+        if self.api_type == 'cursor':
+            return {
+                'mode': 'cursor',
+                'prompt': prompt
+            }
+        
+        elif self.api_type == 'responses':
             params = {
                 'model': self.model_name,
                 'input': prompt,
@@ -154,6 +163,7 @@ class ModelConfigManager:
     _configs: Dict[str, ModelConfig] = {}
     _pro_models: List[str] = []
     _defaults: Dict[str, Any] = {}
+    _phase_timeouts: Dict[str, Any] = {}  # v7.10.0: Phase별 timeout 설정
     
     def __new__(cls):
         if cls._instance is None:
@@ -179,6 +189,9 @@ class ModelConfigManager:
         
         # Pro 모델 목록 저장
         self._pro_models = data.get('pro_models', [])
+
+        # v7.10.0: Phase별 timeout 설정 저장
+        self._phase_timeouts = data.get('phase_timeouts', {})
         
         # 모델별 설정 로드
         for model_name, config in data.get('models', {}).items():
@@ -225,6 +238,7 @@ class ModelConfigManager:
         logger.warning(f"Exact model config not found: {model_name}, trying prefix match")
         
         prefix_map = {
+            'cursor': 'cursor-native',
             'o1-pro': 'o1-pro',
             'o1-mini': 'o1-mini',
             'o1': 'o1',
@@ -274,6 +288,43 @@ class ModelConfigManager:
         """Pro 모델 여부 확인"""
         return model_name in self._pro_models
 
+    def get_phase_timeout(self, phase: int, model_name: Optional[str] = None) -> float:
+        """
+        Phase별 timeout 조회 (v7.10.0)
+
+        Args:
+            phase: Phase 번호 (3 또는 4)
+            model_name: 모델 이름 (선택, 모델별 timeout 적용)
+
+        Returns:
+            timeout 초 (float)
+
+        Example:
+            >>> manager = ModelConfigManager()
+            >>> manager.get_phase_timeout(4, 'gpt-5.1')
+            60.0
+            >>> manager.get_phase_timeout(3)  # 기본값
+            45.0
+        """
+        phase_key = f"phase_{phase}"
+        phase_config = self._phase_timeouts.get(phase_key, {})
+
+        # 기본 timeout
+        default_timeout = phase_config.get('default', self._defaults.get('timeout_seconds', 30))
+
+        if model_name:
+            # 모델별 timeout
+            models_timeout = phase_config.get('models', {})
+            if model_name in models_timeout:
+                return float(models_timeout[model_name])
+
+            # Prefix 매칭 시도
+            for prefix, timeout in models_timeout.items():
+                if model_name.startswith(prefix):
+                    return float(timeout)
+
+        return float(default_timeout)
+
 
 # Singleton instance
 model_config_manager = ModelConfigManager()
@@ -293,4 +344,9 @@ def list_supported_models() -> List[str]:
 def is_pro_model(model_name: str) -> bool:
     """Pro 모델 여부 (편의 함수)"""
     return model_config_manager.is_pro_model(model_name)
+
+
+def get_phase_timeout(phase: int, model_name: Optional[str] = None) -> float:
+    """Phase별 timeout 조회 (편의 함수, v7.10.0)"""
+    return model_config_manager.get_phase_timeout(phase, model_name)
 

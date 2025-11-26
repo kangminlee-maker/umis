@@ -1,6 +1,6 @@
-# UMIS v7.0.0 Folder Structure
+# UMIS v7.11.0 Folder Structure
 **목적**: 전체 폴더 구조 한눈에 파악  
-**업데이트**: 2025-11-03
+**업데이트**: 2025-11-26
 
 ---
 
@@ -147,21 +147,61 @@ data/
 
 ---
 
-### docs/ - 활성 UMIS 프로토콜
-**목적**: 현재 사용 중인 프로토콜 및 가이드
+### docs/ - 활성 UMIS 프로토콜 및 가이드
+**목적**: 현재 사용 중인 프로토콜, API 문서, 아키텍처, 사용자 가이드
 
 ```
 docs/
-├── README.md
-└── UMIS-DART-재무제표-조사-프로토콜.md  # Rachel 재무 데이터 조사 표준
+├── README.md                              # docs 폴더 설명
+├── FOLDER_STRUCTURE.md                    # 전체 폴더 구조 (이 파일)
+├── VERSION_UPDATE_CHECKLIST.md           # 버전 업데이트 체크리스트
+├── MIGRATION_QUICKSTART_v7_11_0.md       # v7.11.0 마이그레이션 퀵스타트
+├── MIGRATION_GUIDE_v7_11_0.md            # v7.11.0 완전 마이그레이션 가이드
+├── UMIS-DART-재무제표-조사-프로토콜.md      # Rachel 재무 데이터 조사 표준
+│
+├── api/
+│   └── ESTIMATOR_API_v7_11_0.md          # Estimator API (4-Stage Fusion)
+│
+├── guides/
+│   ├── 기본 설정
+│   ├── INSTALL.md
+│   ├── MAIN_BRANCH_SETUP.md
+│   ├── NATIVE_MODE_GUIDE.md
+│   ├── RAG_DATABASE_SETUP.md
+│   │
+│   ├── 데이터 수집
+│   ├── DART_CRAWLER_USER_GUIDE.md
+│   ├── API_DATA_COLLECTION_GUIDE.md
+│   ├── WEB_SEARCH_SETUP_GUIDE.md
+│   ├── WEB_SEARCH_CRAWLING_GUIDE.md
+│   │
+│   ├── Estimator & LLM
+│   ├── ESTIMATOR_USER_GUIDE_v7_11_0.md   # Estimator 사용자 가이드
+│   ├── BUDGET_CONFIGURATION_GUIDE.md     # Budget 설정 (Stage 3)
+│   ├── LLM_MODEL_SELECTION.md            # LLM 모델 선택
+│   │
+│   └── System RAG
+│       ├── SYSTEM_RAG_GUIDE.md           # System RAG 사용법
+│       └── SYSTEM_RAG_INTERFACE.md       # System RAG 인터페이스
+│
+└── architecture/
+    ├── UMIS_ARCHITECTURE_BLUEPRINT.md    # 전체 시스템 구조 (1,400줄)
+    ├── LLM_ABSTRACTION_v7_11_0.md        # LLM Complete Abstraction
+    └── LLM_STRATEGY.md                   # LLM 전략 및 최적화
 ```
 
 **특징**:
 - ✅ 활성 문서만 (현재 버전에서 사용)
 - ✅ 에이전트 참조 가능
+- ✅ 사용자 직접 참조 가능
+- ✅ v7.11.0 아키텍처 완전 반영
 - ❌ Deprecated 문서 제외 (→ archive/)
 
-**향후**: 추가 프로토콜 작성 시 이 폴더에 추가
+**v7.11.0 업데이트**:
+- API 문서 추가 (Estimator)
+- 아키텍처 문서 중앙 집중화 (3개)
+- LLM & System RAG 가이드 추가 (7개)
+- Deprecated 문서 archive 이동 (3개)
 
 ---
 

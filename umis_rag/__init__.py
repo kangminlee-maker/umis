@@ -81,27 +81,19 @@ def _get_global_mode():
     """
     UMIS LLM 제공자 설정 반환
     
-    .env 파일의 UMIS_MODE 환경변수:
-      - 'native'   : Cursor Agent LLM 사용 (기본)
-      - 'external' : External API LLM 사용
+    .env 파일의 LLM_MODE 환경변수:
+      - 'cursor'     : Cursor Agent LLM 사용 (기본)
+      - 'gpt-4o-mini': GPT-4o-mini API 사용
+      - 'o1-mini'    : O1-mini API 사용
+      - 기타 모델명  : 해당 모델 API 사용
     
     영향 범위: UMIS 전체 시스템 (모든 Agent, 모든 LLM 호출)
     """
-    mode = os.getenv('UMIS_MODE', 'native').lower()
-    
-    if mode not in ['native', 'external']:
-        import warnings
-        warnings.warn(
-            f"⚠️ UMIS_MODE='{mode}'는 유효하지 않습니다. 'native' 또는 'external'만 가능.\n"
-            f"   기본값 'native' 사용합니다.",
-            UserWarning
-        )
-        mode = 'native'
-    
+    mode = os.getenv('LLM_MODE', 'cursor').lower()
     return mode
 
 # UMIS 전역 설정 (시스템 전체 적용)
-UMIS_MODE = _get_global_mode()  # LLM 제공자 (native/external)
+LLM_MODE = _get_global_mode()  # LLM 제공자 (cursor/gpt-4o-mini/o1-mini 등)
 
 # 참고: 
 # - UMIS 실행 모드: config/runtime.yaml (hybrid/rag_full 등)
@@ -117,6 +109,6 @@ __all__ = [
     "settings", 
     "__version__", 
     "_env_loaded",
-    "UMIS_MODE",           # LLM 제공자 설정 (전역, .env)
+    "LLM_MODE",           # LLM 제공자 설정 (전역, .env)
 ]
 
