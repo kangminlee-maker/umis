@@ -17,6 +17,8 @@ from langchain_openai import ChatOpenAI
 
 from umis_rag.core.config import settings
 from umis_rag.utils.logger import logger
+from umis_rag.core.llm_interface import LLMProvider
+from umis_rag.core.llm_provider_factory import get_default_llm_provider
 from .models import Guardrail, GuardrailType
 
 
@@ -39,6 +41,12 @@ class AnalysisResult:
 class GuardrailAnalyzer:
     """
     GuardrailAnalyzer - LLM 2단계 체인
+    
+    v7.11.0 변경사항:
+    ---------------
+    - ❌ llm_mode property 제거
+    - ✅ LLMProvider 기반
+    - ✅ 분기 없음
 
     사용 예시:
         >>> analyzer = GuardrailAnalyzer()
@@ -51,20 +59,23 @@ class GuardrailAnalyzer:
         # Guardrail(type=HARD_UPPER, value=28000000, confidence=0.95, ...)
     """
 
-    def __init__(self, llm_mode: Optional[str] = None):
-        self._llm_mode = llm_mode
+    def __init__(self, llm_provider: Optional[LLMProvider] = None):
+        """
+        초기화
+        
+        Args:
+            llm_provider: LLMProvider (None이면 기본 Provider)
+        
+        Note:
+            v7.11.0: llm_mode 파라미터 제거됨
+        """
+        self.llm_provider = llm_provider or get_default_llm_provider()
         self._llm = None
-
-    @property
-    def llm_mode(self) -> str:
-        if self._llm_mode is None:
-            return settings.llm_mode
-        return self._llm_mode
 
     def _get_llm(self) -> ChatOpenAI:
         """LLM 인스턴스 (Lazy 초기화)"""
         if self._llm is None:
-            model = settings.llm_model if self.llm_mode != "cursor" else "gpt-4o-mini"
+            model = settings.llm_model
             self._llm = ChatOpenAI(
                 model=model,
                 temperature=0.1,  # 일관된 판단을 위해 낮은 temperature
