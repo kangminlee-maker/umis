@@ -17,7 +17,7 @@ from .estimator.models import (
     Context, EstimationResult,
     Phase1Config, Phase3Config, Phase4Config
 )
-from .estimator.phase1_direct_rag import Phase1DirectRAG
+from .estimator.rag_source import RAGSource
 from .estimator.learning_writer import LearningWriter, UserContribution
 
 # v7.11.0 Stage 기반 구현
@@ -28,7 +28,7 @@ from .estimator.evidence_collector import EvidenceCollector
 
 __all__ = [
     'EstimatorRAG', 'get_estimator_rag',
-    'Phase1DirectRAG',
+    'RAGSource',
     'Phase1Config', 'Phase3Config', 'Phase4Config',
     'LearningWriter', 'UserContribution',
     'Context', 'EstimationResult',

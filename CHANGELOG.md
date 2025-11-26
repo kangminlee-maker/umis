@@ -9,9 +9,9 @@
 
 ## [7.11.1] - 2025-11-26
 
-### 🧹 Legacy Cleanup
+### 🧹 Legacy Cleanup & Terminology Consistency
 
-v7.11.0에서 deprecated된 코드를 완전히 제거한 패치 릴리스입니다.
+v7.11.0에서 deprecated된 코드를 완전히 제거하고, Stage 기반 아키텍처의 용어 일관성을 개선한 패치 릴리스입니다.
 
 ---
 
@@ -24,20 +24,6 @@ v7.11.0에서 deprecated된 코드를 완전히 제거한 패치 릴리스입니
   - v7.11.0에서 DeprecationWarning으로 경고
   - 사용자는 `PriorEstimator`, `FermiEstimator` 직접 사용
 
-**참고**: `Phase0Literal`, `Phase1DirectRAG`, `Phase2ValidatorSearchEnhanced`는 `EvidenceCollector` 내부 구현으로 유지됩니다.
-
-- **Legacy 벤치마크 제거** (v7.11.0에서 진행)
-  - `benchmarks/` 폴더 전체 제거 (→ `archive/benchmarks_all_legacy/`)
-  - Phase 0-4 벤치마크 → `tests/unit/`, `tests/integration/`으로 이동
-  - `benchmarks/common/common.py` (1,110 lines): deprecated
-
-- **Legacy 코드 정리** (v7.11.0에서 진행)
-  - `umis_rag/guestimation_v3/`: 빈 폴더 제거
-  - `umis_rag/agents/estimator.v7.10.2.backup/`: 37개 파일 제거
-  - `umis_rag/utils/fermi_model_search.py` (745 lines): 재귀 기반 엔진 제거
-
-**총 제거**: 2개 파일 (compat.py), 141 lines
-
 #### Test Cases
 - **E2E Scenario 10 제거**: Legacy API 호환성 테스트
   - `test_scenario_10_legacy_api_compatibility()` 제거
@@ -47,14 +33,38 @@ v7.11.0에서 deprecated된 코드를 완전히 제거한 패치 릴리스입니
 
 ### Changed (변경)
 
+#### Terminology Consistency (용어 일관성)
+**문제**: Stage 기반 아키텍처로 전환했지만, Evidence Collector 내부에서 여전히 "Phase"라는 용어 사용 → 혼란 발생
+
+**해결**: Source 중심 명명으로 변경 (v7.11.1)
+
+- **파일명 변경**:
+  - `phase0_literal.py` → `literal_source.py`
+  - `phase1_direct_rag.py` → `rag_source.py`
+  - `phase2_validator_search_enhanced.py` → `validator_source.py`
+
+- **클래스명 변경**:
+  - `Phase0Literal` → `LiteralSource` (프로젝트 확정 데이터)
+  - `Phase1DirectRAG` → `RAGSource` (학습된 규칙)
+  - `Phase2ValidatorSearchEnhanced` → `ValidatorSource` (외부 데이터)
+
+- **EvidenceCollector 내부**:
+  - `self.phase0` → `self.literal_source`
+  - `self.phase1` → `self.rag_source`
+  - `self.phase2` → `self.validator_source`
+
+**참고**: 이들은 `EvidenceCollector` (Stage 1)의 **내부 구성 요소**이며, 사용자가 직접 import하는 API가 아닙니다.
+
 #### Import Structure
 - **umis_rag/agents/estimator/__init__.py**:
   - `from .compat import ...` 제거
   - `Phase3Guestimation`, `Phase4FermiDecomposition` exports 제거
-  - v7.11.1: 완전한 Stage 기반 구조
+  - `LiteralSource`, `RAGSource`, `ValidatorSource` exports 추가
+  - v7.11.1: 완전한 Stage 기반 구조 + Source 명명
 
 - **umis_rag/agents/estimator.py**:
   - `from .estimator.compat import ...` 제거
+  - `Phase1DirectRAG` → `RAGSource`로 변경
   - Deprecated aliases 제거
 
 - **umis_rag/__init__.py**:
@@ -69,7 +79,7 @@ v7.11.0에서 deprecated된 코드를 완전히 제거한 패치 릴리스입니
 
 ### Migration Guide (마이그레이션 가이드)
 
-**v7.10.2 → v7.11.1 사용자**:
+**v7.10.2 → v7.11.1 사용자** (Deprecated API 제거):
 
 ```python
 # 변경 전 (v7.10.2)
@@ -86,7 +96,17 @@ prior = PriorEstimator(llm_provider=llm_provider)
 fermi = FermiEstimator(llm_provider=llm_provider, prior_estimator=prior)
 ```
 
-**자세한 내용**: `docs/MIGRATION_GUIDE_v7_11_0.md`
+**v7.11.0 → v7.11.1 사용자** (Source 명명 변경):
+
+```python
+# 변경 전 (v7.11.0 - 내부 API, 일반적으로 직접 사용 안함)
+from umis_rag.agents.estimator import Phase0Literal, Phase1DirectRAG, Phase2ValidatorSearchEnhanced
+
+# 변경 후 (v7.11.1 - 더 명확한 이름)
+from umis_rag.agents.estimator import LiteralSource, RAGSource, ValidatorSource
+```
+
+**참고**: 대부분의 사용자는 `EstimatorRAG` 또는 `EvidenceCollector`만 사용하므로 영향 없음.
 
 ---
 
