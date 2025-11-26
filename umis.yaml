@@ -4925,11 +4925,11 @@ agents:
           name: "Stage 1 - Evidence & Guardrails Collection"
           role: "거의 확정적인 사실 / 제약 제공"
           speed: "0.001~1초"
-          fast_path: "Phase 0에서 확정 데이터 발견 시 즉시 반환 ⚡"
+          fast_path: "Literal에서 확정 데이터 발견 시 즉시 반환 ⚡"
           
-          sub_phases:
-            phase_0_literal:
-              name: "Phase 0 - Literal (프로젝트 데이터)"
+          components:
+            literal:
+              name: "Literal (프로젝트 데이터)"
               status: "✅ 구현 완료"
               file: "umis_rag/agents/estimator/phase0_literal.py"
               role: "프로젝트별 확정 데이터 저장/조회"
@@ -4939,17 +4939,19 @@ agents:
                 definite_value: "확정 값 (있으면 즉시 종료)"
                 context_support: "domain_region_variable 형식 지원"
                 storage: "projects/{project_id}/data.json"
+              note: "구 Phase 0 (레거시 명칭)"
             
-            phase_1_direct_rag:
-              name: "Phase 1 - Direct RAG (학습된 규칙)"
-              status: "✅ 기존 구현"
+            direct_rag:
+              name: "Direct RAG (학습된 규칙)"
+              status: "✅ 구현 완료"
               file: "umis_rag/agents/estimator/phase1_direct_rag.py"
               role: "과거 추정 결과 및 학습 규칙 검색"
               speed: "<0.5초"
               confidence: "0.95+ (학습된 데이터)"
+              note: "구 Phase 1 (레거시 명칭)"
             
-            phase_2_validator_search:
-              name: "Phase 2 - Validator Search (확정 데이터)"
+            validator_search:
+              name: "Validator Search (확정 데이터)"
               status: "✅ Enhanced 버전 구현"
               file: "umis_rag/agents/estimator/phase2_validator_search_enhanced.py"
               role: "외부 검증 데이터 검색 및 유사 데이터 수집"
@@ -4958,12 +4960,13 @@ agents:
               output:
                 definite_value: "Validator 확정값"
                 similar_data: "Guardrail Engine 입력용"
+              note: "구 Phase 2 (레거시 명칭)"
             
             guardrail_engine:
               name: "Guardrail Engine (자동 제약 수집)"
               status: "✅ 구현 완료"
               file: "umis_rag/agents/estimator/guardrail_analyzer.py"
-              role: "Phase 2 유사 데이터를 논리적/경험적 제약으로 자동 변환"
+              role: "Validator Search 유사 데이터를 논리적/경험적 제약으로 자동 변환"
               process:
                 step_1: "2단계 LLM 체인 (관계 판단 → Hard/Soft 판정)"
                 step_2: "Guardrail 객체 생성 및 Evidence 통합"
@@ -4987,6 +4990,7 @@ agents:
           status: "✅ 구현 완료"
           file: "umis_rag/agents/estimator/prior_estimator.py"
           speed: "1-3초"
+          note: "구 Phase 3 Guestimation을 완전히 대체 (더 이상 Phase 3 없음)"
           
           mechanism:
             input: "question + Evidence.hard_bounds + Budget"
@@ -5018,7 +5022,7 @@ agents:
               - "사람 이동속도 = 4-5km/h"
           
           key_change:
-            from: "confidence (외부 검증) → 재귀 유발"
+            from: "confidence (외부 검증) → 재귀 유발 (구 Phase 3)"
             to: "certainty (내적 확신) → 항상 값 반환"
           
           principle: "Generative Prior = 생성 계층 (상식적 통념 기반)"
@@ -5029,13 +5033,14 @@ agents:
           status: "✅ 재귀 제거 완료"
           file: "umis_rag/agents/estimator/fermi_estimator.py"
           speed: "5-15초 (Budget 제한)"
+          note: "구 Phase 4 Fermi를 완전히 재설계 (더 이상 Phase 4 없음)"
           
           role_redefinition:
-            before: "정밀화 (재귀 분해로 더 정확히)"
+            before: "정밀화 (재귀 분해로 더 정확히, 구 Phase 4)"
             after: |
               1. 구조적 설명 제공 (explainability)
               2. 정밀도 약간 향상 (Prior 앵커로 조정)
-              3. Phase 2 (Prior)의 보조 수단
+              3. Stage 2 (Prior)의 보조 수단
           
           constraints:
             max_depth: "2 (강제, 재귀 금지)"
@@ -5151,9 +5156,9 @@ agents:
           Question + Context + Budget
                  ↓
           [Stage 1] Evidence Collection
-             → Phase 0: Literal (프로젝트 데이터)
-             → Phase 1: Direct RAG (학습 규칙)
-             → Phase 2: Validator (확정 데이터 + 유사 데이터)
+             → Literal (프로젝트 데이터)
+             → Direct RAG (학습 규칙)
+             → Validator Search (확정 데이터 + 유사 데이터)
              → Guardrail Engine (자동 제약 변환)
              ↓ Evidence(definite_value, hard_bounds, ...)
                  ↓
@@ -5178,6 +5183,10 @@ agents:
              → Hard Bounds 클리핑
              → Range 교집합
              → 최종 EstimationResult
+          
+          ⚠️ 레거시 Phase 3-4 폐기됨:
+             - 구 Phase 3 (Guestimation) → Stage 2 (Prior)로 대체
+             - 구 Phase 4 (Fermi) → Stage 3 (Fermi, 재귀 제거)로 재설계
         
         stage_independence:
           stage_1:
@@ -5206,7 +5215,7 @@ agents:
             action: "Stage 2-3 스킵, 즉시 반환"
             speed: "<0.1초 ⚡⚡⚡"
             confidence: "1.0"
-            source: "Evidence (Phase 0/1/2)"
+            source: "Evidence (Literal/Direct RAG/Validator Search)"
           
           no_recursion_policy:
             principle: "⛔ 재귀 완전 금지 (정책 레벨 봉인)"
@@ -5216,10 +5225,11 @@ agents:
               - "Budget 소진 시 즉시 종료"
               - "max_depth=2 강제 제한"
             rationale: "코드 튜닝이 아닌 아키텍처 원칙"
+            legacy_problem: "구 Phase 4의 재귀 폭발 완전 해결"
         
         no_fallback_cascade:
-          before: "Phase N 실패 → Phase N+1로 Fallback"
-          after: "모든 Stage 독립 실행 → Fusion에서 통합"
+          before: "Phase 0→1→2→3→4 순차 Fallback (레거시)"
+          after: "Stage 1→2→3→4 독립 실행 → Fusion에서 통합"
           principle: "'실패' 개념 없음, 항상 값 반환"
 
       # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
