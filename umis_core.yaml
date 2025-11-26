@@ -47,7 +47,8 @@ ai_guide:
           - tool:observer:complete
           - tool:explorer:complete
           - tool:quantifier:complete
-        context: ~8,200 tokens (3개)
+          - tool:estimator:complete (4-Stage Fusion)
+        context: ~11,000 tokens (4개)
         note: umis.yaml 참조 불필요!
       
       quick_check:
@@ -64,6 +65,7 @@ ai_guide:
     
     examples:
       - python3 scripts/query_system_rag.py tool:observer:complete
+      - python3 scripts/query_system_rag.py tool:estimator:complete
       - python3 scripts/query_system_rag.py tool:system:system_architecture
 
 # ========================================
