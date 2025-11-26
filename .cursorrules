@@ -3,6 +3,59 @@
 # v7.11.0 | Non-coder | Cursor-only
 # ========================================
 
+# === UMIS Tool Roles (Model-agnostic) ===
+
+tool_roles:
+  terminal:
+    description: >
+      "터미널에서 셸 명령을 실행하는 도구"를 의미한다.
+      예시: GPT 환경에서는 functions.Shell,
+            Claude 환경에서는 run_command 또는 유사한 도구.
+  file_read:
+    description: >
+      "파일 내용을 읽는 도구"를 의미한다.
+      예시: GPT 환경에서는 functions.Read,
+            Claude 환경에서는 read_file 또는 유사한 도구.
+  websearch:
+    description: >
+      "외부 웹을 검색하는 도구"를 의미한다.
+      예시: WebSearch / duckduckgo-search 래퍼 등.
+
+env_notes:
+  - "이 규칙에서 'terminal 역할 도구'라고 지시하면,
+     현재 환경에 존재하는 터미널 실행용 도구(e.g. functions.Shell, run_command)를 사용하라."
+  - "이 규칙에서 'file_read 역할 도구'라고 지시하면,
+     현재 환경에 존재하는 파일 읽기 도구(e.g. functions.Read, read_file)를 사용하라."
+
+core_rules:
+  - id: "umis_use_system_rag_first"
+    description: >
+      시장/산업 구조, 경쟁 구도, 기회, 전략, 수치/추정, 검증과 관련된 질문에 답변할 때는
+      항상 UMIS System RAG 도구를 먼저 호출하여 해당 Agent/Framework 컨텍스트를 로드하고
+      그 내용을 주된 근거로 사용해야 한다.
+      (예: Tier 1에서는 tool:system:system_architecture / tool:system:system,
+       Tier 2에서는 tool:observer:complete, tool:explorer:complete, tool:quantifier:complete 등)
+      System RAG 인덱스가 없거나 오류가 발생한 경우에만 umis_core.yaml / umis.yaml 파일을
+      직접 읽는 fallback 전략을 사용한다.
+  - id: "umis_follow_4_step_process"
+    description: >
+      새로운 프로젝트나 시장 분석을 시작할 때는 가능한 한 항상 다음 4단계를 따른다:
+      (1) System RAG Tier 1 도구를 사용해 UMIS 시스템 개요를 로드한다.
+      (2) 사용자 의도에 따라 적절한 Tier와 Agent 도구(tool_keys)를 선택한다
+          (예: 시장 분석 → observer+explorer+quantifier complete).
+      (3) 각 tool_key에 대해 터미널 역할 도구로 python3 scripts/query_system_rag.py {tool_key}를 실행해
+          도구 컨텍스트를 로드한다.
+      (4) 로드된 도구 컨텍스트를 기반으로 Observer→Explorer→Quantifier→Validator→Guardian 순서
+          (필요한 범위)로 워크플로를 실행하며 답변을 구성한다.
+  - id: "umis_use_validator_for_information"
+    description: >
+      외부 시장 통계, 경쟁사 데이터, 기사/리포트 등 정보를 찾거나 검증해야 할 때는
+      항상 Validator Agent를 우선 사용한다.
+      구체적으로는 System RAG로 tool:validator:complete (또는 관련 task 도구들)을 로드하고,
+      data_sources_registry, creative_sourcing, source_verification 등에 정의된
+      프로토콜을 따라 정보를 수집·교차검증해야 한다.
+      WebSearch/검색 API 호출은 이 Validator 단계 안에서 보조 수단으로만 사용한다.
+
 # === PART 1: UMIS 개념 (AI 필수 이해) ===
 
 system:
@@ -312,7 +365,7 @@ ai_mandatory_process:
   
   # ===== STEP 1: umis_core.yaml 로드 (필수!) =====
   step_1_load_index:
-    action: "read_file tool 사용"
+    action: "file_read 역할 도구 사용"
     file: "umis_core.yaml"
     reason: "3-Tier 구조 파악 및 도구 선택 (INDEX)"
     
@@ -401,7 +454,7 @@ ai_mandatory_process:
   
   # ===== STEP 3: System RAG 검색 (필수!) =====
   step_3_execute_system_rag:
-    action: "run_terminal_cmd tool 사용하여 필요한 도구 로드"
+    action: "terminal 역할 도구를 사용하여 필요한 도구 로드"
     
     command_template: "python3 scripts/query_system_rag.py {tool_key}"
     
