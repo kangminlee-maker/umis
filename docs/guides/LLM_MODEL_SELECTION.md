@@ -1,5 +1,5 @@
-# GPT 모델 선택 가이드 (UMIS 최적화)
-**각 모델의 특징과 UMIS 작업별 최적 모델 매칭**
+# GPT 모델 선택 가이드 (UMIS 최적화, v7.11.1)
+**4-Stage Fusion Architecture 기반 모델 선택 가이드**
 
 ---
 
@@ -51,7 +51,7 @@
   - Thinking 부족: 복잡한 추론 약함
 
 UMIS 적합도:
-  - Estimator Phase 2-3: ⭐⭐⭐⭐⭐
+  - Estimator Stage 2-3: ⭐⭐⭐⭐⭐
   - Explorer Workflow: ⭐⭐⭐⭐⭐
   - Observer 분석: ⭐⭐⭐⭐
   - Discovery Sprint: ⭐⭐⭐
@@ -84,12 +84,12 @@ UMIS 적합도:
   - Edge case: 실수 가능
 
 UMIS 적합도:
-  - Estimator Phase 0-2: ⭐⭐⭐⭐⭐ (완벽!)
+  - Estimator Stage 1: ⭐⭐⭐⭐⭐ (완벽!)
   - Quantifier 계산: ⭐⭐⭐⭐⭐ (공식 기반)
   - Validator 검증: ⭐⭐⭐⭐⭐ (체크리스트)
   - Explorer 패턴 검색: ⭐⭐⭐⭐ (RAG 기반)
-  - Estimator Phase 3: ⭐⭐⭐ (템플릿 있으면 OK)
-  - Estimator Phase 4: ⭐⭐ (단순한 경우만)
+  - Estimator Stage 2: ⭐⭐⭐ (템플릿 있으면 OK)
+  - Estimator Stage 3: ⭐⭐ (단순한 경우만)
   - Discovery Sprint: ⭐ (약함)
 
 추천 용도:
@@ -161,13 +161,13 @@ UMIS 적합도:
   - 간단한 작업: 오버킬
 
 UMIS 적합도:
-  - Estimator Phase 4: ⭐⭐⭐⭐⭐ (최적!)
+  - Estimator Stage 3: ⭐⭐⭐⭐⭐ (최적!)
   - Discovery Sprint: ⭐⭐⭐⭐⭐
   - Observer 복잡한 분석: ⭐⭐⭐⭐
   - 나머지: ⭐⭐ (불필요)
 
 추천 용도:
-  - Phase 4만 (창의적 모형 생성)
+  - Stage 3만 (창의적 모형 생성)
   - Discovery Sprint만
   - 복잡한 구조 분석만
 
