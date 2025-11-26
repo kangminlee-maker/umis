@@ -1,7 +1,7 @@
 # RAG Database 설정 가이드
 
-**작성일**: 2025-11-04  
-**대상**: UMIS v7.1.0+  
+**작성일**: 2025-11-25 (v7.11.1 업데이트)
+**대상**: UMIS v7.11.1+  
 **ChromaDB 크기**: ~50-100MB (향후 증가 예상)
 
 ---
@@ -62,13 +62,27 @@ python scripts/build_agent_rag_collections.py --agent all
 # 비용: ~$1-2
 ```
 
-**생성되는 Collections** (6개):
-- calculation_methodologies (30개)
-- market_benchmarks (100개)
-- data_sources_registry (50개)
-- definition_validation_cases (84개)
-- market_structure_patterns (30개)
-- value_chain_benchmarks (50개)
+**생성되는 Collections** (v7.11.1 기준):
+
+**Agent Collections (6개)**:
+- `explorer_knowledge_base` (54개 패턴: 31 Business Models + 23 Disruption)
+- `calculation_methodologies` (30개, Quantifier)
+- `market_benchmarks` (100개, Quantifier)
+- `data_sources_registry` (50개, Validator)
+- `definition_validation_cases` (84개, Validator)
+- `market_structure_patterns` (30개, Observer)
+- `value_chain_benchmarks` (50개, Observer)
+
+**Estimator Collections (3개)**:
+- `canonical_store` (정규화된 학습 데이터)
+- `estimator` (Agent별 View, 0→2,000개 진화)
+- `learned_rules` (학습된 규칙, Estimator 자동 학습)
+
+**System Collections (2개)**:
+- `system_knowledge` (44개 도구: System 9, Complete 6, Task 29)
+- `goal_memory`, `query_memory`, `rae_index` (Guardian Meta-RAG)
+
+**총 Collections**: 11-14개 (Agent + Estimator + System + Guardian)
 
 ---
 

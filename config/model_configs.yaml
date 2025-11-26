@@ -1,4 +1,4 @@
-# UMIS Model API Configurations (v7.11.0)
+# UMIS Model API Configurations (v7.11.1)
 #
 # 4-Stage Fusion Architecture 기반
 # TaskType별 모델 파라미터 자동 조정
@@ -54,26 +54,24 @@ defaults:
     default: medium
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# Stage별 Timeout 설정 (v7.11.0)
+# Stage별 Timeout 설정 (v7.11.1)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# Stage 2: Generative Prior (구 Phase 3 Guestimation)
-# Stage 3: Structural Explanation (구 Phase 4 Fermi, 재귀 제거)
+# Stage 2: Generative Prior (경량 모델)
+# Stage 3: Structural Explanation (Fermi 분해)
 # Stage 1, 4는 LLM 미사용으로 timeout 불필요
 stage_timeouts:
-  stage_2_generative_prior:  # 구 Phase 3
+  stage_2:  # Generative Prior
     description: "LLM 직접 값 요청 (단일 호출)"
     default: 45
-    legacy_alias: phase_3    # LLM_MODEL_PHASE3 환경변수 지원
     models:
       gpt-4o-mini: 15      # 빠름 (2-6초)
       gpt-4.1-nano: 10     # 매우 빠름 (1-3초)
       gpt-5.1: 45          # reasoning 모델 (6-35초)
       o1-mini: 45          # reasoning 모델
 
-  stage_3_fermi:  # 구 Phase 4 (재귀 제거)
-    description: "구조적 설명 (Fermi 분해, 재귀 없음, max_depth=2)"
+  stage_3:  # Structural Explanation (Fermi)
+    description: "구조적 설명 (Fermi 분해)"
     default: 60
-    legacy_alias: phase_4    # LLM_MODEL_PHASE4 환경변수 지원
     models:
       gpt-4o-mini: 20      # 빠름 (5-15초)
       gpt-5.1: 60          # reasoning high (11-14초, 여유)
@@ -83,32 +81,7 @@ stage_timeouts:
       gpt-5-pro: 180       # Pro 모델 (73초)
 
   # Stage 1 (Evidence Collection): LLM 미사용 (Literal, RAG, Validator만)
-  # Stage 4 (Fusion): LLM 미사용 (가중 합성만)
-
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# Legacy Phase Timeout (하위 호환성)
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# Deprecated: v7.11.0에서 stage_timeouts 사용 권장
-# 자동 매핑: phase_3 → stage_2_generative_prior
-#           phase_4 → stage_3_fermi
-phase_timeouts:
-  phase_3:
-    default: 45
-    models:
-      gpt-4o-mini: 15
-      gpt-4.1-nano: 10
-      gpt-5.1: 45
-      o1-mini: 45
-
-  phase_4:
-    default: 60
-    models:
-      gpt-4o-mini: 20
-      gpt-5.1: 60
-      o1-mini: 60
-      o1: 90
-      o1-pro: 120
-      gpt-5-pro: 180
+  # Stage 4 (Fusion & Validation): LLM 미사용 (Sensor Fusion, 수학적 계산만)
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 모델별 설정
