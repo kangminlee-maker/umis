@@ -26,7 +26,7 @@ _meta:
     - "4-Stage Fusion Architecture: Evidence → Prior → Fermi → Fusion"
     - "Clean Architecture: DIP, SRP, OCP, ISP 완전 준수"
     - "Recursion 금지: 예산 기반 탐색 제어"
-    - "하위 호환성: compat.py로 v7.10.0 API 완전 지원"
+    - "하위 호환성: compat.py로 이전 API 완전 지원"
 
 # ========================================
 # Part 1: 에이전트별 산출물 표준
@@ -313,7 +313,7 @@ agent_deliverable_standards:
             v7_5_0_update: "Estimator Agent 통합 (Single Source Policy)"
 
             estimator_integration:
-              principle: "v7.5.0: 모든 값 추정은 Estimator, 계산은 Quantifier"
+              principle: "모든 값 추정은 Estimator, 계산은 Quantifier"
               workflow:
                 step_1: "Quantifier가 계산 공식 확인 (예: LTV = ARPU / Churn)"
                 step_2: "필요한 값이 없으면 Estimator 호출"
@@ -350,7 +350,7 @@ agent_deliverable_standards:
                 - 피아노/기타/바이올린 등 세부 구분 없음
                 - 직접 조사 데이터도 없음
 
-                [2] Estimator 호출 (v7.7.0)
+                [2] Estimator 호출
                 - Query: "한국 음악학원 중 피아노 학원 비중은?"
                 - Context: {
                     market: "한국 음악 교육",
@@ -460,7 +460,7 @@ agent_deliverable_standards:
 
                 ============================================
 
-                Note: v7.5.0부터는 Estimator Agent 사용 권장 (위 템플릿)
+                Note: Estimator Agent 사용 권장 (위 템플릿)
 
             column_structure:
               columns:
@@ -1199,7 +1199,7 @@ agent_deliverable_standards:
           }
 
       business_metrics_results:
-        description: "12개 비즈니스 지표 템플릿 결과 (v7.5.0)"
+        description: "12개 비즈니스 지표 템플릿 결과"
         total_metrics: 12
         total_models: 23
 
@@ -1327,7 +1327,7 @@ agent_deliverable_standards:
         - "100% 재현 가능"
 
     collaboration_protocol:
-      description: "다른 Agent와의 협업 표준 (v7.5.0 Single Source Policy)"
+      description: "다른 Agent와의 협업 표준 (Single Source Policy)"
 
       when_agents_need_estimation:
         quantifier_collaboration:
@@ -1861,7 +1861,7 @@ project_lifecycle_management:
               quantifier: "{count}"  # Bill
               observer: "{count}"    # Albert
               explorer: "{count}"    # Steve
-              estimator: "{count}"   # Fermi (v7.5.0)
+              estimator: "{count}"   # Estimator Agent
               total: "{count}"
 
             validation_summary:
@@ -2199,7 +2199,7 @@ reproducibility_framework:
             - "검증 결과 포함"
 
     estimator_audit_trail:
-      description: "추정 과정의 완전한 투명성 및 재현성 (v7.5.0)"
+      description: "추정 과정의 완전한 투명성 및 재현성"
 
       required_documentation:
 
@@ -3162,7 +3162,7 @@ file_format_templates:
           bill: 0
           albert: 0
           steve: 0
-          fermi: 0  # v7.5.0 Estimator
+          fermi: 0  # Estimator Agent
           total: 0
 
         validation_summary:
@@ -3294,7 +3294,7 @@ integrated_workflow_example:
         - "9개 시트 작성:"
         - "  1) Assumptions: 직접데이터(SRC_ID) + 추정치(EST_ID) 구분"
         - "  1b) Estimation_Details: 피아노 학원 비중 30% 추정 논리 상세 작성"
-        - "     → v7.5.0: Estimator 호출하여 추정 (Tier 2 사용)"
+        - "     → Estimator 호출하여 추정"
         - "     → EstimationResult를 Estimation_Details에 기록"
         - "  2-5) 4가지 Method, 6) Convergence, 7) Scenarios, 8) Validation"
         - "4가지 방법으로 SAM 계산, 모든 계산 함수로 구현"
@@ -3302,7 +3302,7 @@ integrated_workflow_example:
         - "PDF 백업 + sam_calculation_report.md 작성"
         - "Validator, Observer에게 검증 요청"
 
-      estimator_collaboration:  # v7.5.0
+      estimator_collaboration:
         - "추정 필요 항목: 피아노 학원 비중"
         - "Estimator.estimate() 호출 → 30% ± 5% (Phase 3, 3.2초)"
         - "EstimationResult를 EST_001로 Estimation_Details에 기록"
