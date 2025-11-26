@@ -17,6 +17,7 @@ FermiEstimator - 구조적 설명 엔진 (v7.11.0 Stage 3)
 - 모든 변수 추정 = PriorEstimator 호출
 - max_depth = 2 (강제)
 - 예산 소진 시 즉시 반환
+- llm_mode 제거, LLMProvider 기반
 """
 
 from typing import Optional, Dict, Any, List, Tuple
@@ -28,6 +29,8 @@ from langchain_openai import ChatOpenAI
 from umis_rag.utils.logger import logger
 from umis_rag.core.config import settings
 from umis_rag.core.model_router import select_model_with_config
+from umis_rag.core.llm_interface import LLMProvider
+from umis_rag.core.llm_provider_factory import get_default_llm_provider
 
 from .common.budget import Budget
 from .common.estimation_result import EstimationResult, create_fermi_result, Evidence
@@ -44,6 +47,12 @@ class FermiEstimator:
     - Fermi 분해로 "구조 설명" 제공
     - 재귀 금지 (절대적 원칙)
     - 모든 변수 = PriorEstimator로 직접 추정
+    
+    v7.11.0 변경사항:
+    ---------------
+    - ❌ llm_mode property 제거
+    - ✅ LLMProvider 기반
+    - ✅ 분기 없음
     
     제약:
     -----
@@ -62,7 +71,7 @@ class FermiEstimator:
     
     def __init__(
         self,
-        llm_mode: Optional[str] = None,
+        llm_provider: Optional[LLMProvider] = None,
         model_name: Optional[str] = None,
         prior_estimator: Optional[PriorEstimator] = None
     ):
@@ -70,43 +79,46 @@ class FermiEstimator:
         초기화
         
         Args:
-            llm_mode: LLM 모드
-            model_name: LLM 모델 이름 (None이면 Phase 4 기본값)
+            llm_provider: LLMProvider (None이면 기본 Provider)
+            model_name: LLM 모델 이름 (None이면 Stage 3 기본값)
             prior_estimator: Prior Estimator (None이면 생성)
+        
+        Note:
+            v7.11.0: llm_mode 파라미터 제거됨
         """
-        self._llm_mode = llm_mode
+        self.llm_provider = llm_provider or get_default_llm_provider()
         self._model_name = model_name
         self._llm = None
         
-        # Prior Estimator (변수 추정용)
-        self.prior_estimator = prior_estimator or PriorEstimator(llm_mode=llm_mode)
+        # Prior Estimator (변수 추정용, 같은 Provider 사용)
+        self.prior_estimator = prior_estimator or PriorEstimator(
+            llm_provider=self.llm_provider
+        )
         
         logger.info("[FermiEstimator] 초기화")
-        logger.info(f"  LLM Mode: {self.llm_mode}")
+        logger.info(f"  Provider: {self.llm_provider.__class__.__name__}")
         logger.info(f"  Model: {self.model_name}")
         logger.info("  ⚠️  재귀 금지 (Recursion FORBIDDEN)")
-    
-    @property
-    def llm_mode(self) -> str:
-        """LLM 모드 동적 읽기"""
-        if self._llm_mode is None:
-            return settings.llm_mode
-        return self._llm_mode
     
     @property
     def model_name(self) -> str:
         """
         LLM 모델 이름 동적 읽기
         
-        Phase 4 전용 모델 사용 (gpt-4o 권장)
+        Stage 3 전용 모델 사용 (gpt-4o-mini 권장)
         """
         if self._model_name is None:
-            model, config = select_model_with_config(phase=4)
+            model, config = select_model_with_config(phase=3)  # Stage 3
             return model
         return self._model_name
     
     def _get_llm(self) -> ChatOpenAI:
-        """LLM 인스턴스 (Lazy 초기화)"""
+        """
+        LLM 인스턴스 (Lazy 초기화)
+        
+        Note:
+            현재는 직접 ChatOpenAI 생성
+        """
         if self._llm is None:
             self._llm = ChatOpenAI(
                 model=self.model_name,
@@ -139,6 +151,9 @@ class FermiEstimator:
         
         Returns:
             EstimationResult or None
+        
+        Note:
+            v7.11.0: 분기 없음
         """
         logger.info(f"[FermiEstimator] 추정 시작 (depth={depth}): {question}")
         start_time = time.time()

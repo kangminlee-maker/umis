@@ -11,6 +11,11 @@ PriorEstimator - 생성적 사전 추정기 (v7.11.0 Stage 2)
 - 확신 있게 말할 수 있는 값을 찍음
 - Certainty: high/medium/low (내적 확신도)
 - 재귀 금지 (절대적 원칙)
+
+v7.11.0 완전 추상화:
+- llm_mode property 제거
+- LLMProvider 기반
+- 분기 없음
 """
 
 from typing import Optional, Tuple
@@ -21,7 +26,8 @@ from langchain_openai import ChatOpenAI
 
 from umis_rag.utils.logger import logger
 from umis_rag.core.config import settings
-from umis_rag.core.model_router import select_model_with_config
+from umis_rag.core.llm_interface import LLMProvider, TaskType
+from umis_rag.core.llm_provider_factory import get_default_llm_provider
 
 from .common.budget import Budget
 from .common.estimation_result import EstimationResult, create_prior_result, Evidence
@@ -38,6 +44,12 @@ class PriorEstimator:
     - 범위 + Certainty 반환
     - 재귀 금지 (절대적 원칙)
     
+    v7.11.0 변경사항:
+    ---------------
+    - ❌ llm_mode property 제거
+    - ✅ LLMProvider 기반
+    - ✅ 분기 없음
+    
     프롬프트 설계:
     -------------
     "당신이 확신 있게 말할 수 있는 값을 제시하세요"
@@ -51,46 +63,52 @@ class PriorEstimator:
     - reasoning: 추정 근거
     """
     
-    def __init__(self, llm_mode: Optional[str] = None, model_name: Optional[str] = None):
+    def __init__(
+        self,
+        llm_provider: Optional[LLMProvider] = None,
+        model_name: Optional[str] = None
+    ):
         """
         초기화
         
         Args:
-            llm_mode: LLM 모드 (None이면 settings에서 읽기)
-            model_name: LLM 모델 이름 (None이면 Phase 3 기본값)
+            llm_provider: LLMProvider (None이면 기본 Provider)
+            model_name: LLM 모델 이름 (None이면 Stage 2 기본값)
+        
+        Note:
+            v7.11.0: llm_mode 파라미터 제거됨
         """
-        self._llm_mode = llm_mode
+        self.llm_provider = llm_provider or get_default_llm_provider()
         self._model_name = model_name
         self._llm = None
         
         logger.info("[PriorEstimator] 초기화")
-        logger.info(f"  LLM Mode: {self.llm_mode}")
+        logger.info(f"  Provider: {self.llm_provider.__class__.__name__}")
         logger.info(f"  Model: {self.model_name}")
-    
-    @property
-    def llm_mode(self) -> str:
-        """LLM 모드 동적 읽기"""
-        if self._llm_mode is None:
-            return settings.llm_mode
-        return self._llm_mode
     
     @property
     def model_name(self) -> str:
         """
         LLM 모델 이름 동적 읽기
         
-        Phase 3 전용 모델 사용 (gpt-4o-mini 권장)
+        Stage 2 전용 모델 사용 (gpt-4.1-nano 또는 설정된 모델)
         """
         if self._model_name is None:
-            # Phase 3 모델 선택
+            # Stage 2 모델 선택
             from umis_rag.core.model_router import select_model_with_config
             
-            model, config = select_model_with_config(phase=3)
+            model, config = select_model_with_config(phase=2)  # Stage 2
             return model
         return self._model_name
     
     def _get_llm(self) -> ChatOpenAI:
-        """LLM 인스턴스 (Lazy 초기화)"""
+        """
+        LLM 인스턴스 (Lazy 초기화)
+        
+        Note:
+            현재는 직접 ChatOpenAI 생성하지만,
+            향후 LLMProvider.get_llm()을 통해 받아올 수 있음
+        """
         if self._llm is None:
             self._llm = ChatOpenAI(
                 model=self.model_name,
@@ -121,6 +139,9 @@ class PriorEstimator:
         
         Returns:
             EstimationResult or None
+        
+        Note:
+            v7.11.0: 분기 없음 (Native/External 자동 처리)
         """
         logger.info(f"[PriorEstimator] 추정 시작: {question}")
         start_time = time.time()
@@ -182,11 +203,14 @@ class PriorEstimator:
         
         Returns:
             (value, range, certainty, reasoning)
+        
+        Note:
+            v7.11.0: LLM 직접 호출 (프롬프트 커스터마이징 필요)
         """
         # 프롬프트 생성
         prompt = self._build_prompt(question, evidence, context)
         
-        # LLM 호출
+        # LLM 호출 (직접)
         llm = self._get_llm()
         response = llm.invoke(prompt)
         content = response.content.strip()

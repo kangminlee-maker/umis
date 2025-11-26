@@ -18,6 +18,8 @@ import time
 
 from umis_rag.utils.logger import logger
 from umis_rag.core.config import settings
+from umis_rag.core.llm_interface import LLMProvider
+from umis_rag.core.llm_provider_factory import get_default_llm_provider
 
 from .common.estimation_result import Evidence, EstimationResult, create_definite_result
 from .phase0_literal import Phase0Literal
@@ -44,15 +46,22 @@ class EvidenceCollector:
     - 확정 값이 있으면 EstimationResult 반환 (추정 불필요)
     """
     
-    def __init__(self, llm_mode: Optional[str] = None, project_id: Optional[str] = None):
+    def __init__(
+        self,
+        llm_provider: Optional[LLMProvider] = None,
+        project_id: Optional[str] = None
+    ):
         """
         초기화
         
         Args:
-            llm_mode: LLM 모드 (None이면 settings에서 읽기)
+            llm_provider: LLMProvider (None이면 기본 Provider)
             project_id: 프로젝트 ID (Phase 0용)
+        
+        Note:
+            v7.11.0: llm_mode 파라미터 제거됨
         """
-        self._llm_mode = llm_mode
+        self.llm_provider = llm_provider or get_default_llm_provider()
         self._project_id = project_id
         
         logger.info("[EvidenceCollector] 초기화 시작")
@@ -69,18 +78,11 @@ class EvidenceCollector:
         self.phase2 = Phase2ValidatorSearchEnhanced()
         logger.info("  ✅ Phase 2 (Validator Search Enhanced)")
         
-        # Guardrail Analyzer
-        self.guardrail_analyzer = GuardrailAnalyzer(llm_mode=self.llm_mode)
+        # Guardrail Analyzer (같은 Provider 사용)
+        self.guardrail_analyzer = GuardrailAnalyzer(llm_provider=self.llm_provider)
         logger.info("  ✅ Guardrail Analyzer")
         
         logger.info("[EvidenceCollector] 초기화 완료")
-    
-    @property
-    def llm_mode(self) -> str:
-        """LLM 모드 동적 읽기"""
-        if self._llm_mode is None:
-            return settings.llm_mode
-        return self._llm_mode
     
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     # 메인 인터페이스

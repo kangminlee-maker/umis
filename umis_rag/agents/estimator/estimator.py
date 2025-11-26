@@ -27,6 +27,8 @@ sys.path.insert(0, str(project_root))
 
 from umis_rag.core.config import settings
 from umis_rag.utils.logger import logger
+from umis_rag.core.llm_interface import LLMProvider
+from umis_rag.core.llm_provider_factory import get_default_llm_provider
 
 from .common.budget import Budget, create_standard_budget, create_fast_budget, create_thorough_budget
 from .common.estimation_result import EstimationResult, Evidence
@@ -85,34 +87,45 @@ class EstimatorRAG:
         >>> result = estimator.estimate("서울 음식점 수는?", budget=budget)
     """
     
-    def __init__(self, project_id: Optional[str] = None):
+    def __init__(
+        self,
+        llm_provider: Optional[LLMProvider] = None,
+        project_id: Optional[str] = None
+    ):
         """
         Estimator RAG Agent 초기화 (v7.11.0)
         
         Args:
-            project_id: 프로젝트 ID (Phase 0 Literal용, 선택)
+            llm_provider: LLMProvider (None이면 기본 Provider)
+            project_id: 프로젝트 ID (Stage 1 Literal용, 선택)
+        
+        Note:
+            v7.11.0: llm_mode 파라미터 제거됨
         """
         logger.info("[Estimator] v7.11.0 Fusion Architecture 초기화")
+        
+        # LLMProvider 설정
+        self.llm_provider = llm_provider or get_default_llm_provider()
         
         if project_id:
             logger.info(f"  📌 Project ID: {project_id}")
         
-        logger.info(f"  📌 LLM Mode: {self.llm_mode}")
+        logger.info(f"  📌 Provider: {self.llm_provider.__class__.__name__}")
         
         # Stage 1: Evidence Collector
         self.evidence_collector = EvidenceCollector(
-            llm_mode=self.llm_mode,
+            llm_provider=self.llm_provider,
             project_id=project_id
         )
         logger.info("  ✅ Stage 1: Evidence Collector")
         
         # Stage 2: Prior Estimator
-        self.prior_estimator = PriorEstimator(llm_mode=self.llm_mode)
+        self.prior_estimator = PriorEstimator(llm_provider=self.llm_provider)
         logger.info("  ✅ Stage 2: Prior Estimator")
         
         # Stage 3: Fermi Estimator
         self.fermi_estimator = FermiEstimator(
-            llm_mode=self.llm_mode,
+            llm_provider=self.llm_provider,
             prior_estimator=self.prior_estimator
         )
         logger.info("  ✅ Stage 3: Fermi Estimator (재귀 금지)")
@@ -123,16 +136,6 @@ class EstimatorRAG:
         
         logger.info("  ⚠️  v7.11.0: 재귀 완전 제거 (Recursion FORBIDDEN)")
         logger.info("  ✅ Estimator Agent 준비 완료")
-    
-    @property
-    def llm_mode(self) -> str:
-        """
-        LLM 모드 동적 읽기
-        
-        Returns:
-            현재 설정된 LLM 모드
-        """
-        return settings.llm_mode
     
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     # 메인 인터페이스
