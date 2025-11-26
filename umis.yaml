@@ -272,7 +272,7 @@ system:
   release_date: "2025-11-24"
   status: "Stable Release - cursor-native Integration"
   purpose: "RAG 기반 6-Agent 협업 시장 분석 시스템"
-  description: "6-Agent + 5-Phase Estimator + Model Config 시스템 (18개: 17 External + cursor-native) + 98% 비용 절감 (Native $0 / External $0.30)"
+  description: "6-Agent + 4-Stage Fusion Estimator + LLM Complete Abstraction + Model Config 시스템 (18개: 17 External + cursor-native) + 98% 비용 절감"
   default_mode: "Discovery Sprint → Comprehensive Study (2-4주) - 별도 언급 없으면 자동 적용"
 
   rag_architecture:
