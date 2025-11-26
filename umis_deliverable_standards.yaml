@@ -1053,21 +1053,18 @@ agent_deliverable_standards:
         - "실행 로드맵 구체화"
         - "70% 이상 통과율"
 
-  # Fermi (Estimator) - 값 추정 및 판단 (v7.5.0) ⭐
+  # Estimator - 값 추정 및 판단 ⭐
   fermi_standards:
     _id: "fermi_deliverable_standards"
     _role: "Estimator"
     _agent_id: "estimator"
     _core_output: "EstimationResult + DecompositionTrace + 비즈니스 지표 결과"
-    _version: "7.7.0"
-    _architecture: "5-Phase (Phase 0-4)"
-    _terminology:
-      phase: "Estimator 전체 단계 (0-4)"
-      step: "Phase 4 (Fermi) 내부 단계 (1-4)"
-      files: "phase1_direct_rag.py, phase3_guestimation.py, phase4_fermi.py"
+    _version: "7.11.0"
+    _architecture: "4-Stage Fusion (Evidence → Prior → Fermi → Fusion)"
+    _clean_architecture: "LLM Complete Abstraction (DIP, SRP, OCP, ISP)"
 
     single_source_policy:
-      principle: "모든 값/데이터 추정은 Estimator만 담당 (v7.5.0)"
+      principle: "모든 값/데이터 추정은 Estimator만 담당"
       enforcement: "5개 Agent (Rachel/Bill/Albert/Steve/Stewart)가 추정 필요 시 Estimator 호출"
       exception: "직접 데이터가 있을 때는 불필요"
       benefit:
@@ -1079,7 +1076,7 @@ agent_deliverable_standards:
     primary_deliverables:
 
       estimation_result:
-        description: "추정 결과 및 상세 근거 (모든 Phase 공통)"
+        description: "추정 결과 및 상세 근거 (4-Stage Fusion)"
         file_format: "Python Dict / JSON"
         output_location: "프로그래밍 방식 또는 분석 문서 내 인라인"
 
@@ -1090,43 +1087,40 @@ agent_deliverable_standards:
             example: "6.0 (% Churn Rate)"
             mandatory: true
 
-          - field: "phase"
-            type: "integer"
-            values: [0, 1, 2, 3, 4]
-            description: "사용된 Phase (v7.7.0: tier→phase)"
-            example: 2
+          - field: "source"
+            type: "string"
+            values: ["Evidence", "Generative Prior", "Fermi", "Fusion"]
+            description: "값의 출처 (4-Stage)"
+            example: "Generative Prior"
             mandatory: true
-            note: "v7.7.0 Breaking Change: tier → phase"
 
           - field: "reasoning_detail"
             type: "string/dict"
             description: "추정 근거 (완전 투명화)"
             mandatory: true
             structure:
-              phase_1:
-                - "matched_rule_id"
-                - "rule_content"
-                - "confidence: 100%"
+              stage_1_evidence:
+                - "literal_value (Phase 0)"
+                - "learned_rule (Phase 1)"
+                - "validator_result (Phase 2)"
+                - "early_return: true/false"
 
-              phase_2:
-                - "validator_search_result"
-                - "unit_conversion (if applied)"
-                - "relevance_check"
-                - "confidence: 1.0"
+              stage_2_prior:
+                - "llm_estimation (생성적 추정)"
+                - "certainty: high/medium/low"
+                - "value_range: [min, max]"
+                - "reasoning: 1-2문장"
 
-              phase_3:
-                - "context_analysis (시장/산업/고객 타입)"
-                - "sources_used (11개 Source 중)"
-                - "judgment_logic (맥락 기반)"
-                - "confidence_range"
-
-              phase_4:
+              stage_3_fermi:
                 - "decomposition_formula"
-                - "step_1_4_trace (스캔→생성→체크→실행)"
-                - "recursive_breakdown (depth)"
-                - "variable_values (데이터 상속)"
+                - "variable_estimates"
                 - "calculation_steps"
-                - "llm_mode (Native/External)"
+                - "max_depth: 2"
+
+              stage_4_fusion:
+                - "fusion_strategy (가중 평균)"
+                - "hard_bounds_clipping"
+                - "final_certainty"
 
           - field: "confidence"
             type: "string"
@@ -1136,7 +1130,7 @@ agent_deliverable_standards:
 
           - field: "sources"
             type: "array"
-            description: "사용된 데이터 출처 (Rachel source_id 또는 Source 타입)"
+            description: "사용된 데이터 출처"
             example: ["SRC_20251108_001", "RAG_benchmark", "Statistical_pattern"]
             mandatory: true
 
@@ -1145,38 +1139,36 @@ agent_deliverable_standards:
             description: "추가 정보"
             fields:
               - "timestamp"
-              - "phase_path (시도 경로: 0→1→2→3→4)"
+              - "stage_path (실행 경로: Evidence→Prior→Fermi→Fusion)"
               - "execution_time"
-              - "learning_applied (Phase 1 규칙 사용 여부)"
+              - "llm_provider (CursorLLM/ExternalLLM)"
             mandatory: false
 
       decomposition_trace:
-        description: "Phase 4 (Fermi) 재귀 분해 추적 - Step 1-4"
-        when: "Phase 4 사용 시만"
+        description: "Stage 3 (Fermi) 분해 추적"
+        when: "Stage 3 사용 시만"
         file_format: "Python Dict / 분석 문서 내 상세 섹션"
 
         purpose:
-          - "재귀 분해 과정 완전 투명화 (Step 1-4)"
+          - "분해 과정 완전 투명화"
           - "변수 간 의존성 추적"
-          - "데이터 상속 경로 기록 (Step 1)"
           - "재현 가능성 보장"
+          - "Recursion 금지 (max_depth=2)"
 
         structure:
           root_metric:
             - "name: 지표명 (예: LTV)"
             - "formula: 수식"
-            - "depth: 재귀 깊이 (최대 4)"
+            - "depth: 분해 깊이 (최대 2)"
 
           decomposition_tree:
             - "각 변수의 분해 트리"
             - "부모-자식 관계"
-            - "데이터 상속 표시"
             - "순환 감지 결과"
 
           variable_resolution:
-            - "각 변수 해결 방법 (규칙/추정/데이터/상속)"
-            - "Phase 0-4 사용 표시"
-            - "LLM 호출 여부 (External 모드)"
+            - "각 변수 해결 방법 (Evidence/Prior/Fermi)"
+            - "LLMProvider 사용 여부"
 
           final_calculation:
             - "Bottom-up 계산 경로"
@@ -1186,24 +1178,23 @@ agent_deliverable_standards:
           {
             "metric": "LTV",
             "formula": "ARPU / Churn_Rate",
-            "depth": 2,
+            "depth": 1,
             "decomposition": {
               "ARPU": {
-                "formula": "MRR / Active_Users",
-                "depth": 1,
-                "MRR": {"value": 50000, "source": "project_data"},
-                "Active_Users": {"value": 1000, "source": "phase3_estimate"}
+                "value": 80000,
+                "source": "Generative Prior",
+                "certainty": "high"
               },
               "Churn_Rate": {
-                "value": 0.06,
-                "phase": 3,
-                "reasoning": "B2B SaaS 맥락 분석"
+                "value": 0.05,
+                "source": "Generative Prior",
+                "certainty": "medium"
               }
             },
             "result": {
-              "value": 833.33,
-              "unit": "$",
-              "confidence": "Medium (± 15%)"
+              "value": 1600000,
+              "unit": "원",
+              "confidence": "Medium (± 20%)"
             }
           }
 
