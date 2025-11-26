@@ -137,9 +137,9 @@ B2B SaaS Churn Rate: 5-8%
 - YAML 파일 열기 → 출처 URL 직접 접근
 - 다른 사람이 같은 프로세스 재실행 가능
 
-### 3. Native 모드 (비용 $0)
+### 3. Native 모드 (Cursor 인터페이스 그대로 활용)
 
-**Cursor LLM을 직접 사용**:
+**핵심 장점: 별도 프로그램 설치 없이 Cursor에서 바로 사용**:
 ```bash
 # .env 설정
 LLM_MODE=cursor
@@ -148,18 +148,20 @@ LLM_MODE=cursor
 Cursor Composer (Cmd+I):
 "@Steve, 시장 분석해줘"
 
-→ Cursor의 내장 LLM이 직접 처리
-→ 외부 API 호출 없음
-→ 비용: $0
+→ Cursor의 UI/UX 그대로 활용
+→ 새로운 프로그램 설치 불필요
+→ 커스터마이징 용이 (Cursor Rules, @mentions)
+→ 비용: $0 (Cursor 구독에 포함)
 ```
 
 **External 모드와 비교**:
 | 항목 | Native (Cursor) | External (OpenAI/Anthropic) |
 |------|-----------------|------------------------------|
-| 비용 | $0 | $0.01-0.10 per request |
-| API Key | 불필요 | 필요 |
-| 속도 | 빠름 | 빠름 |
-| 모델 선택 | Cursor 모델 | 18개 모델 선택 가능 |
+| 사용성 | ✅ Cursor 인터페이스 그대로 | 별도 API 설정 필요 |
+| 설치 | ✅ 추가 설치 불필요 | API Key 설정 |
+| 커스터마이징 | ✅ Cursor Rules, @mentions | 프로그래밍 필요 |
+| 비용 | $0 (Cursor 구독) | $0.01-0.10 per request |
+| 자동화 | 불가 (수동 실행) | 가능 (스크립트) |
 
 ### 4. Estimator: 4-Stage Fusion Architecture (v7.11.0)
 
