@@ -2,12 +2,13 @@
 Model API Configuration Manager
 
 모델별 API 설정을 YAML에서 로드하고 관리
-Phase 4 Fermi Decomposition 벤치마크 기반 (v7.8.0)
+Stage별 Timeout 설정 지원 (v7.11.1)
+4-Stage Fusion Architecture 기반
 
 Usage:
     from umis_rag.core.model_configs import model_config_manager
-    
-    config = model_config_manager.get_config('o1-mini')
+
+    config = model_config_manager.get_config('gpt-4o-mini')
     api_params = config.build_api_params(prompt="Test", reasoning_effort='medium')
 """
 
@@ -163,7 +164,7 @@ class ModelConfigManager:
     _configs: Dict[str, ModelConfig] = {}
     _pro_models: List[str] = []
     _defaults: Dict[str, Any] = {}
-    _phase_timeouts: Dict[str, Any] = {}  # v7.10.0: Phase별 timeout 설정
+    _stage_timeouts: Dict[str, Any] = {}  # v7.11.1: Stage별 timeout 설정
     
     def __new__(cls):
         if cls._instance is None:
@@ -190,8 +191,8 @@ class ModelConfigManager:
         # Pro 모델 목록 저장
         self._pro_models = data.get('pro_models', [])
 
-        # v7.10.0: Phase별 timeout 설정 저장
-        self._phase_timeouts = data.get('phase_timeouts', {})
+        # v7.11.1: Stage별 timeout 설정 저장 (하위호환: phase_timeouts도 허용)
+        self._stage_timeouts = data.get('stage_timeouts', data.get('phase_timeouts', {}))
         
         # 모델별 설정 로드
         for model_name, config in data.get('models', {}).items():
@@ -288,12 +289,12 @@ class ModelConfigManager:
         """Pro 모델 여부 확인"""
         return model_name in self._pro_models
 
-    def get_phase_timeout(self, phase: int, model_name: Optional[str] = None) -> float:
+    def get_stage_timeout(self, stage: int, model_name: Optional[str] = None) -> float:
         """
-        Phase별 timeout 조회 (v7.10.0)
+        Stage별 timeout 조회 (v7.11.1)
 
         Args:
-            phase: Phase 번호 (3 또는 4)
+            stage: Stage 번호 (1, 2, 3, 4)
             model_name: 모델 이름 (선택, 모델별 timeout 적용)
 
         Returns:
@@ -301,20 +302,25 @@ class ModelConfigManager:
 
         Example:
             >>> manager = ModelConfigManager()
-            >>> manager.get_phase_timeout(4, 'gpt-5.1')
+            >>> manager.get_stage_timeout(3, 'gpt-4o-mini')
             60.0
-            >>> manager.get_phase_timeout(3)  # 기본값
-            45.0
+            >>> manager.get_stage_timeout(2)  # 기본값
+            30.0
         """
-        phase_key = f"phase_{phase}"
-        phase_config = self._phase_timeouts.get(phase_key, {})
+        # stage_X 키 먼저 확인, 없으면 phase_X 키도 확인 (하위호환)
+        stage_key = f"stage_{stage}"
+        phase_key = f"phase_{stage}"  # 레거시 지원
+        
+        stage_config = self._stage_timeouts.get(stage_key)
+        if stage_config is None:
+            stage_config = self._stage_timeouts.get(phase_key, {})
 
         # 기본 timeout
-        default_timeout = phase_config.get('default', self._defaults.get('timeout_seconds', 30))
+        default_timeout = stage_config.get('default', self._defaults.get('timeout_seconds', 30))
 
         if model_name:
             # 모델별 timeout
-            models_timeout = phase_config.get('models', {})
+            models_timeout = stage_config.get('models', {})
             if model_name in models_timeout:
                 return float(models_timeout[model_name])
 
@@ -346,7 +352,7 @@ def is_pro_model(model_name: str) -> bool:
     return model_config_manager.is_pro_model(model_name)
 
 
-def get_phase_timeout(phase: int, model_name: Optional[str] = None) -> float:
-    """Phase별 timeout 조회 (편의 함수, v7.10.0)"""
-    return model_config_manager.get_phase_timeout(phase, model_name)
+def get_stage_timeout(stage: int, model_name: Optional[str] = None) -> float:
+    """Stage별 timeout 조회 (편의 함수, v7.11.1)"""
+    return model_config_manager.get_stage_timeout(stage, model_name)
 
