@@ -1,4 +1,0 @@
-"""
-UMIS Benchmark System
-"""
-
