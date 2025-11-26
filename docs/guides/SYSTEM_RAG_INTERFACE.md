@@ -1,6 +1,6 @@
 # System RAG 인터페이스 가이드
-**날짜**: 2025-11-05  
-**버전**: UMIS v7.2.0  
+**날짜**: 2025-11-25 (v7.11.1 업데이트)
+**버전**: UMIS v7.11.1  
 **대상**: AI Assistant (Cursor, Claude 등)
 
 ---
@@ -41,11 +41,11 @@
 
 구조:
   umis_core.yaml (709줄):
-    - INDEX (도구 목록, Agent 역할 요약)
+    - INDEX (44개 도구: System 9 + Complete 6 + Task 29)
     - 전체 개요
     - Decision Guide
   
-  System RAG (28개 도구):
+  System RAG (44개 도구):
     - 각 도구의 상세 content (200-800줄)
     - tool_key로 정확 검색
     - 필요한 것만 로드
