@@ -1,11 +1,16 @@
 """
-Meta-RAG: Guardian Orchestrator
+Meta-RAG: Guardian Orchestrator (v7.11.1)
 
 Guardian의 통합 평가 및 프로세스 감시 시스템:
 - QueryMemory (순환 감지)
 - GoalMemory (목표 정렬)
 - RAEMemory (평가 일관성)
 - Three-Stage Evaluation (품질 평가)
+
+v7.11.0 업데이트:
+- 용어 통일: Phase → Stage, confidence → certainty
+- Estimator 4-Stage Fusion Architecture 반영
+- 예산 기반 제어 (max_llm_calls, max_runtime) 지원
 """
 
 from typing import Dict, Any, Optional, List
@@ -175,14 +180,16 @@ class GuardianMetaRAG:
         """
         추정 결과 기반 방법론 권고 - DEPRECATED (v7.5.0)
         
-        v7.7.0 업데이트:
-        - Domain Reasoner 제거 (Estimator Phase 3/4로 완전 대체)
-        - 2-Phase 전략 폐지
-        - 모든 추정은 Estimator Agent 사용 (Phase 0 → 1 → 2 → 3 → 4 자동)
+        v7.11.0 업데이트:
+        - Domain Reasoner 제거 (Estimator Stage 3/4로 완전 대체)
+        - 2-Stage 전략 폐지
+        - 모든 추정은 Estimator Agent 사용 (Stage 1 → 2 → 3 → 4 자동)
+        - 용어 통일: Phase → Stage, confidence → certainty
+        - 예산 기반 제어 (max_llm_calls, max_runtime)
         
         현재 동작:
         - 항상 'estimator_sufficient' 반환
-        - Estimator가 Phase 0-4 자동 선택
+        - Estimator가 Stage 1-4 자동 선택
         
         Args:
             estimate_result: EstimationResult (사용 안 함)
@@ -196,9 +203,10 @@ class GuardianMetaRAG:
                 guardian.recommend_methodology() → 'domain_reasoner'
                 → quantifier.calculate_sam_with_hybrid()
             
-            After (v7.7.0):
+            After (v7.11.0):
                 estimator.estimate(question, domain, region)
-                → Phase 0 → 1 → 2 → 3 → 4 자동 시도
+                → Stage 1 → 2 → 3 → 4 자동 시도
+                → 예산 기반 제어 (max_llm_calls, max_runtime)
         """
         logger.warning("[Guardian] recommend_methodology() DEPRECATED (v7.5.0)")
         logger.warning("  Domain Reasoner 제거됨")
@@ -210,27 +218,40 @@ class GuardianMetaRAG:
         # 입력 추출 (호환성 유지)
         value = estimate_result.get('value', 0)
         range_tuple = estimate_result.get('range', (0, 0))
-        confidence = estimate_result.get('confidence', 0)
+        
+        # v7.11.0: confidence → certainty 용어 통일
+        certainty = estimate_result.get('certainty', estimate_result.get('confidence', 0))
         current_method = estimate_result.get('method', 'estimator')
         
         # v7.5.0: Domain Reasoner 제거됨
         # 모든 트리거 무시하고 Estimator 사용 권고
         
-        logger.info("\n[Guardian] 방법론 권고 (v7.7.0)")
+        logger.info("\n[Guardian] 방법론 권고 (v7.11.0)")
         logger.info("=" * 60)
         logger.info("  ⚠️  Domain Reasoner 제거됨")
-        logger.info("  ✅ Estimator Agent가 Phase 0-4 자동 선택")
-        logger.info(f"  입력 confidence: {confidence*100:.0f}%")
+        logger.info("  ✅ Estimator Agent가 Stage 1-4 자동 선택")
+        logger.info(f"  입력 certainty: {certainty*100:.0f}%")
+        logger.info("  📊 4-Stage Fusion Architecture:")
+        logger.info("      Stage 1: Evidence Collection (85% 커버)")
+        logger.info("      Stage 2: Generative Prior (certainty 평가)")
+        logger.info("      Stage 3: Structural Explanation (max_depth=2)")
+        logger.info("      Stage 4: Fusion (가중 합성)")
         
-        # v7.7.0: 항상 Estimator 사용 (5-Phase)
+        # v7.11.0: 항상 Estimator 사용 (4-Stage Fusion)
         return {
             'recommendation': 'estimator_sufficient',
-            'reason': 'v7.7.0: Estimator 5-Phase 완성 (Domain Reasoner 대체)',
+            'reason': 'v7.11.0: Estimator 4-Stage Fusion 완성 (Domain Reasoner 대체)',
             'priority': 'low',
             'trigger': 'estimator_auto',
-            'estimated_time': '자동 (P0:<0.1초, P1:<0.5초, P2:<1초, P3:3-8초, P4:10-30초)',
+            'estimated_time': '자동 (S1:<0.5초, S2:<1초, S3:3-8초, S4:10-30초)',
             'auto_execute': True,
-            'note': 'Estimator가 상황에 따라 Phase 자동 선택'
+            'note': 'Estimator가 상황에 따라 Stage 자동 선택 (예산 기반 제어)',
+            'architecture': '4-Stage Fusion (Evidence → Prior → Fermi → Fusion)',
+            'budget_control': {
+                'max_llm_calls': '명시적 제어',
+                'max_runtime': '명시적 제어',
+                'recursion': '제거 (max_depth=2 고정)'
+            }
         }
     
     def _generate_recommendations(
