@@ -2,7 +2,7 @@
 
 ## 📋 개요
 
-v7.11.1부터 Google/DuckDuckGo 검색 결과의 실제 페이지를 크롤링하여 더 많은 정보를 획득할 수 있습니다.
+v7.11.1 4-Stage Fusion Architecture의 Stage 1 (Evidence Collection)에서 Google/DuckDuckGo 검색 결과의 실제 페이지를 크롤링하여 더 많은 정보를 획득할 수 있습니다.
 
 ### 성능 비교
 
@@ -305,10 +305,14 @@ WEB_SEARCH_TIMEOUT=15
 ## 📚 관련 문서
 
 - [Web Search 설정 가이드](../setup/ENV_SETUP_GUIDE.md)
-- [Estimator Phase 2 문서](../../umis_core.yaml#L603-693)
+- [Estimator Stage 1 (Evidence Collection)](../../umis_core.yaml#L603-693)
 - [Value Sources 아키텍처](../../umis_rag/agents/estimator/sources/value.py)
 
 ## 📅 변경 이력
+
+### v7.11.1 (2025-11-26)
+- 📝 4-Stage Fusion Architecture 반영
+- 📝 Estimator Stage 1 (Evidence Collection) 참조 업데이트
 
 ### v7.7.0 (2025-11-12)
 - ✨ 페이지 크롤링 기능 추가
@@ -321,6 +325,6 @@ WEB_SEARCH_TIMEOUT=15
 ---
 
 **작성자**: UMIS Team
-**버전**: v7.7.0
-**날짜**: 2025-11-12
+**버전**: v7.11.1
+**날짜**: 2025-11-26
 
