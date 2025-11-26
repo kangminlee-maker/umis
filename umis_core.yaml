@@ -162,11 +162,10 @@ key_principles:
     principle_4: 백업 자동 생성 (안전)
 
 # ========================================
-# v7.8.0: Model Config System
+# Model Config System
 # ========================================
 
 model_config_system:
-  version: 7.8.1
   purpose: 중앙 집중식 LLM 모델 관리
   
   key_features:
@@ -200,8 +199,7 @@ model_config_system:
       - External LLM 불필요
   
   usage:
-    change_model: .env에서 LLM_MODEL_PHASE4=gpt-5.1 (External)
-    native_mode: UMIS_MODE=native → cursor-native 자동 사용
+    change_model: .env에서 LLM_MODEL_PHASE3=gpt-4.1-nano (External)
     auto_apply:
       - API 타입 (responses/chat/cursor)
       - max_output_tokens (모델별 최적값)
@@ -216,78 +214,73 @@ model_config_system:
     native_integration: Native Mode도 동일 시스템 (cursor-native)
 
 # ========================================
-# v7.8.0: LLM Optimization (3-Model 구성)
+# LLM Optimization (3-Model 구성)
 # ========================================
 
 llm_optimization:
-  version: 7.8.0
   achievement: 98% 비용 절감 달성!
   
-  phase_0_2:
+  stage_1_evidence:
     model: gpt-4.1-nano
     coverage: 45%
     cost_per_task: $0.000033
-    speed: 1.02초
+    speed: <2초
     accuracy: 100%
     use_case:
-      - Phase 0 (Literal)
-      - Phase 1 (Inferred)
-      - Phase 2 (Formula)
+      - Stage 1 Evidence Collection
       - Quantifier 공식 계산
       - Validator 기본 검증
   
-  phase_3:
+  stage_2_prior:
     model: gpt-4o-mini
-    coverage: 48%
+    coverage: 40%
     cost_per_task: $0.000121
-    speed: 4.61초
+    speed: 3-8초
     accuracy: 100%
     use_case:
-      - Phase 3 Guestimation
+      - Stage 2 Generative Prior
       - Explorer RAG 검색
       - Validator 정의 검증
-    note: 프롬프트 개선으로 100% 정확도
   
-  phase_4:
+  stage_3_fermi:
     model: o1-mini
-    coverage: 7%
+    coverage: 10%
     cost_per_task: $0.0033
-    speed: 5-15초
+    speed: 10-30초
     accuracy: 93%
     use_case:
-      - Phase 4 Fermi Decomposition
+      - Stage 3 Structural Explanation (Fermi)
       - Discovery Sprint
-      - 복잡한 추론
+      - 구조적 분해 및 설명
   
   total_cost:
     per_1000_tasks: $0.30
     vs_previous: $15.00 (Sonnet Think)
     savings: 98%
     breakdown:
-      phase_0_2: 450 × $0.000033 = $0.015
-      phase_3: 480 × $0.000121 = $0.058
-      phase_4: 70 × $0.0033 = $0.231
+      stage_1: 450 × $0.000033 = $0.015
+      stage_2: 400 × $0.000121 = $0.048
+      stage_3: 100 × $0.0033 = $0.33
   
   env_configuration:
-    USE_PHASE_BASED_ROUTING: true
-    LLM_MODEL_PHASE0_2: gpt-4.1-nano
-    LLM_MODEL_PHASE3: gpt-4o-mini
-    LLM_MODEL_PHASE4: o1-mini
+    USE_STAGE_BASED_ROUTING: true
+    LLM_MODEL_STAGE1: gpt-4.1-nano
+    LLM_MODEL_STAGE2: gpt-4o-mini
+    LLM_MODEL_STAGE3: o1-mini
     note: Model Config 시스템이 자동으로 API 최적화
 
 # ========================================
-# v7.8.0: Benchmarks System
+# Benchmarks System
 # ========================================
 
 benchmarks_system:
-  version: 7.8.0
   purpose: 통합 벤치마크 시스템
   
   structure:
     root: benchmarks/
     common: benchmarks/common/ (공통 모듈)
     estimator: benchmarks/estimator/ (Estimator 벤치마크)
-    phase4: benchmarks/estimator/phase4/ (Phase 4 Fermi)
+    fermi: benchmarks/estimator/fermi/ (Fermi 분해)
   
   phase4_contents:
     tests:
@@ -324,11 +317,10 @@ benchmarks_system:
     phase_4: Workflow 통합 (예정)
 
 # ========================================
-# v7.8.0: Phase 4 Evaluation System
+# Fermi Evaluation System
 # ========================================
 
-phase4_evaluation:
-  version: 7.8.0
+fermi_evaluation:
   total_score: 110점
   
   scoring_breakdown:
