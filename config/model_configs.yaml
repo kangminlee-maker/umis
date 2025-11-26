@@ -1,11 +1,20 @@
 # UMIS Model API Configurations (v7.11.0)
 #
 # 4-Stage Fusion Architecture 기반
-# Stage 2-3 Timeout 및 모델 설정
+# TaskType별 모델 파라미터 자동 조정
 #
 # 사용법:
-#   .env에서 LLM_MODEL_STAGE3=o1-mini 설정하면
-#   자동으로 해당 모델의 API 설정 적용
+#   .env에서 LLM_MODEL_STAGE3=gpt-5.1 설정하면
+#   TaskType에 따라 자동으로 최적 파라미터 적용
+#
+# TaskType별 파라미터 조정:
+#   Explorer (가설 생성): temperature 높게, reasoning.effort 낮게
+#   Stage 2 (Prior): temperature 중간, reasoning.effort 중간
+#   Stage 3 (Fermi): temperature 없음, reasoning.effort 높게
+#
+# 예시:
+#   gpt-5.1 on Explorer: reasoning.effort=none, temperature=0.7
+#   gpt-5.1 on Stage 3: reasoning.effort=high, temperature 불가
 #
 # 하위 호환성:
 #   LLM_MODEL_PHASE3, LLM_MODEL_PHASE4도 계속 동작
@@ -93,10 +102,23 @@ models:
     reasoning_effort:
       support: true
       levels: [low, medium, high]
-      default: medium
+      default: medium  # Stage 3 기본값
+      # TaskType별 조정:
+      # - Explorer: low (빠름)
+      # - Stage 2: medium (균형)
+      # - Stage 3: high (정확성)
     temperature_support: false
     context_window: 128000
     notes: "STEM 최적화, 80% 저렴, Stage 3 Fermi 기본 모델 (구 Phase 4)"
+    
+    # TaskType별 권장 설정
+    task_overrides:
+      explorer:
+        reasoning_effort: low
+      stage_2_prior:
+        reasoning_effort: medium
+      stage_3_fermi:
+        reasoning_effort: high
 
   o1:
     api_type: responses
@@ -218,11 +240,33 @@ models:
     reasoning_effort:
       support: true
       levels: [none, low, medium, high]
-      default: high
+      default: high  # Stage 3 기본값
+      # TaskType별 조정:
+      # - Explorer: none (temperature 사용 위해)
+      # - Stage 2 Prior: medium (균형)
+      # - Stage 3 Fermi: high (정확성)
     temperature_support: true  # reasoning.effort=none일 때만
     temperature_condition: reasoning_effort_none
+    temperature:
+      default: 0.7  # reasoning.effort=none일 때
+      # TaskType별 조정:
+      # - Explorer: 0.8 (창의성)
+      # - Stage 2: 0.7 (균형)
+      # - Stage 3: 불가 (reasoning.effort=high 사용)
     context_window: 196000
-    notes: "Advanced reasoning, JSON 형식 약함, Stage 2-3 권장, temperature는 reasoning.effort=none일 때만"
+    notes: "Advanced reasoning, JSON 형식 약함, Stage 2-3 권장, TaskType별 파라미터 자동 조정"
+    
+    # TaskType별 권장 설정 (코드에서 자동 적용)
+    task_overrides:
+      explorer:
+        reasoning_effort: none
+        temperature: 0.8
+      stage_2_prior:
+        reasoning_effort: medium
+        temperature: 0.7
+      stage_3_fermi:
+        reasoning_effort: high
+        temperature: null  # 불가
 
   gpt-5-pro:
     api_type: responses  # Responses API only
@@ -274,9 +318,20 @@ models:
     reasoning_effort:
       support: false
     temperature_support: true
-    temperature: 0.7
+    temperature:
+      default: 0.7
+      # TaskType별 조정:
+      # - Explorer: 0.8 (창의성)
+      # - Stage 2: 0.7 (균형)
     context_window: 128000
     notes: "Stage 2 (Generative Prior) 최적화, $0.000121/작업, 정확도 100%, 빠르고 저렴 (구 Phase 3)"
+    
+    # TaskType별 권장 설정
+    task_overrides:
+      explorer:
+        temperature: 0.8
+      stage_2_prior:
+        temperature: 0.7
 
   # ===== Cursor Native =====
 
