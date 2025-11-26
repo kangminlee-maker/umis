@@ -185,7 +185,14 @@ class Settings(BaseSettings):
     langchain_project: str = Field(default="umis-rag")
     
     # UMIS 전역 설정 (v7.2.1+)
-    umis_mode: str = Field(default="native")  # native / external
+    # ========================================
+    # LLM 모드 (v7.8.1: 직접 모델명 사용)
+    # ========================================
+    # .env: LLM_MODE=cursor (또는 gpt-4o-mini, o1-mini 등)
+    # 
+    # - cursor: Cursor AI 사용 (무료, 대화형)
+    # - 기타: External API 사용 (model_configs.yaml 참조)
+    llm_mode: str = Field(default="cursor")
     
     # ========================================
     # 한국 공공 데이터 API (v7.9.0)

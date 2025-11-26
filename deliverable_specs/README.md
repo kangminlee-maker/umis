@@ -1,9 +1,9 @@
 # Deliverable Specifications
 
-**목적**: UMIS v7.5.0 6-Agent 산출물의 AI 최적화 명세서  
+**목적**: UMIS v7.11.0 6-Agent 산출물의 AI 최적화 명세서  
 **포맷**: 100% YAML (AI 파싱/생성 효율화)  
-**버전**: 2.0  
-**최종 업데이트**: 2025-11-08
+**버전**: 3.0  
+**최종 업데이트**: 2025-11-26
 
 ---
 
@@ -20,7 +20,7 @@ deliverable_specs/
 │   └── market_reality_report_spec.yaml
 ├── explorer/           # Steve (Explorer)
 │   └── opportunity_hypothesis_spec.yaml
-├── estimator/          # Fermi (Estimator) ⭐ v7.5.0 신규
+├── estimator/          # Fermi (Estimator) ⭐ v7.11.0
 │   └── (산출물: EstimationResult, 문서 내 인라인)
 └── project/            # 프로젝트 공통
     ├── project_meta_spec.yaml
@@ -105,21 +105,22 @@ Output (사람이 읽음):
 
 ---
 
-### 5. Estimator (Fermi) - 값 추정 ⭐ v7.5.0
+### 5. Estimator (Fermi) - 값 추정 ⭐ v7.11.0
 
 **산출물**: `EstimationResult` (프로그래밍 방식 또는 문서 내 인라인)
 - **Output**: Python Dict / JSON / 분석 문서 내 통합
 - **핵심 필드**:
   - `value`: 추정값
-  - `tier`: 사용된 Tier (1/2/3)
-  - `reasoning_detail`: 추정 근거 (완전 투명)
-  - `confidence`: 신뢰도 범위
-  - `sources`: 데이터 출처
+  - `source`: 추정 소스 (Evidence/Prior/Fermi/Fusion)
+  - `reasoning_detail`: 추정 근거 (Stage별 완전 투명)
+  - `certainty`: LLM 내부 확신도 (high/medium/low)
+  - `metadata`: 실행 정보
 
-**3-Tier Architecture**:
-- Tier 1: 규칙 (<0.5초)
-- Tier 2: 맥락 판단 (3-8초)
-- Tier 3: Fermi 분해 (10-30초, 12개 지표)
+**4-Stage Fusion Architecture**:
+- Stage 1: Evidence Collection (확정 데이터, <1초)
+- Stage 2: Generative Prior (LLM 직접 추정, ~3초)
+- Stage 3: Structural Explanation (Fermi 분해, max_depth=2)
+- Stage 4: Fusion & Validation (융합, <1초)
 
 **협업**: 모든 Agent가 추정 필요 시 Estimator 호출 (Single Source Policy)
 
@@ -311,14 +312,14 @@ generate_portfolio_dashboard(sorted_opps)
 
 ## 📖 참조
 
-- **Parent**: `umis_deliverable_standards.yaml` (v7.5.0)
+- **Parent**: `umis_deliverable_standards.yaml` (v7.11.0)
 - **Core**: `umis_core.yaml` (System RAG Index)
 - **Examples**: `quantifier/examples/excel/` (Excel 템플릿)
 
 ---
 
-**Spec Version**: 2.0  
-**UMIS Version**: 7.5.0 (6-Agent)  
-**Release**: 2025-11-08
+**Spec Version**: 3.0  
+**UMIS Version**: 7.11.0 (6-Agent, 4-Stage Fusion)  
+**Release**: 2025-11-26
 
 

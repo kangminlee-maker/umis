@@ -10,12 +10,15 @@
 # ========================================
 
 spec_meta:
-  spec_version: "1.0"
+  spec_version: "1.1"
   agent_id: "observer"
   agent_role: "Observer"
-  agent_name: "Albert"  # customizable
+  agent_name: "Albert"
   output_format: "yaml_frontmatter_markdown"
   deliverable_type: "market_reality_report"
+  created: "2025-11-08"
+  updated: "2025-11-26"
+  version: "7.11.0"
 
 output_file:
   filename: "market_reality_report.md"

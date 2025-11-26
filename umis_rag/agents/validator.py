@@ -255,17 +255,23 @@ class ValidatorRAG:
         """
         확정 데이터 검색 (추정 전 필수 확인!)
         
-        역할:
+        역할 (v7.8.1 엄격화):
+        ---------------------
+        - 이미 확인된 데이터를 재사용 (캐싱)
+        - 100% 매칭 또는 95% 이상 유사도만 허용
+        - 핵심 키워드 완전 일치 필수
+        
+        원칙:
         -----
-        - Estimator 추정 전 확정 데이터 존재 여부 확인
-        - 공식 통계, 정부 데이터, 벤치마크 검색
-        - 값이 있으면 즉시 반환 (추정 불필요)
+        1. Phase 2는 "재사용"이 목적 (새로운 추정 X)
+        2. 거의 완벽하게 매칭될 때만 사용
+        3. 의심스러우면 Phase 3/4로 넘김
         
         검색 범위:
         ----------
         1. data_sources_registry (공식 통계)
         2. 메타데이터에서 값 추출
-        3. 신뢰도 높은 것만 (0.85+)
+        3. 엄격한 Relevance 검증
         
         Args:
             question: 질문 (예: "한국 담배 판매량은?")
@@ -295,11 +301,16 @@ class ValidatorRAG:
         
         # Context 정보 추출
         domain_str = ""
+        region_str = ""
         if context and hasattr(context, 'domain'):
             domain_str = f"{context.domain} " if context.domain != "General" else ""
+        if context and hasattr(context, 'region'):
+            region_str = f"{context.region} " if context.region else ""
         
-        # 검색 쿼리 구성
-        search_query = f"{domain_str}{question}".strip()
+        # v7.9.0: 검색 쿼리 구성 (정규화 없이 원본 사용)
+        # 이유: 데이터베이스에 정규화되지 않은 원본이 저장되어 있음
+        # 향후: 데이터베이스 재구축 시 정규화 적용 예정
+        search_query = f"{region_str}{domain_str}{question}".strip()
         logger.info(f"  검색: {search_query}")
         
         # data_sources_registry 검색 (top 3)
@@ -312,45 +323,342 @@ class ValidatorRAG:
             logger.info("  → 확정 데이터 없음")
             return None
         
-        # 높은 유사도 & 값이 있는 것만
-        for doc, score in results:
-            logger.info(f"  후보: {doc.metadata.get('source_name', 'Unknown')} (유사도: {score:.2f})")
-            
-            # v7.6.0: threshold 0.75
-            if score > 0.75:
-                metadata = doc.metadata
-                
-                # 메타데이터에서 값 추출
-                if 'value' in metadata and metadata['value'] is not None:
-                    # ⭐ v7.6.1: Relevance 검증 추가!
-                    if not self._is_relevant(question, doc, context):
-                        logger.warning(f"  ⚠️  유사도 높지만 관련성 낮음 → 스킵")
-                        continue
-                    
-                    logger.info(f"  ✅ 확정 데이터 발견! (relevance 검증 통과)")
-                    
-                    # ⭐ v7.6.1: 단위 변환 추가!
-                    result_data = {
-                        'value': metadata['value'],
-                        'unit': metadata.get('unit', ''),
-                        'source': metadata.get('source_name', 'Unknown'),
-                        'confidence': 1.0,
-                        'definition': metadata.get('definition', ''),
-                        'last_updated': metadata.get('year', ''),
-                        'access_method': metadata.get('access_method', ''),
-                        'reliability': metadata.get('reliability', 'high'),
-                        'document': doc.page_content
-                    }
-                    
-                    # 단위 변환 시도
-                    converted = self._convert_unit_if_needed(question, result_data, doc)
-                    if converted:
-                        result_data = converted
-                    
-                    return result_data
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # v7.9.0: Phase 2 임계값 강화 (과도 매칭 방지)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # ChromaDB L2 distance (실제 측정값):
+        #   - 0.70~0.90: 거의 동일한 질문 ("한국 인구" vs "한국 총인구")
+        #   - 0.90~1.10: 매우 유사 ("한국 인구" vs "담배 판매량")
+        #   - 1.10~1.30: Registry 내 다른 항목 ("한국 인구" vs "서울 인구")
+        #   - 1.30+: 완전히 다른 개념
+        # 
+        # Phase 2 목적: 이미 확인한 데이터 재사용 (캐싱)
+        # 
+        # v7.9.0 변경:
+        # - v7.8.1: < 0.90 (100%), < 1.10 (95%)
+        # - v7.9.0: < 0.85 (100%), 0.85~0.95 제거됨
+        # 
+        # 이유:
+        # - "SaaS 서비스 ARPU" (0.979) → "B2B SaaS ARPU" 매칭은 부적절
+        # - Phase 2는 "거의 완벽한 매칭"만 허용 (재사용 목적)
+        # - 애매한 케이스는 Phase 3/4로 위임 (추정 필요)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         
-        logger.info("  → 확정 데이터 없음 (유사도 낮거나 값 없음)")
+        for doc, score in results:
+            logger.info(f"  후보: {doc.metadata.get('source_name', 'Unknown')} (distance: {score:.3f})")
+            
+            # v7.9.0: 엄격한 임계값 (거의 완벽한 매칭만)
+            if score < 0.85:
+                confidence_level = "perfect"
+                confidence = 1.0
+                logger.info(f"    → 거의 완벽한 매칭 (100%)")
+            else:
+                # v7.9.0: 0.85 이상은 모두 스킵 → Phase 3/4로 위임
+                logger.info(f"    → 유사도 불충분 ({score:.3f}) → Phase 3/4로 위임")
+                continue
+            
+            metadata = doc.metadata
+            
+            # 메타데이터에서 값 추출
+            if 'value' not in metadata or metadata['value'] is None:
+                logger.info(f"    → 값 없음 → 스킵")
+                continue
+            
+            # ⭐ 엄격한 Relevance 검증!
+            relevance_result = self._is_relevant_strict(question, doc, context)
+            
+            if not relevance_result['is_relevant']:
+                logger.warning(f"    ⚠️  Relevance 검증 실패: {relevance_result['reason']}")
+                continue
+            
+            logger.info(f"    ✅ Relevance 검증 통과: {relevance_result['matched_keywords']}")
+            logger.info(f"  ✅ 확정 데이터 발견! (신뢰도: {confidence:.0%})")
+            
+            # 결과 반환
+            result_data = {
+                'value': metadata['value'],
+                'unit': metadata.get('unit', ''),
+                'source': metadata.get('source_name', 'Unknown'),
+                'confidence': confidence,
+                'confidence_level': confidence_level,
+                'similarity_score': score,
+                'definition': metadata.get('definition', ''),
+                'last_updated': metadata.get('year', ''),
+                'access_method': metadata.get('access_method', ''),
+                'reliability': metadata.get('reliability', 'high'),
+                'document': doc.page_content
+            }
+            
+            # 단위 변환 시도
+            converted = self._convert_unit_if_needed(question, result_data, doc)
+            if converted:
+                result_data = converted
+            
+            return result_data
+        
+        logger.info("  → 확정 데이터 없음 (유사도 낮거나 관련성 없음)")
         return None
+    
+    def _normalize_question(self, question: str) -> str:
+        """
+        질문 정규화 (v7.9.0)
+        
+        목적:
+        - 동일한 의미의 다양한 표현을 통일
+        - 유사도 매칭 정확도 향상
+        
+        정규화 규칙:
+        1. 대소문자 통일 (소문자)
+        2. 불필요한 공백 제거
+        3. 조사 제거 ("은?", "는?", "의", "를" 등)
+        4. 불필요한 수식어 제거 ("평균", "대략", "약" 등)
+        5. 질문 형식 제거 ("?", "인가", "입니까" 등)
+        
+        Args:
+            question: 원본 질문
+        
+        Returns:
+            정규화된 질문
+        
+        Example:
+            >>> self._normalize_question("B2B SaaS의 평균 ARPU는?")
+            "b2b saas arpu"
+            >>> self._normalize_question("한국  음식점  수는  몇 개?")
+            "한국 음식점 수"
+        """
+        import re
+        
+        # 1. 소문자 변환
+        normalized = question.lower()
+        
+        # 2. 조사 제거 (한국어)
+        # "은?", "는?", "의", "를", "을", "가", "이" 등
+        normalized = re.sub(r'[은는의를을가이]\??', '', normalized)
+        
+        # 3. 불필요한 수식어 제거
+        # "평균", "대략", "약", "정도" 등
+        remove_words = ['평균', '대략', '약', '정도', '보통', '일반적', '일반적으로']
+        for word in remove_words:
+            normalized = normalized.replace(word, '')
+        
+        # 4. 질문 형식 제거
+        # "?", "인가", "입니까", "인지", "몇" 등
+        normalized = re.sub(r'\?+', '', normalized)
+        normalized = re.sub(r'(인가|입니까|인지|몇|개)', '', normalized)
+        
+        # 5. 여러 공백을 하나로
+        normalized = re.sub(r'\s+', ' ', normalized)
+        
+        # 6. 앞뒤 공백 제거
+        normalized = normalized.strip()
+        
+        return normalized
+    
+    def _is_relevant_strict(
+        self,
+        question: str,
+        doc: Any,
+        context: Optional[Any] = None
+    ) -> Dict[str, Any]:
+        """
+        엄격한 Relevance 검증 (v7.8.1)
+        
+        Phase 2는 "재사용"이 목적이므로
+        핵심 키워드가 거의 완벽하게 일치해야 함
+        
+        검증 항목:
+        1. 핵심 명사 완전 일치 (필수)
+        2. 도메인 키워드 일치
+        3. 단위 호환성
+        4. 비호환 조합 차단
+        
+        Returns:
+            {
+                'is_relevant': bool,
+                'reason': str,
+                'matched_keywords': List[str],
+                'confidence': float
+            }
+        """
+        metadata = doc.metadata
+        doc_content = doc.page_content.lower()
+        question_lower = question.lower()
+        
+        data_point = metadata.get('data_point', '').lower()
+        category = metadata.get('category', '').lower()
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # 1. 핵심 명사 추출 (엄격)
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        question_nouns = self._extract_core_nouns_strict(question_lower)
+        data_nouns = self._extract_core_nouns_strict(data_point)
+        
+        if not question_nouns:
+            return {
+                'is_relevant': False,
+                'reason': '질문에서 핵심 명사 추출 실패',
+                'matched_keywords': [],
+                'confidence': 0.0
+            }
+        
+        # 교집합 계산
+        matched_nouns = set(question_nouns) & set(data_nouns)
+        match_ratio = len(matched_nouns) / len(question_nouns) if question_nouns else 0
+        
+        # ⭐ 핵심: 최소 60% 이상 매칭 필요
+        if match_ratio < 0.6:
+            return {
+                'is_relevant': False,
+                'reason': f'핵심 명사 일치율 낮음 ({match_ratio:.0%}): 질문 {question_nouns} vs 데이터 {data_nouns}',
+                'matched_keywords': list(matched_nouns),
+                'confidence': match_ratio
+            }
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # 2. 비호환 조합 차단
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        INCOMPATIBLE_PAIRS = [
+            # (질문 키워드, 데이터 키워드) = 비호환
+            (['양자', '양자컴퓨터'], ['가구', '인구']),
+            (['메타버스', '가상'], ['이탈률', '비율']),
+            (['화성', '우주', '식민지'], ['인구', '서울']),
+            (['ai', '에이전트', '인공지능'], ['음악', '스트리밍']),
+            (['드론', '배송'], ['인구']),
+            (['수직농장', '농장'], ['담배', '흡연']),
+            (['블록체인', '암호화폐'], ['샴푸', '담배']),
+            
+            # 기존
+            (['시장', '규모'], ['gdp', '국내총생산']),
+            (['수업료', '학원'], ['최저임금']),
+            (['음식점', '카페'], ['인구통계']),
+        ]
+        
+        for q_keywords, d_keywords in INCOMPATIBLE_PAIRS:
+            has_q = any(kw in question_lower for kw in q_keywords)
+            has_d = any(kw in data_point or kw in category or kw in doc_content for kw in d_keywords)
+            
+            if has_q and has_d:
+                return {
+                    'is_relevant': False,
+                    'reason': f'비호환 조합: 질문({q_keywords}) vs 데이터({d_keywords})',
+                    'matched_keywords': [],
+                    'confidence': 0.0
+                }
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # 3. 단위 호환성
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        unit_compatible = self._check_unit_compatibility(question, metadata.get('unit', ''))
+        
+        if not unit_compatible:
+            return {
+                'is_relevant': False,
+                'reason': f'단위 비호환: 질문 vs 데이터 {metadata.get("unit")}',
+                'matched_keywords': list(matched_nouns),
+                'confidence': match_ratio * 0.5
+            }
+        
+        # 통과!
+        return {
+            'is_relevant': True,
+            'reason': 'OK',
+            'matched_keywords': list(matched_nouns),
+            'confidence': match_ratio
+        }
+    
+    def _extract_core_nouns_strict(self, text: str) -> List[str]:
+        """
+        핵심 명사 엄격 추출 (v7.8.1)
+        
+        목적: 거의 완벽한 매칭 판단용
+        """
+        # 주요 명사 사전
+        NOUN_DICT = {
+            # 인구/가구
+            '인구', '총인구', '서울', '성인',
+            '가구', '가구수',
+            
+            # 경제
+            'gdp', '국내총생산', '소득',
+            
+            # 산업
+            '담배', '샴푸', '음식점', '카페',
+            '판매', '판매량', '소비', '소비량',
+            
+            # SaaS
+            'saas', '이탈', '이탈률', 'churn',
+            'ltv', 'cac', '전환율',
+            
+            # 시장
+            '시장', '규모', '음악', '스트리밍',
+            
+            # 기타
+            '흡연', '흡연율', '최저임금',
+            
+            # 미래/가상
+            '양자', '양자컴퓨터', '메타버스', '화성',
+            '식민지', 'ai', '에이전트', '드론',
+            '수직농장', '블록체인',
+        }
+        
+        # 텍스트에서 명사 추출
+        found_nouns = []
+        for noun in NOUN_DICT:
+            if noun in text:
+                found_nouns.append(noun)
+        
+        return found_nouns
+    
+    def _check_unit_compatibility(self, question: str, data_unit: str) -> bool:
+        """
+        단위 호환성 체크 (v7.8.1)
+        
+        질문과 데이터 단위가 합리적으로 연결되는지
+        """
+        if not data_unit:
+            return True  # 단위 없으면 통과
+        
+        question_lower = question.lower()
+        data_unit_lower = data_unit.lower()
+        
+        # 단위 그룹
+        COMPATIBLE_GROUPS = [
+            # 인구 관련
+            {'명', 'people', '인구', '가구'},
+            
+            # 돈 관련
+            {'원', 'usd', 'won', '달러'},
+            
+            # 수량 관련
+            {'개', '갑', '잔', 'kg', '리터'},
+            
+            # 비율 관련
+            {'비율', 'ratio', '%', '퍼센트'},
+            
+            # 시간 관련
+            {'시간', '일', '개월', '년'},
+        ]
+        
+        # 질문에서 요구하는 단위 그룹 찾기
+        question_group = None
+        for group in COMPATIBLE_GROUPS:
+            if any(unit_kw in question_lower for unit_kw in group):
+                question_group = group
+                break
+        
+        # 데이터 단위 그룹 찾기
+        data_group = None
+        for group in COMPATIBLE_GROUPS:
+            if any(unit_kw in data_unit_lower for unit_kw in group):
+                data_group = group
+                break
+        
+        # 둘 다 그룹이 있으면 같은 그룹이어야 함
+        if question_group and data_group:
+            return question_group == data_group
+        
+        # 그룹 없으면 통과
+        return True
     
     def _is_relevant(
         self,
@@ -359,7 +667,9 @@ class ValidatorRAG:
         context: Optional[Any] = None
     ) -> bool:
         """
-        Relevance 검증 (v7.6.1)
+        Relevance 검증 (v7.6.1, deprecated)
+        
+        ⚠️ v7.8.1부터 _is_relevant_strict 사용
         
         유사도가 높아도 실제로 관련 없는 데이터 필터링
         예: "시장 규모" → GDP (X)

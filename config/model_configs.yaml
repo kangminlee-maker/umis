@@ -1,11 +1,45 @@
-# UMIS Model API Configurations
-# 
-# 모델별 API 파라미터 설정
-# Phase 4 Fermi Decomposition 벤치마크 기반 (v7.8.0)
+# UMIS Model API Configurations (v7.11.0)
+#
+# 4-Stage Fusion Architecture 기반
+# TaskType별 모델 파라미터 자동 조정
 #
 # 사용법:
-#   .env에서 LLM_MODEL_PHASE4=o1-mini 설정하면
-#   자동으로 해당 모델의 API 설정 적용
+#   .env에서 LLM_MODEL_STAGE3=gpt-5.1 설정하면
+#   TaskType에 따라 자동으로 최적 파라미터 적용
+#
+# TaskType별 파라미터 조정:
+#   Explorer (가설 생성): reasoning.effort 높게 (깊은 고찰), temperature 높게 (다양성)
+#   Stage 2 (Prior): reasoning.effort 중간 (균형)
+#   Stage 3 (Fermi): reasoning.effort 높게 (정확성)
+#
+# Reasoning Effort 효과:
+#   - low: 빠르고 얕은 분석 (랜덤에 가까움) ❌ 창의성 아님
+#   - medium: 균형 (Stage 2 적합)
+#   - high: 느리고 깊은 분석 (논리적 연결, 깊은 고찰) ✅ 진정한 창의성
+#
+# Explorer의 창의성:
+#   - "지식 간의 연계성을 깊이있게 고찰" → high reasoning.effort 필요
+#   - "의외이지만 이유가 명확한 기회" → 깊은 사고의 결과
+#   - 랜덤성 ≠ 창의성
+#
+# API별 전략:
+#   Responses API (o1, o3, gpt-5 등):
+#     - Explorer: high reasoning.effort (깊은 고찰, 논리적 연결)
+#     - Stage 2: medium (균형)
+#     - Stage 3: high (정확성)
+#   
+#   Chat API (gpt-4o-mini 등):
+#     - Explorer: temperature=0.8 (다양한 가능성 탐색)
+#     - Stage 2: temperature=0.7 (균형)
+#     - 주의: 깊은 사고는 부족, fallback용
+#
+# 예시:
+#   gpt-5.1 on Explorer: reasoning.effort=high (깊은 연결성 고찰)
+#   gpt-5.1 on Stage 3: reasoning.effort=high (정확한 분해)
+#
+# 하위 호환성:
+#   LLM_MODEL_PHASE3, LLM_MODEL_PHASE4도 계속 동작
+#   (자동 매핑: PHASE3 → STAGE2, PHASE4 → STAGE3)
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 기본값 (미지원 모델 폴백)
@@ -14,28 +48,99 @@ defaults:
   api_type: chat
   max_output_tokens: 4096
   temperature: 0.7
+  timeout_seconds: 30
   reasoning_effort:
     support: false
     default: medium
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Stage별 Timeout 설정 (v7.11.0)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Stage 2: Generative Prior (구 Phase 3 Guestimation)
+# Stage 3: Structural Explanation (구 Phase 4 Fermi, 재귀 제거)
+# Stage 1, 4는 LLM 미사용으로 timeout 불필요
+stage_timeouts:
+  stage_2_generative_prior:  # 구 Phase 3
+    description: "LLM 직접 값 요청 (단일 호출)"
+    default: 45
+    legacy_alias: phase_3    # LLM_MODEL_PHASE3 환경변수 지원
+    models:
+      gpt-4o-mini: 15      # 빠름 (2-6초)
+      gpt-4.1-nano: 10     # 매우 빠름 (1-3초)
+      gpt-5.1: 45          # reasoning 모델 (6-35초)
+      o1-mini: 45          # reasoning 모델
+
+  stage_3_fermi:  # 구 Phase 4 (재귀 제거)
+    description: "구조적 설명 (Fermi 분해, 재귀 없음, max_depth=2)"
+    default: 60
+    legacy_alias: phase_4    # LLM_MODEL_PHASE4 환경변수 지원
+    models:
+      gpt-4o-mini: 20      # 빠름 (5-15초)
+      gpt-5.1: 60          # reasoning high (11-14초, 여유)
+      o1-mini: 60          # reasoning (12-13초)
+      o1: 90               # 대형 reasoning (느림)
+      o1-pro: 120          # Pro 모델 (30-70초)
+      gpt-5-pro: 180       # Pro 모델 (73초)
+
+  # Stage 1 (Evidence Collection): LLM 미사용 (Literal, RAG, Validator만)
+  # Stage 4 (Fusion): LLM 미사용 (가중 합성만)
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Legacy Phase Timeout (하위 호환성)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Deprecated: v7.11.0에서 stage_timeouts 사용 권장
+# 자동 매핑: phase_3 → stage_2_generative_prior
+#           phase_4 → stage_3_fermi
+phase_timeouts:
+  phase_3:
+    default: 45
+    models:
+      gpt-4o-mini: 15
+      gpt-4.1-nano: 10
+      gpt-5.1: 45
+      o1-mini: 45
+
+  phase_4:
+    default: 60
+    models:
+      gpt-4o-mini: 20
+      gpt-5.1: 60
+      o1-mini: 60
+      o1: 90
+      o1-pro: 120
+      gpt-5-pro: 180
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 모델별 설정
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 models:
-  
+
   # ===== o-series (OpenAI Reasoning Models) =====
-  
+
   o1-mini:
     api_type: responses
     max_output_tokens: 16000
     reasoning_effort:
       support: true
       levels: [low, medium, high]
-      default: medium
+      default: high  # 기본값
+      # TaskType별 조정:
+      # - Explorer: high (깊은 고찰, 논리적 연결)
+      # - Stage 2: medium (균형)
+      # - Stage 3: high (정확한 분해)
     temperature_support: false
     context_window: 128000
-    notes: "STEM 최적화, 80% 저렴, Phase 4 기본 모델"
-  
+    notes: "STEM 최적화, 80% 저렴, Stage 3 Fermi 기본 모델 (구 Phase 4)"
+    
+    # TaskType별 권장 설정
+    task_overrides:
+      explorer:
+        reasoning_effort: high       # 깊은 연결성 고찰
+      stage_2_prior:
+        reasoning_effort: medium     # 균형
+      stage_3_fermi:
+        reasoning_effort: high       # 정확한 분해
+
   o1:
     api_type: responses
     max_output_tokens: 16000
@@ -45,8 +150,8 @@ models:
       default: medium
     temperature_support: false
     context_window: 200000
-    notes: "기본 reasoning 모델, function calling 지원"
-  
+    notes: "기본 reasoning 모델, function calling 지원, Stage 3 권장"
+
   o1-2024-12-17:
     api_type: responses
     max_output_tokens: 16000
@@ -56,8 +161,8 @@ models:
       default: medium
     temperature_support: false
     context_window: 200000
-    notes: "o1의 특정 버전"
-  
+    notes: "o1의 특정 버전, Stage 3 사용 가능"
+
   o1-pro:
     api_type: responses
     max_output_tokens: 16000
@@ -68,8 +173,8 @@ models:
       default: high
     temperature_support: false
     context_window: 200000
-    notes: "Responses API only, 최고 성능, 비용 높음 ($150/1M input)"
-  
+    notes: "Responses API only, 최고 성능, 비용 높음 ($150/1M input), Stage 3 Premium"
+
   o1-pro-2025-03-19:
     api_type: responses
     max_output_tokens: 16000
@@ -80,8 +185,8 @@ models:
       default: high
     temperature_support: false
     context_window: 200000
-    notes: "o1-pro의 특정 버전"
-  
+    notes: "o1-pro의 특정 버전, Stage 3 Premium"
+
   o3:
     api_type: responses
     max_output_tokens: 16000
@@ -91,8 +196,8 @@ models:
       default: medium
     temperature_support: false
     context_window: 200000
-    notes: "o3 시리즈"
-  
+    notes: "o3 시리즈, Stage 3 권장"
+
   o3-2025-04-16:
     api_type: responses
     max_output_tokens: 16000
@@ -102,8 +207,8 @@ models:
       default: medium
     temperature_support: false
     context_window: 200000
-    notes: "o3의 특정 버전"
-  
+    notes: "o3의 특정 버전, Stage 3 권장"
+
   o3-mini:
     api_type: responses
     max_output_tokens: 16000
@@ -113,8 +218,8 @@ models:
       default: medium
     temperature_support: false
     context_window: 200000
-    notes: "o3 mini 버전"
-  
+    notes: "o3 mini 버전, Stage 3 권장"
+
   o3-mini-2025-01-31:
     api_type: responses
     max_output_tokens: 16000
@@ -124,8 +229,8 @@ models:
       default: medium
     temperature_support: false
     context_window: 200000
-    notes: "o3-mini의 특정 버전, 벤치마크 최우선 후보"
-  
+    notes: "o3-mini 특정 버전, Stage 3 벤치마크 최우선 후보 (계산 연결성 50/50, 개념 일관성 15/15)"
+
   o4-mini:
     api_type: responses
     max_output_tokens: 16000
@@ -135,8 +240,8 @@ models:
       default: medium
     temperature_support: false
     context_window: 200000
-    notes: "o4 mini 버전"
-  
+    notes: "o4 mini 버전, Stage 3 권장"
+
   o4-mini-2025-04-16:
     api_type: responses
     max_output_tokens: 16000
@@ -146,22 +251,41 @@ models:
       default: medium
     temperature_support: false
     context_window: 200000
-    notes: "o4-mini의 특정 버전, 벤치마크 최우선 후보"
-  
+    notes: "o4-mini 특정 버전, Stage 3 벤치마크 최우선 후보 (계산 연결성 50/50, 개념 일관성 15/15)"
+
   # ===== gpt-5 series =====
-  
+
   gpt-5.1:
     api_type: responses  # Chat Completions도 지원
     max_output_tokens: 16000
     reasoning_effort:
       support: true
       levels: [none, low, medium, high]
-      default: high
+      default: high  # 기본값
+      # TaskType별 조정:
+      # - Explorer: high (깊은 고찰, 논리적 연결)
+      # - Stage 2 Prior: medium (균형)
+      # - Stage 3 Fermi: high (정확한 분해)
     temperature_support: true  # reasoning.effort=none일 때만
     temperature_condition: reasoning_effort_none
+    temperature:
+      default: 0.7  # reasoning.effort=none일 때만
+      # 참고: reasoning.effort 사용 시 temperature 불가
     context_window: 196000
-    notes: "Advanced reasoning, JSON 형식 약함, temperature는 reasoning.effort=none일 때만"
-  
+    notes: "Advanced reasoning, JSON 형식 약함, Explorer/Stage 2-3 모두 권장 (high reasoning.effort로 깊은 사고)"
+    
+    # TaskType별 권장 설정 (코드에서 자동 적용)
+    task_overrides:
+      explorer:
+        reasoning_effort: high       # 깊은 연결성 고찰
+        temperature: null            # reasoning.effort 사용 시 불가
+      stage_2_prior:
+        reasoning_effort: medium     # 균형
+        temperature: null
+      stage_3_fermi:
+        reasoning_effort: high       # 정확한 분해
+        temperature: null
+
   gpt-5-pro:
     api_type: responses  # Responses API only
     max_output_tokens: 16000
@@ -172,10 +296,10 @@ models:
       default: high
     temperature_support: false
     context_window: 400000
-    notes: "Responses API only, reasoning.effort=high 고정, temperature 미지원, Fast Mode 권장"
-  
+    notes: "Responses API only, reasoning.effort=high 고정, temperature 미지원, Stage 3 Premium, Fast Mode 권장"
+
   # ===== gpt-4.1 series =====
-  
+
   gpt-4.1:
     api_type: responses
     max_output_tokens: 16000
@@ -183,8 +307,8 @@ models:
       support: false
     temperature_support: false  # Responses API에서는 미지원
     context_window: 128000
-    notes: "reasoning 미지원"
-  
+    notes: "reasoning 미지원, Stage 2 권장"
+
   gpt-4.1-mini:
     api_type: responses
     max_output_tokens: 16000
@@ -192,10 +316,10 @@ models:
       support: false
     temperature_support: false
     context_window: 128000
-    notes: "reasoning 미지원"
-  
-  # ===== Phase 0-3 최적화 모델 (참고용) =====
-  
+    notes: "reasoning 미지원, Stage 2 권장"
+
+  # ===== Stage 1-2 최적화 모델 =====
+
   gpt-4.1-nano:
     api_type: chat
     max_output_tokens: 4096
@@ -204,17 +328,37 @@ models:
     temperature_support: true
     temperature: 0.7
     context_window: 16000
-    notes: "Phase 0-2 최적화, $0.000033/작업, 정확도 100%"
-  
+    notes: "Stage 1 (Evidence) 최적화, $0.000033/작업, 정확도 100%"
+
   gpt-4o-mini:
     api_type: chat
     max_output_tokens: 16000
     reasoning_effort:
       support: false
     temperature_support: true
-    temperature: 0.7
+    temperature:
+      default: 0.7
+      # TaskType별 조정:
+      # - Explorer: 0.8 (창의성)
+      # - Stage 2: 0.7 (균형)
     context_window: 128000
-    notes: "Phase 3 최적화, $0.000121/작업, 정확도 100%"
+    notes: "Stage 2 (Generative Prior) 최적화, $0.000121/작업, 정확도 100%, 빠르고 저렴 (구 Phase 3)"
+    
+    # TaskType별 권장 설정
+    task_overrides:
+      explorer:
+        temperature: 0.8
+      stage_2_prior:
+        temperature: 0.7
+
+  # ===== Cursor Native =====
+
+  cursor-native:
+    api_type: cursor
+    description: "Cursor AI - 무료, 모든 파라미터는 Cursor 내부 관리"
+    cost_per_1k_input: 0.0
+    cost_per_1k_output: 0.0
+    notes: "Native mode, API 불필요, 패턴 매칭 기반 직접 추론, Stage 2 Fallback 가능"
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Pro 모델 (Fast Mode 대상)
@@ -225,19 +369,78 @@ pro_models:
   - o1-pro-2025-03-19
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 벤치마크 결과 (참고용)
+# Stage별 모델 추천 (v7.11.0)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 
-# 최우선 후보 (Phase 4):
+# API 우선순위: Responses API > Chat API
+# Responses API는 reasoning.effort로 창의성-정확성 제어 가능
+stage_recommendations:
+  explorer:
+    description: "가설 생성 (깊은 고찰로 의외의 연결성 발견)"
+    llm_usage: "LLM 1회 호출"
+    api_preference: "Responses API (reasoning.effort=high)"
+    creativity_definition: "지식 간의 연계성을 깊이있게 고찰 → 의외이지만 이유가 명확한 기회"
+    note: "랜덤성 ≠ 창의성. 깊은 사고가 진정한 창의성."
+    recommended_models:
+      - gpt-5.1       # Responses API, reasoning.effort=high (깊은 연결성)
+      - o1-mini       # Responses API, reasoning.effort=high (깊은 고찰)
+      - gpt-4o-mini   # Chat API, temperature=0.8 (fallback, 다양성만)
+
+  stage_1_evidence:
+    description: "Evidence Collection (Literal, RAG, Validator, Guardrails)"
+    llm_usage: "Guardrail Engine만 LLM 사용"
+    recommended_models:
+      - gpt-4.1-nano  # Chat API, 저렴, 빠름
+      - gpt-4o-mini   # Chat API, 빠름
+
+  stage_2_generative_prior:
+    description: "LLM 직접 값 요청 (단일 호출)"
+    llm_usage: "LLM 1회 호출"
+    api_preference: "Responses API (reasoning.effort=medium)"
+    note: "빠른 추정이지만 논리적 근거 필요"
+    recommended_models:
+      - o1-mini       # Responses API, reasoning.effort=medium (균형)
+      - gpt-5.1       # Responses API, reasoning.effort=medium
+      - gpt-4o-mini   # Chat API, temperature=0.7 (fallback)
+
+  stage_3_fermi:
+    description: "구조적 설명 (Fermi 분해, 재귀 없음, max_depth=2)"
+    llm_usage: "LLM 3-5회 호출 (변수 추정)"
+    api_preference: "Responses API (reasoning.effort=high)"
+    note: "정확한 분해, 논리적 일관성 최우선"
+    recommended_models:
+      - o1-mini       # Responses API, reasoning.effort=high (기본)
+      - gpt-5.1       # Responses API, reasoning.effort=high
+      - o3-mini-2025-01-31  # Responses API, 최우선 후보 (벤치마크)
+      - o4-mini-2025-04-16  # Responses API, 최우선 후보 (벤치마크)
+      - o1-pro        # Responses API, Premium (최고 성능)
+
+  stage_4_fusion:
+    description: "가중 합성 (LLM 미사용)"
+    llm_usage: "LLM 미사용 (계산만)"
+    recommended_models: []
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 벤치마크 결과 (참고용, v7.11.0 업데이트)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#
+# Stage 3 (Fermi) 최우선 후보:
 #   - o3-mini-2025-01-31: 계산 연결성 50/50, 개념 일관성 15/15
 #   - o4-mini-2025-04-16: 계산 연결성 50/50, 개념 일관성 15/15
 #
-# 프리미엄:
+# Stage 3 프리미엄:
 #   - o3-2025-04-16: 최고 품질
 #   - o1-pro-2025-03-19: 최고 성능
+#
+# Stage 2 (Prior) 최적:
+#   - gpt-4o-mini: 빠름, 저렴, 정확도 100%
+#   - gpt-5.1: 고급 reasoning
 #
 # 실험적:
 #   - gpt-5.1: 높은 추론 능력, JSON 형식 약함 (형식 점수 0-2/5)
 #
 # 상세: benchmarks/estimator/phase4/analysis/model_recommendations.md
-
+#
+# v7.11.0 변경사항:
+# - Phase 3-4 → Stage 2-3
+# - 재귀 제거로 Stage 3 속도 향상 (10-30초 → 5-15초)
+# - Budget 기반 탐색 (max_llm_calls, max_depth=2)
