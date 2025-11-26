@@ -1,35 +1,33 @@
-# UMIS examples - Compatible with v7.7.0
+# UMIS examples - Compatible with v7.11.0
 # ========================================
-# UMIS v7.7.0 사용 예시
+# UMIS v7.11.0 사용 예시
 # ========================================
 #
-# v7.7.0 주요 특징:
+# v7.11.0 주요 특징:
 # - 6-Agent 협업 시스템
-# - 5-Phase Estimator (100% 커버리지)
-# - Native 모드 진짜 구현 (비용 $0)
-# - Phase/Step 용어 명확화
-# - 파일명 phase 기반 (phase1/3/4_*.py)
-# - Backward compatibility 유지
+# - 4-Stage Fusion Estimator (100% 커버리지)
+# - LLM Complete Abstraction (Clean Architecture)
+# - Recursion 금지 (예산 기반 탐색)
 # - Explorer RAG (54개 패턴/사례)
 # - Knowledge Graph (13 노드, 45 관계)
 # - Meta-RAG (Guardian 프로세스 감시)
 # - System RAG (31개 도구)
 #
-# 최종 업데이트: 2025-11-10
+# 최종 업데이트: 2025-11-26
 # ========================================
 
 _meta:
-  version: "7.7.0"
-  umis_version: "7.7.0"
-  purpose: "UMIS v7.7.0 실제 사용 예시 (5-Phase + Native 모드)"
-  last_updated: "2025-11-10"
+  version: "7.11.0"
+  umis_version: "7.11.0"
+  purpose: "UMIS v7.11.0 실제 사용 예시 (4-Stage Fusion + LLM Abstraction)"
+  last_updated: "2025-11-26"
 
 # ========================================
 # PART 1: 빠른 시작 예시
 # ========================================
 
 quick_start_examples:
-  description: "UMIS v7.0.0 빠른 시작"
+  description: "UMIS v7.11.0 빠른 시작"
 
   # 예시 1: AI 자동 설치
   example_1_auto_install:
