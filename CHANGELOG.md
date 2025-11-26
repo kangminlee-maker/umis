@@ -7,6 +7,100 @@
 
 ---
 
+## [7.11.1] - 2025-11-26
+
+### 🧹 Legacy Cleanup
+
+v7.11.0에서 deprecated된 코드를 완전히 제거한 패치 릴리스입니다.
+
+---
+
+### Removed (제거)
+
+#### Compatibility Layer
+- **compat.py 제거** (141 lines)
+  - `Phase3Guestimation` 클래스 (deprecated → 제거)
+  - `Phase4FermiDecomposition` 클래스 (deprecated → 제거)
+  - v7.11.0에서 DeprecationWarning으로 경고
+  - 사용자는 `PriorEstimator`, `FermiEstimator` 직접 사용
+
+**참고**: `Phase0Literal`, `Phase1DirectRAG`, `Phase2ValidatorSearchEnhanced`는 `EvidenceCollector` 내부 구현으로 유지됩니다.
+
+- **Legacy 벤치마크 제거** (v7.11.0에서 진행)
+  - `benchmarks/` 폴더 전체 제거 (→ `archive/benchmarks_all_legacy/`)
+  - Phase 0-4 벤치마크 → `tests/unit/`, `tests/integration/`으로 이동
+  - `benchmarks/common/common.py` (1,110 lines): deprecated
+
+- **Legacy 코드 정리** (v7.11.0에서 진행)
+  - `umis_rag/guestimation_v3/`: 빈 폴더 제거
+  - `umis_rag/agents/estimator.v7.10.2.backup/`: 37개 파일 제거
+  - `umis_rag/utils/fermi_model_search.py` (745 lines): 재귀 기반 엔진 제거
+
+**총 제거**: 2개 파일 (compat.py), 141 lines
+
+#### Test Cases
+- **E2E Scenario 10 제거**: Legacy API 호환성 테스트
+  - `test_scenario_10_legacy_api_compatibility()` 제거
+  - `Phase3Guestimation`, `Phase4FermiDecomposition` import 제거
+
+---
+
+### Changed (변경)
+
+#### Import Structure
+- **umis_rag/agents/estimator/__init__.py**:
+  - `from .compat import ...` 제거
+  - `Phase3Guestimation`, `Phase4FermiDecomposition` exports 제거
+  - v7.11.1: 완전한 Stage 기반 구조
+
+- **umis_rag/agents/estimator.py**:
+  - `from .estimator.compat import ...` 제거
+  - Deprecated aliases 제거
+
+- **umis_rag/__init__.py**:
+  - `__version__`: "7.7.0" → "7.11.1"
+  - `LLM_MODE` 검증 강화: `cursor` 또는 `external`만 허용
+  - 문서화 업데이트: Stage 기반, `config/model_configs.yaml`
+
+#### Documentation
+- **VERSION.txt**: v7.11.0 → v7.11.1
+
+---
+
+### Migration Guide (마이그레이션 가이드)
+
+**v7.10.2 → v7.11.1 사용자**:
+
+```python
+# 변경 전 (v7.10.2)
+from umis_rag.agents.estimator import Phase3Guestimation, Phase4FermiDecomposition
+phase3 = Phase3Guestimation(llm_mode="external")
+phase4 = Phase4FermiDecomposition(llm_mode="external")
+
+# 변경 후 (v7.11.1)
+from umis_rag.agents.estimator import PriorEstimator, FermiEstimator
+from umis_rag.core.llm_provider_factory import get_llm_provider
+
+llm_provider = get_llm_provider(mode="external")
+prior = PriorEstimator(llm_provider=llm_provider)
+fermi = FermiEstimator(llm_provider=llm_provider, prior_estimator=prior)
+```
+
+**자세한 내용**: `docs/MIGRATION_GUIDE_v7_11_0.md`
+
+---
+
+### Archive (보관)
+
+v7.11.0에서 진행된 Legacy 코드는 archive에 보존되어 있습니다:
+- `archive/benchmarks_all_legacy/`: 전체 벤치마크 폴더
+- `archive/phase3_4_legacy_v7.10.2/`: Phase 3-4 구현 (compat.py 포함)
+- `archive/guestimation_v3/`: Guestimation v3 구현
+- `archive/umis_rag_legacy/`: umis_rag 내부 legacy 파일들
+- `archive/dev_docs_v7.10.2_and_below/`: 개발 문서
+
+---
+
 ## [7.11.0] - 2025-11-26
 
 ### 🎉 주요 개선사항

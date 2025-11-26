@@ -12,10 +12,9 @@ Estimator (Fermi) Agent - 값 추정 및 판단 전문가
     estimator = EstimatorRAG()
     result = estimator.estimate("B2B SaaS Churn Rate는?", domain="B2B_SaaS")
 
-v7.11.0:
-    - 재귀 완전 제거
-    - 예산 기반 탐색
-    - Fusion Architecture
+v7.11.1:
+    - compat.py 제거 (Phase3Guestimation, Phase4FermiDecomposition)
+    - 완전한 Stage 기반 아키텍처
 """
 
 from .estimator import EstimatorRAG, get_estimator
@@ -33,16 +32,6 @@ from .evidence_collector import EvidenceCollector
 
 # 호환성 alias (v7.11.0)
 get_estimator_rag = get_estimator
-
-# Deprecated Aliases (Phase 3-4 레거시 호환)
-# v7.11.1에서 제거 예정
-try:
-    from .compat import Phase3Guestimation, Phase4FermiDecomposition
-    _COMPAT_AVAILABLE = True
-except ImportError:
-    _COMPAT_AVAILABLE = False
-    Phase3Guestimation = None
-    Phase4FermiDecomposition = None
 
 __all__ = [
     # 메인 Agent
@@ -67,8 +56,4 @@ __all__ = [
     'create_thorough_budget',
     'EstimationResultV11',
     'Evidence',
-    
-    # Deprecated (v7.11.1 제거 예정)
-    'Phase3Guestimation',       # Deprecated, use PriorEstimator
-    'Phase4FermiDecomposition', # Deprecated, use FermiEstimator
 ]
