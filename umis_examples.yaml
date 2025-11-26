@@ -1018,9 +1018,11 @@ reference_docs:
     - "config/runtime.yaml: 실행 모드"
 
   estimator:
-    - "config/fermi_model_search.yaml: Phase 4 설계 문서"
-    - "umis_rag/agents/estimator/phase4_fermi.py: Phase 4 구현"
-    - "docs/guides/NATIVE_MODE_GUIDE.md: Native 모드 가이드" 
+    - "umis_rag/agents/estimator/estimator.py: 4-Stage Fusion 구현"
+    - "umis_rag/agents/estimator/fermi_estimator.py: Stage 3 (Fermi)"
+    - "umis_rag/agents/estimator/prior_estimator.py: Stage 2 (Prior)"
+    - "umis_rag/core/llm_provider.py: LLM Abstraction"
+    - "dev_docs/improvements/LLM_COMPLETE_ABSTRACTION_SUMMARY_v7_11_0.md" 
 
   advanced:
     - "dev_docs/guestimation_v3/: Estimator 설계 (20개)"
