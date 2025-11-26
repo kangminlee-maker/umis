@@ -16,12 +16,12 @@ sys.path.insert(0, str(project_root))
 
 import pytest
 from umis_rag.agents.estimator import EstimatorRAG, Context
-from umis_rag.agents.estimator.phase0_literal import Phase0Literal
+from umis_rag.agents.estimator.literal_source import LiteralSource
 from umis_rag.agents.estimator.evidence_collector import EvidenceCollector
 from umis_rag.utils.logger import logger
 
 
-class TestPhase0Literal:
+class TestLiteralSource:
     """Phase 0 (Literal) 테스트"""
     
     def test_phase0_set_and_get(self):
@@ -31,7 +31,7 @@ class TestPhase0Literal:
         logger.info("="*80)
         
         # Phase 0 초기화
-        phase0 = Phase0Literal(project_id="test_project_v7_11_0")
+        phase0 = LiteralSource(project_id="test_project_v7_11_0")
         
         # 데이터 저장
         phase0.set('churn_rate', 0.05, metadata={'source': 'test'})
@@ -56,7 +56,7 @@ class TestPhase0Literal:
         logger.info("TEST 2: Phase 0 - Context 기반 조회")
         logger.info("="*80)
         
-        phase0 = Phase0Literal(project_id="test_project_v7_11_0")
+        phase0 = LiteralSource(project_id="test_project_v7_11_0")
         
         # Context별 데이터 저장
         phase0.set('B2B_SaaS_Korea_churn_rate', 0.05)
@@ -124,7 +124,7 @@ class TestIntegration:
         logger.info("="*80)
         
         # Phase 0 데이터 준비
-        phase0 = Phase0Literal(project_id="test_project_v7_11_0")
+        phase0 = LiteralSource(project_id="test_project_v7_11_0")
         phase0.set('churn_rate', 0.05)
         phase0.set('arpu', 80000)
         
@@ -156,7 +156,7 @@ def run_all_tests():
     logger.info("="*100)
     
     # Phase 0 테스트
-    test_phase0 = TestPhase0Literal()
+    test_phase0 = TestLiteralSource()
     test_phase0.test_phase0_set_and_get()
     test_phase0.test_phase0_with_context()
     

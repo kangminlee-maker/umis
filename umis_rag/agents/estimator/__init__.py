@@ -30,6 +30,11 @@ from .fermi_estimator import FermiEstimator
 from .fusion_layer import FusionLayer
 from .evidence_collector import EvidenceCollector
 
+# v7.11.1 Source 기반 구성 요소 (Evidence Collector 내부)
+from .literal_source import LiteralSource
+from .rag_source import RAGSource
+from .validator_source import ValidatorSource
+
 # 호환성 alias (v7.11.0)
 get_estimator_rag = get_estimator
 
@@ -40,10 +45,15 @@ __all__ = [
     'get_estimator_rag',  # 호환성
     
     # v7.11.0 Stage 기반 (권장)
-    'PriorEstimator',           # Stage 2 (구 Phase 3)
-    'FermiEstimator',           # Stage 3 (구 Phase 4)
+    'PriorEstimator',           # Stage 2
+    'FermiEstimator',           # Stage 3
     'FusionLayer',              # Stage 4
     'EvidenceCollector',        # Stage 1
+    
+    # v7.11.1 Source 기반 (Evidence Collector 내부)
+    'LiteralSource',            # 프로젝트 확정 데이터
+    'RAGSource',                # 학습된 규칙
+    'ValidatorSource',          # 외부 데이터
     
     # 레거시 Models (호환성)
     'Context',
