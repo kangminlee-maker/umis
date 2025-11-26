@@ -10,12 +10,15 @@
 # ========================================
 
 spec_meta:
-  spec_version: "1.0"
+  spec_version: "1.1"
   agent_id: "validator"
   agent_role: "Validator"
-  agent_name: "Rachel"  # customizable
+  agent_name: "Rachel"
   output_format: "yaml"
   deliverable_type: "source_registry"
+  created: "2025-11-08"
+  updated: "2025-11-26"
+  version: "7.11.0"
 
 output_file:
   filename: "source_registry.yaml"

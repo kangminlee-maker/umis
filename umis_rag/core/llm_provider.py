@@ -1,16 +1,32 @@
 """
 LLM Provider Module for UMIS RAG System
 
-UMIS 전역 설정(umis_mode)에 따라 적절한 LLM 제공:
-- native: Cursor Agent LLM 사용 (비용 $0, RAG만 수행)
-- external: OpenAI API 호출 (완전 자동화)
+⚠️ DEPRECATED: v7.11.0에서 LLMProvider (llm_interface.py)로 대체됨
 
-핵심 철학:
-----------
-Native 모드는 "RAG 검색만 수행 → Cursor LLM이 분석"
-External 모드는 "RAG 검색 + API 호출 → 완성된 결과"
+이전 용도:
+- UMIS 전역 설정(llm_mode)에 따라 적절한 LLM 제공
+- cursor: Cursor Agent LLM 사용 (비용 $0, RAG만 수행)
+- gpt-4o-mini, o1-mini 등: External LLM API 호출 (완전 자동화)
 
-v7.7.0 신규 추가 (2025-11-10)
+v7.11.0 변경사항:
+- 이 파일은 Deprecated (하위 호환성만)
+- 새로운 사용: llm_interface.py의 LLMProvider 인터페이스
+- llm_provider_factory.py의 get_llm_provider() 함수 사용
+
+마이그레이션:
+```python
+# 이전 (Deprecated):
+from umis_rag.core.llm_provider import LLMProvider
+llm = LLMProvider.create_llm()
+
+# 현재 (v7.11.0):
+from umis_rag.core.llm_provider_factory import get_default_llm_provider
+provider = get_default_llm_provider()
+llm = provider.get_llm(TaskType.PRIOR_ESTIMATION)
+```
+
+작성: 2025-11-10
+Deprecated: 2025-11-26 (v7.11.0)
 """
 
 from typing import Optional, Any, Dict
@@ -33,7 +49,7 @@ class LLMProvider:
 
     역할:
     -----
-    umis_mode 설정에 따라 적절한 LLM 객체 생성
+    llm_mode 설정에 따라 적절한 LLM 객체 생성
 
     사용 예시:
     ---------
@@ -44,10 +60,10 @@ class LLMProvider:
     class ExplorerRAG:
         def __init__(self):
             self.llm = LLMProvider.create_llm()
-            self.mode = settings.umis_mode
+            self.mode = settings.llm_mode
 
         def generate_hypothesis(self, ...):
-            if self.mode == "native":
+            if self.mode == "cursor":
                 # RAG 검색만 수행
                 return self._prepare_for_cursor(rag_results)
             else:
@@ -57,14 +73,14 @@ class LLMProvider:
 
     모드별 동작:
     -----------
-    Native Mode (umis_mode='native'):
+    Cursor Mode (llm_mode='cursor'):
         - LLM 객체 생성하지 않음 (None 반환)
         - Agent는 RAG 검색만 수행
         - 결과를 Cursor Composer/Chat에 전달
         - Cursor LLM이 직접 분석 수행
         - 비용: $0 (Cursor 구독에 포함)
 
-    External Mode (umis_mode='external'):
+    External LLM Mode (llm_mode='gpt-4o-mini', 'o1-mini' 등):
         - ChatOpenAI 객체 생성
         - Agent가 RAG + API 호출까지 완료
         - 완성된 결과 반환
@@ -74,25 +90,26 @@ class LLMProvider:
     @staticmethod
     def create_llm() -> Optional[BaseChatModel]:
         """
-        umis_mode에 따라 LLM 객체 생성
+        llm_mode에 따라 LLM 객체 생성
 
         Returns:
         --------
-        - None: Native 모드 (LLM 사용 안 함, RAG만)
-        - ChatOpenAI: External 모드 (API 호출)
+        - None: Cursor 모드 (LLM 사용 안 함, RAG만)
+        - ChatOpenAI: External LLM 모드 (API 호출)
 
         Raises:
         -------
-        ValueError: 알 수 없는 umis_mode 값
+        ValueError: 알 수 없는 llm_mode 값
         """
-        mode = settings.umis_mode.lower()
+        mode = settings.llm_mode.lower()
 
-        if mode == "native":
-            logger.info("🎯 Native 모드: LLM 객체 생성 안 함 (Cursor가 직접 처리)")
+        if mode == "cursor":
+            logger.info("🎯 Cursor 모드: LLM 객체 생성 안 함 (Cursor가 직접 처리)")
             return None
 
-        elif mode == "external":
-            logger.info(f"🌐 External 모드: OpenAI API 사용 (모델: {settings.llm_model})")
+        else:
+            # External LLM (gpt-4o-mini, o1-mini 등)
+            logger.info(f"🌐 External LLM 모드: OpenAI API 사용 (모델: {settings.llm_model})")
             return ChatOpenAI(
                 model=settings.llm_model,
                 temperature=settings.llm_temperature,
@@ -100,35 +117,29 @@ class LLMProvider:
                 max_tokens=settings.llm_max_tokens
             )
 
-        else:
-            raise ValueError(
-                f"알 수 없는 umis_mode: '{mode}'\n"
-                f"허용 값: 'native', 'external'"
-            )
-
     @staticmethod
-    def is_native_mode() -> bool:
+    def is_cursor_mode() -> bool:
         """
-        Native 모드 여부 확인
+        Cursor 모드 여부 확인
 
         Returns:
         --------
-        True: Native 모드 (Cursor LLM 사용)
-        False: External 모드 (API 호출)
+        True: Cursor 모드 (Cursor LLM 사용)
+        False: External LLM 모드 (API 호출)
         """
-        return settings.umis_mode.lower() == "native"
+        return settings.llm_mode.lower() == "cursor"
 
     @staticmethod
     def is_external_mode() -> bool:
         """
-        External 모드 여부 확인
+        External LLM 모드 여부 확인
 
         Returns:
         --------
-        True: External 모드 (API 호출)
-        False: Native 모드 (Cursor LLM 사용)
+        True: External LLM 모드 (API 호출)
+        False: Cursor 모드 (Cursor LLM 사용)
         """
-        return settings.umis_mode.lower() == "external"
+        return settings.llm_mode.lower() != "cursor"
 
     @staticmethod
     def get_mode_info() -> Dict[str, Any]:
@@ -138,77 +149,69 @@ class LLMProvider:
         Returns:
         --------
         Dict with keys:
-            - mode: 'native' or 'external'
+            - mode: 'cursor' or model name (e.g., 'gpt-4o-mini')
             - uses_api: bool
             - cost: str (비용 설명)
             - automation: bool (자동화 가능 여부)
         """
-        mode = settings.umis_mode.lower()
+        mode = settings.llm_mode.lower()
 
-        if mode == "native":
+        if mode == "cursor":
             return {
-                "mode": "native",
+                "mode": "cursor",
                 "uses_api": False,
                 "cost": "$0 (Cursor 구독 포함)",
                 "automation": False,
                 "description": "RAG 검색만 수행 → Cursor LLM이 분석"
             }
-        elif mode == "external":
+        else:
             return {
-                "mode": "external",
+                "mode": mode,
                 "uses_api": True,
                 "cost": f"토큰당 과금 (모델: {settings.llm_model})",
                 "automation": True,
                 "description": "RAG 검색 + API 호출 → 완성된 결과"
             }
-        else:
-            return {
-                "mode": "unknown",
-                "uses_api": None,
-                "cost": "알 수 없음",
-                "automation": None,
-                "description": f"잘못된 모드: {mode}"
-            }
 
 
-class NativeModeMixin:
+class CursorModeMixin:
     """
-    Native 모드 헬퍼 Mixin
+    Cursor 모드 헬퍼 Mixin
 
-    Agent가 Native/External 모드를 쉽게 처리하도록 돕는 유틸리티
+    Agent가 Cursor/External LLM 모드를 쉽게 처리하도록 돕는 유틸리티
 
     사용 예시:
     ---------
     ```python
-    class ExplorerRAG(NativeModeMixin):
+    class ExplorerRAG(CursorModeMixin):
         def generate_hypothesis(self, rag_results):
-            if self.is_native():
-                return self.prepare_native_output(
+            if self.is_cursor():
+                return self.prepare_cursor_output(
                     rag_results,
                     instruction="위 패턴을 바탕으로 기회 가설 3개를 생성해주세요."
                 )
             else:
-                # External: API 호출
+                # External LLM: API 호출
                 return self._call_api(rag_results)
     ```
     """
 
-    def is_native(self) -> bool:
-        """Native 모드 여부"""
-        return LLMProvider.is_native_mode()
+    def is_cursor(self) -> bool:
+        """Cursor 모드 여부"""
+        return LLMProvider.is_cursor_mode()
 
     def is_external(self) -> bool:
-        """External 모드 여부"""
+        """External LLM 모드 여부"""
         return LLMProvider.is_external_mode()
 
-    def prepare_native_output(
+    def prepare_cursor_output(
         self,
         rag_results: Any,
         instruction: str,
         metadata: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """
-        Native 모드용 출력 준비
+        Cursor 모드용 출력 준비
 
         RAG 검색 결과를 Cursor LLM이 사용할 수 있는 형태로 포맷팅
 
@@ -221,13 +224,13 @@ class NativeModeMixin:
         Returns:
         --------
         Dict with keys:
-            - mode: 'native'
+            - mode: 'cursor'
             - rag_results: 검색 결과
             - instruction: LLM 지시사항
             - metadata: 메타데이터
         """
         return {
-            "mode": "native",
+            "mode": "cursor",
             "rag_results": rag_results,
             "instruction": instruction,
             "metadata": metadata or {},

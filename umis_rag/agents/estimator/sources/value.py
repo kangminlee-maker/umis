@@ -80,15 +80,15 @@ class AIAugmentedEstimationSource(ValueSourceBase):
     -----
     - LLM + Web 통합 (기존 LLMEstimationSource + WebSearchSource)
     - LLM 지식 우선 → 불확실하면 웹 검색
-    - Native: instruction 반환 (AI가 실행)
-    - External: API 호출 (자동 실행)
+    - Cursor: instruction 반환 (AI가 실행)
+    - API: External LLM API 호출 (자동 실행)
     - confidence 0.55-0.90
     
     통합 이유:
     ----------
     - LLM과 Web 모두 "외부에서 값 가져오기"
     - 웹 검색은 LLM이 불확실할 때 보조 수단
-    - Native 모드에서 LLM Source 활용도 0% 문제 해결
+    - Cursor 모드에서 LLM Source 활용도 0% 문제 해결 (v7.8.1)
     """
     
     def __init__(self, llm_mode: str = "native"):
@@ -104,38 +104,164 @@ class AIAugmentedEstimationSource(ValueSourceBase):
             return []
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Native 모드: instruction 반환
+        # Cursor AI: instruction 생성 (Phase 3에서는 사용 불가)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        if self.llm_mode == "native":
-            logger.info(f"  [AI+Web] Native 모드: instruction 생성")
+        if self.llm_mode == "cursor":  # v7.8.1: cursor = Cursor AI
+            logger.info(f"  [AI+Web] Cursor AI: instruction 생성 (Phase 3 스킵)")
             
             instruction = self._build_native_instruction(question, context)
             
-            # ValueEstimate로 반환 (특수 타입: instruction 포함)
-            return [ValueEstimate(
-                source_type=SourceType.AI_AUGMENTED,
-                value=0.0,  # AI가 계산
-                confidence=0.0,  # AI가 결정
-                reasoning="AI가 추정 (필요시 웹 검색 수행)",
-                source_detail="native_mode_instruction",
-                raw_data={"instruction": instruction, "mode": "native"}
-            )]
+            # v7.8.1: Cursor AI에서는 빈 리스트 반환
+            # 이유: value=0.0은 False로 평가되어 판단 실패 발생
+            # instruction은 Phase 4에서만 사용
+            logger.info(f"  [AI+Web] Cursor AI: Phase 3에서 사용 불가 → 빈 값 반환")
+            return []
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # External 모드: API 호출 (TODO)
+        # API Mode: External LLM API 호출 (v7.8.1)
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        else:
-            logger.info(f"  [AI+Web] External 모드 (TODO: API 호출)")
-            # TODO: LangChain + Tavily/SerpAPI
-            return []
+        else:  # External LLM
+            logger.info(f"  [AI+Web] API Mode (모델: {self.llm_mode})")
+            
+            try:
+                # Instruction 생성 (Native 로직 재사용)
+                instruction = self._build_native_instruction(question, context)
+                
+                # LLM API 호출
+                from umis_rag.core.model_configs import get_model_config
+                from openai import OpenAI
+                
+                model_config = get_model_config(self.llm_mode)
+                api_params = model_config.build_api_params(instruction)
+                
+                # OpenAI 클라이언트
+                import os
+                client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+                
+                # API 호출 (api_type에 따라 분기)
+                if model_config.api_type == 'responses':
+                    response = client.responses.create(**api_params)
+                    # 응답 파싱
+                    llm_output = response.output_text if hasattr(response, 'output_text') else str(response.output[0].content[0].text)
+                
+                elif model_config.api_type == 'chat':
+                    # System message 추가
+                    if 'messages' in api_params:
+                        api_params['messages'].insert(0, {
+                            "role": "system",
+                            "content": "당신은 시장 분석 전문가입니다. 항상 JSON 형식으로만 답변하세요."
+                        })
+                    response = client.chat.completions.create(**api_params)
+                    llm_output = response.choices[0].message.content
+                
+                else:
+                    logger.warning(f"  [AI+Web] 지원하지 않는 api_type: {model_config.api_type}")
+                    return []
+                
+                logger.info(f"  [AI+Web] LLM 응답 수신 ({len(llm_output)}자)")
+                
+                # JSON 파싱 (벤치마크 패턴 활용)
+                parsed_data = self._parse_llm_json_response(llm_output)
+                
+                if not parsed_data:
+                    logger.warning(f"  [AI+Web] JSON 파싱 실패")
+                    return []
+                
+                # ValueEstimate 생성
+                if 'value' not in parsed_data:
+                    logger.warning(f"  [AI+Web] 'value' 키 없음")
+                    return []
+                
+                # v7.10.0: None 체크 및 안전한 파싱
+                raw_value = parsed_data.get('value')
+                if raw_value is None:
+                    logger.warning(f"  [AI+Web] 'value' 값이 None")
+                    return []
+
+                try:
+                    parsed_value = float(raw_value)
+                except (TypeError, ValueError) as e:
+                    logger.error(f"  [AI+Web] value 파싱 실패: {raw_value} ({e})")
+                    return []
+
+                estimate = ValueEstimate(
+                    source_type=SourceType.AI_AUGMENTED,
+                    value=parsed_value,
+                    confidence=parsed_data.get('confidence', 0.70),
+                    reasoning=parsed_data.get('reasoning', 'AI 증강 추정'),
+                    source_detail=f"LLM: {self.llm_mode}",
+                    raw_data=parsed_data
+                )
+                
+                logger.info(f"  [AI+Web] 추정 완료: {estimate.value} (신뢰도: {estimate.confidence:.2f})")
+                
+                return [estimate]
+            
+            except Exception as e:
+                logger.error(f"  [AI+Web] API 호출 실패: {e}")
+                import traceback
+                logger.debug(traceback.format_exc())
+                return []
+    
+    def _parse_llm_json_response(self, llm_output: str) -> Optional[Dict]:
+        """
+        LLM 응답에서 JSON 추출 및 파싱
+        
+        벤치마크 패턴 적용:
+        1. ```json ... ``` 블록 추출
+        2. ``` ... ``` 일반 블록 추출
+        3. Raw JSON 파싱
+        
+        Args:
+            llm_output: LLM 응답 텍스트
+        
+        Returns:
+            파싱된 Dict 또는 None
+        """
+        import json
+        
+        try:
+            content = llm_output
+            
+            # 1. JSON 코드 블록 추출 (```json ... ```)
+            if '```json' in content:
+                json_start = content.find('```json') + 7
+                json_end = content.find('```', json_start)
+                content = content[json_start:json_end].strip()
+                logger.debug("  [Parser] JSON 블록 감지 (```json)")
+            
+            # 2. 일반 코드 블록 추출 (``` ... ```)
+            elif '```' in content:
+                json_start = content.find('```') + 3
+                json_end = content.find('```', json_start)
+                content = content[json_start:json_end].strip()
+                logger.debug("  [Parser] 코드 블록 감지 (```)")
+            
+            else:
+                logger.debug("  [Parser] 코드 블록 없음, Raw JSON 파싱 시도")
+            
+            # 3. JSON 파싱
+            parsed = json.loads(content)
+            logger.debug(f"  [Parser] JSON 파싱 성공")
+            
+            return parsed
+        
+        except json.JSONDecodeError as e:
+            logger.debug(f"  [Parser] JSON 파싱 실패: {e}")
+            logger.debug(f"  [Parser] 응답 미리보기: {llm_output[:200]}...")
+            return None
+        
+        except Exception as e:
+            logger.debug(f"  [Parser] 예외 발생: {e}")
+            return None
     
     def _build_native_instruction(
-        self, 
-        question: str, 
+        self,
+        question: str,
         context: Optional[Context]
     ) -> str:
         """
-        Native 모드 instruction 생성
+        Cursor AI instruction 생성 (v7.8.1)
         
         AI에게 제공할 상세한 로직
         """
@@ -318,7 +444,7 @@ class LLMEstimationSource(ValueSourceBase):
     역할:
     -----
     - LLM에게 직접 질문
-    - Native Mode (Cursor) or External (API)
+    - Cursor Mode (Cursor AI) or API Mode (External LLM)
     - confidence 0.60-0.90
     """
     
@@ -504,7 +630,7 @@ class WebSearchSource(ValueSourceBase):
                 logger.info(f"    Consensus: {consensus['value']} (신뢰도: {consensus['confidence']:.2f})")
                 
                 return [ValueEstimate(
-                    source_type=SourceType.WEB_SEARCH,
+                    source_type=SourceType.AI_AUGMENTED,  # v7.8.1: WEB_SEARCH deprecated
                     value=consensus['value'],
                     confidence=consensus['confidence'],
                     reasoning=f"웹 검색 consensus ({consensus['count']}개 출처 일치)",
@@ -1053,6 +1179,120 @@ class RAGBenchmarkSource(ValueSourceBase):
             r'(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*%',  # "5-7%"
             r'(\d+(?:\.\d+)?)\s*%',  # "6%"
         ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, content)
+            if match:
+                if len(match.groups()) == 2:  # range
+                    min_val = float(match.group(1))
+                    max_val = float(match.group(2))
+                    return (min_val + max_val) / 2 / 100  # % → 소수
+                else:  # single value
+                    return float(match.group(1)) / 100
+        
+        return None
+    
+    def _parse_value(self, value_raw) -> Optional[float]:
+        """값 파싱"""
+        # 숫자면 그대로
+        if isinstance(value_raw, (int, float)):
+            return float(value_raw)
+        
+        # 문자열이면 파싱 시도
+        if isinstance(value_raw, str):
+            # "5-7%" → 중앙값 6
+            if '-' in value_raw:
+                parts = value_raw.replace('%', '').split('-')
+                try:
+                    min_val = float(parts[0])
+                    max_val = float(parts[1])
+                    return (min_val + max_val) / 2 / 100  # % → 소수
+                except:
+                    pass
+            
+            # "6%" → 0.06
+            try:
+                val_str = value_raw.replace('%', '').replace(',', '').strip()
+                val = float(val_str)
+                # % 형태면 100으로 나누기
+                if '%' in value_raw:
+                    return val / 100
+                return val
+            except:
+                pass
+        
+        return None
+
+
+class StatisticalValueSource(ValueSourceBase):
+    """
+    통계 패턴 값
+    
+    역할:
+    -----
+    - 통계 패턴의 대표값 (median or mean)
+    - 다른 Value 없을 때만 사용
+    - confidence 0.50-0.65
+    """
+    
+    def collect(
+        self,
+        question: str,
+        context: Optional[Context] = None,
+        statistical_guide: Optional['SoftGuide'] = None
+    ) -> List[ValueEstimate]:
+        """통계값 추출"""
+        
+        if not statistical_guide or not statistical_guide.distribution:
+            return []
+        
+        estimates = []
+        
+        dist = statistical_guide.distribution
+        
+        # 분포 타입별 대표값 선택
+        if dist.distribution_type == DistributionType.NORMAL:
+            # 정규분포 → mean
+            if dist.mean:
+                estimate = ValueEstimate(
+                    source_type=SourceType.STATISTICAL_VALUE,
+                    value=dist.mean,
+                    confidence=0.70 if (dist.cv and dist.cv < 0.20) else 0.60,
+                    reasoning="정규분포 평균값"
+                )
+                estimates.append(estimate)
+        
+        elif dist.distribution_type == DistributionType.POWER_LAW:
+            # Power Law → median (평균 금지!)
+            if dist.percentiles and 'p50' in dist.percentiles:
+                estimate = ValueEstimate(
+                    source_type=SourceType.STATISTICAL_VALUE,
+                    value=dist.percentiles['p50'],
+                    confidence=0.60,
+                    reasoning="Power Law 중앙값 (평균 사용 금지)"
+                )
+                estimates.append(estimate)
+        
+        elif dist.distribution_type == DistributionType.EXPONENTIAL:
+            # 지수분포 → median
+            if dist.percentiles and 'p50' in dist.percentiles:
+                estimate = ValueEstimate(
+                    source_type=SourceType.STATISTICAL_VALUE,
+                    value=dist.percentiles['p50'],
+                    confidence=0.65,
+                    reasoning="지수분포 중앙값"
+                )
+                estimates.append(estimate)
+        
+        elif dist.distribution_type == DistributionType.BIMODAL:
+            # 이봉분포 → 값 제시 못함
+            logger.info("  [통계값] 이봉분포 → 세분화 필요")
+            return []
+        
+        return estimates
+
+
+        
         
         for pattern in patterns:
             match = re.search(pattern, content)
