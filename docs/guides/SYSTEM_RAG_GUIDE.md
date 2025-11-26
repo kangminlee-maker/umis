@@ -1,88 +1,62 @@
 # System RAG 사용 가이드 (v7.11.1)
-**작성일**: 2025-11-25 (v7.11.1 업데이트)
-**버전**: v7.11.1
-**목적**: 3-Tier 구조 사용 가이드 (System + Complete + Task)
+**작성일**: 2025-11-26 (v7.11.1 업데이트)  
+**버전**: v7.11.1  
+**목적**: 2-Tier 구조 사용 가이드 (System + Complete)
 
 ---
 
-## 📊 새로운 구조 (3-Tier, v7.11.1)
+## 📊 현재 구조 (2-Tier, v7.11.1)
+
+**결정**: Complete 도구만 사용 (Task 도구 제거)  
+**근거**: 유지보수 단순성 + 200K 모델 충분 + Vector Fallback 동작  
+**상세**: `CONTEXT_WINDOW_STRATEGY.md`, `TASK_TOOLS_DECISION.md` 참조
+
+---
 
 ### Tier 1: System 도구 (9개)
-**목적**: UMIS 시스템 전체 이해
+**목적**: UMIS 시스템 전체 이해  
 **출처**: umis.yaml 시스템 섹션
 
-### Tier 2: Complete 도구 (6개)
-**목적**: 실제 작업 수행 시 전체 컨텍스트 제공
-**출처**: umis.yaml Agent 섹션 0% 손실 ⭐ 실제 작업 권장!
-
-| 도구 | 크기 | 토큰 | 사용 시점 |
-|------|------|------|----------|
-| tool:observer:complete | 6,707자 | ~1,676 | Observer 실제 작업 |
-| tool:explorer:complete | 14,237자 | ~3,559 | Explorer 실제 작업 |
-| tool:quantifier:complete | 11,993자 | ~2,998 | Quantifier 실제 작업 |
-| tool:validator:complete | 9,721자 | ~2,430 | Validator 실제 작업 |
-| tool:guardian:complete | 7,817자 | ~1,954 | Guardian 실제 작업 |
-| tool:estimator:complete | 14,339자 | ~3,584 | Estimator 실제 작업 |
-
-**특징**:
-- umis.yaml Agent 섹션 전체 (모든 원칙, 프레임워크, 예시)
-- AI가 umis.yaml 읽을 필요 없음
-- 단, 크기가 크므로 필요시만 사용
+| 도구 | 크기 | 사용 시점 |
+|------|------|----------|
+| tool:system:system_architecture | ~1,774 tokens | 시스템 구조 이해 |
+| tool:system:implementation_guide | ~4,623 tokens | 구현 가이드 |
+| tool:system:agents | ~16,578 tokens | 모든 Agent (매우 큼) |
+| (6개 더) | ... | ... |
 
 ---
 
-### Tier 3: Task 도구 (29개)
-**목적**: 빠른 확인, 특정 작업만 수행
-**크기**: 평균 1,844자 (~461 토큰)
+### Tier 2: Complete 도구 (6개)
+**목적**: 실제 작업 수행 시 전체 컨텍스트 제공  
+**출처**: umis.yaml Agent 섹션 0% 손실 ⭐ 실제 작업 권장!
 
-| Agent | 도구 예시 | 사용 시점 |
-|-------|-----------|----------|
-| Observer | market_structure, value_chain | 시장 구조만 빠르게 |
-| Explorer | pattern_search, 7_step_process | 패턴 검색만 |
-| Quantifier | sam_4methods, growth_analysis | SAM 계산만 |
-| Validator | data_definition, creative_sourcing | 정의 검증만 |
-| ... | ... | ... |
+| 도구 | 토큰 | 사용 시점 |
+|------|------|----------|
+| tool:observer:complete | ~1,676 | Observer 실제 작업 |
+| tool:explorer:complete | ~3,559 | Explorer 실제 작업 |
+| tool:quantifier:complete | ~2,998 | Quantifier 실제 작업 |
+| tool:validator:complete | ~2,430 | Validator 실제 작업 |
+| tool:guardian:complete | ~1,954 | Guardian 실제 작업 |
+| tool:estimator:complete | ~3,584 | Estimator 실제 작업 |
 
 **특징**:
-- 특정 작업에 집중
-- 빠른 조회 (작은 크기)
-- 전체 컨텍스트 필요 시 Complete로 전환
+- 평균 ~2,867 tokens (6개)
+- 200K+ 모델에서 충분한 컨텍스트
+- Vector Fallback으로 유연한 쿼리
 
 ---
 
 ## 🎯 사용 패턴
 
-### 패턴 A: 빠른 확인 (Task 도구)
+### 패턴 A: 단일 Agent 작업
 
-**시나리오**: "@Observer, 시장 구조만 빠르게 파악"
+**시나리오**: "@Observer, 음악 스트리밍 시장 분석"
 
-```python
+```bash
 # AI 실행 순서
 1. umis_core.yaml 읽기 (INDEX)
-2. query_system_rag.py tool:observer:market_structure
-   → 1,500자 로드 (~375 토큰)
-3. 바로 실행
-
-컨텍스트:
-  - umis_core: ~1,000줄 (~4,000 토큰)
-  - Task 도구 1개: ~375 토큰
-  - 합계: ~4,375 토큰
-
-절약: 91% (vs umis.yaml 50,000 토큰)
-```
-
----
-
-### 패턴 B: 실제 작업 (Complete 도구) ⭐ 권장
-
-**시나리오**: "@Observer, 음악 스트리밍 시장 분석" (실제 작업)
-
-```python
-# AI 실행 순서
-1. umis_core.yaml 읽기 (INDEX)
-2. query_system_rag.py tool:observer:complete
+2. python3 scripts/query_system_rag.py tool:observer:complete
    → 6,707자 로드 (~1,676 토큰)
-   → umis.yaml Observer 섹션 전체 포함!
 3. 바로 실행 (umis.yaml 참조 불필요!)
 
 컨텍스트:
@@ -93,24 +67,18 @@
 절약: 89% (vs umis.yaml 50,000 토큰)
 ```
 
-**장점**:
-- ✅ umis.yaml 참조 불필요 (0% 손실)
-- ✅ 모든 작업 방식, 원칙, 프레임워크 포함
-- ✅ 실전 사례, 협업 방식 포함
-- ✅ 여전히 89% 컨텍스트 절약
-
 ---
 
-### 패턴 C: 복합 작업 (Complete 여러 개)
+### 패턴 B: 복합 작업 (Complete 여러 개)
 
 **시나리오**: "음악 스트리밍 시장 분석" (Observer → Explorer → Quantifier)
 
-```python
+```bash
 # AI 실행 순서
 1. umis_core.yaml 읽기
-2. query_system_rag.py tool:observer:complete (~1,676 토큰)
-3. query_system_rag.py tool:explorer:complete (~3,559 토큰)
-4. query_system_rag.py tool:quantifier:complete (~2,998 토큰)
+2. python3 scripts/query_system_rag.py tool:observer:complete
+3. python3 scripts/query_system_rag.py tool:explorer:complete
+4. python3 scripts/query_system_rag.py tool:quantifier:complete
 
 컨텍스트:
   - umis_core: ~4,000 토큰
@@ -120,65 +88,56 @@
 절약: 76% (vs umis.yaml 50,000 토큰)
 ```
 
-**여전히 효율적!**
-
 ---
 
-### 패턴 D: 하이브리드 (Complete + Task 혼합)
+### 패턴 C: Discovery Sprint (6 Agents)
 
-**시나리오**: Explorer 중심, Observer는 참고만
+**시나리오**: "피아노 구독 서비스 시장" (목표 불명확)
 
-```python
-# AI 실행 순서
-1. umis_core.yaml 읽기
-2. tool:explorer:complete (~3,559 토큰) ← 전체 컨텍스트
-3. tool:observer:market_structure (~375 토큰) ← 참고만
+```bash
+# 6개 Complete 로드
+python3 scripts/query_system_rag.py tool:observer:complete
+python3 scripts/query_system_rag.py tool:explorer:complete
+python3 scripts/query_system_rag.py tool:quantifier:complete
+python3 scripts/query_system_rag.py tool:validator:complete
+python3 scripts/query_system_rag.py tool:guardian:complete
+python3 scripts/query_system_rag.py tool:estimator:complete
 
 컨텍스트:
   - umis_core: ~4,000 토큰
-  - Complete 1개: ~3,559 토큰
-  - Task 1개: ~375 토큰
-  - 합계: ~7,934 토큰
+  - Complete 6개: ~16,201 토큰
+  - 합계: ~20,201 토큰
 
-절약: 84% (vs umis.yaml 50,000 토큰)
+절약: 75% (vs umis.yaml 50,000 토큰)
+
+권장 모델: claude-sonnet-3.5 (200K) 또는 gemini-1.5-pro (272K)
 ```
-
-**최적 균형!**
 
 ---
 
 ## 📋 도구 선택 가이드
 
-### 언제 Complete를 사용하는가?
+### ✅ Complete 사용 (권장)
 
-✅ **Complete 사용 (권장)**:
+**언제 사용**:
 1. 실제 작업 수행 (분석, 계산, 검증)
 2. Agent 역할 전체 이해 필요
 3. 협업 방식 파악 필요
 4. 원칙, 프레임워크 숙지 필요
 
 **예시**:
-- "@Observer, 음악 스트리밍 시장 구조 분석" → observer:complete
-- "@Quantifier, SAM 계산" → quantifier:complete
-- "@Explorer, 기회 발굴" → explorer:complete
+- "@Observer, 음악 스트리밍 시장 구조 분석" → tool:observer:complete
+- "@Quantifier, SAM 계산" → tool:quantifier:complete
+- "@Explorer, 기회 발굴" → tool:explorer:complete
+
+**장점**:
+- umis.yaml 참조 불필요 (0% 손실)
+- 여전히 75-89% 절약
+- 200K+ 모델에서 안정적
 
 ---
 
-### 언제 Task를 사용하는가?
-
-✅ **Task 사용**:
-1. 빠른 확인 (개념만)
-2. 특정 도구 하나만 사용
-3. 컨텍스트 최소화 필요
-
-**예시**:
-- "HHI 계산 방법만 확인" → tool:observer:market_structure
-- "SAM 4가지 방법만 확인" → tool:quantifier:sam_4methods
-- "패턴 검색 방법만" → tool:explorer:pattern_search
-
----
-
-## 🎯 AI 실행 프로세스 (업데이트)
+## 🎯 AI 실행 프로세스
 
 ### Step 1: umis_core.yaml 읽기 (INDEX)
 ```
@@ -186,25 +145,15 @@ Lines 40-110 읽기
 → Agent 선택, 도구 식별
 ```
 
-### Step 2: 도구 타입 결정
-```
-실제 작업? → Complete
-빠른 확인? → Task
-```
-
-### Step 3: System RAG 검색
+### Step 2: System RAG 검색
 ```bash
-# Complete (실제 작업)
-python3 scripts/query_system_rag.py tool:observer:complete
-
-# Task (빠른 확인)
-python3 scripts/query_system_rag.py tool:observer:market_structure
+python3 scripts/query_system_rag.py tool:{agent}:complete
 ```
 
-### Step 4: 로드된 컨텍스트로 작업
+### Step 3: 로드된 컨텍스트로 작업
 ```
 Complete: umis.yaml 참조 불필요 ✅
-Task: 필요 시 Complete 추가 로드
+Vector Fallback: 유사 쿼리도 자동 매칭
 ```
 
 ---
@@ -218,84 +167,56 @@ umis.yaml 전체 읽기
 → 비효율
 ```
 
-###After (Complete 사용)
+### After (Complete 사용)
 ```
-3개 Complete: ~8,101 토큰 (84% 절약)
-5개 Complete: ~13,502 토큰 (73% 절약)
+단일 Agent: ~5,676 토큰 (89% 절약)
+3개 Agent: ~12,233 토큰 (76% 절약)
+6개 Agent: ~20,201 토큰 (75% 절약)
 
-여전히 매우 효율적!
-```
-
-### 극한 효율 (Task 사용)
-```
-5개 Task: ~2,305 토큰 (95% 절약)
-
-하지만 컨텍스트 부족할 수 있음
-→ Complete 권장
+→ 여전히 매우 효율적!
 ```
 
 ---
 
-## ⚠️ 주의사항
+## ⚠️ 모델별 권장사항
 
-### 1. Complete는 크다
-- 평균 10,802자 (~2,700 토큰)
-- 5개 로드 시 ~13,500 토큰
-- 하지만 umis.yaml 대비 여전히 73% 절약
+### 200K 모델 (claude-sonnet-3.5) ⭐ 권장
+- Discovery Sprint: 51% 사용 (안정적)
+- 일반 작업: 20-30% 사용 (여유)
 
-### 2. 필요한 것만 로드
-```
-❌ 모든 Agent Complete 로드 (6개 = ~16,200 토큰)
-✅ 필요한 Agent만 Complete 로드 (3-5개 = ~8,000-13,500 토큰)
-```
+### 272K-400K 모델 (gemini-1.5-pro, gpt-4.1)
+- 모든 작업 안정적
+- Discovery Sprint: 25-38% 사용
 
-### 3. Task는 불완전
-- Task 도구는 요약본
-- 실제 작업에는 컨텍스트 부족 가능
-- **실제 작업 = Complete 권장**
+### 128K 모델 (gpt-4o-mini)
+- Discovery Sprint: 79% 사용 (주의)
+- 작업 분할 권장
 
 ---
 
-## 🚀 권장 사용 전략
+## ✅ 권장 사항
 
-### 기본 전략 (권장)
+### 1. 기본적으로 Complete 사용 (권장!)
+
+**이유**:
+- umis.yaml 참조 불필요 (0% 손실)
+- 여전히 75-89% 절약
+- 작업 오류 최소화
+- 200K+ 모델에서 충분
+
+### 2. 필요한 Agent만 로드
+
 ```
-실제 작업 Agent: Complete 로드
-참고용 Agent: Task 로드
-
-예시 (시장 분석):
-  - observer:complete (주 작업)
-  - explorer:complete (주 작업)
-  - quantifier:sam_4methods (SAM만 참고)
-  - validator:data_definition (정의만 확인)
-
-컨텍스트: ~8,000 토큰 (84% 절약)
-```
-
-### 효율 우선 전략
-```
-모두 Task 도구 사용
-필요 시 Complete 추가
-
-예시:
-  1. observer:market_structure 로드
-  2. 정보 부족 감지
-  3. observer:complete 추가 로드
-
-컨텍스트: 점진적 확장
+❌ 모든 Agent Complete 로드 (6개 = ~16,201 토큰)
+✅ 필요한 Agent만 Complete 로드 (2-3개 = ~8,000 토큰)
 ```
 
-### 품질 우선 전략 (권장!)
-```
-처음부터 Complete 로드 (3-5개)
+### 3. Vector Fallback 활용
 
-이유:
-  - 0% 손실 컨텍스트
-  - umis.yaml 참조 불필요
-  - 여전히 73% 절약
-  - 작업 오류 최소화
-
-→ 가장 안정적!
+```python
+# Task 도구 쿼리해도 자동으로 Complete 매칭
+query_system_rag.py tool:observer:market_structure
+→ tool:observer:complete 자동 fallback ✅
 ```
 
 ---
@@ -304,11 +225,10 @@ umis.yaml 전체 읽기
 
 ### 예시 1: Observer 단독 작업
 
-**쿼리**: "@Observer, 미용 MRO 시장 구조 분석"
-
-**AI 프로세스**:
 ```bash
-# Complete 로드 (권장)
+# 쿼리: "@Observer, 미용 MRO 시장 구조 분석"
+
+# Complete 로드
 python3 scripts/query_system_rag.py tool:observer:complete
 
 # 획득 컨텍스트:
@@ -324,21 +244,15 @@ python3 scripts/query_system_rag.py tool:observer:complete
 
 ---
 
-### 예시 2: 시장 분석 (Observer → Explorer → Quantifier)
+### 예시 2: 시장 분석 (3 Agents)
 
-**쿼리**: "음악 스트리밍 시장 분석"
-
-**AI 프로세스**:
 ```bash
+# 쿼리: "음악 스트리밍 시장 분석"
+
 # 3개 Complete 로드
 python3 scripts/query_system_rag.py tool:observer:complete
 python3 scripts/query_system_rag.py tool:explorer:complete
 python3 scripts/query_system_rag.py tool:quantifier:complete
-
-# 컨텍스트:
-- umis_core: ~4,000 토큰
-- Complete 3개: ~8,233 토큰
-- 합계: ~12,233 토큰 (76% 절약)
 
 # 획득:
 - Observer: 전체 관찰 방식, 8개 차원, 협업 방식
@@ -350,163 +264,31 @@ python3 scripts/query_system_rag.py tool:quantifier:complete
 
 ---
 
-### 예시 3: 하이브리드 (권장)
-
-**쿼리**: "@Explorer 중심 기회 발굴, Observer는 참고만"
-
-**AI 프로세스**:
-```bash
-# Explorer는 Complete (주 작업)
-python3 scripts/query_system_rag.py tool:explorer:complete
-
-# Observer는 Task (참고)
-python3 scripts/query_system_rag.py tool:observer:market_structure
-
-# 컨텍스트:
-- umis_core: ~4,000 토큰
-- explorer:complete: ~3,559 토큰
-- observer:market_structure: ~375 토큰
-- 합계: ~7,934 토큰 (84% 절약)
-
-→ 최적 균형!
-```
-
----
-
-## 🔍 Task vs Complete 비교
-
-### Task 도구 (observer:market_structure)
-**크기**: ~1,500자 (~375 토큰)
-
-**포함 내용**:
-- ✅ 13차원 정의 (리스트)
-- ✅ 6단계 프로세스 (개요)
-- ✅ HHI, Porter's 5 Forces (개념)
-- ✅ 7가지 비효율성 (리스트)
-- ✅ 관찰 원칙 4가지
-- ✅ 산업별 예시 3개
-
-**누락 내용**:
-- ❌ extended_frameworks 상세 (8개 차원)
-- ❌ universal_observation_dimensions (cross-industry)
-- ❌ output_standardization
-- ❌ 상세 협업 프로토콜
-
-**적합**: 빠른 확인, 개념 이해
-
----
-
-### Complete 도구 (observer:complete)
-**크기**: ~6,707자 (~1,676 토큰)
-
-**포함 내용** (0% 손실):
-- ✅ 모든 Task 내용
-- ✅ extended_frameworks 전체 (8개 차원 상세)
-- ✅ universal_observation_dimensions (산업 무관)
-- ✅ output_standardization (표준 출력)
-- ✅ concrete_examples (4개 산업)
-- ✅ role_boundaries (역할 경계 상세)
-- ✅ support_and_validation (협업 프로토콜)
-- ✅ frequent_collaboration (협업 패턴)
-
-**적합**: 실제 작업 수행
-
----
-
-## 📊 효율성 분석
-
-### 시나리오별 컨텍스트
-
-| 시나리오 | 도구 조합 | 토큰 | 절약 |
-|---------|----------|------|------|
-| 단순 쿼리 | umis_core + Task 1-2개 | ~5,000 | 90% |
-| 중간 작업 | umis_core + Complete 2-3개 | ~12,000 | 76% |
-| 복합 작업 | umis_core + Complete 4-5개 | ~17,500 | 65% |
-| 전체 (참고) | umis.yaml 전체 | ~50,000 | 0% |
-
-**결론**: Complete 사용해도 여전히 65-89% 절약!
-
----
-
-## ✅ 권장 사항
-
-### 1. 기본적으로 Complete 사용 (권장!)
-
-**이유**:
-- umis.yaml 참조 불필요 (0% 손실)
-- 여전히 73-89% 절약
-- 작업 오류 최소화
-- AI가 완전한 컨텍스트로 작업
-
-**예외**: 빠른 개념 확인만 필요할 때 Task 사용
-
----
-
-### 2. Task는 보조 수단
-
-**사용 케이스**:
-- 빠른 확인 (개념, 프로세스 개요)
-- 컨텍스트 극도로 제한적일 때
-- 특정 도구 하나만 필요
-
-**주의**: 실제 작업 시 컨텍스트 부족 가능
-
----
-
-### 3. 하이브리드 전략
-
-**주 Agent**: Complete
-**보조 Agent**: Task
-
-**예시**:
-```
-Explorer 중심 기회 발굴:
-  - explorer:complete (주)
-  - observer:market_structure (보조)
-  - quantifier:sam_4methods (보조)
-  
-→ 주요 작업은 완전한 컨텍스트
-→ 보조는 간략히
-→ 효율 + 품질 균형
-```
-
----
-
 ## 🎯 결론
 
 ### ✅ 목표 달성
 
 **문제**: "rag 도구가 너무 짧아서 umis.yaml 참조 필요 / 너무 길면 컨텍스트 부담"
 
-**해결**: **2-Tier 구조**
-- **Complete**: umis.yaml 섹션 전체 (0% 손실)
-- **Task**: 세분화 도구 (빠른 조회)
+**해결**: **2-Tier 구조 (System + Complete)**
+- System: 시스템 이해 (9개)
+- Complete: 실제 작업 (6개, 0% 손실)
 
 **결과**:
 - ✅ umis.yaml 참조 불필요 (Complete 사용 시)
-- ✅ 여전히 73-89% 컨텍스트 절약
-- ✅ 유연한 선택 (Complete/Task/Hybrid)
+- ✅ 여전히 75-89% 컨텍스트 절약
+- ✅ 200K+ 모델에서 안정적
+- ✅ Vector Fallback으로 유연한 쿼리
 
 ---
 
-### 🚀 다음 단계
+## 🔗 관련 문서
 
-**현재 상태**: 완성 (시작점 확보)
-- 6개 Complete 도구 (0% 손실)
-- 29개 Task 도구 (기존 세분화)
-
-**추후 최적화** (선택):
-1. Complete 도구 간결화 (중복 제거)
-2. Task 도구 보강 (현재 부족한 부분)
-3. 사용 패턴 분석 후 조정
-
-**하지만 현재도 충분히 실용적!**
+- **CONTEXT_WINDOW_STRATEGY.md**: 컨텍스트 윈도우 전략 상세
+- **TASK_TOOLS_DECISION.md**: Task 도구 제거 결정 근거
+- **umis_core.yaml**: System RAG INDEX
+- **SYSTEM_RAG_INTERFACE.md**: AI Assistant 인터페이스
 
 ---
 
 **문서 끝**
-
-
-
-
-
