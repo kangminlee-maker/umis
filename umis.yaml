@@ -2855,11 +2855,28 @@ agents:
     universal_tools:
       estimator_collaboration:
         when: "공개되지 않은 시장 구조 비율 추정 필요 시"
-        agent: "Estimator (Fermi)"
-        method: "estimator.estimate()"
+        agent: "Estimator"
+        method: "estimator.estimate(question, domain=None, region=None, context=None, budget=None)"
         frequency: "★★★ 종종 사용"
         common_cases: "가치사슬 마진, 플랫폼 수수료, 시장 집중도"
-        note: "v7.3.2+: 직접 추정 금지, Estimator 호출 필수"
+        note: "모든 값 추정은 Estimator만 수행 (Single Source of Truth)"
+        
+        architecture: "4-Stage Fusion (Evidence → Prior → Fermi → Fusion)"
+        
+        example:
+          python: |
+            from umis_rag.agents.estimator import EstimatorRAG
+            
+            estimator = EstimatorRAG()
+            result = estimator.estimate(
+                question="플랫폼 평균 수수료율은?",
+                domain="Platform",
+                region="한국"
+            )
+            
+            if result and result.is_successful():
+                fee_rate = result.value
+                print(f"수수료율: {fee_rate*100:.1f}% (출처: {result.source})")
 
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
@@ -3134,11 +3151,28 @@ agents:
     universal_tools:
       estimator_collaboration:
         when: "기회 크기 빠른 가늠, 우선순위 판단"
-        agent: "Estimator (Fermi)"
-        method: "estimator.estimate()"
+        agent: "Estimator"
+        method: "estimator.estimate(question, domain=None, region=None, context=None, budget=None)"
         frequency: "★★★★ 자주 사용"
         common_cases: "잠재 시장 규모, 기회 우선순위, 투자 수익"
-        note: "v7.3.2+: 직접 추정 금지, Estimator 호출 필수"
+        note: "모든 값 추정은 Estimator만 수행 (Single Source of Truth)"
+        
+        architecture: "4-Stage Fusion (Evidence → Prior → Fermi → Fusion)"
+        
+        example:
+          python: |
+            from umis_rag.agents.estimator import EstimatorRAG
+            
+            estimator = EstimatorRAG()
+            result = estimator.estimate(
+                question="AI 챗봇 시장 규모는?",
+                domain="AI_Chatbot",
+                region="글로벌"
+            )
+            
+            if result and result.is_successful():
+                market_size = result.value
+                print(f"시장 규모: ${market_size/1e9:.1f}B (출처: {result.source})")
 
     # ===== 3. INTEGRATED OPPORTUNITY DISCOVERY PROCESS =====
     integrated_opportunity_discovery_process:
@@ -3638,30 +3672,49 @@ agents:
       - "4가지 방법 모두 사용하여 교차 검증"
       - "±30% 이내 수렴을 목표로 반복 검증"
       - "모든 숫자는 정의, 출처, 가정을 명시"
-      - "직접 데이터 없을 때: Estimator (Fermi) 호출 필수 (v7.3.2 Single Source)"
+      - "직접 데이터 없을 때: Estimator 호출 필수 (Single Source of Truth)"
 
     universal_tools:
       estimator_collaboration:
         when: "값이 필요한데 데이터가 없을 때"
-        agent: "Estimator (Fermi)"
-        method: "estimator.estimate(question, domain, region)"
+        agent: "Estimator"
+        method: "estimator.estimate(question, domain=None, region=None, context=None, budget=None)"
         frequency: "★★★★★ 가장 많이 사용"
-        common_cases: "ARPU, Churn, 전환율, 성장률, 음식점 수 등"
-        note: "v7.5.0: Quantifier는 계산만, 추정은 Estimator"
+        common_cases: "ARPU, Churn, 전환율, 성장률, 음식점 수, 비율 등"
         single_source: "모든 값 추정은 Estimator만 수행"
-
-        role_clarity_v7_5_0:
+        
+        architecture: "4-Stage Fusion (Evidence → Prior → Fermi → Fusion)"
+        
+        role_separation:
           quantifier_role: "계산 공식 소유 + 실행 (예: LTV = ARPU / Churn)"
           estimator_role: "값 추정 (예: ARPU는? → 80,000원)"
           collaboration: "Quantifier가 필요한 값을 Estimator에게 요청"
-
-          example_ltv_calculation:
-            step_1: "Quantifier: LTV 계산 시작"
-            step_2: "Quantifier: ARPU 필요 → Estimator.estimate('B2B SaaS ARPU는?')"
-            step_3: "Estimator: 80,000원 반환"
-            step_4: "Quantifier: Churn 필요 → Estimator.estimate('B2B SaaS Churn은?')"
-            step_5: "Estimator: 5% 반환"
-            step_6: "Quantifier: LTV = 80,000 / 0.05 = 1,600,000원 계산"
+        
+        example_ltv_calculation:
+          step_1: "Quantifier: LTV 계산 시작"
+          step_2: "Quantifier: ARPU 필요 → estimator.estimate('B2B SaaS ARPU는?')"
+          step_3: "Estimator: 80,000원 반환"
+          step_4: "Quantifier: Churn 필요 → estimator.estimate('B2B SaaS Churn은?')"
+          step_5: "Estimator: 5% 반환"
+          step_6: "Quantifier: LTV = 80,000 / 0.05 = 1,600,000원 계산"
+        
+        code_example:
+          python: |
+            from umis_rag.agents.estimator import EstimatorRAG
+            
+            estimator = EstimatorRAG()
+            
+            # ARPU 추정
+            arpu_result = estimator.estimate("B2B SaaS ARPU는?", domain="B2B_SaaS", region="한국")
+            arpu = arpu_result.value if arpu_result else 0
+            
+            # Churn 추정
+            churn_result = estimator.estimate("B2B SaaS Churn은?", domain="B2B_SaaS", region="한국")
+            churn = churn_result.value if churn_result else 0.05
+            
+            # LTV 계산 (Quantifier가 수행)
+            ltv = arpu / churn if churn > 0 else 0
+            print(f"LTV: {ltv:,.0f}원")
 
       business_metric_calculation:
         owner: "Quantifier"
@@ -4044,16 +4097,37 @@ agents:
       - "불명확한 정의는 사용 금지"
       - "조정은 투명하고 추적 가능하게"
       - "사용자 관점에서 검색어를 확장하여 정보의 사각지대 제거"
-      - "신뢰도 범위 추정 시: Estimator (Fermi) 호출 또는 교차 검증 요청"
+      - "신뢰도 범위 추정 시: Estimator 호출 또는 교차 검증 요청"
 
     universal_tools:
       estimator_collaboration:
         when: "데이터 신뢰도 범위 평가, 추정치 교차 검증"
-        agent: "Estimator (Fermi)"
-        method: "estimator.estimate() 또는 validator.validate_estimation()"
-        frequency: "★★★ 자주 사용 (v7.3.2 교차 검증)"
-        common_cases: "Error Range, 신뢰구간, 추정치 검증"
-        note: "v7.3.2+: 교차 검증 지원 (Estimator 독립 추정 → 비교)"
+        agent: "Estimator"
+        method: "estimator.estimate(question, domain=None, region=None) 또는 validator.validate_estimation()"
+        frequency: "★★★ 자주 사용"
+        common_cases: "Error Range, 신뢰구간, 추정치 교차 검증"
+        note: "교차 검증 지원 (Estimator 독립 추정 → 비교)"
+        
+        architecture: "4-Stage Fusion (Evidence → Prior → Fermi → Fusion)"
+        
+        example:
+          python: |
+            from umis_rag.agents.estimator import EstimatorRAG
+            
+            estimator = EstimatorRAG()
+            
+            # 독립 추정 (교차 검증용)
+            result = estimator.estimate(
+                question="Netflix 2024 ARPU는?",
+                domain="Streaming",
+                region="글로벌"
+            )
+            
+            # 신뢰도 확인
+            if result and result.is_successful():
+                print(f"추정값: ${result.value:.2f}")
+                print(f"확신도: {result.certainty}")
+                print(f"출처: {result.source}")
 
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
