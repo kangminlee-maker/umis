@@ -16,11 +16,22 @@ purpose: |
     - 하위 호환성: compat.py로 v7.10.0 API 완전 지원
   
 structure:
-  total_tools: 44
+  total_tools: 15
   tiers:
     tier_1_system: 9개 (umis.yaml 시스템 섹션)
     tier_2_complete: 6개 (Agent 전체 컨텍스트)
-    tier_3_task: 29개 (세분화, 빠른 조회)
+  
+  # ========================================
+  # Task 도구 제거 결정 (v7.11.1)
+  # ========================================
+  # 근거: Complete만으로 충분 + 유지보수 복잡도 2.9배 감소
+  # 
+  # 대안 옵션 (필요 시 재고려):
+  #   Option 2: Hybrid - 128K 모델 + 6 Agent Discovery Sprint만 Task 사용
+  #   Option 3: Task 전체 재생성 - 엔터프라이즈 규모 (2000+회/월)
+  # 
+  # 상세: CONTEXT_WINDOW_STRATEGY.md 참조
+  # ========================================
 
 # ========================================
 # AI 사용 가이드
@@ -49,16 +60,10 @@ ai_guide:
           - tool:quantifier:complete
           - tool:estimator:complete (4-Stage Fusion)
         context: ~11,000 tokens (4개)
-        note: umis.yaml 참조 불필요!
-      
-      quick_check:
-        intent: 빠른 개념 확인
-        tier: Tier 3 (Task)
-        tools:
-          - tool:observer:market_structure
-          - tool:quantifier:sam_4methods
-        context: ~800 tokens
-        note: 실제 작업 시 Complete로 전환
+        note: |
+          umis.yaml 참조 불필요!
+          Complete 도구로 모든 작업 수행 가능
+          200K+ 모델에서 충분한 컨텍스트 확보
 
   step_2_load_tools:
     command: python3 scripts/query_system_rag.py {tool_key}
@@ -92,15 +97,11 @@ tools:
     - tool:validator:complete (~2,430 tokens)
     - tool:guardian:complete (~1,954 tokens)
     - tool:estimator:complete (~3,584 tokens)
-  
-  tier_3_task:
-    count: 29
-    examples:
-      - tool:observer:market_structure
-      - tool:explorer:pattern_search
-      - tool:quantifier:sam_4methods
-      - tool:validator:data_definition
-      - (25개 더)
+    
+    note: |
+      Complete 도구로 모든 Agent 작업 수행
+      평균 ~2,867 tokens로 200K+ 모델에 적합
+      Vector Fallback 동작으로 유연한 쿼리 지원
 
 # ========================================
 # 사용 패턴
@@ -135,13 +136,20 @@ usage_patterns:
     context: ~6,397 tokens
     savings: 84%
   
-  pattern_quick_check:
-    description: 빠른 조회
+  pattern_discovery_sprint:
+    description: Discovery Sprint (6 Agents)
     tools:
-      - tool:quantifier:sam_4methods
-    context: ~461 tokens
-    savings: 99%
-    note: 실제 작업 시 Complete로
+      - tool:observer:complete
+      - tool:explorer:complete
+      - tool:quantifier:complete
+      - tool:validator:complete
+      - tool:guardian:complete
+      - tool:estimator:complete
+    context: ~16,201 tokens (6개)
+    savings: 75%
+    note: |
+      200K 모델 권장 (51% 사용 → Heavy 작업 시)
+      128K 모델 시 작업 분할 고려
 
 # ========================================
 # 핵심 원칙
@@ -150,10 +158,11 @@ usage_patterns:
 key_principles:
   
   for_ai:
-    principle_1: 실제 작업 = Tier 2 (Complete) 사용!
+    principle_1: 모든 작업 = Tier 2 (Complete) 사용!
     principle_2: Complete 사용 시 umis.yaml 참조 불필요
     principle_3: 필요한 도구만 로드 (75-96% 절약)
     principle_4: tool:system:agents는 너무 큼 (개별 Complete 권장)
+    principle_5: 200K+ 모델 권장 (Discovery Sprint 안정적)
   
   for_developers:
     principle_1: umis.yaml만 편집 (Source of Truth)

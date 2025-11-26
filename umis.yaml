@@ -1,9 +1,9 @@
 # ========================================
-# UMIS v7.11.0 GUIDELINES
+# UMIS v7.11.1 GUIDELINES
 # ========================================
 #
 # 📖 핵심 문서:
-# - umis_core.yaml: 압축된 가이드 (System RAG용, AI 필수)
+# - umis_core.yaml: System RAG INDEX (15개 도구, AI 필수)
 # - docs/architecture/UMIS_ARCHITECTURE_BLUEPRINT.md: 전체 시스템 구조
 # - config/: 모든 설정 파일
 # - CHANGELOG.md: 버전 변경 이력
@@ -21,12 +21,13 @@
 # - Excel 자동 생성 + 완전 추적성
 # - 통합 벤치마크 (98% 비용 절감)
 #
-# v7.11.0 핵심 특징:
+# v7.11.1 핵심 특징:
 # - LLM 완전 추상화: 61개 llm_mode 분기 → 0개 (100% 제거)
 # - Clean Architecture: DIP, SRP, OCP, ISP 완전 준수
 # - 4-Stage Fusion: Evidence → Prior → Fermi → Fusion
 # - Recursion 금지: 예산 기반 탐색 제어
 # - 하위 호환성: compat.py로 v7.10.0 API 완전 지원
+# - System RAG: 15개 도구 (System 9 + Complete 6)
 #
 # 문서 구조:
 # - Section 0-1: 시스템 개요 및 정의
@@ -35,7 +36,7 @@
 # - Section 8: 실행 가이드
 # ========================================
 
-# Universal Market Intelligence System v7.11.0
+# Universal Market Intelligence System v7.11.1
 # ========================================
 # SECTION 0: SYSTEM ARCHITECTURE OVERVIEW
 # @id: system_architecture_overview

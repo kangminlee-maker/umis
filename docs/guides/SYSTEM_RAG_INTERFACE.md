@@ -1,6 +1,6 @@
 # System RAG 인터페이스 가이드
-**날짜**: 2025-11-05  
-**버전**: UMIS v7.2.0  
+**날짜**: 2025-11-26 (v7.11.1 업데이트)
+**버전**: UMIS v7.11.1  
 **대상**: AI Assistant (Cursor, Claude 등)
 
 ---
@@ -36,24 +36,24 @@
 
 ```yaml
 목적:
-  UMIS 6,102줄 전체를 로드하지 않고
-  필요한 도구만 정확히 로드하여 컨텍스트 절약
+  UMIS 6,838줄 전체를 로드하지 않고
+  필요한 Complete 도구만 로드하여 컨텍스트 절약
 
-구조:
-  umis_core.yaml (709줄):
-    - INDEX (도구 목록, Agent 역할 요약)
+구조 (v7.11.1):
+  umis_core.yaml:
+    - INDEX (15개 도구: System 9 + Complete 6)
     - 전체 개요
     - Decision Guide
   
-  System RAG (28개 도구):
-    - 각 도구의 상세 content (200-800줄)
+  System RAG (15개 도구):
+    - Complete 도구: ~2,867 tokens (평균)
     - tool_key로 정확 검색
     - 필요한 것만 로드
 
 절약:
-  간단한 작업: 82% (709 + 400 = 1,109줄 vs 6,102줄)
-  중간 작업: 69% (709 + 1,200 = 1,909줄)
-  복잡한 작업: 47% (709 + 2,500 = 3,209줄)
+  단일 Agent: 89% (~5,676 tokens vs ~50,000)
+  3개 Agent: 76% (~12,233 tokens)
+  6개 Agent: 75% (~20,201 tokens)
 ```
 
 ### 비유
@@ -85,18 +85,18 @@ STEP 1: umis_core.yaml 읽기
   Mandatory: true
 
 STEP 2: 쿼리 분석
-  Action: 사용자 요청에서 agent + task + keywords 추출
-  Refer: umis_core.yaml Lines 96-109 (agent_selection_flowchart)
-  Output: tool_key 리스트
-  Example: ["tool:explorer:pattern_search", "tool:quantifier:sam_4methods"]
+  Action: 사용자 요청에서 agent 추출
+  Output: Complete tool_key 선택
+  Example: "@Explorer" → tool:explorer:complete
 
 STEP 3: System RAG 실행 ⭐⭐⭐
   Tool: run_terminal_cmd (필수!)
-  Command: "python3 scripts/query_system_rag.py {tool_key}"
-  Repeat: 필요한 모든 tool_key에 대해
-  Output: 도구 content (200-800줄/개)
+  Command: "python3 scripts/query_system_rag.py tool:{agent}:complete"
+  Output: Complete 도구 content (~2,867 tokens 평균)
   Mandatory: true
   Skip Penalty: 작업 실패 (도구 없음)
+  
+  Note: Task 도구 쿼리 시 Vector Fallback으로 Complete 자동 매칭
 
 STEP 4: 로드된 도구로 작업
   Action: System RAG 결과를 컨텍스트에 포함하여 작업 수행
@@ -137,23 +137,23 @@ read_file("umis_core.yaml", offset=40, limit=110)
 # - Tool key: tool:explorer:pattern_search
 
 # Step 2: System RAG 실행 (필수!)
-run_terminal_cmd("python3 scripts/query_system_rag.py tool:explorer:pattern_search")
+run_terminal_cmd("python3 scripts/query_system_rag.py tool:explorer:complete")
 
 # 결과:
-# - Content: ~400줄 (패턴 검색 도구 상세)
-# - Match Type: exact_key
+# - Content: Complete 도구 (umis.yaml Explorer 섹션 전체)
+# - Match Type: exact_key 또는 vector_fallback
 # - Latency: 0.25ms
 
 # Step 3: 로드된 content 활용
-# → Explorer RAG 패턴 검색 프로세스 이해
-# → 실제 RAG 검색 실행
-# → 구독 모델 패턴 분석
+# → Explorer 전체 컨텍스트 확보
+# → 7단계 프로세스 + RAG 패턴 검색 + 검증 프로토콜
+# → 실제 작업 수행
 
 # Context 사용량:
-# - umis_core.yaml: 709줄
-# - System RAG: 400줄
-# - Total: 1,109줄 (vs 6,102줄 전체)
-# - 절약: 82%
+# - umis_core.yaml: ~4,000 tokens
+# - Complete: ~3,559 tokens
+# - Total: ~7,559 tokens (vs 50,000)
+# - 절약: 85%
 ```
 
 ---
@@ -173,41 +173,38 @@ read_file("umis_core.yaml")
 
 # 파악:
 # - Lines 106: "시장 분석" = Observer → Explorer → Quantifier
-# - Tool keys 필요:
-#   1. tool:observer:market_structure
-#   2. tool:explorer:pattern_search
-#   3. tool:quantifier:sam_4methods
+# - Tool keys 필요 (Complete):
+#   1. tool:observer:complete
+#   2. tool:explorer:complete
+#   3. tool:quantifier:complete
 
 # Step 2: System RAG 실행 (3번!)
-run_terminal_cmd("python3 scripts/query_system_rag.py tool:observer:market_structure")
-run_terminal_cmd("python3 scripts/query_system_rag.py tool:explorer:pattern_search")
-run_terminal_cmd("python3 scripts/query_system_rag.py tool:quantifier:sam_4methods")
+run_terminal_cmd("python3 scripts/query_system_rag.py tool:observer:complete")
+run_terminal_cmd("python3 scripts/query_system_rag.py tool:explorer:complete")
+run_terminal_cmd("python3 scripts/query_system_rag.py tool:quantifier:complete")
 
 # 결과:
-# - 3개 도구 content (~1,200줄)
-# - 각 도구의 상세 프로세스 파악
+# - 3개 Complete 도구 (~8,233 tokens)
+# - 각 Agent의 전체 프로세스 파악
 
 # Step 3: Workflow 실행
 # 1. Observer (Albert):
-#    - 로드된 market_structure 도구 참조
-#    - 시장 구조 관찰
-#    - 비효율성 발견
+#    - 로드된 complete 도구 참조
+#    - 시장 구조 관찰 + 가치사슬 + 비효율성
 
 # 2. Explorer (Steve):
-#    - 로드된 pattern_search 도구 참조
-#    - RAG 패턴 매칭
-#    - 기회 가설 생성
+#    - 로드된 complete 도구 참조
+#    - 7단계 + RAG 패턴 + 가설 검증
 
 # 3. Quantifier (Bill):
-#    - 로드된 sam_4methods 도구 참조
-#    - SAM 4가지 방법 계산
-#    - Excel 생성
+#    - 로드된 complete 도구 참조
+#    - SAM 4가지 방법 + Estimator 협업 + Excel 생성
 
 # Context 사용량:
-# - umis_core.yaml: 709줄
-# - System RAG: 1,200줄
-# - Total: 1,909줄 (vs 6,102줄)
-# - 절약: 69%
+# - umis_core.yaml: ~4,000 tokens
+# - System RAG: ~8,233 tokens
+# - Total: ~12,233 tokens (vs 50,000)
+# - 절약: 76%
 ```
 
 ---
@@ -229,24 +226,23 @@ read_file("umis_core.yaml")
 # - 목표 불명확 → Discovery Sprint 필요
 # - Lines 109: "Discovery Sprint" = framework + 모든 Agent
 
-# Step 2: 필요한 도구 식별
+# Step 2: 필요한 도구 식별 (Complete 권장)
 tool_keys = [
-    "tool:framework:discovery_sprint",      # Framework
-    "tool:observer:market_structure",       # Observer
-    "tool:explorer:pattern_search",         # Explorer
-    "tool:explorer:7_step_process",         # Explorer (상세)
-    "tool:quantifier:sam_4methods",         # Quantifier
-    "tool:validator:data_definition",       # Validator
-    "tool:guardian:progress_monitoring"     # Guardian
+    "tool:observer:complete",
+    "tool:explorer:complete", 
+    "tool:quantifier:complete",
+    "tool:validator:complete",
+    "tool:guardian:complete",
+    "tool:estimator:complete"
 ]
 
-# Step 3: System RAG 실행 (7번!)
+# Step 3: System RAG 실행 (6번!)
 for key in tool_keys:
     run_terminal_cmd(f"python3 scripts/query_system_rag.py {key}")
 
 # 결과:
-# - 7개 도구 content (~2,500줄)
-# - 각 Agent의 역할과 프로세스 파악
+# - 6개 Complete 도구 (~16,201 tokens)
+# - 각 Agent의 역할과 전체 프로세스 파악
 
 # Step 4: Discovery Sprint 실행
 # → 5-Agent 병렬 탐색 (framework 도구 참조)
@@ -255,10 +251,14 @@ for key in tool_keys:
 # → 다음 단계 결정
 
 # Context 사용량:
-# - umis_core.yaml: 709줄
-# - System RAG: 2,500줄
-# - Total: 3,209줄 (vs 6,102줄)
-# - 절약: 47%
+# - umis_core.yaml: ~4,000 tokens
+# - System RAG: ~16,201 tokens
+# - Total: ~20,201 tokens (vs 50,000)
+# - 절약: 75%
+
+# 권장 모델:
+# - claude-sonnet-3.5 (200K): 51% 사용 (안정적)
+# - gemini-1.5-pro (272K): 38% 사용 (여유)
 ```
 
 ---
@@ -291,12 +291,11 @@ read_file("umis_core.yaml")
 tool_key = "tool:observer:market_structure"
 
 # 3. System RAG 실행 (필수!)
-run_terminal_cmd("python3 scripts/query_system_rag.py tool:observer:market_structure")
+run_terminal_cmd("python3 scripts/query_system_rag.py tool:observer:complete")
 
 # 4. 로드된 content로 작업
-# → Observer 프로세스 명확히 이해
-# → 가치사슬 맵핑 방법 파악
-# → 비효율성 감지 기준 적용
+# → Observer 전체 프로세스 명확히 이해
+# → 13차원 정의 + 가치사슬 + 8개 차원 + 협업 방식
 # → 성공!
 ```
 
@@ -322,11 +321,11 @@ AI: "Explorer가 기회를 발굴하겠습니다..."
 
 AI:
 1. umis_core.yaml 확인 → "시장 분석 = Observer → Explorer → Quantifier"
-2. System RAG 3개 로드
+2. System RAG 3개 Complete 로드
 3. Workflow 순서대로:
-   - Observer: 시장 구조 관찰
-   - Explorer: 기회 발굴 (Observer 결과 기반)
-   - Quantifier: SAM 계산 (Explorer 기회 기반)
+   - Observer: 시장 구조 관찰 (complete 전체 활용)
+   - Explorer: 기회 발굴 (complete 전체 활용)
+   - Quantifier: SAM 계산 (complete 전체 활용)
 ```
 
 ---
@@ -415,80 +414,30 @@ AI가 "도구를 사용합니다"라고만 하고 실제 실행 안 함
 **해결**:
 ```python
 # ❌ 틀린 방식 (언급만)
-"tool:explorer:pattern_search를 사용하겠습니다"
+"tool:explorer:complete를 사용하겠습니다"
 
 # ✅ 올바른 방식 (실행!)
-run_terminal_cmd("python3 scripts/query_system_rag.py tool:explorer:pattern_search")
+run_terminal_cmd("python3 scripts/query_system_rag.py tool:explorer:complete")
 # → Content 로드됨
-# → Content 기반 작업
+# → Complete 전체 컨텍스트로 작업
 ```
 
 ---
 
 ## Tool Key 매핑 (Quick Reference)
 
-### Explorer (4개)
+### Complete 도구 (v7.11.1) ⭐ 권장
 
-| Keywords | Tool Key |
-|----------|----------|
-| 패턴, 모델, 사례 | `tool:explorer:pattern_search` |
-| 기회, 발굴, 7단계 | `tool:explorer:7_step_process` |
-| 검증, 프로토콜 | `tool:explorer:validation_protocol` |
-| 가설, 생성 | `tool:explorer:hypothesis_generation` |
+| Agent | Tool Key | 토큰 | 사용 시점 |
+|-------|----------|------|----------|
+| Observer | `tool:observer:complete` | ~1,676 | 시장 구조 분석 |
+| Explorer | `tool:explorer:complete` | ~3,559 | 기회 발굴 |
+| Quantifier | `tool:quantifier:complete` | ~2,998 | 시장 규모 계산 |
+| Validator | `tool:validator:complete` | ~2,430 | 데이터 검증 |
+| Guardian | `tool:guardian:complete` | ~1,954 | 품질 평가 |
+| Estimator | `tool:estimator:complete` | ~3,584 | 값 추정 (4-Stage Fusion) |
 
-### Quantifier (4개)
-
-| Keywords | Tool Key |
-|----------|----------|
-| SAM, 시장 규모, TAM | `tool:quantifier:sam_4methods` |
-| 성장률, 전망 | `tool:quantifier:growth_analysis` |
-| 시나리오, 계획 | `tool:quantifier:scenario_planning` |
-| 벤치마크, 비교 | `tool:quantifier:benchmark_analysis` |
-
-### Validator (4개)
-
-| Keywords | Tool Key |
-|----------|----------|
-| 정의, 검증 | `tool:validator:data_definition` |
-| 출처, 신뢰도 | `tool:validator:source_verification` |
-| 소싱, 창의적 | `tool:validator:creative_sourcing` |
-| Gap, 조정 | `tool:validator:gap_analysis` |
-
-### Observer (4개)
-
-| Keywords | Tool Key |
-|----------|----------|
-| 구조, 시장 구조 | `tool:observer:market_structure` |
-| 가치사슬, 흐름 | `tool:observer:value_chain` |
-| 비효율, 감지 | `tool:observer:inefficiency_detection` |
-| 파괴, 혁신 기회 | `tool:observer:disruption_opportunity` |
-
-### Guardian (2개)
-
-| Keywords | Tool Key |
-|----------|----------|
-| 진행, 모니터링 | `tool:guardian:progress_monitoring` |
-| 품질, 평가 | `tool:guardian:quality_evaluation` |
-
-### Framework (7개)
-
-| Keywords | Tool Key |
-|----------|----------|
-| 시장 정의, 13차원 | `tool:framework:13_dimensions` |
-| Discovery Sprint | `tool:framework:discovery_sprint` |
-| 7 Powers | `tool:framework:7_powers` |
-| 경쟁 분석 | `tool:framework:competitive_analysis` |
-| Counter-Positioning | `tool:framework:counter_positioning` |
-| 시장 정의 (일반) | `tool:framework:market_definition` |
-| 가치사슬 분석 | `tool:framework:value_chain_analysis` |
-
-### Universal (3개)
-
-| Keywords | Tool Key |
-|----------|----------|
-| guestimate, 추정, 빠른 | `tool:universal:guestimation` |
-| reasoner, 정밀, 증거 | `tool:universal:domain_reasoner_10_signals` |
-| hybrid, auto, 자동 | `tool:universal:hybrid_strategy` |
+**Note**: Task 도구 쿼리 시 Vector Fallback으로 Complete 자동 매칭
 
 ---
 
@@ -500,34 +449,34 @@ run_terminal_cmd("python3 scripts/query_system_rag.py tool:explorer:pattern_sear
 
 ```yaml
 1. Observer (Albert):
-   Tool: tool:observer:market_structure
-   Role: 시장 구조 관찰, 비효율성 발견
-   Output: 가치사슬 맵, 트리거 시그널
+   Tool: tool:observer:complete
+   Role: 시장 구조 관찰, 가치사슬, 비효율성
+   Output: market_reality_report.md
    Duration: 2-4시간
 
 2. Explorer (Steve):
-   Tool: tool:explorer:pattern_search
-   Role: 패턴 매칭 (RAG), 기회 가설 생성
+   Tool: tool:explorer:complete
+   Role: 7단계 프로세스, RAG 패턴, 기회 가설
    Input: Observer의 트리거 시그널
-   Output: OPP_xxx (기회 가설)
+   Output: OPP_xxx.md
    Duration: 4-8시간
 
 3. Quantifier (Bill):
-   Tool: tool:quantifier:sam_4methods
-   Role: SAM 4가지 방법 계산
+   Tool: tool:quantifier:complete
+   Role: SAM 4가지 방법, Estimator 협업
    Input: Explorer의 기회 정의
    Output: market_sizing.xlsx
    Duration: 8-12시간
 
 4. Validator (Rachel):
-   Tool: tool:validator:data_definition
-   Role: 데이터 정의 검증
-   Input: Bill의 계산에 사용된 데이터
+   Tool: tool:validator:complete
+   Role: 데이터 정의 검증, 출처 확인
+   Input: Bill의 계산 데이터
    Output: source_registry.yaml
    Duration: 4-8시간
 
 5. Guardian (Stewart):
-   Tool: tool:guardian:quality_evaluation
+   Tool: tool:guardian:complete
    Role: 품질 평가, 최종 승인
    Output: quality_report.md
    Duration: 2-4시간
@@ -541,25 +490,23 @@ run_terminal_cmd("python3 scripts/query_system_rag.py tool:explorer:pattern_sear
 
 **언제**: 명확도 < 7 (목표가 불명확할 때)
 
-**Tool**: `tool:framework:discovery_sprint`
-
 **Process**:
 ```yaml
 1. System RAG 로드:
-   - tool:framework:discovery_sprint (프로세스)
-   - 모든 Agent 도구 (5-Agent 병렬 탐색)
+   - 6개 Complete 도구 (모든 Agent)
 
-2. 5-Agent 병렬 탐색 (2-8시간):
-   - Albert: 시장 구조 관찰
-   - Steve: 패턴 매칭
-   - Bill: 시장 규모 대략 추정
-   - Rachel: 데이터 현황 파악
-   - Stewart: 진행 모니터링
+2. 6-Agent 병렬 탐색 (2-8시간):
+   - Albert: 시장 구조 관찰 (complete)
+   - Steve: 패턴 매칭 (complete)
+   - Bill: 시장 규모 추정 (complete)
+   - Rachel: 데이터 현황 (complete)
+   - Stewart: 진행 모니터링 (complete)
+   - Fermi: 핵심 지표 추정 (complete)
 
 3. 목표 구체화:
-   - 5개 관점 통합
+   - 6개 관점 통합
    - 명확도 7 이상 달성
-   - 다음 단계 결정 (Comprehensive/Rapid/Quick)
+   - 다음 단계 결정
 
 4. Workflow 전환:
    - 목표 명확화됨 → 정규 Workflow
@@ -577,8 +524,8 @@ python3 scripts/query_system_rag.py --stats
 
 **기대 결과**:
 ```
-✅ 총 도구 수: 28개
-✅ Agent별: explorer(4), quantifier(4), validator(4), ...
+✅ 총 도구 수: 15개 (System 9 + Complete 6)
+✅ Agent별: observer, explorer, quantifier, validator, guardian, estimator
 ```
 
 ---
@@ -591,8 +538,8 @@ python3 scripts/query_system_rag.py --list
 
 **기대 결과**:
 ```
-✅ 28개 tool_key 출력
-✅ tool:agent:task 형식
+✅ 15개 tool_key 출력
+✅ tool:agent:complete 형식
 ```
 
 ---
@@ -600,14 +547,14 @@ python3 scripts/query_system_rag.py --list
 ### 테스트 3: 실제 도구 로드
 
 ```bash
-python3 scripts/query_system_rag.py tool:explorer:pattern_search
+python3 scripts/query_system_rag.py tool:explorer:complete
 ```
 
 **기대 결과**:
 ```
-✅ Match Type: exact_key
+✅ Match Type: exact_key (또는 vector_fallback)
 ✅ Latency: < 1ms
-✅ Content: ~400줄 출력
+✅ Content: Complete 도구 출력
 ```
 
 ---
@@ -638,12 +585,28 @@ python3 scripts/query_system_rag.py --stats
 python3 scripts/query_system_rag.py --list
 
 # 도구 로드 (가장 중요!)
+python3 scripts/query_system_rag.py tool:explorer:complete
+
+# Note: Task 도구 쿼리도 가능 (Vector Fallback)
 python3 scripts/query_system_rag.py tool:explorer:pattern_search
+# → tool:explorer:complete 자동 매칭
 ```
 
 ---
 
-**작성**: 2025-11-05  
-**파일**: `docs/SYSTEM_RAG_INTERFACE_GUIDE.md`  
-**관련**: .cursorrules (PART 7), umis_core.yaml (Section 0)
+## v7.11.1 업데이트
+
+**변경 사항**:
+- Complete 도구만 사용 (Task 도구 제거)
+- 총 15개 도구 (System 9 + Complete 6)
+- Vector Fallback으로 Task 쿼리도 Complete 매칭
+- 200K+ 모델 권장
+
+**상세**: `CONTEXT_WINDOW_STRATEGY.md`, `TASK_TOOLS_DECISION.md`
+
+---
+
+**작성**: 2025-11-26  
+**파일**: `docs/guides/SYSTEM_RAG_INTERFACE.md`  
+**관련**: .cursorrules, umis_core.yaml
 
