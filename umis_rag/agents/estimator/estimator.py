@@ -215,7 +215,7 @@ class EstimatorRAG:
             logger.info(f"⚡ 확정 값 발견 → 추정 불필요")
             logger.info(f"결과: {definite_result.value:,.0f} (source={definite_result.source}, {elapsed:.2f}초)")
             logger.info("=" * 80)
-            
+                
             return definite_result
         
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -257,7 +257,7 @@ class EstimatorRAG:
                 context=context,
                 depth=0
             )
-            
+
             if fermi_result:
                 logger.info(f"  ✅ Fermi: {fermi_result.value:,.0f} (certainty={fermi_result.certainty})")
                 if fermi_result.decomposition:
@@ -269,7 +269,7 @@ class EstimatorRAG:
                 logger.info("\n[Stage 3] Fermi 사용 안 함 (use_fermi=False)")
             else:
                 logger.warning("\n[Stage 3] Fermi 스킵 (예산 부족 또는 소진)")
-        
+
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # Stage 4: Fusion
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -285,7 +285,7 @@ class EstimatorRAG:
         # 총 시간 업데이트
         elapsed = time.time() - start_time
         final_result.cost['time'] = elapsed
-        
+
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # 결과 출력
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -343,16 +343,16 @@ class EstimatorRAG:
         """
         budget = create_thorough_budget()
         return self.estimate(question, context=context, budget=budget, use_fermi=True)
-
-
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        
+        
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Factory Function
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def get_estimator() -> EstimatorRAG:
     """
     Estimator Agent 싱글톤 인스턴스
-    
+
     Returns:
         EstimatorRAG 인스턴스
     """

@@ -171,7 +171,7 @@ class AIAugmentedEstimationSource(ValueSourceBase):
                 if 'value' not in parsed_data:
                     logger.warning(f"  [AI+Web] 'value' 키 없음")
                     return []
-
+                
                 # v7.10.0: None 체크 및 안전한 파싱
                 raw_value = parsed_data.get('value')
                 if raw_value is None:

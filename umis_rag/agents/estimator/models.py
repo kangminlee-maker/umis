@@ -309,7 +309,7 @@ class EstimationResult:
     unit: str = ""
     
     # 메타 정보
-    phase: int = 0  # 0, 1, 2, 3, 4 (-1: 전체 실패)
+    phase: int = 0  # 0, 1, 2, 3, 4 (-1: 전체 실패) [Deprecated in v7.11.0, use 'source']
     confidence: float = 0.0
     uncertainty: float = 0.3
     
@@ -317,7 +317,7 @@ class EstimationResult:
     error: Optional[str] = None  # 실패 시 에러 메시지
     failed_phases: List[int] = field(default_factory=list)  # 실패한 Phase 목록
     
-    # Phase 3 전용
+    # Phase 3 전용 [Deprecated in v7.11.0]
     context: Optional[Context] = None
     
     # 수집된 Source들
@@ -531,7 +531,17 @@ class Phase1Config:
 
 @dataclass
 class Phase3Config:
-    """Phase 3 (Guestimation) 설정 (v7.7.0)"""
+    """
+    Phase 3 (Guestimation) 설정 (v7.7.0)
+    
+    ⚠️ Deprecated in v7.11.0
+    Phase 3 Guestimation → Stage 2 Generative Prior (PriorEstimator)
+    
+    하위 호환성을 위해 보존되었습니다.
+    v7.11.1에서 제거될 예정입니다.
+    
+    대체: PriorEstimatorConfig 또는 Budget
+    """
     enabled: bool = True
     
     # 임계값
@@ -551,7 +561,21 @@ class Phase3Config:
 
 @dataclass
 class Phase4Config:
-    """Phase 4 (Fermi Decomposition) 설정 (v7.7.0+)
+    """
+    Phase 4 (Fermi Decomposition) 설정 (v7.7.0+)
+    
+    ⚠️ Deprecated in v7.11.0
+    Phase 4 Fermi Decomposition → Stage 3 Structural Explanation (FermiEstimator)
+    
+    주요 변경:
+    - 재귀 완전 제거 (Recursion FORBIDDEN)
+    - max_depth=2 강제 (4 → 2)
+    - Budget 기반 탐색
+    
+    하위 호환성을 위해 보존되었습니다.
+    v7.11.1에서 제거될 예정입니다.
+    
+    대체: FermiEstimatorConfig 또는 Budget
     
     Note:
         LLM 설정(llm_model, llm_temperature, llm_max_tokens)은
@@ -566,7 +590,7 @@ class Phase4Config:
     enabled: bool = True
     
     # Fermi
-    max_depth: int = 4
+    max_depth: int = 4  # v7.11.0: 2로 강제 (Budget 사용 권장)
     force_judgment_at_max_depth: bool = True
     
     # v7.7.1+ Few-shot 개선

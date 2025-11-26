@@ -269,7 +269,7 @@ def create_prior_result(
     llm_calls: int = 1
 ) -> EstimationResult:
     """
-    Prior 추정 결과 생성 (Phase 3)
+    Prior 추정 결과 생성 (Stage 2 Generative Prior)
     
     Args:
         value: 추정 값
@@ -288,7 +288,7 @@ def create_prior_result(
         value_range=value_range,
         certainty=certainty,
         uncertainty=uncertainty_map.get(certainty, 0.3),
-        source="Prior",
+        source="Generative Prior",
         reasoning=reasoning,
         cost={'llm_calls': llm_calls, 'variables': 1, 'time': 0.0}
     )
