@@ -1,5 +1,5 @@
 # ========================================
-# UMIS v7.8.1 GUIDELINES
+# UMIS v7.11.0 GUIDELINES
 # ========================================
 #
 # 📖 핵심 문서:
@@ -10,28 +10,23 @@
 #
 # 빠른 시작:
 # 1. 설치: "UMIS 설치해줘" (AI 자동) 또는 python setup/setup.py
-# 2. 사용: "@Explorer, 시장 분석해줘" / "@Fermi, ARPU는?"
+# 2. 사용: "@Explorer, 시장 분석해줘" / "@Estimator, ARPU는?"
 #
-# UMIS 기능:
+# UMIS 핵심 기능:
 # - 6-Agent 협업 시스템 (역할 MECE)
-# - 5-Phase Estimator (100% 커버리지)
-# - Native/External 모드 (LLM 선택)
+# - 4-Stage Fusion Estimator (100% 커버리지)
+# - LLM Complete Abstraction (Clean Architecture, Zero Branching)
+# - Model Config 시스템 (18개 모델: 17 External + cursor-native)
 # - RAG 기반 패턴/사례 자동 검색 (54개)
 # - Excel 자동 생성 + 완전 추적성
-# - Model Config 시스템 (18개 모델: 17 External + cursor-native) ⭐ v7.8.1 NEW!
-# - 통합 벤치마크 (98% 비용 절감) ⭐ v7.8.0
+# - 통합 벤치마크 (98% 비용 절감)
 #
-# v7.8.1 주요 변경:
-# - cursor-native 통합: Native Mode를 Model Config 시스템으로 통합
-# - Phase 4 통합: api_type 기반 통일된 분기 처리 (cursor/responses/chat)
-# - Phase 4 테스트: 100% 성공 (2/2, 평균 2.14초, $0)
-# - Phase 2 Validator: Distance threshold 개선 (0.90 / 1.10)
-#
-# v7.8.0 주요 변경:
-# - Model Config 시스템: .env 모델 변경 → 코드 수정 0줄
-# - benchmarks/ 폴더: 통합 벤치마크 시스템
-# - Phase 0-3 벤치마크: 98% 비용 절감 ($0.30/1,000회)
-# - Phase 4 평가 시스템: 내용/형식 분리 (110점)
+# v7.11.0 핵심 특징:
+# - LLM 완전 추상화: 61개 llm_mode 분기 → 0개 (100% 제거)
+# - Clean Architecture: DIP, SRP, OCP, ISP 완전 준수
+# - 4-Stage Fusion: Evidence → Prior → Fermi → Fusion
+# - Recursion 금지: 예산 기반 탐색 제어
+# - 하위 호환성: compat.py로 v7.10.0 API 완전 지원
 #
 # 문서 구조:
 # - Section 0-1: 시스템 개요 및 정의
@@ -40,7 +35,7 @@
 # - Section 8: 실행 가이드
 # ========================================
 
-# Universal Market Intelligence System v7.8.1
+# Universal Market Intelligence System v7.11.0
 # ========================================
 # SECTION 0: SYSTEM ARCHITECTURE OVERVIEW
 # @id: system_architecture_overview
