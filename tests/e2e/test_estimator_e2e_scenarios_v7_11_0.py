@@ -94,7 +94,6 @@ class TestEstimatorE2EScenarios:
         question = "B2B SaaS 평균 ARPU는?"
         context = Context(
             domain="B2B_SaaS",
-            business_model="subscription",
             region="글로벌"
         )
         budget = create_standard_budget()
@@ -130,7 +129,6 @@ class TestEstimatorE2EScenarios:
         question = "E-commerce 구독 서비스 월 해지율은?"
         context = Context(
             domain="E-commerce",
-            business_model="subscription",
             region="한국"
         )
         budget = create_standard_budget()
@@ -198,7 +196,6 @@ class TestEstimatorE2EScenarios:
         question = "AI 챗봇 SaaS 고객 LTV는?"
         context = Context(
             domain="AI_Chatbot",
-            business_model="subscription",
             region="글로벌"
         )
         budget = create_standard_budget()
@@ -232,7 +229,6 @@ class TestEstimatorE2EScenarios:
         question = "구독 모델 평균 CAC는?"
         context = Context(
             domain="Subscription",
-            business_model="subscription",
             region="한국"
         )
         budget = create_standard_budget()
@@ -301,8 +297,7 @@ class TestEstimatorE2EScenarios:
 
         question = "B2B SaaS 평균 월 매출 성장률은?"
         context = Context(
-            domain="B2B_SaaS",
-            business_model="subscription"
+            domain="B2B_SaaS"
         )
         budget = create_standard_budget()
 
@@ -376,7 +371,6 @@ class TestEstimatorE2EScenarios:
         question = "Netflix 2024년 연간 ARPU는?"
         context = Context(
             domain="Streaming",
-            company="Netflix",
             time_period="2024"
         )
         budget = create_standard_budget()

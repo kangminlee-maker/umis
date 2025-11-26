@@ -29,6 +29,7 @@ from typing import Optional
 # v7.11.0 신규 구현 Import
 from .prior_estimator import PriorEstimator
 from .fermi_estimator import FermiEstimator
+from umis_rag.core.llm_provider_factory import get_llm_provider
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -56,8 +57,10 @@ class Phase3Guestimation(PriorEstimator):
             stacklevel=2
         )
         
-        # PriorEstimator 초기화 (llm_mode만 사용)
-        super().__init__(llm_mode=llm_mode)
+        # PriorEstimator 초기화
+        # llm_mode를 LLMProvider로 변환 (하위 호환성)
+        llm_provider = get_llm_provider(mode=llm_mode)
+        super().__init__(llm_provider=llm_provider)
 
 
 class Phase4FermiDecomposition(FermiEstimator):
@@ -88,9 +91,12 @@ class Phase4FermiDecomposition(FermiEstimator):
         )
         
         # FermiEstimator 초기화
-        # PriorEstimator 자동 생성 (레거시 호환용)
-        prior_estimator = PriorEstimator(llm_mode=llm_mode)
-        super().__init__(llm_mode=llm_mode, prior_estimator=prior_estimator)
+        # llm_mode를 LLMProvider로 변환 (하위 호환성)
+        llm_provider = get_llm_provider(mode=llm_mode)
+        
+        # PriorEstimator 자동 생성 (레거시 호환용, 같은 Provider 사용)
+        prior_estimator = PriorEstimator(llm_provider=llm_provider)
+        super().__init__(llm_provider=llm_provider, prior_estimator=prior_estimator)
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
