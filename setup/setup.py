@@ -47,8 +47,9 @@ def print_warning(msg: str):
 def print_error(msg: str):
     print(f"{Colors.FAIL}❌ {msg}{Colors.ENDC}")
 
-def print_info(msg: str):
-    print(f"{Colors.OKBLUE}ℹ️  {msg}{Colors.ENDC}")
+def print_info(msg: str, **kwargs):
+    """일반 정보 메시지 출력 (print의 추가 인자 지원)"""
+    print(f"{Colors.OKBLUE}ℹ️  {msg}{Colors.ENDC}", **kwargs)
 
 # ============================================
 # 유틸리티
@@ -179,8 +180,12 @@ def step2_install_dependencies():
     """Step 2: 패키지 설치"""
     print_step(2, "Python 패키지 설치")
     
-    print_info("pip install -r requirements.txt 실행 중...")
-    success, output = run_command("pip install -r requirements.txt")
+    # 현재 사용 중인 Python 실행 파일 기준으로 pip 실행
+    python_executable = sys.executable or "python3"
+    cmd = f'"{python_executable}" -m pip install -r requirements.txt'
+    
+    print_info(f"{cmd} 실행 중...")
+    success, output = run_command(cmd)
     
     if success:
         print_success("모든 패키지 설치 완료")
