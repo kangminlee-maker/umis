@@ -1,8 +1,11 @@
 # UMIS LLM 전략 (Architecture Review)
 
-**작성일**: 2025-11-05  
-**버전**: v7.2.0  
-**검토**: LLM 활용 전략
+**작성일**: 2025-11-25 (v7.11.1 업데이트)
+**버전**: v7.11.1  
+**검토**: Native vs External LLM 아키텍처
+
+**참고**: v7.11.1에서는 `LLMProvider` 추상화를 통해 Native/External 모드가 완전 통합되었습니다.  
+상세 내용은 `NATIVE_MODE_GUIDE.md`를 참조하세요.
 
 ---
 
