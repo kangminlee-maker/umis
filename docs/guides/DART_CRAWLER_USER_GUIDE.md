@@ -55,25 +55,36 @@ sudo apt-get install chromium-chromedriver
 
 ### **2. 기본 테스트** (2분)
 
-```bash
+```python
+# Python 모듈로 직접 사용
+from umis_rag.utils.dart_crawler_selenium import crawl_sga_for_company
+
 # 이마트 크롤링 (dcmNo 알고 있음)
-python scripts/test_dart_crawler.py
+result = crawl_sga_for_company(
+    corp_name='이마트',
+    rcept_no='20250318000688',
+    dcm_no='10420267'
+)
 
 # 예상 출력:
-# ✅ 크롤링 성공!
-# 합계: 41,313.0억원
-# 등급: A
+print(f"✅ 크롤링 성공!" if result['success'] else f"❌ 실패")
+print(f"합계: {result['total']:.1f}억원")
+print(f"등급: {result['grade']}")
 ```
 
 ### **3. 자동 탐색 테스트** (3분)
 
-```bash
+```python
 # dcmNo 자동 탐색
-python scripts/test_dart_crawler.py --auto
+result = crawl_sga_for_company(
+    corp_name='이마트',
+    rcept_no='20250318000688'
+    # dcm_no 생략 → 자동 탐색!
+)
 
 # 예상 출력:
-# ✓ dcmNo 발견: 10420267
-# ✅ 자동 탐색 성공!
+print(f"✓ dcmNo 발견: {result['dcm_no']}")
+print(f"✅ 자동 탐색 성공!")
 ```
 
 ---
@@ -129,30 +140,63 @@ result = crawler.crawl_sga(
 )
 ```
 
-### **B. 커맨드라인에서 사용**
+### **B. 커맨드라인에서 사용** (선택 사항)
 
-#### **단일 기업**
+Python REPL 또는 Jupyter에서 직접 사용:
 
-```bash
+```python
+from umis_rag.utils.dart_crawler_selenium import crawl_sga_for_company
+
 # 기본 (이마트)
-python scripts/test_dart_crawler.py
+result = crawl_sga_for_company(
+    corp_name='이마트',
+    rcept_no='20250318000688',
+    dcm_no='10420267'
+)
 
 # 특정 기업
-python scripts/test_dart_crawler.py \
-  --corp 삼성전자 \
-  --rcept 20250317000660
+result = crawl_sga_for_company(
+    corp_name='삼성전자',
+    rcept_no='20250317000660'
+)
 
 # dcmNo 자동 탐색
-python scripts/test_dart_crawler.py --auto
+result = crawl_sga_for_company(
+    corp_name='삼성전자',
+    rcept_no='20250317000660'
+    # dcm_no 생략
+)
 
 # 브라우저 표시 (디버깅)
-python scripts/test_dart_crawler.py --no-headless
+from umis_rag.utils.dart_crawler_selenium import DARTCrawlerSelenium
+crawler = DARTCrawlerSelenium(headless=False)
+result = crawler.crawl_sga(
+    corp_name='이마트',
+    rcept_no='20250318000688',
+    dcm_no='10420267'
+)
 ```
 
 #### **배치 처리** (4개 수동 입력 케이스)
 
-```bash
-python scripts/test_dart_crawler.py --batch
+```python
+from umis_rag.utils.dart_crawler_selenium import crawl_sga_for_company
+
+cases = [
+    {'corp': '이마트', 'rcept': '20250318000688', 'dcm': '10420267'},
+    {'corp': '삼성전자', 'rcept': '20250317000660'},
+    {'corp': 'LG화학', 'rcept': '20250317000540'},
+    {'corp': '현대차', 'rcept': '20250331000291'}
+]
+
+for i, case in enumerate(cases, 1):
+    result = crawl_sga_for_company(
+        corp_name=case['corp'],
+        rcept_no=case['rcept'],
+        dcm_no=case.get('dcm')
+    )
+    status = "✅" if result['success'] else "❌"
+    print(f"[{i}/{len(cases)}] {case['corp']} {status}")
 
 # 예상 출력:
 # [1/4] 이마트 ✅
@@ -470,10 +514,13 @@ crawler = DARTCrawlerSelenium(timeout=30)
 **해결**:
 ```python
 # 브라우저 표시하여 확인
-result = crawl_sga_for_company(
+from umis_rag.utils.dart_crawler_selenium import DARTCrawlerSelenium
+
+crawler = DARTCrawlerSelenium(headless=False)
+result = crawler.crawl_sga(
     corp_name='기업명',
     rcept_no='...',
-    headless=False  # 브라우저 표시!
+    dcm_no='...'
 )
 ```
 
@@ -488,15 +535,21 @@ result = crawl_sga_for_company(
 - "감사보고서" 링크가 없음
 
 **해결**:
-```bash
+```python
+# Python에서 직접 dcmNo 확인 및 사용
+from umis_rag.utils.dart_crawler_selenium import DARTCrawlerSelenium
+
+crawler = DARTCrawlerSelenium()
+
 # 수동으로 dcmNo 확인
 # https://dart.fss.or.kr/dsaf001/main.do?rcpNo={rcept_no}
 # → 감사보고서 클릭 → URL에서 dcmNo 복사
 
-python scripts/test_dart_crawler.py \
-  --corp 기업명 \
-  --rcept 접수번호 \
-  --dcm 10420267  # 수동 입력
+result = crawler.crawl_sga(
+    corp_name='기업명',
+    rcept_no='접수번호',
+    dcm_no='10420267'  # 수동 입력
+)
 ```
 
 ---

@@ -1,4 +1,4 @@
-# UMIS v7.0.0 설치
+# UMIS v7.11.1 설치
 
 ## 🚀 빠른 시작
 
@@ -59,9 +59,9 @@ python scripts/02_build_index.py --agent explorer
 - [`setup/START_HERE.md`](setup/START_HERE.md) - 빠른 시작
 
 **이해하기**:
-- [`UMIS_ARCHITECTURE_BLUEPRINT.md`](UMIS_ARCHITECTURE_BLUEPRINT.md) - 전체 아키텍처 ⭐
-- [`FOLDER_STRUCTURE.md`](FOLDER_STRUCTURE.md) - 폴더 구조
-- [`CURRENT_STATUS.md`](CURRENT_STATUS.md) - 현재 상태
+- [`UMIS_ARCHITECTURE_BLUEPRINT.md`](../architecture/UMIS_ARCHITECTURE_BLUEPRINT.md) - 전체 아키텍처 ⭐
+- [`docs/architecture/`](../architecture/) - 아키텍처 문서
+- [`docs/guides/`](.) - 사용 가이드
 
 ---
 
