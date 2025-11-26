@@ -7,6 +7,120 @@
 
 ---
 
+## [7.11.1] - 2025-11-26
+
+### 🧹 Legacy Cleanup & Terminology Consistency
+
+v7.11.0에서 deprecated된 코드를 완전히 제거하고, Stage 기반 아키텍처의 용어 일관성을 개선한 패치 릴리스입니다.
+
+---
+
+### Removed (제거)
+
+#### Compatibility Layer
+- **compat.py 제거** (141 lines)
+  - `Phase3Guestimation` 클래스 (deprecated → 제거)
+  - `Phase4FermiDecomposition` 클래스 (deprecated → 제거)
+  - v7.11.0에서 DeprecationWarning으로 경고
+  - 사용자는 `PriorEstimator`, `FermiEstimator` 직접 사용
+
+#### Test Cases
+- **E2E Scenario 10 제거**: Legacy API 호환성 테스트
+  - `test_scenario_10_legacy_api_compatibility()` 제거
+  - `Phase3Guestimation`, `Phase4FermiDecomposition` import 제거
+
+---
+
+### Changed (변경)
+
+#### Terminology Consistency (용어 일관성)
+**문제**: Stage 기반 아키텍처로 전환했지만, Evidence Collector 내부에서 여전히 "Phase"라는 용어 사용 → 혼란 발생
+
+**해결**: Source 중심 명명으로 변경 (v7.11.1)
+
+- **파일명 변경**:
+  - `phase0_literal.py` → `literal_source.py`
+  - `phase1_direct_rag.py` → `rag_source.py`
+  - `phase2_validator_search_enhanced.py` → `validator_source.py`
+
+- **클래스명 변경**:
+  - `Phase0Literal` → `LiteralSource` (프로젝트 확정 데이터)
+  - `Phase1DirectRAG` → `RAGSource` (학습된 규칙)
+  - `Phase2ValidatorSearchEnhanced` → `ValidatorSource` (외부 데이터)
+
+- **EvidenceCollector 내부**:
+  - `self.phase0` → `self.literal_source`
+  - `self.phase1` → `self.rag_source`
+  - `self.phase2` → `self.validator_source`
+
+**참고**: 이들은 `EvidenceCollector` (Stage 1)의 **내부 구성 요소**이며, 사용자가 직접 import하는 API가 아닙니다.
+
+#### Import Structure
+- **umis_rag/agents/estimator/__init__.py**:
+  - `from .compat import ...` 제거
+  - `Phase3Guestimation`, `Phase4FermiDecomposition` exports 제거
+  - `LiteralSource`, `RAGSource`, `ValidatorSource` exports 추가
+  - v7.11.1: 완전한 Stage 기반 구조 + Source 명명
+
+- **umis_rag/agents/estimator.py**:
+  - `from .estimator.compat import ...` 제거
+  - `Phase1DirectRAG` → `RAGSource`로 변경
+  - Deprecated aliases 제거
+
+- **umis_rag/__init__.py**:
+  - `__version__`: "7.7.0" → "7.11.1"
+  - `LLM_MODE` 검증 강화: `cursor` 또는 `external`만 허용
+  - 문서화 업데이트: Stage 기반, `config/model_configs.yaml`
+
+#### Documentation
+- **VERSION.txt**: v7.11.0 → v7.11.1
+
+---
+
+### Migration Guide (마이그레이션 가이드)
+
+**v7.10.2 → v7.11.1 사용자** (Deprecated API 제거):
+
+```python
+# 변경 전 (v7.10.2)
+from umis_rag.agents.estimator import Phase3Guestimation, Phase4FermiDecomposition
+phase3 = Phase3Guestimation(llm_mode="external")
+phase4 = Phase4FermiDecomposition(llm_mode="external")
+
+# 변경 후 (v7.11.1)
+from umis_rag.agents.estimator import PriorEstimator, FermiEstimator
+from umis_rag.core.llm_provider_factory import get_llm_provider
+
+llm_provider = get_llm_provider(mode="external")
+prior = PriorEstimator(llm_provider=llm_provider)
+fermi = FermiEstimator(llm_provider=llm_provider, prior_estimator=prior)
+```
+
+**v7.11.0 → v7.11.1 사용자** (Source 명명 변경):
+
+```python
+# 변경 전 (v7.11.0 - 내부 API, 일반적으로 직접 사용 안함)
+from umis_rag.agents.estimator import Phase0Literal, Phase1DirectRAG, Phase2ValidatorSearchEnhanced
+
+# 변경 후 (v7.11.1 - 더 명확한 이름)
+from umis_rag.agents.estimator import LiteralSource, RAGSource, ValidatorSource
+```
+
+**참고**: 대부분의 사용자는 `EstimatorRAG` 또는 `EvidenceCollector`만 사용하므로 영향 없음.
+
+---
+
+### Archive (보관)
+
+v7.11.0에서 진행된 Legacy 코드는 archive에 보존되어 있습니다:
+- `archive/benchmarks_all_legacy/`: 전체 벤치마크 폴더
+- `archive/phase3_4_legacy_v7.10.2/`: Phase 3-4 구현 (compat.py 포함)
+- `archive/guestimation_v3/`: Guestimation v3 구현
+- `archive/umis_rag_legacy/`: umis_rag 내부 legacy 파일들
+- `archive/dev_docs_v7.10.2_and_below/`: 개발 문서
+
+---
+
 ## [7.11.0] - 2025-11-26
 
 ### 🎉 주요 개선사항
