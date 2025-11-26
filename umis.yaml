@@ -4927,6 +4927,14 @@ agents:
           speed: "0.001~1초"
           fast_path: "Literal에서 확정 데이터 발견 시 즉시 반환 ⚡"
           
+          llm_usage_policy:
+            components_literal_rag_validator: "⛔ LLM 사용 금지 (Deterministic 검색만)"
+            guardrail_engine: "✅ LLM 필요 (2단계 체인: 관계 판단 → Hard/Soft 판정)"
+            rationale: |
+              - Literal/Direct RAG/Validator는 단순 조회/검색
+              - API 호출 비용 불필요, 코드 복잡도만 증가
+              - Guardrail Engine만 LLM 추론 필요 (논리 판단)
+          
           components:
             literal:
               name: "Literal (프로젝트 데이터)"
@@ -4935,6 +4943,8 @@ agents:
               role: "프로젝트별 확정 데이터 저장/조회"
               speed: "<0.1초"
               confidence: "1.0 (100% 확정)"
+              llm_usage: "⛔ 없음 (JSON 조회만)"
+              implementation: "순수 dict lookup, 키워드 매칭"
               output:
                 definite_value: "확정 값 (있으면 즉시 종료)"
                 context_support: "domain_region_variable 형식 지원"
@@ -4948,6 +4958,8 @@ agents:
               role: "과거 추정 결과 및 학습 규칙 검색"
               speed: "<0.5초"
               confidence: "0.95+ (학습된 데이터)"
+              llm_usage: "⛔ 없음 (임베딩 검색만)"
+              implementation: "ChromaDB similarity search, threshold=0.95"
               note: "구 Phase 1 (레거시 명칭)"
             
             validator_search:
@@ -4957,6 +4969,8 @@ agents:
               role: "외부 검증 데이터 검색 및 유사 데이터 수집"
               speed: "<1초"
               confidence: "1.0 (Validator 검증값)"
+              llm_usage: "⛔ 없음 (데이터 검색만)"
+              implementation: "Validator RAG search, context filtering"
               output:
                 definite_value: "Validator 확정값"
                 similar_data: "Guardrail Engine 입력용"
@@ -4967,9 +4981,14 @@ agents:
               status: "✅ 구현 완료"
               file: "umis_rag/agents/estimator/guardrail_analyzer.py"
               role: "Validator Search 유사 데이터를 논리적/경험적 제약으로 자동 변환"
+              llm_usage: "✅ 필수 (2단계 LLM 체인)"
+              llm_calls: "유사 데이터 1개당 2회 (관계 판단 + Hard/Soft)"
+              model: "gpt-4o-mini (경량 모델)"
               process:
-                step_1: "2단계 LLM 체인 (관계 판단 → Hard/Soft 판정)"
-                step_2: "Guardrail 객체 생성 및 Evidence 통합"
+                step_1: "관계 판단 (UPPER_BOUND/LOWER_BOUND/UNRELATED) - LLM ✅"
+                step_2: "Hard/Soft 판정 (논리적 vs 경험적) - LLM ✅"
+                step_3: "Guardrail 객체 생성 및 Evidence 통합 - 코드"
+              rationale: "논리적 추론 필요, LLM 없이는 불가능"
               output:
                 hard_bounds: "(min, max) - 절대 벗어날 수 없는 범위"
                 soft_hints: "[{type, value, confidence}] - 경험적 힌트"
