@@ -7,7 +7,7 @@
 
 | Item | Value |
 |------|-------|
-| **UMIS Version** | v7.8.1 |
+| **UMIS Version** | v7.11.0 |
 | **Status** | Production Ready |
 | **Last Updated** | 2025-11-24 |
 
@@ -24,7 +24,7 @@
 
 ### Key Characteristics
 - ✅ **6-Agent 협업 시스템** 역할 분담 및 상호 검증
-- ✅ **Estimator (Fermi) Agent** 5-Phase 재설계 (Phase 0-4)
+- ✅ **Estimator (Fermi) Agent** 4-Stage Fusion Architecture (재귀 제거) ⭐ v7.11.0
 - ✅ **Validator Priority** 확정 데이터 우선 검색 (85% 처리)
 - ✅ **Boundary Intelligence** 개념 기반 동적 검증
 - ✅ **Unit Conversion** 단위 자동 변환
@@ -180,7 +180,7 @@ Cursor Composer (Cmd+I):
 | **quantifier** | Bill | 계산 전문 (31개 방법론) + Excel | market_sizing.xlsx (10 sheets)<br>unit_economics.xlsx (10 sheets)<br>financial_projection.xlsx (11 sheets) | validator, observer |
 | **validator** | Rachel | 데이터 검증 + DART API v1.0.0 | source_registry.yaml<br>DART 재무/공시 데이터 | - (검증자) |
 | **guardian** | Stewart | 프로세스 관리 | .project_meta.yaml, deliverables_registry.yaml | - (메타 관리자) |
-| **estimator** | **Fermi** | **값 추정 전문 (5-Phase)** | **EstimationResult** (값 + 근거 + phase) | - (협업 파트너) |
+| **estimator** | **Fermi** | **값 추정 전문 (4-Stage Fusion)** | **EstimationResult** (값 + 근거 + source) | - (협업 파트너) |
 
 **핵심**: 
 - **Agent ID 불변** (observer, explorer, quantifier, validator, guardian, **estimator**) → 폴더/파일 경로
@@ -331,7 +331,7 @@ Layer 4: Memory (MEM-*, RAE-*, EST-*)
 | Prefix | 의미 | 예시 | Collection/파일 | Agent |
 |--------|------|------|----------------|-------|
 | **SRC-** | 데이터 출처 | SRC_20241031_001 | source_registry.yaml | Rachel |
-| **EST-** | **Estimator 추정 결과** | **EST-churn-001** | **EstimationResult (Memory)** | **Fermi** |
+| **EST-** | **Estimator 추정 결과** | **EST-churn-001** | **EstimationResult (Memory)** | **Fermi** (v7.11.0: Stage 1-4) |
 | **ASM-** | 가정 | ASM_001 | market_sizing.xlsx (Assumptions) | Bill |
 | **OPP-** | 기회 가설 | OPP_20241031_001 | OPP_*.md | Steve |
 | **DEL-** | 산출물 | DEL_20241031_001 | deliverables_registry.yaml | Stewart |
@@ -500,14 +500,13 @@ Step 3: estimator_collaboration (조건부) v7.3.2+
   Query: "잠재 시장 크기는?"
   
   Estimator.estimate():
-    - Phase 0: 프로젝트 데이터
-    - Phase 1: 학습된 규칙
-    - Phase 2: Validator 검색
-    - Phase 3: 11개 Source
-    - Phase 4: Fermi 분해
+    - Stage 1: Evidence Collection (Literal, RAG, Validator, Guardrails)
+    - Stage 2: Generative Prior (LLM 직접 값 요청)
+    - Stage 3: Structural Explanation (Fermi, 재귀 없음, max_depth=2)
+    - Stage 4: Fusion & Validation (가중 합성)
     - reasoning_detail 생성
     
-  Output: estimation_result = {value, confidence, reasoning_detail}
+  Output: estimation_result = {value, certainty, source, reasoning_detail}
   ↓
 Step 4: quantifier_collaboration (조건부)
   Condition: needs_quantitative
@@ -631,7 +630,7 @@ umis/
 │   ├── routing_policy.yaml            # Workflow (Estimator 협업)
 │   ├── runtime.yaml                   # 실행 모드
 │   ├── pattern_relationships.yaml     # Knowledge Graph (45 관계)
-│   ├── fermi_model_search.yaml        # Phase 4 설계 (1,500줄)
+│   ├── model_configs.yaml             # Stage 2-3 모델 설정 (v7.11.0)
 │   ├── learned_sga_patterns.yaml      # SG&A 학습 패턴 v1.0.0 (2025-11-13)
 │   └── ...                            # 기타 설정 파일
 │
@@ -677,7 +676,7 @@ umis/
 │   │   └── estimator/                 # Estimator
 │   │       ├── estimator.py           # 통합 인터페이스 (5-Phase)
 │   │       ├── phase1_direct_rag.py   # Phase 1 (<0.5초)
-│   │       ├── phase3_guestimation.py # Phase 3 (3-8초)
+│   │       ├── prior_estimator.py     # Stage 2 Prior (3초) v7.11.0
 │   │       ├── phase4_fermi.py        # Phase 4 (10-30초, Step 1-4)
 │   │       ├── learning_writer.py     # 학습 시스템
 │   │       ├── source_collector.py    # 11개 Source
