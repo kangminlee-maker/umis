@@ -1,4 +1,4 @@
-# UMIS Runtime Configuration v7.7.0
+# UMIS Runtime Configuration v7.11.0
 # Fail-Safe 다층 방어: Mode Toggle
 
 # ========================================
@@ -9,7 +9,7 @@ mode: rag_full  # yaml_only / hybrid / rag_full
 
 # yaml_only: YAML 기반만 (RAG 비활성)
 # hybrid: YAML + Vector RAG (안정적)
-# rag_full: YAML + Vector + Graph + Memory + Meta + Estimator (모든 기능, v7.7.0) ⭐
+# rag_full: YAML + Vector + Graph + Memory + Meta + Estimator (모든 기능, v7.11.0) ⭐
 
 # ========================================
 # Layer별 활성화
@@ -19,9 +19,9 @@ layers:
   vector: true      # Vector RAG (Explorer, Quantifier, Validator, Observer)
   graph: true       # Knowledge Graph (Hybrid Search, 13 노드, 45 관계)
   memory: true      # Guardian Memory (QueryMemory, GoalMemory)
-  meta: true        # Meta-RAG (Guardian, v7.1.0+) ⭐
-  estimator: true   # Estimator 5-Phase (v7.7.0) ⭐ Native 모드!
-  validator_search: true  # Validator 확정 데이터 검색 (Phase 2, v7.6.0+) ⭐
+  meta: true        # Meta-RAG (Guardian) ⭐
+  estimator: true   # Estimator 4-Stage Fusion (v7.11.0) ⭐
+  validator_search: true  # Validator 확정 데이터 검색 (Stage 1) ⭐
 
 # ========================================
 # Fail-Safe 설정
@@ -37,15 +37,15 @@ fallback:
   # Memory 실패 시
   memory_fail: skip  # Memory 없이 진행
 
-  # Meta-RAG 실패 시 (v7.1.0+)
+  # Meta-RAG 실패 시
   meta_fail: skip  # Meta-RAG 없이 진행
 
-  # Estimator 실패 시 (v7.6.2+)
-  estimator_phase4_fail: fallback  # Phase 4 (Fermi) 실패 시 Fallback (conf 0.5)
+  # Estimator 실패 시
+  estimator_stage3_fail: fallback  # Stage 3 (Fermi) 실패 시 Fallback (certainty: low)
   estimator_boundary_fail: skip  # Boundary 검증 실패 시 스킵
 
 # ========================================
-# Circuit Breaker (Phase 4 Fermi)
+# Circuit Breaker (Stage 3 Fermi)
 # ========================================
 
 circuit_breaker:
@@ -96,34 +96,33 @@ production:
   strict_validation: true
 
 # ========================================
-# v7.6.2 신규 기능
+# v7.11.0 핵심 기능
 # ========================================
 
-v7_6_2_features:
+v7_11_0_features:
 
-  estimator_5phase:
+  estimator_4stage_fusion:
     enabled: true
     
-    phase_coverage:
-      phase_0: "10% (Project Data)"
-      phase_1: "5% → 40% (Learned, Year 1)"
-      phase_2: "85% → 50% (Validator, Year 1)"
-      phase_3: "2-5% (Guestimation)"
-      phase_4: "3% → 1% (Fermi, Year 1)"
+    stage_coverage:
+      stage_1: "85% (Evidence Collection: Literal, RAG, Validator, Guardrails)"
+      stage_2: "10% (Generative Prior: LLM 직접 값 요청)"
+      stage_3: "3% (Structural Explanation: Fermi 분해, 재귀 제거)"
+      stage_4: "100% (Fusion: 가중 합성, 항상 실행)"
     
     total_coverage: "100%"
     
     key_changes:
-      - "Built-in Rules 제거 (답변 일관성)"
-      - "Validator 우선 검색 (Phase 2, 강제)"
-      - "개념 기반 Boundary 검증"
-      - "하드코딩 제거 → 재귀 추정"
-      - "Web Search 추가 (DuckDuckGo/Google)"
+      - "5-Phase → 4-Stage Fusion 전환"
+      - "재귀 제거 (max_depth=2, Budget 기반)"
+      - "LLM Complete Abstraction"
+      - "EstimatorRAG → LLMProvider 의존성 주입"
+      - "certainty 표준화 (high/medium/low)"
     
     accuracy:
       validator: "100% (0% 오차)"
-      phase_4: "75% (25% 오차, 3배 개선)"
-      e2e_success: "95%"
+      stage_3: "80% (25% → 20% 오차, 재귀 제거)"
+      e2e_success: "98%"
     
     validator_features:
       - "data_sources_registry (24개)"
@@ -131,12 +130,26 @@ v7_6_2_features:
       - "Relevance 검증"
       - "search_definite_data() 메서드"
     
-    phase4_features:
-      - "Fallback 체계 (conf 0.5)"
+    stage_3_features:
+      - "Fallback 체계 (certainty: low)"
       - "Boundary 검증"
       - "개념 타입 일반화 (count, rate, size)"
-      - "재귀 추정 (depth 4)"
+      - "Budget 기반 탐색 (max_depth=2)"
       - "Step 1-4 (스캔→생성→체크→실행)"
+
+  llm_abstraction:
+    enabled: true
+    status: "✅ 구현 완료"
+    components:
+      - "LLMProvider (Interface)"
+      - "CursorLLMProvider (Native Mode)"
+      - "ExternalLLMProvider (External Mode)"
+      - "LLMProviderFactory (Singleton)"
+      - "TaskType Enum (Stage별 매핑)"
+    benefits:
+      - "llm_mode 브랜치 61개 제거"
+      - "Clean Architecture (SOLID 원칙)"
+      - "확장성 (새 LLM 추가 용이)"
 
   web_search:
     enabled: true
@@ -151,7 +164,7 @@ v7_6_2_features:
 
   meta_rag:
     enabled: true
-    status: "✅ 구현 완료 (v7.1.0+)"
+    status: "✅ 구현 완료"
     components:
       - "QueryMemory (순환 감지)"
       - "GoalMemory (목표 정렬)"
@@ -162,7 +175,7 @@ v7_6_2_features:
 # 버전
 # ========================================
 
-version: "1.2.0"
-updated_at: "2025-11-10"
-umis_version: "7.6.2"
+version: "1.3.0"
+updated_at: "2025-11-26"
+umis_version: "7.11.0"
 

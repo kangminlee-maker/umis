@@ -8,9 +8,11 @@
 # ========================================
 
 _meta:
-  version: "1.0"
+  version: "1.1"
   coverage: "90% (목표)"
   learned_rules: 0
+  umis_version: "7.11.0"
+  updated_at: "2025-11-26"
 
 # 필드별 Agent 매핑
 field_rules:
@@ -111,7 +113,7 @@ chunk_type_rules:
       last_used: "last_used"
       last_verified: "last_verified"
 
-    reason: "Estimator (Fermi) Agent 학습 결과 → Tier 1 재사용"
+    reason: "Estimator Agent 학습 결과 → Stage 1 재사용"
 
 # LLM 판단 로그
 llm_log_path: "data/llm_projection_log.jsonl"

@@ -10,12 +10,15 @@
 # ========================================
 
 spec_meta:
-  spec_version: "1.0"
+  spec_version: "1.1"
   agent_id: "explorer"
   agent_role: "Explorer"
-  agent_name: "Steve"  # customizable
+  agent_name: "Steve"
   output_format: "yaml_frontmatter_markdown"
   deliverable_type: "opportunity_hypothesis"
+  created: "2025-11-08"
+  updated: "2025-11-26"
+  version: "7.11.0"
 
 output_file:
   naming_convention: "OPP_{date}_{sequence}_{short_name}.md"

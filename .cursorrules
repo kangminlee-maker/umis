@@ -1,13 +1,13 @@
 # ========================================
 # UMIS RAG Cursor Rules - AI Optimized
-# v7.7.0 | Non-coder | Cursor-only
+# v7.11.0 | Non-coder | Cursor-only
 # ========================================
 
 # === PART 1: UMIS 개념 (AI 필수 이해) ===
 
 system:
   name: Universal Market Intelligence System
-  version: 7.7.0
+  version: 7.11.0
   
   agents:
     Observer: {name: Albert, role: market_structure, rag: true}       # v7.1.0+
@@ -15,7 +15,7 @@ system:
     Quantifier: {name: Bill, role: market_sizing, rag: true}         # v7.1.0+
     Validator: {name: Rachel, role: data_verification, rag: true}    # v7.1.0+
     Guardian: {name: Stewart, role: process_monitoring, rag: true}   # v7.1.0+ (Meta-RAG ✅)
-    Estimator: {name: Fermi, role: value_estimation_5phase, rag: true}  # v7.7.0+ (5-Phase + Native 모드 ✅)
+    Estimator: {name: Fermi, role: value_estimation_4stage, rag: true}  # v7.11.0+ (4-Stage Fusion ✅)
   
   # id: Agent ID (Observer, Explorer, ...)
   # name: Default name (Albert, Steve, ...) → agent_names.yaml로 커스터마이징
@@ -27,7 +27,7 @@ system:
   discovery_sprint: 명확도<7 → 6-Agent 병렬 탐색 (Estimator 협업) → 목표 구체화
   
   rag:
-    active: 6-Agent RAG (v7.7.0+)
+    active: 6-Agent RAG (v7.11.0+)
     architecture: v3.0 (4-Layer: Canonical → Projected → Graph → Memory)
     
     layers:
@@ -118,7 +118,7 @@ setup:
       
       사용: Cmd+I → @umis.yaml
       "@Explorer, 시장 분석해줘"
-      "@Fermi, LTV는?" ⭐ v7.7.0 (5-Phase + Native 모드!)
+      "@Fermi, LTV는?" ⭐ v7.11.0 (4-Stage Fusion!)
 
 ## Agent 이름 커스터마이징
 agent_names:
@@ -273,25 +273,25 @@ guardian_meta_rag:
 # ⚠️ AI: 모든 UMIS 프로젝트 시작 시 이 섹션을 따르세요!
 # ========================================
 
-system_rag:
+  system_rag:
   enabled: true
   collection: "system_knowledge"
-  total_tools: 44  # v7.7.0: 15개 Complete + 29개 Task
+  total_tools: 44  # v7.11.0: 15개 Complete + 29개 Task
   
   purpose: |
     AI가 UMIS 전체 시스템을 빠르게 파악하고
     필요한 도구만 정확히 로드하여 컨텍스트 73-96% 절약
   
-  v7_7_0_structure:
+  v7_11_0_structure:
     tier_1_system: "9개 (umis.yaml 시스템 섹션, 0% 손실)"
     tier_2_complete: "6개 (Agent 전체 컨텍스트, 권장!)"
     tier_3_task: "29개 (세분화, 빠른 조회)"
     
     key_changes:
-      - "umis.yaml 100% RAG 마이그레이션 (0% 손실)"
-      - "Complete 도구 = umis.yaml 섹션 전체"
-      - "실제 작업 = Complete 사용 (umis.yaml 참조 불필요!)"
-      - "자동화 파이프라인 (sync_umis_to_rag.py)"
+      - "v7.11.0: Stage 1-4 Fusion Architecture"
+      - "재귀 제거: max_depth=2 고정, 속도 3-10배 향상"
+      - "용어 개선: phase → source, confidence → certainty"
+      - "Budget 기반: max_llm_calls, max_runtime 명시적 제어"
     
     usage_principle:
       - "⭐ 실제 작업: Tier 2 (Complete) 사용!"
@@ -636,7 +636,7 @@ ai_usage_examples:
         # umis_core.yaml 읽기
         read_file("umis_core.yaml", offset=603, limit=90)
         → Estimator 섹션 파악
-        → 5-Phase Architecture (v7.7.0: Phase + Step 명확화)
+        → 4-Stage Fusion Architecture (v7.11.0)
         → 12개 비즈니스 지표
       
       step_2: |
@@ -656,10 +656,12 @@ ai_usage_examples:
         estimator = EstimatorRAG()
         result = estimator.estimate("SaaS LTV는?")
         
-        # Phase 0 → 1 → 2 → 3 → 4 자동 시도
-        # Phase 2 우선: Validator 검색 (85% 처리)
-        # Phase 4: Fermi 분해, 재귀 추정, Backtracking
-        # 결과: value, phase, decomposition
+        # Stage 1 → 2 → 3 → 4 자동 시도
+        # Stage 1: Evidence Collection (85% 처리!)
+        # Stage 2: Generative Prior (certainty 평가)
+        # Stage 3: Structural Explanation (재귀 없음, max_depth=2)
+        # Stage 4: Fusion (가중 합성)
+        # 결과: value, source, certainty, decomposition
     
     context_used: "949 + 500 = 1,449줄 (vs 6,663줄, 78% 절약)"
 
@@ -698,7 +700,7 @@ common_tool_keys:
     - "tool:guardian:quality_evaluation (품질 평가)"
   
   estimator:
-    - "tool:estimator:estimate (값 추정, 5-Phase)" ⭐ v7.7.0
+    - "tool:estimator:estimate (값 추정, 4-Stage Fusion)" ⭐ v7.11.0
     - "tool:estimator:cross_validation (교차 검증)"
     - "tool:estimator:learning_system (학습 시스템)"
   
