@@ -1,32 +1,19 @@
 # ========================================
-# UMIS Core (INDEX) v7.8.1
+# UMIS Core (INDEX) v7.11.0
 # ========================================
 
-version: 7.8.1
-updated: 2025-11-24
+version: 7.11.0
+updated: 2025-11-26
 
 purpose: |
   System RAG INDEX - AI가 어떤 도구를 로드할지 안내
   
-  v7.8.1 (2025-11-24): ⭐⭐⭐ cursor-native 통합
-    - cursor-native 모델 설정: Native Mode를 Model Config 시스템으로 통합
-    - config/model_configs.yaml: 18개 모델 (17 External + cursor-native)
-    - phase4_fermi.py: api_type 기반 통일된 분기 처리
-    - Phase 4 테스트: 100% 성공 (2/2, 평균 2.14초)
-    - Phase 2 Validator: Distance threshold 개선 (0.90 / 1.10)
-  
-  v7.8.0 (2025-11-24): ⭐⭐⭐ Major Release
-    - Model Config 시스템: 중앙 집중식 LLM 관리 (17개 모델)
-    - benchmarks/ 폴더: 통합 벤치마크 시스템
-    - Phase 0-3 벤치마크: 98% 비용 절감 달성
-    - Phase 4 평가 시스템: 내용/형식 분리 (110점)
-    - phase4_fermi.py: Model Config 통합
-    - env.template: Model Config 가이드 추가
-  
-  v7.7.1 (2025-11-21):
-    - Estimator Phase 4 Few-shot 개선
-    - 계산 연결성 145% 향상 (18/40 → 50/50)
-    - Reasoning 필수화
+  v7.11.0 핵심 특징:
+    - LLM Complete Abstraction: 61개 llm_mode 분기 → 0개 (100% 제거)
+    - 4-Stage Fusion Architecture: Evidence → Prior → Fermi → Fusion
+    - Clean Architecture: DIP, SRP, OCP, ISP 완전 준수
+    - Recursion 금지: 예산 기반 탐색 제어
+    - 하위 호환성: compat.py로 v7.10.0 API 완전 지원
   
 structure:
   total_tools: 44
