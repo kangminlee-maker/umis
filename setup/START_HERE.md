@@ -1,7 +1,7 @@
-# UMIS v7.7.0 시작하기
+# UMIS v7.11.0 시작하기
 
-**버전:** 7.7.0 (6-Agent + 5-Phase + Web 크롤링, 100% 커버리지)  
-**날짜:** 2025-11-12  
+**버전:** 7.11.0 (6-Agent + 4-Stage Fusion + LLM Abstraction)  
+**날짜:** 2025-11-26  
 **대상:** Cursor 사용자
 
 ---
@@ -14,8 +14,8 @@ Cursor Composer (Cmd+I):
 umis.yaml 첨부
 
 "@Steve, 음악 스트리밍 구독 서비스 시장 기회 분석해줘"
-"@Fermi, SaaS LTV는?"  ⭐ 5-Phase + Web Search!
-"@Fermi, 한국 인구는?"  ⭐ Validator 우선 검색!
+"@Estimator, SaaS LTV는?"  ⭐ 4-Stage Fusion!
+"@Estimator, 한국 인구는?"  ⭐ Validator 우선 검색!
 ```
 
 **끝!** 🎉
@@ -30,29 +30,34 @@ Explorer (Steve) → 기회 발굴 (RAG!)
 Quantifier (Bill) → 정량 분석 + Excel
 Validator (Rachel) → 데이터 검증 + 교차 검증
 Guardian (Stewart) → 프로세스 감시 (Meta-RAG)
-Estimator (Fermi) → 값 추정 (3-Tier, 12개 지표) ⭐ 신규!
+Estimator (Fermi) → 값 추정 (4-Stage Fusion, 12개 지표) ⭐
 
-v7.6.2: 5-Phase + Web Search 완전 작동!
+v7.11.0: 4-Stage Fusion + LLM Abstraction 완성!
 ```
 
 ---
 
-## ⭐ v7.7.0 신규 기능
+## ⭐ v7.11.0 신규 기능
 
 ```yaml
-✅ Web Search 페이지 크롤링 (v7.7.0)
-   - 정보량: 553자 → 20,538자 (3,614% 증가)
-   - 숫자 추출: 4개 → 41개 (10배 증가)
-   - 자동 fallback (실패 시 snippet 사용)
+✅ 4-Stage Fusion Architecture (v7.11.0)
+   - Phase 0-4 → Stage 1-4 통합
+   - Stage 1: Evidence Collection (확정 데이터, <1초)
+   - Stage 2: Generative Prior (LLM 직접 추정, ~3초)
+   - Stage 3: Structural Explanation (Fermi 분해, max_depth=2)
+   - Stage 4: Fusion & Validation (융합, <1초)
+   - 재귀 제거 → 예측 가능한 실행 시간
 
-✅ Native 모드 진짜 구현
-   - Explorer: RAG만 → Cursor LLM 분석
-   - 비용 $0 (API 호출 없음)
+✅ LLM Complete Abstraction
+   - LLMProvider 인터페이스 (DIP, SRP, OCP, ISP)
+   - Cursor vs External 모드 완전 추상화
+   - 비즈니스 로직에서 llm_mode 분기 61개 제거
+   - Clean Architecture 100% 적용
 
-✅ 5-Phase 명확화 (Phase 0-4)
-   - Phase: Estimator 전체 단계
-   - Step: Phase 4 내부 단계
-   - 혼란 완전 제거
+✅ Budget 기반 탐색
+   - max_llm_calls, max_runtime, budget_mode
+   - 예측 가능한 비용 및 실행 시간
+   - 표준 모드 (3-5초), 고속 모드 (1-2초), 정밀 모드 (5-10초)
 
 ✅ 100% 커버리지 유지
 ```
@@ -105,7 +110,7 @@ umis/
 
 ---
 
-## 🚀 사용 흐름 (v7.6.2)
+## 🚀 사용 흐름 (v7.11.0)
 
 ```
 1. Cursor (Cmd+I)
@@ -117,13 +122,15 @@ umis/
 → Spotify, Netflix 사례 학습
 → 가설 생성
 
-4. "@Fermi, LTV는?"  ⭐ 신규!
+4. "@Estimator, LTV는?"  ⭐ 4-Stage Fusion!
 
-→ Tier 1 체크 → 없음
-→ Tier 2 시도 → 복잡
-→ Tier 3 실행 (재귀 분해)
-→ 템플릿: ltv = arpu / churn_rate
-→ 재귀 추정 → Backtracking
+→ Stage 1 (Evidence): 확정 데이터 검색 (<1초)
+→ Stage 1 없음 → Stage 2 (Prior): LLM 직접 추정 (~3초)
+→ certainty == low → Stage 3 (Fermi): 구조적 분해 (max_depth=2)
+   - Formula: ltv = arpu / churn_rate
+   - 변수 추정: arpu, churn_rate (Stage 2 사용)
+   - 계산 수행
+→ Stage 4 (Fusion): 모든 Stage 결과 가중 합성 (<1초)
 → 결과: 1,600,000원
 
 → 100% 답변 가능! ✨
@@ -134,15 +141,15 @@ umis/
 ## 📖 더 알아보기
 
 **시작:**
-- [README.md](../README.md) - UMIS v7.6.2 소개
+- [README.md](../README.md) - UMIS v7.11.0 소개
 - [SETUP.md](SETUP.md) - 초기 설정 (5분)
 
 **가이드:**
 - [UMIS_ARCHITECTURE_BLUEPRINT.md](../UMIS_ARCHITECTURE_BLUEPRINT.md) - 전체 아키텍처
-- [CURRENT_STATUS.md](../CURRENT_STATUS.md) - v7.6.2 현황
+- [LLM_COMPLETE_ABSTRACTION_SUMMARY_v7_11_0.md](../dev_docs/improvements/LLM_COMPLETE_ABSTRACTION_SUMMARY_v7_11_0.md) - LLM 추상화
 
 **Release Notes:**
-- [CHANGELOG.md](../CHANGELOG.md) - v7.6.2 변경사항
+- [CHANGELOG.md](../CHANGELOG.md) - v7.11.0 변경사항
 - [CHANGELOG.md](../CHANGELOG.md) - 전체 버전 이력
 
 ---
