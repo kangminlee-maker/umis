@@ -4916,13 +4916,12 @@ agents:
 
     # ===== 2. CAPABILITIES =====
     core_competencies:
-      - "5-Phase Architecture (Literal → RAG → Validator → Guestimation → Fermi)"
-      - "11개 Source 통합 (Physical, Soft, Value)"
+      - "4-Stage Fusion Architecture (Evidence → Prior → Fermi → Fusion)"
+      - "LLM Complete Abstraction (Clean Architecture)"
       - "Context-Aware 판단 (domain, region, time)"
       - "학습 시스템 (사용할수록 6-16배 빠름)"
-      - "추정 근거 완전 투명화 (v7.3.2)"
+      - "추정 근거 완전 투명화"
       - "교차 검증 지원 (Validator 협업)"
-      - "Native/External 모드 (v7.7.0)"
 
     estimation_principles:
       - "증거 기반 판단 (최소 1개 증거 필요)"
