@@ -1,10 +1,31 @@
 # ========================================
-# UMIS LLM 모드 설정
-# v7.7.0+
+# ⚠️  DEPRECATED: UMIS LLM 모드 설정
+# v7.11.0+: LLM Complete Abstraction으로 대체
+# ========================================
+#
+# 이 파일은 v7.11.0부터 Deprecated 되었습니다.
+#
+# 변경사항:
+#   - llm_mode 파라미터 제거
+#   - LLMProvider 인터페이스 사용 (Dependency Injection)
+#   - 환경변수: LLM_MODE (cursor/external)
+#
+# 새로운 사용법:
+#   from umis_rag.core.llm_provider_factory import get_default_llm_provider
+#   
+#   llm_provider = get_default_llm_provider()  # .env의 LLM_MODE 사용
+#   estimator = EstimatorRAG(llm_provider=llm_provider)
+#
+# 참고 문서:
+#   - dev_docs/improvements/LLM_COMPLETE_ABSTRACTION_SUMMARY_v7_11_0.md
+#   - umis.yaml (Estimator Agent 섹션)
+#
 # ========================================
 
-version: "7.7.0"
-updated: "2025-11-10"
+version: "7.11.0"
+status: "deprecated"
+updated: "2025-11-26"
+replacement: "LLMProvider (umis_rag.core.llm_provider)"
 
 # ========================================
 # 🎉 v7.7.0 신규 기능
