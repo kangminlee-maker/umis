@@ -268,9 +268,9 @@ system_architecture:
 # ========================================
 system:
   name: "Universal Market Intelligence System"
-  version: "7.8.1"
-  release_date: "2025-11-24"
-  status: "Stable Release - cursor-native Integration"
+  version: "7.11.0"
+  release_date: "2025-11-26"
+  status: "Production - LLM Complete Abstraction"
   purpose: "RAG 기반 6-Agent 협업 시장 분석 시스템"
   description: "6-Agent + 4-Stage Fusion Estimator + LLM Complete Abstraction + Model Config 시스템 (18개: 17 External + cursor-native) + 98% 비용 절감"
   default_mode: "Discovery Sprint → Comprehensive Study (2-4주) - 별도 언급 없으면 자동 적용"
@@ -303,14 +303,12 @@ system:
     - "Autonomous Monitoring: 능동적 목표 정렬과 개입"
     - "Complete Traceability: 모든 결론 → 원본 데이터 역추적 (ID Namespace)"
     - "Reproducibility: Excel 함수, YAML 스키마로 재검증 가능"
-    - "Model Config System (v7.8.1): 18개 LLM 모델 중앙 관리 (17 External + cursor-native), .env 변경 → 코드 수정 0줄"
-    - "3-Model Optimization (v7.8.0): 98% 비용 절감 달성 ($0.30/1,000회)"
-    - "Integrated Benchmarks (v7.8.0): benchmarks/ 폴더로 통합 벤치마크 시스템"
-    - "cursor-native Integration (v7.8.1): Native Mode를 Model Config 시스템으로 통합"
+    - "Model Config System: 18개 LLM 모델 중앙 관리 (17 External + cursor-native), .env 변경 → 코드 수정 0줄"
+    - "3-Model Optimization: 98% 비용 절감 달성 ($0.30/1,000회)"
+    - "Integrated Benchmarks: benchmarks/ 폴더로 통합 벤치마크 시스템"
+    - "LLM Complete Abstraction: 61개 llm_mode 분기 → 0개, Clean Architecture 완전 준수"
 
-  # v7.8.1 신규: cursor-native 통합
   model_config_system:
-    version: "7.8.1"
     purpose: "중앙 집중식 LLM 모델 관리 (18개: 17 External + cursor-native)"
     description: ".env 파일로 모델 변경 시 코드 수정 불필요, API 파라미터 자동 최적화, Native Mode 통합"
 
@@ -432,9 +430,7 @@ system:
       consistency: "모든 Phase에서 일관된 모델 관리"
       testing: "모델 A/B 테스트 간소화"
 
-  # v7.8.0 신규: LLM 최적화 (3-Model 구성)
   llm_optimization:
-    version: "7.8.0"
     achievement: "98% 비용 절감 달성! ($15.00 → $0.30)"
 
     phase_0_2_configuration:
@@ -514,18 +510,13 @@ system:
       quality_first: "o1-mini 단일 모델 (비용 ↑)"
       experimental: "gpt-5.1 (high) + Pro 모델 테스트"
 
-  # v7.8.0 신규: 통합 벤치마크 시스템
   benchmarks_system:
-    version: "7.8.0"
     purpose: "UMIS 전체 시스템 벤치마크 통합 관리"
 
     structure:
       root: "benchmarks/"
       common: "benchmarks/common/ (공통 평가 모듈)"
       estimator: "benchmarks/estimator/ (Estimator 벤치마크)"
-      phase4: "benchmarks/estimator/phase4/ (Phase 4 Fermi)"
-
-    phase4_fermi_benchmarks:
       test_batches:
         batch1: "o1-mini / gpt-5.1 (high) / o3-mini"
         batch2: "gpt-5-pro / o1-pro"
@@ -550,7 +541,7 @@ system:
 
       analysis:
         model_recommendations: "model_recommendations.md (모델 추천)"
-        evaluation_rebalancing: "evaluation_rebalancing.md (평가 재조정 v7.8.0)"
+        evaluation_rebalancing: "evaluation_rebalancing.md (평가 재조정)"
 
       evaluation_system:
         version: "v7.8.0"
@@ -578,9 +569,7 @@ system:
       phase_3: "전체 Agent 확장 (📋 예정)"
       phase_4: "Workflow 통합 (📋 예정)"
 
-  # v7.8.0 신규: Phase 4 평가 시스템
-  phase4_evaluation_system:
-    version: "7.8.0"
+  fermi_evaluation_system:
     total_score: 110점
     rationale: "내용/형식 분리로 공정한 평가"
 
@@ -2400,7 +2389,7 @@ data_integrity_system:
   # 5. Deliverable Standards 통합 (v6.2 신규)
     deliverable_standards_integration:
       description: "산출물 표준화 및 재검증 가능성 보장"
-      reference: "umis_deliverable_standards.yaml (v7.5.0)"
+      reference: "umis_deliverable_standards.yaml"
       specs: "deliverable_specs/ (AI 최적화 YAML 스펙 6개)"
 
     core_principle: "모든 결론은 원본 데이터까지 추적 가능해야 한다"
@@ -2474,7 +2463,7 @@ data_integrity_system:
     project_lifecycle_protocols:
       description: "프로젝트 시작부터 종료까지의 체계적 관리"
       reference: "umis_deliverable_standards.yaml § project_lifecycle_management"
-      project_folder: "projects/YYYYMMDD_name/ (v7.5.0 표준 구조)"
+      project_folder: "projects/YYYYMMDD_name/ (표준 구조)"
 
     lifecycle_phases:
 
@@ -3721,7 +3710,7 @@ agents:
         location: "data/raw/calculation_methodologies.yaml"
         metrics: "LTV, CAC, ARPU, Churn, Payback, Rule of 40, NRR, Gross Margin"
         total: "31개 계산 방법론"
-        note: "v7.5.0: Estimator에서 이동, 역할 명확화"
+        note: "Estimator에서 이동, 역할 명확화"
 
     # ===== 3. WORK DOMAIN =====
     exclusive_responsibilities:
@@ -4578,7 +4567,7 @@ agents:
         method: "estimator.estimate()"
         frequency: "★ 기획 시 사용"
         common_cases: "프로젝트 기간, 필요 인력, 토큰 예측"
-        note: "v7.3.2+: 직접 추정 금지, Estimator 호출 필수"
+        note: "직접 추정 금지, Estimator 호출 필수"
 
     # ===== 3. WORK DOMAIN =====
     guardian_mode:
@@ -4903,18 +4892,15 @@ agents:
     description: "데이터 없을 때 창의적으로 값을 추정하는 전문가"
     character: "논리와 증거로 판단하는 냉철한 추정가. 모든 추정에는 근거와 신뢰도를 제시한다."
 
-    # v7.3.1 신규: 6번째 Agent
-    # v7.5.0 역할 명확화: 추정 전문 (계산은 Quantifier)
     agent_type: "협업 파트너 (Workflow 독립)"
     focus: "값 추정만 (예: ARPU는? Churn은? 음식점 수는?)"
     not_focus: "계산 (Quantifier), 검증 (Validator), 분석 (Observer/Explorer)"
 
-    role_clarity_v7_5_0:
+    role_clarity:
       what_estimator_does: "값이 없을 때 만들어냄 (증거/논리/Fermi)"
       what_quantifier_does: "값이 있을 때 공식으로 계산 (LTV, Payback 등)"
       mece: "Estimator = 추정, Quantifier = 계산 (명확히 분리)"
 
-    # v7.3.2 핵심 원칙: Single Source of Truth
     single_source_policy:
       principle: "모든 값/데이터 추정은 Estimator만 수행"
       enforcement:
