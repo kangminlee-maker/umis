@@ -95,10 +95,10 @@ config/tool_registry_backup_*.yaml
 config/tool_registry_incomplete.yaml
 umis_core_backup.yaml
 
-
-# Archive 폴더 (main 브랜치에서만 제외)
+# Development files (main branch only)
 # alpha 브랜치에서는 이 섹션 제거 또는 주석 처리
-# archive/
+archive/
+dev_docs/
 
 # DART API Cache (불필요, API가 매번 호출)
 docs_cache/
