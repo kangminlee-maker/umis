@@ -266,3 +266,4 @@ print(f'결과: {result.value} (신뢰도: {result.confidence})')
 - `dev_docs/session_summaries/SESSION_SUMMARY_20251125_PHASE4_FERMI_RESTRUCTURE.md` - 이전 세션
 - `umis_rag/agents/estimator/phase4_fermi.py` - 핵심 파일
 - `testlog.txt` - 전체 로그 (4,851줄)
+
