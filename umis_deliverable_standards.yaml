@@ -2708,9 +2708,9 @@ file_format_templates:
 
         sheet_1b:
           name: "Estimation_Details"
-          description: "추정치의 상세 논리 (Estimator v7.5.0 통합)"
+          description: "추정치의 상세 논리 (Estimator 통합)"
           structure: "EST_NNN 블록별로 Estimator 결과 또는 수동 추정 논리 작성"
-          note: "추정 재현성의 핵심 시트 (v7.5.0: Estimator 우선 사용)"
+          note: "추정 재현성의 핵심 시트 (Estimator 우선 사용)"
 
         sheet_2:
           name: "Method_1_TopDown"
