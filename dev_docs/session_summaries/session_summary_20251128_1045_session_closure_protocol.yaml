@@ -1,0 +1,471 @@
+# ========================================
+# 세션 서머리 - SESSION_CLOSURE_PROTOCOL 개발
+# ========================================
+
+version: 1.0
+session_date: 2025-11-28
+session_time: "10:45-12:00"
+duration: "1h 15min"
+branch: alpha
+version_before: v7.11.0
+version_after: v7.11.1
+keywords: [session_closure, protocol, dependency, file_organization]
+ai_model: Claude Sonnet 4.5
+
+# ========================================
+# SECTION 1: 메타데이터
+# ========================================
+
+metadata:
+  total_files_modified: 2
+  total_files_created: 1
+  total_files_moved: 3
+  total_lines_added: ~1460
+  total_commits: 1 (예정)
+
+# ========================================
+# SECTION 2: 세션 목표 및 컨텍스트
+# ========================================
+
+session_objective:
+  primary_goal: |
+    개발 세션 종료 시 체계적인 마무리 프로세스를 정의하여,
+    다음 세션에서 완벽한 컨텍스트 연속성을 보장하는 프로토콜 작성
+  
+  background: |
+    - 기존: 세션 마무리가 산발적이고 비체계적
+    - 문제: 다음 세션 시작 시 컨텍스트 손실
+    - 필요: 파일 정리, 의존성 파악, 남은 작업 정리 자동화
+  
+  trigger: |
+    사용자 요청: "세션 마무리 가이드를 만들어서, 매번 세션을 마무리 할 때마다 
+    AI가 참조해서 진행하도록 하고 싶어"
+  
+  scope: |
+    - 파일 정리 규칙 (내용 기반 분류)
+    - 세션 서머리 구조 (11개 섹션)
+    - 의존성 체인 명확화
+    - Git 커밋 프로토콜
+    - 8단계 실행 순서
+
+# ========================================
+# SECTION 3: 수행한 작업 (상세)
+# ========================================
+
+work_performed:
+  task_1:
+    name: "SESSION_CLOSURE_PROTOCOL.yaml 생성"
+    description: |
+      세션 마무리를 위한 포괄적인 프로토콜 문서 작성.
+      8단계 프로세스, 11개 섹션 세션 서머리 템플릿 포함.
+    
+    files_created:
+      - path: "dev_docs/SESSION_CLOSURE_PROTOCOL.yaml"
+        purpose: "세션 마무리 가이드 (이 프로토콜!)"
+        size: "~45KB, 1,460 lines"
+        content_summary: |
+          - Step 0: 파일 정리 (내용 기반 분류)
+          - Step 1: 세션 서머리 (11개 섹션)
+          - Step 2: BLUEPRINT 업데이트
+          - Step 3-6: 문서 동기화
+          - Step 7: 검증
+          - Step 8: Git 커밋
+    
+    result: "성공"
+    notes: "1,460줄의 상세한 프로토콜 완성"
+  
+  task_2:
+    name: "파일 분류 규칙 개발"
+    description: |
+      파일명 패턴이 아닌 내용 기반 분류 규칙 작성.
+      각 폴더의 README.md를 Single Source of Truth로 활용.
+    
+    files_modified:
+      - path: "dev_docs/SESSION_CLOSURE_PROTOCOL.yaml"
+        section: "file_organization (Lines 18-251)"
+        changes:
+          - "내용 기반 분류 프로세스 (5단계)"
+          - "폴더별 역할 정의 (7개 폴더)"
+          - "하위 폴더 생성 규칙 (9단계)"
+        before_state: "파일명 패턴 기반 (부정확)"
+        after_state: "내용 읽기 + README 참조 (정확)"
+    
+    result: "성공"
+    notes: "보수적 접근 (애매하면 기존 폴더 활용)"
+  
+  task_3:
+    name: "세션 서머리 구조 재설계"
+    description: |
+      추상적이던 구조를 11개 섹션으로 구체화.
+      의존성 맵, 우선순위별 남은 작업, 다음 세션 준비 포함.
+    
+    files_modified:
+      - path: "dev_docs/SESSION_CLOSURE_PROTOCOL.yaml"
+        section: "session_summary (Lines 442-853)"
+        changes:
+          - "SECTION 1-11 구조화"
+          - "의존성 맵 (체인별 시각화)"
+          - "우선순위별 작업 (P0-P3)"
+          - "다음 세션 준비 (필독 파일 + 명령어)"
+        before_state: "8개 추상 필드"
+        after_state: "11개 구체 섹션 (예시 포함)"
+    
+    result: "성공"
+    notes: "다음 세션 시작 시 완벽한 가이드 제공"
+  
+  task_4:
+    name: "의존성 체인 명확화"
+    description: |
+      umis.yaml → tool_registry.yaml → System RAG 체인 확인.
+      umis_core.yaml은 별도 INDEX (주 체인 아님) 명확화.
+    
+    files_modified:
+      - path: "dev_docs/SESSION_CLOSURE_PROTOCOL.yaml"
+        section: "dependency_map (Lines 600-620)"
+        changes:
+          - "chain_1_system_rag 수정"
+          - "umis_core.yaml 역할 재정의 (수동 INDEX)"
+          - "tool_registry → System RAG 직접 연결"
+    
+    result: "성공"
+    notes: "정확한 의존성 그래프 확립"
+  
+  task_5:
+    name: "Git 커밋 프로토콜 복원"
+    description: |
+      초기 삭제했던 Git 커밋 단계를 복원.
+      정확한 커밋 해시 저장을 위해 AI가 커밋 수행.
+    
+    files_modified:
+      - path: "dev_docs/SESSION_CLOSURE_PROTOCOL.yaml"
+        section: "execution_sequence.step_8 (Lines 1232-1267)"
+        changes:
+          - "Git 커밋 단계 추가"
+          - "커밋 메시지 템플릿"
+          - "git rev-parse HEAD로 해시 가져오기"
+          - "Best Practices 추가"
+    
+    result: "성공"
+    notes: "BLUEPRINT 메타데이터에 정확한 해시 저장 가능"
+
+# ========================================
+# SECTION 4: 파일 변경 내역 (전체)
+# ========================================
+
+files_changed:
+  summary:
+    total_modified: 2
+    total_created: 1
+    total_deleted: 0
+    total_moved: 3
+  
+  modified_files:
+    - path: ".cursorrules"
+      line_changes: "75 → 74 (-1줄)"
+      change_type: "minor edit"
+      sections_affected:
+        - "/umis close 명령어 제거 (불필요)"
+      depends_on: []
+      affects:
+        - "SESSION_CLOSURE_PROTOCOL.yaml (참조 제거)"
+    
+    - path: "dev_docs/SESSION_CLOSURE_PROTOCOL.yaml"
+      line_changes: "0 → 1,460 (+1,460줄)"
+      change_type: "major addition"
+      sections_affected:
+        - "전체 프로토콜 작성"
+      depends_on:
+        - "dev_docs/ 폴더 구조"
+        - "폴더별 README.md"
+      affects:
+        - "모든 미래 개발 세션 (프로토콜 기준)"
+  
+  created_files:
+    - path: "dev_docs/SESSION_CLOSURE_PROTOCOL.yaml"
+      size: "~45KB, 1,460 lines"
+      purpose: "세션 마무리 프로토콜"
+      created_from: "새로 작성"
+  
+  moved_files:
+    - from: "CONTEXT_WINDOW_STRATEGY.md"
+      to: "dev_docs/CONTEXT_WINDOW_STRATEGY.md"
+      reason: "개발 문서 (Task vs Complete 전략)"
+    
+    - from: "CURSOR_AUTO_SETUP.md"
+      to: "docs/guides/CURSOR_AUTO_SETUP.md"
+      reason: "사용자 가이드 (설치)"
+    
+    - from: "CURSOR_SYSTEM_COMMANDS.md"
+      to: "docs/guides/CURSOR_SYSTEM_COMMANDS.md"
+      reason: "사용자 가이드 (시스템 명령어)"
+
+# ========================================
+# SECTION 5: 의존성 맵
+# ========================================
+
+dependency_map:
+  purpose: "파일 간 의존성 명시 (어떤 파일이 어떤 파일에 영향을 주는가?)"
+  
+  chains:
+    chain_1_protocol_reference:
+      trigger: "SESSION_CLOSURE_PROTOCOL.yaml 생성"
+      cascade:
+        - step: "프로토콜 파일 생성"
+        - step: "→ 모든 미래 세션에서 참조"
+        - step: "→ 세션 서머리 파일 생성 시 템플릿으로 활용"
+      
+      status: "완료"
+      
+      files_involved:
+        - "SESSION_CLOSURE_PROTOCOL.yaml": "template (생성됨)"
+        - "session_summary_*.yaml": "output (미래 생성)"
+    
+    chain_2_folder_structure:
+      trigger: "파일 이동 규칙 적용"
+      cascade:
+        - step: "루트 파일 스캔"
+        - step: "→ 폴더 README.md 읽기"
+        - step: "→ 내용 기반 분류"
+        - step: "→ 적절한 폴더로 이동"
+      
+      status: "완료 (3개 파일 이동)"
+      
+      files_involved:
+        - "CONTEXT_WINDOW_STRATEGY.md": "moved to dev_docs/"
+        - "CURSOR_AUTO_SETUP.md": "moved to docs/guides/"
+        - "CURSOR_SYSTEM_COMMANDS.md": "moved to docs/guides/"
+    
+    chain_3_dependency_graph:
+      trigger: "전체 시스템 의존성 분석"
+      cascade:
+        - step: "UMIS 시스템 구조 분석"
+        - step: "→ 7개 핵심 체인 식별"
+        - step: "→ 107개 Python 파일 의존성 파악"
+      
+      status: "분석 완료 (구현 예정)"
+      
+      files_involved:
+        - "umis.yaml": "최상위 (Single Source of Truth)"
+        - "umis_rag/": "107개 Python 파일"
+        - "config/": "8개 설정 파일"
+
+# ========================================
+# SECTION 6: 남은 작업 (우선순위별)
+# ========================================
+
+remaining_tasks:
+  purpose: "다음 세션에서 해야 할 작업 (구체적으로)"
+  
+  critical:
+    priority: "P0 (즉시 - 다음 세션 시작)"
+    tasks:
+      - task: "Dependency Graph 시각화"
+        reason: "의존성 문제 사전 감지 시스템 구축"
+        approach:
+          - "Python 코드 정적 분석 (ast, importlib)"
+          - "의존성 그래프 생성 (networkx)"
+          - "순환 의존성 감지"
+          - "Critical Node 식별"
+        estimated_time: "2-3시간"
+        dependencies: []
+        blocked_by: []
+        files_to_create:
+          - "scripts/analyze_dependencies.py"
+          - "dev_docs/DEPENDENCY_GRAPH.md"
+        
+      - task: "의존성 문제 감지 도구 개발"
+        reason: "개발 중 의존성 변경 시 자동 경고"
+        approach:
+          - "Import 체인 분석"
+          - "순환 참조 감지"
+          - "Missing import 체크"
+          - "Unused import 정리"
+        estimated_time: "1-2시간"
+        dependencies: ["Dependency Graph 완성"]
+        blocked_by: []
+  
+  high:
+    priority: "P1 (1-2일 내)"
+    tasks:
+      - task: "이번 세션 커밋 완료"
+        reason: "변경사항 저장 및 해시 기록"
+        command: |
+          git add dev_docs/SESSION_CLOSURE_PROTOCOL.yaml
+          git add dev_docs/CONTEXT_WINDOW_STRATEGY.md
+          git add docs/guides/CURSOR_*.md
+          git add .cursorrules
+          git commit -m "docs: add SESSION_CLOSURE_PROTOCOL and organize files"
+          git rev-parse HEAD
+        estimated_time: "5분"
+      
+      - task: "UMIS_ARCHITECTURE_BLUEPRINT.md 업데이트"
+        reason: "최신 구조 반영 (SESSION_CLOSURE_PROTOCOL 추가)"
+        sections_to_update:
+          - "개발 워크플로우 섹션"
+          - "문서 구조 섹션"
+        estimated_time: "20분"
+  
+  medium:
+    priority: "P2 (1주일 내)"
+    tasks:
+      - task: "Pre-commit Hook 구현"
+        reason: "커밋 전 의존성 자동 체크"
+        approach:
+          - ".git/hooks/pre-commit 스크립트"
+          - "의존성 변경 감지"
+          - "순환 참조 체크"
+        estimated_time: "1시간"
+  
+  low:
+    priority: "P3 (선택적)"
+    tasks:
+      - task: "Dependency Graph 자동 업데이트"
+        reason: "코드 변경 시 그래프 자동 갱신"
+        approach: "Git hook 활용"
+
+# ========================================
+# SECTION 7: 다음 세션 준비 (필독!)
+# ========================================
+
+next_session_prep:
+  purpose: "다음 세션 시작 전 반드시 확인해야 할 내용"
+  
+  must_read_files:
+    - file: "dev_docs/session_summaries/session_summary_20251128_1045_session_closure_protocol.yaml"
+      reason: "이번 세션 완전한 컨텍스트"
+      sections: "전체 (특히 SECTION 6, 7)"
+      read_command: "read_file(...)"
+    
+    - file: "dev_docs/SESSION_CLOSURE_PROTOCOL.yaml"
+      reason: "프로토콜 이해 (1,460줄)"
+      sections: "Step 0-8, 세션 서머리 구조"
+      read_command: "read_file(..., limit=200) # 처음 200줄 요약"
+    
+    - file: "umis_rag/__init__.py"
+      reason: "의존성 진입점 파악"
+      sections: "import 문, __all__"
+      read_command: "read_file(..., limit=150)"
+  
+  must_know_context:
+    - context: "SESSION_CLOSURE_PROTOCOL.yaml 완성 (1,460줄)"
+      why: "모든 세션 마무리의 기준"
+      location: "dev_docs/SESSION_CLOSURE_PROTOCOL.yaml"
+      
+    - context: "의존성 체인 명확화"
+      why: "umis.yaml → tool_registry.yaml → System RAG (umis_core.yaml은 별도)"
+      key_insight: "umis_core.yaml은 수동 관리 INDEX (주 체인 아님)"
+      
+    - context: "파일 분류는 내용 기반"
+      why: "파일명 패턴은 힌트일 뿐, README가 기준"
+      rule: "애매하면 보수적으로 기존 폴더 활용"
+    
+    - context: "다음 세션 목표: Dependency Graph"
+      why: "의존성 문제 사전 감지 시스템"
+      scope: "Python 코드 정적 분석 + 그래프 생성"
+  
+  potential_issues:
+    - issue: "순환 의존성 발견 시"
+      symptom: "ImportError, 무한 루프"
+      solution: "의존성 방향 재설계, 추상화 계층 도입"
+      
+    - issue: "Missing import"
+      symptom: "ModuleNotFoundError"
+      solution: "analyze_dependencies.py로 사전 감지"
+  
+  recommended_start_sequence:
+    step_1: "이 세션 서머리 읽기"
+    step_2: "남은 작업 확인 (SECTION 6)"
+    step_3: "Dependency Graph 개발 시작"
+    step_4: "umis_rag/ 구조 분석 (107개 파일)"
+    step_5: "순환 의존성 체크"
+
+# ========================================
+# SECTION 8: 주요 결정사항 및 인사이트
+# ========================================
+
+key_decisions:
+  purpose: "왜 이렇게 결정했는가? (미래 참조용)"
+  
+  decisions:
+    - decision: "세션 서머리를 11개 섹션으로 구조화"
+      reason: "추상적 필드는 작성 시 혼란, 구체적 섹션이 필요"
+      alternatives_considered:
+        - "8개 필드 유지 → 기각 (너무 추상적)"
+        - "자유 형식 → 기각 (일관성 부족)"
+      trade_offs:
+        pros: ["명확한 가이드", "누락 방지", "다음 세션 준비 완벽"]
+        cons: ["작성 시간 증가 → 자동화로 해결"]
+    
+    - decision: "파일 분류를 내용 기반으로"
+      reason: "파일명 패턴은 부정확, 오분류 위험"
+      alternatives_considered:
+        - "파일명 패턴 유지 → 기각 (부정확)"
+        - "확장자만 체크 → 기각 (불충분)"
+      trade_offs:
+        pros: ["정확한 분류", "README 기준 명확"]
+        cons: ["파일 읽기 필요 → 50줄 제한으로 해결"]
+    
+    - decision: "Git 커밋을 AI가 수행"
+      reason: "정확한 커밋 해시를 BLUEPRINT 메타데이터에 저장"
+      expected_impact: "문서 메타데이터 정확성 100%"
+
+insights:
+  purpose: "작업 중 발견한 중요한 사실"
+  
+  - insight: "의존성 체인 이해는 시스템 이해의 핵심"
+    evidence: "umis_core.yaml 역할 혼동 → 명확화 후 전체 흐름 이해"
+    action_taken: "의존성 맵 섹션 추가 (SECTION 5)"
+  
+  - insight: "프로토콜 길이 (1,460줄)는 문제가 아님"
+    evidence: "구체적 예시와 템플릿이 실제 사용성 향상"
+    action_taken: "축약하지 않고 상세하게 유지"
+
+# ========================================
+# SECTION 9: 오류 및 해결
+# ========================================
+
+errors_encountered:
+  purpose: "발생한 문제와 해결 방법 (미래 참조)"
+  
+  - error: "의존성 체인 오해"
+    context: "umis_core.yaml 위치 혼동"
+    cause: "주 체인 vs INDEX 역할 미구분"
+    solution: "스크립트 분석 + 명확화"
+    lesson: "가정하지 말고 코드 확인"
+
+# ========================================
+# SECTION 10: 재사용 가능한 명령어
+# ========================================
+
+useful_commands:
+  purpose: "이 세션에서 사용한 유용한 명령어"
+  
+  - command: "ls -la *.md | grep -v 'README\\|CHANGELOG'"
+    purpose: "루트 폴더 정리 대상 MD 파일 찾기"
+    when: "파일 정리 시"
+  
+  - command: "git rev-parse HEAD"
+    purpose: "현재 커밋 해시 가져오기"
+    when: "BLUEPRINT 메타데이터 업데이트 시"
+    
+  - command: "find umis_rag -name '*.py' -type f | wc -l"
+    purpose: "Python 파일 개수 확인"
+    when: "의존성 분석 범위 파악"
+
+# ========================================
+# SECTION 11: 세션 완료 체크리스트
+# ========================================
+
+completion_checklist:
+  - "[x] 모든 파일 변경사항 저장됨"
+  - "[x] 의존성 파일 목록 작성됨"
+  - "[x] 남은 작업 우선순위별 정리됨"
+  - "[x] 다음 세션 준비 섹션 작성됨"
+  - "[ ] git status 확인됨"
+  - "[x] 임시 파일 정리됨"
+  - "[x] 세션 서머리 파일 저장됨"
+  - "[ ] Git 커밋 완료 (Step 8에서 수행 예정)"
+
+# ========================================
+# END OF SESSION SUMMARY
+# ========================================
