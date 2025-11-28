@@ -369,10 +369,8 @@ class ValidatorSource:
             # Metadata에서 기본 정보
             metadata = search_result.metadata
 
-            # Document에서 상세 정보 파싱 (YAML 포맷)
-            # TODO: YAML 파싱 또는 메타데이터 활용
-            # 현재는 메타데이터 우선 사용
-
+            # Document에서 상세 정보 파싱
+            # 메타데이터 우선, 없으면 YAML 파싱 시도
             benchmark = {
                 'benchmark_id': metadata.get('benchmark_id'),
                 'industry': metadata.get('industry'),
@@ -391,6 +389,27 @@ class ValidatorSource:
                 'by_price_positioning': metadata.get('by_price_positioning', {}),
                 'by_pricing_tier': metadata.get('by_pricing_tier', {})
             }
+            
+            # Document 내용에서 추가 정보 파싱 (YAML 형식일 경우)
+            if hasattr(search_result, 'page_content'):
+                try:
+                    import yaml
+                    # YAML 블록 추출 시도
+                    content = search_result.page_content
+                    if '```yaml' in content or '```' in content:
+                        # 코드 블록 추출
+                        yaml_match = re.search(r'```(?:yaml)?\s*\n(.*?)\n```', content, re.DOTALL)
+                        if yaml_match:
+                            yaml_content = yaml_match.group(1)
+                            parsed_data = yaml.safe_load(yaml_content)
+                            # YAML에서 추가 데이터 병합
+                            if isinstance(parsed_data, dict):
+                                for key in ['margins', 'by_company_size', 'by_revenue_scale']:
+                                    if key in parsed_data and not benchmark.get(key):
+                                        benchmark[key] = parsed_data[key]
+                except Exception as yaml_error:
+                    # YAML 파싱 실패는 무시 (메타데이터로 충분)
+                    pass
 
             return benchmark
 

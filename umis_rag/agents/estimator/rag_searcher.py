@@ -53,9 +53,16 @@ class EstimatorRAGSearcher:
             total_count = self.projected_store._collection.count()
             logger.info(f"  ✅ projected_index: {total_count}개 청크")
             
-            # guestimation 청크 수 (현재는 0개)
-            # TODO: 실제로는 filter로 카운트 필요
-            logger.info(f"  ℹ️  estimator 청크: 0개 (학습되면 증가)")
+            # guestimation 청크 수 (filter 기반)
+            try:
+                # metadata에서 source가 'estimator'인 청크만 카운트
+                estimator_count = self.projected_store._collection.count(
+                    where={"source": "estimator"}
+                )
+                logger.info(f"  ℹ️  estimator 청크: {estimator_count}개 (학습 데이터)")
+            except Exception:
+                # 필터 실패 시 기본값
+                logger.info(f"  ℹ️  estimator 청크: 0개 (학습되면 증가)")
             
         except Exception as e:
             logger.error(f"  ❌ projected_index 로드 실패: {e}")
