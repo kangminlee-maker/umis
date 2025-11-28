@@ -102,8 +102,15 @@ class UmisToRAGSync:
         
         tools = []
         
+        # 0. Onboarding 도구 생성 (신규!)
+        if 'ai_onboarding' in umis_data:
+            onboarding_tools = self._create_onboarding_tools(umis_data['ai_onboarding'])
+            tools.extend(onboarding_tools)
+            print(f"   ✅ {len(onboarding_tools)}개 Onboarding 도구")
+        
         # 1. System 섹션 도구 생성
-        system_sections = [k for k in umis_data.keys() if k != 'agents']
+        system_sections = [k for k in umis_data.keys() 
+                           if k not in ['agents', 'ai_onboarding']]
         
         for section_name in system_sections:
             section_data = umis_data[section_name]
@@ -125,7 +132,8 @@ class UmisToRAGSync:
             print(f"   ✅ tool:{agent_id.lower()}:complete")
         
         print()
-        print(f"   총 {len(tools)}개 도구 생성 (System + Complete)")
+        print(f"   총 {len(tools)}개 도구 생성")
+        print(f"   - Onboarding 도구: {len([t for t in tools if 'onboarding:' in t['tool_id']])}개")
         print(f"   - System 도구: {len([t for t in tools if 'system:' in t['tool_id']])}개")
         print(f"   - Complete 도구: {len([t for t in tools if ':complete' in t['tool_id']])}개")
         print()
@@ -149,6 +157,75 @@ class UmisToRAGSync:
         }
         
         return registry
+    
+    def _create_onboarding_tools(self, onboarding_data):
+        """Onboarding 도구 4개 생성"""
+        tools = []
+        
+        onboarding_sections = ['quick_start', 'state_machine', 
+                               'agent_essentials', 'workflow_primer']
+        
+        for section_name in onboarding_sections:
+            if section_name not in onboarding_data:
+                continue
+            
+            section_content = onboarding_data[section_name]
+            
+            # YAML 형태로 직렬화
+            content_yaml = yaml.dump(
+                {section_name: section_content},
+                allow_unicode=True,
+                default_flow_style=False,
+                sort_keys=False,
+                width=120
+            )
+            
+            # Content 포맷팅
+            content = f"""# Onboarding: {section_name}
+
+## 📋 출처
+umis.yaml - ai_onboarding.{section_name} (Auto-Sync)
+
+## 📖 내용 (YAML)
+
+```yaml
+{content_yaml}```
+
+---
+
+⚠️  이 도구는 자동 생성됩니다.
+   수정하려면 umis.yaml의 ai_onboarding 섹션을 편집하세요.
+"""
+            
+            # 토큰 추정
+            char_count = len(content)
+            token_estimate = int(char_count / 4)
+            
+            tool = {
+                'tool_id': f'onboarding:{section_name}',
+                'tool_key': f'tool:onboarding:{section_name}',
+                'metadata': {
+                    'agent': 'onboarding',
+                    'category': 'ai_learning',
+                    'context_size': char_count,
+                    'token_estimate': token_estimate,
+                    'priority': 'critical',
+                    'source': f'umis.yaml ai_onboarding.{section_name} (auto-sync)',
+                    'auto_generated': True
+                },
+                'when_to_use': {
+                    'keywords': [section_name, 'onboarding', '학습', 'learning'],
+                    'scenarios': [
+                        f'AI 초기 학습: {section_name}',
+                        'UMIS 시스템 빠른 파악'
+                    ]
+                },
+                'content': content
+            }
+            
+            tools.append(tool)
+        
+        return tools
     
     def _create_system_tool(self, section_name, section_data):
         """System 섹션 도구 생성"""
@@ -266,6 +343,7 @@ umis.yaml agents section - {agent_id} 전체 (Auto-Sync)
         
         # 2. 필수 도구 존재 체크
         required_tools = [
+            'onboarding:quick_start',
             'system:system_architecture',
             'observer:complete',
             'explorer:complete'
