@@ -138,12 +138,12 @@ class MarketSizingWorkbookGenerator:
         validation_log = ValidationLogBuilder(wb, self.formula_engine)  # FormulaEngine 전달
         validation_log.create_sheet()
         
-        # 11. Should vs Will (Domain Reasoner 기능)
+        # 11. Should vs Will (Note: Domain Reasoner는 deprecated)
         print(f"   10/10 Should vs Will...")
         should_vs_will = ShouldVsWillBuilder(wb, self.formula_engine)
         
-        # Domain Reasoner 결과 가져오기
-        should_vs_will_data = self._get_domain_reasoner_results(market_name)
+        # Domain Reasoner는 deprecated되어 None 전달
+        should_vs_will_data = None
         
         should_vs_will.create_sheet(should_vs_will_data)
         
@@ -172,47 +172,27 @@ class MarketSizingWorkbookGenerator:
     
     def _get_domain_reasoner_results(self, market_name: str) -> Optional[Dict]:
         """
-        Domain Reasoner 결과 가져오기
+        Domain Reasoner 결과 가져오기 (DEPRECATED)
         
         Args:
             market_name: 시장명
         
         Returns:
-            Dict with should_market_size, will_market_size, barriers, etc.
-            None if Domain Reasoner is not available
+            None (Domain Reasoner는 deprecated)
         
         Note:
-            Domain Reasoner는 v7.12.0+에서 구현 예정
-            현재는 None 반환 (ShouldVsWillBuilder가 gracefully handle)
+            ⚠️ Domain Reasoner는 deprecated되었습니다.
+            Should vs Will 분석은 다른 방식으로 진행됩니다.
+            ShouldVsWillBuilder는 None을 받아도 기본 템플릿을 생성합니다.
+        
+        History:
+            - v7.8.0: Domain Reasoner 기능 도입
+            - v7.11.0: Deprecated (기능 통합)
+            - v7.11.1: 이 메서드는 호환성 유지를 위해 남겨둠
         """
         
-        try:
-            # Domain Reasoner 모듈 import 시도
-            from umis_rag.agents.domain_reasoner import get_domain_reasoner
-            
-            reasoner = get_domain_reasoner()
-            
-            # Should vs Will 분석 요청
-            result = reasoner.analyze_should_vs_will(
-                market_name=market_name,
-                question=f"What is the realistic market size for {market_name}?"
-            )
-            
-            if result:
-                return {
-                    'should_market_size': result.get('should_market_size'),
-                    'will_market_size': result.get('will_market_size'),
-                    'barriers': result.get('barriers', []),
-                    'enablers': result.get('enablers', []),
-                    'confidence': result.get('confidence', 'medium')
-                }
-        
-        except ImportError:
-            # Domain Reasoner 미구현
-            print("    ℹ️  Domain Reasoner 미구현 (v7.12.0+ 예정)")
-        except Exception as e:
-            print(f"    ⚠️ Domain Reasoner 실행 실패: {e}")
-        
+        # Domain Reasoner는 deprecated
+        # ShouldVsWillBuilder가 None을 gracefully handle
         return None
 
 

@@ -111,10 +111,12 @@
 | File | Line | 구현 내용 |
 |------|------|----------|
 | source_collector.py | 262 | ThreadPoolExecutor 병렬화 (5 workers, 30s timeout) |
-| market_sizing_generator.py | 144 | Domain Reasoner 연동 준비 (v7.12.0+) |
+| market_sizing_generator.py | 144 | Domain Reasoner TODO 제거 (deprecated 기능) |
 | explorer.py | 586 | LangChain 5개 Tool 구현 |
 
 **커밋**: `feat(v7.11.1): Phase 2-4 - Complete all remaining TODOs`
+
+**Note**: Domain Reasoner는 v7.11.0에서 deprecated되어 기능이 통합되었습니다.
 
 ---
 
@@ -176,7 +178,7 @@
 
 #### Phase 2-4: Final 3 (3개)
 - ✅ ThreadPoolExecutor 병렬화
-- ✅ Domain Reasoner 연동 준비
+- ✅ Domain Reasoner TODO 제거 (deprecated)
 - ✅ LangChain Agent Tools
 
 **실제 공수**: 4-5시간
@@ -185,16 +187,21 @@
 
 ---
 
-### Phase 3: Domain Reasoner (v7.12.0) - 예정
+### Phase 3: Production Enhancements (v7.12.0) - 예정
 **기간**: 2주
 
 **목표**:
-1. Domain Reasoner 구현
-   - Should vs Will 분석
-   - 장벽/촉진 요인 분석
-   - 시나리오 생성
-2. market_sizing_generator.py와 연동
-3. Excel 자동 생성 테스트
+1. 성능 최적화
+   - 병렬 처리 확대
+   - 캐싱 메커니즘 강화
+   - API 호출 최적화
+2. 테스트 커버리지 향상
+   - Unit tests 추가
+   - Integration tests
+   - E2E tests
+3. 모니터링 및 로깅
+   - 성능 메트릭 수집
+   - 에러 추적 개선
 
 **예상 공수**: 5-7일
 
@@ -322,7 +329,7 @@ diff <(jq '.summary' dev_docs/completeness_analysis_prev.json) \
 |------|------|------|-----------|------|
 | 2025-11-28 오전 | 8 → 0 ✅ | 20 | 373 | Phase 1 완료 |
 | 2025-11-28 오후 | 0 | 18 → 0 ✅ | 373 | Phase 2 완료 |
-| 2025-12-15 (예상) | 0 | 0 | ~300 | Domain Reasoner 완료 |
+| 2025-12-15 (예상) | 0 | 0 | ~300 | Production 최적화 |
 | 2026-01-31 (예상) | 0 | 0 | ~200 | Dead Code 정리 시작 |
 | 2026-02-28 (목표) | 0 | 0 | <100 | 최종 목표 달성 |
 
@@ -360,6 +367,6 @@ diff <(jq '.summary' dev_docs/completeness_analysis_prev.json) \
 
 ---
 
-**마지막 업데이트**: 2025-11-28 17:30 (Phase 2 완료)  
-**버전**: v2.0  
-**다음 리뷰**: 2025-12-05 (Domain Reasoner 착수)
+**마지막 업데이트**: 2025-11-28 21:55 (Domain Reasoner deprecated 반영)  
+**버전**: v2.1  
+**다음 리뷰**: 2025-12-05 (Production 최적화 착수)
