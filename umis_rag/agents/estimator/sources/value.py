@@ -453,19 +453,16 @@ class LLMEstimationSource(ValueSourceBase):
         logger.warning("⚠️ LLMEstimationSource는 deprecated. AIAugmentedEstimationSource 사용 권장")
     
     def collect(self, question: str, context: Optional[Context] = None) -> List[ValueEstimate]:
-        """LLM 추정 (deprecated)"""
+        """
+        LLM 추정 (deprecated)
         
-        if self.llm_mode == "skip":
-            return []
+        Note:
+            이 소스는 더 이상 사용되지 않습니다.
+            대신 AIAugmentedEstimationSource를 사용하세요.
+            (Stage 1: Evidence Collection에서 통합됨)
+        """
         
-        # 간단한 사실 질문만 (복잡한 건 Tier 2에서)
-        if not self._is_simple_factual(question):
-            return []
-        
-        # TODO: 실제 LLM 호출
-        # 현재는 스킵
-        logger.info(f"  [LLM] 스킵 (deprecated → AIAugmented 사용)")
-        
+        logger.info(f"  [LLM] Deprecated - Use AIAugmentedEstimationSource instead")
         return []
     
     def _is_simple_factual(self, question: str) -> bool:
