@@ -116,7 +116,10 @@
 
 **커밋**: `feat(v7.11.1): Phase 2-4 - Complete all remaining TODOs`
 
-**Note**: Domain Reasoner는 v7.11.0에서 deprecated되어 기능이 통합되었습니다.
+**Note**: Domain Reasoner는 v7.5.0 (2025-11-10)에서 deprecated & archived되었습니다.
+- Estimator/Quantifier MECE 분리를 위한 구조 개선
+- domain_reasoner.py (1,907줄) 및 YAML (1,033줄) 제거
+- 기능은 Estimator Tier 3에 통합
 
 ---
 
