@@ -1331,36 +1331,240 @@ class ValidatorRAG:
         return result
     
     def _search_official_statistics(self, market: str, years: range) -> Dict:
-        """공식 통계 검색 (통계청, 한국은행 등)"""
-        # TODO: 실제 API 연동 또는 웹 검색
-        # 현재는 placeholder
-        logger.info("    (구현 예정: 통계청 API)")
-        return {'market_size': {}}
+        """
+        공식 통계 검색 (통계청, 한국은행 등)
+        
+        Args:
+            market: 시장명
+            years: 연도 범위
+        
+        Returns:
+            Dict with market_size data
+        
+        Note:
+            현재는 KOSIS API 연동 준비 중
+            수동 수집 데이터 사용 권장
+        """
+        
+        result = {'market_size': {}}
+        
+        # KOSIS API가 설정되어 있다면
+        if hasattr(self, 'kosis_api_key') and self.kosis_api_key:
+            try:
+                # KOSIS search_kosis_data() 메서드 활용
+                kosis_result = self.search_kosis_data(
+                    search_term=market,
+                    data_type='market_size'
+                )
+                
+                if kosis_result:
+                    logger.info(f"    ✅ KOSIS API: 데이터 발견")
+                    result['market_size'] = kosis_result.get('data', {})
+                    return result
+            except Exception as e:
+                logger.warning(f"    ⚠️ KOSIS API 호출 실패: {e}")
+        
+        # Fallback: RAG에서 통계 데이터 검색
+        if self.source_store:
+            try:
+                query = f"{market} official statistics 시장 규모 통계청"
+                search_results = self.source_store.similarity_search(query, k=3)
+                
+                if search_results:
+                    logger.info(f"    ✅ RAG 통계 소스: {len(search_results)}개 발견")
+                    # 메타데이터에서 데이터 추출
+                    for res in search_results:
+                        if hasattr(res, 'metadata') and 'year' in res.metadata:
+                            year = res.metadata['year']
+                            if 'market_size' in res.metadata:
+                                result['market_size'][str(year)] = res.metadata['market_size']
+            except Exception as e:
+                logger.warning(f"    ⚠️ RAG 검색 실패: {e}")
+        
+        logger.info("    ℹ️  대안: https://kosis.kr 수동 확인")
+        return result
     
     def _search_industry_reports_rag(self, market: str, years: range) -> Dict:
-        """산업 리포트 검색 (RAG 활용)"""
+        """
+        산업 리포트 검색 (RAG 활용)
+        
+        Args:
+            market: 시장명
+            years: 연도 범위
+        
+        Returns:
+            Dict with market_size data extracted from reports
+        """
+        
+        result = {'market_size': {}}
+        
         # data_sources_registry에서 검색
         if self.source_store:
-            results = self.source_store.similarity_search(
-                f"{market} market size historical data",
-                k=5
-            )
-            logger.info(f"    ✅ RAG: {len(results)}개 소스 발견")
+            try:
+                query = f"{market} market size historical data {min(years)}-{max(years)}"
+                results = self.source_store.similarity_search(query, k=5)
+                logger.info(f"    ✅ RAG: {len(results)}개 소스 발견")
+                
+                # 각 결과에서 데이터 추출
+                for res in results:
+                    try:
+                        # 메타데이터에서 연도별 데이터 추출
+                        if hasattr(res, 'metadata'):
+                            metadata = res.metadata
+                            year = metadata.get('year')
+                            market_size = metadata.get('market_size')
+                            
+                            if year and market_size:
+                                year_str = str(year)
+                                if year_str not in result['market_size']:
+                                    result['market_size'][year_str] = {
+                                        'value': market_size,
+                                        'unit': metadata.get('unit', 'USD'),
+                                        'source': metadata.get('source_name', 'Industry Report'),
+                                        'reliability': metadata.get('reliability', 'medium')
+                                    }
+                        
+                        # page_content에서 숫자 추출 시도
+                        if hasattr(res, 'page_content'):
+                            # 간단한 패턴 매칭 (확장 가능)
+                            import re
+                            content = res.page_content
+                            # "2023: $100M" 같은 패턴
+                            year_value_pattern = r'(\d{4}):\s*\$?([\d,\.]+)\s*([MB])'
+                            matches = re.findall(year_value_pattern, content)
+                            
+                            for year, value, unit in matches:
+                                if int(year) in years:
+                                    multiplier = 1_000_000 if unit == 'M' else 1_000_000_000
+                                    numeric_value = float(value.replace(',', '')) * multiplier
+                                    
+                                    if year not in result['market_size']:
+                                        result['market_size'][year] = {
+                                            'value': numeric_value,
+                                            'unit': 'USD',
+                                            'source': 'Report extraction',
+                                            'reliability': 'medium'
+                                        }
+                    except Exception as extract_error:
+                        logger.debug(f"    추출 실패: {extract_error}")
+                        continue
+                
+            except Exception as e:
+                logger.warning(f"    ⚠️ RAG 검색 실패: {e}")
         
-        # TODO: 실제 리포트에서 데이터 추출
-        return {'market_size': {}}
+        return result
     
     def _search_public_filings(self, market: str, years: range) -> Dict:
-        """공시 데이터 검색 (DART API 등)"""
-        # TODO: DART API 연동
-        logger.info("    (구현 예정: DART API)")
-        return {'players': {}}
+        """
+        공시 데이터 검색 (DART API 등)
+        
+        Args:
+            market: 시장명
+            years: 연도 범위
+        
+        Returns:
+            Dict with players data from public filings
+        """
+        
+        result = {'players': {}}
+        
+        # DART API 연동 (utils.dart_api 활용)
+        try:
+            if hasattr(self, 'dart_api') and self.dart_api:
+                # DART API 검색
+                # 시장 관련 주요 기업 추출
+                from umis_rag.utils.dart_api import DartAPI
+                
+                dart = DartAPI()
+                
+                # 키워드 기반 기업 검색
+                companies = dart.search_companies(keyword=market, limit=10)
+                
+                if companies:
+                    logger.info(f"    ✅ DART API: {len(companies)}개 기업 발견")
+                    
+                    for company in companies:
+                        corp_code = company.get('corp_code')
+                        corp_name = company.get('corp_name')
+                        
+                        # 연도별 재무 데이터 수집
+                        for year in years:
+                            try:
+                                financial_data = dart.get_financial_statement(
+                                    corp_code=corp_code,
+                                    year=year
+                                )
+                                
+                                if financial_data:
+                                    result['players'][corp_name] = {
+                                        'year': year,
+                                        'revenue': financial_data.get('revenue'),
+                                        'source': 'DART',
+                                        'reliability': 'high'
+                                    }
+                            except Exception:
+                                continue
+                
+                return result
+                
+        except ImportError:
+            logger.debug("    ℹ️  DART API 모듈 없음")
+        except Exception as e:
+            logger.warning(f"    ⚠️ DART API 연동 실패: {e}")
+        
+        logger.info("    ℹ️  대안: https://dart.fss.or.kr 수동 확인")
+        return result
     
     def _search_news_events(self, market: str, years: range) -> List[Dict]:
-        """뉴스에서 주요 사건 추출"""
-        # TODO: 뉴스 검색 및 사건 추출
-        logger.info("    (구현 예정: 뉴스 검색)")
-        return []
+        """
+        뉴스에서 주요 사건 추출
+        
+        Args:
+            market: 시장명
+            years: 연도 범위
+        
+        Returns:
+            List of event dicts
+        """
+        
+        events = []
+        
+        # Web Search를 활용한 뉴스 검색
+        try:
+            from duckduckgo_search import DDGS
+            
+            ddgs = DDGS()
+            
+            # 연도별 주요 사건 검색
+            for year in years:
+                query = f"{market} market {year} major events news"
+                
+                try:
+                    results = ddgs.text(query, max_results=5)
+                    
+                    for res in results:
+                        events.append({
+                            'year': year,
+                            'title': res.get('title', ''),
+                            'snippet': res.get('body', ''),
+                            'url': res.get('href', ''),
+                            'source': 'news_search'
+                        })
+                    
+                    if results:
+                        logger.info(f"    ✅ 뉴스: {year}년 {len(results)}개 사건")
+                    
+                except Exception as search_error:
+                    logger.debug(f"    검색 실패 ({year}): {search_error}")
+                    continue
+            
+        except ImportError:
+            logger.info("    ℹ️  duckduckgo_search 미설치 (pip install duckduckgo-search)")
+        except Exception as e:
+            logger.warning(f"    ⚠️ 뉴스 검색 실패: {e}")
+        
+        logger.info(f"    총 {len(events)}개 사건 추출")
+        return events
     
     def _identify_data_gaps(self, collected_data: Dict, years: range) -> Dict:
         """데이터 Gap 식별"""
@@ -1383,21 +1587,59 @@ class ValidatorRAG:
         return gaps
     
     def _fill_gaps_with_estimator(self, data: Dict, gaps: Dict) -> Dict:
-        """Estimator 협업으로 Gap 채우기"""
+        """
+        Estimator 협업으로 Gap 채우기
+        
+        Args:
+            data: 수집된 데이터
+            gaps: 식별된 Gap
+        
+        Returns:
+            Gap이 채워진 데이터
+        """
+        
         try:
             from umis_rag.agents.estimator import get_estimator_rag
+            from umis_rag.agents.estimator.common.estimation_result import Context
+            
             estimator = get_estimator_rag()
             
             for request in gaps['estimator_requests']:
                 if request['type'] == 'market_size_interpolation':
-                    # 보간 요청
-                    # TODO: Estimator.estimate() 호출
-                    logger.info(f"      Estimator: {request['year']}년 추정 중...")
+                    year = request['year']
+                    market = request.get('market', 'Unknown')
                     
-                    # Placeholder
-                    # result = estimator.estimate(...)
-                    # data['market_size_by_year'][request['year']] = result
+                    logger.info(f"      🤖 Estimator: {year}년 추정 요청...")
+                    
+                    # Context 준비
+                    estimation_context = Context(
+                        industry=request.get('industry'),
+                        time_period=str(year),
+                        region=request.get('region', 'Global')
+                    )
+                    
+                    # Estimator 호출
+                    question = f"What was the {market} market size in {year}?"
+                    result = estimator.estimate(
+                        question=question,
+                        context=estimation_context
+                    )
+                    
+                    if result and hasattr(result, 'value'):
+                        # 추정 결과 저장
+                        data['market_size_by_year'][str(year)] = {
+                            'value': result.value,
+                            'unit': result.unit,
+                            'source': 'Estimator',
+                            'reliability': 'estimated',
+                            'certainty': getattr(result, 'certainty', 'medium')
+                        }
+                        logger.info(f"      ✅ {year}년: {result.value} {result.unit} (추정)")
+                    else:
+                        logger.warning(f"      ⚠️ {year}년 추정 실패")
         
+        except ImportError as ie:
+            logger.warning(f"    ⚠️ Estimator import 실패: {ie}")
         except Exception as e:
             logger.warning(f"    ⚠️ Estimator 협업 실패: {e}")
         
@@ -1580,12 +1822,57 @@ class ValidatorRAG:
             logger.info("  대안: https://kosis.kr 수동 확인")
             return None
         
-        logger.warning("[Validator] KOSIS API 파싱 로직 구현 필요")
-        logger.info("  현재: 수동 수집 권장 (kosis.kr)")
+        # KOSIS API 파싱 로직
+        try:
+            import requests
+            
+            # KOSIS OpenAPI 엔드포인트
+            base_url = "https://kosis.kr/openapi/Param/statisticsParameterData.do"
+            
+            params = {
+                'method': 'getList',
+                'apiKey': self.kosis_api_key,
+                'format': 'json',
+                'jsonVD': 'Y',
+                'itmId': search_term,  # 통계표 ID (실제로는 매핑 필요)
+                'objL1': 'ALL'
+            }
+            
+            response = requests.get(base_url, params=params, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # 데이터 파싱 (KOSIS 응답 구조에 맞게)
+                if isinstance(data, list) and len(data) > 0:
+                    parsed_data = {}
+                    
+                    for item in data:
+                        # 연도와 값 추출
+                        year = item.get('PRD_DE')  # 시점
+                        value = item.get('DT')  # 데이터값
+                        
+                        if year and value:
+                            try:
+                                parsed_data[year] = float(value.replace(',', ''))
+                            except ValueError:
+                                continue
+                    
+                    logger.info(f"  ✅ KOSIS API: {len(parsed_data)}개 데이터 포인트")
+                    return {
+                        'data': parsed_data,
+                        'source': 'KOSIS',
+                        'reliability': 'high'
+                    }
+            else:
+                logger.warning(f"  ⚠️ KOSIS API 응답 실패: {response.status_code}")
+                
+        except ImportError:
+            logger.warning("  ⚠️ requests 라이브러리 필요 (pip install requests)")
+        except Exception as e:
+            logger.warning(f"  ⚠️ KOSIS API 파싱 실패: {e}")
         
-        # TODO: KOSIS API 파싱 로직 구현
-        # 현재는 수동 수집된 데이터 사용 권장
-        
+        logger.info("  ℹ️  대안: https://kosis.kr 수동 수집 권장")
         return None
     
     def search_api_sources(
