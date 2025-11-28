@@ -1,35 +1,18 @@
 {
   "summary": {
-    "total_issues": 20,
+    "total_issues": 391,
     "by_category": {
-      "debt": 20
+      "debt": 18,
+      "dead_code": 373
     },
     "by_severity": {
-      "high": 2,
-      "medium": 18
+      "medium": 18,
+      "low": 373
     },
     "total_functions": 708,
     "total_classes": 162
   },
   "issues": [
-    {
-      "file": "umis_rag/core/model_configs.py",
-      "line": 114,
-      "category": "debt",
-      "subcategory": "temp",
-      "severity": "high",
-      "description": "TEMP: erature (gpt-5.1 등 일부 모델만 지원)",
-      "suggestion": "Address the technical debt"
-    },
-    {
-      "file": "umis_rag/core/model_configs.py",
-      "line": 136,
-      "category": "debt",
-      "subcategory": "temp",
-      "severity": "high",
-      "description": "TEMP: erature 적용",
-      "suggestion": "Address the technical debt"
-    },
     {
       "file": "umis_rag/agents/validator.py",
       "line": 1335,
@@ -191,52 +174,3445 @@
       "severity": "medium",
       "description": "TODO: 실제 구현",
       "suggestion": "Address the technical debt"
+    },
+    {
+      "file": "umis_rag/core/llm_cursor.py",
+      "line": 51,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_cursor.py",
+      "line": 79,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: decompose",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_cursor.py",
+      "line": 106,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: evaluate_certainty",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_cursor.py",
+      "line": 132,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_boundary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_cursor.py",
+      "line": 160,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_native",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_cursor.py",
+      "line": 215,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_llm",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_cursor.py",
+      "line": 232,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_native",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_cursor.py",
+      "line": 236,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_mode_info",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/metadata_schema.py",
+      "line": 371,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: to_chroma_metadata",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_external.py",
+      "line": 89,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_external.py",
+      "line": 130,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: decompose",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_external.py",
+      "line": 168,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: evaluate_certainty",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_external.py",
+      "line": 195,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_boundary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_external.py",
+      "line": 220,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_native",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_external.py",
+      "line": 536,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_llm",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_external.py",
+      "line": 549,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_native",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_external.py",
+      "line": 553,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_mode_info",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/condition_parser.py",
+      "line": 43,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: evaluate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_interface.py",
+      "line": 92,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_interface.py",
+      "line": 124,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: decompose",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_interface.py",
+      "line": 162,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: evaluate_certainty",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_interface.py",
+      "line": 192,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_boundary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_interface.py",
+      "line": 224,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_native",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_interface.py",
+      "line": 256,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_llm",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_interface.py",
+      "line": 274,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_native",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_interface.py",
+      "line": 285,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_mode_info",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/circuit_breaker.py",
+      "line": 75,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: call",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/circuit_breaker.py",
+      "line": 180,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_state",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/circuit_breaker.py",
+      "line": 191,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: reset",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/circuit_breaker.py",
+      "line": 206,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_circuit_breaker",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/circuit_breaker.py",
+      "line": 233,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: circuit_breaker",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/circuit_breaker.py",
+      "line": 263,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: unstable_function",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 55,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: build_api_params",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 144,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_pro_model",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 169,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: __new__",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 220,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_config",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 280,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: list_models",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 284,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_pro_models",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 288,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_pro_model",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 292,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_stage_timeout",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 340,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_model_config",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 345,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: list_supported_models",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 350,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_pro_model",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_configs.py",
+      "line": 355,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_stage_timeout",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/error_handler.py",
+      "line": 64,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: with_retry",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/error_handler.py",
+      "line": 126,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: with_fallback_chain",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/error_handler.py",
+      "line": 166,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: retry_on_error",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/error_handler.py",
+      "line": 217,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: unstable_func",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/error_handler.py",
+      "line": 229,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: always_fail",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/error_handler.py",
+      "line": 232,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: fallback_func",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/error_handler.py",
+      "line": 241,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: primary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/error_handler.py",
+      "line": 244,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: fallback1",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/error_handler.py",
+      "line": 247,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: fallback2",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/layer_manager.py",
+      "line": 64,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: load_with_overlay",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/layer_manager.py",
+      "line": 252,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_layer_info",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/layer_manager.py",
+      "line": 256,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_enabled",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_provider.py",
+      "line": 91,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_llm",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_provider.py",
+      "line": 121,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_cursor_mode",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_provider.py",
+      "line": 133,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_external_mode",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_provider.py",
+      "line": 145,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_mode_info",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_provider.py",
+      "line": 199,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_cursor",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_provider.py",
+      "line": 203,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_external",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_provider.py",
+      "line": 207,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: prepare_cursor_output",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_provider_factory.py",
+      "line": 24,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_llm_provider",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_provider_factory.py",
+      "line": 72,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_default_llm_provider",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_provider_factory.py",
+      "line": 94,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: reset_llm_provider",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/llm_provider_factory.py",
+      "line": 182,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_current_mode_info",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_router.py",
+      "line": 73,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: select_model",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_router.py",
+      "line": 135,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: select_model_with_config",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_router.py",
+      "line": 170,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_model_info",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_router.py",
+      "line": 232,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate_cost",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_router.py",
+      "line": 289,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_model_router",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_router.py",
+      "line": 303,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: select_model",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_router.py",
+      "line": 323,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: select_model_with_config",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_router.py",
+      "line": 344,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_model_info",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/model_router.py",
+      "line": 352,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate_cost",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/workflow_executor.py",
+      "line": 211,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_layer_config",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/workflow_executor.py",
+      "line": 220,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_fallback_policy",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/schema.py",
+      "line": 25,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_id_pattern",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/schema.py",
+      "line": 29,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_id_prefix",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/schema.py",
+      "line": 33,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_field",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/schema.py",
+      "line": 74,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_required_fields",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/schema.py",
+      "line": 86,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: generate_id",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/core/schema.py",
+      "line": 105,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: calculate_content_hash",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/learning/rule_learner.py",
+      "line": 61,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: load_logs",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/learning/rule_learner.py",
+      "line": 81,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: analyze_patterns",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/learning/rule_learner.py",
+      "line": 148,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: extract_rules",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/learning/rule_learner.py",
+      "line": 217,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: generate_yaml_rules",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/learning/rule_learner.py",
+      "line": 253,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: learn_and_save",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/learning/rule_learner.py",
+      "line": 327,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: learn_from_logs",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/confidence_calculator.py",
+      "line": 68,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: calculate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/confidence_calculator.py",
+      "line": 275,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: calculate_from_dict",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/confidence_calculator.py",
+      "line": 298,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: to_dict",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/confidence_calculator.py",
+      "line": 328,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: classify_confidence",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/confidence_calculator.py",
+      "line": 346,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: calculate_confidence",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/hybrid_search.py",
+      "line": 82,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/hybrid_search.py",
+      "line": 294,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_by_pattern_id",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/hybrid_search.py",
+      "line": 337,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: explain_combination",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/hybrid_search.py",
+      "line": 392,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: print_hybrid_results",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/hybrid_search.py",
+      "line": 423,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_patterns",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/hybrid_search.py",
+      "line": 442,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_by_id",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/connection.py",
+      "line": 42,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: connect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/connection.py",
+      "line": 56,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: close",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/connection.py",
+      "line": 63,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: session",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/connection.py",
+      "line": 135,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: verify_connection",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/connection.py",
+      "line": 162,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_stats",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/connection.py",
+      "line": 202,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: __enter__",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/connection.py",
+      "line": 207,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: __exit__",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/schema_initializer.py",
+      "line": 27,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: initialize_schema",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/schema_initializer.py",
+      "line": 137,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: verify_schema",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/graph/schema_initializer.py",
+      "line": 163,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: drop_all",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 118,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_data_source",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 164,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_definition_case",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 210,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_gap_analysis",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 250,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_definite_data",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 846,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_with_rag",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 910,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: load_kpi_library",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 933,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_kpi_definition",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 1140,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_estimation",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 1260,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_historical_data",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 1440,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_dart_company_financials",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 1553,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_kosis_industry_average",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 1591,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_api_sources",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "line": 1636,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_validator_rag",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/observer.py",
+      "line": 111,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_structure_pattern",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/observer.py",
+      "line": 156,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_value_chain",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/observer.py",
+      "line": 201,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_inefficiency",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/observer.py",
+      "line": 231,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: analyze_structure_with_rag",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/observer.py",
+      "line": 297,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: analyze_market_timeline",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/observer.py",
+      "line": 969,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_observer_rag",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/explorer.py",
+      "line": 117,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_patterns",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/explorer.py",
+      "line": 198,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_pattern_details",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/explorer.py",
+      "line": 226,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_patterns_with_graph",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/explorer.py",
+      "line": 286,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_cases",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/explorer.py",
+      "line": 338,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_validation_framework",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/explorer.py",
+      "line": 374,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: generate_opportunity_hypothesis",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/explorer.py",
+      "line": 589,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: autonomous_discovery",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/explorer.py",
+      "line": 640,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: generate_strategy_playbook",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/explorer.py",
+      "line": 1442,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_explorer_agent",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/explorer.py",
+      "line": 1447,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_explorer_agentic",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/quantifier.py",
+      "line": 106,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_methodology",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/quantifier.py",
+      "line": 151,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_benchmark",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/quantifier.py",
+      "line": 197,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_formula",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/quantifier.py",
+      "line": 223,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: calculate_sam_with_rag",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/quantifier.py",
+      "line": 301,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/quantifier.py",
+      "line": 353,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: analyze_growth_with_timeline",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/quantifier.py",
+      "line": 557,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_quantifier_rag",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler.py",
+      "line": 35,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: find_audit_report_dcmno",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler.py",
+      "line": 82,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: crawl_sga_from_audit_report",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler.py",
+      "line": 256,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: crawl_sga_for_company",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_selenium.py",
+      "line": 121,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: crawl_sga",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_selenium.py",
+      "line": 259,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: find_dcmno",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_selenium.py",
+      "line": 320,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: crawl_audit_report",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_selenium.py",
+      "line": 385,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: parse_sga_table",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_selenium.py",
+      "line": 487,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: verify_ofs",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_selenium.py",
+      "line": 579,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: crawl_sga_for_company",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/logger.py",
+      "line": 13,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: setup_logger",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/logger.py",
+      "line": 47,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_logger",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_api.py",
+      "line": 54,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_corp_code",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_api.py",
+      "line": 106,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_financials",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_api.py",
+      "line": 168,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_report_list",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_api.py",
+      "line": 224,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: download_document",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_api.py",
+      "line": 271,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_company_info",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_api.py",
+      "line": 299,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_company",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_api.py",
+      "line": 313,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_company_financials",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_robust.py",
+      "line": 210,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: fetch_toc_data",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_robust.py",
+      "line": 343,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: find_sga_section",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_robust.py",
+      "line": 389,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: fetch_section_content",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_robust.py",
+      "line": 437,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: parse_sga_table",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_robust.py",
+      "line": 704,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: crawl_sga",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_crawler_robust.py",
+      "line": 862,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: crawl_sga_robust",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_validator.py",
+      "line": 14,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: extract_sga_total_from_section",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_validator.py",
+      "line": 100,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_ofs_cfs",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/utils/dart_validator.py",
+      "line": 217,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: print_ofs_cfs_validation",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/goal_memory.py",
+      "line": 87,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: generate_memory_id",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/goal_memory.py",
+      "line": 107,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: set_goal",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/goal_memory.py",
+      "line": 141,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: calculate_alignment",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/goal_memory.py",
+      "line": 175,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: check_alignment",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/goal_memory.py",
+      "line": 269,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_active_goal",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/goal_memory.py",
+      "line": 296,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: deactivate_goal",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/goal_memory.py",
+      "line": 321,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_stats",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/goal_memory.py",
+      "line": 337,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: clear_memory",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/goal_memory.py",
+      "line": 360,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: check_goal_alignment",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/memory.py",
+      "line": 58,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: set_goal",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/memory.py",
+      "line": 71,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: check_process",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/memory.py",
+      "line": 191,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_summary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/memory.py",
+      "line": 211,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: check_with_guardian",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/three_stage_evaluator.py",
+      "line": 73,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: evaluate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/rae_memory.py",
+      "line": 91,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: generate_rae_id",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/rae_memory.py",
+      "line": 115,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: store_evaluation",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/rae_memory.py",
+      "line": 171,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: find_similar_evaluations",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/rae_memory.py",
+      "line": 235,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_evaluation_by_id",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/rae_memory.py",
+      "line": 275,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_stats",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/rae_memory.py",
+      "line": 311,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: clear_memory",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/meta_rag.py",
+      "line": 87,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: set_goal",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/meta_rag.py",
+      "line": 99,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: evaluate_deliverable",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/meta_rag.py",
+      "line": 175,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: recommend_methodology",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/meta_rag.py",
+      "line": 296,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_summary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/query_memory.py",
+      "line": 88,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: generate_memory_id",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/query_memory.py",
+      "line": 109,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: extract_topic",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/query_memory.py",
+      "line": 139,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: check_similarity",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/query_memory.py",
+      "line": 164,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: check_and_store",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/query_memory.py",
+      "line": 243,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_query_history",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/query_memory.py",
+      "line": 283,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_stats",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/query_memory.py",
+      "line": 321,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: clear_memory",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/guardian/query_memory.py",
+      "line": 345,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: check_circular_query",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/projection/ttl_manager.py",
+      "line": 74,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: check_expiration",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/projection/ttl_manager.py",
+      "line": 156,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: regenerate_on_demand",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/projection/ttl_manager.py",
+      "line": 245,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: update_access_count",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/projection/ttl_manager.py",
+      "line": 292,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: cleanup_expired",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/projection/ttl_manager.py",
+      "line": 344,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_stats",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/projection/ttl_manager.py",
+      "line": 399,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: check_and_regenerate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/projection/hybrid_projector.py",
+      "line": 43,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: project",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 41,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: set_contract",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 50,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: define_named_range",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 104,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_assumption_ref",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 120,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_multiplication_chain",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 136,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sum",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 149,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_average",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 153,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_stdev",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 157,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_convergence_formulas",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 187,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_cross_sheet_ref",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 205,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_formula",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 235,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_iferror",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 252,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_conditional_formula",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 272,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_cell_absolute",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 288,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_percentage_formula",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 306,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_ltv_formula",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 332,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_ltv_from_churn",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 358,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_cac_formula",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 378,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_ratio_formula",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 396,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_payback_formula",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 418,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_churn_to_lifetime",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "line": 433,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_margin_formula",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/should_vs_will_builder.py",
+      "line": 48,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/summary_builder.py",
+      "line": 43,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/market_sizing_generator.py",
+      "line": 56,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: generate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/golden_test_framework.py",
+      "line": 30,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_market_sizing_spec",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/golden_test_framework.py",
+      "line": 161,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_unit_economics_spec",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/golden_test_framework.py",
+      "line": 249,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_financial_projection_spec",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 45,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: __repr__",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 68,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: add_named_range",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 78,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: add_row_number",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 88,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: add_metadata",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 98,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_named_range",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 110,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_row_number",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 122,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_metadata",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 134,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: has_named_range",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 146,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: list_named_ranges",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 155,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: add_validation_result",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 164,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: add_validation",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 188,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: has_failures",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 197,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: has_warnings",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 206,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validation_summary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 243,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: summary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 270,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: __repr__",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 284,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: register",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 293,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 305,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: find_named_range",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 320,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: list_all_named_ranges",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 332,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: summary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "line": 349,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: __repr__",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/assumptions_builder.py",
+      "line": 41,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/assumptions_builder.py",
+      "line": 177,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/scenarios_builder.py",
+      "line": 40,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/method_builders.py",
+      "line": 35,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/method_builders.py",
+      "line": 175,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/method_builders.py",
+      "line": 343,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/method_builders.py",
+      "line": 487,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_reference_validator.py",
+      "line": 46,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/formula_reference_validator.py",
+      "line": 307,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_formula_references",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/validation_log_builder.py",
+      "line": 56,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/excel_validator.py",
+      "line": 43,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/excel_validator.py",
+      "line": 412,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/excel_validator.py",
+      "line": 513,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_excel",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/excel_validator.py",
+      "line": 529,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate_with_golden",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/convergence_builder.py",
+      "line": 42,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/financial_projection/fp_assumptions_builder.py",
+      "line": 38,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/financial_projection/cost_builder.py",
+      "line": 37,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/financial_projection/dcf_builder.py",
+      "line": 37,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/financial_projection/pl_builder.py",
+      "line": 44,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/financial_projection/fp_scenarios_builder.py",
+      "line": 37,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/financial_projection/metrics_builder.py",
+      "line": 37,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/financial_projection/breakeven_builder.py",
+      "line": 36,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/financial_projection/cashflow_builder.py",
+      "line": 39,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/financial_projection/fp_dashboard_builder.py",
+      "line": 38,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/financial_projection/financial_projection_generator.py",
+      "line": 49,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: generate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/financial_projection/revenue_builder.py",
+      "line": 38,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/unit_economics/ue_scenarios_builder.py",
+      "line": 37,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/unit_economics/sensitivity_builder.py",
+      "line": 36,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/unit_economics/cohort_ltv_builder.py",
+      "line": 37,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/unit_economics/benchmark_builder.py",
+      "line": 37,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/unit_economics/unit_economics_generator.py",
+      "line": 48,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: generate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/unit_economics/ratio_builder.py",
+      "line": 39,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/unit_economics/payback_builder.py",
+      "line": 39,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/unit_economics/ltv_builder.py",
+      "line": 37,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/unit_economics/dashboard_builder.py",
+      "line": 39,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/unit_economics/cac_builder.py",
+      "line": 37,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/deliverables/excel/unit_economics/inputs_builder.py",
+      "line": 40,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sheet",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/validator_source.py",
+      "line": 61,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: to_dict",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/validator_source.py",
+      "line": 89,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: initialize_benchmark_store",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/validator_source.py",
+      "line": 123,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search_with_context",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/literal_source.py",
+      "line": 105,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/literal_source.py",
+      "line": 152,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: set",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/evidence_collector.py",
+      "line": 91,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/rag_searcher.py",
+      "line": 64,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: search",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/models.py",
+      "line": 121,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: __post_init__",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/models.py",
+      "line": 374,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_successful",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/models.py",
+      "line": 383,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_display_value",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/models.py",
+      "line": 641,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: add_definite",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/models.py",
+      "line": 646,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: add_guardrail",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/models.py",
+      "line": 653,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_hard_bounds",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/models.py",
+      "line": 674,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: has_definite_value",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/models.py",
+      "line": 678,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_best_definite",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/models.py",
+      "line": 690,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: summary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/judgment.py",
+      "line": 47,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: synthesize",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/fermi_estimator.py",
+      "line": 104,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: model_name",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/fermi_estimator.py",
+      "line": 134,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/source_collector.py",
+      "line": 102,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: llm_mode",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/source_collector.py",
+      "line": 114,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect_all",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/prior_estimator.py",
+      "line": 90,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: model_name",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/prior_estimator.py",
+      "line": 124,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/fusion_layer.py",
+      "line": 55,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: synthesize",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/rag_source.py",
+      "line": 75,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/estimator.py",
+      "line": 144,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/estimator.py",
+      "line": 314,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate_fast",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/estimator.py",
+      "line": 332,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: estimate_thorough",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/estimator.py",
+      "line": 355,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_estimator",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/guardrail_analyzer.py",
+      "line": 86,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: analyze",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/guardrail_analyzer.py",
+      "line": 263,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: analyze_batch",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 44,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: __post_init__",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 53,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: consume_llm_call",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 68,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: consume_variable",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 87,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: can_call_llm",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 91,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: can_estimate_variable",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 95,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: has_time",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 102,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_exhausted",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 131,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_elapsed_time",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 141,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_status_summary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 164,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_sub_budget",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 196,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_fast_budget",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 213,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_standard_budget",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "line": 225,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_thorough_budget",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/estimation_result.py",
+      "line": 130,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_definite",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/estimation_result.py",
+      "line": 142,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_certainty_score",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/estimation_result.py",
+      "line": 156,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: get_cost_summary",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/estimation_result.py",
+      "line": 168,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: is_within_bounds",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/estimation_result.py",
+      "line": 185,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: clip_to_bounds",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/estimation_result.py",
+      "line": 203,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: to_dict",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/estimation_result.py",
+      "line": 224,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: __repr__",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/estimation_result.py",
+      "line": 237,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_definite_result",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/estimation_result.py",
+      "line": 264,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_prior_result",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/estimation_result.py",
+      "line": 297,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: create_fermi_result",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/soft.py",
+      "line": 26,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/soft.py",
+      "line": 30,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/soft.py",
+      "line": 98,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/soft.py",
+      "line": 105,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/soft.py",
+      "line": 207,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/soft.py",
+      "line": 213,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/soft.py",
+      "line": 357,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/soft.py",
+      "line": 363,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: validate",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/value.py",
+      "line": 24,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/value.py",
+      "line": 39,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/value.py",
+      "line": 100,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/value.py",
+      "line": 455,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/value.py",
+      "line": 572,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/value.py",
+      "line": 1099,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/value.py",
+      "line": 1352,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/physical.py",
+      "line": 26,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/physical.py",
+      "line": 58,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/physical.py",
+      "line": 265,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/physical.py",
+      "line": 341,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/physical.py",
+      "line": 395,
+      "category": "dead_code",
+      "subcategory": "unused_function",
+      "severity": "low",
+      "description": "Function appears unused: collect",
+      "suggestion": "Remove if truly unused, or export as public API"
     }
   ],
   "top_files": [
     {
-      "file": "umis_rag/agents/validator.py",
-      "issue_count": 6
+      "file": "umis_rag/deliverables/excel/builder_contract.py",
+      "issue_count": 22
     },
     {
-      "file": "umis_rag/agents/estimator/sources/physical.py",
-      "issue_count": 3
+      "file": "umis_rag/deliverables/excel/formula_engine.py",
+      "issue_count": 21
+    },
+    {
+      "file": "umis_rag/agents/validator.py",
+      "issue_count": 19
+    },
+    {
+      "file": "umis_rag/agents/estimator/common/budget.py",
+      "issue_count": 13
     },
     {
       "file": "umis_rag/core/model_configs.py",
-      "issue_count": 2
-    },
-    {
-      "file": "umis_rag/agents/estimator/source_collector.py",
-      "issue_count": 2
+      "issue_count": 12
     },
     {
       "file": "umis_rag/agents/explorer.py",
-      "issue_count": 1
+      "issue_count": 11
     },
     {
-      "file": "umis_rag/deliverables/excel/market_sizing_generator.py",
-      "issue_count": 1
-    },
-    {
-      "file": "umis_rag/agents/estimator/validator_source.py",
-      "issue_count": 1
-    },
-    {
-      "file": "umis_rag/agents/estimator/rag_searcher.py",
-      "issue_count": 1
-    },
-    {
-      "file": "umis_rag/agents/estimator/rag_source.py",
-      "issue_count": 1
+      "file": "umis_rag/agents/estimator/common/estimation_result.py",
+      "issue_count": 10
     },
     {
       "file": "umis_rag/agents/estimator/sources/soft.py",
-      "issue_count": 1
+      "issue_count": 9
+    },
+    {
+      "file": "umis_rag/core/error_handler.py",
+      "issue_count": 9
+    },
+    {
+      "file": "umis_rag/core/model_router.py",
+      "issue_count": 9
+    },
+    {
+      "file": "umis_rag/guardian/goal_memory.py",
+      "issue_count": 9
+    },
+    {
+      "file": "umis_rag/agents/estimator/models.py",
+      "issue_count": 9
     },
     {
       "file": "umis_rag/agents/estimator/sources/value.py",
-      "issue_count": 1
+      "issue_count": 8
+    },
+    {
+      "file": "umis_rag/agents/estimator/sources/physical.py",
+      "issue_count": 8
+    },
+    {
+      "file": "umis_rag/core/llm_cursor.py",
+      "issue_count": 8
+    },
+    {
+      "file": "umis_rag/core/llm_external.py",
+      "issue_count": 8
+    },
+    {
+      "file": "umis_rag/core/llm_interface.py",
+      "issue_count": 8
+    },
+    {
+      "file": "umis_rag/guardian/query_memory.py",
+      "issue_count": 8
+    },
+    {
+      "file": "umis_rag/core/llm_provider.py",
+      "issue_count": 7
+    },
+    {
+      "file": "umis_rag/graph/connection.py",
+      "issue_count": 7
     }
   ]
 }

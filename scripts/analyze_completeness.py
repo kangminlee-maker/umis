@@ -239,9 +239,9 @@ class CompletenessAnalyzer:
                     lines = f.readlines()
                 
                 for i, line in enumerate(lines, 1):
-                    # TODO/FIXME/XXX/HACK 탐지
-                    if re.search(r'#\s*(TODO|FIXME|XXX|HACK|WIP|TEMP)', line, re.IGNORECASE):
-                        match = re.search(r'#\s*(TODO|FIXME|XXX|HACK|WIP|TEMP)[:\s]*(.*)', line, re.IGNORECASE)
+                    # TODO/FIXME/XXX/HACK 탐지 (단어 경계 체크)
+                    if re.search(r'#\s*\b(TODO|FIXME|XXX|HACK|WIP|TEMP)\b', line, re.IGNORECASE):
+                        match = re.search(r'#\s*\b(TODO|FIXME|XXX|HACK|WIP|TEMP)\b[:\s]*(.*)', line, re.IGNORECASE)
                         if match:
                             marker = match.group(1).upper()
                             comment = match.group(2).strip()
@@ -521,10 +521,11 @@ class ASTVisitor(ast.NodeVisitor):
                     if real_body[0].exc.func.id == "NotImplementedError":
                         return "notimplemented", False
         
-        # Ellipsis (...)
+        # Ellipsis (...) - Python stub 표기
         if len(real_body) == 1 and isinstance(real_body[0], ast.Expr):
-            if isinstance(real_body[0].value, ast.Constant) and real_body[0].value.value == ...:
-                return "pass", False
+            if isinstance(real_body[0].value, ast.Constant):
+                if real_body[0].value.value == ...:
+                    return "implemented", True  # Ellipsis는 정상적인 stub 표기법
         
         return "implemented", True
 
