@@ -141,7 +141,10 @@ class MarketSizingWorkbookGenerator:
         # 11. Should vs Will (Domain Reasoner 기능)
         print(f"   10/10 Should vs Will...")
         should_vs_will = ShouldVsWillBuilder(wb, self.formula_engine)
-        should_vs_will_data = None  # TODO: Domain Reasoner 결과 연동
+        
+        # Domain Reasoner 결과 가져오기
+        should_vs_will_data = self._get_domain_reasoner_results(market_name)
+        
         should_vs_will.create_sheet(should_vs_will_data)
         
         # 12. Summary (첫 번째 시트로 이동)
@@ -166,6 +169,51 @@ class MarketSizingWorkbookGenerator:
         print(f"📋 다음: PDF로 저장 (백업)")
         
         return filepath
+    
+    def _get_domain_reasoner_results(self, market_name: str) -> Optional[Dict]:
+        """
+        Domain Reasoner 결과 가져오기
+        
+        Args:
+            market_name: 시장명
+        
+        Returns:
+            Dict with should_market_size, will_market_size, barriers, etc.
+            None if Domain Reasoner is not available
+        
+        Note:
+            Domain Reasoner는 v7.12.0+에서 구현 예정
+            현재는 None 반환 (ShouldVsWillBuilder가 gracefully handle)
+        """
+        
+        try:
+            # Domain Reasoner 모듈 import 시도
+            from umis_rag.agents.domain_reasoner import get_domain_reasoner
+            
+            reasoner = get_domain_reasoner()
+            
+            # Should vs Will 분석 요청
+            result = reasoner.analyze_should_vs_will(
+                market_name=market_name,
+                question=f"What is the realistic market size for {market_name}?"
+            )
+            
+            if result:
+                return {
+                    'should_market_size': result.get('should_market_size'),
+                    'will_market_size': result.get('will_market_size'),
+                    'barriers': result.get('barriers', []),
+                    'enablers': result.get('enablers', []),
+                    'confidence': result.get('confidence', 'medium')
+                }
+        
+        except ImportError:
+            # Domain Reasoner 미구현
+            print("    ℹ️  Domain Reasoner 미구현 (v7.12.0+ 예정)")
+        except Exception as e:
+            print(f"    ⚠️ Domain Reasoner 실행 실패: {e}")
+        
+        return None
 
 
 # 테스트는 별도 스크립트에서
