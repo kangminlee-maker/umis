@@ -192,11 +192,29 @@ class SourceCollector:
         # 통계 패턴 (항상)
         guides.extend(self.statistical_pattern.collect(question, context))
         
-        # 행동경제학 (선택적)
-        # TODO: 맥락 기반 선택
-        guides.extend(self.behavioral.collect(question, context))
+        # 행동경제학 (맥락 기반 선택)
+        # B2C 소비자 행동 또는 심리 관련 질문일 때만
+        if context and self._should_use_behavioral(question, context):
+            guides.extend(self.behavioral.collect(question, context))
         
         return guides
+    
+    def _should_use_behavioral(self, question: str, context: Context) -> bool:
+        """행동경제학 소스 사용 여부 판단"""
+        # B2C 비즈니스 모델
+        if context.business_model and 'B2C' in context.business_model:
+            return True
+        
+        # 소비자/심리/행동 키워드
+        behavioral_keywords = [
+            'consumer', 'customer behavior', 'psychology', 'decision making',
+            '소비자', '구매', '선호', '행동', '심리'
+        ]
+        question_lower = question.lower()
+        if any(keyword in question_lower for keyword in behavioral_keywords):
+            return True
+        
+        return False
     
     def _collect_values_sequential(
         self,
