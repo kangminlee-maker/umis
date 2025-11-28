@@ -354,6 +354,118 @@ class DependencyAnalyzer:
         print(f"   ✅ Graph saved to: {output_path}")
 
 
+def compare_dependencies(old_report_path: Path, new_report_path: Path) -> Dict:
+    """의존성 변경 비교"""
+    print("\n🔍 Comparing dependency changes...")
+    
+    with open(old_report_path, 'r') as f:
+        old_report = json.load(f)
+    
+    with open(new_report_path, 'r') as f:
+        new_report = json.load(f)
+    
+    changes = {
+        "summary_changes": {},
+        "critical_node_changes": [],
+        "new_circular_dependencies": [],
+        "resolved_circular_dependencies": [],
+        "new_external_deps": [],
+        "removed_external_deps": []
+    }
+    
+    # Summary 변경
+    old_summary = old_report["summary"]
+    new_summary = new_report["summary"]
+    
+    for key in old_summary:
+        old_val = old_summary[key]
+        new_val = new_summary[key]
+        if old_val != new_val:
+            changes["summary_changes"][key] = {
+                "old": old_val,
+                "new": new_val,
+                "delta": new_val - old_val
+            }
+    
+    # Critical node 변경
+    old_critical = {n["module"]: n for n in old_report["critical_nodes"]}
+    new_critical = {n["module"]: n for n in new_report["critical_nodes"]}
+    
+    for module, new_data in new_critical.items():
+        if module in old_critical:
+            old_data = old_critical[module]
+            if (old_data["imported_by"] != new_data["imported_by"] or
+                old_data["depends_on"] != new_data["depends_on"]):
+                changes["critical_node_changes"].append({
+                    "module": module,
+                    "old_imported_by": old_data["imported_by"],
+                    "new_imported_by": new_data["imported_by"],
+                    "old_depends_on": old_data["depends_on"],
+                    "new_depends_on": new_data["depends_on"]
+                })
+    
+    # 순환 의존성 변경
+    old_cycles = set(tuple(sorted(c)) for c in old_report.get("circular_dependencies", []))
+    new_cycles = set(tuple(sorted(c)) for c in new_report.get("circular_dependencies", []))
+    
+    changes["new_circular_dependencies"] = [list(c) for c in new_cycles - old_cycles]
+    changes["resolved_circular_dependencies"] = [list(c) for c in old_cycles - new_cycles]
+    
+    # 외부 의존성 변경
+    old_external = set(old_report["external_imports"])
+    new_external = set(new_report["external_imports"])
+    
+    changes["new_external_deps"] = sorted(new_external - old_external)
+    changes["removed_external_deps"] = sorted(old_external - new_external)
+    
+    # 출력
+    if changes["summary_changes"]:
+        print("\n   📊 Summary Changes:")
+        for key, change in changes["summary_changes"].items():
+            delta_str = f"+{change['delta']}" if change['delta'] > 0 else str(change['delta'])
+            print(f"      {key}: {change['old']} → {change['new']} ({delta_str})")
+    
+    if changes["critical_node_changes"]:
+        print("\n   ⭐ Critical Node Changes:")
+        for change in changes["critical_node_changes"]:
+            module = change["module"].replace("umis_rag.", "")
+            print(f"      {module}:")
+            print(f"         imported_by: {change['old_imported_by']} → {change['new_imported_by']}")
+            print(f"         depends_on: {change['old_depends_on']} → {change['new_depends_on']}")
+    
+    if changes["new_circular_dependencies"]:
+        print("\n   🚨 NEW Circular Dependencies:")
+        for cycle in changes["new_circular_dependencies"]:
+            print(f"      - {len(cycle)} modules involved")
+    
+    if changes["resolved_circular_dependencies"]:
+        print("\n   ✅ RESOLVED Circular Dependencies:")
+        for cycle in changes["resolved_circular_dependencies"]:
+            print(f"      - {len(cycle)} modules fixed")
+    
+    if changes["new_external_deps"]:
+        print("\n   📦 NEW External Dependencies:")
+        for dep in changes["new_external_deps"]:
+            print(f"      + {dep}")
+    
+    if changes["removed_external_deps"]:
+        print("\n   🗑️  REMOVED External Dependencies:")
+        for dep in changes["removed_external_deps"]:
+            print(f"      - {dep}")
+    
+    if not any([
+        changes["summary_changes"],
+        changes["critical_node_changes"],
+        changes["new_circular_dependencies"],
+        changes["resolved_circular_dependencies"],
+        changes["new_external_deps"],
+        changes["removed_external_deps"]
+    ]):
+        print("   ✅ No changes detected")
+    
+    return changes
+
+
 def main():
     parser = argparse.ArgumentParser(description="UMIS Dependency Analyzer")
     parser.add_argument("--visualize", action="store_true", help="Generate visualization")
@@ -361,6 +473,7 @@ def main():
     parser.add_argument("--save-graph", action="store_true", help="Save dependency graph as JSON")
     parser.add_argument("--max-nodes", type=int, default=50, help="Max nodes in visualization")
     parser.add_argument("--output-dir", type=str, default="dev_docs", help="Output directory")
+    parser.add_argument("--compare", type=str, help="Compare with previous report (path to old JSON)")
     
     args = parser.parse_args()
     
@@ -390,6 +503,20 @@ def main():
     
     report_path = output_dir / "dependency_analysis.json"
     analyzer.save_report(report_path)
+    
+    # 의존성 변경 비교
+    if args.compare:
+        compare_path = Path(args.compare)
+        if compare_path.exists():
+            changes = compare_dependencies(compare_path, report_path)
+            
+            # 변경사항 저장
+            changes_path = output_dir / "dependency_changes.json"
+            with open(changes_path, 'w', encoding='utf-8') as f:
+                json.dump(changes, f, indent=2, ensure_ascii=False)
+            print(f"\n✅ Changes saved to: {changes_path}")
+        else:
+            print(f"\n⚠️  Comparison file not found: {compare_path}")
     
     # 시각화
     if args.visualize:
