@@ -257,9 +257,55 @@ class SourceCollector:
         question: str,
         context: Optional[Context]
     ) -> List[ValueEstimate]:
-        """Value Sources 병렬 수집"""
+        """
+        Value Sources 병렬 수집
         
-        # TODO: ThreadPoolExecutor로 병렬화
-        # 현재는 순차로
-        return self._collect_values_sequential(question, context)
+        Args:
+            question: 질문
+            context: 컨텍스트
+        
+        Returns:
+            List of ValueEstimate
+        
+        Note:
+            ThreadPoolExecutor를 사용한 병렬 실행
+            타임아웃: 각 소스당 30초
+        """
+        
+        from concurrent.futures import ThreadPoolExecutor, TimeoutError, as_completed
+        
+        all_values = []
+        max_workers = min(len(self.value_sources), 5)  # 최대 5개 동시 실행
+        timeout_per_source = 30  # 각 소스당 30초 제한
+        
+        def collect_from_source(source):
+            """단일 소스에서 수집"""
+            try:
+                return source.collect(question, context)
+            except Exception as e:
+                logger.warning(f"    ⚠️ {source.__class__.__name__} 실패: {e}")
+                return []
+        
+        # 병렬 실행
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            # Submit all tasks
+            future_to_source = {
+                executor.submit(collect_from_source, source): source
+                for source in self.value_sources
+            }
+            
+            # Collect results as they complete
+            for future in as_completed(future_to_source, timeout=timeout_per_source * len(self.value_sources)):
+                source = future_to_source[future]
+                try:
+                    values = future.result(timeout=timeout_per_source)
+                    if values:
+                        all_values.extend(values)
+                        logger.info(f"    ✅ {source.__class__.__name__}: {len(values)}개")
+                except TimeoutError:
+                    logger.warning(f"    ⏱️ {source.__class__.__name__}: 타임아웃 (30초)")
+                except Exception as e:
+                    logger.warning(f"    ⚠️ {source.__class__.__name__}: {e}")
+        
+        return all_values
 
