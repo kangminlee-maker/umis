@@ -186,12 +186,15 @@ class MarketSizingWorkbookGenerator:
             ShouldVsWillBuilder는 None을 받아도 기본 템플릿을 생성합니다.
         
         History:
-            - v7.8.0: Domain Reasoner 기능 도입
-            - v7.11.0: Deprecated (기능 통합)
+            - v7.2.0: Domain Reasoner 기능 도입 (10-Signal Stack)
+            - v7.5.0: Deprecated & Archived (2025-11-10)
+              - domain_reasoner.py 제거 (1,907 lines)
+              - umis_domain_reasoner_methodology.yaml 제거 (1,033 lines)
+              - Estimator/Quantifier MECE 분리를 위한 구조 개선
             - v7.11.1: 이 메서드는 호환성 유지를 위해 남겨둠
         """
         
-        # Domain Reasoner는 deprecated
+        # Domain Reasoner는 v7.5.0에서 deprecated & archived
         # ShouldVsWillBuilder가 None을 gracefully handle
         return None
 
