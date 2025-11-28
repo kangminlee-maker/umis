@@ -118,7 +118,7 @@ class BaseLLM(ABC):
             >>> # External: result = EstimationResult(value=5.0, unit="%", ...)
             >>> # Cursor: result = None
         """
-        pass
+        ...
     
     @abstractmethod
     def decompose(
@@ -156,7 +156,7 @@ class BaseLLM(ABC):
             >>> # External: {"variables": [...], "formula": "..."}
             >>> # Cursor: None
         """
-        pass
+        ...
     
     @abstractmethod
     def evaluate_certainty(
@@ -186,7 +186,7 @@ class BaseLLM(ABC):
             ... )
             >>> certainty  # "high"
         """
-        pass
+        ...
     
     @abstractmethod
     def validate_boundary(
@@ -218,7 +218,7 @@ class BaseLLM(ABC):
             ... )
             >>> result["is_valid"]  # True
         """
-        pass
+        ...
     
     @abstractmethod
     def is_native(self) -> bool:
@@ -232,7 +232,7 @@ class BaseLLM(ABC):
         Example:
             >>> llm.is_native()  # True (Cursor) or False (External)
         """
-        pass
+        ...
 
 
 class LLMProvider(ABC):
@@ -268,7 +268,7 @@ class LLMProvider(ABC):
             >>> llm = provider.get_llm(TaskType.PRIOR_ESTIMATION)
             >>> isinstance(llm, BaseLLM)  # True
         """
-        pass
+        ...
     
     @abstractmethod
     def is_native(self) -> bool:
@@ -279,7 +279,7 @@ class LLMProvider(ABC):
             True: CursorLLMProvider
             False: ExternalLLMProvider
         """
-        pass
+        ...
     
     @abstractmethod
     def get_mode_info(self) -> Dict[str, Any]:
@@ -306,7 +306,7 @@ class LLMProvider(ABC):
                 "description": "RAG 검색만 수행 → Cursor LLM이 분석"
             }
         """
-        pass
+        ...
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
