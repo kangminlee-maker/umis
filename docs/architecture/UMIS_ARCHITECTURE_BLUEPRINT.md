@@ -22,7 +22,7 @@
 - ✅ **Estimator 4-Stage Fusion**: 증거 우선, 재귀 제거, Budget 기반
 - ✅ **Validator Priority**: 확정 데이터 우선 검색 (85% 처리)
 - ✅ **Knowledge Graph**: 패턴 조합 자동 발견 (Neo4j)
-- ✅ **System RAG**: 44개 도구 Key-based 검색
+- ✅ **System RAG**: 19개 도구 Key-based 검색 (4 Onboarding + 9 System + 6 Agent Complete)
 - ✅ **Excel 자동 생성**: 3개 워크북 (9-11 시트), 100% 수식 기반
 - ✅ **Native/External Mode**: Cursor LLM 직접 활용 or API 자동화
 - ✅ **LLM Complete Abstraction**: Business logic에서 LLM 모드 분리
@@ -618,7 +618,8 @@ umis/
 │   ├── projection_rules.yaml          # Canonical → Projected 변환 규칙
 │   ├── routing_policy.yaml            # Workflow 정의
 │   ├── runtime.yaml                   # 실행 모드 (Circuit Breaker)
-│   └── pattern_relationships.yaml     # Knowledge Graph 관계 정의
+│   ├── pattern_relationships.yaml     # Knowledge Graph 관계 정의
+│   └── tool_registry.yaml             # System RAG 도구 레지스트리 (19개)
 │
 ├── umis_rag/                          # 핵심 패키지
 │   ├── core/                          # 핵심 시스템
@@ -665,6 +666,11 @@ umis/
 │       ├── hybrid_projector.py        # 90% 규칙 + 10% LLM
 │       └── ttl_manager.py
 │
+├── dev_docs/                          # 개발 문서
+│   ├── SESSION_CLOSURE_PROTOCOL.yaml  # 세션 마무리 프로토콜 (8단계)
+│   ├── session_summaries/             # 세션 서머리 (11개 섹션)
+│   └── CONTEXT_WINDOW_STRATEGY.md     # 컨텍스트 윈도우 전략
+│
 └── scripts/                           # 실행 스크립트
     ├── 01_convert_yaml.py             # YAML → JSONL
     ├── 02_build_index.py              # RAG 빌드 통합
@@ -673,7 +679,7 @@ umis/
     ├── build_knowledge_graph.py
     ├── build_system_knowledge.py      # System RAG 빌드
     ├── query_system_rag.py            # System RAG 검색
-    └── sync_umis_to_rag.py            # umis.yaml → RAG 동기화
+    └── sync_umis_to_rag.py            # umis.yaml → RAG 동기화 (Onboarding 자동 생성)
 ```
 
 ### Configuration 핵심 설정
@@ -751,21 +757,29 @@ print(f"근거: {result.reasoning_detail}")
 ## 📚 References
 
 ### 핵심 문서
-- `umis.yaml`: 메인 가이드 (Cursor Rules, 6,000+ 줄)
+- `umis.yaml`: 메인 가이드 (Cursor Rules, 6,800+ 줄)
 - `umis_core.yaml`: 압축 INDEX (System RAG용)
 - `config/schema_registry.yaml`: RAG 레이어 스키마
 - `config/model_configs.yaml`: LLM 모델 설정
+- `config/tool_registry.yaml`: System RAG 도구 레지스트리 (auto-sync)
 
 ### 아키텍처 문서
 - `LLM_ABSTRACTION_v7_11_0.md`: LLM Complete Abstraction 상세
 - `LLM_STRATEGY.md`: LLM 전략 및 최적화
 - `MIGRATION_GUIDE_v7_11_0.md`: v7.11.0 마이그레이션 가이드
 
+### 개발 가이드
+- `dev_docs/SESSION_CLOSURE_PROTOCOL.yaml`: 세션 마무리 프로토콜 (8단계, 1,460줄)
+- `dev_docs/CONTEXT_WINDOW_STRATEGY.md`: 컨텍스트 윈도우 전략
+- `dev_docs/session_summaries/`: 과거 세션 기록 (11개 섹션 구조)
+
 ### 사용자 가이드
 - `INSTALL.md`: 설치 가이드
 - `ESTIMATOR_USER_GUIDE_v7_11_0.md`: Estimator 사용법
 - `BUDGET_CONFIGURATION_GUIDE.md`: Budget 설정 (Stage 3)
 - `SYSTEM_RAG_GUIDE.md`: System RAG 사용법
+- `docs/guides/CURSOR_AUTO_SETUP.md`: Cursor 자동 설치
+- `docs/guides/CURSOR_SYSTEM_COMMANDS.md`: 시스템 명령어
 
 ---
 
