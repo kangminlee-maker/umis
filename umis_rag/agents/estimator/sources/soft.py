@@ -256,12 +256,18 @@ class StatisticalPatternSource(SoftConstraintBase):
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     
     def _collect_deprecated(self, question: str, context: Optional[Context] = None) -> List[SoftGuide]:
-        """통계 패턴 수집 (deprecated)"""
+        """
+        통계 패턴 수집 (deprecated)
         
-        guides = []
+        Note:
+            이 메서드는 더 이상 사용되지 않습니다.
+            대신 StatisticalPatternSource를 사용하세요.
+            
+            샘플 구현은 참고용으로만 남겨둡니다.
+        """
         
-        # TODO: 실제로는 RAG 검색 or DB 조회
-        # 현재는 샘플 구현
+        logger.warning("_collect_deprecated() is deprecated. Use StatisticalPatternSource instead.")
+        return []
         
         # 음식점 관련 질문
         if '음식점' in question or '식당' in question:
