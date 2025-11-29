@@ -1525,11 +1525,37 @@ class ValidatorRAG:
         
         Returns:
             List of event dicts
+        
+        Note:
+            .env WEB_SEARCH_ENGINE 설정에 따라 DuckDuckGo 또는 Google 사용
+            - duckduckgo: 무료, 기본값
+            - google: GOOGLE_API_KEY 필요
         """
+        
+        from umis_rag.core.config import settings
         
         events = []
         
-        # Web Search를 활용한 뉴스 검색
+        # Web Search 비활성화 체크
+        if not settings.web_search_enabled:
+            logger.info("    ℹ️  WEB_SEARCH_ENABLED=false (뉴스 검색 스킵)")
+            return events
+        
+        # 검색 엔진 선택
+        search_engine = settings.web_search_engine.lower()
+        
+        if search_engine == "google":
+            events = self._search_news_google(market, years)
+        else:  # duckduckgo (default)
+            events = self._search_news_duckduckgo(market, years)
+        
+        logger.info(f"    총 {len(events)}개 사건 추출 (engine: {search_engine})")
+        return events
+    
+    def _search_news_duckduckgo(self, market: str, years: range) -> List[Dict]:
+        """DuckDuckGo를 사용한 뉴스 검색"""
+        events = []
+        
         try:
             from duckduckgo_search import DDGS
             
@@ -1548,11 +1574,12 @@ class ValidatorRAG:
                             'title': res.get('title', ''),
                             'snippet': res.get('body', ''),
                             'url': res.get('href', ''),
-                            'source': 'news_search'
+                            'source': 'duckduckgo',
+                            'engine': 'duckduckgo'
                         })
                     
                     if results:
-                        logger.info(f"    ✅ 뉴스: {year}년 {len(results)}개 사건")
+                        logger.info(f"    ✅ 뉴스 (DuckDuckGo): {year}년 {len(results)}개 사건")
                     
                 except Exception as search_error:
                     logger.debug(f"    검색 실패 ({year}): {search_error}")
@@ -1561,9 +1588,75 @@ class ValidatorRAG:
         except ImportError:
             logger.info("    ℹ️  duckduckgo_search 미설치 (pip install duckduckgo-search)")
         except Exception as e:
-            logger.warning(f"    ⚠️ 뉴스 검색 실패: {e}")
+            logger.warning(f"    ⚠️ DuckDuckGo 검색 실패: {e}")
         
-        logger.info(f"    총 {len(events)}개 사건 추출")
+        return events
+    
+    def _search_news_google(self, market: str, years: range) -> List[Dict]:
+        """Google Custom Search를 사용한 뉴스 검색"""
+        from umis_rag.core.config import settings
+        
+        events = []
+        
+        # API 키 체크
+        if not settings.google_api_key or not settings.google_search_engine_id:
+            logger.warning("    ⚠️ Google Search 사용 시 .env 설정 필요:")
+            logger.warning("       GOOGLE_API_KEY=your-key")
+            logger.warning("       GOOGLE_SEARCH_ENGINE_ID=your-id")
+            logger.info("    → DuckDuckGo로 fallback")
+            return self._search_news_duckduckgo(market, years)
+        
+        try:
+            import requests
+            
+            base_url = "https://www.googleapis.com/customsearch/v1"
+            
+            for year in years:
+                query = f"{market} market {year} major events news"
+                
+                params = {
+                    'key': settings.google_api_key,
+                    'cx': settings.google_search_engine_id,
+                    'q': query,
+                    'num': 5,  # 최대 5개 결과
+                    'dateRestrict': f'y{1}',  # 해당 연도
+                }
+                
+                try:
+                    response = requests.get(
+                        base_url, 
+                        params=params, 
+                        timeout=settings.web_search_timeout
+                    )
+                    
+                    if response.status_code == 200:
+                        data = response.json()
+                        items = data.get('items', [])
+                        
+                        for item in items:
+                            events.append({
+                                'year': year,
+                                'title': item.get('title', ''),
+                                'snippet': item.get('snippet', ''),
+                                'url': item.get('link', ''),
+                                'source': 'google',
+                                'engine': 'google'
+                            })
+                        
+                        if items:
+                            logger.info(f"    ✅ 뉴스 (Google): {year}년 {len(items)}개 사건")
+                    else:
+                        logger.warning(f"    ⚠️ Google API 오류: {response.status_code}")
+                
+                except Exception as search_error:
+                    logger.debug(f"    검색 실패 ({year}): {search_error}")
+                    continue
+        
+        except ImportError:
+            logger.warning("    ⚠️ requests 라이브러리 필요 (pip install requests)")
+        except Exception as e:
+            logger.warning(f"    ⚠️ Google Search 실패: {e}")
+        
         return events
     
     def _identify_data_gaps(self, collected_data: Dict, years: range) -> Dict:
