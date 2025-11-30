@@ -11,7 +11,7 @@ _meta:
   version: "1.1"
   coverage: "90% (목표)"
   learned_rules: 0
-  umis_version: "7.11.0"
+  umis_version: "8.0.0"
   updated_at: "2025-11-26"
 
 # 필드별 Agent 매핑
@@ -114,6 +114,19 @@ chunk_type_rules:
       last_verified: "last_verified"
 
     reason: "Estimator Agent 학습 결과 → Stage 1 재사용"
+
+# 데이터 소스 우선순위 오버라이드 (v8 curated internal 1b)
+source_tier_overrides:
+  curated_internal:
+    description: "검수된 패턴/KG YAML (내부 큐레이션)"
+    treat_as: "evidence_high"   # EvidenceCollector fast path에 포함
+    priority: 1.5               # official(1)과 commercial(2) 사이
+    applies_to:
+      - "knowledge_graph"
+      - "patterns"
+    notes:
+      - "region/domain/time mismatch는 Guardian 정책으로 검증"
+      - "Projection 시 해당 소스는 learned=false 여도 직접 반영 허용"
 
 # LLM 판단 로그
 llm_log_path: "data/llm_projection_log.jsonl"

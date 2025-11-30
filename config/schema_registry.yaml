@@ -198,6 +198,163 @@ core_fields:
     used_by: [all]
     example: "2025-11-02T10:30:00Z"
 
+# ========================================
+# PART 7: Truth Factory Schemas (v8)
+# ========================================
+
+truth_factory_schemas:
+
+  EvidenceBundle:
+    type: object
+    description: "Fast Path/Validated Evidence 묶음"
+    properties:
+      literals:
+        type: object
+        description: "프로젝트/설정에 박힌 값"
+      rag_hits:
+        type: array
+        items: object
+        description: "System RAG 검색 결과 요약"
+      kg_evidence:
+        type: array
+        items: object
+        description: "KG(Neo4j) 기반 패턴/관계에 근거한 증거"
+      cache_memory:
+        type: object
+        description: "Query/Goal/RAE 메모리 기반 힌트"
+      bounds:
+        type: object
+        properties:
+          hard:
+            type: object
+          soft:
+            type: object
+      context:
+        type: object
+        description: "domain/region/time_horizon 등"
+    required: [context]
+
+  TruthCandidate:
+    type: object
+    description: "Calculator/Estimator가 제안한 단일 진실 후보"
+    properties:
+      metric_id: {type: string}
+      value: {type: number}
+      unit: {type: string}
+      method: {type: string}  # e.g., topdown, bottomup, proxy, competitor, prior
+      evidence_ratio: {type: number}
+      origin_level:
+        type: enum
+        values: [level_1_official, level_1b_curated, level_2_validated, level_3_calculated, level_4_prior]
+      confidence: {type: number}  # 0.0~1.0
+      lineage: {type: object}
+    required: [metric_id, value]
+
+  TruthCandidateList:
+    type: array
+    items:
+      $ref: "#/truth_factory_schemas/TruthCandidate"
+
+  MissingVariables:
+    type: object
+    description: "Calculator가 Estimator Prior를 요청할 변수 목록"
+    properties:
+      metric_id: {type: string}
+      variables:
+        type: array
+        items:
+          type: object
+          properties:
+            name: {type: string}
+            required: {type: boolean}
+            origin_level_min:
+              type: enum
+              values: [level_1_official, level_1b_curated, level_2_validated, level_3_calculated, level_4_prior]
+      context: {type: object}
+    required: [metric_id, variables]
+
+  PriorCandidates:
+    type: array
+    items:
+      type: object
+      properties:
+        variable: {type: string}
+        prior_value: {type: number}
+        unit: {type: string}
+        bounds:
+          type: object
+          properties:
+            min: {type: number}
+            max: {type: number}
+        certainty:
+          type: enum
+          values: [high, medium, low]
+
+  EstimationEvent:
+    type: object
+    description: "Estimator Prior 이벤트(EST- 트래킹용)"
+    properties:
+      est_id: {type: string}
+      question: {type: string}
+      value: {type: number}
+      unit: {type: string}
+      certainty:
+        type: enum
+        values: [high, medium, low]
+      used_evidence: {type: object}
+      created_at: {type: datetime}
+
+  EstimationResult:
+    type: object
+    description: "Truth Factory 최종 결과(VAL 승격 대상)"
+    properties:
+      metric_id: {type: string}
+      value: {type: number}
+      unit: {type: string}
+      range:
+        type: object
+        properties:
+          min: {type: number}
+          max: {type: number}
+      certainty:
+        type: enum
+        values: [high, medium, low]
+      reliability:
+        type: enum
+        values: [A, B, C, D]
+      method_breakdown:
+        type: array
+        items: object
+      evidence_ratio: {type: number}
+      lineage: {type: object}
+      produced_at: {type: datetime}
+    required: [metric_id, value, unit, certainty]
+
+  ValueRecord:
+    type: object
+    description: "Value Store Canonical Record (VAL-)"
+    properties:
+      val_id: {type: string}
+      metric_id: {type: string}
+      value: {type: number}
+      unit: {type: string}
+      period: {type: string}
+      source_mix:
+        type: object
+        properties:
+          literal: {type: number}
+          calculated: {type: number}
+          estimated: {type: number}
+      lineage: {type: object}
+      certainty:
+        type: enum
+        values: [high, medium, low]
+      policy_tag:
+        type: enum
+        values: [official, scenario, experimental]
+      created_at: {type: datetime}
+    required: [val_id, metric_id, value, unit]
+
   updated_at:
     type: datetime
     format: "ISO 8601"
