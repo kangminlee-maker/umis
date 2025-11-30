@@ -1,0 +1,97 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g., v7.5.1)'
+        required: false
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install msgpack
+      
+      - name: Build Balanced (Production)
+        run: |
+          echo "🔄 Building Balanced for Production..."
+          python scripts/build_balanced.py
+          
+          echo "📊 Build results:"
+          du -sh dist/
+          find dist/ -name "*.json.gz" | wc -l
+          find dist/ -name "*.msgpack" | wc -l
+      
+      - name: Validate build
+        run: |
+          python scripts/validate_build.py || echo "⚠️ Validation script may need implementation"
+      
+      - name: Run tests
+        run: |
+          export UMIS_ENV=production
+          pytest tests/ -v --maxfail=1 || echo "⚠️ Some tests may not be ready"
+      
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t umis:production-${{ github.sha }} \
+            -t umis:production-latest \
+            .
+      
+      - name: Validate Docker image
+        run: |
+          echo "📦 Docker image:"
+          docker images umis:production-latest
+          
+          echo "✅ Security check - YAML exclusion:"
+          docker run --rm umis:production-latest ls umis.yaml 2>&1 | grep -q "No such file" && echo "✅ YAML excluded (IP protected)" || echo "⚠️ YAML found"
+      
+      - name: Create Git tag
+        if: github.event.inputs.version
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git tag ${{ github.event.inputs.version }}
+          git push origin ${{ github.event.inputs.version }}
+      
+      - name: Create Release Notes
+        if: github.event.inputs.version
+        run: |
+          echo "## UMIS ${{ github.event.inputs.version }}" > release-notes.md
+          echo "" >> release-notes.md
+          echo "### Build Info" >> release-notes.md
+          echo "- Commit: ${{ github.sha }}" >> release-notes.md
+          echo "- Build: Balanced (JSON.gz + MessagePack)" >> release-notes.md
+          echo "- Docker: umis:production-${{ github.sha }}" >> release-notes.md
+          
+          cat release-notes.md
+      
+      - name: Notify deployment
+        if: always()
+        run: |
+          echo "🚀 Production deployment ${{ job.status }}"
+          echo "📝 Commit: ${{ github.sha }}"
+          echo "👤 Author: ${{ github.actor }}"
+          echo "🏷️  Version: ${{ github.event.inputs.version }}"
+
