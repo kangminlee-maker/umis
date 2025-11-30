@@ -284,13 +284,46 @@ class SpacetimeConstraintSource(PhysicalConstraintBase):
         return constraints
     
     def _check_travel_time(self, question: str, context: Optional[Context]) -> Optional[Boundary]:
-        """이동 시간 제약"""
+        """
+        이동 시간 제약
         
-        # 간단한 패턴 매칭 (실제로는 LLM 사용 가능)
-        # "서울에서 부산까지 시간?" 같은 질문
+        Args:
+            question: 질문 (예: "서울에서 부산까지 시간?")
+            context: 컨텍스트
         
-        # TODO: 실제 구현
-        # 현재는 None
+        Returns:
+            Boundary or None
+        """
+        
+        # 이동 관련 키워드 확인
+        travel_keywords = ['이동', '여행', '운전', '비행', '거리']
+        if not any(kw in question for kw in travel_keywords):
+            return None
+        
+        # 시간 관련 키워드 확인
+        time_keywords = ['시간', '분', '걸리']
+        if not any(kw in question for kw in time_keywords):
+            return None
+        
+        # 알려진 이동 시간 패턴 (확장 가능)
+        travel_patterns = {
+            ('서울', '부산'): {'min': 2, 'max': 6, 'unit': 'hours', 'note': 'KTX 2-3h, 차량 4-6h'},
+            ('서울', '제주'): {'min': 1, 'max': 2, 'unit': 'hours', 'note': '비행 1h + 공항 시간'},
+        }
+        
+        # 패턴 매칭
+        for (from_loc, to_loc), bounds in travel_patterns.items():
+            if from_loc in question and to_loc in question:
+                return Boundary(
+                    min_value=bounds['min'],
+                    max_value=bounds['max'],
+                    reason=f"이동 시간 제약: {from_loc}-{to_loc} ({bounds['note']})",
+                    confidence="high",
+                    source="travel_time_constraint"
+                )
+        
+        # 일반적인 이동 시간 제약 (확장 가능)
+        # 현재는 None (구체적 패턴 없음)
         return None
     
     def _check_time_units(self, question: str, context: Optional[Context]) -> Optional[Boundary]:
@@ -362,23 +395,101 @@ class ConservationLawSource(PhysicalConstraintBase):
         return constraints
     
     def _check_part_whole(self, question: str, context: Optional[Context]) -> Optional[Boundary]:
-        """부분-전체 관계 체크"""
+        """
+        부분-전체 관계 체크
         
-        # "세그먼트 시장" < "전체 시장"
-        # "B2B 매출" < "전체 매출"
+        Args:
+            question: 질문 (예: "B2B 세그먼트 매출?")
+            context: 컨텍스트
         
-        # TODO: 실제 구현
-        # 현재는 None
+        Returns:
+            Boundary or None
+        """
+        
+        # 세그먼트/부분 키워드
+        part_keywords = ['세그먼트', '부분', 'segment', 'B2B', 'B2C', '개인', '기업']
+        has_part = any(kw in question for kw in part_keywords)
+        
+        # 전체/총 키워드
+        whole_keywords = ['전체', '총', 'total', '시장']
+        has_whole = any(kw in question for kw in whole_keywords)
+        
+        if not (has_part or has_whole):
+            return None
+        
+        # 부분 < 전체 제약
+        if has_part and context:
+            # 컨텍스트에 전체 시장 크기가 있다면
+            if hasattr(context, 'total_market_size') and context.total_market_size:
+                return Boundary(
+                    min_value=0,
+                    max_value=context.total_market_size,
+                    reason=f"부분-전체 제약: 세그먼트 < 전체 시장 ({context.total_market_size})",
+                    confidence="high",
+                    source="part_whole_constraint"
+                )
+        
+        # 일반적 제약: 부분은 100% 이하
+        if has_part and '비율' in question or 'share' in question.lower():
+            return Boundary(
+                min_value=0,
+                max_value=100,
+                reason="부분-전체 제약: 비율은 100% 이하",
+                confidence="high",
+                source="part_whole_constraint"
+            )
+        
         return None
     
     def _check_sum_relationship(self, project_data: Dict) -> Optional[Boundary]:
-        """합산 관계 체크"""
+        """
+        합산 관계 체크
         
-        # 예: customer_count와 revenue가 있으면
-        #     arpu = revenue / customer_count (관계 도출)
+        Args:
+            project_data: 프로젝트 데이터 (알려진 값들)
         
-        # TODO: 실제 구현
-        return None
+        Returns:
+            Boundary or None
+        
+        Example:
+            customer_count=1000, revenue=5000 → arpu=[0, 5]
+        """
+        
+        if not project_data:
+            return None
+        
+        # 알려진 관계 패턴들
+        relationships = [
+            # (dividend, divisor, result, description)
+            ('revenue', 'customer_count', 'arpu', 'ARPU = Revenue / Customers'),
+            ('revenue', 'arpu', 'customer_count', 'Customers = Revenue / ARPU'),
+            ('total_cost', 'unit_count', 'unit_cost', 'Unit Cost = Total / Units'),
+        ]
+        
+        derived_bounds = []
+        
+        for dividend_key, divisor_key, result_key, desc in relationships:
+            dividend = project_data.get(dividend_key)
+            divisor = project_data.get(divisor_key)
+            
+            if dividend is not None and divisor is not None and divisor != 0:
+                # 도출 가능한 값
+                derived_value = dividend / divisor
+                
+                # 합리적 범위 (±20%)
+                min_val = derived_value * 0.8
+                max_val = derived_value * 1.2
+                
+                derived_bounds.append(Boundary(
+                    min_value=min_val,
+                    max_value=max_val,
+                    reason=f"합산 관계: {desc} (도출값: {derived_value:.2f})",
+                    confidence="medium",
+                    source="sum_relationship"
+                ))
+        
+        # 여러 개 있으면 첫 번째 반환 (확장 가능: 모두 반환)
+        return derived_bounds[0] if derived_bounds else None
 
 
 class MathematicalDefinitionSource(PhysicalConstraintBase):

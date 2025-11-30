@@ -6,153 +6,22 @@
 # 동기화 방법:
 #   python3 scripts/sync_umis_to_rag.py
 # 
-# 마지막 동기화: 2025-11-28 10:06:35
+# 마지막 동기화: 2025-11-26 22:04:47
 # ========================================
 
 version: 7.11.1
 created: '2025-11-26'
-updated: '2025-11-28 10:06:35'
-total_tools: 19
+updated: '2025-11-26 22:04:47'
+total_tools: 15
 auto_generated: true
 changelog: 'v7.11.1: Complete only (Task tools removed)'
 source: umis.yaml (System + Complete, 0% loss)
 note: Task 도구 제거 결정 (v7.11.1) - CONTEXT_WINDOW_STRATEGY.md 참조
 sync_info:
-  last_sync: '2025-11-28 10:06:35'
+  last_sync: '2025-11-26 22:04:47'
   source_file: umis.yaml
   sync_script: scripts/sync_umis_to_rag.py
 tools:
-- tool_id: onboarding:quick_start
-  tool_key: tool:onboarding:quick_start
-  metadata:
-    agent: onboarding
-    category: ai_learning
-    context_size: 1691
-    token_estimate: 422
-    priority: critical
-    source: umis.yaml ai_onboarding.quick_start (auto-sync)
-    auto_generated: true
-  when_to_use:
-    keywords:
-    - quick_start
-    - onboarding
-    - 학습
-    - learning
-    scenarios:
-    - 'AI 초기 학습: quick_start'
-    - UMIS 시스템 빠른 파악
-  content: "# Onboarding: quick_start\n\n## \U0001F4CB 출처\numis.yaml - ai_onboarding.quick_start (Auto-Sync)\n\n## \U0001F4D6\
-    \ 내용 (YAML)\n\n```yaml\nquick_start:\n  purpose: 3분 내 UMIS 핵심 파악\n  next_tools:\n  - tool:onboarding:state_machine\n \
-    \ - tool:onboarding:agent_essentials\n  - tool:onboarding:workflow_primer\n  system_overview:\n    name: Universal Market\
-    \ Intelligence System v7.11.0\n    purpose: 6-Agent RAG 기반 시장 분석 시스템\n    core_concept: '- 6개 Agent가 역할 분담하여 시장 분석 수행\n\
-    \n      - 상태 기계 기반 순차 협업 (Albert→Steve→Owner)\n\n      - 모든 결론에 필수 검증 게이트 존재\n\n      - System RAG로 필요한 지식만 선택적 로드\n\n\
-    \      '\n  key_agents:\n    main_flow:\n      albert: Observer - 시장 구조 관찰 → Market Reality Report\n      steve: Explorer\
-    \ - 기회 발굴 → 검증된 포트폴리오\n      owner: 전략적 의사결정\n    support:\n      bill: Quantifier - 숫자/계산 지원 (상시 대기)\n      rachel: Validator\
-    \ - 데이터 검증 지원 (상시 대기)\n      stewart: Guardian - 프로세스 감시\n      fermi: Estimator - 값 추정 (100% 커버리지)\n  workflow_basics:\n\
-    \    default_mode: Discovery Sprint (1-3일) → Comprehensive Study (2-4주)\n    start_trigger: 명확도 평가 (Stewart)\n    key_principle:\
-    \ 모든 가설과 판단에는 근거와 검증 필요\n  essential_commands:\n    load_this: python3 scripts/query_system_rag.py tool:onboarding:quick_start\n\
-    \    load_state_machine: python3 scripts/query_system_rag.py tool:onboarding:state_machine\n    load_agent: python3 scripts/query_system_rag.py\
-    \ tool:{agent}:complete\n    list_all: python3 scripts/query_system_rag.py --list\n  learning_path:\n    beginner: quick_start\
-    \ (3분) → state_machine (2분) → agent_essentials (2분)\n    intermediate: agent_essentials → workflow_primer → tool:{agent}:complete\n\
-    \    advanced: tool:system:system_architecture → tool:system:implementation_guide\n```\n\n---\n\n⚠️  이 도구는 자동 생성됩니다.\n\
-    \   수정하려면 umis.yaml의 ai_onboarding 섹션을 편집하세요.\n"
-- tool_id: onboarding:state_machine
-  tool_key: tool:onboarding:state_machine
-  metadata:
-    agent: onboarding
-    category: ai_learning
-    context_size: 1441
-    token_estimate: 360
-    priority: critical
-    source: umis.yaml ai_onboarding.state_machine (auto-sync)
-    auto_generated: true
-  when_to_use:
-    keywords:
-    - state_machine
-    - onboarding
-    - 학습
-    - learning
-    scenarios:
-    - 'AI 초기 학습: state_machine'
-    - UMIS 시스템 빠른 파악
-  content: "# Onboarding: state_machine\n\n## \U0001F4CB 출처\numis.yaml - ai_onboarding.state_machine (Auto-Sync)\n\n## \U0001F4D6\
-    \ 내용 (YAML)\n\n```yaml\nstate_machine:\n  purpose: 7단계 상태 전이 핵심만\n  source: tool:system:system_architecture (상세)\n  flow_overview:\
-    \ project_start → discovery → data_preparation → structure_analysis → opportunity_discovery → decision_preparation\n \
-    \   → strategic_decision\n  states:\n    project_start:\n      agent: Stewart\n      action: 명확도 평가 (1-10)\n      decision:\
-    \ 명확도 < 7 → Discovery Sprint\n    discovery:\n      agents: 6-Agent 병렬 탐색\n      duration: 1-3일 (명확도 낮음) / 2-4시간 (명확도\
-    \ 높음)\n      output: 명확한 목표, 시장 경계, 방향성\n    data_preparation:\n      agent: Rachel\n      quality_gate: 신뢰도 >= 80%\n\
-    \      output: 검증된 데이터셋\n    structure_analysis:\n      agent: Albert (주도)\n      support: Bill, Rachel\n      validation:\
-    \ Bill + Rachel + Stewart 모두 통과\n      output: Market Reality Report\n    opportunity_discovery:\n      agent: Steve (주도)\n\
-    \      input_required: Albert의 Market Reality Report\n      validation: Albert + Bill + Rachel 모두 통과\n      output: 검증된\
-    \ 기회 포트폴리오\n    decision_preparation:\n      agent: Stewart\n      check: 논리적 건전성 + 절차적 완결성\n    strategic_decision:\n\
-    \      agent: Owner\n      validation: Stewart 승인 필수\n      output: 전략적 결정 + 실행 계획\n  critical_rules:\n  - Steve는 Albert\
-    \ 완료 후에만 시작\n  - Bill은 Rachel 데이터 검증 후 계산\n  - 모든 최종 결론은 3명 검증자 통과 필요\n  next: tool:system:system_architecture (전체 상세)\n\
-    ```\n\n---\n\n⚠️  이 도구는 자동 생성됩니다.\n   수정하려면 umis.yaml의 ai_onboarding 섹션을 편집하세요.\n"
-- tool_id: onboarding:agent_essentials
-  tool_key: tool:onboarding:agent_essentials
-  metadata:
-    agent: onboarding
-    category: ai_learning
-    context_size: 1858
-    token_estimate: 464
-    priority: critical
-    source: umis.yaml ai_onboarding.agent_essentials (auto-sync)
-    auto_generated: true
-  when_to_use:
-    keywords:
-    - agent_essentials
-    - onboarding
-    - 학습
-    - learning
-    scenarios:
-    - 'AI 초기 학습: agent_essentials'
-    - UMIS 시스템 빠른 파악
-  content: "# Onboarding: agent_essentials\n\n## \U0001F4CB 출처\numis.yaml - ai_onboarding.agent_essentials (Auto-Sync)\n\n\
-    ## \U0001F4D6 내용 (YAML)\n\n```yaml\nagent_essentials:\n  purpose: 6 Agent 핵심 역할만\n  source: tool:{agent}:complete (개별\
-    \ 상세)\n  agents:\n    albert:\n      id: Observer\n      role: 시장 구조 관찰\n      character: 팩트와 숫자로 말하는 현실주의자\n      focus:\
-    \ 시장이 '어떻게' 작동하는가\n      not_focus: 시장이 '왜' 그런가 (Steve 영역)\n      output: Market Reality Report\n      next_agent: Steve\n\
-    \      tool_key: tool:observer:complete\n    steve:\n      id: Explorer\n      role: 기회 발굴\n      character: 가능성을 보는 탐험가\n\
-    \      input_required: Albert의 Market Reality Report\n      focus: 무엇이 '가능한가', '왜' 기회인가\n      output: 검증된 기회 포트폴리오\n\
-    \      rag_enabled: 54개 패턴 자동 검색\n      tool_key: tool:explorer:complete\n    bill:\n      id: Quantifier\n      role:\
-    \ 정량 분석 지원\n      availability: 상시 대기\n      expertise: 시장 규모, 수익성, ROI, 성장률\n      response_time: 2-4시간\n      critical_dependency:\
-    \ Rachel 데이터 검증 먼저\n      tool_key: tool:quantifier:complete\n    rachel:\n      id: Validator\n      role: 데이터 검증 지원\n\
-    \      availability: 상시 대기\n      expertise: 데이터 정의, 신뢰성, 창의적 소싱\n      response_time: 30분-2시간\n      supports: 모든 Agent\n\
-    \      tool_key: tool:validator:complete\n    stewart:\n      id: Guardian\n      role: 프로세스 감시\n      monitors: 목표 정렬,\
-    \ 순환 패턴, 토큰 사용\n      validates: Albert 결론, Owner 결정\n      intervenes_when: 목표이탈, 3회 실패, 토큰 초과\n      tool_key: tool:guardian:complete\n\
-    \    fermi:\n      id: Estimator\n      role: 값 추정 (4-Stage Fusion)\n      coverage: 100% (모든 Agent가 호출 가능)\n      architecture:\
-    \ Evidence → Prior → Fermi → Fusion\n      use_case: 데이터 없을 때 창의적 추정\n      tool_key: tool:estimator:complete\n  collaboration_pattern:\n\
-    \    sequential: Albert → Steve → Owner (순차)\n    support: Bill, Rachel (병렬 지원)\n    oversight: Stewart (전체 감시)\n  next:\
-    \ tool:{agent}:complete (개별 Agent 상세)\n```\n\n---\n\n⚠️  이 도구는 자동 생성됩니다.\n   수정하려면 umis.yaml의 ai_onboarding 섹션을 편집하세요.\n"
-- tool_id: onboarding:workflow_primer
-  tool_key: tool:onboarding:workflow_primer
-  metadata:
-    agent: onboarding
-    category: ai_learning
-    context_size: 1180
-    token_estimate: 295
-    priority: critical
-    source: umis.yaml ai_onboarding.workflow_primer (auto-sync)
-    auto_generated: true
-  when_to_use:
-    keywords:
-    - workflow_primer
-    - onboarding
-    - 학습
-    - learning
-    scenarios:
-    - 'AI 초기 학습: workflow_primer'
-    - UMIS 시스템 빠른 파악
-  content: "# Onboarding: workflow_primer\n\n## \U0001F4CB 출처\numis.yaml - ai_onboarding.workflow_primer (Auto-Sync)\n\n##\
-    \ \U0001F4D6 내용 (YAML)\n\n```yaml\nworkflow_primer:\n  purpose: 기본 워크플로우 핵심만\n  source: tool:system:implementation_guide\
-    \ (상세)\n  default_workflow:\n    name: Comprehensive Market Research\n    duration: 2-4주\n    trigger: 별도 언급 없는 모든 프로젝트\n\
-    \    phases:\n      phase_0: Discovery Sprint (1-3일) - 목표 명확화\n      phase_1: Market Mapping (Week 1) - 시장 구조\n      phase_2:\
-    \ Dimensional Analysis (Week 2) - 13차원 분석\n      phase_3: Dynamic Patterns (Week 3) - 시나리오\n      phase_4: Strategy Synthesis\
-    \ (Week 4) - 전략 수립\n  execution_modes:\n    exploration:\n      ai_autonomy: 90-100%\n      when: 불확실성 높음\n      checkpoints:\
-    \ 2-4시간 간격\n      interaction: 체크포인트에서만\n    collaboration:\n      ai_autonomy: 60-70%\n      when: 일반 프로젝트 (기본값)\n  \
-    \    checkpoints: 1시간 간격\n      interaction: 주요 결정 지점\n    precision:\n      ai_autonomy: 30-40%\n      when: 중요/민감 프로젝트\n\
-    \      checkpoints: 30분 간격\n      interaction: 지속적\n  quick_workflows:\n    rapid_assessment: 1-3일 (빠른 기회 평가)\n    quick_insights:\
-    \ 1-2시간 (즉시 통찰, 토큰 10%)\n  next: tool:system:implementation_guide (전체 워크플로우)\n```\n\n---\n\n⚠️  이 도구는 자동 생성됩니다.\n   수정하려면\
-    \ umis.yaml의 ai_onboarding 섹션을 편집하세요.\n"
 - tool_id: system:system_architecture
   tool_key: tool:system:system_architecture
   metadata:
