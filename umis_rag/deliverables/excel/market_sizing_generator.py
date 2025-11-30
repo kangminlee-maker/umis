@@ -138,10 +138,13 @@ class MarketSizingWorkbookGenerator:
         validation_log = ValidationLogBuilder(wb, self.formula_engine)  # FormulaEngine 전달
         validation_log.create_sheet()
         
-        # 11. Should vs Will (Domain Reasoner 기능)
+        # 11. Should vs Will (Note: Domain Reasoner는 deprecated)
         print(f"   10/10 Should vs Will...")
         should_vs_will = ShouldVsWillBuilder(wb, self.formula_engine)
-        should_vs_will_data = None  # TODO: Domain Reasoner 결과 연동
+        
+        # Domain Reasoner는 deprecated되어 None 전달
+        should_vs_will_data = None
+        
         should_vs_will.create_sheet(should_vs_will_data)
         
         # 12. Summary (첫 번째 시트로 이동)
@@ -166,6 +169,34 @@ class MarketSizingWorkbookGenerator:
         print(f"📋 다음: PDF로 저장 (백업)")
         
         return filepath
+    
+    def _get_domain_reasoner_results(self, market_name: str) -> Optional[Dict]:
+        """
+        Domain Reasoner 결과 가져오기 (DEPRECATED)
+        
+        Args:
+            market_name: 시장명
+        
+        Returns:
+            None (Domain Reasoner는 deprecated)
+        
+        Note:
+            ⚠️ Domain Reasoner는 deprecated되었습니다.
+            Should vs Will 분석은 다른 방식으로 진행됩니다.
+            ShouldVsWillBuilder는 None을 받아도 기본 템플릿을 생성합니다.
+        
+        History:
+            - v7.2.0: Domain Reasoner 기능 도입 (10-Signal Stack)
+            - v7.5.0: Deprecated & Archived (2025-11-10)
+              - domain_reasoner.py 제거 (1,907 lines)
+              - umis_domain_reasoner_methodology.yaml 제거 (1,033 lines)
+              - Estimator/Quantifier MECE 분리를 위한 구조 개선
+            - v7.11.1: 이 메서드는 호환성 유지를 위해 남겨둠
+        """
+        
+        # Domain Reasoner는 v7.5.0에서 deprecated & archived
+        # ShouldVsWillBuilder가 None을 gracefully handle
+        return None
 
 
 # 테스트는 별도 스크립트에서

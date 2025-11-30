@@ -259,7 +259,52 @@ class RAGSource:
         if context.time_period == rule.context.time_period:
             return None, None
         
-        # TODO: 성장률 적용 로직
-        # 현재는 조정 안 함
+        # 성장률 적용 로직
+        try:
+            # 시점 파싱 (예: "2023", "2024Q1" 등)
+            stored_year = self._parse_year(rule.context.time_period)
+            query_year = self._parse_year(context.time_period)
+            
+            if stored_year and query_year and stored_year != query_year:
+                years_diff = query_year - stored_year
+                
+                # 기본 성장률 추정 (산업별 다를 수 있음)
+                # 보수적 5% 연간 성장률 가정
+                default_growth_rate = 0.05
+                
+                # 산업별 성장률 오버라이드 (확장 가능)
+                industry_growth_rates = {
+                    'SaaS': 0.20,  # 20% 연간 성장
+                    'AI': 0.30,    # 30% 연간 성장
+                    'E-commerce': 0.15,
+                }
+                
+                growth_rate = default_growth_rate
+                if context.industry and context.industry in industry_growth_rates:
+                    growth_rate = industry_growth_rates[context.industry]
+                
+                # 복리 계산
+                adjustment_factor = (1 + growth_rate) ** years_diff
+                adjusted_value = rule.value * adjustment_factor
+                
+                note = (
+                    f"시점 조정: {rule.context.time_period} → {context.time_period} "
+                    f"({years_diff}년, 성장률 {growth_rate*100:.0f}%)"
+                )
+                
+                return adjusted_value, note
+        except Exception as e:
+            # 파싱 실패 시 조정 안 함
+            pass
+        
+        # 조정 불가
         return None, f"시점 차이 있음 (저장: {rule.context.time_period}, 질문: {context.time_period})"
+    
+    def _parse_year(self, time_period: str) -> Optional[int]:
+        """시점에서 연도 추출 (예: '2023', '2024Q1' → 2023, 2024)"""
+        import re
+        match = re.search(r'(\d{4})', time_period)
+        if match:
+            return int(match.group(1))
+        return None
 

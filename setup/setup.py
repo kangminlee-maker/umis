@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 """
-UMIS v7.6.2 Automated Setup Script
-AI가 자동으로 실행 가능한 설치 스크립트
+UMIS v7.11.1 Automated Setup Script
+AI가 자동으로 실행 가능한 설치 스크립트 (대화형 입력 없음)
 
 사용법:
-  python setup.py              # 전체 설치
+  python setup.py              # 전체 설치 (기본값, 비대화형)
   python setup.py --minimal    # 최소 설치 (Neo4j 제외)
   python setup.py --check      # 설치 상태 확인
+  python setup.py --rebuild    # RAG 인덱스 강제 재빌드
+  python setup.py --neo4j      # Neo4j 자동 시작
+  
+변경사항 (v7.11.1):
+  - 대화형 입력 완전 제거 (Cursor AI 환경 최적화)
+  - python vs python3 경로 통일 (sys.executable 사용)
+  - 에러 핸들링 강화
 """
 
 import os
@@ -47,8 +54,9 @@ def print_warning(msg: str):
 def print_error(msg: str):
     print(f"{Colors.FAIL}❌ {msg}{Colors.ENDC}")
 
-def print_info(msg: str):
-    print(f"{Colors.OKBLUE}ℹ️  {msg}{Colors.ENDC}")
+def print_info(msg: str, **kwargs):
+    """일반 정보 메시지 출력 (print의 추가 인자 지원)"""
+    print(f"{Colors.OKBLUE}ℹ️  {msg}{Colors.ENDC}", **kwargs)
 
 # ============================================
 # 유틸리티
@@ -179,8 +187,12 @@ def step2_install_dependencies():
     """Step 2: 패키지 설치"""
     print_step(2, "Python 패키지 설치")
     
-    print_info("pip install -r requirements.txt 실행 중...")
-    success, output = run_command("pip install -r requirements.txt")
+    # 현재 사용 중인 Python 실행 파일 기준으로 pip 실행
+    python_executable = sys.executable or "python3"
+    cmd = f'"{python_executable}" -m pip install -r requirements.txt'
+    
+    print_info(f"{cmd} 실행 중...")
+    success, output = run_command(cmd)
     
     if success:
         print_success("모든 패키지 설치 완료")
@@ -213,7 +225,7 @@ def step3_setup_env_file():
     
     return True
 
-def step4_build_rag_index():
+def step4_build_rag_index(auto_rebuild: bool = False):
     """Step 4: RAG 인덱스 빌드"""
     print_step(4, "RAG 인덱스 빌드")
     
@@ -225,18 +237,21 @@ def step4_build_rag_index():
     
     # ChromaDB 존재 확인
     if check_chromadb():
-        print_info("기존 인덱스 발견 - 재빌드하시겠습니까? (y/N): ", end='')
-        response = input().strip().lower()
-        if response != 'y':
-            print_info("인덱스 빌드 스킵")
+        if not auto_rebuild:
+            print_info("기존 인덱스 발견 - 스킵 (재빌드 필요시 --rebuild 사용)")
             return True
+        else:
+            print_info("기존 인덱스 발견 - 재빌드 중...")
     
     print_info("RAG 인덱스 빌드 중... (1-2분 소요)")
     print_info("비용: 약 $0.006")
     
+    # 현재 사용 중인 Python 실행 파일 사용
+    python_executable = sys.executable or "python3"
+    
     # YAML → JSONL 변환
     print_info("  [1/2] YAML → JSONL 변환...")
-    success, output = run_command("python scripts/01_convert_yaml.py")
+    success, output = run_command(f'"{python_executable}" scripts/01_convert_yaml.py')
     
     if not success:
         print_error("YAML 변환 실패")
@@ -245,7 +260,7 @@ def step4_build_rag_index():
     
     # 인덱스 빌드
     print_info("  [2/2] Vector DB 빌드...")
-    success, output = run_command("python scripts/02_build_index.py --agent explorer")
+    success, output = run_command(f'"{python_executable}" scripts/02_build_index.py --agent explorer')
     
     if success:
         print_success("RAG 인덱스 빌드 완료")
@@ -255,7 +270,7 @@ def step4_build_rag_index():
         print(output)
         return False
 
-def step5_setup_neo4j(skip: bool = False):
+def step5_setup_neo4j(skip: bool = False, auto_start: bool = False):
     """Step 5: Neo4j 설정 (선택 사항)"""
     print_step(5, "Neo4j 설정 (선택 사항)")
     
@@ -275,11 +290,8 @@ def step5_setup_neo4j(skip: bool = False):
         print_success("Neo4j 이미 실행 중")
         return True
     
-    # Neo4j 실행 여부 묻기
-    print_info("Neo4j를 실행하시겠습니까? (y/N): ", end='')
-    response = input().strip().lower()
-    
-    if response == 'y':
+    # Neo4j 자동 시작 모드
+    if auto_start:
         print_info("docker-compose up -d 실행 중...")
         success, output = run_command("docker-compose up -d")
         
@@ -293,7 +305,7 @@ def step5_setup_neo4j(skip: bool = False):
             print(output)
             return False
     else:
-        print_info("Neo4j 설정 스킵")
+        print_info("Neo4j 설정 스킵 (필요시 --neo4j 사용)")
         return True
 
 def check_installation():
@@ -362,6 +374,8 @@ def main():
     args = sys.argv[1:]
     minimal_mode = '--minimal' in args
     check_mode = '--check' in args
+    auto_rebuild = '--rebuild' in args
+    auto_neo4j = '--neo4j' in args
     
     if check_mode:
         check_installation()
@@ -376,6 +390,12 @@ def main():
         print_info("모드: 최소 설치 (Neo4j 제외)")
     else:
         print_info("모드: 전체 설치")
+    
+    if auto_rebuild:
+        print_info("옵션: RAG 인덱스 강제 재빌드")
+    
+    if auto_neo4j:
+        print_info("옵션: Neo4j 자동 시작")
     
     # 설치 시작
     print("\n" + "="*60)
@@ -396,14 +416,15 @@ def main():
         sys.exit(1)
     
     # Step 4: RAG 인덱스 빌드
-    if not step4_build_rag_index():
+    if not step4_build_rag_index(auto_rebuild=auto_rebuild):
         print_warning("\nRAG 인덱스 빌드 실패")
         print_info("  → .env에서 OPENAI_API_KEY 설정 후")
-        print_info("  → python scripts/02_build_index.py --agent explorer 실행")
+        python_exe = sys.executable or "python3"
+        print_info(f'  → {python_exe} scripts/02_build_index.py --agent explorer 실행')
     
     # Step 5: Neo4j 설정 (선택)
     if not minimal_mode:
-        step5_setup_neo4j()
+        step5_setup_neo4j(skip=False, auto_start=auto_neo4j)
     
     # 완료
     print_header("설치 완료!")

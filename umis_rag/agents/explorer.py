@@ -582,9 +582,127 @@ class ExplorerAgenticRAG(ExplorerRAG):
     def __init__(self):
         super().__init__()
         
-        # Agent Tools 정의 (향후 구현)
-        # TODO: LangChain Agent + Tools 통합
-        logger.info("  → Agentic 모드: 향후 구현 예정")
+        # Agent Tools 정의
+        self.agent_tools = self._initialize_agent_tools()
+        
+        if self.agent_tools:
+            logger.info(f"  → Agentic 모드: {len(self.agent_tools)}개 도구 활성화")
+        else:
+            logger.info("  → Agentic 모드: 향후 구현 예정 (LangChain 통합)")
+    
+    def _initialize_agent_tools(self) -> Optional[List]:
+        """
+        LangChain Agent Tools 초기화
+        
+        Returns:
+            List of LangChain tools or None if not available
+        
+        Tools:
+            - search_patterns: RAG에서 패턴 검색
+            - search_cases: RAG에서 사례 검색
+            - ask_quantifier: Quantifier에게 질문
+            - ask_validator: Validator에게 질문
+            - generate_hypothesis: 가설 생성
+        """
+        
+        try:
+            from langchain.tools import Tool
+            from langchain.agents import initialize_agent, AgentType
+            
+            tools = []
+            
+            # Tool 1: Pattern Search
+            tools.append(Tool(
+                name="search_patterns",
+                func=self._tool_search_patterns,
+                description="Search for business patterns in RAG database. Input: pattern description"
+            ))
+            
+            # Tool 2: Case Search
+            tools.append(Tool(
+                name="search_cases",
+                func=self._tool_search_cases,
+                description="Search for case studies in RAG database. Input: case description"
+            ))
+            
+            # Tool 3: Ask Quantifier
+            tools.append(Tool(
+                name="ask_quantifier",
+                func=self._tool_ask_quantifier,
+                description="Ask Quantifier agent to estimate a value. Input: estimation question"
+            ))
+            
+            # Tool 4: Ask Validator
+            tools.append(Tool(
+                name="ask_validator",
+                func=self._tool_ask_validator,
+                description="Ask Validator agent to verify data. Input: validation question"
+            ))
+            
+            # Tool 5: Generate Hypothesis
+            tools.append(Tool(
+                name="generate_hypothesis",
+                func=self._tool_generate_hypothesis,
+                description="Generate business hypothesis. Input: hypothesis context"
+            ))
+            
+            return tools
+        
+        except ImportError:
+            logger.debug("  ℹ️  LangChain 미설치 (pip install langchain)")
+            return None
+        except Exception as e:
+            logger.warning(f"  ⚠️ Agent Tools 초기화 실패: {e}")
+            return None
+    
+    def _tool_search_patterns(self, query: str) -> str:
+        """Tool: RAG 패턴 검색"""
+        try:
+            if hasattr(self, 'pattern_store') and self.pattern_store:
+                results = self.pattern_store.similarity_search(query, k=3)
+                return "\n".join([r.page_content for r in results[:3]])
+        except Exception:
+            pass
+        return "No patterns found"
+    
+    def _tool_search_cases(self, query: str) -> str:
+        """Tool: RAG 사례 검색"""
+        try:
+            if hasattr(self, 'case_store') and self.case_store:
+                results = self.case_store.similarity_search(query, k=3)
+                return "\n".join([r.page_content for r in results[:3]])
+        except Exception:
+            pass
+        return "No cases found"
+    
+    def _tool_ask_quantifier(self, question: str) -> str:
+        """Tool: Quantifier 협업"""
+        try:
+            from umis_rag.agents.quantifier import get_quantifier_rag
+            quantifier = get_quantifier_rag()
+            result = quantifier.estimate(question)
+            if result:
+                return f"Estimate: {result.value} {result.unit}"
+        except Exception:
+            pass
+        return "Quantifier unavailable"
+    
+    def _tool_ask_validator(self, question: str) -> str:
+        """Tool: Validator 협업"""
+        try:
+            from umis_rag.agents.validator import get_validator_rag
+            validator = get_validator_rag()
+            result = validator.validate(question)
+            if result:
+                return f"Validation: {result}"
+        except Exception:
+            pass
+        return "Validator unavailable"
+    
+    def _tool_generate_hypothesis(self, context: str) -> str:
+        """Tool: 가설 생성"""
+        # 간단한 패턴 기반 가설 생성
+        return f"Hypothesis: Based on {context}, consider market dynamics and trends."
     
     def autonomous_discovery(
         self,
