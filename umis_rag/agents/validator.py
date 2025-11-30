@@ -1554,6 +1554,8 @@ class ValidatorRAG:
     
     def _search_news_duckduckgo(self, market: str, years: range) -> List[Dict]:
         """DuckDuckGo를 사용한 뉴스 검색"""
+        from umis_rag.core.config import settings
+        
         events = []
         
         try:
@@ -1569,17 +1571,29 @@ class ValidatorRAG:
                     results = ddgs.text(query, max_results=5)
                     
                     for res in results:
+                        url = res.get('href', '')
+                        snippet = res.get('body', '')
+                        
+                        # 페이지 크롤링 설정 체크
+                        content = snippet
+                        if settings.web_search_fetch_full_page and url:
+                            full_content = self._fetch_page_content(url)
+                            if full_content:
+                                content = full_content
+                        
                         events.append({
                             'year': year,
                             'title': res.get('title', ''),
-                            'snippet': res.get('body', ''),
-                            'url': res.get('href', ''),
+                            'snippet': content,
+                            'url': url,
                             'source': 'duckduckgo',
-                            'engine': 'duckduckgo'
+                            'engine': 'duckduckgo',
+                            'crawled': settings.web_search_fetch_full_page and full_content is not None
                         })
                     
                     if results:
-                        logger.info(f"    ✅ 뉴스 (DuckDuckGo): {year}년 {len(results)}개 사건")
+                        crawl_status = "크롤링" if settings.web_search_fetch_full_page else "snippet"
+                        logger.info(f"    ✅ 뉴스 (DuckDuckGo/{crawl_status}): {year}년 {len(results)}개 사건")
                     
                 except Exception as search_error:
                     logger.debug(f"    검색 실패 ({year}): {search_error}")
@@ -1634,17 +1648,29 @@ class ValidatorRAG:
                         items = data.get('items', [])
                         
                         for item in items:
+                            url = item.get('link', '')
+                            snippet = item.get('snippet', '')
+                            
+                            # 페이지 크롤링 설정 체크
+                            content = snippet
+                            if settings.web_search_fetch_full_page and url:
+                                full_content = self._fetch_page_content(url)
+                                if full_content:
+                                    content = full_content
+                            
                             events.append({
                                 'year': year,
                                 'title': item.get('title', ''),
-                                'snippet': item.get('snippet', ''),
-                                'url': item.get('link', ''),
+                                'snippet': content,
+                                'url': url,
                                 'source': 'google',
-                                'engine': 'google'
+                                'engine': 'google',
+                                'crawled': settings.web_search_fetch_full_page and full_content is not None
                             })
                         
                         if items:
-                            logger.info(f"    ✅ 뉴스 (Google): {year}년 {len(items)}개 사건")
+                            crawl_status = "크롤링" if settings.web_search_fetch_full_page else "snippet"
+                            logger.info(f"    ✅ 뉴스 (Google/{crawl_status}): {year}년 {len(items)}개 사건")
                     else:
                         logger.warning(f"    ⚠️ Google API 오류: {response.status_code}")
                 
@@ -1658,6 +1684,70 @@ class ValidatorRAG:
             logger.warning(f"    ⚠️ Google Search 실패: {e}")
         
         return events
+    
+    def _fetch_page_content(self, url: str) -> Optional[str]:
+        """
+        웹 페이지 크롤링 (v7.7.0+)
+        
+        Args:
+            url: 크롤링할 URL
+        
+        Returns:
+            페이지 텍스트 (최대 WEB_SEARCH_MAX_CHARS), 실패 시 None
+        
+        Note:
+            value.py의 _fetch_page_content()와 동일한 로직
+        """
+        from umis_rag.core.config import settings
+        
+        try:
+            from bs4 import BeautifulSoup
+            import requests
+            
+            # User-Agent 헤더 (일부 사이트는 봇 차단)
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+            
+            # 페이지 가져오기 (타임아웃 적용)
+            response = requests.get(url, headers=headers, timeout=settings.web_search_timeout)
+            response.raise_for_status()
+            
+            # BeautifulSoup으로 파싱
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # 불필요한 태그 제거 (스크립트, 스타일, 네비게이션 등)
+            for tag in soup(['script', 'style', 'nav', 'header', 'footer', 'aside', 'iframe']):
+                tag.decompose()
+            
+            # 텍스트 추출
+            text = soup.get_text(separator=' ', strip=True)
+            
+            # 공백 정리
+            text = ' '.join(text.split())
+            
+            # 최대 문자 수 제한
+            if len(text) > settings.web_search_max_chars:
+                text = text[:settings.web_search_max_chars]
+            
+            logger.debug(f"    크롤링 성공: {url[:50]}... ({len(text)}자)")
+            return text
+        
+        except requests.Timeout:
+            logger.debug(f"    타임아웃: {url[:50]}...")
+            return None
+        
+        except requests.RequestException as e:
+            logger.debug(f"    요청 실패: {url[:50]}... ({e})")
+            return None
+        
+        except ImportError:
+            logger.debug(f"    bs4 미설치: {url[:50]}...")
+            return None
+        
+        except Exception as e:
+            logger.debug(f"    파싱 실패: {url[:50]}... ({e})")
+            return None
     
     def _identify_data_gaps(self, collected_data: Dict, years: range) -> Dict:
         """데이터 Gap 식별"""
