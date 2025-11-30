@@ -1,0 +1,420 @@
+# ========================================
+# UMIS v8.0.0 - Master Skeleton (Agent-centric)
+# File: umis_v8.yaml
+# ========================================
+
+umis_v8:
+  meta:
+    version: "8.0.0"
+    base_version: "7.11.x"
+    status: "design_review"
+    last_updated: "2025-11-30"
+    description: >
+      UMIS v8은 Agent 중심 아키텍처를 유지하면서, Validator–Calculator–Estimator 3 Agent가
+      Truth Factory로서 Business Layer가 사용하는 단일 진실(SSoT)을 생산한다.
+      Fusion은 제거하지 않고 Estimator 도메인 레이어의 FusionPolicy로 엄격히 분리해 유지한다.
+
+  terminology:
+    agent_tier:
+      tier_1_business_analysis: ["observer", "explorer"]
+      tier_2_evidence_generation: ["evidence_collector", "validator", "calculator", "estimator"]
+      tier_3_supervision: ["guardian"]
+    # 데이터 출처 우선순위(외부 세계)
+    source_tier:
+      source_tier_1_official: "정부/공식 통계, DART, 국제기구"
+      source_tier_1b_curated_internal: "검수된 패턴/KG YAML (내부 큐레이션)"
+      source_tier_2_commercial: "검증된 상업 리포트/증권사"
+      source_tier_3_structured_estimation: "Truth Factory 기반 구조적 추정(계산/분해)"
+      source_tier_4_llm_baseline: "일반 LLM 지식(Prior)"
+    # 계산 파이프라인 내부의 변수 원천 레벨(혼동 방지: tier 명칭을 쓰지 않음)
+    origin_level:
+      level_1_official: "Validator/Official"
+      level_1b_curated: "EvidenceCollector/Curated Internal"
+      level_2_validated: "Validator 추가 검증 데이터"
+      level_3_calculated: "Calculator(Fermi/공식) 산출"
+      level_4_prior: "Estimator Prior"
+
+  agent_id_migration:
+    quantifier:
+      new_id: calculator
+      deprecated_since: "8.0.0"
+      behavior:
+        - "v7 quantifier 코드/도구는 calculator로 이동(alias 1 minor 유지 가능)"
+        - "문서/예시/ID 네임스페이스는 v8에서 calculator로 표준화"
+
+  id_namespace:
+    prefixes:
+      SRC: "원천 데이터 (Validator)"
+      EST: "Estimator 이벤트/추정 결과 (학습/메모리용)"
+      VAL: "Value Store의 Canonical Value Record (SSoT)"
+      ASM: "Assumption (시나리오/민감도 입력)"
+      OPP: "기회 가설"
+      DEL: "산출물"
+      CAN: "Canonical Index 청크"
+      PRJ: "Projected Index 청크"
+      GND: "Graph Node"
+      GED: "Graph Edge"
+      MEM: "Guardian Memory"
+      RAE: "Guardian Evaluation"
+      tool: "System RAG 도구 키"
+    rules:
+      - "Business Layer(Observer/Explorer)는 수치 사용 시 VAL-*만 직접 참조"
+      - "EST-*는 추정 이벤트/메모리 추적용으로만 사용(직접 노출 금지)"
+      - "CAN/PRJ/GND/GED는 RAG/Graph 내부에 한정"
+
+# ========================================
+# SECTION 1: AGENTS (Agent-centric view)
+# ========================================
+  agents:
+    tier_1_business_analysis:
+      observer:
+        id: observer
+        name: Albert
+        classification: "Domain Agent"
+        responsibility:
+          - "시장 구조/가치사슬 관찰"
+          - "규모/마진 구조 종합(계산/추정은 위임)"
+        produces:
+          - "market_reality_report.md"
+        uses: ["calculator", "validator", "estimator", "guardian"]
+        must_not:
+          - "값 직접 추정 금지(Truth Factory 호출)"
+      explorer:
+        id: explorer
+        name: Steve
+        classification: "Domain Agent"
+        responsibility:
+          - "패턴/사례 기반 기회 발굴(RAG + Graph)"
+          - "기회별 Rough sizing/ROI 시사점 도출"
+        produces:
+          - "OPP_*.md (Validated Opportunity Portfolio)"
+        uses: ["calculator", "validator", "estimator", "guardian"]
+        rules:
+          - "빠른 우선순위 판단 목적의 prior는 Estimator 직접 호출 허용(draft 태그)"
+          - "보고/의사결정 수치 사용 전에는 반드시 Truth Factory로 재계산"
+
+    tier_2_evidence_generation:
+      evidence_collector:
+        id: evidence_collector
+        classification: "Infrastructure"
+        role: "<1s Fast Path Evidence"
+        sources: ["project_files", "system_rag", "knowledge_graph", "guardian_memory"]
+        output_type: EvidenceBundle
+        schema_ref: "config/schema_registry.yaml#EvidenceBundle"
+      validator:
+        id: validator
+        name: Rachel
+        classification: "Support Agent"
+        role: "Active Data Hunter + Definition/Lineage 검증"
+        operates_on: ["source_tier_1_official", "source_tier_2_commercial", "source_tier_1b_curated_internal"]
+        output_type: EvidenceBundle
+      calculator:
+        id: calculator
+        name: Bill
+        classification: "Support Agent"
+        role: "Formula Orchestrator & Fermi Decomposition & Convergence"
+        internal_tools: ["calculator_engine", "fermi_decomposer"]
+        tracks:
+          exact:
+            allow_estimated_inputs: false
+            write_to_value_store: true
+          convergence:
+            allow_estimated_inputs: true
+            write_to_value_store: false
+          fermi:
+            allow_estimated_inputs: true
+            write_to_value_store: false
+        output_type: TruthCandidateList
+        schema_ref: "config/schema_registry.yaml#TruthCandidateList"
+      estimator:
+        id: estimator
+        name: Fermi
+        classification: "Support Agent"
+        role: "Generative Prior Specialist (Last Resort)"
+        stage_policy:
+          stage_1_fast_path: "EvidenceBundle 확정값 시 pass-through"
+          stage_2_prior: "hard_bounds + hints 기반 prior 생성"
+        output_type: EstimationEvent
+        schema_ref: "config/schema_registry.yaml#EstimationEvent"
+        notes:
+          - "Estimator는 LLM Prior에 집중, 재귀 금지"
+
+    tier_3_supervision:
+      guardian:
+        id: guardian
+        name: Stewart
+        classification: "Supervision Agent"
+        role: "Policy/Quality/Memory/CircuitBreaker 감독"
+        outputs: [".project_meta.yaml", "deliverables_registry.yaml", "rae_memory.jsonl"]
+
+# ========================================
+# SECTION 2: TRUTH FACTORY (Validator→Calculator→Estimator)
+# ========================================
+  truth_factory:
+    description: >
+      EvidenceCollector→Validator→Calculator→Estimator 4 Stage로 단일 ValueRecord(VAL-*)를 생산.
+      Calculator가 방법론/분해/수렴을, Estimator는 부족 변수 Prior를 담당.
+    api:
+      value_get: "value_service.get(metric_id, context, policy)"
+      policies_ref: "config/runtime.yaml#policies"
+    pipeline:
+      stage_1_evidence_collection:
+        owner: evidence_collector
+        output: EvidenceBundle
+        schema_ref_output: "config/schema_registry.yaml#EvidenceBundle"
+      stage_2_active_validation:
+        owner: validator
+        input: EvidenceBundle
+        output: EvidenceBundle
+        schema_ref_input: "config/schema_registry.yaml#EvidenceBundle"
+        schema_ref_output: "config/schema_registry.yaml#EvidenceBundle"
+      stage_3_structured_calculation:
+        owner: calculator
+        input: EvidenceBundle
+        output: TruthCandidateList
+        schema_ref_input: "config/schema_registry.yaml#EvidenceBundle"
+        schema_ref_output: "config/schema_registry.yaml#TruthCandidateList"
+      stage_4_last_resort_prior:
+        owner: estimator
+        input: MissingVariables
+        output: PriorCandidates
+        schema_ref_input: "config/schema_registry.yaml#MissingVariables"
+        schema_ref_output: "config/schema_registry.yaml#PriorCandidates"
+    fusion:
+      owner: estimator
+      domain_policy:
+        interface_ref: "umis_rag/estimation/domain/fusion_policy.py"
+        config_ref: "config/runtime.yaml#estimator.fusion"
+        invariants:
+          - "Evidence 우선(official/curated > commercial > calculated > prior)"
+          - "hard_bounds 준수 + 일관성 검증"
+          - "early_return 허용(Stage 1/2 확신 high)"
+      mode:
+        fusion_mode: "full"  # full | selector_only | disabled
+      output_type: EstimationResult
+      schema_ref: "config/schema_registry.yaml#EstimationResult"
+
+# ========================================
+# SECTION 3: VALUE STORE (Single Source of Truth)
+# ========================================
+  value_store:
+    id_prefix: "VAL-"
+    storage:
+      registry_ref: "data/value_store.jsonl"  # 구현 선택지: jsonl/db
+    value_record:
+      schema_ref: "config/schema_registry.yaml#ValueRecord"
+      fields:
+        - metric_id
+        - value
+        - unit
+        - period
+        - source_mix  # literal/calculated/estimated 비중
+        - lineage     # [SRC-*, EST-*, ASM-*, OPP-*]
+        - certainty   # high/medium/low
+        - policy_tag  # official/scenario/experimental
+      rules:
+        - "Business Layer는 VAL-*만 참조"
+        - "Truth Factory 출력(EstimationResult)은 ValueRecord로 승격 후 사용"
+
+# ========================================
+# SECTION 4: DATA SOURCE PRIORITY (system-wide)
+# ========================================
+  data_source_priority:
+    order:
+      - source_tier_1_official
+      - source_tier_1b_curated_internal  # 1.5 레벨(공식에 준하는 내부 큐레이션)
+      - source_tier_2_commercial
+      - source_tier_3_structured_estimation
+      - source_tier_4_llm_baseline
+    gate:
+      fact_check:
+        validator_approval_required: true
+        applies_to: ["모든 최종 보고서", "사용자 노출 수치"]
+
+# ========================================
+# SECTION 5: BUSINESS WORKFLOWS (Agent recipes)
+# ========================================
+  workflows:
+    observer_default:
+      entry_agent: observer
+      steps:
+        - "시장/세그먼트 정의"
+        - "구조/참여자/거래 메커니즘 관찰"
+        - "핵심 지표 수집 요청 → truth_factory.value_get(...)"
+        - "ValueRecord(VAL-*)에서 값 읽어 구조/마진 구조 정리"
+        - "fact_check gate(validator) → guardian meta 승인"
+    explorer_default:
+      entry_agent: explorer
+      steps:
+        - "패턴/사례 탐색(CAN/PRJ/KG)"
+        - "OPP 후보 생성"
+        - "기회별 Rough sizing → truth_factory.value_get(...)"
+        - "ValueRecord(VAL-*)에서 값 읽어 검증/정리"
+        - "validator/guardian 검증 후 포트폴리오 확정"
+
+# ========================================
+# SECTION 6: RAG & KNOWLEDGE GRAPH
+# ========================================
+  rag_and_kg:
+    canonical_index:
+      id_prefix: "CAN-"
+      purpose: "정규화 원본 청크"
+      anchor_strategy: "anchor_path + content_hash"
+    projected_index:
+      id_prefix: "PRJ-"
+      purpose: "Agent별 검색용 뷰"
+      projection_rules_ref: "config/projection_rules.yaml"
+    knowledge_graph:
+      node_prefix: "GND-"
+      edge_prefix: "GED-"
+      source_data:
+        type: curated_yaml
+        onboarding:
+          from_yaml_paths:
+            - "data/raw/umis_business_model_patterns.yaml"
+            - "data/raw/umis_pattern_relationships.yaml"
+          policy: prevalidated_by_user
+        sot_integration:
+          treat_as: "evidence_high"
+          notes:
+            - "KG 수치/비율은 curated_internal로 분류"
+            - "EvidenceCollector fast path에 포함"
+    memory:
+      types: ["MEM-query-*", "MEM-goal-*", "RAE-eval-*"]
+      usage: ["순환 방지", "목표 정렬", "평가 재사용"]
+
+# ========================================
+# SECTION 7: RUNTIME & LLM ABSTRACTION
+# ========================================
+  runtime:
+    llm_provider:
+      interface_ref: "umis_rag/core/llm_interface.py"
+      task_types: ["prior_estimation", "fermi_decomposition", "fusion_validation"]
+      providers:
+        cursor_native: {enabled: true}
+        external_api: {enabled: true}
+    modes:
+      default: rag_full
+      options: [yaml_only, hybrid, rag_full]
+      circuit_breaker_ref: "config/runtime.yaml"
+    estimator:
+      fusion:
+        mode: full  # full | selector_only | disabled
+        config_ref: "config/runtime.yaml#estimator.fusion"
+    calculator:
+      tracks:
+        exact: {allow_estimated_inputs: false, write_to_value_store: true}
+        convergence: {allow_estimated_inputs: true, write_to_value_store: false}
+        fermi: {allow_estimated_inputs: true, write_to_value_store: false}
+
+# ========================================
+# SECTION 8: MIGRATION (v7 → v8)
+# ========================================
+  migration_from_v7:
+    estimator_usage_categories:
+      calc_value:
+        label: "계산용 값"
+        description: "수식 입력용 추정치 → v8은 Calculator経由 + VAL-* 승격"
+      opp_prior:
+        label: "기회 prior"
+        description: "Explorer 우선순위 판단용 Draft prior"
+      struct_ratio:
+        label: "구조 비율"
+        description: "구조 파라미터(Fermi 분해 핵심)"
+      other:
+        label: "기타/예외"
+        description: "개별 검토 필요"
+    estimator_call_mapping_table:
+      - id: MIG-0001
+        legacy:
+          module: "umis_rag/agents/quantifier.py"
+          function: "QuantifierRAG.estimate"
+          line_hint: 338
+          prompt_summary: "시장 지표(ARPU/Churn 등) 추정 위임"
+          notes: "계산식 입력값 확보용"
+        classification:
+          category: calc_value
+          domain: "generic"
+          tags: ["arpu", "churn", "unit_metrics"]
+          is_exception: false
+        v8_plan:
+          owner_agent: calculator
+          map_to: "calculator.tracks.convergence"
+          estimator_usage:
+            mode: "indirect"
+            preferred_stages: [1, 2]  # Evidence/Prior only
+          artifacts:
+            assumption_prefix: "ASM_"
+            est_id_prefix: "EST-"
+            value_store: "VAL-* (승격 대상)"
+          remarks: "Fermi 재귀 금지. 공식+검증 중심, 부족 변수에 한해 Prior 사용"
+
+      - id: MIG-0002
+        legacy:
+          module: "umis_rag/agents/validator.py"
+          function: "ValidatorRAG.validate_estimation"
+          line_hint: 1188
+          prompt_summary: "주장값 교차 검증을 위한 추정 호출"
+          notes: "검증 목적. 보고 전 Fact-check 게이트"
+        classification:
+          category: calc_value
+          domain: "generic"
+          tags: ["validation", "cross_check"]
+          is_exception: false
+        v8_plan:
+          owner_agent: validator
+          map_to: "calculator.tracks.exact"
+          policy: "official_strict"
+          estimator_usage:
+            mode: "indirect"
+            preferred_stages: [1]  # Evidence 우선
+          artifacts:
+            value_store: "VAL-*"
+          remarks: "Validator는 Truth Factory 경유로 재계산하고 VAL-* 기준으로 비교"
+
+      - id: MIG-0003
+        legacy:
+          module: "umis_rag/agents/validator.py"
+          function: "ValidatorRAG._fill_missing_years_with_estimation"
+          line_hint: 1806
+          prompt_summary: "연도별 시장규모 시계열 결손 채우기"
+          notes: "보간/추정으로 공백 연도 메움"
+        classification:
+          category: calc_value
+          domain: "market_size"
+          tags: ["interpolation", "timeseries", "market_size"]
+          is_exception: false
+        v8_plan:
+          owner_agent: calculator
+          map_to: "calculator.tracks.convergence"
+          estimator_usage:
+            mode: "indirect"
+            preferred_stages: [1, 2]  # 필요 시 Prior
+          artifacts:
+            value_store: "VAL-*"
+          remarks: "공식/근거 우선, 부족 변수는 Prior 보조"
+    agent_mapping:
+      observer: observer
+      explorer: explorer
+      quantifier: calculator
+      validator: validator
+      guardian: guardian
+      estimator:
+        from: "4-Stage Fusion"
+        to: ["estimator: prior", "calculator: fermi+convergence", "estimator: fusion_policy(owner)"]
+    python_api_mapping:
+      estimator_estimate_calls:
+        classification_rules:
+          - {id: pure_calculation, map_to: "calculator.tracks.exact"}
+          - {id: multi_method_sizing, map_to: "calculator.tracks.convergence"}
+          - {id: structural_fermi, map_to: "calculator.tracks.fermi"}
+          - {id: pure_guess, map_to: "estimator.stage_2_prior"}
+    yaml_mapping:
+      v7_file: "umis.yaml"
+      v8_file: "umis_v8.yaml"
+      sections:
+        - {from: "SECTION 6: AGENTS - Quantifier", to: "agents.tier_2_evidence_generation.calculator"}
+        - {from: "Estimator 4-Stage", to: "truth_factory + estimator.fusion + calculator"}
+
+# ========================================
+# END
