@@ -36,16 +36,16 @@ field_rules:
 
   # 정량 데이터
   market_size:
-    agents: [quantifier]
+    agents: [calculator]
     reason: "시장 규모 계산"
 
   churn_rate:
-    agents: [explorer, quantifier, guardian]
+    agents: [explorer, calculator, guardian]
     reason: "구독 평가 + 계산 + 검증"
     learned: false
 
   revenue_model:
-    agents: [explorer, quantifier]
+    agents: [explorer, calculator]
     reason: "수익 구조 + 계산"
 
   # 검증 관련
@@ -72,7 +72,7 @@ pattern_defaults:
     priority_agents: [explorer, observer]
 
   subscription_model:
-    priority_agents: [explorer, quantifier]
+    priority_agents: [explorer, calculator]
 
   disruption_patterns:
     priority_agents: [explorer, observer]
