@@ -1,0 +1,449 @@
+# ========================================
+# UMIS v8.0.0 - Skeleton YAML
+# File: umis_v8.yaml (제안)
+# ========================================
+
+umis_v8:
+  version: "8.0.0"
+  status: "skeleton"
+  description: >
+    UMIS v8은 Agent 중심 아키텍처를 유지하면서,
+    Validator + Calculator + Estimator 클러스터를 통해
+    Business Layer가 사용하는 Single Source of Truth(SSoT)를 생산하는 구조로 재설계된다.
+
+  key_changes_from_v7:
+    - "Quantifier → Calculator (계산/공식/수렴용 Tool)"
+    - "Estimator → Pure Generative Prior (Last Resort '찍기')"
+    - "Validator + Calculator + Estimator = Truth Factory (Business Layer SSoT 생산기지)"
+    - "Fusion 개념은 Calculator의 Convergence/Fusion 로직으로 흡수"
+    - "Agent 중심 상위 구조 유지, Workflow는 Agent 위에서 유연하게 정의"
+
+  compatibility:
+    backward_compatibility: "low"
+    notes:
+      - "런칭 전 제품이므로 v7과의 하위 호환성 요구 낮음"
+      - "v7 Estimator/Quantifier로 연결된 Python 코드 및 yaml 섹션은 migration 규칙에 따라 v8 구조로 재매핑"
+
+
+# ========================================
+# SECTION 1: AGENT SYSTEM (TIERED VIEW)
+# ========================================
+agent_system:
+
+  # ---- 1.1 Tier 정의 (역할 계층) ----
+  tiers:
+    business_analysis:
+      id: "tier_1_business_analysis"
+      order: 1
+      description: "사용자에게 직접 보이는 분석/리포트 생산 계층"
+      agents: ["observer", "explorer"]
+
+    evidence_generation:
+      id: "tier_2_evidence_generation"
+      order: 2
+      description: "Business Layer가 사용할 SSoT를 만들어내는 생산 라인"
+      agents: ["evidence_collector", "validator", "calculator", "estimator"]
+
+    supervision:
+      id: "tier_3_supervision"
+      order: 3
+      description: "프로세스/품질/메모리 관리"
+      agents: ["guardian"]
+
+  # ---- 1.2 Agent 메타 정의 (ID, 타입, 역할 요약) ----
+  agents:
+
+    # --- Tier 1: Business Analysis ---
+    observer:
+      id: "observer"
+      name: "Albert"
+      tier: "business_analysis"
+      classification: "Domain Agent"
+      role: "Market Structure + Sizing Analyst"
+      primary_outputs:
+        - "market_reality_report.md"
+      collaborates_with:
+        - "calculator"
+        - "validator"
+        - "estimator"
+      # TODO: v8에서 유지할/변경할 세부 역할을 v7 umis.yaml에서 migrate
+
+    explorer:
+      id: "explorer"
+      name: "Steve"
+      tier: "business_analysis"
+      classification: "Domain Agent"
+      role: "Opportunity Scout"
+      primary_outputs:
+        - "OPP_*.md (Validated Opportunity Portfolio)"
+      collaborates_with:
+        - "calculator"
+        - "validator"
+        - "estimator"
+      # TODO: v7 Explorer 섹션에서 역할/패턴/RAG 연동 부분 가져와 보강
+
+    # --- Tier 2: Evidence Generation (Truth Factory) ---
+    evidence_collector:
+      id: "evidence_collector"
+      tier: "evidence_generation"
+      classification: "Infrastructure"
+      role: "Fast Path Evidence Collector"
+      description: >
+        Literal 데이터, 캐시, RAG, Knowledge Graph, Guardian Memory를 활용해
+        <1초 내에 사용 가능한 Evidence Bundle을 만든다.
+      sources:
+        - "project_files (literal)"
+        - "system_rag (canonical/projected)"
+        - "knowledge_graph (prevalidated YAML)"
+        - "cache/memory (guardian)"
+      output_type: "EvidenceBundle"
+      # TODO: EvidenceBundle 스키마를 schema_registry.yaml에 정의
+
+    validator:
+      id: "validator"
+      name: "Rachel"
+      tier: "evidence_generation"
+      classification: "Support Agent"
+      role: "Active Data Hunter"
+      description: "DART/KOSIS/Web/Creative Search로 적극적으로 데이터 찾는 탐정"
+      sources:
+        - "DART"
+        - "KOSIS"
+        - "Official Reports (PDF, CSV)"
+        - "Web Search + Creative Expansion"
+      output_type: "EvidenceBundle"
+      # TODO: v8 문서의 validator_workflow를 연결
+
+    calculator:
+      id: "calculator"
+      tier: "evidence_generation"
+      classification: "Tool"
+      role: "Formula Designer & Convergence/Fusion Engine"
+      description: >
+        공식 설계, 변수 수집, 계산, 여러 방법론 수렴(Fusion)을 담당하는 순수 함수적 도구.
+        Quantifier의 대부분의 기능을 승계.
+      modes:
+        - "exact"        # 모든 변수 확정일 때
+        - "convergence"  # 여러 방법론 수렴 필요할 때
+        - "fermi"        # 구조적 분해 및 재귀 (max_depth=2)
+      output_type: "TruthCandidate"  # value, range, reliability, evidence_ratio 등
+      source_priority_levels:
+        # NOTE: 여기서 'tier'라는 이름은 피하고, priority 레벨로 표현
+        level_1: "evidence_collector (fast literal/RAG)"
+        level_2: "validator (active search)"
+        level_3: "calculator_fermi (구조 분해)"
+        level_4: "estimator_prior (LLM '찍기')"
+      # TODO: TruthCandidate 스키마를 schema_registry.yaml에 정의
+
+    estimator:
+      id: "estimator"
+      name: "Fermi"
+      tier: "evidence_generation"
+      classification: "Support Agent"
+      role: "Pure Guesser (Last Resort)"
+      description: >
+        상식/도메인 통념 기반 LLM 내적 확신으로 '찍는' 최후의 전문가.
+        Evidence/Validator/Calculator가 모두 충분한 값을 못 만드는 경우에만 호출.
+      behavior:
+        stage_1_fast_path: "EvidenceBundle에서 확정값 있으면 그대로 반환 (거의 안 씀)"
+        stage_2_generative_prior: "hard_bounds + soft_hints + context 기반 Prior 값 생성"
+      output_type: "TruthCandidate"
+      reliability: "lowest_in_cluster"   # 항상 '이전 단계들보다 낮은 신뢰도'
+
+    # --- Tier 3: Supervision ---
+    guardian:
+      id: "guardian"
+      name: "Stewart"
+      tier: "supervision"
+      classification: "Supervision Agent"
+      role: "Process Overseer & Meta-RAG"
+      description: >
+        Query/Goal/RAE Memory를 통해 순환 감지, 목표 정렬, 평가 일관성을 관리.
+        Truth Factory의 출력 품질을 모니터링하고 세션 단위 메타 정보를 관리.
+      outputs:
+        - ".project_meta.yaml"
+        - "deliverables_registry.yaml"
+        - "rae_memory.jsonl"
+      # TODO: v7 guardian + Meta-RAG 설계를 통합해 v8 버전으로 리팩토링
+
+
+# ========================================
+# SECTION 2: TRUTH FACTORY (SSoT PIPELINE)
+# ========================================
+truth_factory:
+
+  purpose: >
+    Business Analysis Layer(observer/explorer)이 사용할 단일 진실의 원천을
+    EvidenceCollector + Validator + Calculator + Estimator가 협업해서 생산하는 공정.
+
+  input:
+    fields:
+      - "question"
+      - "context"
+      - "constraints (hard_bounds, region, domain, time_horizon 등)"
+      - "budget (time, cost, depth)"
+    caller_examples:
+      - "observer: 가치사슬 마진율"
+      - "explorer: 잠재 시장 크기 (SAM/TAM)"
+      - "guardian: 프로젝트 기간, 리소스 추정"
+
+  stages:
+    - id: "stage_1_evidence_collection"
+      owner: "evidence_collector"
+      description: "Literal + RAG + KG + Memory 기반 Fast Path Evidence"
+      output: "EvidenceBundle"
+
+    - id: "stage_2_active_validation"
+      owner: "validator"
+      description: "API/Web/Creative Search를 통한 적극적 데이터 추가"
+      input: "EvidenceBundle"
+      output: "EvidenceBundle (강화된)"
+
+    - id: "stage_3_structured_calculation"
+      owner: "calculator"
+      description: >
+        공식 설계 + 변수 수집 + Fermi 분해 + 다중 방법론 계산.
+        이 단계에서 Fusion/Convergence를 수행해 TruthCandidate들을 만든다.
+      input: "EvidenceBundle"
+      output: "TruthCandidateList"
+
+    - id: "stage_4_last_resort_prior"
+      owner: "estimator"
+      description: >
+        여전히 부족한 변수/값에 대해 LLM Prior를 생성하는 최후의 '찍기' 단계.
+        Calculator가 필요로 하는 변수 중 stage 1-3에서 못 구한 값에 대해서만 호출.
+      input: "MissingVariables + EvidenceBundle"
+      output: "TruthCandidate (low_reliability)"
+
+  fusion:
+    implemented_in: "calculator"
+    description: >
+      여러 TruthCandidate (여러 공식, 여러 시나리오)를 CV/Outlier/weighting을 통해
+      하나의 SSoT 값으로 수렴시키는 로직.
+    inputs:
+      - "TruthCandidateList"
+      - "Estimator Prior (optional)"
+    metrics:
+      - "mean, std, cv"
+      - "evidence_ratio (tier_1+2 coverage 비율)"
+      - "outlier_z_score"
+    output_type: "EstimationResult"
+    notes:
+      - "v7에서 Estimator Stage 4(Fusion)가 담당하던 역할을 Calculator의 Convergence로 이전"
+      - "Estimator는 Fusion에 참여하되, 단지 한 소스(Prior)로만 들어간다"
+
+  output:
+    type: "EstimationResult"
+    schema_ref: "config/schema_registry.yaml#EstimationResult"
+    fields:
+      - "value"
+      - "range"
+      - "certainty"
+      - "reliability"
+      - "method_breakdown"
+      - "evidence_ratio"
+      - "lineage (SRC/EST/ASM/OPP IDs)"
+    consumers:
+      - "observer"
+      - "explorer"
+      - "guardian"
+
+
+# ========================================
+# SECTION 3: BUSINESS LAYER WORKFLOWS (v8 VIEW)
+# ========================================
+business_layer_workflows:
+
+  observer_default:
+    trigger: "시장 구조 + 규모 분석 요청"
+    entry_agent: "observer"
+    uses_truth_factory: true
+    high_level_steps:
+      - "시장/세그먼트 정의"
+      - "구조/참여자/거래 메커니즘 관찰"
+      - "핵심 지표(ARPU, churn, penetration 등) 수집 요청 → Truth Factory 호출"
+      - "Calculator 수렴 결과 기반 시장 규모/마진 구조 정리"
+      - "Guardian에게 메타 검토 요청"
+
+  explorer_default:
+    trigger: "신규/기존 시장에서 기회 탐색"
+    entry_agent: "explorer"
+    uses_truth_factory: true
+    high_level_steps:
+      - "Canonical/Projected Index + Knowledge Graph로 패턴/사례 검색"
+      - "잠재 기회 후보군 생성 (OPP candidates)"
+      - "각 기회별 시장 크기/단위 경제성 Rough Sizing → Truth Factory 호출"
+      - "검증된 기회만 필터링 (Validator/Guardian 협업)"
+      - "Validated Opportunity Portfolio 생성"
+
+  # TODO: 필요 시 Scenario별 상세 workflow (Quick Estimate, Deep Dive 등) 추가
+
+
+# ========================================
+# SECTION 4: RAG & KNOWLEDGE GRAPH INTEGRATION
+# ========================================
+rag_and_kg:
+
+  canonical_index:
+    description: "정규화된 원본 청크 저장소"
+    id_prefix: "CAN-"
+    usage:
+      - "Explorer/Observer 패턴 검색의 근간"
+      - "EvidenceCollector의 literal-like evidence 소스"
+
+  projected_index:
+    description: "Agent별 검색용 Materialized View"
+    id_prefix: "PRJ-"
+    agent_views:
+      - "explorer"
+      - "observer"
+      - "calculator (optional: method templates)"
+    projection_rules_ref: "config/projection_rules.yaml"
+
+  knowledge_graph:
+    description: "패턴/관계/조합을 표현하는 그래프 (Neo4j)"
+    id_prefix_node: "GND-"
+    id_prefix_edge: "GED-"
+    source_data:
+      type: "curated_yaml"
+      # 사용자가 직접 검수한 YAML → 사전 검증된 것으로 취급
+      onboarding:
+        from_yaml_paths:
+          - "data/raw/umis_business_model_patterns.yaml"
+          - "data/raw/umis_pattern_relationships.yaml"
+        validation_policy: "prevalidated_by_user"
+        sot_integration:
+          strategy: "treat_as_evidence_with_high_default_reliability"
+          notes:
+            - "KG에서 나오는 숫자/비율은 이미 검수된 것으로 간주"
+            - "EvidenceCollector가 Literal과 동일한 tier로 편입"
+            - "단, region/domain/time mismatch는 Guardian Rule로 검증"
+
+  memory:
+    description: "Guardian 중심 Meta/Query/Goal/RAE 메모리"
+    types:
+      - "MEM-query-*"
+      - "MEM-goal-*"
+      - "RAE-eval-*"
+    usage:
+      - "순환 질의 방지"
+      - "프로젝트 목표 정렬"
+      - "평가 재사용"
+
+
+# ========================================
+# SECTION 5: RUNTIME & LLM ABSTRACTION (HOOKS)
+# ========================================
+runtime:
+
+  llm_provider:
+    description: "Business Logic은 LLM 종류/모드를 모르게 유지"
+    interface_ref: "umis_rag/core/llm_interface.py"
+    task_types:
+      - "prior_estimation"
+      - "fermi_decomposition"
+      - "fusion_validation"
+    providers:
+      cursor_native:
+        enabled: true
+        usage: "개발/분석 시 Native 모드"
+      external_api:
+        enabled: true
+        usage: "배포/자동화 시 External 모드"
+
+  modes:
+    default: "rag_full"
+    options:
+      - "yaml_only"
+      - "hybrid"
+      - "rag_full"
+    circuit_breaker_ref: "config/runtime.yaml"
+
+  # TODO: Estimator/Calculator가 어떤 TaskType과 어떤 모델을 쓰는지 model_configs.yaml에서 정의
+
+
+# ========================================
+# SECTION 6: MIGRATION (v7 → v8)
+# ========================================
+migration:
+
+  from_version: "7.x"
+  to_version: "8.0.0"
+
+  # ---- 6.1 Agent 매핑 ----
+  agent_mapping:
+    observer: "observer (유지)"
+    explorer: "explorer (유지)"
+    quantifier: "calculator (주요 기능 승계)"
+    validator: "validator (기능 확장)"
+    guardian: "guardian (유지, Meta-RAG 강화)"
+    estimator:
+      from: "4-Stage Fusion + Fermi"
+      to:
+        - "calculator (Fermi/Convergence)"
+        - "estimator (Pure Prior)"
+      notes:
+        - "v7 Stage 3/4 Fermi & Fusion 로직은 calculator로 이동"
+        - "v7 Stage 2 Prior 성격은 estimator로 집중"
+
+  # ---- 6.2 Python 코드 매핑 규칙 (정책 레벨) ----
+  python_api_mapping:
+
+    estimator_estimate_calls:
+      pattern: "EstimatorRAG().estimate("
+      classification_rules:
+        - id: "pure_calculation"
+          when: "입력 질문이 '구조가 명확하고, 필요한 값이 모두 주어짐'"
+          map_to: "calculator.mode_1_exact"
+        - id: "multi_method_sizing"
+          when: "시장 규모/단위 경제성 같이 여러 방법론 수렴이 필요한 경우"
+          map_to: "calculator.mode_2_convergence"
+        - id: "structural_fermi"
+          when: "질문이 '연간 공연 횟수'처럼 구조 분해가 필요한 경우"
+          map_to: "calculator.fermi"
+        - id: "pure_guess"
+          when: "명확한 구조/데이터 없이 상식적 추정만 가능한 경우"
+          map_to: "estimator.generative_prior"
+
+      migration_action:
+        - "v7 코드에서 각 estimate 호출의 맥락을 사람이 1차 분류"
+        - "위 규칙에 따라 Calculator/Estimator 중 어디로 보낼지 결정"
+        - "필요 시 Truth Factory API로 래핑"
+
+    quantifier_usage:
+      from_modules:
+        - "umis_rag/agents/quantifier.py"
+      to_modules:
+        - "umis_rag/agents/calculator.py"
+      notes:
+        - "계산 로직/엑셀 생성/수식 템플릿은 Calculator로 직행"
+        - "값 추정 로직은 Truth Factory(Validator+Calculator+Estimator) 호출로 전환"
+
+  # ---- 6.3 YAML 섹션 매핑 ----
+  yaml_mapping:
+    v7_file: "umis.yaml"
+    v8_file: "umis_v8.yaml"
+
+    sections:
+      - from: "SECTION 6: AGENTS - Quantifier"
+        to: "agent_system.agents.calculator"
+        status: "manual_port_required"
+
+      - from: "SECTION 3: ESTIMATOR (4-Stage Fusion)"
+        to:
+          - "truth_factory"
+          - "agent_system.agents.calculator"
+          - "agent_system.agents.estimator"
+        strategy: "split_and_refactor"
+
+      - from: "RAG Architecture / Knowledge Graph 설명"
+        to:
+          - "rag_and_kg"
+        notes:
+          - "구조는 유지하되, EvidenceCollector/Truth Factory 관점에서 재서술"
+
+  # ---- 6.4 Open TODOs (검증 필요 지점) ----
+  open_questions:
+    - "v7 EstimationResult 스키마와 v8 EstimationResult 스키마 간 완전한 diff 및 마이그레이션 규칙 정의"
+    - "Calculator 모듈이 어느 수준까지 '엑셀 생성' 책임을 가져갈지 확정"
+    - "Knowledge Graph 수치 정보(예: 비율/랭킹)를 어떻게 SRC/EST 네임스페이스에 매핑할지 정책 확립"
