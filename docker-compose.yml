@@ -1,6 +1,73 @@
-version: '3.8'
-
 services:
+  # ============================================
+  # UMIS Main Application
+  # ============================================
+  umis:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: umis-app
+    restart: unless-stopped
+
+    # Environment variables
+    environment:
+      # API Keys (from .env file)
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+
+      # LLM Settings
+      - LLM_MODE=${LLM_MODE:-cursor}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-text-embedding-3-large}
+      - EMBEDDING_DIMENSION=${EMBEDDING_DIMENSION:-3072}
+
+      # ChromaDB
+      - CHROMA_PERSIST_DIR=/app/data/chroma
+
+      # Neo4j
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD:-***REMOVED***}
+      - WAIT_FOR_NEO4J=${WAIT_FOR_NEO4J:-true}
+
+      # Container Options
+      - AUTO_BUILD_RAG=${AUTO_BUILD_RAG:-true}
+
+      # Web Search
+      - WEB_SEARCH_ENGINE=${WEB_SEARCH_ENGINE:-duckduckgo}
+      - WEB_SEARCH_ENABLED=${WEB_SEARCH_ENABLED:-true}
+
+      # Optional APIs
+      - DART_API_KEY=${DART_API_KEY:-}
+      - KOSIS_API_KEY=${KOSIS_API_KEY:-}
+
+    # Volume mounts (data persistence)
+    volumes:
+      # ChromaDB data (required)
+      - umis-chroma-data:/app/data/chroma
+      # Chunks cache
+      - umis-chunks-data:/app/data/chunks
+      # Logs
+      - umis-logs:/app/logs
+      # User config (optional, read-only)
+      - ./config:/app/config:ro
+
+    networks:
+      - umis-network
+
+    depends_on:
+      neo4j:
+        condition: service_healthy
+
+    healthcheck:
+      test: ["CMD", "python", "/healthcheck.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  # ============================================
+  # Neo4j (Knowledge Graph)
+  # ============================================
   neo4j:
     image: neo4j:5.13
     container_name: umis-neo4j
@@ -8,21 +75,51 @@ services:
       - "7474:7474"  # HTTP (Browser UI)
       - "7687:7687"  # Bolt (Driver)
     environment:
-      - NEO4J_AUTH=neo4j/***REMOVED***
+      - NEO4J_AUTH=neo4j/${NEO4J_PASSWORD:-***REMOVED***}
       - NEO4J_PLUGINS=["apoc"]
       - NEO4J_dbms_security_procedures_unrestricted=apoc.*
       - NEO4J_dbms_memory_heap_initial__size=512m
       - NEO4J_dbms_memory_heap_max__size=2g
     volumes:
-      - ./data/neo4j/data:/data
-      - ./data/neo4j/logs:/logs
-      - ./data/neo4j/import:/var/lib/neo4j/import
-      - ./data/neo4j/plugins:/plugins
+      - umis-neo4j-data:/data
+      - umis-neo4j-logs:/logs
+      - umis-neo4j-import:/var/lib/neo4j/import
+      - umis-neo4j-plugins:/plugins
     restart: unless-stopped
     networks:
       - umis-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:7474 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
 
+# ============================================
+# Networks
+# ============================================
 networks:
   umis-network:
     driver: bridge
 
+# ============================================
+# Volumes (Data Persistence)
+# ============================================
+volumes:
+  # UMIS Data
+  umis-chroma-data:
+    driver: local
+  umis-chunks-data:
+    driver: local
+  umis-logs:
+    driver: local
+
+  # Neo4j Data
+  umis-neo4j-data:
+    driver: local
+  umis-neo4j-logs:
+    driver: local
+  umis-neo4j-import:
+    driver: local
+  umis-neo4j-plugins:
+    driver: local
