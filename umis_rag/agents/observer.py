@@ -35,6 +35,7 @@ project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from umis_rag.core.config import settings
+from umis_rag.core.openai_validation import require_openai_api_key
 from umis_rag.utils.logger import logger
 
 
@@ -66,9 +67,13 @@ class ObserverRAG:
         logger.info("Observer RAG 에이전트 초기화")
         
         # Embeddings
+        openai_api_key = require_openai_api_key(
+            settings.openai_api_key,
+            component="ObserverRAG(OpenAIEmbeddings)"
+        )
         self.embeddings = OpenAIEmbeddings(
             model=settings.embedding_model,
-            openai_api_key=settings.openai_api_key
+            openai_api_key=openai_api_key
         )
         
         # Vector Stores

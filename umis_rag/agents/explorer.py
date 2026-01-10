@@ -35,6 +35,7 @@ project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from umis_rag.core.config import settings
+from umis_rag.core.openai_validation import require_openai_api_key
 from umis_rag.core.llm_provider import LLMProvider
 from umis_rag.utils.logger import logger
 from umis_rag.graph.hybrid_search import HybridSearch, HybridResult
@@ -75,9 +76,13 @@ class ExplorerRAG:
         logger.info("Explorer RAG 에이전트 초기화")
         
         # Embeddings 초기화
+        openai_api_key = require_openai_api_key(
+            settings.openai_api_key,
+            component="ExplorerRAG(OpenAIEmbeddings)"
+        )
         self.embeddings = OpenAIEmbeddings(
             model=settings.embedding_model,
-            openai_api_key=settings.openai_api_key
+            openai_api_key=openai_api_key
         )
         
         # 벡터 스토어 로드 (v3.0 Dual-Index 지원!)
