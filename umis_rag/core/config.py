@@ -27,7 +27,8 @@ class Settings(BaseSettings):
     # OpenAI API (하나의 키로 모든 모델 사용 가능)
     # ========================================
     # .env: OPENAI_API_KEY=sk-...
-    openai_api_key: str
+    # Docker에서는 선택적 (RAG 빌드 시에만 필요)
+    openai_api_key: Optional[str] = Field(default=None)
     # .env: OPENAI_ORG_ID=org-... (선택)
     openai_org_id: Optional[str] = Field(default=None)
     
