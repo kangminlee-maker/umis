@@ -21,6 +21,16 @@ neo4j>=5.13.0
 click>=8.0.0
 tqdm>=4.65.0
 backoff>=2.2.0
+loguru>=0.7.0
+rich>=13.0.0
+numpy>=1.24.0
+openpyxl>=3.1.0
+
+# LangChain
+langchain>=0.1.0
+langchain-community>=0.0.10
+langchain-core>=0.1.0
+langchain-openai>=0.0.5
 
 # Web Search & Scraping
 requests>=2.31.0
